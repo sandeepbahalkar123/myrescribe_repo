@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Rescribe</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+
+    <string name="internet">Please check your Internet Connection</string>
+    <string name="timeout">Timeout error</string>
+</resources>

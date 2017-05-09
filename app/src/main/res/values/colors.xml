@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="reset_yellow">#ffa100</color>
+    <color name="apply_blue">#6AB0D3</color>
+    <color name="dcr_customer_name">#010101</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_800">#424242</color>
+    <color name="grey_500">#9E9E9E</color>
+    <color name="grey_200">#E0E0E0</color>
+    <color name="transparent">#00000000</color>
+    <color name="placeHolder">#55000000</color>
+    <item name="errorColor" type="color">#BD362F</item>
+    <color name="refId_color">#8dc63f</color>
+    <color name="Gray">#736F6E</color>
+    <color name="black">#000000</color>
+    <color name="LightSkyBlue">#82CAFA</color>
+    <color name="cobalt_blue">#0020C2</color>
+    <color name="BlueAngel">#0288d1</color>
+    <color name="MediumSpringGreen">#348017</color>
+    <color name="BlueDress">#157DEC</color>
+    <color name="Red">#FF0000</color>
+    <color name="tagColor">#1CBBB4</color>
+    <color name="login_bg">#4FAFDC</color>
+    <color name="login_button">#36657A</color>
+    <color name="white">#ffffff</color>
+</resources>

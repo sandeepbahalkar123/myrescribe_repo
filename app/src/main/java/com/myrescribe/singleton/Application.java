@@ -1,6 +1,5 @@
 package com.myrescribe.singleton;
 
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.TextUtils;
@@ -20,20 +19,20 @@ import com.google.android.gms.analytics.Tracker;*/
 /**
  * Created by Sandeep Bahalkar
  */
-public class DmsApplication extends  Application /*MultiDexApplication*/ {
-    public static final String TAG = DmsApplication.class
+public class Application extends android.app.Application /*MultiDexApplication*/ {
+    public static final String TAG = Application.class
             .getSimpleName();
 
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
-    private static DmsApplication mInstance;
+    private static Application mInstance;
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
     }
 
-    public static synchronized DmsApplication getInstance() {
+    public static synchronized Application getInstance() {
         return mInstance;
     }
 
@@ -86,7 +85,7 @@ public class DmsApplication extends  Application /*MultiDexApplication*/ {
     private Tracker mTracker;
 
     *//**
-     * Gets the default {@link Tracker} for this {@link Application}.
+     * Gets the default {@link Tracker} for this {@link android.app.Application}.
      * @return tracker
      *//*
     synchronized public Tracker getDefaultTracker() {

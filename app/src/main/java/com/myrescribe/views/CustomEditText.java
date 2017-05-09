@@ -8,8 +8,8 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 
 import com.myrescribe.R;
-import com.myrescribe.singleton.DmsApplication;
-import com.myrescribe.util.DmsConstants;
+import com.myrescribe.singleton.Application;
+import com.myrescribe.util.Constants;
 
 /**
  * Created by Sandeep Bahalkar
@@ -22,7 +22,7 @@ public class CustomEditText extends EditText {
             return;
         }
 
-        setTextColor(Color.parseColor(DmsConstants.TEXT_COLOR));
+        setTextColor(Color.parseColor(Constants.TEXT_COLOR));
         setHintTextColor(context.getResources().getColor(R.color.placeHolder));
         setCustomFont(context, attrs);
     }
@@ -36,7 +36,7 @@ public class CustomEditText extends EditText {
     }
 
     public void setCustomFont(Context ctx, String asset) {
-        Typeface typeface = DmsApplication.get(ctx, asset);
+        Typeface typeface = Application.get(ctx, asset);
         setTypeface(typeface);
     }
 }

@@ -4,7 +4,7 @@ package com.myrescribe.util;
 /**
  * @author Sandeep Bahalkar
  */
-public class DmsConstants {
+public class Constants {
 
     public static final String DMS_LOG_FOLDER = "DMS_LOG";
     public static final String DMS_LOG_FILE = "DMS_LOG_FILE.txt";
@@ -65,13 +65,13 @@ public class DmsConstants {
 
     // Connection codes
 
-    public static final String REGISTRATION_CODE = DmsConstants.BLANK + 0;
-    public static final String TASK_LOGIN_CODE = DmsConstants.BLANK + 1;
-    public static final String TASK_PATIENT_LIST = DmsConstants.BLANK + 2;
-    public static final String TASK_ANNOTATIONS_LIST = DmsConstants.BLANK + 3;
-    public static final String TASK_GET_ARCHIVED_LIST = DmsConstants.BLANK + 4;
-    public static final String TASK_GET_PDF_DATA = DmsConstants.BLANK + "PDF_DATA";
-    public static final String TASK_CHECK_SERVER_CONNECTION = DmsConstants.BLANK +5;
+    public static final String REGISTRATION_CODE = Constants.BLANK + 0;
+    public static final String TASK_LOGIN_CODE = Constants.BLANK + 1;
+    public static final String TASK_PATIENT_LIST = Constants.BLANK + 2;
+    public static final String TASK_ANNOTATIONS_LIST = Constants.BLANK + 3;
+    public static final String TASK_GET_ARCHIVED_LIST = Constants.BLANK + 4;
+    public static final String TASK_GET_PDF_DATA = Constants.BLANK + "PDF_DATA";
+    public static final String TASK_CHECK_SERVER_CONNECTION = Constants.BLANK +5;
 
     public static class DATE_PATTERN {
         public static String YYYY_MM_DD = "yyyy-MM-dd";

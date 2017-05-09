@@ -21,4 +21,5 @@ public class ConnectRequest {
     protected String mOldDataTag;
     protected String mURL;
     protected int reqPostOrGet;
+    protected boolean isOffline;
 }

@@ -18,7 +18,7 @@ public class Config {
         if (DEV_BUILD) {
 
             *//*BASE_URL = "http://192.168.0.25:81/api/";*//*
-            BASE_URL = DmsPreferencesManager.getString(DmsPreferencesManager.DMS_PREFERENCES_KEY.SERVER_PATH, mContext);
+            BASE_URL = PreferencesManager.getString(PreferencesManager.DMS_PREFERENCES_KEY.SERVER_PATH, mContext);
             Log.e(TAG, "BASE_URL: " + BASE_URL);
         } else {
 //            TODO: production base url will be added once its ready

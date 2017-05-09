@@ -8,8 +8,8 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.singleton.DmsApplication;
-import com.myrescribe.util.DmsConstants;
+import com.myrescribe.singleton.Application;
+import com.myrescribe.util.Constants;
 
 /**
  * Created by Sandeep Bahalkar
@@ -24,8 +24,8 @@ public class CustomTextView extends TextView {
             return;
         }
 
-        setTextColor(Color.parseColor(DmsConstants.TEXT_COLOR));
-        setLinkTextColor(Color.parseColor(DmsConstants.HEADER_COLOR));
+        setTextColor(Color.parseColor(Constants.TEXT_COLOR));
+        setLinkTextColor(Color.parseColor(Constants.HEADER_COLOR));
         setCustomFont(context, attrs);
     }
 
@@ -38,7 +38,7 @@ public class CustomTextView extends TextView {
     }
 
     public void setCustomFont(Context ctx, String asset) {
-        Typeface typeface = DmsApplication.get(ctx, asset);
+        Typeface typeface = Application.get(ctx, asset);
         setTypeface(typeface);
     }
 }

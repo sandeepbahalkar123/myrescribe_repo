@@ -8,8 +8,8 @@ import android.util.AttributeSet;
 import android.widget.Button;
 
 import com.myrescribe.R;
-import com.myrescribe.singleton.DmsApplication;
-import com.myrescribe.util.DmsConstants;
+import com.myrescribe.singleton.Application;
+import com.myrescribe.util.Constants;
 
 /**
  * Created by Sandeep Bahalkar
@@ -18,8 +18,8 @@ public class CustomButton extends Button {
     public CustomButton(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-//        setBackground(DmsConstants.getRectangleDrawable(DmsConstants.BUTTON_COLOR, "#00000000", 2, 10, 10, 10, 10));
-        setTextColor(Color.parseColor(DmsConstants.BUTTON_TEXT_COLOR));
+//        setBackground(Constants.getRectangleDrawable(Constants.BUTTON_COLOR, "#00000000", 2, 10, 10, 10, 10));
+        setTextColor(Color.parseColor(Constants.BUTTON_TEXT_COLOR));
         setCustomFont(context, attrs);
     }
 
@@ -32,7 +32,7 @@ public class CustomButton extends Button {
     }
 
     public void setCustomFont(Context ctx, String asset) {
-        Typeface typeface = DmsApplication.get(ctx, asset);
+        Typeface typeface = Application.get(ctx, asset);
         setTypeface(typeface);
     }
 }

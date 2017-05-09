@@ -20,9 +20,9 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * Created by Sandeep Bahalkar
  */
-public class DmsPreferencesManager {
+public class PreferencesManager {
 
-    private static final String TAG = "DMS/DmsPreferencesManager";
+    private static final String TAG = "DMS/PreferencesManager";
     private static SharedPreferences sharedPreferences = null;
     private static byte[] sKey;
 
@@ -160,10 +160,10 @@ public class DmsPreferencesManager {
         }
         try {
             final Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(DmsPreferencesManager.sKey, "AES"));
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(PreferencesManager.sKey, "AES"));
             return encode(cipher.doFinal(cleartext.getBytes("UTF-8")));
         } catch (Exception e) {
-            Log.e(DmsPreferencesManager.class.getName(), "encrypt", e);
+            Log.e(PreferencesManager.class.getName(), "encrypt", e);
             return null;
         }
     }
@@ -174,10 +174,10 @@ public class DmsPreferencesManager {
         }
         try {
             final Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(DmsPreferencesManager.sKey, "AES"));
-            return new String(cipher.doFinal(DmsPreferencesManager.decode(ciphertext)), "UTF-8");
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(PreferencesManager.sKey, "AES"));
+            return new String(cipher.doFinal(PreferencesManager.decode(ciphertext)), "UTF-8");
         } catch (Exception e) {
-            Log.e(DmsPreferencesManager.class.getName(), "decrypt", e);
+            Log.e(PreferencesManager.class.getName(), "decrypt", e);
             return null;
         }
     }

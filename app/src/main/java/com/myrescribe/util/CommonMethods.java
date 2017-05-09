@@ -127,12 +127,12 @@ public class CommonMethods {
     public static void DmsLogWriteFile(String title, String text, boolean textAppend) {
         try {
             byte[] keyBytes = getKey("password");
-            File directory = new File(Environment.getExternalStorageDirectory().getPath() + "/", DmsConstants.DMS_LOG_FOLDER);
+            File directory = new File(Environment.getExternalStorageDirectory().getPath() + "/", Constants.DMS_LOG_FOLDER);
             if (!directory.exists()) {
                 directory.mkdir();
             }
             //make a new text file in that created new directory/folder
-            File file = new File(directory.getPath(), DmsConstants.DMS_LOG_FILE);
+            File file = new File(directory.getPath(), Constants.DMS_LOG_FILE);
 
             if (!file.exists() && directory.exists()) {
                 file.createNewFile();
@@ -180,7 +180,7 @@ public class CommonMethods {
         try {
             byte[] keyBytes = getKey("password");
 
-            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/", DmsConstants.DMS_LOG_FOLDER + "/" + DmsConstants.DMS_LOG_FILE);
+            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/", Constants.DMS_LOG_FOLDER + "/" + Constants.DMS_LOG_FILE);
             InputStreamReader isr;
             if (encryptionIsOn) {
                 Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -404,8 +404,8 @@ public class CommonMethods {
      */
     public static String formatDateTime(String selectedDateTime, String requestedFormat, String currentDateFormat, String formatString) {
 
-        if (formatString.equalsIgnoreCase(DmsConstants.TIME)) {
-            SimpleDateFormat ft = new SimpleDateFormat(DmsConstants.DATE_PATTERN.HH_MM);
+        if (formatString.equalsIgnoreCase(Constants.TIME)) {
+            SimpleDateFormat ft = new SimpleDateFormat(Constants.DATE_PATTERN.HH_MM);
             Date dateObj = null;
 
             try {
@@ -420,7 +420,7 @@ public class CommonMethods {
             return simpleDateFormatObj.format(millis);
 
         }//if
-        else if (formatString.equalsIgnoreCase(DmsConstants.DATE)) {
+        else if (formatString.equalsIgnoreCase(Constants.DATE)) {
             SimpleDateFormat ft = new SimpleDateFormat(currentDateFormat);
             Date dateObj = null;
 

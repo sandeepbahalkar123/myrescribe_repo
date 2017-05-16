@@ -63,6 +63,11 @@ public class Constants {
     public static final String TRUE = "true";
     public static final String FALSE = "false";
 
+    //Click codes
+    public static final String CLICK_DELETE = Constants.BLANK + 0;
+    public static final String CLICK_EXPAND_VIEW = Constants.BLANK + 1;
+    public static final String CLICK_EDIT = Constants.BLANK + 2;
+
     // Connection codes
 
     public static final String REGISTRATION_CODE = Constants.BLANK + 0;

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.myrescribe.activities.MainActivity"
+            android:name="com.myrescribe.activities.ShowMedicineDoseListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,6 +23,8 @@
             android:name="com.myrescribe.activities.SplashScreenActivity"
             android:label="@string/title_activity_splash_screen"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activities.EditPrescription"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -2,12 +2,15 @@ package com.myrescribe.util;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.util.Base64;
@@ -16,12 +19,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.myrescribe.R;
+import com.myrescribe.activities.EditPrescription;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
 
@@ -565,5 +571,29 @@ public class CommonMethods {
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
+    public  static void showDialog(String msg,Context mContext) {
+
+
+        final Dialog dialog = new Dialog(mContext);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_ok_cancel);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+
+        ((TextView) dialog.findViewById(R.id.textview_sucess)).setText(msg);
+
+        dialog.findViewById(R.id.button_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
 }
 

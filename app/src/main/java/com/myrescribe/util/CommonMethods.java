@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import com.myrescribe.R;
 import com.myrescribe.activities.EditPrescription;
+import com.myrescribe.activities.ShowMedicineDoseListActivity;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
 
@@ -571,7 +573,7 @@ public class CommonMethods {
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
-    public  static void showDialog(String msg,Context mContext) {
+    public  static void showDialog(String msg, final Context mContext) {
 
 
         final Dialog dialog = new Dialog(mContext);
@@ -587,8 +589,10 @@ public class CommonMethods {
         dialog.findViewById(R.id.button_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dialog.dismiss();
+                ((Activity) mContext).finish();
+                 mContext.startActivity(new Intent(mContext, ShowMedicineDoseListActivity.class));
+
             }
         });
 

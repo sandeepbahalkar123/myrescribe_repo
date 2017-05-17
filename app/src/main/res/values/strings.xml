@@ -26,6 +26,16 @@
     <string name="logout">Logout</string>
     <string name="medicine">MEDICINE</string>
     <string name="duration">DURATION</string>
+    <string name="notificationtitle">Android Notification Tutorial</string>
+    <string name="notificationtext">Notification Text</string>
+    <string name="notificationticker">Notification Ticker</string>
+    <string name="customnotificationtitle">Android</string>
+    <string name="customnotificationtext">Custom Notification Text</string>
+    <string name="customnotificationticker">Medicine Dose Notification</string>
+    <string name="lbltitle">"Title : "</string>
+    <string name="lbltext">"Text : "</string>
+    <string name="notification">Notification</string>
+    <string name="customnotification">Custom Notification</string>
 
     <string-array name="ids">
         <item>0</item>

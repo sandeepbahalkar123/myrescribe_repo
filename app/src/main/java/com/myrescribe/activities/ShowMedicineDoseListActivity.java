@@ -19,9 +19,11 @@ import android.view.WindowManager;
 import com.myrescribe.R;
 import com.myrescribe.adapters.ShowMedicineDoseListAdapter;
 import com.myrescribe.model.DataObject;
+import com.myrescribe.notification.AlarmTask;
 import com.myrescribe.util.Constants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +61,12 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     private void initialize() {
         initializeVariables();
+        notificationForMedicine();
         bindView();
+    }
+
+    private void notificationForMedicine() {
+        new AlarmTask(ShowMedicineDoseListActivity.this, Calendar.getInstance()).run();
     }
 
     private void initializeVariables() {
@@ -159,7 +166,13 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         }
 
         else if(mClickCodes.equals(Constants.CLICK_EDIT)){
-            startActivity(new Intent(mContext, EditPrescription.class));
+            Intent intent = new Intent(mContext, EditPrescription.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+
         }
 
     }

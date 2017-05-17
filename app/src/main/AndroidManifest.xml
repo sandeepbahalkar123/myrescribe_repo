@@ -19,12 +19,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.myrescribe.activities.SplashScreenActivity"
             android:label="@string/title_activity_splash_screen"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <activity android:name=".activities.EditPrescription"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name=".services.NotifyService" />
+
+        <receiver android:name=".broadcast_receivers.YesClickReceiver"/>
+
+        <receiver android:name=".broadcast_receivers.NoClickReceiver"/>
     </application>
 
 </manifest>

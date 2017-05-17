@@ -55,7 +55,7 @@
   -->     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1 Before"
+            android:text="1 Before BreakFast"
             android:textSize="@dimen/sp16"
             android:textColor="@color/black"
             android:drawablePadding="@dimen/dp10"
@@ -69,7 +69,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1 Before"
+            android:text="1 Before Lunch"
             android:textColor="@color/black"
             android:drawablePadding="@dimen/dp10"
             android:textSize="@dimen/sp16"
@@ -81,7 +81,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2 After"
+            android:text="1 After Dinner"
             android:textColor="@color/black"
             android:textSize="@dimen/sp16"
             android:drawablePadding="@dimen/dp10"

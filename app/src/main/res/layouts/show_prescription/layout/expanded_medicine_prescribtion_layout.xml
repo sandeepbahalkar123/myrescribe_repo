@@ -3,125 +3,126 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp05"
         android:layout_marginTop="@dimen/dp4"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp05"
-        android:background="@color/grey"/>
+        android:background="@color/grey" />
 
-   <!-- <LinearLayout
-        android:layout_width="match_parent"
+    <!-- <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal">
+
+         <TextView
+             android:layout_height="wrap_content"
+             android:layout_width="0dp"
+             android:text="1 BB"
+             android:textSize="@dimen/sp16"
+             android:layout_weight="1"
+             android:textColor="@color/black"
+             android:drawablePadding="@dimen/dp10"
+             android:gravity="center_vertical"
+             android:drawableLeft="@mipmap/sunset"
+             android:layout_margin="@dimen/dp6"
+             />
+         <TextView
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:text="1 AL"
+             android:textSize="@dimen/sp16"
+             android:textColor="@color/black"
+             android:drawablePadding="@dimen/dp10"
+             android:gravity="center_vertical"
+             android:drawableLeft="@mipmap/sun"
+             android:layout_margin="@dimen/dp6"
+             />
+
+         <TextView
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:text="2 BD"
+             android:textSize="@dimen/sp16"
+             android:layout_weight="1"
+             android:textColor="@color/black"
+             android:drawablePadding="@dimen/dp10"
+             android:gravity="center_vertical"
+             android:drawableLeft="@mipmap/night"
+             android:layout_margin="@dimen/dp6"
+             />
+     </LinearLayout>
+   -->     <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp6"
+    android:drawableLeft="@mipmap/sunset"
+    android:drawablePadding="@dimen/dp10"
+    android:gravity="center_vertical"
+    android:text="1 Before"
+    android:textColor="@color/black"
+    android:textSize="@dimen/sp16" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="@dimen/dp6"
+        android:drawableLeft="@mipmap/sun"
+        android:drawablePadding="@dimen/dp10"
+        android:gravity="center_vertical"
+        android:text="1 Before"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp16" />
 
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:text="1 BB"
-            android:textSize="@dimen/sp16"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:drawablePadding="@dimen/dp10"
-            android:gravity="center_vertical"
-            android:drawableLeft="@mipmap/sunset"
-            android:layout_margin="@dimen/dp6"
-            />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="1 AL"
-            android:textSize="@dimen/sp16"
-            android:textColor="@color/black"
-            android:drawablePadding="@dimen/dp10"
-            android:gravity="center_vertical"
-            android:drawableLeft="@mipmap/sun"
-            android:layout_margin="@dimen/dp6"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="2 BD"
-            android:textSize="@dimen/sp16"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:drawablePadding="@dimen/dp10"
-            android:gravity="center_vertical"
-            android:drawableLeft="@mipmap/night"
-            android:layout_margin="@dimen/dp6"
-            />
-    </LinearLayout>
-  -->     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1 Before"
-            android:textSize="@dimen/sp16"
-            android:textColor="@color/black"
-            android:drawablePadding="@dimen/dp10"
-            android:gravity="center_vertical"
-            android:drawableLeft="@mipmap/sunset"
-            android:layout_margin="@dimen/dp6"
-            />
-
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1 Before"
-            android:textColor="@color/black"
-            android:drawablePadding="@dimen/dp10"
-            android:textSize="@dimen/sp16"
-            android:gravity="center_vertical"
-            android:drawableLeft="@mipmap/sun"
-            android:layout_margin="@dimen/dp6"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2 After"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp16"
-            android:drawablePadding="@dimen/dp10"
-            android:gravity="center_vertical"
-            android:drawableLeft="@mipmap/night"
-            android:layout_margin="@dimen/dp6"
-            />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp6"
+        android:drawableLeft="@mipmap/night"
+        android:drawablePadding="@dimen/dp10"
+        android:gravity="center_vertical"
+        android:text="2 After"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp16" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp05"
-        android:background="@color/grey"/>
+        android:background="@color/grey" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp6"
             android:text="@string/instructions"
             android:textColor="@color/black"
-            android:textStyle="bold"
             android:textSize="@dimen/sp16"
-            android:layout_margin="@dimen/dp6"
-            />
+            android:textStyle="bold" />
+
         <TextView
+            android:id="@+id/tv_instructions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/message_text"
-            android:layout_weight="1"
-            android:textSize="@dimen/sp16"
-            android:textColor="@color/black"
             android:layout_margin="@dimen/dp6"
-            />
+            android:layout_weight="1"
+            android:text="@string/message_text"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp16" />
 
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp05"
-        android:background="@color/grey"/>
+        android:background="@color/grey" />
+
     <LinearLayout
         android:id="@+id/linearlayout_showOnlytoDoctor"
         android:layout_width="match_parent"
@@ -132,33 +133,34 @@
             android:id="@+id/buttonEdit"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp30"
-            android:text="@string/edit"
-            android:padding="@dimen/dp4"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:textSize="@dimen/sp16"
             android:layout_marginTop="@dimen/dp4"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/dp4"
+            android:text="@string/edit"
             android:textColor="@color/tagColor"
+            android:textSize="@dimen/sp16"
             android:textStyle="bold"
 
             />
+
         <View
             android:layout_width="@dimen/dp05"
             android:layout_height="match_parent"
-            android:background="@color/grey"/>
+            android:background="@color/grey" />
 
         <TextView
             android:id="@+id/buttonDelete"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp30"
-            android:text="@string/delete"
-            android:padding="@dimen/dp4"
             android:layout_marginTop="@dimen/dp4"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="@dimen/sp16"
-            android:textColor="@color/black"
             android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/dp4"
+            android:text="@string/delete"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp16"
+            android:textStyle="bold"
 
             />
 

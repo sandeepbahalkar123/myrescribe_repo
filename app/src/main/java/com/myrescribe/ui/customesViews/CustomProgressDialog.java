@@ -1,4 +1,4 @@
-package com.myrescribe.views;
+package com.myrescribe.ui.customesViews;
 
 import android.app.Dialog;
 import android.content.Context;

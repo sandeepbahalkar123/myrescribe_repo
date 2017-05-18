@@ -27,8 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.myrescribe.R;
-import com.myrescribe.activities.EditPrescription;
-import com.myrescribe.interfaces.CheckIpConnection;
+ import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
 
 import java.io.BufferedReader;

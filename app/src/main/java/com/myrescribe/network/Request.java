@@ -7,7 +7,7 @@ package com.myrescribe.network;
 import android.content.Context;
 
 import com.myrescribe.interfaces.ConnectionListener;
-import com.myrescribe.views.CustomProgressDialog;
+import com.myrescribe.ui.customesViews.CustomProgressDialog;
 
 import java.util.Map;
 

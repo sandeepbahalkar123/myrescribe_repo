@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MyRescribe_repo.iml" filepath="$PROJECT_DIR$/MyRescribe_repo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/myrescribe_repo.iml" filepath="$PROJECT_DIR$/myrescribe_repo.iml" />
     </modules>
   </component>
 </project>

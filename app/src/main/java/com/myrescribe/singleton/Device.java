@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.myrescribe.R;
-import com.myrescribe.util.DmsConstants;
+import com.myrescribe.util.Constants;
 
 /**
  * Created by Sandeep Bahalkar
@@ -44,28 +44,28 @@ public class Device {
 
     public String getDensity() {
 
-        String density = DmsConstants.HDPI;
+        String density = Constants.HDPI;
 
         DisplayMetrics metrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(metrics);
         switch (metrics.densityDpi) {
             case DisplayMetrics.DENSITY_LOW:
-                density = DmsConstants.LDPI;
+                density = Constants.LDPI;
                 break;
             case DisplayMetrics.DENSITY_MEDIUM:
-                density = DmsConstants.MDPI;
+                density = Constants.MDPI;
                 break;
             case DisplayMetrics.DENSITY_HIGH:
-                density = DmsConstants.HDPI;
+                density = Constants.HDPI;
                 break;
             case DisplayMetrics.DENSITY_XHIGH:
-                density = DmsConstants.XHDPI;
+                density = Constants.XHDPI;
                 break;
             case DisplayMetrics.DENSITY_XXHIGH:
-                density = DmsConstants.XXHDPI;
+                density = Constants.XXHDPI;
                 break;
             case DisplayMetrics.DENSITY_XXXHIGH:
-                density = DmsConstants.XXXHDPI;
+                density = Constants.XXXHDPI;
                 break;
         }
 
@@ -78,9 +78,9 @@ public class Device {
         String what = "";
         boolean tabletSize = context.getResources().getBoolean(R.bool.isTablet);
         if (tabletSize) {
-            what = DmsConstants.TABLET;
+            what = Constants.TABLET;
         } else {
-            what = DmsConstants.PHONE;
+            what = Constants.PHONE;
         }
         return what;
     }

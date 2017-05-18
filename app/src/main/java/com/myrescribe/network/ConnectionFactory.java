@@ -11,10 +11,10 @@ import android.view.View;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.preference.DmsPreferencesManager;
+import com.myrescribe.preference.AppPreferencesManager;
 import com.myrescribe.singleton.Device;
 import com.myrescribe.util.CommonMethods;
-import com.myrescribe.util.DmsConstants;
+import com.myrescribe.util.Constants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class ConnectionFactory extends ConnectRequest {
     Connector connector = null;
     private Device device;
 
-    public ConnectionFactory(Context context, ConnectionListener connectionListener, View viewById, boolean isProgressBarShown, String mOldDataTag, int reqPostOrGet) {
+    public ConnectionFactory(Context context, ConnectionListener connectionListener, View viewById, boolean isProgressBarShown, String mOldDataTag, int reqPostOrGet, boolean isOffline) {
         super();
         this.mConnectionListener = connectionListener;
         this.mContext = context;
@@ -33,6 +33,7 @@ public class ConnectionFactory extends ConnectRequest {
         this.isProgressBarShown = isProgressBarShown;
         this.mOldDataTag = mOldDataTag;
         this.reqPostOrGet = reqPostOrGet;
+        this.isOffline = isOffline;
 
         device = Device.getInstance(mContext);
     }
@@ -46,23 +47,23 @@ public class ConnectionFactory extends ConnectRequest {
         Map<String, String> headerParams = new HashMap<>();
 
         String authorizationString = "";
-        String contentType = DmsPreferencesManager.getString(DmsConstants.LOGIN_SUCCESS, mContext);
+        String contentType = AppPreferencesManager.getString(Constants.LOGIN_SUCCESS, mContext);
 
-        if (contentType.equalsIgnoreCase(DmsConstants.TRUE)) {
-            authorizationString = DmsPreferencesManager.getString(DmsConstants.TOKEN_TYPE, mContext)
-                    + " " + DmsPreferencesManager.getString(DmsConstants.ACCESS_TOKEN, mContext);
-            headerParams.put(DmsConstants.CONTENT_TYPE, DmsConstants.APPLICATION_JSON);
+        if (contentType.equalsIgnoreCase(Constants.TRUE)) {
+            authorizationString = AppPreferencesManager.getString(Constants.TOKEN_TYPE, mContext)
+                    + " " + AppPreferencesManager.getString(Constants.ACCESS_TOKEN, mContext);
+            headerParams.put(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON);
         } else {
-            headerParams.put(DmsConstants.CONTENT_TYPE, DmsConstants.APPLICATION_URL_ENCODED);
+            headerParams.put(Constants.CONTENT_TYPE, Constants.APPLICATION_URL_ENCODED);
         }
 
-        headerParams.put(DmsConstants.AUTHORIZATION, authorizationString);
-        headerParams.put(DmsConstants.DEVICEID, device.getDeviceId());
+        headerParams.put(Constants.AUTHORIZATION, authorizationString);
+        headerParams.put(Constants.DEVICEID, device.getDeviceId());
 
-        headerParams.put(DmsConstants.OS, device.getOS());
-        headerParams.put(DmsConstants.OSVERSION, device.getOSVersion());
-        //  headerParams.put(DmsConstants.DEVICETYPE, device.getDeviceType());
-//        headerParams.put(DmsConstants.ACCESS_TOKEN, "");
+        headerParams.put(Constants.OS, device.getOS());
+        headerParams.put(Constants.OSVERSION, device.getOSVersion());
+        //  headerParams.put(Constants.DEVICETYPE, device.getDeviceType());
+//        headerParams.put(Constants.ACCESS_TOKEN, "");
         CommonMethods.Log(TAG, "setHeaderParams:" + headerParams.toString());
         this.mHeaderParams = headerParams;
     }
@@ -76,14 +77,14 @@ public class ConnectionFactory extends ConnectRequest {
     }
 
     public void setUrl(String url) {
-        String baseUrl = DmsPreferencesManager.getString(DmsPreferencesManager.DMS_PREFERENCES_KEY.SERVER_PATH, mContext);
+        String baseUrl = AppPreferencesManager.getString(AppPreferencesManager.DMS_PREFERENCES_KEY.SERVER_PATH, mContext);
         this.mURL = baseUrl + url;
         CommonMethods.Log(TAG,"mURL: "+this.mURL);
     }
 
     public Connector createConnection(String type) {
 
-        connector = new RequestManager(mContext, mConnectionListener, type, mViewById, isProgressBarShown, mOldDataTag, reqPostOrGet);
+        connector = new RequestManager(mContext, mConnectionListener, type, mViewById, isProgressBarShown, mOldDataTag, reqPostOrGet, isOffline);
 
         if (customResponse != null) connector.setPostParams(customResponse);
 

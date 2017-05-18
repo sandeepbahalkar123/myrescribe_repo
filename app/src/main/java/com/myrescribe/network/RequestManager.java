@@ -7,6 +7,7 @@ package com.myrescribe.network;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,16 +28,21 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myrescribe.R;
-import com.myrescribe.activities.SplashScreenActivity;
+
+import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.preference.DmsPreferencesManager;
+import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
+import com.myrescribe.model.prescription_response_model.PrescriptionData;
+import com.myrescribe.preference.AppPreferencesManager;
+import com.myrescribe.ui.activities.SplashScreenActivity;
+import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
-import com.myrescribe.util.DmsConstants;
+import com.myrescribe.util.Constants;
 import com.myrescribe.util.NetworkUtil;
-import com.myrescribe.views.CustomProgressDialog;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +56,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     private static final String TAG = "DMS/RequestManager";
     private static final int CONNECTION_TIME_OUT = 1000 * 60;
     private static final int N0OF_RETRY = 0;
+    private AppDBHelper dbHelper;
     private String requestTag;
     private int connectionType = Request.Method.POST;
 
@@ -58,7 +65,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     private JsonObjectRequest jsonRequest;
     private StringRequest stringRequest;
 
-    public RequestManager(Context mContext, ConnectionListener connectionListener, String dataTag, View viewById, boolean isProgressBarShown, String mOldDataTag, int connectionType) {
+    public RequestManager(Context mContext, ConnectionListener connectionListener, String dataTag, View viewById, boolean isProgressBarShown, String mOldDataTag, int connectionType, boolean isOffline) {
         super();
         this.mConnectionListener = connectionListener;
         this.mContext = mContext;
@@ -71,7 +78,9 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         this.requestTimer.setListener(this);
         this.mProgressDialog = new CustomProgressDialog(mContext);
         this.connectionType = connectionType;
+        this.isOffline = isOffline;
 
+        this.dbHelper = new AppDBHelper(mContext);
     }
 
     @Override
@@ -99,7 +108,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
             }
         } else {
 
-            mConnectionListener.onResponse(ConnectionListener.NO_INTERNET, null, mOldDataTag);
+            if (isOffline) {
+                succesResponse(getOfflineData(), false);
+            } else {
+                mConnectionListener.onResponse(ConnectionListener.NO_INTERNET, null, mOldDataTag);
+            }
 
             if (mViewById != null)
                 CommonMethods.showSnack(mViewById, mContext.getString(R.string.internet));
@@ -130,6 +143,8 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     @Override
                     public void onResponse(JSONObject response) {
                         succesResponse(response.toString(), false);
+                        if (isOffline)
+                            dbHelper.insertData(mDataTag, response.toString());
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -173,6 +188,8 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     @Override
                     public void onResponse(String response) {
                         succesResponse(response, isTokenExpired);
+                        if (isOffline)
+                            dbHelper.insertData(mDataTag, response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -266,7 +283,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 //                    mContext.startActivity(intent);
 //                    ((AppCompatActivity) mContext).finishAffinity();
 
-                    DmsPreferencesManager.clearSharedPref(mContext);
+                    AppPreferencesManager.clearSharedPref(mContext);
                     Intent intent = new Intent(mContext, SplashScreenActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -276,6 +293,13 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 } else
                     mConnectionListener.onResponse(ConnectionListener.SERVER_ERROR, null, mOldDataTag);
             } else if (error instanceof NetworkError) {
+
+                if (isOffline) {
+                    succesResponse(getOfflineData(), false);
+                } else {
+                    mConnectionListener.onResponse(ConnectionListener.NO_INTERNET, null, mOldDataTag);
+                }
+
                 if (mViewById != null)
                     CommonMethods.showSnack(mViewById, mContext.getString(R.string.internet));
                 else
@@ -291,6 +315,16 @@ public class RequestManager extends ConnectRequest implements Connector, Request
             e.printStackTrace();
         }
 
+    }
+
+    private String getOfflineData() {
+        if (dbHelper.numberOfRows(this.mDataTag) > 0) {
+            Cursor cursor = dbHelper.getData(this.mDataTag);
+            cursor.moveToFirst();
+            return cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
+        } else {
+            return "";
+        }
     }
 
     private String fixEncoding(String response) {
@@ -318,14 +352,14 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 // Need to Add
 
                 /*LoginResponseModel loginResponseModel = gson.fromJson(data, LoginResponseModel.class);
-                DmsPreferencesManager.putString(DmsConstants.ACCESS_TOKEN, loginResponseModel.getAccessToken(), mContext);
-                DmsPreferencesManager.putString(DmsConstants.TOKEN_TYPE, loginResponseModel.getTokenType(), mContext);
-                DmsPreferencesManager.putString(DmsConstants.REFRESH_TOKEN, loginResponseModel.getRefreshToken(), mContext);
+                AppPreferencesManager.putString(Constants.ACCESS_TOKEN, loginResponseModel.getAccessToken(), mContext);
+                AppPreferencesManager.putString(Constants.TOKEN_TYPE, loginResponseModel.getTokenType(), mContext);
+                AppPreferencesManager.putString(Constants.REFRESH_TOKEN, loginResponseModel.getRefreshToken(), mContext);
 
                 String authorizationString = loginResponseModel.getTokenType()
                         + " " + loginResponseModel.getAccessToken();
 
-                mHeaderParams.put(DmsConstants.AUTHORIZATION, authorizationString);
+                mHeaderParams.put(Constants.AUTHORIZATION, authorizationString);
 
                 connect();
                 */
@@ -336,14 +370,14 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
                     // Need to add
 
-                    /*case DmsConstants.TASK_CHECK_SERVER_CONNECTION: //This is for get archived list
-                        IpTestResponseModel ipTestResponseModel = gson.fromJson(data, IpTestResponseModel.class);
+                    case Constants.TASK_PRESCRIPTION_LIST: //This is for get archived list
+                        PatientPrescriptionModel ipTestResponseModel = gson.fromJson(data, PatientPrescriptionModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, ipTestResponseModel, mOldDataTag);
                         break;
-
+                    /*
                     default:
                         //This is for get PDF Data
-                        if (mOldDataTag.startsWith(DmsConstants.TASK_GET_PDF_DATA)) {
+                        if (mOldDataTag.startsWith(Constants.TASK_GET_PDF_DATA)) {
                             GetPdfDataResponseModel getPdfDataResponseModel = gson.fromJson(data, GetPdfDataResponseModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, getPdfDataResponseModel, mOldDataTag);
                         }*/
@@ -420,18 +454,19 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     }
 
     private void tokenRefreshRequest() {
-        String url = DmsPreferencesManager.getString(DmsPreferencesManager.DMS_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
-        CommonMethods.Log(TAG, "Refersh token while sending refresh token api: " + DmsPreferencesManager.getString(DmsConstants.REFRESH_TOKEN, mContext));
+        // Commented as login API is not implemented yet.
+       /* String url = AppPreferencesManager.getString(AppPreferencesManager.DMS_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
+        CommonMethods.Log(TAG, "Refersh token while sending refresh token api: " + AppPreferencesManager.getString(Constants.REFRESH_TOKEN, mContext));
         Map<String, String> headerParams = new HashMap<>();
         headerParams.putAll(mHeaderParams);
-        headerParams.remove(DmsConstants.CONTENT_TYPE);
-        headerParams.put(DmsConstants.CONTENT_TYPE, DmsConstants.APPLICATION_URL_ENCODED);
+        headerParams.remove(Constants.CONTENT_TYPE);
+        headerParams.put(Constants.CONTENT_TYPE, Constants.APPLICATION_URL_ENCODED);
 
         Map<String, String> postParams = new HashMap<>();
-        postParams.put(DmsConstants.GRANT_TYPE_KEY, DmsConstants.REFRESH_TOKEN);
-        postParams.put(DmsConstants.REFRESH_TOKEN, DmsPreferencesManager.getString(DmsConstants.REFRESH_TOKEN, mContext));
-        postParams.put(DmsConstants.CLIENT_ID_KEY, DmsConstants.CLIENT_ID_VALUE);
+        postParams.put(Constants.GRANT_TYPE_KEY, Constants.REFRESH_TOKEN);
+        postParams.put(Constants.REFRESH_TOKEN, AppPreferencesManager.getString(Constants.REFRESH_TOKEN, mContext));
+        postParams.put(Constants.CLIENT_ID_KEY, Constants.CLIENT_ID_VALUE);
 
-        stringRequest(url, Request.Method.POST, headerParams, postParams, true);
+        stringRequest(url, Request.Method.POST, headerParams, postParams, true);*/
     }
 }

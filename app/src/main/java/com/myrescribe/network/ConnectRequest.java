@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.views.CustomProgressDialog;
+import com.myrescribe.ui.customesViews.CustomProgressDialog;
 
 import java.util.Map;
 
@@ -21,4 +21,5 @@ public class ConnectRequest {
     protected String mOldDataTag;
     protected String mURL;
     protected int reqPostOrGet;
+    protected boolean isOffline;
 }

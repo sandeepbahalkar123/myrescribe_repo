@@ -2,12 +2,16 @@ package com.myrescribe.util;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.util.Base64;
@@ -16,14 +20,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.myrescribe.R;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
+import com.myrescribe.ui.activities.ShowMedicineDoseListActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -127,12 +134,12 @@ public class CommonMethods {
     public static void DmsLogWriteFile(String title, String text, boolean textAppend) {
         try {
             byte[] keyBytes = getKey("password");
-            File directory = new File(Environment.getExternalStorageDirectory().getPath() + "/", DmsConstants.DMS_LOG_FOLDER);
+            File directory = new File(Environment.getExternalStorageDirectory().getPath() + "/", Constants.DMS_LOG_FOLDER);
             if (!directory.exists()) {
                 directory.mkdir();
             }
             //make a new text file in that created new directory/folder
-            File file = new File(directory.getPath(), DmsConstants.DMS_LOG_FILE);
+            File file = new File(directory.getPath(), Constants.DMS_LOG_FILE);
 
             if (!file.exists() && directory.exists()) {
                 file.createNewFile();
@@ -180,7 +187,7 @@ public class CommonMethods {
         try {
             byte[] keyBytes = getKey("password");
 
-            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/", DmsConstants.DMS_LOG_FOLDER + "/" + DmsConstants.DMS_LOG_FILE);
+            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/", Constants.DMS_LOG_FOLDER + "/" + Constants.DMS_LOG_FILE);
             InputStreamReader isr;
             if (encryptionIsOn) {
                 Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -278,7 +285,7 @@ public class CommonMethods {
     public static String getCurrentTimeStamp() {
         try {
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
             String currentTimeStamp = dateFormat.format(new Date()); // Find todays date
 
             return currentTimeStamp;
@@ -290,7 +297,7 @@ public class CommonMethods {
     }
 
     public static int getTimeStampDifference(String startTime, String endTime) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 
         Date secondParsedDate = null;
         Date firstParsedDate = null;
@@ -404,8 +411,8 @@ public class CommonMethods {
      */
     public static String formatDateTime(String selectedDateTime, String requestedFormat, String currentDateFormat, String formatString) {
 
-        if (formatString.equalsIgnoreCase(DmsConstants.TIME)) {
-            SimpleDateFormat ft = new SimpleDateFormat(DmsConstants.DATE_PATTERN.HH_MM);
+        if (formatString.equalsIgnoreCase(Constants.TIME)) {
+            SimpleDateFormat ft = new SimpleDateFormat(Constants.DATE_PATTERN.HH_MM);
             Date dateObj = null;
 
             try {
@@ -420,7 +427,7 @@ public class CommonMethods {
             return simpleDateFormatObj.format(millis);
 
         }//if
-        else if (formatString.equalsIgnoreCase(DmsConstants.DATE)) {
+        else if (formatString.equalsIgnoreCase(Constants.DATE)) {
             SimpleDateFormat ft = new SimpleDateFormat(currentDateFormat);
             Date dateObj = null;
 
@@ -461,29 +468,26 @@ public class CommonMethods {
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
 
-                        if(isFromDateClicked) {
+                        if (isFromDateClicked) {
+                            mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        } else {
                             mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
                         }
-                        else {
-                            mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                        }
-
 
 
                     }
                 }, mYear, mMonth, mDay);
-        if(isFromDateClicked) {
+        if (isFromDateClicked) {
             datePickerDialog.getDatePicker().setCalendarViewShown(false);
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
             datePickerDialog.show();
-        }else{
-            if(date!=null) {
+        } else {
+            if (date != null) {
                 datePickerDialog.getDatePicker().setCalendarViewShown(false);
                 datePickerDialog.getDatePicker().setMinDate(date.getTime());
                 datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
                 datePickerDialog.show();
-            }
-            else{
+            } else {
                 datePickerDialog.getDatePicker().setCalendarViewShown(false);
                 datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
                 datePickerDialog.show();
@@ -565,5 +569,32 @@ public class CommonMethods {
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
+
+    public static void showDialog(String msg, final Context mContext) {
+
+
+        final Dialog dialog = new Dialog(mContext);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_ok_cancel);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+
+        ((TextView) dialog.findViewById(R.id.textview_sucess)).setText(msg);
+
+        dialog.findViewById(R.id.button_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                ((Activity) mContext).finish();
+                mContext.startActivity(new Intent(mContext, ShowMedicineDoseListActivity.class));
+
+            }
+        });
+
+        dialog.show();
+    }
+
 }
 

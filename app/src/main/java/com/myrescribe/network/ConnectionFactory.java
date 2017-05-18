@@ -11,7 +11,7 @@ import android.view.View;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.preference.PreferencesManager;
+import com.myrescribe.preference.AppPreferencesManager;
 import com.myrescribe.singleton.Device;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Constants;
@@ -47,11 +47,11 @@ public class ConnectionFactory extends ConnectRequest {
         Map<String, String> headerParams = new HashMap<>();
 
         String authorizationString = "";
-        String contentType = PreferencesManager.getString(Constants.LOGIN_SUCCESS, mContext);
+        String contentType = AppPreferencesManager.getString(Constants.LOGIN_SUCCESS, mContext);
 
         if (contentType.equalsIgnoreCase(Constants.TRUE)) {
-            authorizationString = PreferencesManager.getString(Constants.TOKEN_TYPE, mContext)
-                    + " " + PreferencesManager.getString(Constants.ACCESS_TOKEN, mContext);
+            authorizationString = AppPreferencesManager.getString(Constants.TOKEN_TYPE, mContext)
+                    + " " + AppPreferencesManager.getString(Constants.ACCESS_TOKEN, mContext);
             headerParams.put(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON);
         } else {
             headerParams.put(Constants.CONTENT_TYPE, Constants.APPLICATION_URL_ENCODED);
@@ -77,7 +77,7 @@ public class ConnectionFactory extends ConnectRequest {
     }
 
     public void setUrl(String url) {
-        String baseUrl = PreferencesManager.getString(PreferencesManager.DMS_PREFERENCES_KEY.SERVER_PATH, mContext);
+        String baseUrl = AppPreferencesManager.getString(AppPreferencesManager.DMS_PREFERENCES_KEY.SERVER_PATH, mContext);
         this.mURL = baseUrl + url;
         CommonMethods.Log(TAG,"mURL: "+this.mURL);
     }

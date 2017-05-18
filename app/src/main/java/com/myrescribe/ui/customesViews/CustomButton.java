@@ -1,31 +1,25 @@
-package com.myrescribe.views;
+package com.myrescribe.ui.customesViews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.widget.TextView;
+import android.widget.Button;
 
 import com.myrescribe.R;
-import com.myrescribe.singleton.Application;
+import com.myrescribe.singleton.MyRescribeApplication;
 import com.myrescribe.util.Constants;
 
 /**
  * Created by Sandeep Bahalkar
  */
-
-public class CustomTextView extends TextView {
-
-    public CustomTextView(Context context, AttributeSet attrs) {
+public class CustomButton extends Button {
+    public CustomButton(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        if (isInEditMode()) {
-            return;
-        }
-
-        setTextColor(Color.parseColor(Constants.TEXT_COLOR));
-        setLinkTextColor(Color.parseColor(Constants.HEADER_COLOR));
+//        setBackground(Constants.getRectangleDrawable(Constants.BUTTON_COLOR, "#00000000", 2, 10, 10, 10, 10));
+        setTextColor(Color.parseColor(Constants.BUTTON_TEXT_COLOR));
         setCustomFont(context, attrs);
     }
 
@@ -38,7 +32,7 @@ public class CustomTextView extends TextView {
     }
 
     public void setCustomFont(Context ctx, String asset) {
-        Typeface typeface = Application.get(ctx, asset);
+        Typeface typeface = MyRescribeApplication.get(ctx, asset);
         setTypeface(typeface);
     }
 }

@@ -1,4 +1,4 @@
-package com.myrescribe.activities;
+package com.myrescribe.ui.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

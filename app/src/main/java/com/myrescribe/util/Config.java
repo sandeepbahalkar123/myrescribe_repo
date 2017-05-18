@@ -14,29 +14,9 @@ public class Config {
     public static String BASE_URL = "";
     public Context mContext;
 
-   /* static {
-        if (DEV_BUILD) {
-
-            *//*BASE_URL = "http://192.168.0.25:81/api/";*//*
-            BASE_URL = PreferencesManager.getString(PreferencesManager.DMS_PREFERENCES_KEY.SERVER_PATH, mContext);
-            Log.e(TAG, "BASE_URL: " + BASE_URL);
-        } else {
-//            TODO: production base url will be added once its ready
-            BASE_URL = "";
-        }
-
-    }*/
-
     //Declared all URL used in app here
 
-    public static final String URL_LOGIN = "userLogin";
-    public static final String URL_PATIENT_LIST = "result/ShowSearchResults";
-    public static final String URL_ANNOTATIONS_LIST = "documenttype/getAnnotations";
-
-
-    public static final String URL_GET_ARCHIVED_LIST = "getArchived";
-    public static final String URL_GET_PDF_DATA = "showfile";
-    public static final String URL_CHECK_SERVER_CONNECTION = "connectionCheck";
+    public static final String PRESCRIPTION_URL = "http://myrescribe.com/medsonit-be/patient/getPatientPrescription/9295";
 
 
 }

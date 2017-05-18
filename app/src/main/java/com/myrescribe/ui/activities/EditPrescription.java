@@ -1,4 +1,4 @@
-package com.myrescribe.activities;
+package com.myrescribe.ui.activities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 11/5/17.
  */
 
-public class EditPrescription extends AppCompatActivity implements  AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class EditPrescription extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private CustomSpinAdapter mCustomSpinAdapter;
     private String[] mArrayId;
@@ -98,10 +98,10 @@ public class EditPrescription extends AppCompatActivity implements  AdapterView.
         switch (v.getId()) {
             //onclick on floating button
             case R.id.apply:
-                CommonMethods.showDialog(getString(R.string.data_saved),mContext);
+                CommonMethods.showDialog(getString(R.string.data_saved), mContext);
                 break;
             case R.id.reset:
-                CommonMethods.showDialog(getString(R.string.data__not_saved),mContext);
+                CommonMethods.showDialog(getString(R.string.data__not_saved), mContext);
                 break;
         }
     }

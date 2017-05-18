@@ -1,4 +1,6 @@
-package com.myrescribe.activities;
+package com.myrescribe.ui.activities;
+
+import com.myrescribe.R;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +20,9 @@ import android.view.WindowManager;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.ShowMedicineDoseListAdapter;
+import com.myrescribe.helpers.prescription.PrescriptionHelper;
+import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.DataObject;
 import com.myrescribe.notification.AlarmTask;
 import com.myrescribe.util.Constants;
@@ -25,15 +30,18 @@ import com.myrescribe.util.Constants;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
+import com.myrescribe.model.prescription_response_model.PrescriptionData;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ShowMedicineDoseListActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,ShowMedicineDoseListAdapter.MyClickListner{
+        implements NavigationView.OnNavigationItemSelectedListener, ShowMedicineDoseListAdapter.RowClickListener, HelperResponse {
 
     private ShowMedicineDoseListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private static String LOG_TAG = "ShowMedicineDoseListActivity";
+    private final String LOG = this.getClass().getSimpleName();
     Context mContext;
 
     @BindView(R.id.toolbar)
@@ -47,6 +55,8 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     @BindView(R.id.recyclerViewShowMedicineDoseList)
     RecyclerView mRecyclerView;
+
+    private PrescriptionHelper mPrescriptionHelper;
 
 
     @Override
@@ -63,6 +73,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         initializeVariables();
         notificationForMedicine();
         bindView();
+        doGetPrescriptionList();
     }
 
     private void notificationForMedicine() {
@@ -71,7 +82,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     private void initializeVariables() {
         mContext = ShowMedicineDoseListActivity.this;
-
+        mPrescriptionHelper = new PrescriptionHelper(this, this);
     }
 
     private void bindView() {
@@ -86,9 +97,10 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new ShowMedicineDoseListAdapter(ShowMedicineDoseListActivity.this, getDataSet(), false);
-        mAdapter.setMyClickListner(this);
-        mRecyclerView.setAdapter(mAdapter);
+
+        //  mAdapter = new ShowMedicineDoseListAdapter(ShowMedicineDoseListActivity.this, getDataSet(), false);
+        //mAdapter.setMyClickListner(this);
+        //mRecyclerView.setAdapter(mAdapter);
     }
 
     private ArrayList<DataObject> getDataSet() {
@@ -113,15 +125,13 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-     //   getMenuInflater().inflate(R.menu.main, menu);
+        //   getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
        /* int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -137,20 +147,9 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
        /* if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }*/
+        }  */
 
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
@@ -158,22 +157,54 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
 
     @Override
-    public void onButtonClick(ArrayList<DataObject> dataObjects, int position, View v, String mClickCodes) {
+    public void onRowClicked(ArrayList<PrescriptionData> dataObjects, int position, View v, String mClickCodes) {
 
-        if(mClickCodes.equals(Constants.CLICK_DELETE)) {
+        if (mClickCodes.equals(Constants.CLICK_DELETE)) {
             dataObjects.remove(position);
             mAdapter.notifyItemRemoved(position);
-        }
-
-        else if(mClickCodes.equals(Constants.CLICK_EDIT)){
+        } else if (mClickCodes.equals(Constants.CLICK_EDIT)) {
             Intent intent = new Intent(mContext, EditPrescription.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+        }
 
+    }
+
+    private void doGetPrescriptionList() {
+        mPrescriptionHelper.doGetPrescriptionList();
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if (mOldDataTag == Constants.TASK_PRESCRIPTION_LIST) {
+            PatientPrescriptionModel prescriptionDataReceived = (PatientPrescriptionModel) customResponse;
+
+            ArrayList<PrescriptionData> data = prescriptionDataReceived.getData();
+            if (data != null) {
+                if (data.size() != 0) {
+                    mAdapter = new ShowMedicineDoseListAdapter(this, data, false);
+                    mAdapter.setRowClickListener(this);
+                    mRecyclerView.setAdapter(mAdapter);
+                }
+            }
 
         }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
     }
 }

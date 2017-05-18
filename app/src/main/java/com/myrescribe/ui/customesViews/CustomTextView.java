@@ -1,21 +1,23 @@
-package com.myrescribe.views;
+package com.myrescribe.ui.customesViews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.singleton.Application;
+import com.myrescribe.singleton.MyRescribeApplication;
 import com.myrescribe.util.Constants;
 
 /**
  * Created by Sandeep Bahalkar
  */
-public class CustomEditText extends EditText {
-    public CustomEditText(Context context, AttributeSet attrs) {
+
+public class CustomTextView extends TextView {
+
+    public CustomTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         if (isInEditMode()) {
@@ -23,7 +25,7 @@ public class CustomEditText extends EditText {
         }
 
         setTextColor(Color.parseColor(Constants.TEXT_COLOR));
-        setHintTextColor(context.getResources().getColor(R.color.placeHolder));
+        setLinkTextColor(Color.parseColor(Constants.HEADER_COLOR));
         setCustomFont(context, attrs);
     }
 
@@ -36,7 +38,7 @@ public class CustomEditText extends EditText {
     }
 
     public void setCustomFont(Context ctx, String asset) {
-        Typeface typeface = Application.get(ctx, asset);
+        Typeface typeface = MyRescribeApplication.get(ctx, asset);
         setTypeface(typeface);
     }
 }

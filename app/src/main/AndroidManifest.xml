@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.myrescribe.activities.ShowMedicineDoseListActivity"
+            android:name=".activities.ShowMedicineDoseListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,20 +19,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.myrescribe.activities.SplashScreenActivity"
+            android:name=".activities.SplashScreenActivity"
             android:label="@string/title_activity_splash_screen"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-        <activity android:name=".activities.EditPrescription"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.EditPrescription"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".services.NotifyService" />
 
-        <receiver android:name=".broadcast_receivers.YesClickReceiver"/>
+        <receiver android:name=".broadcast_receivers.YesClickReceiver" />
+        <receiver android:name=".broadcast_receivers.NoClickReceiver" />
 
-        <receiver android:name=".broadcast_receivers.NoClickReceiver"/>
+        <activity
+            android:name=".activities.PreferencesActivity"
+            android:label="@string/title_activity_preferences"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

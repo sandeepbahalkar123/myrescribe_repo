@@ -1,4 +1,4 @@
-package com.myrescribe.views;
+package com.myrescribe.ui.customesViews;
 
 import android.content.Context;
 import android.content.res.TypedArray;

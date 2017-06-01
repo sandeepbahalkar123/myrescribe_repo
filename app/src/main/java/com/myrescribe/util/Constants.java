@@ -6,20 +6,18 @@ package com.myrescribe.util;
  */
 public class Constants {
 
-    public static final String DMS_LOG_FOLDER = "DMS_LOG";
-    public static final String DMS_LOG_FILE = "DMS_LOG_FILE.txt";
+    public static final String DMS_LOG_FOLDER = "MyRescribe_LOG";
+    public static final String DMS_LOG_FILE = "MyRescribe_LOG_FILE.txt";
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";
     public static String BUTTON_TEXT_COLOR = "#FFFFFF";
     public static String TEXT_COLOR = "#000000";
     public static final String ID = "_id";
-    public static final String PATIENT_ADDRESS = "patientAddress";
-    public static final String DOCTOR_NAME = "doctorName";
+    public static final String USER_ID = "User-ID";
 
-
-    public static class PATIENT_LIST_PARAMS {
-        public static final String PATIENT_NAME = "patientName";
+    public static class PRESCRIPTION_LIST_PARAMS {
+        public static final String PATIENT_NAME = "User-ID";
         public static final String FILE_TYPE = "fileType";
         public static final String DATE_TYPE = "dateType";
         public static final String FROM_DATE = "fromDate";
@@ -32,7 +30,6 @@ public class Constants {
     public static final String DEVICEID = "Device-Id";
     public static final String OS = "OS";
     public static final String OSVERSION = "OS-Version";
-    public static final String DATEFORMAT = "dd/MM/yy";
     public static final String ACCESS_TOKEN = "accessToken";
     public static final String TOKEN_TYPE = "token_type";
     public static final String REFRESH_TOKEN = "refresh_token";
@@ -48,11 +45,12 @@ public class Constants {
 
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String AUTHORIZATION = "Authorization";
+    public static final String AUTHORIZATION_TOKEN = "Authorization-Token";
+    public static final String AUTH_KEY = "Auth-Key";
+    public static final String CLIENT_SERVICE = "Client-Service";
     public static final String GRANT_TYPE_KEY = "grant_type";
     public static final String APPLICATION_URL_ENCODED = "application/x-www-form-urlencoded; charset=UTF-8";
     public static final String APPLICATION_JSON = "application/json; charset=utf-8";
-    public static final String CATEGORY_NAME = "categoryName";
-
 
     //--- Request Params
     public static final String USERNAME = "username";
@@ -70,13 +68,7 @@ public class Constants {
 
     // Connection codes
 
-    public static final String REGISTRATION_CODE = Constants.BLANK + 0;
-    public static final String TASK_LOGIN_CODE = Constants.BLANK + 1;
-    public static final String TASK_PATIENT_LIST = Constants.BLANK + 2;
-    public static final String TASK_ANNOTATIONS_LIST = Constants.BLANK + 3;
-    public static final String TASK_GET_ARCHIVED_LIST = Constants.BLANK + 4;
-    public static final String TASK_GET_PDF_DATA = Constants.BLANK + "PDF_DATA";
-    public static final String TASK_CHECK_SERVER_CONNECTION = Constants.BLANK +5;
+    public static final String TASK_PRESCRIPTION_LIST = Constants.BLANK + 1;
 
     public static class DATE_PATTERN {
         public static String YYYY_MM_DD = "yyyy-MM-dd";

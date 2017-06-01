@@ -1,13 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.myrescribe.activities.PreferencesActivity"
+    tools:context="com.myrescribe.ui.activities.PreferencesActivity"
     tools:showIn="@layout/activity_preferences">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
+        android:text="Select your breakfast time"/>
 
+    <TextView
+        android:id="@+id/breakFastSelect"
+        android:layout_width="match_parent"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
+        android:hint="HH:MM AM/PM"/>
 
-</RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
+        android:text="Select your Lunch time"/>
+
+    <TextView
+        android:id="@+id/lunchTimeSelect"
+        android:layout_width="match_parent"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
+        android:hint="HH:MM AM/PM"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
+        android:text="Select your Dinner time"/>
+
+    <TextView
+        android:id="@+id/dinnerTimeSelect"
+        android:layout_width="match_parent"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
+        android:hint="HH:MM AM/PM"/>
+
+    <Button
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/saveButton"
+        android:text="@string/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

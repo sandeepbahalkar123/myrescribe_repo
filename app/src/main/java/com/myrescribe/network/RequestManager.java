@@ -28,31 +28,32 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myrescribe.R;
-import com.myrescribe.activities.SplashScreenActivity;
-import com.myrescribe.database.DBHelper;
+
+import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.preference.PreferencesManager;
+import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
+import com.myrescribe.preference.AppPreferencesManager;
+import com.myrescribe.ui.activities.SplashScreenActivity;
+import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
-import com.myrescribe.util.Config;
 import com.myrescribe.util.Constants;
 import com.myrescribe.util.NetworkUtil;
-import com.myrescribe.views.CustomProgressDialog;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 public class RequestManager extends ConnectRequest implements Connector, RequestTimer.RequestTimerListener {
     private static final String TAG = "DMS/RequestManager";
     private static final int CONNECTION_TIME_OUT = 1000 * 60;
     private static final int N0OF_RETRY = 0;
-    private DBHelper dbHelper;
+    private AppDBHelper dbHelper;
     private String requestTag;
     private int connectionType = Request.Method.POST;
 
@@ -76,7 +77,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         this.connectionType = connectionType;
         this.isOffline = isOffline;
 
-        this.dbHelper = new DBHelper(mContext);
+        this.dbHelper = new AppDBHelper(mContext);
     }
 
     @Override
@@ -279,7 +280,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 //                    mContext.startActivity(intent);
 //                    ((AppCompatActivity) mContext).finishAffinity();
 
-                    PreferencesManager.clearSharedPref(mContext);
+                    AppPreferencesManager.clearSharedPref(mContext);
                     Intent intent = new Intent(mContext, SplashScreenActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -314,10 +315,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     }
 
     private String getOfflineData() {
-        if (dbHelper.numberOfRows(this.mDataTag) > 0) {
+        if (dbHelper.dataTableNumberOfRows(this.mDataTag) > 0) {
             Cursor cursor = dbHelper.getData(this.mDataTag);
             cursor.moveToFirst();
-            return cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_DATA));
+            return cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
         } else {
             return "";
         }
@@ -348,9 +349,9 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 // Need to Add
 
                 /*LoginResponseModel loginResponseModel = gson.fromJson(data, LoginResponseModel.class);
-                PreferencesManager.putString(Constants.ACCESS_TOKEN, loginResponseModel.getAccessToken(), mContext);
-                PreferencesManager.putString(Constants.TOKEN_TYPE, loginResponseModel.getTokenType(), mContext);
-                PreferencesManager.putString(Constants.REFRESH_TOKEN, loginResponseModel.getRefreshToken(), mContext);
+                AppPreferencesManager.putString(Constants.ACCESS_TOKEN, loginResponseModel.getAccessToken(), mContext);
+                AppPreferencesManager.putString(Constants.TOKEN_TYPE, loginResponseModel.getTokenType(), mContext);
+                AppPreferencesManager.putString(Constants.REFRESH_TOKEN, loginResponseModel.getRefreshToken(), mContext);
 
                 String authorizationString = loginResponseModel.getTokenType()
                         + " " + loginResponseModel.getAccessToken();
@@ -366,11 +367,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
                     // Need to add
 
-                    /*case Constants.TASK_CHECK_SERVER_CONNECTION: //This is for get archived list
-                        IpTestResponseModel ipTestResponseModel = gson.fromJson(data, IpTestResponseModel.class);
+                    case Constants.TASK_PRESCRIPTION_LIST: //This is for get archived list
+                        PatientPrescriptionModel ipTestResponseModel = gson.fromJson(data, PatientPrescriptionModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, ipTestResponseModel, mOldDataTag);
                         break;
-
+                    /*
                     default:
                         //This is for get PDF Data
                         if (mOldDataTag.startsWith(Constants.TASK_GET_PDF_DATA)) {
@@ -450,8 +451,9 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     }
 
     private void tokenRefreshRequest() {
-        String url = PreferencesManager.getString(PreferencesManager.DMS_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
-        CommonMethods.Log(TAG, "Refersh token while sending refresh token api: " + PreferencesManager.getString(Constants.REFRESH_TOKEN, mContext));
+        // Commented as login API is not implemented yet.
+       /* String url = AppPreferencesManager.getString(AppPreferencesManager.DMS_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
+        CommonMethods.Log(TAG, "Refersh token while sending refresh token api: " + AppPreferencesManager.getString(Constants.REFRESH_TOKEN, mContext));
         Map<String, String> headerParams = new HashMap<>();
         headerParams.putAll(mHeaderParams);
         headerParams.remove(Constants.CONTENT_TYPE);
@@ -459,9 +461,9 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
         Map<String, String> postParams = new HashMap<>();
         postParams.put(Constants.GRANT_TYPE_KEY, Constants.REFRESH_TOKEN);
-        postParams.put(Constants.REFRESH_TOKEN, PreferencesManager.getString(Constants.REFRESH_TOKEN, mContext));
+        postParams.put(Constants.REFRESH_TOKEN, AppPreferencesManager.getString(Constants.REFRESH_TOKEN, mContext));
         postParams.put(Constants.CLIENT_ID_KEY, Constants.CLIENT_ID_VALUE);
 
-        stringRequest(url, Request.Method.POST, headerParams, postParams, true);
+        stringRequest(url, Request.Method.POST, headerParams, postParams, true);*/
     }
 }

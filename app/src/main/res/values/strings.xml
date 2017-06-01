@@ -64,5 +64,6 @@
         <item>After</item>
     </string-array>
     <string name="title_activity_preferences">PreferencesActivity</string>
+    <string name="save">Save</string>
 
 </resources>

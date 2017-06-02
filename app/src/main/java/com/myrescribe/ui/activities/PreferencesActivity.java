@@ -76,18 +76,6 @@ public class PreferencesActivity extends AppCompatActivity {
 
                 appDBHelper.insertPreferences("1", breakFastSelect, lunchTimeSelect, dinnerTimeSelect);
 
-                Cursor cursor = appDBHelper.getPreferences("1");
-                if (cursor.moveToFirst()) {
-                    while (!cursor.isAfterLast()) {
-                        String data = cursor.getString(cursor.getColumnIndex(AppDBHelper.USER_ID)) + " " + cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME)) + " " + cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME)) + " " + cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
-
-                        // do what ever you want here
-                        CommonMethods.Log(TAG, data);
-
-                        cursor.moveToNext();
-                    }
-                }
-                cursor.close();
                 break;
         }
     }

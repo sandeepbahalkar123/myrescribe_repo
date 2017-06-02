@@ -1,9 +1,8 @@
 package com.myrescribe.ui.activities;
 
-import com.myrescribe.R;
-
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,20 +17,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.myrescribe.R;
 import com.myrescribe.adapters.ShowMedicineDoseListAdapter;
+import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.DataObject;
+import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
+import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.notification.AlarmTask;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
-import com.myrescribe.model.prescription_response_model.PrescriptionData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +59,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     private PrescriptionHelper mPrescriptionHelper;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,10 +66,10 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ButterKnife.bind(this);
         initialize();
-
     }
 
     private void initialize() {
+
         initializeVariables();
         notificationForMedicine();
         bindView();
@@ -82,7 +81,28 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     }
 
     private void notificationForMedicine() {
-        new AlarmTask(ShowMedicineDoseListActivity.this, Calendar.getInstance()).run();
+
+        String breakFast = "9:17 AM";
+        String lunchTime = "9:19 AM";
+        String dinnerTime = "9:21 AM";
+
+        AppDBHelper appDBHelper = new AppDBHelper(ShowMedicineDoseListActivity.this);
+        appDBHelper = AppDBHelper.getInstance(ShowMedicineDoseListActivity.this);
+        Cursor cursor = appDBHelper.getPreferences("1");
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                breakFast = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
+                lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
+                dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
+                // do what ever you want here
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+
+        String dates[] = {breakFast, lunchTime, dinnerTime};
+
+        new AlarmTask(ShowMedicineDoseListActivity.this, dates).run();
     }
 
     private void initializeVariables() {
@@ -96,7 +116,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.setDrawerListener(toggle);
+        mDrawer.addDrawerListener(toggle);
         toggle.syncState();
         mNavigationView.setNavigationItemSelectedListener(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -174,7 +194,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
-
     }
 
     private void doGetPrescriptionList() {

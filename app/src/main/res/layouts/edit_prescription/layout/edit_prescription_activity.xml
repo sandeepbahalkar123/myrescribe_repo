@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -10,14 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp40"
         android:background="@color/tagColor"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed"
-        >
+        app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-        >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/reset"
@@ -25,41 +23,42 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:drawableLeft="@mipmap/multiply"
-                android:drawableStart="@mipmap/multiply"
                 android:drawablePadding="@dimen/dp6"
-                android:textSize="@dimen/sp16"
+                android:drawableStart="@mipmap/multiply"
                 android:gravity="start"
-                android:textColor="@color/reset_yellow" />
+                android:textColor="@color/reset_yellow"
+                android:textSize="@dimen/sp16" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textStyle="bold"
-                android:textSize="@dimen/sp16"
                 android:gravity="center"
                 android:text="@string/app_name"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp16"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/apply"
                 android:layout_width="@dimen/dp0"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/dp6"
+                android:layout_marginRight="@dimen/dp6"
                 android:layout_weight="1"
                 android:drawableEnd="@mipmap/right"
                 android:drawablePadding="@dimen/dp6"
-                android:layout_marginEnd="@dimen/dp6"
-                android:layout_marginRight="@dimen/dp6"
-                android:textSize="@dimen/sp16"
                 android:drawableRight="@mipmap/right"
                 android:gravity="end"
-                android:textColor="@color/apply_blue" />
+                android:textColor="@color/apply_blue"
+                android:textSize="@dimen/sp16" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
+
     <include
+        android:id="@+id/include_prescriptioneditor"
         layout="@layout/edit_prescription"
         android:layout_width="match_parent"
-        android:visibility="visible"
-        android:id="@+id/include_prescriptioneditor"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="visible" />
 </LinearLayout>

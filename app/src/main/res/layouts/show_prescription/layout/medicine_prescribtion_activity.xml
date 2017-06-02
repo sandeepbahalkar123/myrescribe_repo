@@ -107,34 +107,47 @@
                 android:orientation="horizontal"
                 android:weightSum="3">
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp6"
+                    android:layout_weight="1">
+
                 <ImageView
                     android:id="@+id/imageViewMorningDose"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp6"
-                    android:layout_weight="1"
+                    android:layout_centerInParent="true"
                     android:scaleType="center"
                     android:src="@mipmap/breakfast" />
-
-
-                <ImageView
-                    android:id="@+id/imageViewAfternoonDose"
-                    android:layout_width="0dp"
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dp6"
-                    android:layout_weight="1"
-                    android:scaleType="center"
-                    android:src="@mipmap/lunch"
-                    />
+                    android:layout_weight="1">
 
-                <ImageView
-                    android:id="@+id/imageViewNightDose"
-                    android:layout_width="0dp"
+                    <ImageView
+                        android:id="@+id/imageViewAfternoonDose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="center"
+                        android:src="@mipmap/lunch" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dp6"
-                    android:layout_weight="1"
-                    android:scaleType="center"
-                    android:src="@mipmap/night" />
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageViewNightDose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="center"
+                        android:src="@mipmap/night" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"

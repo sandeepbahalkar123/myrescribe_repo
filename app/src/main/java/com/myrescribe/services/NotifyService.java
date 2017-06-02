@@ -11,8 +11,9 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.myrescribe.R;
-import com.myrescribe.broadcast_receivers.YesClickReceiver;
 import com.myrescribe.broadcast_receivers.NoClickReceiver;
+import com.myrescribe.broadcast_receivers.YesClickReceiver;
+import com.myrescribe.util.MyRescribeConstants;
 
 
 /**
@@ -25,7 +26,7 @@ import com.myrescribe.broadcast_receivers.NoClickReceiver;
  */
 public class NotifyService extends Service {
 
-    static int mNotificationNoTextField = 0;
+//    static int mNotificationNoTextField = 0;
 
     /**
      * Class for clients to access
@@ -55,7 +56,7 @@ public class NotifyService extends Service {
 
         // If this service was started by out AlarmTask intent then we want to show our notification
         if (intent.getBooleanExtra(INTENT_NOTIFY, false))
-            CustomNotification();
+            CustomNotification(intent);
 
         // We don't care if this service is stopped as we have already delivered our notification
         return START_NOT_STICKY;
@@ -69,24 +70,25 @@ public class NotifyService extends Service {
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
 
-    public void CustomNotification() {
-        int NOTIFICATION_ID =  (int) System.currentTimeMillis();
+    public void CustomNotification(Intent intentData) {
+        int NOTIFICATION_ID = (int) System.currentTimeMillis();
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
                 R.layout.notification_layout);
 
         Intent mNotifyYesIntent = new Intent(this, YesClickReceiver.class);
-        mNotifyYesIntent.putExtra("action", "Candid TAB"+" "+ mNotificationNoTextField);
-        mNotifyYesIntent.putExtra("notificationId",NOTIFICATION_ID);
+        mNotifyYesIntent.putExtra("action", intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME));
+        mNotifyYesIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.ButtonYes, mYesPendingIntent);
 
 
         Intent mNotifyNoIntent = new Intent(this, NoClickReceiver.class);
-        mNotifyNoIntent.putExtra("action", "Candid TAB"+" "+ mNotificationNoTextField);
-        mNotifyNoIntent.putExtra("notificationId",NOTIFICATION_ID);
+        mNotifyNoIntent.putExtra("action", intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME));
+        mNotifyNoIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.ButtonNo, mNoPendingIntent);
+
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 // Set Icon
@@ -98,9 +100,9 @@ public class NotifyService extends Service {
                 // Set RemoteViews into Notification
                 .setContent(mRemoteViews);
 
-        mRemoteViews.setTextViewText(R.id.showMedicineName, "Candid TAB"+" "+ mNotificationNoTextField);
-
-        mNotificationNoTextField = mNotificationNoTextField +1;
+        mRemoteViews.setTextViewText(R.id.showMedicineName, intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME));
+        mRemoteViews.setTextViewText(R.id.questionText, "Have you taken " + intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME) + " Medicine?");
+        mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.TIME));
 
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationmanager.notify(NOTIFICATION_ID, builder.build());

@@ -18,14 +18,18 @@ import java.io.OutputStream;
 public class AppDBHelper extends SQLiteOpenHelper {
 
     private final String TAG = "MyRescribe/AppDBHelper";
-
+    private static final String PREFERENCES_TABLE = "preferences_table";
     private static final String DATABASE_NAME = "MyRescribe.sqlite";
     private static final String DB_PATH_SUFFIX = "/data/data/com.myrescribe/databases/";
     private static final int DBVERSION = 1;
-
     public static final String APP_DATA_TABLE = "PrescriptionData";
     public static final String COLUMN_ID = "dataId";
     public static final String COLUMN_DATA = "data";
+
+    public static final String USER_ID = "userId";
+    public static final String BREAKFAST_TIME = "breakfastTime";
+    public static final String LUNCH_TIME = "lunchTime";
+    public static final String DINNER_TIME = "dinnerTime";
 
     static AppDBHelper instance = null;
     private Context mContext;
@@ -40,12 +44,14 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // TODO Auto-generated method stub
         // db.execSQL("CREATE TABLE IF NOT EXISTS " + APP_DATA_TABLE + "(dataId integer, data text)");
+        // db.execSQL("CREATE TABLE IF NOT EXISTS " + PREFERENCES_TABLE + "(userId integer, breakfastTime text, lunchTime text, dinnerTime text)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO Auto-generated method stub
         db.execSQL("DROP TABLE IF EXISTS " + APP_DATA_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PREFERENCES_TABLE);
         onCreate(db);
     }
 
@@ -57,7 +63,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     public boolean insertData(String dataId, String data) {
-        if (numberOfRows(dataId) == 0) {
+        if (dataTableNumberOfRows(dataId) == 0) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
@@ -76,7 +82,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + APP_DATA_TABLE + " where dataId=" + dataId + "", null);
     }
 
-    public int numberOfRows(String dataId) {
+    public int dataTableNumberOfRows(String dataId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return (int) DatabaseUtils.queryNumEntries(db, APP_DATA_TABLE, "dataId = ? ", new String[]{dataId});
     }
@@ -141,6 +147,51 @@ public class AppDBHelper extends SQLiteOpenHelper {
         if (!dbFile.exists()) {
             copyDataBase();
         }
+    }
+
+    public boolean insertPreferences(String userId, String breakfastTime, String lunchTime, String dinnerTime) {
+        if (preferencesTableNumberOfRows(userId) == 0) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(USER_ID, userId);
+            contentValues.put(BREAKFAST_TIME, breakfastTime);
+            contentValues.put(LUNCH_TIME, lunchTime);
+            contentValues.put(DINNER_TIME, dinnerTime);
+
+            db.insert(PREFERENCES_TABLE, null, contentValues);
+        } else {
+            updatePreferences(userId, breakfastTime, lunchTime, dinnerTime);
+        }
+        return true;
+    }
+
+    public int preferencesTableNumberOfRows(String userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return (int) DatabaseUtils.queryNumEntries(db, PREFERENCES_TABLE, USER_ID + " = ? ", new String[]{userId});
+    }
+
+    public Cursor getPreferences(String userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("select * from " + PREFERENCES_TABLE + " where " + USER_ID + "=" + userId + "", null);
+    }
+
+    private boolean updatePreferences(String userId, String breakfastTime, String lunchTime, String dinnerTime) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(BREAKFAST_TIME, breakfastTime);
+        contentValues.put(LUNCH_TIME, lunchTime);
+        contentValues.put(DINNER_TIME, dinnerTime);
+
+        db.update(PREFERENCES_TABLE, contentValues, USER_ID + " = ? ", new String[]{userId});
+        return true;
+    }
+
+    private int deletePreferences(String userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(PREFERENCES_TABLE,
+                USER_ID + " = ? ",
+                new String[]{userId});
     }
 
 }

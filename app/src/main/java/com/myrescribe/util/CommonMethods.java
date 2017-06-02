@@ -404,6 +404,22 @@ public class CommonMethods {
     }
 
 
+    public static String getFormatedDate(String strDate, String sourceFormate,
+                                                   String destinyFormate) {
+        SimpleDateFormat df;
+        df = new SimpleDateFormat(sourceFormate, Locale.UK);
+        Date date = null;
+        try {
+            date = df.parse(strDate);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        df = new SimpleDateFormat(destinyFormate, Locale.UK);
+        return df.format(date);
+    }
+
     /**
      * The method will return the date and time in requested format
      *
@@ -414,8 +430,10 @@ public class CommonMethods {
      */
     public static String formatDateTime(String selectedDateTime, String requestedFormat, String currentDateFormat, String formatString) {
 
+
         if (formatString.equalsIgnoreCase(MyRescribeConstants.TIME)) {
-            SimpleDateFormat ft = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.HH_MM);
+            SimpleDateFormat ft = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.HH_MM,Locale.UK);
+
             Date dateObj = null;
 
             try {
@@ -426,12 +444,14 @@ public class CommonMethods {
             }
 
             long millis = dateObj.getTime();
-            SimpleDateFormat simpleDateFormatObj = new SimpleDateFormat(requestedFormat);
+            SimpleDateFormat simpleDateFormatObj = new SimpleDateFormat(requestedFormat, Locale.UK);
             return simpleDateFormatObj.format(millis);
 
         }//if
+
         else if (formatString.equalsIgnoreCase(MyRescribeConstants.DATE)) {
-            SimpleDateFormat ft = new SimpleDateFormat(currentDateFormat);
+            SimpleDateFormat ft = new SimpleDateFormat(currentDateFormat,Locale.UK);
+
             Date dateObj = null;
 
             try {
@@ -442,7 +462,7 @@ public class CommonMethods {
                 e.printStackTrace();
             }
 
-            SimpleDateFormat simpleDateFormatObj = new SimpleDateFormat(requestedFormat);
+            SimpleDateFormat simpleDateFormatObj = new SimpleDateFormat(requestedFormat, Locale.UK);
             return simpleDateFormatObj.format(dateObj);
 
 

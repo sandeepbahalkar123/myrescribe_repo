@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.singleton.MyRescribeApplication;
-import com.myrescribe.util.Constants;
+import com.myrescribe.util.MyRescribeConstants;
 
 /**
  * Created by Sandeep Bahalkar
@@ -24,8 +24,8 @@ public class CustomTextView extends TextView {
             return;
         }
 
-        setTextColor(Color.parseColor(Constants.TEXT_COLOR));
-        setLinkTextColor(Color.parseColor(Constants.HEADER_COLOR));
+        setTextColor(Color.parseColor(MyRescribeConstants.TEXT_COLOR));
+        setLinkTextColor(Color.parseColor(MyRescribeConstants.HEADER_COLOR));
         setCustomFont(context, attrs);
     }
 

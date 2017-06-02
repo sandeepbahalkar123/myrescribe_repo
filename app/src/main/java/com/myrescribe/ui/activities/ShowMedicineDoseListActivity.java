@@ -18,14 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.myrescribe.R;
 import com.myrescribe.adapters.ShowMedicineDoseListAdapter;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.DataObject;
 import com.myrescribe.notification.AlarmTask;
-import com.myrescribe.util.Constants;
+import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,7 +40,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     private ShowMedicineDoseListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private final String LOG = this.getClass().getSimpleName();
+    private final String TAG = "MyRescribe/ShowMedicineDoseListActivity";
     Context mContext;
 
     @BindView(R.id.toolbar)
@@ -159,10 +158,10 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @Override
     public void onRowClicked(ArrayList<PrescriptionData> dataObjects, int position, View v, String mClickCodes) {
 
-        if (mClickCodes.equals(Constants.CLICK_DELETE)) {
+        if (mClickCodes.equals(MyRescribeConstants.CLICK_DELETE)) {
             dataObjects.remove(position);
             mAdapter.notifyItemRemoved(position);
-        } else if (mClickCodes.equals(Constants.CLICK_EDIT)) {
+        } else if (mClickCodes.equals(MyRescribeConstants.CLICK_EDIT)) {
             Intent intent = new Intent(mContext, EditPrescription.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -178,7 +177,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (mOldDataTag == Constants.TASK_PRESCRIPTION_LIST) {
+        if (mOldDataTag == MyRescribeConstants.TASK_PRESCRIPTION_LIST) {
             PatientPrescriptionModel prescriptionDataReceived = (PatientPrescriptionModel) customResponse;
 
             ArrayList<PrescriptionData> data = prescriptionDataReceived.getData();

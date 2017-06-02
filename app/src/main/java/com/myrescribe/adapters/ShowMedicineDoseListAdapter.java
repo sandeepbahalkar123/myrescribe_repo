@@ -10,9 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.model.DataObject;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
-import com.myrescribe.util.Constants;
+import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
 
@@ -26,8 +25,6 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
     RowClickListener mRowClickListener;
     Context mContext;
     Boolean isPatientLogin;
-    private LinearLayout lv;
-
 
     public ShowMedicineDoseListAdapter(Context context, ArrayList<PrescriptionData> dataSet, Boolean isPatientLogin) {
         this.mDataSet = dataSet;
@@ -45,9 +42,9 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         TextView mButtonEdit;
         TextView textviewDisplayDates;
         LinearLayout mLayoutShowOnlyToDoctor;
-
         TextView mMorningTimeDose, mLunchTimeDose, mDinnerTimeDose;
         TextView mDays;
+        TextView mShowMorningFullFormOfDose,mShowAfterNoonFullFormOfDose,mShowNightFullFormOfDose;
 
 
         public ListViewHolder(View view) {
@@ -68,6 +65,11 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             mDinnerTimeDose = (TextView) view.findViewById(R.id.dinnerTimeDose);
             // Dose Time
             mDays = (TextView) view.findViewById(R.id.days);
+            mShowMorningFullFormOfDose = (TextView)view.findViewById(R.id.textViewMorningDose);
+            mShowAfterNoonFullFormOfDose = (TextView)view.findViewById(R.id.textViewAfternoonDose);
+            mShowNightFullFormOfDose = (TextView)view.findViewById(R.id.textViewNightDose);
+
+
 
 
         }
@@ -120,7 +122,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             @Override
             public void onClick(View v) {
                 if (mRowClickListener != null) {
-                    mRowClickListener.onRowClicked(mDataSet, position, v, Constants.CLICK_EDIT);
+                    mRowClickListener.onRowClicked(mDataSet, position, v, MyRescribeConstants.CLICK_EDIT);
                 }
             }
         });
@@ -129,7 +131,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             @Override
             public void onClick(View v) {
                 if (mRowClickListener != null) {
-                    mRowClickListener.onRowClicked(mDataSet, position, v, Constants.CLICK_DELETE);
+                    mRowClickListener.onRowClicked(mDataSet, position, v, MyRescribeConstants.CLICK_DELETE);
                 }
             }
         });
@@ -145,49 +147,72 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         //+++++++++
         String data = "";
+        String breakFast = "";
+        String lunch = "";
+        String dinner = "";
         //::::::::::::::::::::::
         if (!dataObject.getMorningB().isEmpty()) {
             data = data.concat(dataObject.getMorningB() + "BB");
+            breakFast = "Before BreakFast";
         }
         if (!dataObject.getMorningA().isEmpty()) {
             data = data.concat(dataObject.getMorningA() + "AB");
+            breakFast = "After BreakFast";
         }
         if (data.isEmpty()) {
             holder.mMorningTimeDose.setVisibility(View.GONE);
+            holder.mShowMorningFullFormOfDose.setVisibility(View.GONE);
+
         } else {
             holder.mMorningTimeDose.setVisibility(View.VISIBLE);
+            holder.mShowMorningFullFormOfDose.setVisibility(View.VISIBLE);
+
         }
         holder.mMorningTimeDose.setText(data);
+        holder.mShowMorningFullFormOfDose.setText(breakFast);
         //::::::::::::::::::::::
         data = "";
         //::::::::::::::::::::::
         if (!dataObject.getLunchB().isEmpty()) {
             data = data.concat(dataObject.getLunchB() + "BL");
+            lunch = "Before Lunch";
         }
         if (!dataObject.getLunchA().isEmpty()) {
             data = data.concat(" " + dataObject.getLunchA() + "AL");
+            lunch = "After Lunch";
         }
         if (data.isEmpty()) {
             holder.mLunchTimeDose.setVisibility(View.GONE);
+            holder.mShowAfterNoonFullFormOfDose.setVisibility(View.GONE);
+
+
         } else {
             holder.mLunchTimeDose.setVisibility(View.VISIBLE);
+            holder.mShowAfterNoonFullFormOfDose.setVisibility(View.VISIBLE);
         }
         holder.mLunchTimeDose.setText(data);
+        holder.mShowAfterNoonFullFormOfDose.setText(lunch);
         //::::::::::::::::::::::
         data = "";
         //::::::::::::::::::::::
         if (!dataObject.getDinnerB().isEmpty()) {
             data = data.concat(dataObject.getDinnerB() + "BD");
+            dinner = "Before Dinner";
         }
         if (!dataObject.getDinnerA().isEmpty()) {
             data = data.concat(dataObject.getDinnerA() + "AD");
+            dinner = "After Dinner";
         }
         if (data.isEmpty()) {
             holder.mDinnerTimeDose.setVisibility(View.GONE);
+            holder.mShowNightFullFormOfDose.setVisibility(View.GONE);
         } else {
             holder.mDinnerTimeDose.setVisibility(View.VISIBLE);
+            holder.mShowNightFullFormOfDose.setVisibility(View.VISIBLE);
+
         }
         holder.mDinnerTimeDose.setText(data);
+        holder.mShowNightFullFormOfDose.setText(dinner);
         //::::::::::::::::::::::
         //---------------
 

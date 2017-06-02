@@ -34,13 +34,11 @@ import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
-import com.myrescribe.model.prescription_response_model.PrescriptionData;
-import com.myrescribe.preference.AppPreferencesManager;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.activities.SplashScreenActivity;
 import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
-import com.myrescribe.util.Config;
-import com.myrescribe.util.Constants;
+import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.util.NetworkUtil;
 
 
@@ -49,11 +47,10 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 public class RequestManager extends ConnectRequest implements Connector, RequestTimer.RequestTimerListener {
-    private static final String TAG = "DMS/RequestManager";
+    private static final String TAG = "MyRescribe/RequestManager";
     private static final int CONNECTION_TIME_OUT = 1000 * 60;
     private static final int N0OF_RETRY = 0;
     private AppDBHelper dbHelper;
@@ -283,7 +280,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 //                    mContext.startActivity(intent);
 //                    ((AppCompatActivity) mContext).finishAffinity();
 
-                    AppPreferencesManager.clearSharedPref(mContext);
+                    MyRescribePreferencesManager.clearSharedPref(mContext);
                     Intent intent = new Intent(mContext, SplashScreenActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -352,14 +349,14 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 // Need to Add
 
                 /*LoginResponseModel loginResponseModel = gson.fromJson(data, LoginResponseModel.class);
-                AppPreferencesManager.putString(Constants.ACCESS_TOKEN, loginResponseModel.getAccessToken(), mContext);
-                AppPreferencesManager.putString(Constants.TOKEN_TYPE, loginResponseModel.getTokenType(), mContext);
-                AppPreferencesManager.putString(Constants.REFRESH_TOKEN, loginResponseModel.getRefreshToken(), mContext);
+                MyRescribePreferencesManager.putString(MyRescribeConstants.ACCESS_TOKEN, loginResponseModel.getAccessToken(), mContext);
+                MyRescribePreferencesManager.putString(MyRescribeConstants.TOKEN_TYPE, loginResponseModel.getTokenType(), mContext);
+                MyRescribePreferencesManager.putString(MyRescribeConstants.REFRESH_TOKEN, loginResponseModel.getRefreshToken(), mContext);
 
                 String authorizationString = loginResponseModel.getTokenType()
                         + " " + loginResponseModel.getAccessToken();
 
-                mHeaderParams.put(Constants.AUTHORIZATION, authorizationString);
+                mHeaderParams.put(MyRescribeConstants.AUTHORIZATION, authorizationString);
 
                 connect();
                 */
@@ -370,14 +367,14 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
                     // Need to add
 
-                    case Constants.TASK_PRESCRIPTION_LIST: //This is for get archived list
+                    case MyRescribeConstants.TASK_PRESCRIPTION_LIST: //This is for get archived list
                         PatientPrescriptionModel ipTestResponseModel = gson.fromJson(data, PatientPrescriptionModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, ipTestResponseModel, mOldDataTag);
                         break;
                     /*
                     default:
                         //This is for get PDF Data
-                        if (mOldDataTag.startsWith(Constants.TASK_GET_PDF_DATA)) {
+                        if (mOldDataTag.startsWith(MyRescribeConstants.TASK_GET_PDF_DATA)) {
                             GetPdfDataResponseModel getPdfDataResponseModel = gson.fromJson(data, GetPdfDataResponseModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, getPdfDataResponseModel, mOldDataTag);
                         }*/
@@ -455,17 +452,17 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
     private void tokenRefreshRequest() {
         // Commented as login API is not implemented yet.
-       /* String url = AppPreferencesManager.getString(AppPreferencesManager.DMS_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
-        CommonMethods.Log(TAG, "Refersh token while sending refresh token api: " + AppPreferencesManager.getString(Constants.REFRESH_TOKEN, mContext));
+       /* String url = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
+        CommonMethods.Log(TAG, "Refersh token while sending refresh token api: " + MyRescribePreferencesManager.getString(MyRescribeConstants.REFRESH_TOKEN, mContext));
         Map<String, String> headerParams = new HashMap<>();
         headerParams.putAll(mHeaderParams);
-        headerParams.remove(Constants.CONTENT_TYPE);
-        headerParams.put(Constants.CONTENT_TYPE, Constants.APPLICATION_URL_ENCODED);
+        headerParams.remove(MyRescribeConstants.CONTENT_TYPE);
+        headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_URL_ENCODED);
 
         Map<String, String> postParams = new HashMap<>();
-        postParams.put(Constants.GRANT_TYPE_KEY, Constants.REFRESH_TOKEN);
-        postParams.put(Constants.REFRESH_TOKEN, AppPreferencesManager.getString(Constants.REFRESH_TOKEN, mContext));
-        postParams.put(Constants.CLIENT_ID_KEY, Constants.CLIENT_ID_VALUE);
+        postParams.put(MyRescribeConstants.GRANT_TYPE_KEY, MyRescribeConstants.REFRESH_TOKEN);
+        postParams.put(MyRescribeConstants.REFRESH_TOKEN, MyRescribePreferencesManager.getString(MyRescribeConstants.REFRESH_TOKEN, mContext));
+        postParams.put(MyRescribeConstants.CLIENT_ID_KEY, MyRescribeConstants.CLIENT_ID_VALUE);
 
         stringRequest(url, Request.Method.POST, headerParams, postParams, true);*/
     }

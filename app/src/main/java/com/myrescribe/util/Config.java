@@ -6,7 +6,7 @@ import android.content.Context;
  * Created by Sandeep Bahalkar
  */
 public class Config {
-    private static final String TAG = "DMS/Config";
+    private static final String TAG = "MyRescribe/Config";
     public static final String HTTP = "http://";
     public static final String API = "/api/";
     public static final String TOKEN_TYPE = "Bearer";

@@ -55,10 +55,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/dp6"
+    android:id="@+id/textViewMorningDose"
     android:drawableLeft="@mipmap/sunset"
     android:drawablePadding="@dimen/dp10"
     android:gravity="center_vertical"
-    android:text="1 Before BreakFast"
+    android:text=""
     android:textColor="@color/black"
     android:textSize="@dimen/sp16" />
 
@@ -67,10 +68,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp6"
+        android:id="@+id/textViewAfternoonDose"
         android:drawableLeft="@mipmap/sun"
         android:drawablePadding="@dimen/dp10"
         android:gravity="center_vertical"
-        android:text="1 Before Lunch"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="@dimen/sp16" />
 
@@ -81,7 +83,8 @@
         android:drawableLeft="@mipmap/night"
         android:drawablePadding="@dimen/dp10"
         android:gravity="center_vertical"
-        android:text="1 After Dinner"
+        android:text=""
+        android:id="@+id/textViewNightDose"
         android:textColor="@color/black"
         android:textSize="@dimen/sp16" />
 

@@ -27,20 +27,47 @@
         </activity>
 
         <activity
-            android:name="com.myrescribe.ui.activities.SplashScreenActivity"
-            android:label="@string/title_activity_splash_screen"
+            android:name="com.myrescribe.ui.activities.LoginActivity"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
+     <!--   <activity
+            android:name="com.myrescribe.ui.activities.ShowMedicineDoseListActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+-->
         <activity
             android:name=".ui.activities.EditPrescription"
 
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".ui.activities.PhoneNoActivity"
+
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service android:name=".services.NotifyService" />
 
-        <receiver android:name=".broadcast_receivers.YesClickReceiver" />
+        <receiver android:name=".broadcast_receivers.YesClickReceiver"/>
 
-        <receiver android:name=".broadcast_receivers.NoClickReceiver" />
+        <receiver android:name=".broadcast_receivers.NoClickReceiver"/>
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
     </application>
+
 
 </manifest>

@@ -11,17 +11,17 @@ import android.view.View;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.preference.AppPreferencesManager;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.singleton.Device;
 import com.myrescribe.util.CommonMethods;
-import com.myrescribe.util.Constants;
+import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ConnectionFactory extends ConnectRequest {
 
-    private static final String TAG = "ConnectionFactory";
+    private static final String TAG = "MyRescribe/ConnectionFactory";
     Connector connector = null;
     private Device device;
 
@@ -47,23 +47,23 @@ public class ConnectionFactory extends ConnectRequest {
         Map<String, String> headerParams = new HashMap<>();
 
         String authorizationString = "";
-        String contentType = AppPreferencesManager.getString(Constants.LOGIN_SUCCESS, mContext);
+        String contentType = MyRescribePreferencesManager.getString(MyRescribeConstants.LOGIN_SUCCESS, mContext);
 
-        if (contentType.equalsIgnoreCase(Constants.TRUE)) {
-            authorizationString = AppPreferencesManager.getString(Constants.TOKEN_TYPE, mContext)
-                    + " " + AppPreferencesManager.getString(Constants.ACCESS_TOKEN, mContext);
-            headerParams.put(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON);
+        if (contentType.equalsIgnoreCase(MyRescribeConstants.TRUE)) {
+            authorizationString = MyRescribePreferencesManager.getString(MyRescribeConstants.TOKEN_TYPE, mContext)
+                    + " " + MyRescribePreferencesManager.getString(MyRescribeConstants.ACCESS_TOKEN, mContext);
+            headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
         } else {
-            headerParams.put(Constants.CONTENT_TYPE, Constants.APPLICATION_URL_ENCODED);
+            headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_URL_ENCODED);
         }
 
-        headerParams.put(Constants.AUTHORIZATION, authorizationString);
-        headerParams.put(Constants.DEVICEID, device.getDeviceId());
+        headerParams.put(MyRescribeConstants.AUTHORIZATION, authorizationString);
+        headerParams.put(MyRescribeConstants.DEVICEID, device.getDeviceId());
 
-        headerParams.put(Constants.OS, device.getOS());
-        headerParams.put(Constants.OSVERSION, device.getOSVersion());
-        //  headerParams.put(Constants.DEVICETYPE, device.getDeviceType());
-//        headerParams.put(Constants.ACCESS_TOKEN, "");
+        headerParams.put(MyRescribeConstants.OS, device.getOS());
+        headerParams.put(MyRescribeConstants.OSVERSION, device.getOSVersion());
+        //  headerParams.put(MyRescribeConstants.DEVICETYPE, device.getDeviceType());
+//        headerParams.put(MyRescribeConstants.ACCESS_TOKEN, "");
         CommonMethods.Log(TAG, "setHeaderParams:" + headerParams.toString());
         this.mHeaderParams = headerParams;
     }
@@ -77,7 +77,7 @@ public class ConnectionFactory extends ConnectRequest {
     }
 
     public void setUrl(String url) {
-        String baseUrl = AppPreferencesManager.getString(AppPreferencesManager.DMS_PREFERENCES_KEY.SERVER_PATH, mContext);
+        String baseUrl = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext);
         this.mURL = baseUrl + url;
         CommonMethods.Log(TAG,"mURL: "+this.mURL);
     }

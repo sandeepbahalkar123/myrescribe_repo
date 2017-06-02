@@ -4,10 +4,10 @@ package com.myrescribe.util;
 /**
  * @author Sandeep Bahalkar
  */
-public class Constants {
+public class MyRescribeConstants {
 
-    public static final String DMS_LOG_FOLDER = "MyRescribe_LOG";
-    public static final String DMS_LOG_FILE = "MyRescribe_LOG_FILE.txt";
+    public static final String MYRESCRIBE_LOG_FOLDER = "MyRescribe_LOG";
+    public static final String MYRESCRIBE_LOG_FILE = "MyRescribe_LOG_FILE.txt";
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";
@@ -25,7 +25,6 @@ public class Constants {
         public static final String ANNOTATION_TEXT = "annotationText";
         public static final String DOC_TYPE_ID = "DocTypeId";
     }
-
 
     public static final String DEVICEID = "Device-Id";
     public static final String OS = "OS";
@@ -62,13 +61,13 @@ public class Constants {
     public static final String FALSE = "false";
 
     //Click codes
-    public static final String CLICK_DELETE = Constants.BLANK + 0;
-    public static final String CLICK_EXPAND_VIEW = Constants.BLANK + 1;
-    public static final String CLICK_EDIT = Constants.BLANK + 2;
+    public static final String CLICK_DELETE = MyRescribeConstants.BLANK + 0;
+    public static final String CLICK_EXPAND_VIEW = MyRescribeConstants.BLANK + 1;
+    public static final String CLICK_EDIT = MyRescribeConstants.BLANK + 2;
 
     // Connection codes
 
-    public static final String TASK_PRESCRIPTION_LIST = Constants.BLANK + 1;
+    public static final String TASK_PRESCRIPTION_LIST = MyRescribeConstants.BLANK + 1;
 
     public static class DATE_PATTERN {
         public static String YYYY_MM_DD = "yyyy-MM-dd";

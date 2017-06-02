@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +31,9 @@ import android.widget.Toast;
 import com.myrescribe.R;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.activities.ShowMedicineDoseListActivity;
+import com.myrescribe.ui.activities.SplashScreenActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -61,7 +64,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class CommonMethods {
 
-    private static final String TAG = "Dms/Common";
+    private static final String TAG = "MyRescribe/CommonMethods";
     private static boolean encryptionIsOn = true;
     private static String aBuffer = "";
     private int mYear, mMonth, mDay, mHour, mMinute;
@@ -131,15 +134,15 @@ public class CommonMethods {
 
 
     //create the new folder in sd card & write the data in text file which is created in that folder.
-    public static void DmsLogWriteFile(String title, String text, boolean textAppend) {
+    public static void MyRescribeLogWriteFile(String title, String text, boolean textAppend) {
         try {
             byte[] keyBytes = getKey("password");
-            File directory = new File(Environment.getExternalStorageDirectory().getPath() + "/", Constants.DMS_LOG_FOLDER);
+            File directory = new File(Environment.getExternalStorageDirectory().getPath() + "/", MyRescribeConstants.MYRESCRIBE_LOG_FOLDER);
             if (!directory.exists()) {
                 directory.mkdir();
             }
             //make a new text file in that created new directory/folder
-            File file = new File(directory.getPath(), Constants.DMS_LOG_FILE);
+            File file = new File(directory.getPath(), MyRescribeConstants.MYRESCRIBE_LOG_FILE);
 
             if (!file.exists() && directory.exists()) {
                 file.createNewFile();
@@ -182,12 +185,12 @@ public class CommonMethods {
     }
 
     // read the whole file data with previous data also
-    public static String DmsLogReadFile() {
+    public static String MyRescribeLogReadFile() {
 
         try {
             byte[] keyBytes = getKey("password");
 
-            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/", Constants.DMS_LOG_FOLDER + "/" + Constants.DMS_LOG_FILE);
+            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/", MyRescribeConstants.MYRESCRIBE_LOG_FOLDER + "/" + MyRescribeConstants.MYRESCRIBE_LOG_FILE);
             InputStreamReader isr;
             if (encryptionIsOn) {
                 Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -411,8 +414,8 @@ public class CommonMethods {
      */
     public static String formatDateTime(String selectedDateTime, String requestedFormat, String currentDateFormat, String formatString) {
 
-        if (formatString.equalsIgnoreCase(Constants.TIME)) {
-            SimpleDateFormat ft = new SimpleDateFormat(Constants.DATE_PATTERN.HH_MM);
+        if (formatString.equalsIgnoreCase(MyRescribeConstants.TIME)) {
+            SimpleDateFormat ft = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.HH_MM);
             Date dateObj = null;
 
             try {
@@ -427,7 +430,7 @@ public class CommonMethods {
             return simpleDateFormatObj.format(millis);
 
         }//if
-        else if (formatString.equalsIgnoreCase(Constants.DATE)) {
+        else if (formatString.equalsIgnoreCase(MyRescribeConstants.DATE)) {
             SimpleDateFormat ft = new SimpleDateFormat(currentDateFormat);
             Date dateObj = null;
 
@@ -569,8 +572,7 @@ public class CommonMethods {
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
-
-    public static void showDialog(String msg, final Context mContext) {
+          public static void showDialog(String msg, final Context mContext) {
 
 
         final Dialog dialog = new Dialog(mContext);
@@ -595,6 +597,44 @@ public class CommonMethods {
 
         dialog.show();
     }
+    public static Dialog showAlertDialog(Context activity, String dialogHeader, CheckIpConnection checkIpConnection) {
+        final Context  mContext = activity;
+        mCheckIpConnection = checkIpConnection;
+        final Dialog dialog = new Dialog(activity);
 
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.show_dialog_layout);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        if (dialogHeader != null)
+            ((TextView) dialog.findViewById(R.id.textView_dialog_heading)).setText(dialogHeader);
+
+        dialog.findViewById(R.id.button_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                EditText etServerPath = (EditText) dialog.findViewById(R.id.et_server_path);
+
+                if (isValidIP(etServerPath.getText().toString())) {
+                    String mServerPath = Config.HTTP + etServerPath.getText().toString() + Config.API;
+                    Log.e(TAG, "SERVER PATH===" + mServerPath);
+                    mCheckIpConnection.onOkButtonClickListner(mServerPath, mContext,dialog);
+                } else {
+                    Toast.makeText(mContext, R.string.error_in_ip, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        dialog.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                ((Activity) mContext).finish();
+            }
+        });
+        dialog.show();
+
+        return dialog;
+    }
 }
 

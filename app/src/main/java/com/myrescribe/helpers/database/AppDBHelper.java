@@ -17,7 +17,7 @@ import java.io.OutputStream;
 
 public class AppDBHelper extends SQLiteOpenHelper {
 
-    private final String TAG = this.getClass().getName();
+    private final String TAG = "MyRescribe/AppDBHelper";
 
     private static final String DATABASE_NAME = "MyRescribe.sqlite";
     private static final String DB_PATH_SUFFIX = "/data/data/com.myrescribe/databases/";

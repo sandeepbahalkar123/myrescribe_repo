@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import com.myrescribe.R;
 import com.myrescribe.singleton.MyRescribeApplication;
-import com.myrescribe.util.Constants;
+import com.myrescribe.util.MyRescribeConstants;
 
 /**
  * Created by Sandeep Bahalkar
@@ -18,8 +18,8 @@ public class CustomButton extends Button {
     public CustomButton(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-//        setBackground(Constants.getRectangleDrawable(Constants.BUTTON_COLOR, "#00000000", 2, 10, 10, 10, 10));
-        setTextColor(Color.parseColor(Constants.BUTTON_TEXT_COLOR));
+//        setBackground(MyRescribeConstants.getRectangleDrawable(MyRescribeConstants.BUTTON_COLOR, "#00000000", 2, 10, 10, 10, 10));
+        setTextColor(Color.parseColor(MyRescribeConstants.BUTTON_TEXT_COLOR));
         setCustomFont(context, attrs);
     }
 

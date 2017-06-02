@@ -24,22 +24,5 @@ public class YesClickReceiver extends BroadcastReceiver {
         manager.cancel(notificationId);
 
 
-
     }
-   /* public static final String PERFORM_NOTIFICATION_BUTTON = "perform_notification_button";
-    Context mContext;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        String action = (String) getIntent().getExtras().get("do_action");
-        if (action != null) {
-            Toast.makeText(this, action + " " + "Dose Accepted", Toast.LENGTH_SHORT).show();
-            NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            // Dismiss Notification
-         //   notification.flags = Notification.FLAG_AUTO_CANCEL;
-        }
-
-           finish();
-    }*/
 }

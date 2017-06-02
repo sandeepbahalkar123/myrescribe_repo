@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.myrescribe.helpers.database.AppDBHelper;
 
 import java.util.Hashtable;
@@ -16,8 +18,7 @@ import com.google.android.gms.analytics.Tracker;*/
  * Created by Sandeep Bahalkar
  */
 public class MyRescribeApplication extends Application /*MultiDexApplication*/ {
-    public static final String TAG = MyRescribeApplication.class
-            .getSimpleName();
+    public static final String TAG = "MyRescribe/MyRescribeApplication";
 
     private static MyRescribeApplication singleton;
 
@@ -30,6 +31,8 @@ public class MyRescribeApplication extends Application /*MultiDexApplication*/ {
         super.onCreate();
         //------------
         AppDBHelper.getInstance(this);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
         //--------------
     }
 

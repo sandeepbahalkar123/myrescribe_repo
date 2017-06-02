@@ -52,6 +52,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -572,7 +573,8 @@ public class CommonMethods {
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
-          public static void showDialog(String msg, final Context mContext) {
+
+    public static void showDialog(String msg, final Context mContext) {
 
 
         final Dialog dialog = new Dialog(mContext);
@@ -597,8 +599,9 @@ public class CommonMethods {
 
         dialog.show();
     }
+
     public static Dialog showAlertDialog(Context activity, String dialogHeader, CheckIpConnection checkIpConnection) {
-        final Context  mContext = activity;
+        final Context mContext = activity;
         mCheckIpConnection = checkIpConnection;
         final Dialog dialog = new Dialog(activity);
 
@@ -619,7 +622,7 @@ public class CommonMethods {
                 if (isValidIP(etServerPath.getText().toString())) {
                     String mServerPath = Config.HTTP + etServerPath.getText().toString() + Config.API;
                     Log.e(TAG, "SERVER PATH===" + mServerPath);
-                    mCheckIpConnection.onOkButtonClickListner(mServerPath, mContext,dialog);
+                    mCheckIpConnection.onOkButtonClickListner(mServerPath, mContext, dialog);
                 } else {
                     Toast.makeText(mContext, R.string.error_in_ip, Toast.LENGTH_LONG).show();
                 }
@@ -635,6 +638,21 @@ public class CommonMethods {
         dialog.show();
 
         return dialog;
+    }
+
+    public static String getMealTime(int hour, int mint, Context context) {
+        //BB : 7-11,lunch : 11-3,dinner :7-11
+        String time = "";
+        if (hour > 7 && hour < 11) {
+            time = context.getString(R.string.break_fast);
+        } else if (hour >= 11 && hour < 15) {
+            time = context.getString(R.string.mlunch);
+        } else if (hour >= 15 && hour <= 24) {
+            time = context.getString(R.string.mdinner);
+        }
+        CommonMethods.Log(TAG, "hour" + hour);
+        CommonMethods.Log(TAG, "getMealTime" + time);
+        return time;
     }
 }
 

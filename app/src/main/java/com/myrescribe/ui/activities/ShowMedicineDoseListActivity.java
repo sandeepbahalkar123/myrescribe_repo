@@ -24,6 +24,7 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.DataObject;
 import com.myrescribe.notification.AlarmTask;
+import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
@@ -73,6 +74,12 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         notificationForMedicine();
         bindView();
         doGetPrescriptionList();
+
+
+        Calendar c = Calendar.getInstance();
+        int hour24 = c.get(Calendar.HOUR_OF_DAY);
+        int Min = c.get(Calendar.MINUTE);
+        CommonMethods.getMealTime(hour24, Min, this);
     }
 
     private void notificationForMedicine() {

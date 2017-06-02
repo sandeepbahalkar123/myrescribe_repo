@@ -24,6 +24,7 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.DataObject;
 import com.myrescribe.notification.AlarmTask;
+import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     private RecyclerView.LayoutManager mLayoutManager;
     private final String TAG = "MyRescribe/ShowMedicineDoseListActivity";
     Context mContext;
+    private  String mGetMealTime;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -73,6 +75,10 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         notificationForMedicine();
         bindView();
         doGetPrescriptionList();
+        Calendar c = Calendar.getInstance();
+        int hour24 = c.get(Calendar.HOUR_OF_DAY);
+        int Min = c.get(Calendar.MINUTE);
+       mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
     }
 
     private void notificationForMedicine() {
@@ -183,7 +189,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
             ArrayList<PrescriptionData> data = prescriptionDataReceived.getData();
             if (data != null) {
                 if (data.size() != 0) {
-                    mAdapter = new ShowMedicineDoseListAdapter(this, data, false);
+                    mAdapter = new ShowMedicineDoseListAdapter(this, data, false,mGetMealTime);
                     mAdapter.setRowClickListener(this);
                     mRecyclerView.setAdapter(mAdapter);
                 }

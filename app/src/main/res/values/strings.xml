@@ -26,7 +26,7 @@
     <string name="mlunch">LUNCH</string>
     <string name="dinner">DINNER :</string>
     <string name="mdinner">DINNER</string>
-    <string name="instructions">INSTRUCTIONS</string>
+    <string name="instructions">INSTRUCTIONS :</string>
     <string name="for_example_server_path">e.g. 192.168.0.180:80</string>
     <string name="message_text">This tablet is for acidity take before eating anything.</string>
     <string name="edit">EDIT</string>
@@ -50,6 +50,19 @@
     <string name="customnotification">Custom Notification</string>
     <string name="facebook_app_id">297092640737799</string>
     <string name="fb_login_protocol_scheme">fb1879555372255897</string>
+
+    <string name="gotham_black">gotham_black.ttf</string>
+    <string name="gotham_blackitalic">gotham_blackitalic.ttf</string>
+    <string name="gotham_bold">gotham_bold.ttf</string>
+    <string name="gotham_bolditalic">gotham_bolditalic.ttf</string>
+    <string name="gotham_light">gotham_light.ttf</string>
+    <string name="gotham_lightitalic">gotham_lightitalic.ttf</string>
+    <string name="gotham_medium">gotham_medium.ttf</string>
+    <string name="gotham_mediumitalic">gotham_mediumitalic.ttf</string>
+    <string name="gotham_thin">gotham_thin.ttf</string>
+    <string name="gotham_thinitalic">gotham_thinitalic.ttf</string>
+    <string name="gotham_ultra">gotham_ultra.ttf</string>
+
     <string-array name="ids">
         <item>0</item>
         <item>1</item>

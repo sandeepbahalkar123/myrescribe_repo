@@ -9,6 +9,7 @@
     <dimen name="dp1">1dp</dimen>
     <dimen name="dp2">2dp</dimen>
     <dimen name="dp4">4dp</dimen>
+    <dimen name="dp5">5dp</dimen>
     <dimen name="dp6">6dp</dimen>
     <dimen name="dp8">8dp</dimen>
     <dimen name="dp10">10dp</dimen>
@@ -37,4 +38,5 @@
     <dimen name="sp15">15sp</dimen>
     <dimen name="sp16">16sp</dimen>
     <dimen name="sp17">17sp</dimen>
+    <dimen name="sp40">40sp</dimen>
 </resources>

@@ -636,5 +636,20 @@ public class CommonMethods {
 
         return dialog;
     }
+
+    public static String getMealTime(int hour, int mint, Context context) {
+        //BB : 7-11,lunch : 11-3,dinner :7-11
+        String time = "";
+        if (hour > 7 && hour < 11) {
+            time = context.getString(R.string.break_fast);
+        } else if (hour >= 11 && hour < 15) {
+            time = context.getString(R.string.mlunch);
+        } else if (hour >= 15 && hour <= 24) {
+            time = context.getString(R.string.mdinner);
+        }
+        CommonMethods.Log(TAG, "hour" + hour);
+        CommonMethods.Log(TAG, "getMealTime" + time);
+        return time;
+    }
 }
 

@@ -240,7 +240,7 @@
                     app:customFont="@string/gotham_bold" />
 
                 <com.myrescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/instructions"
+                    android:id="@+id/textViewhightlightInstructions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dp6"

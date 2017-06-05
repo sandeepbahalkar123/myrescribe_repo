@@ -1,5 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Rescribe</string>
+    <string name="after">After</string>
+    <string name="before">Before</string>
     <string name="enter_mobile_no">Enter Mobile No</string>
     <string name="loginfb">Login with fb</string>
     <string name="logingmail">Login with G+</string>
@@ -16,23 +18,24 @@
     <string name="timeout">Timeout error</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="breakfast">BREAKFAST :</string>
+    <string name="breakfast">Breakfast</string>
     <string name="break_fast">BREAKFAST</string>
     <string name="server_path">Enter the server path</string>
     <string name="data_saved">Data updated successfully</string>
     <string name="data__not_saved">Data not saved</string>
     <string name="tablet">Tablet</string>
-    <string name="lunch">LUNCH :</string>
+    <string name="lunch">Lunch</string>
     <string name="mlunch">LUNCH</string>
-    <string name="dinner">DINNER :</string>
+    <string name="dinner">Dinner</string>
     <string name="mdinner">DINNER</string>
-    <string name="instructions">INSTRUCTIONS :</string>
+    <string name="instructions">INSTRUCTION :</string>
     <string name="for_example_server_path">e.g. 192.168.0.180:80</string>
     <string name="message_text">This tablet is for acidity take before eating anything.</string>
     <string name="edit">EDIT</string>
     <string name="typehere" tools:ignore="TypographyEllipsis">Type here...</string>
     <string name="type">TYPE</string>
     <string name="delete">DELETE</string>
+    <string name="search">Search</string>
     <string name="ok">OK</string>
     <string name="dose">DOSE</string>
     <string name="logout">Logout</string>

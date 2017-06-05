@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
@@ -42,42 +43,36 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         TextView mTextViewInstructions;
         CustomTextView mTextviewNameOfMedicine;
         TextView mTextviewTabletLabel;
-        //  TextView mButtonDelete;
         View mExpandLayout;
         CardView mCardViewLayout;
-        // TextView mButtonEdit;
         ImageView mUpIcon;
         ImageView mdownIcon;
+        RelativeLayout mRelativeLayoutShowBreakfastIcon, mRelativeLayoutShowLunchIcon, mRelativeLayoutShowDinnerIcon;
         LinearLayout mDetailedInstructions;
         TextView mDoseQuantity;
         TextView mDays;
+        TextView mDosePeriod,mDoseQuantityNumber,mDoseSlot;
         LinearLayout mHighlightedInstructionView;
         CustomTextView mTextViewhightlightInstructions;
         TextView mShowMorningFullFormOfDose, mShowAfterNoonFullFormOfDose, mShowNightFullFormOfDose;
         TextView mMorningDoseQuanity, mLunchDoseQuantity, mDinnerDoseQuantity;
         ImageView mHightLightMorningDose, mHightLightAfternoonDose, mHightLightNightDose;
-
         TextView mDoseQuantityPeriod;
 
         public ListViewHolder(View view) {
             super(view);
             mUpIcon = (ImageView) view.findViewById(R.id.imageViewUpArrow);
             mdownIcon = (ImageView) view.findViewById(R.id.imageViewdownArrow);
-            //   mButtonEdit = (TextView) view.findViewById(R.id.buttonEdit);
             mTextViewInstructions = (TextView) view.findViewById(R.id.tv_instructions);
             mDetailedInstructions = (LinearLayout) view.findViewById(R.id.detailedInstructions);
             mTextviewNameOfMedicine = (CustomTextView) view.findViewById(R.id.medicineName);
             mTextviewTabletLabel = (TextView) view.findViewById(R.id.textviewTabletLabel);
-            //  mButtonDelete = (TextView) view.findViewById(R.id.buttonDelete);
             mExpandLayout = (View) view.findViewById(R.id.expandPrescriptionView);
             mTextViewhightlightInstructions = (CustomTextView) view.findViewById(R.id.textViewhightlightInstructions);
             mHighlightedInstructionView = (LinearLayout) view.findViewById(R.id.highlightedInstructionView);
             mCardViewLayout = (CardView) view.findViewById(R.id.card_view);
-            //mLayoutShowOnlyToDoctor = (LinearLayout) view.findViewById(R.id.linearlayout_showOnlytoDoctor);
-
             // Dose Time
             mDoseQuantity = (TextView) view.findViewById(R.id.doseQuantity);
-
             // Dose Time
             mDays = (TextView) view.findViewById(R.id.days);
             mShowMorningFullFormOfDose = (TextView) view.findViewById(R.id.morningDose);
@@ -89,8 +84,14 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             mHightLightMorningDose = (ImageView) view.findViewById(R.id.imageViewMorningDose);
             mHightLightAfternoonDose = (ImageView) view.findViewById(R.id.imageViewAfternoonDose);
             mHightLightNightDose = (ImageView) view.findViewById(R.id.imageViewNightDose);
+            //mDoseQuantityPeriod = (TextView) view.findViewById(R.id.doseQuantityPeriod);
+            mDosePeriod = (TextView) view.findViewById(R.id.dosePeriod);
+            mDoseQuantityNumber = (TextView) view.findViewById(R.id.doseQuantityNumber);
+            mDoseSlot = (TextView) view.findViewById(R.id.doseSlot);
+            mRelativeLayoutShowBreakfastIcon = (RelativeLayout) view.findViewById(R.id.relativeLayoutShowBreakfastIcon);
+            mRelativeLayoutShowLunchIcon = (RelativeLayout) view.findViewById(R.id.relativeLayoutShowLunchIcon);
+            mRelativeLayoutShowDinnerIcon = (RelativeLayout) view.findViewById(R.id.relativeLayoutShowDinnerIcon);
 
-            mDoseQuantityPeriod = (TextView) view.findViewById(R.id.doseQuantityPeriod);
 
         }
     }
@@ -126,56 +127,31 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
                     object.setExpanded(false);
                 }
                 if (holder.mExpandLayout.getVisibility() == View.GONE) {
+                   holder.mHighlightedInstructionView.setVisibility(View.GONE);
                     holder.mExpandLayout.setVisibility(View.VISIBLE);
                     dataObject.setExpanded(true);
                 } else {
                     holder.mExpandLayout.setVisibility(View.GONE);
+                   holder.mHighlightedInstructionView.setVisibility(View.VISIBLE);
                     dataObject.setExpanded(false);
                 }
                 notifyDataSetChanged();
 
             }
         });
-       /* holder.mButtonEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mRowClickListener != null) {
-                    mRowClickListener.onRowClicked(mDataSet, position, v, MyRescribeConstants.CLICK_EDIT);
-                }
-            }
-        });
 
-        holder.mButtonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mRowClickListener != null) {
-                    mRowClickListener.onRowClicked(mDataSet, position, v, MyRescribeConstants.CLICK_DELETE);
-                }
-            }
-        });*/
-
-        //----- set data
-
-
+        holder.mDoseQuantity.setText("("+dataObject.getDosage()+")");
         holder.mTextviewNameOfMedicine.setText("" + dataObject.getMedicineName());
         if(dataObject.getInstruction().equals("")){
             holder.mDetailedInstructions.setVisibility(View.GONE);
+            holder.mHighlightedInstructionView.setVisibility(View.GONE);
         }else{
             holder.mDetailedInstructions.setVisibility(View.VISIBLE);
             holder.mTextViewInstructions.setText("" + dataObject.getInstruction());
+            holder.mTextViewhightlightInstructions.setText("" + dataObject.getInstruction());
         }
 
-        holder.mDoseQuantity.setText(" (" + dataObject.getDosage() + ")");
 
-
-        if (position == 0) {
-            holder.mHighlightedInstructionView.setVisibility(View.VISIBLE);
-            holder.mTextViewhightlightInstructions.setText(mContext.getString(R.string.message_text));
-
-        } else {
-            holder.mHighlightedInstructionView.setVisibility(View.GONE);
-
-        }
 
         if (Integer.parseInt(dataObject.getDays()) > 1) {
             holder.mDays.setText("" + dataObject.getDays() + " days");
@@ -184,87 +160,140 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         //+++++++++
         String data = "";
+        String time = "";
         String breakFast = "";
+        String mBreakFast = "";
         String lunch = "";
         String dinner = "";
+        String quantity = "";
         //::::::::::::::::::::::
+      //  **************************BreakFast********************************************
         if (!dataObject.getMorningB().isEmpty()) {
             data = dataObject.getDosage();
             breakFast = "Before BreakFast";
+            time = mContext.getString(R.string.before);
+            quantity = dataObject.getMorningB();
+            mBreakFast = mContext.getString(R.string.break_fast);
         }
         if (!dataObject.getMorningA().isEmpty()) {
             data = dataObject.getDosage();
             breakFast = "After BreakFast";
+            time = mContext.getString(R.string.after);
+            quantity = dataObject.getMorningA();
+            mBreakFast = mContext.getString(R.string.break_fast);
         }
         if (data.isEmpty()) {
-            holder.mHightLightMorningDose.setVisibility(View.INVISIBLE);
+            holder.mRelativeLayoutShowBreakfastIcon.setVisibility(View.GONE);
             holder.mShowMorningFullFormOfDose.setVisibility(View.GONE);
             holder.mMorningDoseQuanity.setVisibility(View.GONE);
         } else {   //if current time is within breakfast time ie. 7 am to 11 am then breakfast image highlighted with circular background
-            if (mGetMealTime.equals(mContext.getString(R.string.break_fast))) {
-                holder.mHightLightMorningDose.setBackground(mContext.getResources().getDrawable(R.mipmap.highlight));
-                holder.mHightLightMorningDose.setVisibility(View.VISIBLE);
+
+                holder.mRelativeLayoutShowBreakfastIcon.setVisibility(View.VISIBLE);
                 holder.mShowMorningFullFormOfDose.setVisibility(View.VISIBLE);
                 holder.mMorningDoseQuanity.setVisibility(View.VISIBLE);
-            }
+
+        }  if (mGetMealTime.equals(mContext.getString(R.string.break_fast))) {
+            holder.mHightLightMorningDose.setBackground(mContext.getResources().getDrawable(R.mipmap.highlight));
+            holder.mDosePeriod.setText(time);
+            holder.mDoseQuantityNumber.setText(quantity);
+            holder.mDoseSlot.setText(mBreakFast);
         }
 
+
         holder.mShowMorningFullFormOfDose.setText(breakFast);
-        holder.mMorningDoseQuanity.setText("(" + data + ")");
+        holder.mMorningDoseQuanity.setText("("+quantity+"Tab)");
+        //***************************************Lunch*****************************************************
         //::::::::::::::::::::::
         data = "";
+         time = "";
+         breakFast = "";
+       mBreakFast = "";
+        lunch = "";
+        dinner = "";
+         quantity = "";
         //::::::::::::::::::::::
         if (!dataObject.getLunchB().isEmpty()) {
             data = dataObject.getDosage();
             lunch = "Before Lunch";
+            time = mContext.getString(R.string.before);
+            quantity = dataObject.getLunchB();
+            mBreakFast = mContext.getString(R.string.lunch);
         }
         if (!dataObject.getLunchA().isEmpty()) {
             data = dataObject.getDosage();
             lunch = "After Lunch";
+            time = mContext.getString(R.string.after);
+            quantity = dataObject.getLunchA();
+            mBreakFast = mContext.getString(R.string.lunch);
         }
         if (data.isEmpty()) {
-            holder.mHightLightAfternoonDose.setVisibility(View.INVISIBLE);
+            holder.mRelativeLayoutShowLunchIcon.setVisibility(View.GONE);
             holder.mShowAfterNoonFullFormOfDose.setVisibility(View.GONE);
             holder.mLunchDoseQuantity.setVisibility(View.GONE);
 
 
+
         } else {
             //if current time is within lunch time ie. 11 am to 3 pm then lunch image highlighted with circular background
-            if (mGetMealTime.equals(mContext.getString(R.string.mlunch))) {
-                holder.mHightLightAfternoonDose.setBackground(mContext.getResources().getDrawable(R.mipmap.highlight));
-                holder.mHightLightAfternoonDose.setVisibility(View.VISIBLE);
+                holder.mRelativeLayoutShowLunchIcon.setVisibility(View.VISIBLE);
                 holder.mLunchDoseQuantity.setVisibility(View.VISIBLE);
                 holder.mShowAfterNoonFullFormOfDose.setVisibility(View.VISIBLE);
-            }
+
+        }
+        if (mGetMealTime.equals(mContext.getString(R.string.mlunch))) {
+            holder.mHightLightAfternoonDose.setBackground(mContext.getResources().getDrawable(R.mipmap.highlight));
+            holder.mDosePeriod.setText(time);
+            holder.mDoseQuantityNumber.setText(quantity);
+            holder.mDoseSlot.setText(mBreakFast);
         }
 
+
         holder.mShowAfterNoonFullFormOfDose.setText(lunch);
-        holder.mLunchDoseQuantity.setText("(" + data + ")");
+        holder.mLunchDoseQuantity.setText("("+quantity+"Tab)");
         //::::::::::::::::::::::
+        //****************************************Dinner********************************************
         data = "";
+       time = "";
+       breakFast = "";
+         mBreakFast = "";
+        lunch = "";
+         dinner = "";
+        quantity = "";
         //::::::::::::::::::::::
         if (!dataObject.getDinnerB().isEmpty()) {
+            time = mContext.getString(R.string.before);
+            quantity = dataObject.getDinnerB();
+            mBreakFast = mContext.getString(R.string.dinner);
             data = dataObject.getDosage();
             dinner = "Before Dinner";
         }
         if (!dataObject.getDinnerA().isEmpty()) {
+            time = mContext.getString(R.string.after);
+            quantity = dataObject.getDinnerA();
+            mBreakFast = mContext.getString(R.string.dinner);
             data = dataObject.getDosage();
             dinner = "After Dinner";
         }
         if (data.isEmpty()) {
-            holder.mHightLightNightDose.setVisibility(View.INVISIBLE);
+            holder.mRelativeLayoutShowDinnerIcon.setVisibility(View.GONE);
             holder.mDinnerDoseQuantity.setVisibility(View.GONE);
             holder.mShowNightFullFormOfDose.setVisibility(View.GONE);
         } else {
             //if current time is within dinner time ie. 7 pm to 11 pm then dinner image highlighted with circular background
-            if (mGetMealTime.equals(mContext.getString(R.string.mdinner))) {
-                holder.mHightLightNightDose.setBackground(mContext.getResources().getDrawable(R.mipmap.highlight));
                 holder.mShowNightFullFormOfDose.setVisibility(View.VISIBLE);
                 holder.mDinnerDoseQuantity.setVisibility(View.VISIBLE);
+                holder.mRelativeLayoutShowDinnerIcon.setVisibility(View.VISIBLE);
                 holder.mShowNightFullFormOfDose.setVisibility(View.VISIBLE);
-            }
         }
-        holder.mDinnerDoseQuantity.setText("(" + data + ")");
+        if (mGetMealTime.equals(mContext.getString(R.string.mdinner))) {
+            holder.mHightLightNightDose.setBackground(mContext.getResources().getDrawable(R.mipmap.highlight));
+            holder.mDosePeriod.setText(time);
+            holder.mDoseQuantityNumber.setText(quantity);
+            holder.mDoseSlot.setText(mBreakFast);
+        }
+
+
+        holder.mDinnerDoseQuantity.setText("("+quantity+"Tab)");
         holder.mShowNightFullFormOfDose.setText(dinner);
         //::::::::::::::::::::::
         //---------------

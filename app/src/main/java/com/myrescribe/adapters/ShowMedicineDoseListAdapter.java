@@ -205,5 +205,4 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
     public void setRowClickListener(RowClickListener mRowClickListener) {
         this.mRowClickListener = mRowClickListener;
     }
-
 }

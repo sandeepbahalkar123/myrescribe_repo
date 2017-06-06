@@ -80,7 +80,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         String dinnerTime = "9:21 AM";
 
         AppDBHelper appDBHelper = new AppDBHelper(ShowMedicineDoseListActivity.this);
-        appDBHelper = AppDBHelper.getInstance(ShowMedicineDoseListActivity.this);
         Cursor cursor = appDBHelper.getPreferences("1");
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {

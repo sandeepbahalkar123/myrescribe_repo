@@ -103,9 +103,9 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
     public void onBindViewHolder(final ShowMedicineDoseListAdapter.ListViewHolder holder, final int position) {
         final PrescriptionData prescriptionDataObject = mPrescriptionData.get(position);
         if (position == 0) {
-            holder.mCardViewLayout.setBackground(mContext.getDrawable(R.color.show_recent_prescription_bgcolor));
+            holder.mCardViewLayout.setBackground(mContext.getResources().getDrawable(R.color.show_recent_prescription_bgcolor));
         } else {
-            holder.mCardViewLayout.setBackground(mContext.getDrawable(R.color.prescription_bgcolor));
+            holder.mCardViewLayout.setBackground(mContext.getResources().getDrawable(R.color.prescription_bgcolor));
         }
         if (prescriptionDataObject.getExpanded()) {
             holder.mExpandLayout.setVisibility(View.VISIBLE);
@@ -174,14 +174,14 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             durationOfBreakFast = mContext.getString(R.string.before_break_fast);
             timeOfDosage = mContext.getString(R.string.before);
             doseQuantity = prescriptionData.getMorningB();
-            showBreakFastLabel = mContext.getString(R.string.break_fast);
+            showBreakFastLabel = mContext.getString(R.string.breakfast);
         }
         if (!prescriptionData.getMorningA().isEmpty()) {
             quantityOfDose = prescriptionData.getDosage();
             durationOfBreakFast = mContext.getString(R.string.after_break_fast);
             timeOfDosage = mContext.getString(R.string.after);
             doseQuantity = prescriptionData.getMorningA();
-            showBreakFastLabel = mContext.getString(R.string.break_fast);
+            showBreakFastLabel = mContext.getString(R.string.breakfast);
         }
         if (quantityOfDose.isEmpty()) {
             holder.mRelativeLayoutShowBreakfastIcon.setVisibility(View.GONE);
@@ -258,9 +258,9 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             holder.mDoseSlot.setText(showBreakFastLabel);
             //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
             if (doseQuantity.contains("/")) {
-                holder.mDoseQuantityNumber.setTextSize(mContext.getResources().getDimension(R.dimen.sp18));
+                holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX,mContext.getResources().getDimension(R.dimen.sp18));
             } else {
-                holder.mDoseQuantityNumber.setTextSize(mContext.getResources().getDimension(R.dimen.sp40));
+                holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX,mContext.getResources().getDimension(R.dimen.sp40));
             }
         }
         //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.

@@ -2,6 +2,8 @@
 <resources>
 
     <color name="grey">#55000000</color>
+    <color name="show_recent_prescription_bgcolor">#b2e6fa</color>
+    <color name="prescription_bgcolor">#e4f3fa</color>
     <color name="reset_yellow">#ffa100</color>
     <color name="apply_blue">#6AB0D3</color>
     <color name="dcr_customer_name">#010101</color>
@@ -21,7 +23,7 @@
     <color name="MediumSpringGreen">#348017</color>
     <color name="BlueDress">#157DEC</color>
     <color name="Red">#FF0000</color>
-    <color name="tagColor">#1CBBB4</color>
+    <color name="tagColor">#04abdf</color>
     <color name="login_bg">#4FAFDC</color>
     <color name="login_button">#36657A</color>
     <color name="white">#ffffff</color>

@@ -1,7 +1,6 @@
 package com.myrescribe.ui.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,10 +10,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 
 import com.myrescribe.R;
@@ -23,7 +23,6 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.DataObject;
 import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.notification.AlarmTask;
@@ -37,10 +36,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ShowMedicineDoseListActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ShowMedicineDoseListAdapter.RowClickListener, HelperResponse {
+        implements NavigationView.OnNavigationItemSelectedListener, HelperResponse {
 
     private ShowMedicineDoseListAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private final String TAG = "MyRescribe/ShowMedicineDoseListActivity";
     Context mContext;
     private  String mGetMealTime;
@@ -94,7 +92,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
                 breakFast = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
                 lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
                 dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
-                // do what ever you want here
                 cursor.moveToNext();
             }
         }
@@ -123,19 +120,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        //  mAdapter = new ShowMedicineDoseListAdapter(ShowMedicineDoseListActivity.this, getDataSet(), false);
-        //mAdapter.setMyClickListner(this);
-        //mRecyclerView.setAdapter(mAdapter);
-    }
-
-    private ArrayList<DataObject> getDataSet() {
-        ArrayList results = new ArrayList<DataObject>();
-        for (int index = 0; index < 20; index++) {
-            DataObject obj = new DataObject("" + index,
-                    "" + index);
-            results.add(index, obj);
-        }
-        return results;
     }
 
     @Override
@@ -149,20 +133,35 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //Search Function to search particular prescribed medicine
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate( R.menu.main, menu);
+
+        MenuItem myActionMenuItem = menu.findItem( R.id.search);
+        final SearchView searchView = (SearchView) myActionMenuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (TextUtils.isEmpty(newText)) {
+                    mAdapter.filter("");
+                } else {
+                    mAdapter.filter(newText);
+                }
+                return true;
+            }
+        });
+
         return true;
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-       /* int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -181,20 +180,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     }
 
 
-    @Override
-    public void onRowClicked(ArrayList<PrescriptionData> dataObjects, int position, View v, String mClickCodes) {
-
-        if (mClickCodes.equals(MyRescribeConstants.CLICK_DELETE)) {
-            dataObjects.remove(position);
-            mAdapter.notifyItemRemoved(position);
-        } else if (mClickCodes.equals(MyRescribeConstants.CLICK_EDIT)) {
-            Intent intent = new Intent(mContext, EditPrescription.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
-    }
 
     private void doGetPrescriptionList() {
         mPrescriptionHelper.doGetPrescriptionList();
@@ -209,7 +194,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
             if (data != null) {
                 if (data.size() != 0) {
                     mAdapter = new ShowMedicineDoseListAdapter(this, data, false,mGetMealTime);
-                    mAdapter.setRowClickListener(this);
                     mRecyclerView.setAdapter(mAdapter);
                 }
             }

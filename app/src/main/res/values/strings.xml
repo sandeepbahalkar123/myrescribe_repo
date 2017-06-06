@@ -1,5 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Rescribe</string>
+    <string name="opening_brace">(</string>
+    <string name="closing_brace">)</string>
+    <string name="Tablet"> Tab</string>
+    <string name="Syrup"> Syrup</string>
     <string name="after">After</string>
     <string name="before">Before</string>
     <string name="enter_mobile_no">Enter Mobile No</string>
@@ -20,10 +24,16 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="breakfast">Breakfast</string>
     <string name="break_fast">BREAKFAST</string>
+    <string name="before_break_fast">Before BreakFast</string>
+    <string name="after_break_fast">After BreakFast</string>
+    <string name="before_lunch">Before Lunch</string>
+    <string name="after_lunch">After Lunch</string>
+    <string name="before_dinner">Before Dinner</string>
+    <string name="after_dinner">After Dinner</string>
     <string name="server_path">Enter the server path</string>
     <string name="data_saved">Data updated successfully</string>
     <string name="data__not_saved">Data not saved</string>
-    <string name="tablet">Tablet</string>
+    <string name="tablet">Tab</string>
     <string name="lunch">Lunch</string>
     <string name="mlunch">LUNCH</string>
     <string name="dinner">Dinner</string>

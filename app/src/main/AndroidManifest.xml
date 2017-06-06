@@ -32,10 +32,6 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
-            android:name=".ui.activities.EditPrescription"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
         android:name=".ui.activities.PhoneNoActivity"
         android:theme="@style/AppTheme.NoActionBar" />
 

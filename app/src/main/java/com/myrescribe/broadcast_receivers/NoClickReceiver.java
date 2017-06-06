@@ -13,7 +13,6 @@ import android.widget.Toast;
  */
 
 public class NoClickReceiver extends BroadcastReceiver {
-    public static final String PERFORM_NOTIFICATION_BUTTON = "perform_notification_button";
 
     @Override
     public void onReceive(Context context, Intent intent) {

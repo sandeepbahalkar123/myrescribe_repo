@@ -18,7 +18,6 @@ public class YesClickReceiver extends BroadcastReceiver {
         String action = (String) intent.getExtras().get("action");
         int notificationId = intent.getIntExtra("notificationId", 0);
         Toast.makeText(context,action + " " + "Dose Accepted", Toast.LENGTH_SHORT).show();
-
         // if you want cancel notification
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(notificationId);

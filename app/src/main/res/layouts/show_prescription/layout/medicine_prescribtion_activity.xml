@@ -72,17 +72,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp14"
                 app:customFont="@string/gotham_light" />
-            <com.myrescribe.ui.customesViews.CustomTextView
-                android:id="@+id/doseQuantity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp4"
-                android:layout_marginRight="@dimen/dp6"
-                android:layout_weight="2"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp14"
-                app:customFont="@string/gotham_light" />
+
 
 
         </LinearLayout>
@@ -156,7 +146,6 @@
                     android:visibility="visible"
                     android:id="@+id/relativeLayoutShowDinnerIcon"
                     android:layout_weight="1">
-
                     <ImageView
                         android:id="@+id/imageViewNightDose"
                         android:layout_width="wrap_content"
@@ -169,8 +158,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
                 android:orientation="horizontal">
 
 
@@ -179,24 +168,27 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/dp6"
                     android:layout_marginBottom="@dimen/dp6"
-                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp8"
                     android:background="@color/grey" />
 
                 <TextView
                     android:id="@+id/doseQuantityNumber"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|end"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginBottom="@dimen/dp2"
-                    android:layout_marginLeft="@dimen/dp8"
+                    android:layout_weight="1"
+                    android:layout_marginTop="@dimen/dp2"
+                    android:layout_marginLeft="@dimen/dp2"
                     android:textColor="@color/BlueAngel"
-                    android:textSize="@dimen/sp40"
+                    android:textSize="@dimen/sp28"
                     android:textStyle="bold" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_weight="0.5"
                     android:orientation="vertical">
 
                     <com.myrescribe.ui.customesViews.CustomTextView
@@ -207,7 +199,7 @@
                         android:layout_marginLeft="@dimen/dp2"
                         android:layout_marginRight="@dimen/dp6"
                         android:layout_marginTop="@dimen/dp6"
-                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
                         android:textSize="@dimen/sp12"
                         app:customFont="@string/gotham_bold" />
 
@@ -218,7 +210,7 @@
                         android:layout_marginBottom="@dimen/dp2"
                         android:layout_marginLeft="@dimen/dp2"
                         android:layout_marginRight="@dimen/dp6"
-                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
                         android:textSize="@dimen/sp14"
                         app:customFont="@string/gotham_bold" />
                 </LinearLayout>
@@ -244,13 +236,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp8"
-                android:orientation="horizontal"
-                android:visibility="visible">
+                android:orientation="horizontal">
 
                 <com.myrescribe.ui.customesViews.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp4"
                     android:layout_marginLeft="@dimen/dp12"
                     android:layout_marginRight="@dimen/dp6"
                     android:layout_marginTop="@dimen/dp6"
@@ -265,13 +255,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp6"
-                    android:layout_marginBottom="@dimen/dp4"
                     android:layout_marginLeft="@dimen/dp6"
                     android:layout_weight="1"
                     android:lineSpacingExtra="@dimen/dp1"
                     android:text="@string/message_text"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp12"
+                    android:textSize="@dimen/sp14"
                     app:customFont="@string/gotham_light" />
 
             </LinearLayout>
@@ -284,7 +273,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|end"
-            android:src="@mipmap/down"
+            android:src="@drawable/ic_down"
             android:textStyle="bold"
             android:visibility="gone" />
 

@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|end"
-        android:src="@mipmap/up"
+        android:src="@drawable/ic_up"
         android:textStyle="bold"
         android:visibility="gone" />
 
@@ -28,7 +28,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="@dimen/dp4"
+        android:layout_marginLeft="@dimen/dp4"
+        android:layout_marginRight="@dimen/dp4"
+        android:layout_marginBottom="@dimen/dp4"
         android:weightSum="2">
 
         <com.myrescribe.ui.customesViews.CustomTextView
@@ -41,7 +43,7 @@
             android:layout_marginTop="@dimen/dp2"
             android:layout_weight="1.5"
             android:drawableLeft="@mipmap/black_breakfast"
-            android:drawablePadding="@dimen/dp10"
+            android:drawablePadding="@dimen/dp18"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/sp16"
@@ -70,20 +72,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="@dimen/dp4"
+        android:layout_marginLeft="@dimen/dp4"
+        android:layout_marginRight="@dimen/dp4"
+        android:layout_marginBottom="@dimen/dp4"
         android:weightSum="2">
 
         <com.myrescribe.ui.customesViews.CustomTextView
             android:id="@+id/afternoonDose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_marginBottom="@dimen/dp6"
             android:layout_marginLeft="@dimen/dp12"
             android:layout_marginStart="@dimen/dp12"
             android:layout_marginTop="@dimen/dp2"
             android:layout_weight="1.5"
             android:drawableLeft="@mipmap/black_lunch"
-            android:drawablePadding="@dimen/dp10"
+            android:drawablePadding="@dimen/dp20"
             android:gravity="center_vertical"
             android:text=""
             android:textColor="@color/black"
@@ -113,8 +118,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dp4"
-       android:layout_marginBottom="@dimen/dp10"
+        android:layout_marginBottom="@dimen/dp10"
         android:layout_marginLeft="@dimen/dp4"
         android:layout_marginRight="@dimen/dp4"
         android:weightSum="2">
@@ -129,7 +133,7 @@
             android:layout_marginTop="@dimen/dp2"
             android:layout_weight="1.5"
             android:drawableLeft="@mipmap/black_night"
-            android:drawablePadding="@dimen/dp10"
+            android:drawablePadding="@dimen/dp20"
             android:gravity="center_vertical"
             android:text=""
             android:textColor="@color/black"
@@ -196,7 +200,7 @@
             android:layout_marginTop="@dimen/dp6"
             android:layout_weight="1"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp12"
+            android:textSize="@dimen/sp14"
             app:customFont="@string/gotham_light" />
 
     </LinearLayout>

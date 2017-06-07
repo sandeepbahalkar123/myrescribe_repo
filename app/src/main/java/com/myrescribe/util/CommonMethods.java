@@ -285,10 +285,10 @@ public class CommonMethods {
         return "" + new DecimalFormat("##.##").format(finalvalue);
     }
 
-    public static String getCurrentTimeStamp() {
+    public static String getCurrentTimeStamp(String expectedFormat) {
         try {
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            SimpleDateFormat dateFormat = new SimpleDateFormat(expectedFormat, Locale.US);
             String currentTimeStamp = dateFormat.format(new Date()); // Find todays date
 
             return currentTimeStamp;

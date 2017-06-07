@@ -77,17 +77,20 @@ public class NotifyService extends Service {
                 R.layout.notification_layout);
 
         Intent mNotifyYesIntent = new Intent(this, YesClickReceiver.class);
-        mNotifyYesIntent.putExtra("action", intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME));
+        mNotifyYesIntent.putExtra("action", intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
         mNotifyYesIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.ButtonYes, mYesPendingIntent);
 
 
         Intent mNotifyNoIntent = new Intent(this, NoClickReceiver.class);
-        mNotifyNoIntent.putExtra("action", intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME));
+        mNotifyNoIntent.putExtra(MyRescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
+        mNotifyNoIntent.putExtra(MyRescribeConstants.DATE, intentData.getStringExtra(MyRescribeConstants.DATE));
+        mNotifyNoIntent.putExtra(MyRescribeConstants.TIME, intentData.getStringExtra(MyRescribeConstants.TIME));
+        mNotifyNoIntent.putExtra(MyRescribeConstants.MEDICINE_NAME, intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME));
         mNotifyNoIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyNoIntent, 0);
-        mRemoteViews.setOnClickPendingIntent(R.id.ButtonNo, mNoPendingIntent);
+        mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -100,8 +103,8 @@ public class NotifyService extends Service {
                 // Set RemoteViews into Notification
                 .setContent(mRemoteViews);
 
-        mRemoteViews.setTextViewText(R.id.showMedicineName, intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME));
-        mRemoteViews.setTextViewText(R.id.questionText, "Have you taken " + intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME) + " Medicine?");
+        mRemoteViews.setTextViewText(R.id.showMedicineName, intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
+        mRemoteViews.setTextViewText(R.id.questionText, "Have you taken " + intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT) + " Medicine?");
         mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.TIME));
 
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

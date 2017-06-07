@@ -142,7 +142,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         String dinnerTime = "9:21 AM";
 
         AppDBHelper appDBHelper = new AppDBHelper(ShowMedicineDoseListActivity.this);
-        appDBHelper = AppDBHelper.getInstance(ShowMedicineDoseListActivity.this);
         Cursor cursor = appDBHelper.getPreferences("1");
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
@@ -154,9 +153,10 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         }
         cursor.close();
 
-        String dates[] = {breakFast, lunchTime, dinnerTime};
+        String times[] = {breakFast, lunchTime, dinnerTime};
+        String date = CommonMethods.getCurrentTimeStamp("dd-MM-yyyy");
 
-        new AlarmTask(ShowMedicineDoseListActivity.this, dates).run();
+        new AlarmTask(ShowMedicineDoseListActivity.this, times, date).run();
     }
 
     private void initializeVariables() {

@@ -1,7 +1,6 @@
 package com.myrescribe.ui.activities;
 
 import android.content.Context;
-
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -15,13 +14,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -29,7 +23,6 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
@@ -57,7 +50,7 @@ import butterknife.ButterKnife;
  */
 
 public class LoginActivity extends AppCompatActivity implements
-        View.OnClickListener, GoogleApiClient.OnConnectionFailedListener  {
+        View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private final String TAG = "MyRescribe/LoginActivity";
     Context mContext;
     private CallbackManager mCallbackManager;
@@ -154,10 +147,10 @@ public class LoginActivity extends AppCompatActivity implements
                         try {
                             Log.e("h", json.toString());
 
-                           String name = json.getString("name");
+                            String name = json.getString("name");
                             Log.e("name", name);
-                            MyRescribePreferencesManager.putString(MyRescribeConstants.USERNAME,name,mContext);
-                            Intent intent = new Intent(LoginActivity.this,PhoneNoActivity.class);
+                            MyRescribePreferencesManager.putString(MyRescribeConstants.USERNAME, name, mContext);
+                            Intent intent = new Intent(LoginActivity.this, PhoneNoActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -209,12 +202,12 @@ public class LoginActivity extends AppCompatActivity implements
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
-        }
-        else if(requestCode!=RC_SIGN_IN){
+        } else if (requestCode != RC_SIGN_IN) {
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
 
     }
+
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
@@ -224,14 +217,12 @@ public class LoginActivity extends AppCompatActivity implements
             Log.e(TAG, "display name: " + acct.getDisplayName());
             String personName = acct.getDisplayName();
 
-            MyRescribePreferencesManager.putString(MyRescribeConstants.USERNAME,personName,mContext);
-            Intent intent = new Intent(LoginActivity.this,PhoneNoActivity.class);
+            MyRescribePreferencesManager.putString(MyRescribeConstants.USERNAME, personName, mContext);
+            Intent intent = new Intent(LoginActivity.this, PhoneNoActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-
-
 
 
         } else {
@@ -259,7 +250,7 @@ public class LoginActivity extends AppCompatActivity implements
             case R.id.btn_login:
                 String userName = mEditTextFullName.getText().toString();
                 String emailId = mEditTextEmailId.getText().toString();
-                isValidate(userName,emailId);
+                isValidate(userName, emailId);
                 break;
         }
     }

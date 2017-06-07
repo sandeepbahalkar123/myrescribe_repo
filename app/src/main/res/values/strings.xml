@@ -98,5 +98,9 @@
     </string-array>
     <string name="title_activity_preferences">PreferencesActivity</string>
     <string name="save">Save</string>
+    <string name="title_activity_notification">NotificationActivity</string>
+    <string name="dinner_medication">Dinner Medication</string>
+    <string name="lunch_medication">Lunch Medication</string>
+    <string name="breakfast_medication">Breakfast Medication</string>
 
 </resources>

@@ -13,21 +13,21 @@ import com.myrescribe.R;
 /**
  * Created by root on 22/6/16.
  */
-public class CustomSpinAdapter extends BaseAdapter {
+public class CustomSpinnerAdapter extends BaseAdapter {
     Context mContext;
-    String[] spinIds;
-    String[] choice;
+    String[] mSpinIds;
+    String[] mSelectedOption;
 
 
-    public CustomSpinAdapter(Context context, String[] ids, String[] spinner_data) {
+    public CustomSpinnerAdapter(Context context, String[] ids, String[] spinner_data) {
         this.mContext = context;
-        this.spinIds = ids;
-        this.choice = spinner_data;
+        this.mSpinIds = ids;
+        this.mSelectedOption = spinner_data;
     }
 
     @Override
     public int getCount() {
-        return choice.length;
+        return mSelectedOption.length;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class CustomSpinAdapter extends BaseAdapter {
         TextView txt_id = (TextView) view.findViewById(R.id.custom_spinner_txt_view_Id);
         TextView txt_data = (TextView) view.findViewById(R.id.custom_spinner_txt_view_txtField);
 
-        txt_data.setText(choice[position]);
+        txt_data.setText(mSelectedOption[position]);
         txt_id.setVisibility(View.GONE);
         return view;
     }

@@ -17,14 +17,11 @@ import java.io.OutputStream;
 
 public class AppDBHelper extends SQLiteOpenHelper {
 
+    private final String TAG = "MyRescribe/AppDBHelper";
     private static final String PREFERENCES_TABLE = "preferences_table";
-
-    private final String TAG = this.getClass().getName();
-
     private static final String DATABASE_NAME = "MyRescribe.sqlite";
     private static final String DB_PATH_SUFFIX = "/data/data/com.myrescribe/databases/";
     private static final int DBVERSION = 1;
-
     public static final String APP_DATA_TABLE = "PrescriptionData";
     public static final String COLUMN_ID = "dataId";
     public static final String COLUMN_DATA = "data";

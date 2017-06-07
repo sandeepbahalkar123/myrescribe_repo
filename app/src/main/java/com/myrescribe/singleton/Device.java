@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.myrescribe.R;
-import com.myrescribe.util.Constants;
+import com.myrescribe.util.MyRescribeConstants;
 
 /**
  * Created by Sandeep Bahalkar
@@ -16,7 +16,7 @@ import com.myrescribe.util.Constants;
 
 public class Device {
 
-    private static final String TAG = "Device";
+    private static final String TAG = "MyRescribe/Device";
     private Context context;
     private WindowManager windowManager;
 
@@ -44,28 +44,28 @@ public class Device {
 
     public String getDensity() {
 
-        String density = Constants.HDPI;
+        String density = MyRescribeConstants.HDPI;
 
         DisplayMetrics metrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(metrics);
         switch (metrics.densityDpi) {
             case DisplayMetrics.DENSITY_LOW:
-                density = Constants.LDPI;
+                density = MyRescribeConstants.LDPI;
                 break;
             case DisplayMetrics.DENSITY_MEDIUM:
-                density = Constants.MDPI;
+                density = MyRescribeConstants.MDPI;
                 break;
             case DisplayMetrics.DENSITY_HIGH:
-                density = Constants.HDPI;
+                density = MyRescribeConstants.HDPI;
                 break;
             case DisplayMetrics.DENSITY_XHIGH:
-                density = Constants.XHDPI;
+                density = MyRescribeConstants.XHDPI;
                 break;
             case DisplayMetrics.DENSITY_XXHIGH:
-                density = Constants.XXHDPI;
+                density = MyRescribeConstants.XXHDPI;
                 break;
             case DisplayMetrics.DENSITY_XXXHIGH:
-                density = Constants.XXXHDPI;
+                density = MyRescribeConstants.XXXHDPI;
                 break;
         }
 
@@ -78,9 +78,9 @@ public class Device {
         String what = "";
         boolean tabletSize = context.getResources().getBoolean(R.bool.isTablet);
         if (tabletSize) {
-            what = Constants.TABLET;
+            what = MyRescribeConstants.TABLET;
         } else {
-            what = Constants.PHONE;
+            what = MyRescribeConstants.PHONE;
         }
         return what;
     }

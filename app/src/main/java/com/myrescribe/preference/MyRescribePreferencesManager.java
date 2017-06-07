@@ -20,14 +20,14 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * Created by Sandeep Bahalkar
  */
-public class AppPreferencesManager {
+public class MyRescribePreferencesManager {
 
-    private static final String TAG = "DMS/AppPreferencesManager";
+    private static final String TAG = "MyRescribe/MyRescribePreferencesManager";
     private static SharedPreferences sharedPreferences = null;
     private static byte[] sKey;
 
 
-    public interface DMS_PREFERENCES_KEY {
+    public interface MYRESCRIBE_PREFERENCES_KEY {
 
         String SERVER_PATH = "server_path";
         String USER_GENDER = "user_gender";
@@ -160,10 +160,10 @@ public class AppPreferencesManager {
         }
         try {
             final Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(AppPreferencesManager.sKey, "AES"));
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(MyRescribePreferencesManager.sKey, "AES"));
             return encode(cipher.doFinal(cleartext.getBytes("UTF-8")));
         } catch (Exception e) {
-            Log.e(AppPreferencesManager.class.getName(), "encrypt", e);
+            Log.e(MyRescribePreferencesManager.class.getName(), "encrypt", e);
             return null;
         }
     }
@@ -174,10 +174,10 @@ public class AppPreferencesManager {
         }
         try {
             final Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(AppPreferencesManager.sKey, "AES"));
-            return new String(cipher.doFinal(AppPreferencesManager.decode(ciphertext)), "UTF-8");
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(MyRescribePreferencesManager.sKey, "AES"));
+            return new String(cipher.doFinal(MyRescribePreferencesManager.decode(ciphertext)), "UTF-8");
         } catch (Exception e) {
-            Log.e(AppPreferencesManager.class.getName(), "decrypt", e);
+            Log.e(MyRescribePreferencesManager.class.getName(), "decrypt", e);
             return null;
         }
     }

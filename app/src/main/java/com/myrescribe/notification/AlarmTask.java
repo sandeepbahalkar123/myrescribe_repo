@@ -4,10 +4,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-
 import com.myrescribe.services.NotifyService;
 import com.myrescribe.util.CommonMethods;
-import com.myrescribe.util.Constants;
+import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.Calendar;
 
@@ -64,15 +63,15 @@ public class AlarmTask implements Runnable {
     private void setAlarm(String date, String medicineName, int requestCode){
         Intent intent = new Intent(context, NotifyService.class);
         intent.putExtra(NotifyService.INTENT_NOTIFY, true);
-        intent.putExtra(Constants.TIME, date);
-        intent.putExtra(Constants.MEDICINE_NAME, medicineName);
+        intent.putExtra(MyRescribeConstants.TIME, date);
+        intent.putExtra(MyRescribeConstants.MEDICINE_NAME, medicineName);
 
         PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent, 0);
 
         // Sets an alarm - note this alarm will be lost if the phone is turned off and on again
-        am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(date).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        am.set(AlarmManager.RTC_WAKEUP, getCalendar(date).getTimeInMillis(), pendingIntent);
 
-        //am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), (5 * 10000), pendingIntent);
+//        am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(date).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
 }

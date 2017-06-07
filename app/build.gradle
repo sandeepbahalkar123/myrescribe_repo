@@ -25,7 +25,8 @@ android {
                             'src/main/res/layouts',
                             'src/main/res/layouts/show_prescription',
                             'src/main/res/layouts/edit_prescription',
-                            'src/main/res/layouts/notification'
+                            'src/main/res/layouts/notification',
+                            'src/main/res/layouts/login'
 
                     ]
         }
@@ -33,18 +34,16 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     // Recommended
     compile('com.philliphsu:bottomsheetpickers:2.3.3') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'design'
         exclude group: 'com.android.support', module: 'gridlayout-v7'
     }
-
     compile 'com.android.support:gridlayout-v7:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -57,4 +56,9 @@ dependencies {
     compile 'com.android.support:cardview-v7:25.3.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.facebook.android:facebook-android-sdk:+'
+    compile 'com.google.android.gms:play-services-auth:9.0.0'
+    compile files('libs/nineoldandroids-2.4.0.jar')
 }
+
+apply plugin: 'com.google.gms.google-services'

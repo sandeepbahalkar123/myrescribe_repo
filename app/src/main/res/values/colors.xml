@@ -15,7 +15,7 @@
     <color name="refId_color">#8dc63f</color>
     <color name="Gray">#736F6E</color>
     <color name="black">#000000</color>
-    <color name="LightSkyBlue">#82CAFA</color>
+    <color name="lightskyBlue">#b2e6fa</color>
     <color name="cobalt_blue">#0020C2</color>
     <color name="BlueAngel">#0288d1</color>
     <color name="MediumSpringGreen">#348017</color>
@@ -28,5 +28,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="skybluefent">#e4f3fa</color>
+    <color name="divider">#91D7ED</color>
 
 </resources>

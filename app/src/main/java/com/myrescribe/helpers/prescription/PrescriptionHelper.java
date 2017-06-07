@@ -11,7 +11,7 @@ import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
-import com.myrescribe.util.Constants;
+import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class PrescriptionHelper implements ConnectionListener {
 
-    String TAG = this.getClass().getSimpleName();
+    String TAG = "MyRescribe/PrescriptionHelper";
     Context mContext;
     HelperResponse mHelperResponseManager;
 
@@ -39,7 +39,7 @@ public class PrescriptionHelper implements ConnectionListener {
 
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == Constants.TASK_PRESCRIPTION_LIST) {
+                if (mOldDataTag == MyRescribeConstants.TASK_PRESCRIPTION_LIST) {
                     PatientPrescriptionModel model = (PatientPrescriptionModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
 
@@ -81,17 +81,16 @@ public class PrescriptionHelper implements ConnectionListener {
 
 
     public void doGetPrescriptionList() {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, Constants.TASK_PRESCRIPTION_LIST, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_PRESCRIPTION_LIST, Request.Method.GET, true);
         Map<String, String> testParams = new HashMap<String, String>();
-        testParams.put(Constants.AUTHORIZATION_TOKEN,"$1$dsBfSFCH$Po/LylUxs0q3z6c98qaVc.");
-
-        testParams.put(Constants.AUTH_KEY, "simplerestapi");
-        testParams.put(Constants.CLIENT_SERVICE, "frontend-client");
-        testParams.put(Constants.USER_ID, "7");
+        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN,"$1$b/6VsSlC$Vn0xoJGNfJZFoCndkFUNY/");
+        testParams.put(MyRescribeConstants.AUTH_KEY, "simplerestapi");
+        testParams.put(MyRescribeConstants.CLIENT_SERVICE, "frontend-client");
+        testParams.put(MyRescribeConstants.USER_ID, "7");
         mConnectionFactory.setHeaderParams(testParams);
         // mConnectionFactory.setPostParams(testParams);
         mConnectionFactory.setUrl(Config.PRESCRIPTION_URL);
-        mConnectionFactory.createConnection(Constants.TASK_PRESCRIPTION_LIST);
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_PRESCRIPTION_LIST);
     }
 
 }

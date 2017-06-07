@@ -64,6 +64,65 @@ public class PrescriptionData {
 
     private boolean isExpanded = false;
 
+    // ganesh
+
+    private boolean isLunchExpanded = false;
+    private boolean isDinnerExpanded = false;
+    private boolean isBreakFastExpanded = false;
+
+    public boolean isLunchExpanded() {
+        return isLunchExpanded;
+    }
+
+    public void setLunchExpanded(boolean lunchExpanded) {
+        isLunchExpanded = lunchExpanded;
+    }
+
+    public boolean isDinnerExpanded() {
+        return isDinnerExpanded;
+    }
+
+    public void setDinnerExpanded(boolean dinnerExpanded) {
+        isDinnerExpanded = dinnerExpanded;
+    }
+
+    public boolean isBreakFastExpanded() {
+        return isBreakFastExpanded;
+    }
+
+    public void setBreakFastExpanded(boolean breakFastExpanded) {
+        isBreakFastExpanded = breakFastExpanded;
+    }
+
+    private boolean isLunchThere = true;
+    private boolean isDinnerThere = true;
+    private boolean isBreakThere = true;
+
+    public boolean isLunchThere() {
+        return isLunchThere;
+    }
+
+    public void setLunchThere(boolean lunchThere) {
+        isLunchThere = lunchThere;
+    }
+
+    public boolean isDinnerThere() {
+        return isDinnerThere;
+    }
+
+    public void setDinnerThere(boolean dinnerThere) {
+        isDinnerThere = dinnerThere;
+    }
+
+    public boolean isBreakThere() {
+        return isBreakThere;
+    }
+
+    public void setBreakThere(boolean breakThere) {
+        isBreakThere = breakThere;
+    }
+
+    //
 
     public String getId() {
         return id;

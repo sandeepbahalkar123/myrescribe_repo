@@ -13,7 +13,7 @@ import android.widget.RemoteViews;
 import com.myrescribe.R;
 import com.myrescribe.broadcast_receivers.NoClickReceiver;
 import com.myrescribe.broadcast_receivers.YesClickReceiver;
-import com.myrescribe.util.Constants;
+import com.myrescribe.util.MyRescribeConstants;
 
 
 /**
@@ -40,7 +40,7 @@ public class NotifyService extends Service {
     // Unique id to identify the notification.
     private static final int NOTIFICATION = 123;
     // Name of an intent extra we can use to identify if this service was started to create a notification
-    public static final String INTENT_NOTIFY = "com.blundell.tut.service.INTENT_NOTIFY";
+    public static final String INTENT_NOTIFY = "com.myrescribe";
     // The system notification manager
     private NotificationManager mNM;
 
@@ -77,14 +77,14 @@ public class NotifyService extends Service {
                 R.layout.notification_layout);
 
         Intent mNotifyYesIntent = new Intent(this, YesClickReceiver.class);
-        mNotifyYesIntent.putExtra("action", intentData.getStringExtra(Constants.MEDICINE_NAME));
+        mNotifyYesIntent.putExtra("action", intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME));
         mNotifyYesIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.ButtonYes, mYesPendingIntent);
 
 
         Intent mNotifyNoIntent = new Intent(this, NoClickReceiver.class);
-        mNotifyNoIntent.putExtra("action", intentData.getStringExtra(Constants.MEDICINE_NAME));
+        mNotifyNoIntent.putExtra("action", intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME));
         mNotifyNoIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.ButtonNo, mNoPendingIntent);
@@ -100,9 +100,9 @@ public class NotifyService extends Service {
                 // Set RemoteViews into Notification
                 .setContent(mRemoteViews);
 
-        mRemoteViews.setTextViewText(R.id.showMedicineName, intentData.getStringExtra(Constants.MEDICINE_NAME));
-        mRemoteViews.setTextViewText(R.id.questionText, "Have you taken " + intentData.getStringExtra(Constants.MEDICINE_NAME) + " Medicine?");
-        mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(Constants.TIME));
+        mRemoteViews.setTextViewText(R.id.showMedicineName, intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME));
+        mRemoteViews.setTextViewText(R.id.questionText, "Have you taken " + intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME) + " Medicine?");
+        mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.TIME));
 
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationmanager.notify(NOTIFICATION_ID, builder.build());

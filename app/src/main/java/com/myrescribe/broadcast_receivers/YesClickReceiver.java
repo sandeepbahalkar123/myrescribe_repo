@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.myrescribe.ui.activities.NotificationActivity;
+import com.myrescribe.util.MyRescribeConstants;
+
 /**
  * Created by jeetal on 16/5/17.
  */
@@ -17,29 +20,25 @@ public class YesClickReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = (String) intent.getExtras().get("action");
         int notificationId = intent.getIntExtra("notificationId", 0);
-        Toast.makeText(context,action + " " + "Dose Accepted", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context,action + " " + "Dose Accepted", Toast.LENGTH_SHORT).show();
+
+
+        Intent intentNotification = new Intent(context, NotificationActivity.class);
+        /*intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
+        intentNotification.putExtra(MyRescribeConstants.DATE, intent.getStringExtra(MyRescribeConstants.DATE));
+        intentNotification.putExtra(MyRescribeConstants.MEDICINE_NAME, intent.getStringExtra(MyRescribeConstants.MEDICINE_NAME));*/
+
+        intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, "Breakfast Medication");
+        intentNotification.putExtra(MyRescribeConstants.TIME, "8:00 AM");
+        intentNotification.putExtra(MyRescribeConstants.DATE, "7-06-2017");
+        intentNotification.putExtra(MyRescribeConstants.MEDICINE_NAME, "");
+
+        context.startActivity(intentNotification);
 
         // if you want cancel notification
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(notificationId);
 
 
-
     }
-   /* public static final String PERFORM_NOTIFICATION_BUTTON = "perform_notification_button";
-    Context mContext;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        String action = (String) getIntent().getExtras().get("do_action");
-        if (action != null) {
-            Toast.makeText(this, action + " " + "Dose Accepted", Toast.LENGTH_SHORT).show();
-            NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            // Dismiss Notification
-         //   notification.flags = Notification.FLAG_AUTO_CANCEL;
-        }
-
-           finish();
-    }*/
 }

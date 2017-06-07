@@ -10,7 +10,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.adapters.CustomSpinAdapter;
+import com.myrescribe.adapters.CustomSpinnerAdapter;
 import com.myrescribe.util.CommonMethods;
 
 import butterknife.BindView;
@@ -21,8 +21,8 @@ import butterknife.ButterKnife;
  */
 
 public class EditPrescription extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
-
-    private CustomSpinAdapter mCustomSpinAdapter;
+    public static final String TAG = "MyRescribe/EditPrescription";
+    private CustomSpinnerAdapter mCustomSpinAdapter;
     private String[] mArrayId;
 
     @BindView(R.id.spinnerType)
@@ -68,16 +68,16 @@ public class EditPrescription extends AppCompatActivity implements AdapterView.O
         mReset.setOnClickListener(this);
         mSpinnerType.setOnItemSelectedListener(this);
 
-        mCustomSpinAdapter = new CustomSpinAdapter(this, mArrayId, getResources().getStringArray(R.array.type));
+        mCustomSpinAdapter = new CustomSpinnerAdapter(this, mArrayId, getResources().getStringArray(R.array.type));
         mSpinnerType.setAdapter(mCustomSpinAdapter);
 
-        mCustomSpinAdapter = new CustomSpinAdapter(this, mArrayId, getResources().getStringArray(R.array.dose));
+        mCustomSpinAdapter = new CustomSpinnerAdapter(this, mArrayId, getResources().getStringArray(R.array.dose));
         mSpinnerBreakfastDose.setAdapter(mCustomSpinAdapter);
 
-        mCustomSpinAdapter = new CustomSpinAdapter(this, mArrayId, getResources().getStringArray(R.array.dose));
+        mCustomSpinAdapter = new CustomSpinnerAdapter(this, mArrayId, getResources().getStringArray(R.array.dose));
         mSpinnerLunchDose.setAdapter(mCustomSpinAdapter);
 
-        mCustomSpinAdapter = new CustomSpinAdapter(this, mArrayId, getResources().getStringArray(R.array.dose));
+        mCustomSpinAdapter = new CustomSpinnerAdapter(this, mArrayId, getResources().getStringArray(R.array.dose));
         mSpinnerDinnerDose.setAdapter(mCustomSpinAdapter);
 
 

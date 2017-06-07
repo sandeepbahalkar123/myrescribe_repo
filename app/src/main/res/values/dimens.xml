@@ -1,4 +1,11 @@
 <resources>
+
+    <dimen name="title_padding">20dp</dimen>
+    <dimen name="background_radius">4dp</dimen>
+    <dimen name="recycler_divider_width">1dp</dimen>
+    <dimen name="header_height">200dp</dimen>
+    <dimen name="header_height_huge">1500dp</dimen>
+
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
@@ -9,6 +16,7 @@
     <dimen name="dp1">1dp</dimen>
     <dimen name="dp2">2dp</dimen>
     <dimen name="dp4">4dp</dimen>
+    <dimen name="dp5">5dp</dimen>
     <dimen name="dp6">6dp</dimen>
     <dimen name="dp8">8dp</dimen>
     <dimen name="dp10">10dp</dimen>
@@ -22,8 +30,13 @@
     <dimen name="dp26">26dp</dimen>
     <dimen name="dp28">28dp</dimen>
     <dimen name="dp30">30dp</dimen>
+    <dimen name="dp56">56dp</dimen>
+    <dimen name="dp72">72dp</dimen>
     <dimen name="dp40">40dp</dimen>
     <dimen name="dp50">50dp</dimen>
+    <dimen name="dp60">60dp</dimen>
+    <dimen name="dp70">70dp</dimen>
+    <dimen name="dp80">80dp</dimen>
     <dimen name="sp10">10sp</dimen>
     <dimen name="sp11">11sp</dimen>
     <dimen name="sp12">12sp</dimen>
@@ -32,4 +45,5 @@
     <dimen name="sp15">15sp</dimen>
     <dimen name="sp16">16sp</dimen>
     <dimen name="sp17">17sp</dimen>
+    <dimen name="sp40">40sp</dimen>
 </resources>

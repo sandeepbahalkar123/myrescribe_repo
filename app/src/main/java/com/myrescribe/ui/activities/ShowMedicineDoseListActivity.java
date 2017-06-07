@@ -27,9 +27,11 @@ import com.myrescribe.model.DataObject;
 import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.notification.AlarmTask;
-import com.myrescribe.util.Constants;
+import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,10 +39,11 @@ import butterknife.ButterKnife;
 public class ShowMedicineDoseListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ShowMedicineDoseListAdapter.RowClickListener, HelperResponse {
 
-    private static final String TAG = "ShowMedicineDose";
     private ShowMedicineDoseListAdapter mAdapter;
-    private final String LOG = this.getClass().getSimpleName();
+    private RecyclerView.LayoutManager mLayoutManager;
+    private final String TAG = "MyRescribe/ShowMedicineDoseListActivity";
     Context mContext;
+    private  String mGetMealTime;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -71,6 +74,10 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         notificationForMedicine();
         bindView();
         doGetPrescriptionList();
+        Calendar c = Calendar.getInstance();
+        int hour24 = c.get(Calendar.HOUR_OF_DAY);
+        int Min = c.get(Calendar.MINUTE);
+       mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
     }
 
     private void notificationForMedicine() {
@@ -142,7 +149,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //   getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -176,10 +183,10 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @Override
     public void onRowClicked(ArrayList<PrescriptionData> dataObjects, int position, View v, String mClickCodes) {
 
-        if (mClickCodes.equals(Constants.CLICK_DELETE)) {
+        if (mClickCodes.equals(MyRescribeConstants.CLICK_DELETE)) {
             dataObjects.remove(position);
             mAdapter.notifyItemRemoved(position);
-        } else if (mClickCodes.equals(Constants.CLICK_EDIT)) {
+        } else if (mClickCodes.equals(MyRescribeConstants.CLICK_EDIT)) {
             Intent intent = new Intent(mContext, EditPrescription.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -189,18 +196,18 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     }
 
     private void doGetPrescriptionList() {
-        //mPrescriptionHelper.doGetPrescriptionList();
+        mPrescriptionHelper.doGetPrescriptionList();
     }
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (mOldDataTag == Constants.TASK_PRESCRIPTION_LIST) {
+        if (mOldDataTag == MyRescribeConstants.TASK_PRESCRIPTION_LIST) {
             PatientPrescriptionModel prescriptionDataReceived = (PatientPrescriptionModel) customResponse;
 
             ArrayList<PrescriptionData> data = prescriptionDataReceived.getData();
             if (data != null) {
                 if (data.size() != 0) {
-                    mAdapter = new ShowMedicineDoseListAdapter(this, data, false);
+                    mAdapter = new ShowMedicineDoseListAdapter(this, data, false,mGetMealTime);
                     mAdapter.setRowClickListener(this);
                     mRecyclerView.setAdapter(mAdapter);
                 }

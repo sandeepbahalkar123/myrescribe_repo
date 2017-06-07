@@ -24,8 +24,8 @@ import butterknife.ButterKnife;
  * Created by jeetal on 30/5/17.
  */
 
-public class PhoneNoActivity extends AppCompatActivity implements View.OnClickListener{
-    public static final String TAG = "MyRescribe/PhoneNoActivity";
+public class PhoneNoActivity extends AppCompatActivity implements View.OnClickListener {
+    public final String TAG = getClass().getName();
     Context mContext;
 
     @BindView(R.id.editTextUserPhoneNumber)
@@ -62,9 +62,9 @@ public class PhoneNoActivity extends AppCompatActivity implements View.OnClickLi
         int id = v.getId();
         switch (id) {
             case R.id.buttonOk:
-              String phoneNumber = mEditTextUserPhoneNumber.getText().toString();
-                MyRescribePreferencesManager.putString(MyRescribeConstants.PHONE,phoneNumber,mContext);
-                Intent intent = new Intent(PhoneNoActivity.this,ShowMedicineDoseListActivity.class);
+                String phoneNumber = mEditTextUserPhoneNumber.getText().toString();
+                MyRescribePreferencesManager.putString(MyRescribeConstants.PHONE, phoneNumber, mContext);
+                Intent intent = new Intent(PhoneNoActivity.this, ShowMedicineDoseListActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

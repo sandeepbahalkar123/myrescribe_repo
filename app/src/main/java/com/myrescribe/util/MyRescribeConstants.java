@@ -11,7 +11,7 @@ public class MyRescribeConstants {
 
     public static final String MYRESCRIBE_LOG_FOLDER = "MyRescribe_LOG";
     public static final String MYRESCRIBE_LOG_FILE = "MyRescribe_LOG_FILE.txt";
-
+    public static final String MEDICINE_NAME = "MEDICINE_NAME";
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";
     public static String BUTTON_TEXT_COLOR = "#FFFFFF";

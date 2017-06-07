@@ -57,7 +57,20 @@ import butterknife.ButterKnife;
  */
 
 public class LoginActivity extends AppCompatActivity implements
-        View.OnClickListener, GoogleApiClient.OnConnectionFailedListener  {
+        View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+
+    String FIELDS = "fields";
+    String ID = "id";
+    String NAME = "name";
+    String PICTURE = "picture";
+    String EMAIL = "email";
+    String BIRTHDAY = "birthday";
+    String GENDER = "gender";
+    String KEY_USERNAME = "email_address";
+    String KEY_PASSWORD = "password";
+    String REQUEST_FIELDS = TextUtils.join(",", new String[]{ID, NAME, PICTURE, EMAIL, BIRTHDAY, GENDER});
+
+
     private final String TAG = "MyRescribe/LoginActivity";
     Context mContext;
     private CallbackManager mCallbackManager;
@@ -65,16 +78,6 @@ public class LoginActivity extends AppCompatActivity implements
     private static final int RC_SIGN_IN = 007;
     private static final int FACEBOOK_SIGN_IN = 001;
     private JSONObject json;
-    private String FIELDS = "fields";
-    private String ID = "id";
-    private String NAME = "name";
-    private String PICTURE = "picture";
-    private String EMAIL = "email";
-    private String BIRTHDAY = "birthday";
-    private String GENDER = "gender";
-    private String KEY_USERNAME = "email_address";
-    private String KEY_PASSWORD = "password";
-    private String REQUEST_FIELDS = TextUtils.join(",", new String[]{ID, NAME, PICTURE, EMAIL, BIRTHDAY, GENDER});
 
     @BindView(R.id.buttonLoginFacebook)
     AppCompatButton mLoginFacebookButton;
@@ -126,8 +129,6 @@ public class LoginActivity extends AppCompatActivity implements
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         requestUserInfo(loginResult.getAccessToken());
-
-
                     }
 
                     @Override
@@ -154,10 +155,10 @@ public class LoginActivity extends AppCompatActivity implements
                         try {
                             Log.e("h", json.toString());
 
-                           String name = json.getString("name");
+                            String name = json.getString("name");
                             Log.e("name", name);
-                            MyRescribePreferencesManager.putString(MyRescribeConstants.USERNAME,name,mContext);
-                            Intent intent = new Intent(LoginActivity.this,PhoneNoActivity.class);
+                            MyRescribePreferencesManager.putString(MyRescribeConstants.USERNAME, name, mContext);
+                            Intent intent = new Intent(LoginActivity.this, PhoneNoActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -209,12 +210,12 @@ public class LoginActivity extends AppCompatActivity implements
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
-        }
-        else if(requestCode!=RC_SIGN_IN){
+        } else if (requestCode != RC_SIGN_IN) {
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
 
     }
+
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
@@ -224,14 +225,12 @@ public class LoginActivity extends AppCompatActivity implements
             Log.e(TAG, "display name: " + acct.getDisplayName());
             String personName = acct.getDisplayName();
 
-            MyRescribePreferencesManager.putString(MyRescribeConstants.USERNAME,personName,mContext);
-            Intent intent = new Intent(LoginActivity.this,PhoneNoActivity.class);
+            MyRescribePreferencesManager.putString(MyRescribeConstants.USERNAME, personName, mContext);
+            Intent intent = new Intent(LoginActivity.this, PhoneNoActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-
-
 
 
         } else {
@@ -259,7 +258,7 @@ public class LoginActivity extends AppCompatActivity implements
             case R.id.btn_login:
                 String userName = mEditTextFullName.getText().toString();
                 String emailId = mEditTextEmailId.getText().toString();
-                isValidate(userName,emailId);
+                isValidate(userName, emailId);
                 break;
         }
     }

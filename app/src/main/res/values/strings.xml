@@ -1,7 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">My Rescribe</string>
+    <string name="app_name">Rescribe</string>
+    <string name="after">After</string>
+    <string name="before">Before</string>
     <string name="enter_mobile_no">Enter Mobile No</string>
+    <string name="enter_password">Enter Password</string>
     <string name="loginfb">Login with fb</string>
+    <string name="log_in">Log In</string>
     <string name="logingmail">Login with G+</string>
     <string name="btn_logout_from_google">Logout from Google</string>
     <string name="btn_revoke_access">Revoke Access</string>
@@ -16,25 +20,28 @@
     <string name="timeout">Timeout error</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="breakfast">BREAKFAST :</string>
+    <string name="breakfast">Breakfast</string>
     <string name="break_fast">BREAKFAST</string>
     <string name="server_path">Enter the server path</string>
     <string name="data_saved">Data updated successfully</string>
     <string name="data__not_saved">Data not saved</string>
     <string name="tablet">Tablet</string>
-    <string name="lunch">LUNCH :</string>
+    <string name="lunch">Lunch</string>
     <string name="mlunch">LUNCH</string>
-    <string name="dinner">DINNER :</string>
+    <string name="dinner">Dinner</string>
     <string name="mdinner">DINNER</string>
-    <string name="instructions">INSTRUCTIONS</string>
+    <string name="instructions">INSTRUCTION :</string>
     <string name="for_example_server_path">e.g. 192.168.0.180:80</string>
     <string name="message_text">This tablet is for acidity take before eating anything.</string>
     <string name="edit">EDIT</string>
     <string name="typehere" tools:ignore="TypographyEllipsis">Type here...</string>
     <string name="type">TYPE</string>
     <string name="delete">DELETE</string>
+    <string name="search">Search</string>
+    <string name="resend_otp">Resend OTP</string>
     <string name="ok">OK</string>
     <string name="dose">DOSE</string>
+    <string name="sign_up">Sign Up</string>
     <string name="logout">Logout</string>
     <string name="medicine">MEDICINE</string>
     <string name="duration">DURATION</string>
@@ -50,6 +57,19 @@
     <string name="customnotification">Custom Notification</string>
     <string name="facebook_app_id">297092640737799</string>
     <string name="fb_login_protocol_scheme">fb1879555372255897</string>
+
+    <string name="gotham_black">gotham_black.ttf</string>
+    <string name="gotham_blackitalic">gotham_blackitalic.ttf</string>
+    <string name="gotham_bold">gotham_bold.ttf</string>
+    <string name="gotham_bolditalic">gotham_bolditalic.ttf</string>
+    <string name="gotham_light">gotham_light.ttf</string>
+    <string name="gotham_lightitalic">gotham_lightitalic.ttf</string>
+    <string name="gotham_medium">gotham_medium.ttf</string>
+    <string name="gotham_mediumitalic">gotham_mediumitalic.ttf</string>
+    <string name="gotham_thin">gotham_thin.ttf</string>
+    <string name="gotham_thinitalic">gotham_thinitalic.ttf</string>
+    <string name="gotham_ultra">gotham_ultra.ttf</string>
+
     <string-array name="ids">
         <item>0</item>
         <item>1</item>
@@ -76,5 +96,14 @@
         <item>Before</item>
         <item>After</item>
     </string-array>
+    <string name="title_activity_preferences">PreferencesActivity</string>
+    <string name="save">Save</string>
+    <string name="terms_conditions">By continuing, you accept the <u>Terms of Use</u> and <u>Privacy Policy</u></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="generate_otp">Generate OTP</string>
+    <string name="enter_received_otp">Enter the OTP in case we fail to detect the SMS automatically</string>
+    <string name="waiting_for_sms">Auto verification of OTP in progress %1$d secs</string>
 
 </resources>

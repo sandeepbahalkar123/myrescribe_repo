@@ -40,11 +40,8 @@ import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.util.NetworkUtil;
-
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Map;
@@ -315,7 +312,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     }
 
     private String getOfflineData() {
-        if (dbHelper.numberOfRows(this.mDataTag) > 0) {
+        if (dbHelper.dataTableNumberOfRows(this.mDataTag) > 0) {
             Cursor cursor = dbHelper.getData(this.mDataTag);
             cursor.moveToFirst();
             return cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));

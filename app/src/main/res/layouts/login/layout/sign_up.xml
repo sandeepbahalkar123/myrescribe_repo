@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:layout_margin="@dimen/dp30"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:paddingLeft="@dimen/dp30"
+        android:paddingRight="@dimen/dp30"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!--  FullName Label -->
+        <android.support.design.widget.TextInputLayout style="@style/AppLoginMainStyle">
+
+            <EditText
+                android:id="@+id/editTextFullName"
+                style="@style/AppLoginMainStyle"
+                android:hint="@string/enter_full_name"
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!--  Email Label -->
+        <android.support.design.widget.TextInputLayout style="@style/AppLoginMainStyle">
+
+            <EditText
+                android:id="@+id/editTextEmailId"
+                style="@style/AppLoginMainStyle"
+                android:hint="@string/enter_email_id"
+                android:inputType="textEmailAddress" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!--  Password Label -->
+        <android.support.design.widget.TextInputLayout style="@style/AppLoginMainStyle">
+
+            <EditText
+                android:id="@+id/editTextPassword"
+                style="@style/AppLoginMainStyle"
+                android:hint="@string/enter_password"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!--  Mobile Label -->
+        <android.support.design.widget.TextInputLayout style="@style/AppLoginMainStyle">
+
+            <EditText
+                android:id="@+id/editTextMobileNo"
+                style="@style/AppLoginMainStyle"
+                android:hint="@string/enter_mobile_no"
+                android:inputType="number" />
+        </android.support.design.widget.TextInputLayout>
+
+        <CheckBox
+            style="@style/AppLoginMainStyle"
+            android:layout_marginBottom="@dimen/dp5"
+            android:text="@string/terms_conditions" />
+
+        <Button
+            style="@style/AppLoginMainStyle"
+            android:layout_height="@dimen/dp30"
+            android:background="@drawable/button_curve_background"
+            android:gravity="center"
+            android:text="@string/sign_up"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+</ScrollView>
+
+
+

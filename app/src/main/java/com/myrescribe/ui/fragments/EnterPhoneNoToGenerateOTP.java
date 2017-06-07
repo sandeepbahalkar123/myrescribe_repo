@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.myrescribe.R;
+import com.myrescribe.preference.MyRescribePreferencesManager;
+import com.myrescribe.util.MyRescribeConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,9 +31,8 @@ public class EnterPhoneNoToGenerateOTP extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    @BindView(R.id.editTextMobileNo)
+    EditText mEditTextMobileNo;
 
     public EnterPhoneNoToGenerateOTP() {
         // Required empty public constructor
@@ -58,10 +59,6 @@ public class EnterPhoneNoToGenerateOTP extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -79,6 +76,7 @@ public class EnterPhoneNoToGenerateOTP extends Fragment {
 
     @OnClick(R.id.generateOTP)
     public void onGenerateOTPClick() {
+        MyRescribePreferencesManager.putString(MyRescribeConstants.PHONE, mEditTextMobileNo.getText().toString(), getContext());
         FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, new EnterGeneratedOTP());

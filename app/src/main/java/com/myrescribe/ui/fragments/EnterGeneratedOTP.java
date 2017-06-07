@@ -25,12 +25,15 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.myrescribe.R;
+import com.myrescribe.ui.activities.PhoneNoActivity;
+import com.myrescribe.ui.activities.ShowMedicineDoseListActivity;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static android.R.attr.format;
 
@@ -247,5 +250,14 @@ public class EnterGeneratedOTP extends Fragment {
 //        } else {
 //            Toast.makeText(context, "Please check your Internet Connection and try again  ", Toast.LENGTH_SHORT).show();
 //        }
+    }
+
+    @OnClick(R.id.submitBtn)
+    public void onSubmitBtnClicked() {
+        Intent intent = new Intent(getActivity(), ShowMedicineDoseListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

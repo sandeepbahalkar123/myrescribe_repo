@@ -12,10 +12,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.ShowMedicineDoseListAdapter;
@@ -36,18 +43,35 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ShowMedicineDoseListActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, HelperResponse {
+        implements NavigationView.OnNavigationItemSelectedListener, HelperResponse ,View.OnClickListener{
 
     private ShowMedicineDoseListAdapter mAdapter;
     private final String TAG = "MyRescribe/ShowMedicineDoseListActivity";
     Context mContext;
     private  String mGetMealTime;
 
+    public Boolean getIsclicked() {
+        return isclicked;
+    }
+
+    public void setIsclicked(Boolean isclicked) {
+        this.isclicked = isclicked;
+    }
+
+    private Boolean isclicked = false;
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.drawer_layout)
-    DrawerLayout mDrawer;
+    @BindView(R.id.searchByPatientName)
+    EditText mSearchByPatientName;
+
+    @BindView(R.id.showAppName)
+    TextView mShowAppName;
+
+    @BindView(R.id.search)
+    ImageView mSearchIcon;
+
 
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
@@ -71,11 +95,44 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         initializeVariables();
         notificationForMedicine();
         bindView();
+        onTextChanged();
         doGetPrescriptionList();
+
         Calendar c = Calendar.getInstance();
         int hour24 = c.get(Calendar.HOUR_OF_DAY);
         int Min = c.get(Calendar.MINUTE);
        mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
+    }
+
+    private void onTextChanged() {
+        mSearchByPatientName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String  newText =  mSearchByPatientName.getText().toString();
+                if (TextUtils.isEmpty(newText)) {
+                    mAdapter.filter("");
+                } else {
+                    mAdapter.filter(newText);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String  newText1 =  mSearchByPatientName.getText().toString();
+                if (TextUtils.isEmpty(newText1)) {
+                    mAdapter.filter("");
+                } else {
+                    mAdapter.filter(newText1);
+                }
+
+            }
+        });
     }
 
     private void notificationForMedicine() {
@@ -109,26 +166,29 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     private void bindView() {
 
-        setSupportActionBar(mToolbar);
+        //setSupportActionBar(mToolbar);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+       /* ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.addDrawerListener(toggle);
         toggle.syncState();
+        toggle.setDrawerIndicatorEnabled(false);
+        toggle.setHomeAsUpIndicator(getResources().getDrawable(R.drawable.back));*/
         mNavigationView.setNavigationItemSelectedListener(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
+        mSearchIcon.setOnClickListener(this);
+
+
+
 
     }
 
     @Override
     public void onBackPressed() {
-        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
-            mDrawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+         super.onBackPressed();
+
     }
 
     @Override
@@ -175,7 +235,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
             // Handle the camera action
         }  */
 
-        mDrawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
@@ -213,6 +273,29 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            //onclick on floating button
+            case R.id.search:
+                if(!isclicked) {
+                    mSearchByPatientName.setVisibility(View.VISIBLE);
+                    mShowAppName.setVisibility(View.GONE);
+                    mSearchIcon.setImageResource(R.drawable.cross);
+                    setIsclicked(true);
+                }else
+                {
+                    mSearchByPatientName.setVisibility(View.GONE);
+                    mShowAppName.setVisibility(View.VISIBLE);
+                    mSearchIcon.setImageResource(R.mipmap.search);
+                    mSearchByPatientName.setText("");
+                    setIsclicked(false);
+                }
+                break;
+        }
 
     }
 }

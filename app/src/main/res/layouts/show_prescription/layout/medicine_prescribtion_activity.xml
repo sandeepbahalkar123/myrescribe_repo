@@ -112,7 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:scaleType="center"
+                        android:scaleType="centerInside"
                         android:src="@mipmap/breakfast" />
                 </RelativeLayout>
 
@@ -132,7 +132,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:scaleType="center"
+                        android:scaleType="centerInside"
                         android:src="@mipmap/lunch" />
                 </RelativeLayout>
 
@@ -151,7 +151,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:scaleType="center"
+                        android:scaleType="centerInside"
                         android:src="@mipmap/night" />
                 </RelativeLayout>
             </LinearLayout>

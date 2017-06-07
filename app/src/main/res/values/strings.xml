@@ -24,12 +24,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="breakfast">Breakfast</string>
     <string name="break_fast">BREAKFAST</string>
-    <string name="before_break_fast">Before BreakFast</string>
-    <string name="after_break_fast">After BreakFast</string>
-    <string name="before_lunch">Before Lunch</string>
-    <string name="after_lunch">After Lunch</string>
-    <string name="before_dinner">Before Dinner</string>
-    <string name="after_dinner">After Dinner</string>
     <string name="server_path">Enter the server path</string>
     <string name="data_saved">Data updated successfully</string>
     <string name="data__not_saved">Data not saved</string>

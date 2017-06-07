@@ -171,14 +171,14 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         //  **************************BreakFast********************************************
         if (!prescriptionData.getMorningB().isEmpty()) {
             quantityOfDose = prescriptionData.getDosage();
-            durationOfBreakFast = mContext.getString(R.string.before_break_fast);
+            durationOfBreakFast = mContext.getString(R.string.before)+" "+mContext.getString(R.string.breakfast);
             timeOfDosage = mContext.getString(R.string.before);
             doseQuantity = prescriptionData.getMorningB();
             showBreakFastLabel = mContext.getString(R.string.breakfast);
         }
         if (!prescriptionData.getMorningA().isEmpty()) {
             quantityOfDose = prescriptionData.getDosage();
-            durationOfBreakFast = mContext.getString(R.string.after_break_fast);
+            durationOfBreakFast = mContext.getString(R.string.after)+" "+mContext.getString(R.string.breakfast);
             timeOfDosage = mContext.getString(R.string.after);
             doseQuantity = prescriptionData.getMorningA();
             showBreakFastLabel = mContext.getString(R.string.breakfast);
@@ -227,14 +227,14 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
 
         if (!prescriptionData.getLunchB().isEmpty()) {
             quantityOfDose = prescriptionData.getDosage();
-            durationOfLunch = mContext.getString(R.string.before_lunch);
+            durationOfLunch = mContext.getString(R.string.before)+" "+mContext.getString(R.string.lunch);
             timeOfDosage = mContext.getString(R.string.before);
             doseQuantity = prescriptionData.getLunchB();
             showBreakFastLabel = mContext.getString(R.string.lunch);
         }
         if (!prescriptionData.getLunchA().isEmpty()) {
             quantityOfDose = prescriptionData.getDosage();
-            durationOfLunch = mContext.getString(R.string.after_lunch);
+            durationOfLunch = mContext.getString(R.string.after)+" "+mContext.getString(R.string.lunch);
             timeOfDosage = mContext.getString(R.string.after);
             doseQuantity = prescriptionData.getLunchA();
             showBreakFastLabel = mContext.getString(R.string.lunch);
@@ -288,14 +288,14 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             doseQuantity = prescriptionData.getDinnerB();
             showBreakFastLabel = mContext.getString(R.string.dinner);
             quantityOfDose = prescriptionData.getDosage();
-            durationOfDinner = mContext.getString(R.string.before_dinner);
+            durationOfDinner = mContext.getString(R.string.before)+" "+mContext.getString(R.string.dinner);
         }
         if (!prescriptionData.getDinnerA().isEmpty()) {
             timeOfDosage = mContext.getString(R.string.after);
             doseQuantity = prescriptionData.getDinnerA();
             showBreakFastLabel = mContext.getString(R.string.dinner);
             quantityOfDose = prescriptionData.getDosage();
-            durationOfDinner = mContext.getString(R.string.after_dinner);
+            durationOfDinner = mContext.getString(R.string.after)+" "+mContext.getString(R.string.dinner);
         }
         if (quantityOfDose.isEmpty()) {
             holder.mRelativeLayoutShowDinnerIcon.setVisibility(View.GONE);

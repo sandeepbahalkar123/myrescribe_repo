@@ -12,41 +12,48 @@
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"/>
+        android:orientation="vertical" />
 
     <LinearLayout
+        android:id="@+id/list_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_horizontal_margin">
+        android:orientation="vertical">
 
-        <com.myrescribe.ui.customesViews.CustomTextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Yesterday"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:customFont="@string/gotham_light" />
-
-        <com.myrescribe.ui.customesViews.CustomTextView
-            android:id="@+id/dateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/activity_horizontal_margin"
             android:paddingEnd="@dimen/activity_horizontal_margin"
-            android:paddingStart="@dimen/activity_horizontal_margin"
-            android:text="05-06-2017"
-            app:customFont="@string/gotham_light"
-            android:textSize="12sp" />
+            android:paddingStart="@dimen/activity_horizontal_margin">
 
+            <com.myrescribe.ui.customesViews.CustomTextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yesterday"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:customFont="@string/gotham_light" />
+
+            <com.myrescribe.ui.customesViews.CustomTextView
+                android:id="@+id/dateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:text="05-06-2017"
+                android:textSize="12sp"
+                app:customFont="@string/gotham_light" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/slotLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/slotLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"/>
 
 </LinearLayout>

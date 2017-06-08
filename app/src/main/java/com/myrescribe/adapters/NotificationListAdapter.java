@@ -3,6 +3,7 @@ package com.myrescribe.adapters;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,8 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     Boolean isPatientLogin;
     String mGetMealTime;
 
+    private boolean isHeaderExpand = true;
+
     public NotificationListAdapter(Context context, ArrayList<PrescriptionData> dataSet, Boolean isPatientLogin, String mGetMealTime, String medicineSlot, String date, String time, ArrayList<Medicine> medicines) {
         this.mDataSet = dataSet;
         this.mContext = context;
@@ -72,6 +75,8 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     @Override
     public void onBindViewHolder(final NotificationListAdapter.ListViewHolder holder, final int position) {
 
+        Log.d("SIZE", mDataSet.size() + " " + position);
+
         if (position == 0) {
             holder.headerLayout.removeAllViews();
             addHeader(holder.headerLayout);
@@ -79,14 +84,27 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             holder.headerLayout.removeAllViews();
         }
 
-        holder.slotLayout.removeAllViews();
-        if (mDataSet.get(position).isDinnerThere())
-            addSlotCards(holder.slotLayout, DINNER, position);
-        if (mDataSet.get(position).isLunchThere())
-            addSlotCards(holder.slotLayout, LUNCH, position);
-        if (mDataSet.get(position).isBreakThere())
-            addSlotCards(holder.slotLayout, BREAK_FAST, position);
+        boolean isItemHeader = false;
 
+        holder.slotLayout.removeAllViews();
+        if (mDataSet.get(position).isDinnerThere()) {
+            addSlotCards(holder.slotLayout, DINNER, position);
+            isItemHeader = true;
+        }
+        if (mDataSet.get(position).isLunchThere()) {
+            addSlotCards(holder.slotLayout, LUNCH, position);
+            isItemHeader = true;
+        }
+        if (mDataSet.get(position).isBreakThere()) {
+            addSlotCards(holder.slotLayout, BREAK_FAST, position);
+            isItemHeader = true;
+        }
+
+        if (position == 0) {
+            if (isItemHeader)
+                holder.list_item.setVisibility(View.VISIBLE);
+            else holder.list_item.setVisibility(View.GONE);
+        }
     }
 
     // Added Slots
@@ -98,7 +116,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         CustomTextView slotTextView = (CustomTextView) view.findViewById(R.id.slotTextView);
         CustomTextView slotTimeTextView = (CustomTextView) view.findViewById(R.id.slotTimeTextView);
         CustomTextView slotQuestionTextView = (CustomTextView) view.findViewById(R.id.slotQuestionTextView);
-        CheckBox slotSelectView = (CheckBox) view.findViewById(R.id.slotSelectView);
+        CheckBox selectView = (CheckBox) view.findViewById(R.id.selectView);
         LinearLayout slotTabletListLayout = (LinearLayout) view.findViewById(R.id.slotTabletListLayout);
         CardView slotCard = (CardView) view.findViewById(R.id.slotCard);
 
@@ -109,10 +127,10 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 addTabletView(slotTabletListLayout, position);
                 if (mDataSet.get(position).isDinnerExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
-                    slotSelectView.setVisibility(View.GONE);
+                    selectView.setVisibility(View.INVISIBLE);
                 } else {
                     slotTabletListLayout.setVisibility(View.GONE);
-                    slotSelectView.setVisibility(View.VISIBLE);
+                    selectView.setVisibility(View.VISIBLE);
                 }
 
                 view.setOnClickListener(new View.OnClickListener() {
@@ -132,10 +150,16 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                         new SwipeDismissTouchListener.OnDismissCallback() {
                             @Override
                             public void onDismiss(View view, Object token) {
+                                if (mDataSet.size() > position)
                                 mDataSet.get(position).setDinnerThere(false);
                                 parent.removeView(view);
+                                if (position != 0) {
+                                    if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere()) {
+                                        mDataSet.remove(position);
+                                        notifyDataSetChanged();
+                                    }
+                                } else notifyItemChanged(position);
                                 CommonMethods.showToast(mContext, "Removed " + slotType);
-                                notifyItemChanged(position);
                             }
                         });
 
@@ -147,10 +171,10 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 addTabletView(slotTabletListLayout, position);
                 if (mDataSet.get(position).isLunchExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
-                    slotSelectView.setVisibility(View.GONE);
+                    selectView.setVisibility(View.INVISIBLE);
                 } else {
                     slotTabletListLayout.setVisibility(View.GONE);
-                    slotSelectView.setVisibility(View.VISIBLE);
+                    selectView.setVisibility(View.VISIBLE);
                 }
 
                 view.setOnClickListener(new View.OnClickListener() {
@@ -170,10 +194,16 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                         new SwipeDismissTouchListener.OnDismissCallback() {
                             @Override
                             public void onDismiss(View view, Object token) {
+                                if (mDataSet.size() > position)
                                 mDataSet.get(position).setLunchThere(false);
                                 parent.removeView(view);
+                                if (position != 0) {
+                                    if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere()) {
+                                        mDataSet.remove(position);
+                                        notifyDataSetChanged();
+                                    }
+                                } else notifyItemChanged(position);
                                 CommonMethods.showToast(mContext, "Removed " + slotType);
-                                notifyItemChanged(position);
                             }
                         }));
                 break;
@@ -183,10 +213,10 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 addTabletView(slotTabletListLayout, position);
                 if (mDataSet.get(position).isBreakFastExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
-                    slotSelectView.setVisibility(View.GONE);
+                    selectView.setVisibility(View.INVISIBLE);
                 } else {
                     slotTabletListLayout.setVisibility(View.GONE);
-                    slotSelectView.setVisibility(View.VISIBLE);
+                    selectView.setVisibility(View.VISIBLE);
                 }
 
                 view.setOnClickListener(new View.OnClickListener() {
@@ -206,10 +236,16 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                         new SwipeDismissTouchListener.OnDismissCallback() {
                             @Override
                             public void onDismiss(View view, Object token) {
+                                if (mDataSet.size() > position)
                                 mDataSet.get(position).setBreakThere(false);
                                 parent.removeView(view);
+                                if (position != 0) {
+                                    if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere()) {
+                                        mDataSet.remove(position);
+                                        notifyDataSetChanged();
+                                    }
+                                } else notifyItemChanged(position);
                                 CommonMethods.showToast(mContext, "Removed " + slotType);
-                                notifyItemChanged(position);
                             }
                         }));
                 break;
@@ -231,7 +267,34 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         timeTextView.setText(time);
         dateTextView.setText(date);
 
-        addHeaderTabletView((LinearLayout) view.findViewById(R.id.tabletListLayout), medicines);
+        final LinearLayout tabletListLayout = (LinearLayout) view.findViewById(R.id.tabletListLayout);
+        final CheckBox selectView = (CheckBox) view.findViewById(R.id.selectView);
+
+        addHeaderTabletView(tabletListLayout, medicines);
+
+        if (isHeaderExpand) {
+            tabletListLayout.setVisibility(View.VISIBLE);
+            selectView.setVisibility(View.INVISIBLE);
+        } else {
+            tabletListLayout.setVisibility(View.GONE);
+            selectView.setVisibility(View.VISIBLE);
+        }
+
+        parent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isHeaderExpand) {
+                    tabletListLayout.setVisibility(View.GONE);
+                    selectView.setVisibility(View.VISIBLE);
+                    isHeaderExpand = false;
+                } else {
+                    tabletListLayout.setVisibility(View.VISIBLE);
+                    selectView.setVisibility(View.INVISIBLE);
+                    isHeaderExpand = true;
+                }
+            }
+        });
+
         parent.addView(view);
     }
 
@@ -321,6 +384,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         @BindView(R.id.headerLayout)
         LinearLayout headerLayout;
 
+        @BindView(R.id.list_item)
+        LinearLayout list_item;
+
         @BindView(R.id.slotLayout)
         LinearLayout slotLayout;
 
@@ -329,9 +395,12 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         @BindView(R.id.dateTextView)
         CustomTextView dateTextView;
 
+        View view;
+
         ListViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            this.view = view;
         }
     }
 }

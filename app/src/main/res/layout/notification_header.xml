@@ -79,7 +79,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin">
 
                 <com.myrescribe.ui.customesViews.CustomTextView
                     android:id="@+id/questionTextView"
@@ -88,21 +89,21 @@
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/selectView"
                     android:layout_toStartOf="@+id/selectView"
-                    android:text="Have you taken your medicines?"
+                    android:text="@string/haveyoutakemedicine"
                     android:textSize="14sp"
                     app:customFont="@string/gotham_light" />
 
-                <ImageView
+                <CheckBox
                     android:id="@+id/selectView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:visibility="invisible"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:src="@drawable/done"
-                    android:visibility="gone" />
+                    android:button="@drawable/checkboxselecter" />
 
             </RelativeLayout>
 
@@ -110,8 +111,7 @@
                 android:id="@+id/tabletListLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="@dimen/activity_horizontal_margin">
+                android:orientation="vertical">
 
                 <!--<include layout="@layout/tablet_list"/>-->
 

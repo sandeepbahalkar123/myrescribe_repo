@@ -24,7 +24,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp2"
-
                 android:layout_marginRight="@dimen/dp2"
                 android:layout_marginTop="@dimen/dp6"
                 android:layout_weight="2"
@@ -211,9 +210,8 @@
                 <com.myrescribe.ui.customesViews.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp4"
-                    android:layout_marginRight="@dimen/dp6"
-                    android:layout_marginTop="@dimen/dp6"
+                    android:layout_marginBottom="@dimen/dp8"
+                    android:layout_marginTop="@dimen/dp8"
                     android:text="@string/instructions"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp12"
@@ -224,9 +222,10 @@
                     android:id="@+id/textViewhightlightInstructions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp4"
-                    android:layout_marginLeft="@dimen/dp6"
-                    android:layout_marginTop="@dimen/dp6"
+                    android:layout_marginBottom="@dimen/dp8"
+                    android:layout_marginLeft="@dimen/dp4"
+                    android:layout_marginRight="@dimen/dp12"
+                    android:layout_marginTop="@dimen/dp8"
                     android:layout_weight="1"
                     android:lineSpacingExtra="@dimen/dp1"
                     android:text="@string/message_text"
@@ -237,7 +236,8 @@
                 <ImageView
                     android:id="@+id/imageViewInstructiondownArrow"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
                     android:src="@drawable/ic_down"
                     android:visibility="visible" />
             </LinearLayout>

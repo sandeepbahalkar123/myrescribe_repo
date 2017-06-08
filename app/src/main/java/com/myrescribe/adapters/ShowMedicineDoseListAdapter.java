@@ -206,7 +206,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
         if (doseQuantity.contains("/")) {
-            holder.mMorningDoseQuanity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp12));
+            holder.mMorningDoseQuanity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp16));
         } else {
             holder.mMorningDoseQuanity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp16));
         }
@@ -266,7 +266,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
         if (doseQuantity.contains("/")) {
-            holder.mLunchDoseQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp12));
+            holder.mLunchDoseQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp16));
         } else {
             holder.mLunchDoseQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp16));
         }
@@ -326,7 +326,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
         if (doseQuantity.contains("/")) {
-            holder.mDinnerDoseQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp12));
+            holder.mDinnerDoseQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp16));
         } else {
             holder.mDinnerDoseQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp16));
         }

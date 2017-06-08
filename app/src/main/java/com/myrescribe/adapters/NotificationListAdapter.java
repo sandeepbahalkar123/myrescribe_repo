@@ -12,10 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
+import com.myrescribe.model.Medicine;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.ui.activities.NotificationActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.util.SwipeDismissTouchListener;
 
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     private final String medicineSlot;
     private final String date;
     private final String time;
-    private final String medicineName;
+    private final ArrayList<Medicine> medicines;
 
     private ArrayList<PrescriptionData> mDataSet;
     NotificationActivity mRowClickListener;
@@ -43,7 +45,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     Boolean isPatientLogin;
     String mGetMealTime;
 
-    public NotificationListAdapter(Context context, ArrayList<PrescriptionData> dataSet, Boolean isPatientLogin, String mGetMealTime, String medicineSlot, String date, String time, String medicineName) {
+    public NotificationListAdapter(Context context, ArrayList<PrescriptionData> dataSet, Boolean isPatientLogin, String mGetMealTime, String medicineSlot, String date, String time, ArrayList<Medicine> medicines) {
         this.mDataSet = dataSet;
         this.mContext = context;
         this.isPatientLogin = isPatientLogin;
@@ -52,7 +54,11 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         this.medicineSlot = medicineSlot;
         this.date = date;
         this.time = time;
-        this.medicineName = medicineName;
+        this.medicines = medicines;
+
+        /*if (dataSet.isEmpty()) {
+            dataSet.add(new PrescriptionData());
+        }*/
 
     }
 
@@ -68,7 +74,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
         if (position == 0) {
             holder.headerLayout.removeAllViews();
-            addHeader(holder.headerLayout, position);
+            addHeader(holder.headerLayout);
         } else {
             holder.headerLayout.removeAllViews();
         }
@@ -213,7 +219,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
     // Added Header
 
-    private void addHeader(ViewGroup parent, int position) {
+    private void addHeader(ViewGroup parent) {
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.notification_header, parent, false);
 
@@ -225,25 +231,67 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         timeTextView.setText(time);
         dateTextView.setText(date);
 
-        addTabletView((LinearLayout) view.findViewById(R.id.tabletListLayout), position);
+        addHeaderTabletView((LinearLayout) view.findViewById(R.id.tabletListLayout), medicines);
         parent.addView(view);
     }
 
     // Added Tablet View
 
-    private void addTabletView(final ViewGroup parent, final int position) {
-        for (int i = 0; i < 2; i++) {
+    private void addTabletView(final ViewGroup parent, int position) {
+        for (int i = 0; i < medicines.size(); i++) {
             View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.tablet_list, parent, false);
 
-            final CheckBox selectViewTab = (CheckBox) view.findViewById(R.id.selectViewTab);
+            CheckBox selectViewTab = (CheckBox) view.findViewById(R.id.selectViewTab);
             ImageView tabTypeView = (ImageView) view.findViewById(R.id.tabTypeView);
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
+            TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
 
-            if (i % 2 == 0) {
-                tabTypeView.setImageResource(R.drawable.tablet);
-                tabNameTextView.setText("Metrogyl");
+            switch (medicines.get(i).getMedicineType()) {
+                case MyRescribeConstants.MT_SYRUP:
+                    tabTypeView.setImageResource(R.drawable.capsule_1);
+                    break;
+
+                case MyRescribeConstants.MT_TABLET:
+                    tabTypeView.setImageResource(R.drawable.tablet);
+                    break;
             }
+
+            tabNameTextView.setText(medicines.get(i).getMedicineName());
+            tabCountTextView.setText(medicines.get(i).getMedicineCount());
+
+            selectViewTab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    CommonMethods.showToast(mContext, "Checked in " + position + " " + selectViewTab.isChecked());
+                }
+            });
+            parent.addView(view);
+        }
+    }
+
+    private void addHeaderTabletView(final ViewGroup parent, final ArrayList<Medicine> medicines) {
+        for (int i = 0; i < medicines.size(); i++) {
+            View view = LayoutInflater.from(mContext)
+                    .inflate(R.layout.tablet_list, parent, false);
+
+            CheckBox selectViewTab = (CheckBox) view.findViewById(R.id.selectViewTab);
+            ImageView tabTypeView = (ImageView) view.findViewById(R.id.tabTypeView);
+            TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
+            TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
+
+            switch (medicines.get(i).getMedicineType()) {
+                case MyRescribeConstants.MT_SYRUP:
+                    tabTypeView.setImageResource(R.drawable.capsule_1);
+                    break;
+
+                case MyRescribeConstants.MT_TABLET:
+                    tabTypeView.setImageResource(R.drawable.tablet);
+                    break;
+            }
+
+            tabNameTextView.setText(medicines.get(i).getMedicineName());
+            tabCountTextView.setText(medicines.get(i).getMedicineCount());
 
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override

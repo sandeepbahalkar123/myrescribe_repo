@@ -14,6 +14,7 @@ import com.myrescribe.adapters.ShowMedicineDoseListAdapter;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.Medicine;
 import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.util.CommonMethods;
@@ -31,7 +32,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     private String medicineSlot;
     private String date;
     private String time;
-    private String medicineName;
+    private ArrayList<Medicine> medicine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
          medicineSlot = intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT);
          date = intent.getStringExtra(MyRescribeConstants.DATE);
          time = intent.getStringExtra(MyRescribeConstants.TIME);
-         medicineName = intent.getStringExtra(MyRescribeConstants.MEDICINE_NAME);
+         medicine = (ArrayList<Medicine>) intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME).getSerializable(MyRescribeConstants.MEDICINE_NAME);
 
         doGetPrescriptionList();
     }
@@ -75,7 +76,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                     recycler = (RecyclerView) findViewById(R.id.recycler);
                     recycler.setLayoutManager(new LinearLayoutManager(NotificationActivity.this, LinearLayoutManager.VERTICAL, false));
 
-                    mAdapter = new NotificationListAdapter(NotificationActivity.this, data, false, mGetMealTime, medicineSlot, date, time, medicineName);
+                    mAdapter = new NotificationListAdapter(NotificationActivity.this, data, false, mGetMealTime, medicineSlot, date, time, medicine);
                     mAdapter.setRowClickListener(this);
                     recycler.setAdapter(mAdapter);
                 }

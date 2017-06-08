@@ -27,7 +27,7 @@ public class NoClickReceiver extends BroadcastReceiver {
         intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
         intentNotification.putExtra(MyRescribeConstants.DATE, intent.getStringExtra(MyRescribeConstants.DATE));
         intentNotification.putExtra(MyRescribeConstants.TIME, intent.getStringExtra(MyRescribeConstants.TIME));
-        intentNotification.putExtra(MyRescribeConstants.MEDICINE_NAME, intent.getStringExtra(MyRescribeConstants.MEDICINE_NAME));
+        intentNotification.putExtra(MyRescribeConstants.MEDICINE_NAME, intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME));
 
         context.startActivity(intentNotification);
 

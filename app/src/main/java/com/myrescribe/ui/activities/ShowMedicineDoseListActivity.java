@@ -4,9 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +26,7 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.Medicine;
 import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.notification.AlarmTask;
@@ -43,12 +40,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ShowMedicineDoseListActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, HelperResponse ,View.OnClickListener{
+        implements NavigationView.OnNavigationItemSelectedListener, HelperResponse, View.OnClickListener {
 
     private ShowMedicineDoseListAdapter mAdapter;
     private final String TAG = "MyRescribe/ShowMedicineDoseListActivity";
     Context mContext;
-    private  String mGetMealTime;
+    private String mGetMealTime;
 
     public Boolean getIsclicked() {
         return isclicked;
@@ -93,7 +90,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     private void initialize() {
 
         initializeVariables();
-        notificationForMedicine();
         bindView();
         onTextChanged();
         doGetPrescriptionList();
@@ -101,7 +97,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         Calendar c = Calendar.getInstance();
         int hour24 = c.get(Calendar.HOUR_OF_DAY);
         int Min = c.get(Calendar.MINUTE);
-       mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
+        mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
     }
 
     private void onTextChanged() {
@@ -113,7 +109,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String  newText =  mSearchByPatientName.getText().toString();
+                String newText = mSearchByPatientName.getText().toString();
                 if (TextUtils.isEmpty(newText)) {
                     mAdapter.filter("");
                 } else {
@@ -124,7 +120,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
             @Override
             public void afterTextChanged(Editable s) {
-                String  newText1 =  mSearchByPatientName.getText().toString();
+                String newText1 = mSearchByPatientName.getText().toString();
                 if (TextUtils.isEmpty(newText1)) {
                     mAdapter.filter("");
                 } else {
@@ -135,7 +131,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         });
     }
 
-    private void notificationForMedicine() {
+    private void notificationForMedicine(ArrayList<PrescriptionData> data) {
 
         String breakFast = "9:17 AM";
         String lunchTime = "9:19 AM";
@@ -156,7 +152,18 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         String times[] = {breakFast, lunchTime, dinnerTime};
         String date = CommonMethods.getCurrentTimeStamp("dd-MM-yyyy");
 
-        new AlarmTask(ShowMedicineDoseListActivity.this, times, date).run();
+        ArrayList<Medicine> medicines = new ArrayList<Medicine>();
+
+        for (PrescriptionData prescriptionData : data) {
+            Medicine medicine1 = new Medicine();
+            medicine1.setMedicineCount(prescriptionData.getDosage());
+            medicine1.setMedicineName(prescriptionData.getMedicineName());
+            medicine1.setMedicineType(prescriptionData.getMedicineTypeName());
+
+            medicines.add(medicine1);
+        }
+
+        new AlarmTask(ShowMedicineDoseListActivity.this, times, date, medicines).run();
     }
 
     private void initializeVariables() {
@@ -181,13 +188,11 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         mSearchIcon.setOnClickListener(this);
 
 
-
-
     }
 
     @Override
     public void onBackPressed() {
-         super.onBackPressed();
+        super.onBackPressed();
 
     }
 
@@ -195,9 +200,9 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         //Search Function to search particular prescribed medicine
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate( R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
 
-        MenuItem myActionMenuItem = menu.findItem( R.id.search);
+        MenuItem myActionMenuItem = menu.findItem(R.id.search);
         final SearchView searchView = (SearchView) myActionMenuItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -240,20 +245,21 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     }
 
 
-
     private void doGetPrescriptionList() {
         mPrescriptionHelper.doGetPrescriptionList();
     }
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (mOldDataTag == MyRescribeConstants.TASK_PRESCRIPTION_LIST) {
+        if (mOldDataTag.equals(MyRescribeConstants.TASK_PRESCRIPTION_LIST)) {
             PatientPrescriptionModel prescriptionDataReceived = (PatientPrescriptionModel) customResponse;
 
             ArrayList<PrescriptionData> data = prescriptionDataReceived.getData();
+
             if (data != null) {
                 if (data.size() != 0) {
-                    mAdapter = new ShowMedicineDoseListAdapter(this, data, false,mGetMealTime);
+                    notificationForMedicine(data);
+                    mAdapter = new ShowMedicineDoseListAdapter(this, data, false, mGetMealTime);
                     mRecyclerView.setAdapter(mAdapter);
                 }
             }
@@ -281,13 +287,12 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         switch (v.getId()) {
             //onclick on floating button
             case R.id.search:
-                if(!isclicked) {
+                if (!isclicked) {
                     mSearchByPatientName.setVisibility(View.VISIBLE);
                     mShowAppName.setVisibility(View.GONE);
                     mSearchIcon.setImageResource(R.drawable.cross);
                     setIsclicked(true);
-                }else
-                {
+                } else {
                     mSearchByPatientName.setVisibility(View.GONE);
                     mShowAppName.setVisibility(View.VISIBLE);
                     mSearchIcon.setImageResource(R.mipmap.search);

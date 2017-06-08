@@ -19,7 +19,7 @@
             android:background="@color/tagColor"
             android:layout_marginTop="@dimen/dp8"
             android:layout_marginBottom="@dimen/dp8"
-            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginLeft="@dimen/dp16"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:popupTheme="@style/AppTheme"
             android:orientation="horizontal"

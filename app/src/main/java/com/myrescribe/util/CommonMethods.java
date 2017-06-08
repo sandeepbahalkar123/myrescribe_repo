@@ -47,6 +47,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -349,6 +350,45 @@ public class CommonMethods {
 
     }
 
+
+    public static String getDayFromDate(String dateFormat, String date) {
+
+        SimpleDateFormat df = new SimpleDateFormat(dateFormat, Locale.US);
+        Date inputDate = null;
+        try {
+            inputDate = df.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Date currentDate = new Date();
+        //---
+        if (inputDate.getTime() == currentDate.getTime()) {
+            return "Recent";
+        }
+        //---
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        Date yesterdayDate = cal.getTime();
+        if (inputDate.getTime() == yesterdayDate.getTime()) {
+            return "Yesterday";
+        }
+        //---
+        cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, +1);
+        Date tomorrowDate = cal.getTime();
+        if (inputDate.getTime() == tomorrowDate.getTime()) {
+            return "Tomorrow";
+        } else {
+            DateFormat f = new SimpleDateFormat("EEEE", Locale.US);
+            try {
+                return f.format(inputDate);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "";
+            }
+        }
+    }
 
     public static String printKeyHash(Activity context) {
         PackageInfo packageInfo;

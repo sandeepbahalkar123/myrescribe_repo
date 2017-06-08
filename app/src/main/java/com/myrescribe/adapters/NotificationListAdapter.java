@@ -58,11 +58,6 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         this.date = date;
         this.time = time;
         this.medicines = medicines;
-
-        /*if (dataSet.isEmpty()) {
-            dataSet.add(new PrescriptionData());
-        }*/
-
     }
 
     @Override
@@ -74,8 +69,6 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
     @Override
     public void onBindViewHolder(final NotificationListAdapter.ListViewHolder holder, final int position) {
-
-        Log.d("SIZE", mDataSet.size() + " " + position);
 
         if (position == 0) {
             holder.headerLayout.removeAllViews();
@@ -120,6 +113,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         LinearLayout slotTabletListLayout = (LinearLayout) view.findViewById(R.id.slotTabletListLayout);
         CardView slotCard = (CardView) view.findViewById(R.id.slotCard);
 
+        ImageView trangleIconBottom = (ImageView) view.findViewById(R.id.trangleIconBottom);
+        ImageView trangleIconTop = (ImageView) view.findViewById(R.id.trangleIconTop);
+
         switch (slotType) {
             case DINNER:
                 slotTextView.setText(mContext.getResources().getString(R.string.dinner_medication));
@@ -128,9 +124,13 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 if (mDataSet.get(position).isDinnerExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
                     selectView.setVisibility(View.INVISIBLE);
+                    trangleIconBottom.setVisibility(View.INVISIBLE);
+                    trangleIconTop.setVisibility(View.VISIBLE);
                 } else {
                     slotTabletListLayout.setVisibility(View.GONE);
                     selectView.setVisibility(View.VISIBLE);
+                    trangleIconBottom.setVisibility(View.VISIBLE);
+                    trangleIconTop.setVisibility(View.INVISIBLE);
                 }
 
                 view.setOnClickListener(new View.OnClickListener() {
@@ -172,9 +172,14 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 if (mDataSet.get(position).isLunchExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
                     selectView.setVisibility(View.INVISIBLE);
+                    trangleIconBottom.setVisibility(View.INVISIBLE);
+                    trangleIconTop.setVisibility(View.VISIBLE);
+
                 } else {
                     slotTabletListLayout.setVisibility(View.GONE);
                     selectView.setVisibility(View.VISIBLE);
+                    trangleIconBottom.setVisibility(View.VISIBLE);
+                    trangleIconTop.setVisibility(View.INVISIBLE);
                 }
 
                 view.setOnClickListener(new View.OnClickListener() {
@@ -214,9 +219,13 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 if (mDataSet.get(position).isBreakFastExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
                     selectView.setVisibility(View.INVISIBLE);
+                    trangleIconBottom.setVisibility(View.INVISIBLE);
+                    trangleIconTop.setVisibility(View.VISIBLE);
                 } else {
                     slotTabletListLayout.setVisibility(View.GONE);
                     selectView.setVisibility(View.VISIBLE);
+                    trangleIconBottom.setVisibility(View.VISIBLE);
+                    trangleIconTop.setVisibility(View.INVISIBLE);
                 }
 
                 view.setOnClickListener(new View.OnClickListener() {
@@ -269,15 +278,21 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
         final LinearLayout tabletListLayout = (LinearLayout) view.findViewById(R.id.tabletListLayout);
         final CheckBox selectView = (CheckBox) view.findViewById(R.id.selectView);
+        final ImageView trangleIconBottom = (ImageView) view.findViewById(R.id.trangleIconBottom);
+        final ImageView trangleIconTop = (ImageView) view.findViewById(R.id.trangleIconTop);
 
         addHeaderTabletView(tabletListLayout, medicines);
 
         if (isHeaderExpand) {
             tabletListLayout.setVisibility(View.VISIBLE);
             selectView.setVisibility(View.INVISIBLE);
+            trangleIconBottom.setVisibility(View.INVISIBLE);
+            trangleIconTop.setVisibility(View.VISIBLE);
         } else {
             tabletListLayout.setVisibility(View.GONE);
             selectView.setVisibility(View.VISIBLE);
+            trangleIconBottom.setVisibility(View.VISIBLE);
+            trangleIconTop.setVisibility(View.INVISIBLE);
         }
 
         parent.setOnClickListener(new View.OnClickListener() {
@@ -286,10 +301,14 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 if (isHeaderExpand) {
                     tabletListLayout.setVisibility(View.GONE);
                     selectView.setVisibility(View.VISIBLE);
+                    trangleIconBottom.setVisibility(View.VISIBLE);
+                    trangleIconTop.setVisibility(View.INVISIBLE);
                     isHeaderExpand = false;
                 } else {
                     tabletListLayout.setVisibility(View.VISIBLE);
                     selectView.setVisibility(View.INVISIBLE);
+                    trangleIconBottom.setVisibility(View.INVISIBLE);
+                    trangleIconTop.setVisibility(View.VISIBLE);
                     isHeaderExpand = true;
                 }
             }

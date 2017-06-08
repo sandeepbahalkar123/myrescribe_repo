@@ -4,20 +4,21 @@
     android:id="@+id/slotCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/skybluefent"
-    android:layout_marginBottom="@dimen/activity_horizontal_margin">
+    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_horizontal_margin">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin">
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/slotTextView"
@@ -38,44 +39,70 @@
 
         </FrameLayout>
 
-        <View
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:background="@color/divider" />
+            android:layout_height="wrap_content">
 
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin">
-
-            <com.myrescribe.ui.customesViews.CustomTextView
-                android:id="@+id/slotQuestionTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/selectView"
-                android:layout_toStartOf="@+id/selectView"
-                android:text="@string/haveyoutakemedicine"
-                android:textSize="14sp"
-                app:customFont="@string/gotham_light" />
-
-            <CheckBox
-                android:id="@+id/selectView"
+            <ImageView
+                android:id="@+id/trangleIconTop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:button="@drawable/checkboxselecter"
-                android:checked="false"
-                android:visibility="visible" />
+                android:layout_gravity="end|top"
+                android:src="@drawable/click_here" />
 
-        </RelativeLayout>
+            <ImageView
+                android:id="@+id/trangleIconBottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:src="@drawable/click_here_copy" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:background="@color/divider" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin">
+
+                    <com.myrescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/slotQuestionTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/selectView"
+                        android:layout_toStartOf="@+id/selectView"
+                        android:text="@string/haveyoutakemedicine"
+                        android:textSize="14sp"
+                        app:customFont="@string/gotham_light" />
+
+                    <CheckBox
+                        android:id="@+id/selectView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:button="@drawable/checkboxselecter"
+                        android:checked="false"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/slotTabletListLayout"

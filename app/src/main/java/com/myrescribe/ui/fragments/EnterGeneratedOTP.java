@@ -216,8 +216,11 @@ public class EnterGeneratedOTP extends Fragment {
         @Override
         public void onTick(long millisUntilFinished) {
 //			mProgressText.setText(" "+millisUntilFinished / 1000 + " secs" );
-            String format = String.format(getString(R.string.waiting_for_sms), (millisUntilFinished / 1000));
-            mProgressTime.setText(format);
+            if (!getActivity().isFinishing()) {
+                String format = String.format(getString(R.string.waiting_for_sms), (millisUntilFinished / 1000));
+                mProgressTime.setText(format);
+            }
+
         }
     }
 
@@ -259,5 +262,11 @@ public class EnterGeneratedOTP extends Fragment {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(mSmsListener);
     }
 }

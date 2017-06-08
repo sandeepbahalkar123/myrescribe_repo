@@ -27,9 +27,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Yesterday"
-            android:textColor="@color/black"
+            android:textColor="@color/recentblue"
             android:textSize="20sp"
-            app:customFont="@string/gotham_light" />
+            app:customFont="@string/helvetica_normal" />
 
         <com.myrescribe.ui.customesViews.CustomTextView
             android:id="@+id/dateTextView"
@@ -38,7 +38,8 @@
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingStart="@dimen/activity_horizontal_margin"
             android:text="05-06-2017"
-            app:customFont="@string/gotham_light"
+            android:textColor="@color/instruction_color"
+            app:customFont="@string/helvetica_normal"
             android:textSize="12sp" />
 
     </LinearLayout>

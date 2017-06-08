@@ -17,6 +17,7 @@
     <color name="placeHolder">#55000000</color>
     <item name="errorColor" type="color">#BD362F</item>
     <color name="refId_color">#8dc63f</color>
+    <color name="recentblue">#04abdf</color>
     <color name="Gray">#736F6E</color>
     <color name="black">#000000</color>
     <color name="lightskyBlue">#b2e6fa</color>

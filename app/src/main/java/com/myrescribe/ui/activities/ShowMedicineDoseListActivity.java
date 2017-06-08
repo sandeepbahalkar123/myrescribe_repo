@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
@@ -56,16 +57,16 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     private Boolean isclicked = false;
 
     @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    LinearLayout mToolbar;
 
-    @BindView(R.id.searchByPatientName)
+   /* @BindView(R.id.searchByPatientName)
     EditText mSearchByPatientName;
 
     @BindView(R.id.showAppName)
     TextView mShowAppName;
 
     @BindView(R.id.search)
-    ImageView mSearchIcon;
+    ImageView mSearchIcon;*/
 
 
     @BindView(R.id.nav_view)
@@ -90,7 +91,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         initializeVariables();
         notificationForMedicine();
         bindView();
-        onTextChanged();
+        //onTextChanged();
         doGetPrescriptionList();
 
         Calendar c = Calendar.getInstance();
@@ -99,7 +100,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
        mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
     }
 
-    private void onTextChanged() {
+   /* private void onTextChanged() {
         mSearchByPatientName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -129,7 +130,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
             }
         });
     }
-
+*/
     private void notificationForMedicine() {
 
         String breakFast = "9:17 AM";
@@ -173,7 +174,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mSearchIcon.setOnClickListener(this);
+        //mSearchIcon.setOnClickListener(this);
 
 
 
@@ -273,7 +274,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+      /*  switch (v.getId()) {
             //onclick on floating button
             case R.id.search:
                 if(!isclicked) {
@@ -290,7 +291,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
                     setIsclicked(false);
                 }
                 break;
-        }
+        }*/
 
     }
 }

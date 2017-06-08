@@ -5,13 +5,13 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    card_view:cardCornerRadius="2dp"
-    card_view:contentPadding="10dp">
+    android:layout_marginTop="@dimen/dp4"
+    card_view:cardCornerRadius="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp12"
         android:orientation="vertical">
 
         <LinearLayout
@@ -24,7 +24,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp2"
-                android:layout_marginLeft="@dimen/dp12"
+
                 android:layout_marginRight="@dimen/dp2"
                 android:layout_marginTop="@dimen/dp6"
                 android:layout_weight="2"
@@ -34,17 +34,13 @@
 
                 />
 
-
-
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/days"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp2"
-                android:layout_marginLeft="@dimen/dp2"
-                android:layout_marginStart="@dimen/dp2"
-                android:layout_marginRight="@dimen/dp10"
-                android:layout_marginEnd="@dimen/dp10"
+                android:layout_marginEnd="@dimen/dp12"
+                android:layout_marginRight="@dimen/dp12"
                 android:layout_marginTop="@dimen/dp6"
                 android:layout_weight="1"
                 android:gravity="end"
@@ -56,6 +52,7 @@
 
                 />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,14 +62,12 @@
                 android:id="@+id/textviewTabletLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp12"
                 android:layout_marginRight="@dimen/dp6"
                 android:layout_weight="0.5"
-                android:textStyle="bold"
                 android:textColor="@color/tablet_color"
                 android:textSize="@dimen/sp14"
+                android:textStyle="bold"
                 app:customFont="@string/helvetica_normal" />
-
 
 
         </LinearLayout>
@@ -80,102 +75,78 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp05"
-            android:layout_margin="@dimen/dp6"
+            android:layout_marginRight="@dimen/dp12"
+            android:layout_marginTop="@dimen/dp2"
             android:background="@color/grey" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-                android:orientation="horizontal"
-                >
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/imageViewMorningDose"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp6"
-                    android:layout_marginRight="@dimen/dp2"
-                    android:layout_marginLeft="@dimen/dp2"
-                    android:visibility="visible"
-                    android:id="@+id/relativeLayoutShowBreakfastIcon"
-                    android:layout_weight="1">
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:scaleType="centerInside"
+                    android:visibility="gone" />
 
-                    <ImageView
-                        android:id="@+id/imageViewMorningDose"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:scaleType="centerInside"
-                        />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/imageViewAfternoonDose"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp6"
-                    android:layout_marginRight="@dimen/dp2"
-                    android:layout_marginLeft="@dimen/dp2"
-                    android:visibility="visible"
-                    android:id="@+id/relativeLayoutShowLunchIcon"
-                    android:layout_weight="1">
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:scaleType="centerInside"
+                    android:visibility="gone" />
 
-                    <ImageView
-                        android:id="@+id/imageViewAfternoonDose"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:scaleType="centerInside"
-                         />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/imageViewNightDose"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp6"
-                    android:layout_marginRight="@dimen/dp2"
-                    android:layout_marginLeft="@dimen/dp2"
-                    android:visibility="visible"
-                    android:id="@+id/relativeLayoutShowDinnerIcon"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:id="@+id/imageViewNightDose"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:scaleType="centerInside"
-                        />
-                </RelativeLayout>
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:scaleType="centerInside"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
 
                 <View
                     android:layout_width="@dimen/dp05"
                     android:layout_height="@dimen/dp50"
-                    android:layout_marginTop="@dimen/dp6"
+                    android:layout_marginBottom="@dimen/dp4"
                     android:layout_marginRight="@dimen/dp8"
+                    android:layout_marginTop="@dimen/dp4"
                     android:background="@color/grey" />
 
                 <TextView
                     android:id="@+id/doseQuantityNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="center_vertical|right"
                     android:layout_marginBottom="@dimen/dp2"
-                    android:layout_weight="1"
-                    android:layout_marginTop="@dimen/dp2"
                     android:layout_marginLeft="@dimen/dp2"
+                    android:layout_marginTop="@dimen/dp2"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="@dimen/dp4"
+                    android:text="2"
                     android:textColor="@color/BlueAngel"
                     android:textSize="@dimen/sp28"
                     android:textStyle="bold" />
@@ -191,11 +162,9 @@
                         android:id="@+id/dosePeriod"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dp2"
-                        android:layout_marginLeft="@dimen/dp2"
-                        android:layout_marginRight="@dimen/dp6"
-                        android:layout_marginTop="@dimen/dp6"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/dp2"
+                        android:layout_marginTop="@dimen/dp6"
                         android:textSize="@dimen/sp12"
                         app:customFont="@string/helvetica_demi_bold" />
 
@@ -203,15 +172,22 @@
                         android:id="@+id/doseSlot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dp2"
-                        android:layout_marginLeft="@dimen/dp2"
-                        android:layout_marginRight="@dimen/dp6"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/dp2"
                         android:textSize="@dimen/sp14"
                         app:customFont="@string/helvetica_demi_bold" />
                 </LinearLayout>
 
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageViewdownArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:src="@drawable/ic_down"
+                android:textStyle="bold"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -219,25 +195,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp05"
-                android:layout_margin="@dimen/dp6"
+                android:layout_marginRight="@dimen/dp12"
                 android:background="@color/grey" />
 
             <LinearLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp8"
                 android:orientation="horizontal">
 
                 <com.myrescribe.ui.customesViews.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp12"
+                    android:layout_marginBottom="@dimen/dp4"
                     android:layout_marginRight="@dimen/dp6"
                     android:layout_marginTop="@dimen/dp6"
                     android:text="@string/instructions"
@@ -250,8 +224,9 @@
                     android:id="@+id/textViewhightlightInstructions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp6"
+                    android:layout_marginBottom="@dimen/dp4"
                     android:layout_marginLeft="@dimen/dp6"
+                    android:layout_marginTop="@dimen/dp6"
                     android:layout_weight="1"
                     android:lineSpacingExtra="@dimen/dp1"
                     android:text="@string/message_text"
@@ -259,19 +234,15 @@
                     android:textSize="@dimen/sp14"
                     app:customFont="@string/helvetica_normal" />
 
+                <ImageView
+                    android:id="@+id/imageViewInstructiondownArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_down"
+                    android:visibility="visible" />
             </LinearLayout>
 
         </LinearLayout>
-
-
-        <ImageView
-            android:id="@+id/imageViewdownArrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|end"
-            android:src="@drawable/ic_down"
-            android:textStyle="bold"
-            android:visibility="gone" />
 
         <include
             android:id="@+id/expandPrescriptionView"

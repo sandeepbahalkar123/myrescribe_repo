@@ -18,9 +18,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Recent"
-            android:textColor="@color/black"
+            android:textColor="@color/recentblue"
             android:textSize="20sp"
-            app:customFont="@string/gotham_light" />
+            app:customFont="@string/helvetica_normal" />
 
         <com.myrescribe.ui.customesViews.CustomTextView
             android:id="@+id/dateTextView"
@@ -29,6 +29,8 @@
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingStart="@dimen/activity_horizontal_margin"
             android:text="05-06-2017"
+            android:textColor="@color/instruction_color"
+            app:customFont="@string/helvetica_normal"
             android:textSize="12sp" />
 
     </LinearLayout>
@@ -57,7 +59,7 @@
                     android:text="Breakfast Medication"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    app:customFont="@string/gotham_bold" />
+                    app:customFont="@string/helvetica_demi_bold" />
 
                 <com.myrescribe.ui.customesViews.CustomTextView
                     android:id="@+id/timeTextView"
@@ -65,7 +67,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
                     android:text="05:06 am"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"
+                    app:customFont="@string/helvetica_demi_bold"/>
 
             </FrameLayout>
 
@@ -90,7 +93,8 @@
                     android:layout_toStartOf="@+id/selectView"
                     android:text="Have you taken your medicines?"
                     android:textSize="14sp"
-                    app:customFont="@string/gotham_light" />
+                    android:textColor="@color/instruction_color"
+                    app:customFont="@string/helvetica_normal" />
 
                 <ImageView
                     android:id="@+id/selectView"

@@ -30,7 +30,6 @@
         android:orientation="horizontal"
         android:layout_marginLeft="@dimen/dp4"
         android:layout_marginRight="@dimen/dp4"
-        android:layout_marginBottom="@dimen/dp4"
         android:weightSum="2">
 
         <com.myrescribe.ui.customesViews.CustomTextView
@@ -48,7 +47,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/sp16"
             android:visibility="gone"
-            app:customFont="@string/gotham_bold" />
+            app:customFont="@string/helvetica_demi_bold" />
 
         <com.myrescribe.ui.customesViews.CustomTextView
             android:id="@+id/morningDoseQuantity"
@@ -61,10 +60,10 @@
             android:layout_weight="0.5"
             android:gravity="right|end"
             android:text=""
-            android:textColor="@color/black"
+            android:textColor="@color/tablet_color"
             android:textSize="@dimen/sp16"
             android:visibility="gone"
-            app:customFont="@string/gotham_light" />
+            app:customFont="@string/helvetica_light_normal" />
 
     </LinearLayout>
 
@@ -74,7 +73,6 @@
         android:orientation="horizontal"
         android:layout_marginLeft="@dimen/dp4"
         android:layout_marginRight="@dimen/dp4"
-        android:layout_marginBottom="@dimen/dp4"
         android:weightSum="2">
 
         <com.myrescribe.ui.customesViews.CustomTextView
@@ -94,7 +92,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/sp16"
             android:visibility="gone"
-            app:customFont="@string/gotham_bold" />
+            app:customFont="@string/helvetica_demi_bold" />
 
         <com.myrescribe.ui.customesViews.CustomTextView
             android:id="@+id/afternoonDoseQuantity"
@@ -107,10 +105,10 @@
             android:layout_weight="0.5"
             android:gravity="right|end"
             android:text=""
-            android:textColor="@color/black"
+            android:textColor="@color/tablet_color"
             android:textSize="@dimen/sp16"
             android:visibility="gone"
-            app:customFont="@string/gotham_light" />
+            app:customFont="@string/helvetica_normal" />
 
     </LinearLayout>
 
@@ -139,7 +137,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/sp16"
             android:visibility="gone"
-            app:customFont="@string/gotham_bold" />
+            app:customFont="@string/helvetica_demi_bold" />
 
         <com.myrescribe.ui.customesViews.CustomTextView
             android:id="@+id/nightDoseQuantity"
@@ -152,10 +150,10 @@
             android:layout_weight="0.5"
             android:gravity="right|end"
             android:text=""
-            android:textColor="@color/black"
+            android:textColor="@color/tablet_color"
             android:textSize="@dimen/sp16"
             android:visibility="gone"
-            app:customFont="@string/gotham_light" />
+            app:customFont="@string/helvetica_normal" />
 
     </LinearLayout>
 
@@ -186,7 +184,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/sp12"
             android:textStyle="bold"
-            app:customFont="@string/gotham_bold" />
+            app:customFont="@string/helvetica_demi_bold" />
 
         <com.myrescribe.ui.customesViews.CustomTextView
             android:id="@+id/tv_instructions"
@@ -199,9 +197,9 @@
             android:layout_marginStart="@dimen/dp4"
             android:layout_marginTop="@dimen/dp6"
             android:layout_weight="1"
-            android:textColor="@color/black"
+            android:textColor="@color/instruction_color"
             android:textSize="@dimen/sp14"
-            app:customFont="@string/gotham_light" />
+            app:customFont="@string/helvetica_normal" />
 
     </LinearLayout>
 

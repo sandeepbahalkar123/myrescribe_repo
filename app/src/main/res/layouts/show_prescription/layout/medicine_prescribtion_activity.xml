@@ -30,7 +30,7 @@
                 android:layout_weight="2"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp16"
-                app:customFont="@string/gotham_bold"
+                app:customFont="@string/helvetica_demi_bold"
 
                 />
 
@@ -52,7 +52,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp14"
                 android:textStyle="bold"
-                app:customFont="@string/gotham_bold"
+                app:customFont="@string/helvetica_demi_bold"
 
                 />
         </LinearLayout>
@@ -68,10 +68,10 @@
                 android:layout_marginLeft="@dimen/dp12"
                 android:layout_marginRight="@dimen/dp6"
                 android:layout_weight="0.5"
-                android:text="@string/tablet"
-                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textColor="@color/tablet_color"
                 android:textSize="@dimen/sp14"
-                app:customFont="@string/gotham_light" />
+                app:customFont="@string/helvetica_normal" />
 
 
 
@@ -92,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
                 android:orientation="horizontal"
                 >
 
@@ -100,7 +100,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp6"
-                    android:layout_marginBottom="@dimen/dp6"
                     android:layout_marginRight="@dimen/dp2"
                     android:layout_marginLeft="@dimen/dp2"
                     android:visibility="visible"
@@ -113,14 +112,13 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:scaleType="centerInside"
-                        android:src="@mipmap/breakfast" />
+                        />
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp6"
-                    android:layout_marginBottom="@dimen/dp6"
                     android:layout_marginRight="@dimen/dp2"
                     android:layout_marginLeft="@dimen/dp2"
                     android:visibility="visible"
@@ -133,14 +131,13 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:scaleType="centerInside"
-                        android:src="@mipmap/lunch" />
+                         />
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp6"
-                    android:layout_marginBottom="@dimen/dp6"
                     android:layout_marginRight="@dimen/dp2"
                     android:layout_marginLeft="@dimen/dp2"
                     android:visibility="visible"
@@ -152,22 +149,21 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:scaleType="centerInside"
-                        android:src="@mipmap/night" />
+                        />
                 </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:orientation="horizontal">
 
 
                 <View
                     android:layout_width="@dimen/dp05"
-                    android:layout_height="match_parent"
+                    android:layout_height="@dimen/dp50"
                     android:layout_marginTop="@dimen/dp6"
-                    android:layout_marginBottom="@dimen/dp6"
                     android:layout_marginRight="@dimen/dp8"
                     android:background="@color/grey" />
 
@@ -201,7 +197,7 @@
                         android:layout_marginTop="@dimen/dp6"
                         android:layout_gravity="center_vertical"
                         android:textSize="@dimen/sp12"
-                        app:customFont="@string/gotham_bold" />
+                        app:customFont="@string/helvetica_demi_bold" />
 
                     <com.myrescribe.ui.customesViews.CustomTextView
                         android:id="@+id/doseSlot"
@@ -212,7 +208,7 @@
                         android:layout_marginRight="@dimen/dp6"
                         android:layout_gravity="center_vertical"
                         android:textSize="@dimen/sp14"
-                        app:customFont="@string/gotham_bold" />
+                        app:customFont="@string/helvetica_demi_bold" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -248,7 +244,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp12"
                     android:textStyle="bold"
-                    app:customFont="@string/gotham_bold" />
+                    app:customFont="@string/helvetica_demi_bold" />
 
                 <com.myrescribe.ui.customesViews.CustomTextView
                     android:id="@+id/textViewhightlightInstructions"
@@ -259,9 +255,9 @@
                     android:layout_weight="1"
                     android:lineSpacingExtra="@dimen/dp1"
                     android:text="@string/message_text"
-                    android:textColor="@color/black"
+                    android:textColor="@color/instruction_color"
                     android:textSize="@dimen/sp14"
-                    app:customFont="@string/gotham_light" />
+                    app:customFont="@string/helvetica_normal" />
 
             </LinearLayout>
 

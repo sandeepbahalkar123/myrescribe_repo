@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,10 +48,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     private final String TAG = "MyRescribe/ShowMedicineDoseListActivity";
     Context mContext;
     private  String mGetMealTime;
-
-    public Boolean getIsclicked() {
-        return isclicked;
-    }
 
     public void setIsclicked(Boolean isclicked) {
         this.isclicked = isclicked;

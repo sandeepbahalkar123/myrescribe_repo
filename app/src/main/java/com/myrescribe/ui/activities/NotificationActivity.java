@@ -41,7 +41,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.back_andriod));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,11 +50,10 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             }
         });
 
-
         Intent intent = getIntent();
-         medicineSlot = intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT);
-         date = intent.getStringExtra(MyRescribeConstants.DATE);
-         time = intent.getStringExtra(MyRescribeConstants.TIME);
+        medicineSlot = intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT);
+        date = intent.getStringExtra(MyRescribeConstants.DATE);
+        time = intent.getStringExtra(MyRescribeConstants.TIME);
         medicine = (ArrayList<Medicine>) intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME).getSerializable(MyRescribeConstants.MEDICINE_NAME);
 
         doGetPrescriptionList();

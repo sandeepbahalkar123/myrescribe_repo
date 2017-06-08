@@ -115,6 +115,6 @@
     <string name="dinner_medication">Dinner Medication</string>
     <string name="lunch_medication">Lunch Medication</string>
     <string name="breakfast_medication">Breakfast Medication</string>
-    <string name="haveyoutakemedicine">Have you taken your medicines?</string>
+    <string name="dosage_completed">Dosage completed?</string>
 
 </resources>

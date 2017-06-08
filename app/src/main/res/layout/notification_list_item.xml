@@ -32,7 +32,7 @@
                 android:text="Yesterday"
                 android:textColor="@color/notification_header_text"
                 android:textSize="20sp"
-                app:customFont="@string/helvetica_47_light_condensed" />
+                app:customFont="@string/helvetica_normal" />
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/dateTextView"
@@ -42,7 +42,7 @@
                 android:paddingStart="@dimen/activity_horizontal_margin"
                 android:text="05-06-2017"
                 android:textSize="12sp"
-                app:customFont="@string/helvetica_47_light_condensed" />
+                app:customFont="@string/helvetica_normal" />
 
         </LinearLayout>
 

@@ -84,9 +84,9 @@
                         android:layout_centerVertical="true"
                         android:layout_toLeftOf="@+id/selectView"
                         android:layout_toStartOf="@+id/selectView"
-                        android:text="@string/haveyoutakemedicine"
+                        android:text="@string/dosage_completed"
                         android:textSize="14sp"
-                        app:customFont="@string/helvetica_47_light_condensed" />
+                        app:customFont="@string/helvetica_demi_bold" />
 
                     <CheckBox
                         android:id="@+id/selectView"

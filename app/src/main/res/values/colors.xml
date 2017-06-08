@@ -36,5 +36,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="skybluefent">#e4f3fa</color>
     <color name="divider">#91D7ED</color>
+    <color name="background_color">#F1F1F1</color>
+    <color name="notification_header_text">#04abdf</color>
 
 </resources>

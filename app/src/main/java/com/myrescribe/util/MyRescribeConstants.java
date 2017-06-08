@@ -8,8 +8,11 @@ public class MyRescribeConstants {
 
     public static final String MYRESCRIBE_LOG_FOLDER = "MyRescribe_LOG";
     public static final String MYRESCRIBE_LOG_FILE = "MyRescribe_LOG_FILE.txt";
-    public static final String MEDICINE_NAME = "MEDICINE_NAME";
-    public static final String MEDICINE_SLOT = "MEDICINE_SLOT";
+
+    public static final String MT_TABLET = "TABLET";
+    public static final String MT_SYRUP = "SYRUP";
+    public static final String MT_OINTMENT = "OINTMENT";
+
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";
     public static String BUTTON_TEXT_COLOR = "#FFFFFF";
@@ -84,6 +87,10 @@ public class MyRescribeConstants {
 
     public static final String TIME = "time";
     public static final String DATE = "date";
+    public static final String MEDICINE_NAME = "medicine_name";
+    public static final String MEDICINE_SLOT = "edicine_slot";
+    public static final String MEDICINE_TYPE = "medicine_type";
+
     public static final String BLANK = "";
     public static final String DATA = "DATA";
 

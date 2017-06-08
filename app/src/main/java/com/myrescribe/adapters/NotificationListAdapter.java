@@ -3,6 +3,7 @@ package com.myrescribe.adapters;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
+import com.myrescribe.model.Medicine;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.ui.activities.NotificationActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.util.SwipeDismissTouchListener;
 
 import java.util.ArrayList;
@@ -35,7 +38,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     private final String medicineSlot;
     private final String date;
     private final String time;
-    private final String medicineName;
+    private final ArrayList<Medicine> medicines;
 
     private ArrayList<PrescriptionData> mDataSet;
     NotificationActivity mRowClickListener;
@@ -43,7 +46,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     Boolean isPatientLogin;
     String mGetMealTime;
 
-    public NotificationListAdapter(Context context, ArrayList<PrescriptionData> dataSet, Boolean isPatientLogin, String mGetMealTime, String medicineSlot, String date, String time, String medicineName) {
+    private boolean isHeaderExpand = true;
+
+    public NotificationListAdapter(Context context, ArrayList<PrescriptionData> dataSet, Boolean isPatientLogin, String mGetMealTime, String medicineSlot, String date, String time, ArrayList<Medicine> medicines) {
         this.mDataSet = dataSet;
         this.mContext = context;
         this.isPatientLogin = isPatientLogin;
@@ -52,8 +57,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         this.medicineSlot = medicineSlot;
         this.date = date;
         this.time = time;
-        this.medicineName = medicineName;
-
+        this.medicines = medicines;
     }
 
     @Override
@@ -68,19 +72,32 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
         if (position == 0) {
             holder.headerLayout.removeAllViews();
-            addHeader(holder.headerLayout, position);
+            addHeader(holder.headerLayout);
         } else {
             holder.headerLayout.removeAllViews();
         }
 
-        holder.slotLayout.removeAllViews();
-        if (mDataSet.get(position).isDinnerThere())
-            addSlotCards(holder.slotLayout, DINNER, position);
-        if (mDataSet.get(position).isLunchThere())
-            addSlotCards(holder.slotLayout, LUNCH, position);
-        if (mDataSet.get(position).isBreakThere())
-            addSlotCards(holder.slotLayout, BREAK_FAST, position);
+        boolean isItemHeader = false;
 
+        holder.slotLayout.removeAllViews();
+        if (mDataSet.get(position).isDinnerThere()) {
+            addSlotCards(holder.slotLayout, DINNER, position);
+            isItemHeader = true;
+        }
+        if (mDataSet.get(position).isLunchThere()) {
+            addSlotCards(holder.slotLayout, LUNCH, position);
+            isItemHeader = true;
+        }
+        if (mDataSet.get(position).isBreakThere()) {
+            addSlotCards(holder.slotLayout, BREAK_FAST, position);
+            isItemHeader = true;
+        }
+
+        if (position == 0) {
+            if (isItemHeader)
+                holder.list_item.setVisibility(View.VISIBLE);
+            else holder.list_item.setVisibility(View.GONE);
+        }
     }
 
     // Added Slots
@@ -92,9 +109,12 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         CustomTextView slotTextView = (CustomTextView) view.findViewById(R.id.slotTextView);
         CustomTextView slotTimeTextView = (CustomTextView) view.findViewById(R.id.slotTimeTextView);
         CustomTextView slotQuestionTextView = (CustomTextView) view.findViewById(R.id.slotQuestionTextView);
-        CheckBox slotSelectView = (CheckBox) view.findViewById(R.id.slotSelectView);
+        CheckBox selectView = (CheckBox) view.findViewById(R.id.selectView);
         LinearLayout slotTabletListLayout = (LinearLayout) view.findViewById(R.id.slotTabletListLayout);
         CardView slotCard = (CardView) view.findViewById(R.id.slotCard);
+
+        ImageView trangleIconBottom = (ImageView) view.findViewById(R.id.trangleIconBottom);
+        ImageView trangleIconTop = (ImageView) view.findViewById(R.id.trangleIconTop);
 
         switch (slotType) {
             case DINNER:
@@ -103,10 +123,14 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 addTabletView(slotTabletListLayout, position);
                 if (mDataSet.get(position).isDinnerExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
-                    slotSelectView.setVisibility(View.GONE);
+                    selectView.setVisibility(View.INVISIBLE);
+                    trangleIconBottom.setVisibility(View.INVISIBLE);
+                    trangleIconTop.setVisibility(View.VISIBLE);
                 } else {
                     slotTabletListLayout.setVisibility(View.GONE);
-                    slotSelectView.setVisibility(View.VISIBLE);
+                    selectView.setVisibility(View.VISIBLE);
+                    trangleIconBottom.setVisibility(View.VISIBLE);
+                    trangleIconTop.setVisibility(View.INVISIBLE);
                 }
 
                 view.setOnClickListener(new View.OnClickListener() {
@@ -126,10 +150,16 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                         new SwipeDismissTouchListener.OnDismissCallback() {
                             @Override
                             public void onDismiss(View view, Object token) {
+                                if (mDataSet.size() > position)
                                 mDataSet.get(position).setDinnerThere(false);
                                 parent.removeView(view);
+                                if (position != 0) {
+                                    if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere()) {
+                                        mDataSet.remove(position);
+                                        notifyDataSetChanged();
+                                    }
+                                } else notifyItemChanged(position);
                                 CommonMethods.showToast(mContext, "Removed " + slotType);
-                                notifyItemChanged(position);
                             }
                         });
 
@@ -141,10 +171,15 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 addTabletView(slotTabletListLayout, position);
                 if (mDataSet.get(position).isLunchExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
-                    slotSelectView.setVisibility(View.GONE);
+                    selectView.setVisibility(View.INVISIBLE);
+                    trangleIconBottom.setVisibility(View.INVISIBLE);
+                    trangleIconTop.setVisibility(View.VISIBLE);
+
                 } else {
                     slotTabletListLayout.setVisibility(View.GONE);
-                    slotSelectView.setVisibility(View.VISIBLE);
+                    selectView.setVisibility(View.VISIBLE);
+                    trangleIconBottom.setVisibility(View.VISIBLE);
+                    trangleIconTop.setVisibility(View.INVISIBLE);
                 }
 
                 view.setOnClickListener(new View.OnClickListener() {
@@ -164,10 +199,16 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                         new SwipeDismissTouchListener.OnDismissCallback() {
                             @Override
                             public void onDismiss(View view, Object token) {
+                                if (mDataSet.size() > position)
                                 mDataSet.get(position).setLunchThere(false);
                                 parent.removeView(view);
+                                if (position != 0) {
+                                    if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere()) {
+                                        mDataSet.remove(position);
+                                        notifyDataSetChanged();
+                                    }
+                                } else notifyItemChanged(position);
                                 CommonMethods.showToast(mContext, "Removed " + slotType);
-                                notifyItemChanged(position);
                             }
                         }));
                 break;
@@ -177,10 +218,14 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 addTabletView(slotTabletListLayout, position);
                 if (mDataSet.get(position).isBreakFastExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
-                    slotSelectView.setVisibility(View.GONE);
+                    selectView.setVisibility(View.INVISIBLE);
+                    trangleIconBottom.setVisibility(View.INVISIBLE);
+                    trangleIconTop.setVisibility(View.VISIBLE);
                 } else {
                     slotTabletListLayout.setVisibility(View.GONE);
-                    slotSelectView.setVisibility(View.VISIBLE);
+                    selectView.setVisibility(View.VISIBLE);
+                    trangleIconBottom.setVisibility(View.VISIBLE);
+                    trangleIconTop.setVisibility(View.INVISIBLE);
                 }
 
                 view.setOnClickListener(new View.OnClickListener() {
@@ -200,10 +245,16 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                         new SwipeDismissTouchListener.OnDismissCallback() {
                             @Override
                             public void onDismiss(View view, Object token) {
+                                if (mDataSet.size() > position)
                                 mDataSet.get(position).setBreakThere(false);
                                 parent.removeView(view);
+                                if (position != 0) {
+                                    if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere()) {
+                                        mDataSet.remove(position);
+                                        notifyDataSetChanged();
+                                    }
+                                } else notifyItemChanged(position);
                                 CommonMethods.showToast(mContext, "Removed " + slotType);
-                                notifyItemChanged(position);
                             }
                         }));
                 break;
@@ -213,7 +264,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
     // Added Header
 
-    private void addHeader(ViewGroup parent, int position) {
+    private void addHeader(ViewGroup parent) {
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.notification_header, parent, false);
 
@@ -225,25 +276,104 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         timeTextView.setText(time);
         dateTextView.setText(date);
 
-        addTabletView((LinearLayout) view.findViewById(R.id.tabletListLayout), position);
+        final LinearLayout tabletListLayout = (LinearLayout) view.findViewById(R.id.tabletListLayout);
+        final CheckBox selectView = (CheckBox) view.findViewById(R.id.selectView);
+        final ImageView trangleIconBottom = (ImageView) view.findViewById(R.id.trangleIconBottom);
+        final ImageView trangleIconTop = (ImageView) view.findViewById(R.id.trangleIconTop);
+
+        addHeaderTabletView(tabletListLayout, medicines);
+
+        if (isHeaderExpand) {
+            tabletListLayout.setVisibility(View.VISIBLE);
+            selectView.setVisibility(View.INVISIBLE);
+            trangleIconBottom.setVisibility(View.INVISIBLE);
+            trangleIconTop.setVisibility(View.VISIBLE);
+        } else {
+            tabletListLayout.setVisibility(View.GONE);
+            selectView.setVisibility(View.VISIBLE);
+            trangleIconBottom.setVisibility(View.VISIBLE);
+            trangleIconTop.setVisibility(View.INVISIBLE);
+        }
+
+        parent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isHeaderExpand) {
+                    tabletListLayout.setVisibility(View.GONE);
+                    selectView.setVisibility(View.VISIBLE);
+                    trangleIconBottom.setVisibility(View.VISIBLE);
+                    trangleIconTop.setVisibility(View.INVISIBLE);
+                    isHeaderExpand = false;
+                } else {
+                    tabletListLayout.setVisibility(View.VISIBLE);
+                    selectView.setVisibility(View.INVISIBLE);
+                    trangleIconBottom.setVisibility(View.INVISIBLE);
+                    trangleIconTop.setVisibility(View.VISIBLE);
+                    isHeaderExpand = true;
+                }
+            }
+        });
+
         parent.addView(view);
     }
 
     // Added Tablet View
 
-    private void addTabletView(final ViewGroup parent, final int position) {
-        for (int i = 0; i < 2; i++) {
+    private void addTabletView(final ViewGroup parent, int position) {
+        for (int i = 0; i < medicines.size(); i++) {
             View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.tablet_list, parent, false);
 
-            final CheckBox selectViewTab = (CheckBox) view.findViewById(R.id.selectViewTab);
+            CheckBox selectViewTab = (CheckBox) view.findViewById(R.id.selectViewTab);
             ImageView tabTypeView = (ImageView) view.findViewById(R.id.tabTypeView);
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
+            TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
 
-            if (i % 2 == 0) {
-                tabTypeView.setImageResource(R.drawable.tablet);
-                tabNameTextView.setText("Metrogyl");
+            switch (medicines.get(i).getMedicineType()) {
+                case MyRescribeConstants.MT_SYRUP:
+                    tabTypeView.setImageResource(R.drawable.syrup_01);
+                    break;
+
+                case MyRescribeConstants.MT_TABLET:
+                    tabTypeView.setImageResource(R.drawable.tablet);
+                    break;
             }
+
+            tabNameTextView.setText(medicines.get(i).getMedicineName());
+            tabCountTextView.setText(medicines.get(i).getMedicineCount());
+
+            selectViewTab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    CommonMethods.showToast(mContext, "Checked in " + position + " " + selectViewTab.isChecked());
+                }
+            });
+            parent.addView(view);
+        }
+    }
+
+    private void addHeaderTabletView(final ViewGroup parent, final ArrayList<Medicine> medicines) {
+        for (int i = 0; i < medicines.size(); i++) {
+            View view = LayoutInflater.from(mContext)
+                    .inflate(R.layout.tablet_list, parent, false);
+
+            CheckBox selectViewTab = (CheckBox) view.findViewById(R.id.selectViewTab);
+            ImageView tabTypeView = (ImageView) view.findViewById(R.id.tabTypeView);
+            TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
+            TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
+
+            switch (medicines.get(i).getMedicineType()) {
+                case MyRescribeConstants.MT_SYRUP:
+                    tabTypeView.setImageResource(R.drawable.syrup_01);
+                    break;
+
+                case MyRescribeConstants.MT_TABLET:
+                    tabTypeView.setImageResource(R.drawable.tablet);
+                    break;
+            }
+
+            tabNameTextView.setText(medicines.get(i).getMedicineName());
+            tabCountTextView.setText(medicines.get(i).getMedicineCount());
 
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -273,6 +403,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         @BindView(R.id.headerLayout)
         LinearLayout headerLayout;
 
+        @BindView(R.id.list_item)
+        LinearLayout list_item;
+
         @BindView(R.id.slotLayout)
         LinearLayout slotLayout;
 
@@ -281,9 +414,12 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         @BindView(R.id.dateTextView)
         CustomTextView dateTextView;
 
+        View view;
+
         ListViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            this.view = view;
         }
     }
 }

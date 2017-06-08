@@ -1,5 +1,6 @@
 package com.myrescribe.util;
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -152,6 +153,7 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
                 }
 
                 if (mSwiping) {
+
                     mTranslationX = deltaX;
                     setTranslationX(mView, deltaX);
                     // TODO: use an ease-out interpolator or such

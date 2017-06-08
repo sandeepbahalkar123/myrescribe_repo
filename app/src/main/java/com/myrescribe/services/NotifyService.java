@@ -52,8 +52,8 @@ public class NotifyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("LocalService", "Received start id " + startId + ": " + intent);
-
+        Log.i("LocalService", "Received start id " + startId + ": " + intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
+        Log.i("LocalService", "Received start id " + ": " + intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME).getSerializable(MyRescribeConstants.MEDICINE_NAME));
         // If this service was started by out AlarmTask intent then we want to show our notification
         if (intent.getBooleanExtra(INTENT_NOTIFY, false))
             CustomNotification(intent);
@@ -77,21 +77,19 @@ public class NotifyService extends Service {
                 R.layout.notification_layout);
 
         Intent mNotifyYesIntent = new Intent(this, YesClickReceiver.class);
-        mNotifyYesIntent.putExtra("action", intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
+        mNotifyYesIntent.putExtra(MyRescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
         mNotifyYesIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.ButtonYes, mYesPendingIntent);
-
 
         Intent mNotifyNoIntent = new Intent(this, NoClickReceiver.class);
         mNotifyNoIntent.putExtra(MyRescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
         mNotifyNoIntent.putExtra(MyRescribeConstants.DATE, intentData.getStringExtra(MyRescribeConstants.DATE));
         mNotifyNoIntent.putExtra(MyRescribeConstants.TIME, intentData.getStringExtra(MyRescribeConstants.TIME));
-        mNotifyNoIntent.putExtra(MyRescribeConstants.MEDICINE_NAME, intentData.getStringExtra(MyRescribeConstants.MEDICINE_NAME));
+        mNotifyNoIntent.putExtra(MyRescribeConstants.MEDICINE_NAME, intentData.getBundleExtra(MyRescribeConstants.MEDICINE_NAME));
         mNotifyNoIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
-
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 // Set Icon

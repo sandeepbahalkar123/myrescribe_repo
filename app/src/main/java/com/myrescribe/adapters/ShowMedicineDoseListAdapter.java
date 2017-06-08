@@ -194,7 +194,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         //if current timeOfDosage is within breakfast timeOfDosage ie. 7 am to 11 am then breakfast image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.break_fast))) {
-            holder.mHightLightMorningDose.setBackground(mContext.getResources().getDrawable(R.mipmap.highlight));
+            holder.mHightLightMorningDose.setImageResource(R.mipmap.breakfast_highlighted);
             holder.mDosePeriod.setText(timeOfDosage);
             holder.mDoseQuantityNumber.setText(doseQuantity);
             holder.mDoseSlot.setText(showBreakFastLabel);
@@ -204,6 +204,8 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             } else {
                 holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp40));
             }
+        }else{
+            holder.mHightLightMorningDose.setImageResource(R.mipmap.breakfast);
         }
         //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
         if (doseQuantity.contains("/")) {
@@ -252,7 +254,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         //if current timeOfDosage is within durationOfLunch timeOfDosage ie. 11 am to 3 pm then durationOfLunch image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.mlunch))) {
-            holder.mHightLightAfternoonDose.setBackground(mContext.getResources().getDrawable(R.mipmap.highlight));
+            holder.mHightLightAfternoonDose.setImageResource(R.mipmap.lunch_highlighted);
             holder.mDosePeriod.setText(timeOfDosage);
             holder.mDoseQuantityNumber.setText(doseQuantity);
             holder.mDoseSlot.setText(showBreakFastLabel);
@@ -262,6 +264,8 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             } else {
                 holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX,mContext.getResources().getDimension(R.dimen.sp40));
             }
+        }else{
+            holder.mHightLightAfternoonDose.setImageResource(R.mipmap.lunch);
         }
         //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
         if (doseQuantity.contains("/")) {
@@ -273,7 +277,8 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         holder.mShowAfterNoonFullFormOfDose.setText(durationOfLunch);
         holder.mLunchDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + " " + mContext.getString(R.string.tablet) + mContext.getString(R.string.closing_brace));
 
-        //****************************************Dinner********************************************
+        //************************************phora@146
+        // AmAAmAAmlA****Dinner********************************************
 
         quantityOfDose = "";
         timeOfDosage = "";
@@ -309,7 +314,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         //if current timeOfDosage is within durationOfDinner timeOfDosage ie. 7 pm to 11 pm then durationOfDinner image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.mdinner))) {
-            holder.mHightLightNightDose.setBackground(mContext.getResources().getDrawable(R.mipmap.highlight));
+            holder.mHightLightNightDose.setImageResource(R.mipmap.dinner_highlighted);
             holder.mDosePeriod.setText(timeOfDosage);
             holder.mDoseQuantityNumber.setText(doseQuantity);
             holder.mDoseSlot.setText(showBreakFastLabel);
@@ -319,6 +324,8 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             } else {
                 holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp40));
             }
+        }else{
+            holder.mHightLightNightDose.setImageResource(R.mipmap.night);
         }
         //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
         if (doseQuantity.contains("/")) {

@@ -243,4 +243,53 @@ public class PrescriptionData {
     public void setDays(String days) {
         this.days = days;
     }
+
+    public String getMedicineTypeAbbreviation(String medicineTypeName) {
+        String abbreviation = medicineTypeName;
+        if (medicineTypeName.equalsIgnoreCase("syrup")) {
+            abbreviation = "SYP";
+        } else if (medicineTypeName.equalsIgnoreCase("Tablet")) {
+            abbreviation = "tab";
+        } else if (medicineTypeName.equalsIgnoreCase("Capsule")) {
+            abbreviation = "cap";
+        } else if (medicineTypeName.equalsIgnoreCase("injection")) {
+            abbreviation = "inj";
+        } else if (medicineTypeName.equalsIgnoreCase("insulin")) {
+            abbreviation = "INS";
+        } else if (medicineTypeName.equalsIgnoreCase("Inhaler")) {
+            abbreviation = "INH";
+        } else if (medicineTypeName.equalsIgnoreCase("liquid")) {
+            abbreviation = "liq";
+        } else if (medicineTypeName.equalsIgnoreCase("tan")) {
+            abbreviation = "tan";
+        } else if (medicineTypeName.equalsIgnoreCase("cream")) {
+            abbreviation = "CRM";
+        } else if (medicineTypeName.equalsIgnoreCase("jelly")) {
+            abbreviation = "JEL";
+        } else if (medicineTypeName.equalsIgnoreCase("local application")) {
+            abbreviation = "LAP";
+        } else if (medicineTypeName.equalsIgnoreCase("ointment")) {
+            abbreviation = "ONT";
+        } else if (medicineTypeName.equalsIgnoreCase("lotion")) {
+            abbreviation = "LOT";
+        } else if (medicineTypeName.equalsIgnoreCase("drops")) {
+            abbreviation = "DRP";
+        } else if (medicineTypeName.equalsIgnoreCase("eye drops")) {
+            abbreviation = "eDRP";
+        } else if (medicineTypeName.equalsIgnoreCase("nasal drops")) {
+            abbreviation = "nDRP";
+        } else if (medicineTypeName.equalsIgnoreCase("nasal spray")) {
+            abbreviation = "nSPRY";
+        } else if (medicineTypeName.equalsIgnoreCase("ointment/powder")) {
+            abbreviation = "pow";
+        } else if (medicineTypeName.equalsIgnoreCase("respules")) {
+            abbreviation = "RES";
+        } else if (medicineTypeName.equalsIgnoreCase("rotacaps")) {
+            abbreviation = "ROTA";
+        } else if (medicineTypeName.equalsIgnoreCase("sachet")) {
+            abbreviation = "sach";
+        }
+        return abbreviation;
+    }
+
 }

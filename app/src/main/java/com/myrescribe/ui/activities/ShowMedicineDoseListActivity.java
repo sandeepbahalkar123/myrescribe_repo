@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.myrescribe.R;
@@ -56,6 +57,9 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     @BindView(R.id.recyclerViewShowMedicineDoseList)
     RecyclerView mRecyclerView;
+
+    @BindView(R.id.backArrow)
+    ImageView mBackArrow;
 
     private PrescriptionHelper mPrescriptionHelper;
 
@@ -122,6 +126,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
+        mBackArrow.setOnClickListener(this);
     }
 
     @Override
@@ -195,6 +200,10 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.backArrow:
+                finish();
+                break;
+        }
     }
 }

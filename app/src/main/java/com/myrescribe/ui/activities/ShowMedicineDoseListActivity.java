@@ -51,16 +51,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @BindView(R.id.toolbar)
     LinearLayout mToolbar;
 
-   /* @BindView(R.id.searchByPatientName)
-    EditText mSearchByPatientName;
-
-    @BindView(R.id.showAppName)
-    TextView mShowAppName;
-
-    @BindView(R.id.search)
-    ImageView mSearchIcon;*/
-
-
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
 
@@ -82,54 +72,17 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
         initializeVariables();
         bindView();
-        //onTextChanged();
         doGetPrescriptionList();
-
         Calendar c = Calendar.getInstance();
         int hour24 = c.get(Calendar.HOUR_OF_DAY);
         int Min = c.get(Calendar.MINUTE);
         mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
     }
 
-   /* private void onTextChanged() {
-        mSearchByPatientName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String newText = mSearchByPatientName.getText().toString();
-                if (TextUtils.isEmpty(newText)) {
-                    mAdapter.filter("");
-                } else {
-                    mAdapter.filter(newText);
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String newText1 = mSearchByPatientName.getText().toString();
-                if (TextUtils.isEmpty(newText1)) {
-                    mAdapter.filter("");
-                } else {
-                    mAdapter.filter(newText1);
-                }
-
-            }
-        });
-    }
-<<<<<<< HEAD
-*/
-
     private void notificationForMedicine(ArrayList<PrescriptionData> data) {
-
         String breakFast = "9:17 AM";
         String lunchTime = "9:19 AM";
         String dinnerTime = "9:21 AM";
-
         AppDBHelper appDBHelper = new AppDBHelper(ShowMedicineDoseListActivity.this);
         Cursor cursor = appDBHelper.getPreferences("1");
         if (cursor.moveToFirst()) {
@@ -165,22 +118,10 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     }
 
     private void bindView() {
-
-        //setSupportActionBar(mToolbar);
-
-       /* ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.addDrawerListener(toggle);
-        toggle.syncState();
-        toggle.setDrawerIndicatorEnabled(false);
-        toggle.setHomeAsUpIndicator(getResources().getDrawable(R.drawable.back));*/
         mNavigationView.setNavigationItemSelectedListener(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        //mSearchIcon.setOnClickListener(this);
-
-
     }
 
     @Override
@@ -191,28 +132,8 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //Search Function to search particular prescribed medicine
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.main, menu);
-
-        MenuItem myActionMenuItem = menu.findItem(R.id.search);
-        final SearchView searchView = (SearchView) myActionMenuItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (TextUtils.isEmpty(newText)) {
-                    mAdapter.filter("");
-                } else {
-                    mAdapter.filter(newText);
-                }
-                return true;
-            }
-        });
 
         return true;
 
@@ -232,11 +153,8 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
        /* if (id == R.id.nav_camera) {
             // Handle the camera action
         }  */
-
-
         return true;
     }
-
 
     private void doGetPrescriptionList() {
         mPrescriptionHelper.doGetPrescriptionList();
@@ -277,23 +195,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-      /*  switch (v.getId()) {
-            //onclick on floating button
-            case R.id.search:
-                if (!isclicked) {
-                    mSearchByPatientName.setVisibility(View.VISIBLE);
-                    mShowAppName.setVisibility(View.GONE);
-                    mSearchIcon.setImageResource(R.drawable.cross);
-                    setIsclicked(true);
-                } else {
-                    mSearchByPatientName.setVisibility(View.GONE);
-                    mShowAppName.setVisibility(View.VISIBLE);
-                    mSearchIcon.setImageResource(R.mipmap.search);
-                    mSearchByPatientName.setText("");
-                    setIsclicked(false);
-                }
-                break;
-        }*/
 
     }
 }

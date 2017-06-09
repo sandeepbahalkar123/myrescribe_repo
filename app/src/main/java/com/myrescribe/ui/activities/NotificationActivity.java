@@ -23,7 +23,7 @@ import com.myrescribe.util.MyRescribeConstants;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class NotificationActivity extends AppCompatActivity implements HelperResponse, ShowMedicineDoseListAdapter.RowClickListener {
+public class NotificationActivity extends AppCompatActivity implements HelperResponse{
 
     private RecyclerView recycler;
     private NotificationListAdapter mAdapter;
@@ -68,10 +68,6 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
     }
 
-    @Override
-    public void onRowClicked(ArrayList<PrescriptionData> dataObjects, int position, View v, String mClickCodes) {
-
-    }
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {

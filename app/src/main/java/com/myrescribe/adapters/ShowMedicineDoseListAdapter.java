@@ -9,16 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.myrescribe.R;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.ui.customesViews.CustomTextView;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /**
  * Created by jeetal on 10/5/17.
@@ -27,10 +27,9 @@ import java.util.Locale;
 public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedicineDoseListAdapter.ListViewHolder> {
 
     private ArrayList<PrescriptionData> mPrescriptionData;
-    RowClickListener mRowClickListener;
-    Context mContext;
-    Boolean isPatientLogin;
-    String mGetMealTime;
+    private Context mContext;
+    private Boolean isPatientLogin;
+    private String mGetMealTime;
     private List<PrescriptionData> mSearchListByMedicineName;
 
 
@@ -42,54 +41,69 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         this.mSearchListByMedicineName = new ArrayList<>();
         this.mSearchListByMedicineName.addAll(mPrescriptionData);
     }
+    static class ListViewHolder extends RecyclerView.ViewHolder {
 
-    public class ListViewHolder extends RecyclerView.ViewHolder {
-        TextView mTextViewInstructions;
-        CustomTextView mTextviewNameOfMedicine;
-        TextView mTextviewTabletLabel;
-        View mExpandLayout;
-        CardView mCardViewLayout;
+        @BindView(R.id.imageViewUpArrow)
         ImageView mUpIcon;
+        @BindView(R.id.imageViewdownArrow)
         ImageView mdownIcon;
-        RelativeLayout mRelativeLayoutShowBreakfastIcon, mRelativeLayoutShowLunchIcon, mRelativeLayoutShowDinnerIcon;
+        @BindView(R.id.tv_instructions)
+        TextView mTextViewInstructions;
+        @BindView(R.id.detailedInstructions)
         LinearLayout mDetailedInstructions;
-        TextView mDays;
-        TextView mDosePeriod, mDoseQuantityNumber, mDoseSlot;
+        @BindView(R.id.medicineName)
+        TextView mTextviewNameOfMedicine;
+        @BindView(R.id.textviewTabletLabel)
+        TextView mTextviewTabletLabel;
+        @BindView(R.id.expandPrescriptionView)
+        View mExpandLayout;
+        @BindView(R.id.textViewhightlightInstructions)
+        TextView mTextViewhightlightInstructions;
+        @BindView(R.id.highlightedInstructionView)
         LinearLayout mHighlightedInstructionView;
-        CustomTextView mTextViewhightlightInstructions;
-        TextView mShowMorningFullFormOfDose, mShowAfterNoonFullFormOfDose, mShowNightFullFormOfDose;
-        TextView mMorningDoseQuanity, mLunchDoseQuantity, mDinnerDoseQuantity;
-        ImageView mHightLightMorningDose, mHightLightAfternoonDose, mHightLightNightDose;
+        @BindView(R.id.days)
+        TextView mDays;
+        @BindView(R.id.morningDose)
+        TextView mShowMorningFullFormOfDose;
+        @BindView(R.id.afternoonDose)
+        TextView mShowAfterNoonFullFormOfDose;
+        @BindView(R.id.nightDose)
+        TextView mShowNightFullFormOfDose;
+        @BindView(R.id.morningDoseQuantity)
+        TextView mMorningDoseQuanity;
+        @BindView(R.id.card_view)
+        CardView mCardViewLayout;
+        @BindView(R.id.afternoonDoseQuantity)
+        TextView mLunchDoseQuantity;
+        @BindView(R.id.nightDoseQuantity)
+        TextView mDinnerDoseQuantity;
+        @BindView(R.id.imageViewMorningDose)
+        ImageView mHightLightMorningDose;
+        @BindView(R.id.imageViewAfternoonDose)
+        ImageView mHightLightAfternoonDose;
+        @BindView(R.id.imageViewNightDose)
+        ImageView mHightLightNightDose;
+        @BindView(R.id.dosePeriod)
+        TextView mDosePeriod;
+        @BindView(R.id.doseQuantityNumber)
+        TextView mDoseQuantityNumber;
+        @BindView(R.id.doseSlot)
+        TextView mDoseSlot;
+        @BindView(R.id.showMorningDosage)
+        LinearLayout mShowMorningDosage;
+        @BindView(R.id.showAfternoonDosage)
+        LinearLayout mShowAfternoonDosage;
+        @BindView(R.id.showEveningDosage)
+        LinearLayout mShowEveningDosage;
+        View view;
 
-        public ListViewHolder(View view) {
+        ListViewHolder(View view) {
             super(view);
-            mUpIcon = (ImageView) view.findViewById(R.id.imageViewUpArrow);
-            mdownIcon = (ImageView) view.findViewById(R.id.imageViewdownArrow);
-            mTextViewInstructions = (TextView) view.findViewById(R.id.tv_instructions);
-            mDetailedInstructions = (LinearLayout) view.findViewById(R.id.detailedInstructions);
-            mTextviewNameOfMedicine = (CustomTextView) view.findViewById(R.id.medicineName);
-            mTextviewTabletLabel = (TextView) view.findViewById(R.id.textviewTabletLabel);
-            mExpandLayout = (View) view.findViewById(R.id.expandPrescriptionView);
-            mTextViewhightlightInstructions = (CustomTextView) view.findViewById(R.id.textViewhightlightInstructions);
-            mHighlightedInstructionView = (LinearLayout) view.findViewById(R.id.highlightedInstructionView);
-            mCardViewLayout = (CardView) view.findViewById(R.id.card_view);
-            mDays = (TextView) view.findViewById(R.id.days);
-            mShowMorningFullFormOfDose = (TextView) view.findViewById(R.id.morningDose);
-            mShowAfterNoonFullFormOfDose = (TextView) view.findViewById(R.id.afternoonDose);
-            mShowNightFullFormOfDose = (TextView) view.findViewById(R.id.nightDose);
-            mMorningDoseQuanity = (TextView) view.findViewById(R.id.morningDoseQuantity);
-            mLunchDoseQuantity = (TextView) view.findViewById(R.id.afternoonDoseQuantity);
-            mDinnerDoseQuantity = (TextView) view.findViewById(R.id.nightDoseQuantity);
-
-            mHightLightMorningDose = (ImageView) view.findViewById(R.id.imageViewMorningDose);
-            mHightLightAfternoonDose = (ImageView) view.findViewById(R.id.imageViewAfternoonDose);
-            mHightLightNightDose = (ImageView) view.findViewById(R.id.imageViewNightDose);
-            mDosePeriod = (TextView) view.findViewById(R.id.dosePeriod);
-            mDoseQuantityNumber = (TextView) view.findViewById(R.id.doseQuantityNumber);
-            mDoseSlot = (TextView) view.findViewById(R.id.doseSlot);
-
+            ButterKnife.bind(this, view);
+            this.view = view;
         }
     }
+
 
     @Override
     public ShowMedicineDoseListAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -133,17 +147,16 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
                 notifyDataSetChanged();
             }
         });
-        holder.mTextviewNameOfMedicine.setText("" + prescriptionDataObject.getMedicineName());
-        holder.mTextviewTabletLabel.setText("" + prescriptionDataObject.getMedicineTypeName() + " (" + prescriptionDataObject.getDosage() + ")");
+        holder.mTextviewNameOfMedicine.setText( prescriptionDataObject.getMedicineName());
+        holder.mTextviewTabletLabel.setText(prescriptionDataObject.getMedicineTypeName() + " (" + prescriptionDataObject.getDosage() + ")");
         if (prescriptionDataObject.getInstruction().equals("")) {
             holder.mDetailedInstructions.setVisibility(View.GONE);
-
             holder.mHighlightedInstructionView.setVisibility(View.GONE);
         } else {
             holder.mdownIcon.setVisibility(View.INVISIBLE);
             holder.mDetailedInstructions.setVisibility(View.VISIBLE);
-            holder.mTextViewInstructions.setText("" + prescriptionDataObject.getInstruction());
-            holder.mTextViewhightlightInstructions.setText("" + prescriptionDataObject.getInstruction());
+            holder.mTextViewInstructions.setText(prescriptionDataObject.getInstruction());
+            holder.mTextViewhightlightInstructions.setText(prescriptionDataObject.getInstruction());
         }
 
         if (Integer.parseInt(prescriptionDataObject.getDays()) > 1) {
@@ -182,12 +195,10 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         if (quantityOfDose.isEmpty()) {
             holder.mHightLightMorningDose.setVisibility(View.GONE);
-            holder.mShowMorningFullFormOfDose.setVisibility(View.GONE);
-            holder.mMorningDoseQuanity.setVisibility(View.GONE);
+           holder.mShowMorningDosage.setVisibility(View.GONE);
         } else {
             holder.mHightLightMorningDose.setVisibility(View.VISIBLE);
-            holder.mShowMorningFullFormOfDose.setVisibility(View.VISIBLE);
-            holder.mMorningDoseQuanity.setVisibility(View.VISIBLE);
+            holder.mShowMorningDosage.setVisibility(View.VISIBLE);
         }
         //if current timeOfDosage is within breakfast timeOfDosage ie. 7 am to 11 am then breakfast image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.break_fast))) {
@@ -240,14 +251,12 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         if (quantityOfDose.isEmpty()) {
             holder.mHightLightAfternoonDose.setVisibility(View.GONE);
-            holder.mShowAfterNoonFullFormOfDose.setVisibility(View.GONE);
-            holder.mLunchDoseQuantity.setVisibility(View.GONE);
+            holder.mShowAfternoonDosage.setVisibility(View.GONE);
 
         } else {
 
             holder.mHightLightAfternoonDose.setVisibility(View.VISIBLE);
-            holder.mLunchDoseQuantity.setVisibility(View.VISIBLE);
-            holder.mShowAfterNoonFullFormOfDose.setVisibility(View.VISIBLE);
+            holder.mShowAfternoonDosage.setVisibility(View.VISIBLE);
         }
         //if current timeOfDosage is within durationOfLunch timeOfDosage ie. 11 am to 3 pm then durationOfLunch image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.mlunch))) {
@@ -301,13 +310,10 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         if (quantityOfDose.isEmpty()) {
             holder.mHightLightNightDose.setVisibility(View.GONE);
-            holder.mDinnerDoseQuantity.setVisibility(View.GONE);
-            holder.mShowNightFullFormOfDose.setVisibility(View.GONE);
+            holder.mShowEveningDosage.setVisibility(View.GONE);
         } else {
-            holder.mShowNightFullFormOfDose.setVisibility(View.VISIBLE);
-            holder.mDinnerDoseQuantity.setVisibility(View.VISIBLE);
             holder.mHightLightNightDose.setVisibility(View.VISIBLE);
-            holder.mShowNightFullFormOfDose.setVisibility(View.VISIBLE);
+            holder.mShowEveningDosage.setVisibility(View.VISIBLE);
         }
         //if current timeOfDosage is within durationOfDinner timeOfDosage ie. 7 pm to 11 pm then durationOfDinner image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.mdinner))) {
@@ -335,32 +341,11 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         holder.mShowNightFullFormOfDose.setText(durationOfDinner);
     }
 
-    // search function to search particular medicine .
-    public void filter(String charText) {
-        charText = charText.toLowerCase(Locale.getDefault());
-        mPrescriptionData.clear();
-        if (charText.length() == 0) {
-            mPrescriptionData.addAll(mSearchListByMedicineName);
-        } else {
-            for (PrescriptionData s : mSearchListByMedicineName) {
-                if (s.getMedicineName().toLowerCase(Locale.getDefault()).contains(charText)) {
-                    mPrescriptionData.add(s);
-                }
-            }
-        }
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getItemCount() {
         return mPrescriptionData.size();
     }
 
-    public interface RowClickListener {
-        void onRowClicked(ArrayList<PrescriptionData> dataObjects, int position, View v, String mClickCodes);
-    }
 
-    public void setRowClickListener(RowClickListener mRowClickListener) {
-        this.mRowClickListener = mRowClickListener;
-    }
 }

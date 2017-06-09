@@ -4,21 +4,21 @@
     android:id="@+id/slotCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+    app:cardUseCompatPadding="true"
     app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="@dimen/activity_horizontal_margin">
+        android:paddingTop="@dimen/dp10">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/activity_horizontal_margin"
-            android:paddingStart="@dimen/activity_horizontal_margin"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin">
+            android:layout_marginBottom="@dimen/dp10"
+            android:paddingEnd="@dimen/horizontal_margin"
+            android:paddingStart="@dimen/horizontal_margin">
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/slotTextView"
@@ -27,15 +27,16 @@
                 android:text="@string/dinner_medication"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                app:customFont="@string/helvetica_77_bold_condensed" />
+                app:customFont="@string/helvetica_demi_bold" />
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/slotTimeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
-                app:customFont="@string/helvetica_77_bold_condensed"
+                app:customFont="@string/helvetica_demi_bold"
                 android:text="05:06 am"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
         </FrameLayout>
@@ -61,21 +62,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingEnd="@dimen/activity_horizontal_margin"
-                android:paddingStart="@dimen/activity_horizontal_margin">
+                android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:layout_marginBottom="@dimen/dp10"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:background="@color/divider" />
 
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin">
+                    android:paddingEnd="@dimen/horizontal_margin"
+                    android:paddingStart="@dimen/horizontal_margin"
+                    android:layout_marginBottom="@dimen/dp10">
 
                     <com.myrescribe.ui.customesViews.CustomTextView
                         android:id="@+id/slotQuestionTextView"
@@ -86,7 +89,7 @@
                         android:layout_toStartOf="@+id/selectView"
                         android:text="@string/dosage_completed"
                         android:textSize="14sp"
-                        app:customFont="@string/helvetica_demi_bold" />
+                        app:customFont="@string/helvetica_normal" />
 
                     <CheckBox
                         android:id="@+id/selectView"
@@ -95,6 +98,8 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:paddingRight="@dimen/dp10"
+                        android:paddingEnd="@dimen/dp10"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:button="@drawable/checkboxselecter"

@@ -1,6 +1,8 @@
 
 package com.myrescribe.model.prescription_response_model;
 
+import android.util.Log;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -244,7 +246,7 @@ public class PrescriptionData {
         this.days = days;
     }
 
-    public String getMedicineTypeAbbreviation(String medicineTypeName) {
+    public static String getMedicineTypeAbbreviation(String medicineTypeName) {
         String abbreviation = medicineTypeName;
         if (medicineTypeName.equalsIgnoreCase("syrup")) {
             abbreviation = "SYP";
@@ -289,7 +291,8 @@ public class PrescriptionData {
         } else if (medicineTypeName.equalsIgnoreCase("sachet")) {
             abbreviation = "sach";
         }
-        return abbreviation;
+        return abbreviation.toUpperCase();
+
     }
 
 }

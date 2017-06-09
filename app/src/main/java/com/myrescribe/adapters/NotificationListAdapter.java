@@ -277,17 +277,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
 
-            switch (medicines.get(i).getMedicineType()) {
-                case MyRescribeConstants.MT_SYRUP:
-                    tabCountTextView.setText(medicines.get(i).getMedicineCount());
-                    tabTypeView.setImageResource(R.drawable.syrup_01);
-                    break;
-
-                case MyRescribeConstants.MT_TABLET:
-                    tabCountTextView.setText(medicines.get(i).getMedicineCount());
-                    tabTypeView.setImageResource(R.drawable.tablet);
-                    break;
-            }
+            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medicines.get(i).getMedicineType(), mContext));
 
             tabNameTextView.setText(medicines.get(i).getMedicineName());
 

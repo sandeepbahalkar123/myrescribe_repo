@@ -28,22 +28,26 @@ import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
+import com.myrescribe.util.SwipeDismissTouchListener;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
-public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationListAdapter.RowClickListener {
+public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationListAdapter.OnHeaderClickListener{
 
     private RecyclerView recycler;
     private NotificationListAdapter mAdapter;
-    private PrescriptionHelper mPrescriptionHelper;
-    private String mGetMealTime;
     private String medicineSlot;
     private String date;
     private String time;
-    private ArrayList<Medicine> medicines;
+//    private ArrayList<Medicine> medicines;
     private Context mContext;
     private boolean isHeaderExpand = true;
+    private LinearLayout tabletListLayout;
+    private CheckBox selectView;
+    private ImageView trangleIconTop;
+    private ImageView trangleIconBottom;
+    private LinearLayout headerLayout;
+    private LinearLayout headerLayoutParent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +71,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         medicineSlot = intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT);
         date = intent.getStringExtra(MyRescribeConstants.DATE);
         time = intent.getStringExtra(MyRescribeConstants.TIME);
-        medicines = (ArrayList<Medicine>) intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME).getSerializable(MyRescribeConstants.MEDICINE_NAME);
+//        medicines = (ArrayList<Medicine>) intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME).getSerializable(MyRescribeConstants.MEDICINE_NAME);
 
         recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.setHasFixedSize(false);
@@ -79,9 +83,10 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
     // Added Header
 
-    private void addHeader(ArrayList<PrescriptionData> data) {
+    private void addHeader(final ArrayList<PrescriptionData> data) {
 
-        final LinearLayout headerLayout = (LinearLayout) findViewById(R.id.headerLayout);
+        headerLayout = (LinearLayout) findViewById(R.id.headerLayout);
+        headerLayoutParent = (LinearLayout) findViewById(R.id.headerLayoutParent);
 
         TextView slotTextView = (TextView) findViewById(R.id.slotTextView);
         TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
@@ -91,68 +96,113 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         timeTextView.setText(time);
         dateTextView.setText(date);
 
-        final LinearLayout tabletListLayout = (LinearLayout) findViewById(R.id.tabletListLayout);
-        final CheckBox selectView = (CheckBox) findViewById(R.id.selectView);
-        final ImageView trangleIconBottom = (ImageView) findViewById(R.id.trangleIconBottom);
-        final ImageView trangleIconTop = (ImageView) findViewById(R.id.trangleIconTop);
+        tabletListLayout = (LinearLayout) findViewById(R.id.tabletListLayout);
+        selectView = (CheckBox) findViewById(R.id.selectView);
+        trangleIconBottom = (ImageView) findViewById(R.id.trangleIconBottom);
+        trangleIconTop = (ImageView) findViewById(R.id.trangleIconTop);
 
-        addHeaderTabletView(tabletListLayout, medicines, data);
+        addHeaderTabletView(tabletListLayout, data);
 
-        /*if (isHeaderExpand) {*/
         tabletListLayout.setVisibility(View.VISIBLE);
         selectView.setVisibility(View.INVISIBLE);
         trangleIconBottom.setVisibility(View.INVISIBLE);
         trangleIconTop.setVisibility(View.VISIBLE);
-       /* } else {
-            tabletListLayout.setVisibility(View.GONE);
-            selectView.setVisibility(View.VISIBLE);
-            trangleIconBottom.setVisibility(View.VISIBLE);
-            trangleIconTop.setVisibility(View.INVISIBLE);
-        }*/
+
+        selectView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectView.isChecked())
+                    headerLayoutParent.removeView(headerLayout);
+            }
+        });
 
         headerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isHeaderExpand) {
-                    tabletListLayout.setVisibility(View.GONE);
-                    selectView.setVisibility(View.VISIBLE);
-                    trangleIconBottom.setVisibility(View.VISIBLE);
-                    trangleIconTop.setVisibility(View.INVISIBLE);
-                    isHeaderExpand = false;
+                    onHeaderCollapse();
                 } else {
+                    isHeaderExpand = true;
+                    if (mAdapter.preExpandedPos != -1) {
+                        mAdapter.collapseAll();
+                        mAdapter.notifyItemChanged(mAdapter.preExpandedPos);
+                        mAdapter.preExpandedPos = -1;
+                    }
                     tabletListLayout.setVisibility(View.VISIBLE);
                     selectView.setVisibility(View.INVISIBLE);
                     trangleIconBottom.setVisibility(View.INVISIBLE);
                     trangleIconTop.setVisibility(View.VISIBLE);
-                    isHeaderExpand = true;
                 }
             }
         });
+
+        SwipeDismissTouchListener swipeDismissTouchListener = new SwipeDismissTouchListener(
+                headerLayout,
+                null,
+                new SwipeDismissTouchListener.OnDismissCallback() {
+                    @Override
+                    public void onDismiss(View view, Object token) {
+                        headerLayoutParent.removeView(view);
+                        CommonMethods.showToast(mContext, "Removed Recent");
+                    }
+                });
+
+        headerLayout.setOnTouchListener(swipeDismissTouchListener);
     }
 
-    private void addHeaderTabletView(final ViewGroup parent, final ArrayList<Medicine> medicines, ArrayList<PrescriptionData> data) {
-        for (int i = 0; i < medicines.size(); i++) {
+    private void addHeaderTabletView(final ViewGroup parent, final ArrayList<PrescriptionData> data) {
 
-            View view = LayoutInflater.from(mContext)
+        final ArrayList<PrescriptionData> medi = new ArrayList<>();
+
+        for (int i = 0; i < data.size(); i++) {
+            if (mContext.getResources().getString(R.string.breakfast_medication).equals(medicineSlot)) {
+                if (!data.get(i).getMorningA().isEmpty() || !data.get(i).getMorningB().isEmpty()) {
+                    medi.add(data.get(i));
+                }
+            } else if (mContext.getResources().getString(R.string.lunch_medication).equals(medicineSlot)) {
+                if (!data.get(i).getLunchA().isEmpty() || !data.get(i).getLunchB().isEmpty()) {
+                    medi.add(data.get(i));
+                }
+            } else if (mContext.getResources().getString(R.string.dinner_medication).equals(medicineSlot)) {
+                if (!data.get(i).getDinnerA().isEmpty() || !data.get(i).getDinnerB().isEmpty()) {
+                    medi.add(data.get(i));
+                }
+            }
+        }
+
+        for (int i = 0; i < medi.size(); i++) {
+
+            final View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.tablet_list, parent, false);
 
-            CheckBox selectViewTab = (CheckBox) view.findViewById(R.id.selectViewTab);
+            final CheckBox selectViewTab = (CheckBox) view.findViewById(R.id.selectViewTab);
             ImageView tabTypeView = (ImageView) view.findViewById(R.id.tabTypeView);
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
 
-            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medicines.get(i).getMedicineType(), mContext));
+            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medi.get(i).getMedicineTypeName(), mContext));
 
-            tabNameTextView.setText(medicines.get(i).getMedicineName());
+            tabNameTextView.setText(medi.get(i).getMedicineName());
 
+            final int finalI = i;
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (selectViewTab.isChecked()) {
+                        medi.get(finalI).setTabSelected(true);
+                        if (getSelectedCount(medi) == medi.size())
+                            headerLayoutParent.removeView(headerLayout);
+                    } else {
+                        medi.get(finalI).setTabSelected(false);
+                    }
 //                    CommonMethods.showToast(mContext, "Checked in " + position + " " + selectViewTab.isChecked());
                 }
             });
 
-            if (mContext.getResources().getString(R.string.breakfast_medication).equals(medicineSlot)) {
+            setDose(tabCountTextView, data.get(i).getDinnerA() + data.get(i).getDinnerB(), medi.get(i));
+            parent.addView(view);
+
+           /* if (mContext.getResources().getString(R.string.breakfast_medication).equals(medicineSlot)) {
                 if (!data.get(i).getMorningA().isEmpty() || !data.get(i).getMorningB().isEmpty()) {
                     setDose(tabCountTextView, data.get(i).getMorningA() + data.get(i).getMorningB(), medicines.get(i));
                     parent.addView(view);
@@ -167,34 +217,26 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                     setDose(tabCountTextView, data.get(i).getDinnerA() + data.get(i).getDinnerB(), medicines.get(i));
                     parent.addView(view);
                 }
-            }
+            }*/
         }
     }
 
-    private void setDose(TextView tabCountTextView, String count, Medicine medicines) {
-        tabCountTextView.setText("( " + count + " " + PrescriptionData.getMedicineTypeAbbreviation(medicines.getMedicineType()) + " )");
-        /*switch (medicines.getMedicineType()) {
-            case MyRescribeConstants.MT_SYRUP:
+    private int getSelectedCount(ArrayList<PrescriptionData> data) {
+        int count = 0;
+        for (PrescriptionData prescriptionData : data) {
+            if (prescriptionData.isTabSelected())
+                count += 1;
+        }
+        return count;
+    }
 
-                break;
-
-            case MyRescribeConstants.MT_TABLET:
-                tabCountTextView.setText("( " + count + " Tab )");
-                break;
-
-            case MyRescribeConstants.MT_OINTMENT:
-                tabCountTextView.setText("( " + count + " Oin )");
-                break;
-        }*/
+    private void setDose(TextView tabCountTextView, String count, PrescriptionData prescriptionData) {
+        tabCountTextView.setText("( " + count + " " + PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + " )");
     }
 
     private void doGetPrescriptionList() {
-        mPrescriptionHelper = new PrescriptionHelper(this, this);
+        PrescriptionHelper mPrescriptionHelper = new PrescriptionHelper(this, this);
         mPrescriptionHelper.doGetPrescriptionList();
-        Calendar c = Calendar.getInstance();
-        int hour24 = c.get(Calendar.HOUR_OF_DAY);
-        int Min = c.get(Calendar.MINUTE);
-        mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
     }
 
 
@@ -207,14 +249,18 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             if (data != null) {
                 if (data.size() != 0) {
 
+                    ArrayList<PrescriptionData> notificationDummyData = new ArrayList<>();
+
                     int j = -1;
-                    for (int i = 0; i < data.size(); i++, --j)
-                        data.get(i).setDate(CommonMethods.getCalculatedDate("dd-MM-yyyy", j));
+                    for (int i = 0; i < data.size(); i++, --j) {
+                        data.get(i).setDate(CommonMethods.getCalculatedDate(MyRescribeConstants.DD_MM_YYYY, j));
+                    }
 
                     addHeader(data);
 
-                    mAdapter = new NotificationListAdapter(mContext, data, false, mGetMealTime, medicineSlot, date, getTimeArray(), medicines);
-                    mAdapter.setRowClickListener(this);
+                    notificationDummyData.addAll(data);
+
+                    mAdapter = new NotificationListAdapter(mContext, notificationDummyData, getTimeArray());
                     recycler.setAdapter(mAdapter);
                 }
             }
@@ -258,7 +304,11 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     }
 
     @Override
-    public void onRowClicked(ArrayList<PrescriptionData> dataObjects, int position, View v, String mClickCodes) {
-
+    public void onHeaderCollapse() {
+        tabletListLayout.setVisibility(View.GONE);
+        selectView.setVisibility(View.VISIBLE);
+        trangleIconBottom.setVisibility(View.VISIBLE);
+        trangleIconTop.setVisibility(View.INVISIBLE);
+        isHeaderExpand = false;
     }
 }

@@ -28,7 +28,8 @@ public class NoClickReceiver extends BroadcastReceiver {
         intentNotification.putExtra(MyRescribeConstants.DATE, intent.getStringExtra(MyRescribeConstants.DATE));
         intentNotification.putExtra(MyRescribeConstants.TIME, intent.getStringExtra(MyRescribeConstants.TIME));
         intentNotification.putExtra(MyRescribeConstants.MEDICINE_NAME, intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME));
-        intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         context.startActivity(intentNotification);
 

@@ -3,7 +3,6 @@ package com.myrescribe.adapters;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.model.Medicine;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
-import com.myrescribe.ui.activities.NotificationActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -35,29 +32,26 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     private static final String DINNER = "dinner";
     private static final String LUNCH = "lunch";
     private static final String BREAK_FAST = "breakfast";
-   /* private final String medicineSlot;
-    private final String date;*/
+
+    public int preExpandedPos = -1;
+
     private final String time[];
-    private final ArrayList<Medicine> medicines;
 
     private ArrayList<PrescriptionData> mDataSet;
-    NotificationActivity mRowClickListener;
-    Context mContext;
-    Boolean isPatientLogin;
-    String mGetMealTime;
+    private Context mContext;
 
-//    private boolean isHeaderExpand = true;
+    private OnHeaderClickListener onHeaderClickListener;
 
-    public NotificationListAdapter(Context context, ArrayList<PrescriptionData> dataSet, Boolean isPatientLogin, String mGetMealTime, String medicineSlot, String date, String time[], ArrayList<Medicine> medicines) {
+    public NotificationListAdapter(Context context, ArrayList<PrescriptionData> dataSet, String time[]) {
         this.mDataSet = dataSet;
         this.mContext = context;
-        this.isPatientLogin = isPatientLogin;
-        this.mGetMealTime = mGetMealTime;
-
-        /*this.medicineSlot = medicineSlot;
-        this.date = date;*/
         this.time = time;
-        this.medicines = medicines;
+
+        try {
+            this.onHeaderClickListener = ((OnHeaderClickListener) mContext);
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement OnHeaderClickListener.");
+        }
     }
 
     @Override
@@ -70,36 +64,18 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     @Override
     public void onBindViewHolder(final NotificationListAdapter.ListViewHolder holder, final int position) {
 
-        /*if (position == 0) {
-            holder.headerLayout.removeAllViews();
-            addHeader(holder.headerLayout);
-        } else {
-            holder.headerLayout.removeAllViews();
-        }*/
-
         holder.dateTextView.setText(mDataSet.get(position).getDate());
-        holder.titleTextView.setText(CommonMethods.getDayFromDate("dd-MM-yyyy", mDataSet.get(position).getDate()));
-
-        boolean isItemHeader = false;
+        holder.titleTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DD_MM_YYYY, mDataSet.get(position).getDate()));
 
         holder.slotLayout.removeAllViews();
         if (mDataSet.get(position).isDinnerThere()) {
             addSlotCards(holder.slotLayout, DINNER, position);
-            isItemHeader = true;
         }
         if (mDataSet.get(position).isLunchThere()) {
             addSlotCards(holder.slotLayout, LUNCH, position);
-            isItemHeader = true;
         }
         if (mDataSet.get(position).isBreakThere()) {
             addSlotCards(holder.slotLayout, BREAK_FAST, position);
-            isItemHeader = true;
-        }
-
-        if (position == 0) {
-            if (isItemHeader)
-                holder.list_item.setVisibility(View.VISIBLE);
-            else holder.list_item.setVisibility(View.GONE);
         }
     }
 
@@ -139,11 +115,19 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mDataSet.get(position).isDinnerExpanded())
+                        if (mDataSet.get(position).isDinnerExpanded()) {
                             mDataSet.get(position).setDinnerExpanded(false);
-                        else mDataSet.get(position).setDinnerExpanded(true);
+                            notifyItemChanged(position);
+                        } else {
+                            collapseAll();
+                            onHeaderClickListener.onHeaderCollapse();
+                            mDataSet.get(position).setDinnerExpanded(true);
+                            notifyItemChanged(preExpandedPos);
+                            if (preExpandedPos != position)
+                                notifyItemChanged(position);
+                            preExpandedPos = position;
+                        }
 //                        CommonMethods.showToast(mContext, "Clicked Card " + slotType);
-                        notifyItemChanged(position);
                     }
                 });
 
@@ -153,15 +137,17 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                         new SwipeDismissTouchListener.OnDismissCallback() {
                             @Override
                             public void onDismiss(View view, Object token) {
-                                if (mDataSet.size() > position)
+
                                 mDataSet.get(position).setDinnerThere(false);
                                 parent.removeView(view);
-                                if (position != 0) {
-                                    if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere()) {
-                                        mDataSet.remove(position);
-                                        notifyDataSetChanged();
-                                    }
-                                } else notifyItemChanged(position);
+
+                                if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere()) {
+                                    mDataSet.remove(position);
+                                    notifyDataSetChanged();
+                                } else {
+                                    notifyItemChanged(position);
+                                }
+
                                 CommonMethods.showToast(mContext, "Removed " + slotType);
                             }
                         });
@@ -188,11 +174,19 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mDataSet.get(position).isLunchExpanded())
+                        if (mDataSet.get(position).isLunchExpanded()) {
                             mDataSet.get(position).setLunchExpanded(false);
-                        else mDataSet.get(position).setLunchExpanded(true);
+                            notifyItemChanged(position);
+                        } else {
+                            collapseAll();
+                            onHeaderClickListener.onHeaderCollapse();
+                            mDataSet.get(position).setLunchExpanded(true);
+                            notifyItemChanged(preExpandedPos);
+                            if (preExpandedPos != position)
+                                notifyItemChanged(position);
+                            preExpandedPos = position;
+                        }
 //                        CommonMethods.showToast(mContext, "Clicked Card " + slotType);
-                        notifyItemChanged(position);
                     }
                 });
 
@@ -202,15 +196,17 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                         new SwipeDismissTouchListener.OnDismissCallback() {
                             @Override
                             public void onDismiss(View view, Object token) {
-                                if (mDataSet.size() > position)
+
                                 mDataSet.get(position).setLunchThere(false);
                                 parent.removeView(view);
-                                if (position != 0) {
-                                    if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere()) {
-                                        mDataSet.remove(position);
-                                        notifyDataSetChanged();
-                                    }
-                                } else notifyItemChanged(position);
+
+                                if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere()) {
+                                    mDataSet.remove(position);
+                                    notifyDataSetChanged();
+                                } else {
+                                    notifyItemChanged(position);
+                                }
+
                                 CommonMethods.showToast(mContext, "Removed " + slotType);
                             }
                         }));
@@ -234,11 +230,19 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mDataSet.get(position).isBreakFastExpanded())
+                        if (mDataSet.get(position).isBreakFastExpanded()) {
                             mDataSet.get(position).setBreakFastExpanded(false);
-                        else mDataSet.get(position).setBreakFastExpanded(true);
+                            notifyItemChanged(position);
+                        } else {
+                            collapseAll();
+                            onHeaderClickListener.onHeaderCollapse();
+                            mDataSet.get(position).setBreakFastExpanded(true);
+                            notifyItemChanged(preExpandedPos);
+                            if (preExpandedPos != position)
+                                notifyItemChanged(position);
+                            preExpandedPos = position;
+                        }
 //                        CommonMethods.showToast(mContext, "Clicked Card " + slotType);
-                        notifyItemChanged(position);
                     }
                 });
 
@@ -248,15 +252,17 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                         new SwipeDismissTouchListener.OnDismissCallback() {
                             @Override
                             public void onDismiss(View view, Object token) {
-                                if (mDataSet.size() > position)
+
                                 mDataSet.get(position).setBreakThere(false);
                                 parent.removeView(view);
-                                if (position != 0) {
-                                    if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere()) {
-                                        mDataSet.remove(position);
-                                        notifyDataSetChanged();
-                                    }
-                                } else notifyItemChanged(position);
+
+                                if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere()) {
+                                    mDataSet.remove(position);
+                                    notifyDataSetChanged();
+                                } else {
+                                    notifyItemChanged(position);
+                                }
+
                                 CommonMethods.showToast(mContext, "Removed " + slotType);
                             }
                         }));
@@ -265,10 +271,20 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         parent.addView(view);
     }
 
+    public void collapseAll() {
+        if (preExpandedPos == -1)
+            onHeaderClickListener.onHeaderCollapse();
+        else {
+            mDataSet.get(preExpandedPos).setBreakFastExpanded(false);
+            mDataSet.get(preExpandedPos).setLunchExpanded(false);
+            mDataSet.get(preExpandedPos).setDinnerExpanded(false);
+        }
+    }
+
     // Added Tablet View
 
     private void addTabletView(final ViewGroup parent, int position) {
-        for (int i = 0; i < medicines.size(); i++) {
+        for (int i = 0; i < mDataSet.size(); i++) {
             View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.tablet_list, parent, false);
 
@@ -277,11 +293,11 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
 
-            tabCountTextView.setText(PrescriptionData.getMedicineTypeAbbreviation(medicines.get(i).getMedicineType()));
+            tabCountTextView.setText("( " + mDataSet.get(i).getDinnerA() + mDataSet.get(i).getDinnerB() + " " + PrescriptionData.getMedicineTypeAbbreviation(mDataSet.get(i).getMedicineTypeName()) + " )");
 
-            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medicines.get(i).getMedicineType(), mContext));
+            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(mDataSet.get(i).getMedicineTypeName(), mContext));
 
-            tabNameTextView.setText(medicines.get(i).getMedicineName());
+            tabNameTextView.setText(mDataSet.get(i).getMedicineName());
 
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -298,18 +314,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         return mDataSet.size();
     }
 
-    public interface RowClickListener {
-        void onRowClicked(ArrayList<PrescriptionData> dataObjects, int position, View v, String mClickCodes);
-    }
-
-    public void setRowClickListener(NotificationActivity mRowClickListener) {
-        this.mRowClickListener = mRowClickListener;
-    }
-
     static class ListViewHolder extends RecyclerView.ViewHolder {
-
-        /*@BindView(R.id.headerLayout)
-        LinearLayout headerLayout;*/
 
         @BindView(R.id.list_item)
         LinearLayout list_item;
@@ -329,5 +334,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             ButterKnife.bind(this, view);
             this.view = view;
         }
+    }
+
+    public interface OnHeaderClickListener {
+        void onHeaderCollapse();
     }
 }

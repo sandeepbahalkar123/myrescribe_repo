@@ -35,9 +35,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     private static final String DINNER = "dinner";
     private static final String LUNCH = "lunch";
     private static final String BREAK_FAST = "breakfast";
-    private final String medicineSlot;
-    private final String date;
-    private final String time;
+   /* private final String medicineSlot;
+    private final String date;*/
+    private final String time[];
     private final ArrayList<Medicine> medicines;
 
     private ArrayList<PrescriptionData> mDataSet;
@@ -46,16 +46,16 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     Boolean isPatientLogin;
     String mGetMealTime;
 
-    private boolean isHeaderExpand = true;
+//    private boolean isHeaderExpand = true;
 
-    public NotificationListAdapter(Context context, ArrayList<PrescriptionData> dataSet, Boolean isPatientLogin, String mGetMealTime, String medicineSlot, String date, String time, ArrayList<Medicine> medicines) {
+    public NotificationListAdapter(Context context, ArrayList<PrescriptionData> dataSet, Boolean isPatientLogin, String mGetMealTime, String medicineSlot, String date, String time[], ArrayList<Medicine> medicines) {
         this.mDataSet = dataSet;
         this.mContext = context;
         this.isPatientLogin = isPatientLogin;
         this.mGetMealTime = mGetMealTime;
 
-        this.medicineSlot = medicineSlot;
-        this.date = date;
+        /*this.medicineSlot = medicineSlot;
+        this.date = date;*/
         this.time = time;
         this.medicines = medicines;
     }
@@ -70,12 +70,15 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     @Override
     public void onBindViewHolder(final NotificationListAdapter.ListViewHolder holder, final int position) {
 
-        if (position == 0) {
+        /*if (position == 0) {
             holder.headerLayout.removeAllViews();
             addHeader(holder.headerLayout);
         } else {
             holder.headerLayout.removeAllViews();
-        }
+        }*/
+
+        holder.dateTextView.setText(mDataSet.get(position).getDate());
+        holder.titleTextView.setText(CommonMethods.getDayFromDate("dd-MM-yyyy", mDataSet.get(position).getDate()));
 
         boolean isItemHeader = false;
 
@@ -119,7 +122,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         switch (slotType) {
             case DINNER:
                 slotTextView.setText(mContext.getResources().getString(R.string.dinner_medication));
-
+                slotTimeTextView.setText(time[0]);
                 addTabletView(slotTabletListLayout, position);
                 if (mDataSet.get(position).isDinnerExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
@@ -167,7 +170,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 break;
             case LUNCH:
                 slotTextView.setText(mContext.getResources().getString(R.string.lunch_medication));
-
+                slotTimeTextView.setText(time[1]);
                 addTabletView(slotTabletListLayout, position);
                 if (mDataSet.get(position).isLunchExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
@@ -214,7 +217,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 break;
             case BREAK_FAST:
                 slotTextView.setText(mContext.getResources().getString(R.string.breakfast_medication));
-
+                slotTimeTextView.setText(time[2]);
                 addTabletView(slotTabletListLayout, position);
                 if (mDataSet.get(position).isBreakFastExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
@@ -262,61 +265,6 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         parent.addView(view);
     }
 
-    // Added Header
-
-    private void addHeader(ViewGroup parent) {
-        View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.notification_header, parent, false);
-
-        TextView slotTextView = (TextView) view.findViewById(R.id.slotTextView);
-        TextView timeTextView = (TextView) view.findViewById(R.id.timeTextView);
-        TextView dateTextView = (TextView) view.findViewById(R.id.dateTextView);
-
-        slotTextView.setText(medicineSlot);
-        timeTextView.setText(time);
-        dateTextView.setText(date);
-
-        final LinearLayout tabletListLayout = (LinearLayout) view.findViewById(R.id.tabletListLayout);
-        final CheckBox selectView = (CheckBox) view.findViewById(R.id.selectView);
-        final ImageView trangleIconBottom = (ImageView) view.findViewById(R.id.trangleIconBottom);
-        final ImageView trangleIconTop = (ImageView) view.findViewById(R.id.trangleIconTop);
-
-        addHeaderTabletView(tabletListLayout, medicines);
-
-        if (isHeaderExpand) {
-            tabletListLayout.setVisibility(View.VISIBLE);
-            selectView.setVisibility(View.INVISIBLE);
-            trangleIconBottom.setVisibility(View.INVISIBLE);
-            trangleIconTop.setVisibility(View.VISIBLE);
-        } else {
-            tabletListLayout.setVisibility(View.GONE);
-            selectView.setVisibility(View.VISIBLE);
-            trangleIconBottom.setVisibility(View.VISIBLE);
-            trangleIconTop.setVisibility(View.INVISIBLE);
-        }
-
-        parent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isHeaderExpand) {
-                    tabletListLayout.setVisibility(View.GONE);
-                    selectView.setVisibility(View.VISIBLE);
-                    trangleIconBottom.setVisibility(View.VISIBLE);
-                    trangleIconTop.setVisibility(View.INVISIBLE);
-                    isHeaderExpand = false;
-                } else {
-                    tabletListLayout.setVisibility(View.VISIBLE);
-                    selectView.setVisibility(View.INVISIBLE);
-                    trangleIconBottom.setVisibility(View.INVISIBLE);
-                    trangleIconTop.setVisibility(View.VISIBLE);
-                    isHeaderExpand = true;
-                }
-            }
-        });
-
-        parent.addView(view);
-    }
-
     // Added Tablet View
 
     private void addTabletView(final ViewGroup parent, int position) {
@@ -329,51 +277,11 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
 
-            switch (medicines.get(i).getMedicineType()) {
-                case MyRescribeConstants.MT_SYRUP:
-                    tabTypeView.setImageResource(R.drawable.syrup_01);
-                    break;
+            tabCountTextView.setText(PrescriptionData.getMedicineTypeAbbreviation(medicines.get(i).getMedicineType()));
 
-                case MyRescribeConstants.MT_TABLET:
-                    tabTypeView.setImageResource(R.drawable.tablet);
-                    break;
-            }
+            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medicines.get(i).getMedicineType(), mContext));
 
             tabNameTextView.setText(medicines.get(i).getMedicineName());
-            tabCountTextView.setText(medicines.get(i).getMedicineCount());
-
-            selectViewTab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    CommonMethods.showToast(mContext, "Checked in " + position + " " + selectViewTab.isChecked());
-                }
-            });
-            parent.addView(view);
-        }
-    }
-
-    private void addHeaderTabletView(final ViewGroup parent, final ArrayList<Medicine> medicines) {
-        for (int i = 0; i < medicines.size(); i++) {
-            View view = LayoutInflater.from(mContext)
-                    .inflate(R.layout.tablet_list, parent, false);
-
-            CheckBox selectViewTab = (CheckBox) view.findViewById(R.id.selectViewTab);
-            ImageView tabTypeView = (ImageView) view.findViewById(R.id.tabTypeView);
-            TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
-            TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
-
-            switch (medicines.get(i).getMedicineType()) {
-                case MyRescribeConstants.MT_SYRUP:
-                    tabTypeView.setImageResource(R.drawable.syrup_01);
-                    break;
-
-                case MyRescribeConstants.MT_TABLET:
-                    tabTypeView.setImageResource(R.drawable.tablet);
-                    break;
-            }
-
-            tabNameTextView.setText(medicines.get(i).getMedicineName());
-            tabCountTextView.setText(medicines.get(i).getMedicineCount());
 
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -400,8 +308,8 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.headerLayout)
-        LinearLayout headerLayout;
+        /*@BindView(R.id.headerLayout)
+        LinearLayout headerLayout;*/
 
         @BindView(R.id.list_item)
         LinearLayout list_item;

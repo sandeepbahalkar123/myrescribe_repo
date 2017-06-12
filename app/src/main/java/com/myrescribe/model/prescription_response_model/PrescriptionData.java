@@ -124,7 +124,19 @@ public class PrescriptionData {
         isBreakThere = breakThere;
     }
 
-    //
+    // for date
+
+    private String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    //  End
 
     public String getId() {
         return id;

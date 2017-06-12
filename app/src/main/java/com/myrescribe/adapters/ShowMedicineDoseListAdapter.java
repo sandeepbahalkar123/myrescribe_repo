@@ -284,7 +284,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
 
         holder.mShowAfterNoonFullFormOfDose.setText(durationOfLunch);
-        holder.mLunchDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + " " + PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
+        holder.mLunchDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));//PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
 
         //************************************phora@146
         // AmAAmAAmlA****Dinner********************************************
@@ -340,7 +340,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             holder.mDinnerDoseQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp16));
         }
 
-        holder.mDinnerDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + " " + PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
+        holder.mDinnerDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace)); //PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
         holder.mShowNightFullFormOfDose.setText(durationOfDinner);
     }
 

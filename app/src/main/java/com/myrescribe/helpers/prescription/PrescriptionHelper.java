@@ -73,7 +73,7 @@ public class PrescriptionHelper implements ConnectionListener {
         Map<String, String> testParams = new HashMap<String, String>();
 
 
-        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN,"$1$OuHCdsTo$z8KnxxIQ2Ya1wKzZ45kYB0");
+        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN,"$1$VYdXbD25$6wn2jEo.odFGopaKFWlhx.");
 
 
         testParams.put(MyRescribeConstants.AUTH_KEY, "simplerestapi");

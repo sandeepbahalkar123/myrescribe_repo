@@ -37,8 +37,6 @@ public class NotifyService extends Service {
         }
     }
 
-    // Unique id to identify the notification.
-    private static final int NOTIFICATION = 123;
     // Name of an intent extra we can use to identify if this service was started to create a notification
     public static final String INTENT_NOTIFY = "com.myrescribe";
     // The system notification manager
@@ -52,8 +50,7 @@ public class NotifyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("LocalService", "Received start id " + startId + ": " + intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
-        Log.i("LocalService", "Received start id " + ": " + intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME).getSerializable(MyRescribeConstants.MEDICINE_NAME));
+
         // If this service was started by out AlarmTask intent then we want to show our notification
         if (intent.getBooleanExtra(INTENT_NOTIFY, false))
             CustomNotification(intent);
@@ -102,7 +99,7 @@ public class NotifyService extends Service {
                 .setContent(mRemoteViews);
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
-        mRemoteViews.setTextViewText(R.id.questionText, "Have you taken " + intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT) + " Medicine?");
+        mRemoteViews.setTextViewText(R.id.questionText, "Have you taken your Medicine?");
         mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.TIME));
 
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

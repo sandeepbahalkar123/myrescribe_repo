@@ -34,7 +34,7 @@
             android:id="@+id/showMedicineName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rx Medicine"
+            tools:text="Rx Medicine"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -67,15 +67,6 @@
             android:layout_height="wrap_content"
             tools:text="8:00pm"/>
 
-        <!--<CheckBox
-            android:id="@+id/ButtonYes"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:layout_margin="5dp"
-            android:button="@drawable/checkboxselecter"
-            android:textColor="@color/white" />-->
-
         <ImageView
             android:id="@+id/ButtonYes"
             android:layout_width="wrap_content"
@@ -86,15 +77,5 @@
             android:textColor="@color/white" />
 
     </LinearLayout>
-
-
-    <Button
-        android:id="@+id/ButtonNo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="No"
-        android:textColor="@color/white"
-        android:visibility="gone" />
-
 
 </RelativeLayout>

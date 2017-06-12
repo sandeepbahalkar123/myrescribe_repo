@@ -100,9 +100,9 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         cursor.close();
 
         String times[] = {breakFast, lunchTime, dinnerTime};
-        String date = CommonMethods.getCurrentTimeStamp("dd-MM-yyyy");
+        String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY);
 
-        ArrayList<Medicine> medicines = new ArrayList<Medicine>();
+        /*ArrayList<Medicine> medicines = new ArrayList<Medicine>();
 
         for (PrescriptionData prescriptionData : data) {
             Medicine medicine1 = new Medicine();
@@ -111,9 +111,9 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
             medicine1.setMedicineType(prescriptionData.getMedicineTypeName());
 
             medicines.add(medicine1);
-        }
+        }*/
 
-        new AlarmTask(ShowMedicineDoseListActivity.this, times, date, medicines).run();
+        new AlarmTask(ShowMedicineDoseListActivity.this, times, date/*, medicines*/).run();
     }
 
     private void initializeVariables() {

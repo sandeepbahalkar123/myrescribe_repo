@@ -38,6 +38,7 @@
                 android:id="@+id/showMorningDosage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <com.myrescribe.ui.customesViews.CustomTextView
@@ -74,6 +75,7 @@
             <LinearLayout
                 android:id="@+id/showAfternoonDosage"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -113,6 +115,7 @@
                 android:id="@+id/showEveningDosage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <com.myrescribe.ui.customesViews.CustomTextView

@@ -43,7 +43,6 @@
                 android:layout_marginTop="@dimen/dp6"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="80 days"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp14"
                 android:textStyle="bold"
@@ -145,7 +144,6 @@
                     android:layout_weight="1"
                     android:gravity="right|center_vertical"
                     android:paddingRight="@dimen/dp4"
-                    android:text="2"
                     android:textColor="@color/BlueAngel"
                     android:textSize="@dimen/sp28"
                     android:textStyle="bold" />
@@ -228,7 +226,6 @@
                     android:layout_marginTop="@dimen/dp8"
                     android:layout_weight="1"
                     android:lineSpacingExtra="@dimen/dp1"
-                    android:text="@string/message_text"
                     android:textColor="@color/instruction_color"
                     android:textSize="@dimen/sp14"
                     app:customFont="@string/helvetica_normal" />

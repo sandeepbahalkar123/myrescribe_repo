@@ -31,8 +31,8 @@
 
             <com.myrescribe.ui.customesViews.CircularImageView
                 android:id="@+id/showPatientIcon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dp10"
                 android:src="@drawable/image_male"

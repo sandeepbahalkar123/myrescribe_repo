@@ -34,7 +34,6 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
     private RecyclerView recycler;
     private NotificationListAdapter mAdapter;
-    private PrescriptionHelper mPrescriptionHelper;
     private String medicineSlot;
     private String date;
     private String time;
@@ -172,7 +171,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     }
 
     private void doGetPrescriptionList() {
-        mPrescriptionHelper = new PrescriptionHelper(this, this);
+        PrescriptionHelper mPrescriptionHelper = new PrescriptionHelper(this, this);
         mPrescriptionHelper.doGetPrescriptionList();
     }
 

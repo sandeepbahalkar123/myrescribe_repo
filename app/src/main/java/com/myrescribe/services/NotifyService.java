@@ -102,7 +102,8 @@ public class NotifyService extends Service {
                 .setContent(mRemoteViews);
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
-        mRemoteViews.setTextViewText(R.id.questionText, "Have you taken " + intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT) + " Medicine?");
+        mRemoteViews.setTextViewText(R.id.questionText, "Have you taken your medicine?");
+       // mRemoteViews.setTextViewText(R.id.questionText, "Have you taken " + intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT) + " Medicine?");
         mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.TIME));
 
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

@@ -29,20 +29,22 @@ import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
-public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationListAdapter.RowClickListener {
+public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationListAdapter.OnHeaderClickListener{
 
     private RecyclerView recycler;
     private NotificationListAdapter mAdapter;
     private PrescriptionHelper mPrescriptionHelper;
-    private String mGetMealTime;
     private String medicineSlot;
     private String date;
     private String time;
     private ArrayList<Medicine> medicines;
     private Context mContext;
     private boolean isHeaderExpand = true;
+    private LinearLayout tabletListLayout;
+    private CheckBox selectView;
+    private ImageView trangleIconTop;
+    private ImageView trangleIconBottom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +80,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
     // Added Header
 
-    private void addHeader(ArrayList<PrescriptionData> data) {
+    private void addHeader(final ArrayList<PrescriptionData> data) {
 
         final LinearLayout headerLayout = (LinearLayout) findViewById(R.id.headerLayout);
 
@@ -90,24 +92,17 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         timeTextView.setText(time);
         dateTextView.setText(date);
 
-        final LinearLayout tabletListLayout = (LinearLayout) findViewById(R.id.tabletListLayout);
-        final CheckBox selectView = (CheckBox) findViewById(R.id.selectView);
-        final ImageView trangleIconBottom = (ImageView) findViewById(R.id.trangleIconBottom);
-        final ImageView trangleIconTop = (ImageView) findViewById(R.id.trangleIconTop);
+        tabletListLayout = (LinearLayout) findViewById(R.id.tabletListLayout);
+        selectView = (CheckBox) findViewById(R.id.selectView);
+        trangleIconBottom = (ImageView) findViewById(R.id.trangleIconBottom);
+        trangleIconTop = (ImageView) findViewById(R.id.trangleIconTop);
 
         addHeaderTabletView(tabletListLayout, medicines, data);
 
-        /*if (isHeaderExpand) {*/
         tabletListLayout.setVisibility(View.VISIBLE);
         selectView.setVisibility(View.INVISIBLE);
         trangleIconBottom.setVisibility(View.INVISIBLE);
         trangleIconTop.setVisibility(View.VISIBLE);
-       /* } else {
-            tabletListLayout.setVisibility(View.GONE);
-            selectView.setVisibility(View.VISIBLE);
-            trangleIconBottom.setVisibility(View.VISIBLE);
-            trangleIconTop.setVisibility(View.INVISIBLE);
-        }*/
 
         headerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +119,8 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                     trangleIconBottom.setVisibility(View.INVISIBLE);
                     trangleIconTop.setVisibility(View.VISIBLE);
                     isHeaderExpand = true;
+                    mAdapter.collapseAll();
+                    mAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -172,28 +169,11 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
     private void setDose(TextView tabCountTextView, String count, Medicine medicines) {
         tabCountTextView.setText("( " + count + " " + PrescriptionData.getMedicineTypeAbbreviation(medicines.getMedicineType()) + " )");
-        /*switch (medicines.getMedicineType()) {
-            case MyRescribeConstants.MT_SYRUP:
-
-                break;
-
-            case MyRescribeConstants.MT_TABLET:
-                tabCountTextView.setText("( " + count + " Tab )");
-                break;
-
-            case MyRescribeConstants.MT_OINTMENT:
-                tabCountTextView.setText("( " + count + " Oin )");
-                break;
-        }*/
     }
 
     private void doGetPrescriptionList() {
         mPrescriptionHelper = new PrescriptionHelper(this, this);
         mPrescriptionHelper.doGetPrescriptionList();
-        Calendar c = Calendar.getInstance();
-        int hour24 = c.get(Calendar.HOUR_OF_DAY);
-        int Min = c.get(Calendar.MINUTE);
-        mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
     }
 
 
@@ -212,8 +192,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
                     addHeader(data);
 
-                    mAdapter = new NotificationListAdapter(mContext, data, false, mGetMealTime, medicineSlot, date, getTimeArray(), medicines);
-                    mAdapter.setRowClickListener(this);
+                    mAdapter = new NotificationListAdapter(mContext, data, getTimeArray());
                     recycler.setAdapter(mAdapter);
                 }
             }
@@ -257,7 +236,11 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     }
 
     @Override
-    public void onRowClicked(ArrayList<PrescriptionData> dataObjects, int position, View v, String mClickCodes) {
-
+    public void onHeaderCollapse() {
+        tabletListLayout.setVisibility(View.GONE);
+        selectView.setVisibility(View.VISIBLE);
+        trangleIconBottom.setVisibility(View.VISIBLE);
+        trangleIconTop.setVisibility(View.INVISIBLE);
+        isHeaderExpand = false;
     }
 }

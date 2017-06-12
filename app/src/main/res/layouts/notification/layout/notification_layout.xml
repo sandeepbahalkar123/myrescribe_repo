@@ -86,17 +86,8 @@
                 android:src="@drawable/checkboxselecter"
                 android:textColor="@color/white" />
 
+
         </LinearLayout>
     </LinearLayout>
-
-
-    <Button
-        android:id="@+id/ButtonNo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="No"
-        android:textColor="@color/white"
-        android:visibility="gone" />
-
 
 </RelativeLayout>

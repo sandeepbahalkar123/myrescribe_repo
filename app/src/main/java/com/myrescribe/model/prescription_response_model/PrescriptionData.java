@@ -136,6 +136,18 @@ public class PrescriptionData {
         this.date = date;
     }
 
+    // for tab selection fun
+
+    private boolean isTabSelected = false;
+
+    public boolean isTabSelected() {
+        return isTabSelected;
+    }
+
+    public void setTabSelected(boolean tabSelected) {
+        isTabSelected = tabSelected;
+    }
+
     //  End
 
     public String getId() {

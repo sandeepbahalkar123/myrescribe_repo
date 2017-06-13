@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/dp2"
+        android:paddingTop="@dimen/dp8"
         android:paddingBottom="@dimen/dp6"
         android:paddingEnd="@dimen/horizontal_margin"
         android:paddingStart="@dimen/horizontal_margin">

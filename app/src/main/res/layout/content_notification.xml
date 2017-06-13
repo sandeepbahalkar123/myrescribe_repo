@@ -31,9 +31,10 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/dp6"
+                    android:gravity="center_vertical"
                     android:paddingEnd="@dimen/horizontal_margin"
                     android:paddingStart="@dimen/horizontal_margin"
-                    android:paddingTop="@dimen/dp6">
+                    android:paddingTop="@dimen/dp10">
 
                     <com.myrescribe.ui.customesViews.CustomTextView
                         android:id="@+id/titleTextView"
@@ -51,6 +52,7 @@
                         android:paddingEnd="@dimen/dp10"
                         android:paddingStart="@dimen/dp10"
                         android:text="05-06-2017"
+                        android:paddingTop="@dimen/dp2"
                         android:textSize="12sp"
                         app:customFont="@string/helvetica_normal" />
 

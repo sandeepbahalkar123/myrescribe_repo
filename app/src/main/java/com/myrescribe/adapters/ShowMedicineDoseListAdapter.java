@@ -162,11 +162,13 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             holder.mTextViewhightlightInstructions.setText(prescriptionDataObject.getInstruction());
         }
 
-        if (Integer.parseInt(prescriptionDataObject.getDays()) > 1) {
-            holder.mDays.setText("" + prescriptionDataObject.getDays() + " days");
-        } else {
-            holder.mDays.setText("" + prescriptionDataObject.getDays() + " day");
-        }
+        if(!prescriptionDataObject.getDays().equals("")) {
+            if (Integer.parseInt(prescriptionDataObject.getDays()) > 1) {
+                holder.mDays.setText("" + prescriptionDataObject.getDays() + " days");
+            } else {
+                holder.mDays.setText("" + prescriptionDataObject.getDays() + " day");
+            }
+        }else holder.mDays.setText("0 day");
 
         setPrescriptionDosageData(holder, position);
     }

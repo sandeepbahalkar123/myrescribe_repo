@@ -184,13 +184,15 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
             tabNameTextView.setText(medi.get(i).getMedicineName());
 
+            selectViewTab.setChecked(medi.get(i).isTabSelected());
+
             final int finalI = i;
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (selectViewTab.isChecked()) {
                         medi.get(finalI).setTabSelected(true);
-                        if (getSelectedCount(medi) == medi.size())
+                        if (mAdapter.getSelectedCount(medi) == medi.size())
                             headerLayoutParent.removeView(headerLayout);
                     } else {
                         medi.get(finalI).setTabSelected(false);
@@ -202,32 +204,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             setDose(tabCountTextView, data.get(i).getDinnerA() + data.get(i).getDinnerB(), medi.get(i));
             parent.addView(view);
 
-           /* if (mContext.getResources().getString(R.string.breakfast_medication).equals(medicineSlot)) {
-                if (!data.get(i).getMorningA().isEmpty() || !data.get(i).getMorningB().isEmpty()) {
-                    setDose(tabCountTextView, data.get(i).getMorningA() + data.get(i).getMorningB(), medicines.get(i));
-                    parent.addView(view);
-                }
-            } else if (mContext.getResources().getString(R.string.lunch_medication).equals(medicineSlot)) {
-                if (!data.get(i).getLunchA().isEmpty() || !data.get(i).getLunchB().isEmpty()) {
-                    setDose(tabCountTextView, data.get(i).getLunchA() + data.get(i).getLunchB(), medicines.get(i));
-                    parent.addView(view);
-                }
-            } else if (mContext.getResources().getString(R.string.dinner_medication).equals(medicineSlot)) {
-                if (!data.get(i).getDinnerA().isEmpty() || !data.get(i).getDinnerB().isEmpty()) {
-                    setDose(tabCountTextView, data.get(i).getDinnerA() + data.get(i).getDinnerB(), medicines.get(i));
-                    parent.addView(view);
-                }
-            }*/
         }
-    }
-
-    private int getSelectedCount(ArrayList<PrescriptionData> data) {
-        int count = 0;
-        for (PrescriptionData prescriptionData : data) {
-            if (prescriptionData.isTabSelected())
-                count += 1;
-        }
-        return count;
     }
 
     private void setDose(TextView tabCountTextView, String count, PrescriptionData prescriptionData) {

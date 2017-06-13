@@ -12,7 +12,7 @@
         android:orientation="horizontal"
         android:paddingEnd="@dimen/horizontal_margin"
         android:paddingStart="@dimen/horizontal_margin"
-        android:paddingTop="@dimen/dp6"
+        android:paddingTop="@dimen/dp8"
         android:paddingBottom="@dimen/dp6">
 
         <com.myrescribe.ui.customesViews.CustomTextView

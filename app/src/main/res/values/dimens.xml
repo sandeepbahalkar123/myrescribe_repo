@@ -54,5 +54,13 @@
     <dimen name="sp16">16sp</dimen>
     <dimen name="sp17">17sp</dimen>
     <dimen name="sp40">40sp</dimen>
+    <dimen name="sp38">38sp</dimen>
+    <dimen name="sp36">36sp</dimen>
+    <dimen name="sp34">34sp</dimen>
+    <dimen name="sp32">32sp</dimen>
     <dimen name="sp28">28sp</dimen>
+    <dimen name="tab_max_width">264dp</dimen>
+    <dimen name="tab_padding_bottom">16dp</dimen>
+    <dimen name="tab_label">14sp</dimen>
+    <dimen name="custom_tab_layout_height">72dp</dimen>
 </resources>

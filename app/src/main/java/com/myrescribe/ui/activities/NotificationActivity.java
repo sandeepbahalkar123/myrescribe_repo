@@ -210,7 +210,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                     for (int i = 0; i < data.size(); i++, --j)
                         data.get(i).setDate(CommonMethods.getCalculatedDate("dd-MM-yyyy", j));
 
-                    addHeader(data);
+                  addHeader(data);
 
                     mAdapter = new NotificationListAdapter(mContext, data, false, mGetMealTime, medicineSlot, date, getTimeArray(), medicines);
                     mAdapter.setRowClickListener(this);

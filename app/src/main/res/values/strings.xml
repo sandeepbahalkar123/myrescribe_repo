@@ -77,7 +77,6 @@
     <string name="helvetica_97_black_condensed">helvetica_97_black_condensed.otf</string>
     <string name="helvetica_bold_outline">helvetica_bold_outline.otf</string>
     <string name="helvetica_demi_bold">helvetica_demi_bold.otf</string>
-
     <string name="helvetica_light_normal">helvetica_light_normal.ttf</string>
     <string name="helvetica_lt_condensed_black_obliq">helvetica_lt_condensed_black_obliq.ttf</string>
     <string name="helvetica_medium_italic.otf">helvetica_medium_italic.otf</string>
@@ -100,6 +99,7 @@
         <item>13</item>
         <item>14</item>
         <item>15</item>
+
     </string-array>
     <string-array name="type">
         <item>Tablet</item>
@@ -116,5 +116,9 @@
     <string name="lunch_medication">Lunch Medication</string>
     <string name="breakfast_medication">Breakfast Medication</string>
     <string name="dosage_completed">Dosage completed?</string>
-
+    <string name="fraction_text">
+    <![CDATA[
+    <afrc>1/2</afrc>
+    ]]>
+  </string>
 </resources>

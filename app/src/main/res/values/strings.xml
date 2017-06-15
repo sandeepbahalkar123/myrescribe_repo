@@ -121,4 +121,6 @@
     <afrc>1/2</afrc>
     ]]>
   </string>
+    <string name="no">No</string>
+
 </resources>

@@ -38,5 +38,6 @@
     <color name="divider">#265e5e5e</color>
     <color name="background_color">#F1F1F1</color>
     <color name="notification_header_text">#04abdf</color>
+    <color name="tab_unselected">#E0E0E0</color>
 
 </resources>

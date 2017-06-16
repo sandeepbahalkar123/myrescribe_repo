@@ -7,20 +7,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.widget.LinearLayout;
-
 import com.myrescribe.R;
-import com.myrescribe.ui.fragments.EightFragment;
-import com.myrescribe.ui.fragments.FiveFragment;
-import com.myrescribe.ui.fragments.FourFragment;
-import com.myrescribe.ui.fragments.NineFragment;
 import com.myrescribe.ui.fragments.OneFragment;
-import com.myrescribe.ui.fragments.SevenFragment;
-import com.myrescribe.ui.fragments.SixFragment;
-import com.myrescribe.ui.fragments.TenFragment;
-import com.myrescribe.ui.fragments.ThreeFragment;
-import com.myrescribe.ui.fragments.TwoFragment;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +24,7 @@ public class HistoryActivity extends AppCompatActivity {
     private LinearLayout toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private String[] strings= {"One","Two","Three","Four"};
+    private String[] strings= {"All","Complaints","Findings","Vitals","Diagnosis","Prescription"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

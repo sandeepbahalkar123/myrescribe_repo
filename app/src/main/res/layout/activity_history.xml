@@ -87,7 +87,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabMode="scrollable"
-            app:tabGravity="fill"/>
+            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+            app:tabGravity="fill"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="@color/tab_unselected"
+            app:tabIndicatorHeight="4dp"/>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager

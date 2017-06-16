@@ -1,0 +1,77 @@
+{
+  "common": {
+    "success": 1,
+    "statusCode": 200,
+    "statusMessage": "USER AUTHENTICATED"
+  },
+  "data": {
+    "patientHistory": [
+      {
+        "complaints": [
+          {
+            "id": "50",
+            "name": "ABDOMINAL DISCOMFORT"
+          },
+          {
+            "id": "50",
+            "name": "ABDOMINAL DISCOMFORT"
+          }
+        ]
+      },
+      {
+        "vitals": [
+          {
+            "id": "50",
+            "name": "ABDOMINAL DISCOMFORT"
+          },
+          {
+            "id": "50",
+            "name": "ABDOMINAL DISCOMFORT"
+          }
+        ]
+      },
+      {
+        "findings": ""
+      },
+      {
+        "diagnosis": [
+          {
+            "id": "1122",
+            "name": "ANXITY"
+          },
+          {
+            "id": "1122",
+            "name": "ANXITY"
+          }
+        ]
+      },
+      {
+        "prescriptions": [
+          {
+            "id": "1122",
+            "name": "ANXITY"
+          },
+          {
+            "id": "1122",
+            "name": "ANXITY"
+          }
+        ]
+      },
+      {
+        "investigations": [
+          {
+            "id": "1122",
+            "name": "ANXITY"
+          },
+          {
+            "id": "1122",
+            "name": "ANXITY"
+          }
+        ]
+      },
+      {
+        "advice": "data"
+      }
+    ]
+  }
+}

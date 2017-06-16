@@ -34,7 +34,7 @@ public class HistoryActivity extends AppCompatActivity {
     private LinearLayout toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
+    private String[] strings= {"One","Two","Three","Four"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,18 +51,13 @@ public class HistoryActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new OneFragment(), "ONE");
-        adapter.addFrag(new TwoFragment(), "TWO");
-        adapter.addFrag(new ThreeFragment(), "THREE");
-        adapter.addFrag(new FourFragment(), "FOUR");
-        adapter.addFrag(new FiveFragment(), "FIVE");
-        adapter.addFrag(new SixFragment(), "SIX");
-        adapter.addFrag(new SevenFragment(), "SEVEN");
-        adapter.addFrag(new EightFragment(), "EIGHT");
-        adapter.addFrag(new NineFragment(), "NINE");
-        adapter.addFrag(new TenFragment(), "TEN");
+        for (int i = 0; i < strings.length; i++) {
+            Fragment fragment = OneFragment.createNewFragment(strings[i]); // pass data here
+            adapter.addFrag(fragment,strings[i]); // pass title here
+        }
         viewPager.setAdapter(adapter);
     }
+
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -86,6 +81,8 @@ public class HistoryActivity extends AppCompatActivity {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
+
+
 
         @Override
         public CharSequence getPageTitle(int position) {

@@ -18,6 +18,10 @@ public class OneFragment extends Fragment {
     private  ExpandableListView expListView;
     private List<String> listDataHeader;
     private ShowHistoryListAdapter listAdapter;
+    private static final String COUNT = "column-count";
+    private static final String VALUE = "VALUE";
+    // TODO: Customize parameters
+    private int mColumnCount = 1;
     private HashMap<String, List<String>> listDataChild;
     public OneFragment() {
         // Required empty public constructor
@@ -26,6 +30,9 @@ public class OneFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mColumnCount = getArguments().getInt(COUNT);
+        }
     }
  
     @Override
@@ -38,6 +45,13 @@ public class OneFragment extends Fragment {
 
 
         return rootView;
+    }
+    public static OneFragment createNewFragment(String dataString) {
+        OneFragment fragment = new OneFragment();
+        Bundle args = new Bundle();
+        args.putString(VALUE, dataString);
+     fragment.setArguments(args);
+        return fragment;
     }
 
     private void init(View view) {

@@ -1,6 +1,8 @@
 
 package com.myrescribe.model.prescription_response_model;
 
+import android.util.Log;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -64,6 +66,89 @@ public class PrescriptionData {
 
     private boolean isExpanded = false;
 
+    // ganesh
+
+    private boolean isLunchExpanded = false;
+    private boolean isDinnerExpanded = false;
+    private boolean isBreakFastExpanded = false;
+
+    public boolean isLunchExpanded() {
+        return isLunchExpanded;
+    }
+
+    public void setLunchExpanded(boolean lunchExpanded) {
+        isLunchExpanded = lunchExpanded;
+    }
+
+    public boolean isDinnerExpanded() {
+        return isDinnerExpanded;
+    }
+
+    public void setDinnerExpanded(boolean dinnerExpanded) {
+        isDinnerExpanded = dinnerExpanded;
+    }
+
+    public boolean isBreakFastExpanded() {
+        return isBreakFastExpanded;
+    }
+
+    public void setBreakFastExpanded(boolean breakFastExpanded) {
+        isBreakFastExpanded = breakFastExpanded;
+    }
+
+    private boolean isLunchThere = true;
+    private boolean isDinnerThere = true;
+    private boolean isBreakThere = true;
+
+    public boolean isLunchThere() {
+        return isLunchThere;
+    }
+
+    public void setLunchThere(boolean lunchThere) {
+        isLunchThere = lunchThere;
+    }
+
+    public boolean isDinnerThere() {
+        return isDinnerThere;
+    }
+
+    public void setDinnerThere(boolean dinnerThere) {
+        isDinnerThere = dinnerThere;
+    }
+
+    public boolean isBreakThere() {
+        return isBreakThere;
+    }
+
+    public void setBreakThere(boolean breakThere) {
+        isBreakThere = breakThere;
+    }
+
+    // for date
+
+    private String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    // for tab selection fun
+
+    private boolean isTabSelected = false;
+
+    public boolean isTabSelected() {
+        return isTabSelected;
+    }
+
+    public void setTabSelected(boolean tabSelected) {
+        isTabSelected = tabSelected;
+    }
+
+    //  End
 
     public String getId() {
         return id;
@@ -184,4 +269,54 @@ public class PrescriptionData {
     public void setDays(String days) {
         this.days = days;
     }
+
+    public static String getMedicineTypeAbbreviation(String medicineTypeName) {
+        String abbreviation = medicineTypeName;
+        if (medicineTypeName.equalsIgnoreCase("syrup")) {
+            abbreviation = "SYP";
+        } else if (medicineTypeName.equalsIgnoreCase("Tablet")) {
+            abbreviation = "tab";
+        } else if (medicineTypeName.equalsIgnoreCase("Capsule")) {
+            abbreviation = "cap";
+        } else if (medicineTypeName.equalsIgnoreCase("injection")) {
+            abbreviation = "inj";
+        } else if (medicineTypeName.equalsIgnoreCase("insulin")) {
+            abbreviation = "INS";
+        } else if (medicineTypeName.equalsIgnoreCase("Inhaler")) {
+            abbreviation = "INH";
+        } else if (medicineTypeName.equalsIgnoreCase("liquid")) {
+            abbreviation = "liq";
+        } else if (medicineTypeName.equalsIgnoreCase("tan")) {
+            abbreviation = "tan";
+        } else if (medicineTypeName.equalsIgnoreCase("cream")) {
+            abbreviation = "CRM";
+        } else if (medicineTypeName.equalsIgnoreCase("jelly")) {
+            abbreviation = "JEL";
+        } else if (medicineTypeName.equalsIgnoreCase("local application")) {
+            abbreviation = "LAP";
+        } else if (medicineTypeName.equalsIgnoreCase("ointment")) {
+            abbreviation = "ONT";
+        } else if (medicineTypeName.equalsIgnoreCase("lotion")) {
+            abbreviation = "LOT";
+        } else if (medicineTypeName.equalsIgnoreCase("drops")) {
+            abbreviation = "DRP";
+        } else if (medicineTypeName.equalsIgnoreCase("eye drops")) {
+            abbreviation = "eDRP";
+        } else if (medicineTypeName.equalsIgnoreCase("nasal drops")) {
+            abbreviation = "nDRP";
+        } else if (medicineTypeName.equalsIgnoreCase("nasal spray")) {
+            abbreviation = "nSPRY";
+        } else if (medicineTypeName.equalsIgnoreCase("ointment/powder")) {
+            abbreviation = "pow";
+        } else if (medicineTypeName.equalsIgnoreCase("respules")) {
+            abbreviation = "RES";
+        } else if (medicineTypeName.equalsIgnoreCase("rotacaps")) {
+            abbreviation = "ROTA";
+        } else if (medicineTypeName.equalsIgnoreCase("sachet")) {
+            abbreviation = "sach";
+        }
+        return abbreviation.toUpperCase();
+
+    }
+
 }

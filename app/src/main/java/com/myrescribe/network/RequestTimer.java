@@ -10,17 +10,12 @@ public class RequestTimer {
     public interface RequestTimerListener {
         public void onTimeout(RequestTimer requestTimer);
     }
-
     private static final String TAG = "RequestTimer";
-
     public static final long DEFAULT_TIMEOUT = 1000 * 40; //40 seconds for timeout
-
-
     /* Public attributes */
     private long timeoutMillis;
     private RequestTimerListener listener;
     private Handler handlerMain;
-
     /* Local attributes */
     private HandlerThread threadTimer;
     private Handler handlerTimer;

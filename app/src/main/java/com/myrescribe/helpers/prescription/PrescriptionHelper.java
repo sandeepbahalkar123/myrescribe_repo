@@ -36,55 +36,44 @@ public class PrescriptionHelper implements ConnectionListener {
     public void onResponse(int responseResult, CustomResponse customResponse, String mOldDataTag) {
 
         //CommonMethods.Log(TAG, customResponse.toString());
-
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag == MyRescribeConstants.TASK_PRESCRIPTION_LIST) {
                     PatientPrescriptionModel model = (PatientPrescriptionModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
-
                 }
                 break;
-
-
             case ConnectionListener.PARSE_ERR0R:
                 CommonMethods.Log(TAG, "parse error");
                 mHelperResponseManager.onParseError(mOldDataTag, "parse error");
                 break;
-
             case ConnectionListener.SERVER_ERROR:
                 CommonMethods.Log(TAG, "server error");
                 mHelperResponseManager.onServerError(mOldDataTag, "server error");
 
                 break;
-
             case ConnectionListener.NO_CONNECTION_ERROR:
                 CommonMethods.Log(TAG, "no connection error");
                 mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");
 
                 break;
-
-
             default:
                 CommonMethods.Log(TAG, "default error");
                 break;
-
         }
-
     }
-
 
     @Override
     public void onTimeout(ConnectRequest request) {
 
     }
 
-
     public void doGetPrescriptionList() {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_PRESCRIPTION_LIST, Request.Method.GET, true);
         Map<String, String> testParams = new HashMap<String, String>();
 
         testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, "$1$w/7Ltrwh$DC2pul8hQmVlCDILAROAD.");
+
         testParams.put(MyRescribeConstants.AUTH_KEY, "simplerestapi");
         testParams.put(MyRescribeConstants.CLIENT_SERVICE, "frontend-client");
         testParams.put(MyRescribeConstants.USER_ID, "7");

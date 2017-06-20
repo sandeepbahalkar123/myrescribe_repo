@@ -26,7 +26,6 @@ public class MyRescribePreferencesManager {
     private static SharedPreferences sharedPreferences = null;
     private static byte[] sKey;
 
-
     public interface MYRESCRIBE_PREFERENCES_KEY {
 
         String SERVER_PATH = "server_path";

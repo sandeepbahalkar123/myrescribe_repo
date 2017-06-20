@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/slotCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dp10">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp10"
+            android:paddingEnd="@dimen/horizontal_margin"
+            android:paddingStart="@dimen/horizontal_margin">
+
+            <com.myrescribe.ui.customesViews.CustomTextView
+                android:id="@+id/slotTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dinner_medication"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:customFont="@string/helvetica_demi_bold" />
+
+            <com.myrescribe.ui.customesViews.CustomTextView
+                android:id="@+id/slotTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                app:customFont="@string/helvetica_demi_bold"
+                tools:text="05:06 am"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/trangleIconTop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|top"
+                android:src="@drawable/click_here" />
+
+            <ImageView
+                android:id="@+id/trangleIconBottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                tools:visibility="invisible"
+                android:src="@drawable/click_here_copy" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/dp10"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:background="@color/divider" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/horizontal_margin"
+                    android:paddingStart="@dimen/horizontal_margin"
+                    android:layout_marginBottom="@dimen/dp10">
+
+                    <com.myrescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/slotQuestionTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/selectView"
+                        android:layout_toStartOf="@+id/selectView"
+                        android:text="@string/dosage_completed"
+                        android:textSize="14sp"
+                        app:customFont="@string/helvetica_normal" />
+
+                    <CheckBox
+                        android:id="@+id/selectView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="@dimen/dp10"
+                        android:paddingEnd="@dimen/dp10"
+                        tools:visibility="invisible"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:button="@drawable/checkboxselecter"
+                        android:checked="false"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/slotTabletListLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--<include layout="@layout/tablet_list"/>-->
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

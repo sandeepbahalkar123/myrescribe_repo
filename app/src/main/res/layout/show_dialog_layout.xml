@@ -95,7 +95,7 @@
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:background="@color/LightSkyBlue" />
+                android:background="@color/lightskyBlue" />
 
             <Button
                 android:id="@+id/button_ok"

@@ -2,6 +2,8 @@
 <resources>
 
     <color name="grey">#55000000</color>
+    <color name="show_recent_prescription_bgcolor">#b2e6fa</color>
+    <color name="prescription_bgcolor">#e4f3fa</color>
     <color name="reset_yellow">#ffa100</color>
     <color name="apply_blue">#6AB0D3</color>
     <color name="dcr_customer_name">#010101</color>
@@ -9,25 +11,36 @@
     <color name="grey_800">#424242</color>
     <color name="grey_500">#9E9E9E</color>
     <color name="grey_200">#E0E0E0</color>
+    <color name="tablet_color">#666565</color>
+    <color name="instruction_color">#5e5e5e</color>
     <color name="transparent">#00000000</color>
     <color name="placeHolder">#55000000</color>
     <item name="errorColor" type="color">#BD362F</item>
     <color name="refId_color">#8dc63f</color>
+    <color name="recentblue">#04abdf</color>
     <color name="Gray">#736F6E</color>
     <color name="black">#000000</color>
-    <color name="LightSkyBlue">#82CAFA</color>
+    <color name="lightskyBlue">#b2e6fa</color>
     <color name="cobalt_blue">#0020C2</color>
     <color name="BlueAngel">#0288d1</color>
     <color name="MediumSpringGreen">#348017</color>
     <color name="BlueDress">#157DEC</color>
     <color name="Red">#FF0000</color>
-    <color name="tagColor">#1CBBB4</color>
+    <color name="tagColor">#04abdf</color>
+    <color name="statusbar"> #0077a7</color>
     <color name="login_bg">#4FAFDC</color>
     <color name="login_button">#36657A</color>
     <color name="white">#ffffff</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
     <color name="app_background">#5E5E5E</color>
+
+    <color name="skybluefent">#e4f3fa</color>
+    <color name="divider">#265e5e5e</color>
+    <color name="background_color">#F1F1F1</color>
+    <color name="notification_header_text">#04abdf</color>
+
 
 </resources>

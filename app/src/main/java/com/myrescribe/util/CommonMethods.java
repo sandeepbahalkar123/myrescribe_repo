@@ -12,8 +12,10 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -31,9 +33,7 @@ import android.widget.Toast;
 import com.myrescribe.R;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
-import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.activities.ShowMedicineDoseListActivity;
-import com.myrescribe.ui.activities.SplashScreenActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -47,6 +47,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -286,10 +287,10 @@ public class CommonMethods {
         return "" + new DecimalFormat("##.##").format(finalvalue);
     }
 
-    public static String getCurrentTimeStamp() {
+    public static String getCurrentTimeStamp(String expectedFormat) {
         try {
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            SimpleDateFormat dateFormat = new SimpleDateFormat(expectedFormat, Locale.US);
             String currentTimeStamp = dateFormat.format(new Date()); // Find todays date
 
             return currentTimeStamp;
@@ -350,6 +351,69 @@ public class CommonMethods {
 
     }
 
+
+    public static String getCalculatedDate(String inFormat, int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_YEAR, days);
+        Date date = new Date(cal.getTimeInMillis());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(inFormat, Locale.US);
+        return dateFormat.format(date);
+    }
+
+    public static String getDayFromDate(String dateFormat, String date) {
+
+        date = date.trim();
+        Date currentDate = new Date();
+        String timeString = new SimpleDateFormat(dateFormat + " HH:mm:ss", Locale.US).format(currentDate).substring(10);
+
+        SimpleDateFormat mainDateFormat = new SimpleDateFormat(dateFormat + " HH:mm:ss", Locale.US);
+        Date formattedInputDate = null;
+        try {
+            formattedInputDate = mainDateFormat.parse(date + timeString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (date.trim().equalsIgnoreCase(new SimpleDateFormat(dateFormat, Locale.US).format(currentDate).trim())) {
+            return "Recent";
+        }
+        //-----------
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        Date yesterdayDate = cal.getTime();
+        String sDate = new SimpleDateFormat(dateFormat, Locale.US).format(yesterdayDate);
+        try {
+            yesterdayDate = mainDateFormat.parse(sDate + timeString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (formattedInputDate.getTime() == yesterdayDate.getTime()) {
+            return "Yesterday";
+        }
+        //-----------
+        cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, +1);
+        Date tomorrowDate = cal.getTime();
+        sDate = new SimpleDateFormat(dateFormat, Locale.US).format(tomorrowDate);
+        try {
+            tomorrowDate = mainDateFormat.parse(sDate + timeString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (formattedInputDate.getTime() == tomorrowDate.getTime()) {
+            return "Tomorrow";
+        } else {
+            DateFormat f = new SimpleDateFormat("EEEE", Locale.US);
+            try {
+                return f.format(formattedInputDate);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "";
+            }
+        }
+    }
 
     public static String printKeyHash(Activity context) {
         PackageInfo packageInfo;
@@ -674,5 +738,57 @@ public class CommonMethods {
         CommonMethods.Log(TAG, "getMealTime" + time);
         return time;
     }
+
+    // Return medicine Icon's
+
+    public static Drawable getMedicalTypeIcon(String medicineTypeName, Context context) {
+
+        Drawable abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);
+        if (medicineTypeName.equalsIgnoreCase("syrup")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.syrup_01);
+        } else if (medicineTypeName.equalsIgnoreCase("Tablet")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.tablet);
+        } else if (medicineTypeName.equalsIgnoreCase("Capsule")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.capsule_01);
+        } else if (medicineTypeName.equalsIgnoreCase("injection")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.injection_01);
+        } else if (medicineTypeName.equalsIgnoreCase("insulin")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.insulin_01);
+        } else if (medicineTypeName.equalsIgnoreCase("Inhaler")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.inhaler_01);
+        } else if (medicineTypeName.equalsIgnoreCase("liquid")) {
+            abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight); // not found
+        } else if (medicineTypeName.equalsIgnoreCase("tan")) {
+            abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);// not found
+        } else if (medicineTypeName.equalsIgnoreCase("cream")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.cream_01);
+        } else if (medicineTypeName.equalsIgnoreCase("jelly")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.jelly_02);
+        } else if (medicineTypeName.equalsIgnoreCase("local application")) {
+            abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);// not found
+        } else if (medicineTypeName.equalsIgnoreCase("ointment")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.ointment_01);
+        } else if (medicineTypeName.equalsIgnoreCase("lotion")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.lotion_01);
+        } else if (medicineTypeName.equalsIgnoreCase("drops")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.drop_01);
+        } else if (medicineTypeName.equalsIgnoreCase("eye drops")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.eye_drops_02);
+        } else if (medicineTypeName.equalsIgnoreCase("nasal drops")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.nasal_drop_01_01);
+        } else if (medicineTypeName.equalsIgnoreCase("nasal spray")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.nasal_spray_01);
+        } else if (medicineTypeName.equalsIgnoreCase("ointment/powder")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.ointment_powder_01);
+        } else if (medicineTypeName.equalsIgnoreCase("respules")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.respules_01);
+        } else if (medicineTypeName.equalsIgnoreCase("rotacaps")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.rotacaps_01);
+        } else if (medicineTypeName.equalsIgnoreCase("sachet")) {
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.sachet_01);
+        }
+        return abbreviation;
+    }
+
 }
 

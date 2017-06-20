@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/dp8"
+        android:paddingBottom="@dimen/dp6"
+        android:paddingEnd="@dimen/horizontal_margin"
+        android:paddingStart="@dimen/horizontal_margin">
+
+        <com.myrescribe.ui.customesViews.CustomTextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Yesterday"
+            android:textColor="@color/notification_header_text"
+            android:textSize="20sp"
+            app:customFont="@string/helvetica_normal" />
+
+        <com.myrescribe.ui.customesViews.CustomTextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/dp10"
+            android:paddingStart="@dimen/dp10"
+            tools:text="05-06-2017"
+            android:textSize="12sp"
+            app:customFont="@string/helvetica_normal" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/slotLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+</LinearLayout>

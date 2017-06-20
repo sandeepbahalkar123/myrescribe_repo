@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="@dimen/dp10"
+    android:paddingEnd="@dimen/horizontal_margin"
+    android:paddingStart="@dimen/horizontal_margin">
+
+    <ImageView
+        android:id="@+id/tabTypeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@drawable/capsule_01" />
+
+    <com.myrescribe.ui.customesViews.CustomTextView
+        android:id="@+id/tabNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/tabTypeView"
+        android:layout_toLeftOf="@+id/tabCountTextView"
+        android:layout_toRightOf="@+id/tabTypeView"
+        android:layout_toStartOf="@+id/tabCountTextView"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        tools:text="Rantac"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:customFont="@string/helvetica_normal" />
+
+    <com.myrescribe.ui.customesViews.CustomTextView
+        android:id="@+id/tabCountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/selectViewTab"
+        android:layout_toStartOf="@+id/selectViewTab"
+        tools:text="( 2 Cap )"
+        android:textColor="@color/black"
+        app:customFont="@string/helvetica_normal"
+        android:textSize="16sp" />
+
+    <CheckBox
+        android:id="@+id/selectViewTab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingRight="@dimen/dp10"
+        android:paddingEnd="@dimen/dp10"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:button="@drawable/checkboxselecter" />
+
+</RelativeLayout>

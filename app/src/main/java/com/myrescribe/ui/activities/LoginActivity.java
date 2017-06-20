@@ -1,7 +1,6 @@
 package com.myrescribe.ui.activities;
 
 import android.content.Context;
-
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -15,13 +14,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -29,7 +23,6 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
@@ -59,6 +52,7 @@ import butterknife.ButterKnife;
 public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
+
     String FIELDS = "fields";
     String ID = "id";
     String NAME = "name";
@@ -69,8 +63,7 @@ public class LoginActivity extends AppCompatActivity implements
     String KEY_USERNAME = "email_address";
     String KEY_PASSWORD = "password";
     String REQUEST_FIELDS = TextUtils.join(",", new String[]{ID, NAME, PICTURE, EMAIL, BIRTHDAY, GENDER});
-
-
+ 
     private final String TAG = "MyRescribe/LoginActivity";
     Context mContext;
     private CallbackManager mCallbackManager;

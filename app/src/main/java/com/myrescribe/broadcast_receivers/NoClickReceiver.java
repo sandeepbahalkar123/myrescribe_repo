@@ -8,19 +8,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.myrescribe.ui.activities.NotificationActivity;
+import com.myrescribe.util.MyRescribeConstants;
+
 /**
  * Created by jeetal on 16/5/17.
  */
 
 public class NoClickReceiver extends BroadcastReceiver {
-    public static final String PERFORM_NOTIFICATION_BUTTON = "perform_notification_button";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String action = (String) intent.getExtras().get("action");
         int notificationId = intent.getIntExtra("notificationId", 0);
-        Toast.makeText(context,action + " " + "Dose Rejected", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context,action + " " + "Dose Rejected", Toast.LENGTH_SHORT).show();
         // if you want cancel notification
+
+        Intent intentNotification = new Intent(context, NotificationActivity.class);
+        intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
+        intentNotification.putExtra(MyRescribeConstants.DATE, intent.getStringExtra(MyRescribeConstants.DATE));
+        intentNotification.putExtra(MyRescribeConstants.TIME, intent.getStringExtra(MyRescribeConstants.TIME));
+        intentNotification.putExtra(MyRescribeConstants.MEDICINE_NAME, intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME));
+        intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        context.startActivity(intentNotification);
+
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(notificationId);
 

@@ -216,11 +216,12 @@ public class EnterGeneratedOTP extends Fragment {
         @Override
         public void onTick(long millisUntilFinished) {
 //			mProgressText.setText(" "+millisUntilFinished / 1000 + " secs" );
-            if (!getActivity().isFinishing()) {
-                String format = String.format(getString(R.string.waiting_for_sms), (millisUntilFinished / 1000));
-                mProgressTime.setText(format);
+            if (getActivity() != null) {
+                if (!getActivity().isFinishing()) {
+                    String format = String.format(getString(R.string.waiting_for_sms), (millisUntilFinished / 1000));
+                    mProgressTime.setText(format);
+                }
             }
-
         }
     }
 

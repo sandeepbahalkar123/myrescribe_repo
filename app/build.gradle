@@ -27,7 +27,8 @@ android {
                             'src/main/res/layouts/show_prescription',
                             'src/main/res/layouts/edit_prescription',
                             'src/main/res/layouts/notification',
-                            'src/main/res/layouts/login'
+                            'src/main/res/layouts/login',
+                            'src/main/res/layouts/history'
 
                     ]
         }

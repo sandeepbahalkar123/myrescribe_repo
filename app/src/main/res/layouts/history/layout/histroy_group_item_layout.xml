@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/dp2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.myrescribe.ui.customesViews.CircularImageView
+            android:layout_width="@dimen/dp40"
+            android:layout_height="@dimen/dp40"
+            android:background="@drawable/circular_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp6"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/headerLabel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|left"
+                android:text="Complaints"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp14"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/dp4"
+                android:background="@color/divider" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/groupDivider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:layout_margin="@dimen/dp4"
+        android:background="@color/divider" />
+
+</LinearLayout>

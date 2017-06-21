@@ -10,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 import com.myrescribe.R;
 import com.myrescribe.ui.fragments.OneFragment;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +46,6 @@ public class HistoryActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -71,8 +68,6 @@ public class HistoryActivity extends AppCompatActivity {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
-
-
 
         @Override
         public CharSequence getPageTitle(int position) {

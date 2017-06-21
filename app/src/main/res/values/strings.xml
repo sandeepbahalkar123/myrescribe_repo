@@ -5,6 +5,7 @@
     <string name="Tablet"> Tab</string>
     <string name="Syrup"> Syrup</string>
     <string name="after">After</string>
+    <string name="going_medication">On Going Medication</string>
     <string name="before">Before</string>
     <string name="enter_mobile_no">Enter Mobile No</string>
     <string name="loginfb">Login with fb</string>
@@ -29,7 +30,9 @@
     <string name="data__not_saved">Data not saved</string>
     <string name="tablet">Tab</string>
     <string name="lunch">Lunch</string>
+    <string name="snacks">Snacks</string>
     <string name="mlunch">LUNCH</string>
+    <string name="msnacks">SNACKS</string>
     <string name="dinner">Dinner</string>
     <string name="mdinner">DINNER</string>
     <string name="instructions">Instruction:</string>
@@ -82,6 +85,9 @@
     <string name="helvetica_medium_italic.otf">helvetica_medium_italic.otf</string>
     <string name="helvetica_normal">helvetica_normal.ttf</string>
 
+    <string name="roboto_bold">roboto_bold.ttf</string>
+    <string name="roboto_medium">roboto_medium.ttf</string>
+
     <string-array name="ids">
         <item>0</item>
         <item>1</item>
@@ -113,6 +119,7 @@
     <string name="save">Save</string>
     <string name="title_activity_notification">Notification</string>
     <string name="dinner_medication">Dinner Medication</string>
+    <string name="snacks_medication">Snacks Medication</string>
     <string name="lunch_medication">Lunch Medication</string>
     <string name="breakfast_medication">Breakfast Medication</string>
     <string name="dosage_completed">Dosage completed?</string>

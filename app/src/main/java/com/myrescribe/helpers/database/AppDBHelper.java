@@ -30,6 +30,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public static final String BREAKFAST_TIME = "breakfastTime";
     public static final String LUNCH_TIME = "lunchTime";
     public static final String DINNER_TIME = "dinnerTime";
+    public static final String SNACKS_TIME = "snacksTime";
 
     static AppDBHelper instance = null;
     private Context mContext;
@@ -149,7 +150,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean insertPreferences(String userId, String breakfastTime, String lunchTime, String dinnerTime) {
+    public boolean insertPreferences(String userId, String breakfastTime, String lunchTime,String snacksTime, String dinnerTime) {
         if (preferencesTableNumberOfRows(userId) == 0) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
@@ -158,10 +159,11 @@ public class AppDBHelper extends SQLiteOpenHelper {
             contentValues.put(BREAKFAST_TIME, breakfastTime);
             contentValues.put(LUNCH_TIME, lunchTime);
             contentValues.put(DINNER_TIME, dinnerTime);
+            contentValues.put(SNACKS_TIME,snacksTime);
 
             db.insert(PREFERENCES_TABLE, null, contentValues);
         } else {
-            updatePreferences(userId, breakfastTime, lunchTime, dinnerTime);
+            updatePreferences(userId, breakfastTime, lunchTime, snacksTime, dinnerTime);
         }
         return true;
     }
@@ -176,12 +178,13 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + PREFERENCES_TABLE + " where " + USER_ID + "=" + userId + "", null);
     }
 
-    private boolean updatePreferences(String userId, String breakfastTime, String lunchTime, String dinnerTime) {
+    private boolean updatePreferences(String userId, String breakfastTime, String lunchTime,String snacksTime, String dinnerTime) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(BREAKFAST_TIME, breakfastTime);
         contentValues.put(LUNCH_TIME, lunchTime);
         contentValues.put(DINNER_TIME, dinnerTime);
+        contentValues.put(SNACKS_TIME,snacksTime);
 
         db.update(PREFERENCES_TABLE, contentValues, USER_ID + " = ? ", new String[]{userId});
         return true;

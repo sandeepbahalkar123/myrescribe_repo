@@ -69,7 +69,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="@dimen/sp12"
-                tools:text="Have you taken Rx Medicine?" />
+                android:textColor="@color/instruction_color"
+                android:text="Have you taken Rx Medicine?" />
 
             <!--<CheckBox
                 android:id="@+id/ButtonYes"

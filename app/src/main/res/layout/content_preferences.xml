@@ -50,6 +50,22 @@
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
         android:layout_height="wrap_content"
+        android:text="Select your Snacks time"/>
+
+    <TextView
+        android:id="@+id/snackstSelect"
+        android:layout_width="match_parent"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
+        android:hint="HH:MM AM/PM"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
         android:text="Select your Dinner time"/>
 
     <TextView

@@ -67,6 +67,7 @@ public class AlarmTask implements Runnable {
         setAlarm(time[0], context.getResources().getString(R.string.breakfast_medication), 0/*, medicines*/);
         setAlarm(time[1], context.getResources().getString(R.string.lunch_medication), 1/*, medicines*/);
         setAlarm(time[2], context.getResources().getString(R.string.dinner_medication), 2/*, medicines*/);
+        setAlarm(time[3], context.getResources().getString(R.string.snacks_medication), 3/*, medicines*/);
     }
 
     private void setAlarm(String time, String medicineSlot, int requestCode/*, ArrayList<Medicine> medicines*/){

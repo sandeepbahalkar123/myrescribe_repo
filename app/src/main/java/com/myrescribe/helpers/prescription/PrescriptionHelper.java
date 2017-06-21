@@ -72,11 +72,11 @@ public class PrescriptionHelper implements ConnectionListener {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_PRESCRIPTION_LIST, Request.Method.GET, true);
         Map<String, String> testParams = new HashMap<String, String>();
 
-        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, "$1$w/7Ltrwh$DC2pul8hQmVlCDILAROAD.");
+        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, "$1$7bSdP6L.$XQW6i4Tj2Z2WeTanfgp2y1");
 
         testParams.put(MyRescribeConstants.AUTH_KEY, "simplerestapi");
         testParams.put(MyRescribeConstants.CLIENT_SERVICE, "frontend-client");
-        testParams.put(MyRescribeConstants.USER_ID, "7");
+        testParams.put(MyRescribeConstants.USER_ID, "18");
         mConnectionFactory.setHeaderParams(testParams);
         // mConnectionFactory.setPostParams(testParams);
         mConnectionFactory.setUrl(Config.PRESCRIPTION_URL);

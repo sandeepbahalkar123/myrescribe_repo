@@ -26,7 +26,7 @@ import java.util.Calendar;
  *
  * @author paul.blundell
  */
-public class AlarmTask implements Runnable {
+public class DosesAlarmTask implements Runnable {
     // The time selected for the alarm
     private final String time[];
     private final String date;
@@ -37,7 +37,7 @@ public class AlarmTask implements Runnable {
     private final Context context;
 //    private final ArrayList<Medicine> medicines;
 
-    public AlarmTask(Context context, String time[], String date/*, ArrayList<Medicine> medicines*/) {
+    public DosesAlarmTask(Context context, String time[], String date/*, ArrayList<Medicine> medicines*/) {
         this.context = context;
         this.am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         this.time = time;
@@ -87,5 +87,4 @@ public class AlarmTask implements Runnable {
 
 //        am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
-
 }

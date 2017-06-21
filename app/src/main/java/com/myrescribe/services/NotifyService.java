@@ -51,7 +51,7 @@ public class NotifyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        // If this service was started by out AlarmTask intent then we want to show our notification
+        // If this service was started by out DosesAlarmTask intent then we want to show our notification
         if (intent.getBooleanExtra(INTENT_NOTIFY, false))
             CustomNotification(intent);
 

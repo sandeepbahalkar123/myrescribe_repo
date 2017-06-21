@@ -7,8 +7,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,10 +20,9 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.Medicine;
 import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
-import com.myrescribe.notification.AlarmTask;
+import com.myrescribe.notification.DosesAlarmTask;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -113,7 +110,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
             medicines.add(medicine1);
         }*/
 
-        new AlarmTask(ShowMedicineDoseListActivity.this, times, date/*, medicines*/).run();
+        new DosesAlarmTask(ShowMedicineDoseListActivity.this, times, date/*, medicines*/).run();
     }
 
     private void initializeVariables() {

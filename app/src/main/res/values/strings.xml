@@ -117,5 +117,6 @@
     <string name="breakfast_medication">Breakfast Medication</string>
     <string name="dosage_completed">Dosage completed?</string>
     <string name="no">No</string>
+    <string name="title_activity_investigation">Investigation Result</string>
 
 </resources>

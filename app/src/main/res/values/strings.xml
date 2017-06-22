@@ -118,5 +118,8 @@
     <string name="dosage_completed">Dosage completed?</string>
     <string name="no">No</string>
     <string name="title_activity_investigation">Investigation Result</string>
+    <string name="title_activity_seleted_docs">Seleted Docs</string>
+    <string name="upload">Upload</string>
+    <string name="adddocs">Add Docs</string>
 
 </resources>

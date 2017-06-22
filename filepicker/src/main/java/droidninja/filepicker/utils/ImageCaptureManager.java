@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import droidninja.filepicker.FilePickerConst;
 import droidninja.filepicker.PickerManager;
 
 public class ImageCaptureManager {
@@ -90,6 +91,7 @@ public class ImageCaptureManager {
     Uri contentUri = Uri.fromFile(f);
     mediaScanIntent.setData(contentUri);
     mContext.sendBroadcast(mediaScanIntent);
+    PickerManager.getInstance().add(mCurrentPhotoPath, FilePickerConst.MEDIA_TYPE_IMAGE);
 
 //    notifyMediaStoreScanner(context, f);
   }

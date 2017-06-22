@@ -1,18 +1,15 @@
 package com.myrescribe.ui.activities;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.InvestigationViewAdapter;
@@ -21,17 +18,17 @@ import com.myrescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 
-import droidninja.filepicker.FilePickerBuilder;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import droidninja.filepicker.FilePickerConst;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
 
-@RuntimePermissions
 public class InvestigationActivity extends AppCompatActivity implements InvestigationViewAdapter.CheckedClickListener {
 
-    private int MAX_ATTACHMENT_COUNT = 10;
-    private ArrayList<String> photoPaths = new ArrayList<>();
-    private RecyclerView mRecyclerView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.recycler)
+    RecyclerView mRecyclerView;
+
     private LinearLayoutManager mLayoutManager;
     private InvestigationViewAdapter mAdapter;
     private Context mContext;
@@ -41,7 +38,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_investigation);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -54,8 +51,6 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         });
 
         mContext = InvestigationActivity.this;
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -75,51 +70,25 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
     @Override
     public void onCheckedClick(int position) {
-        InvestigationActivityPermissionsDispatcher.onPickPhotoWithCheck(this, position);
-    }
-
-    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
-    public void onPickPhoto(int position) {
-        int maxCount = MAX_ATTACHMENT_COUNT;
-        photoPaths.clear();
-        if (photoPaths.size() == MAX_ATTACHMENT_COUNT)
-            Toast.makeText(this, "Cannot select more than " + MAX_ATTACHMENT_COUNT + " items", Toast.LENGTH_SHORT).show();
-        else
-            FilePickerBuilder.getInstance().setMaxCount(maxCount)
-                    .setSelectedFiles(photoPaths)
-                    .setActivityTheme(R.style.FilePickerTheme)
-                    .enableVideoPicker(false)
-                    .enableCameraSupport(true)
-                    .showGifs(false)
-                    .showFolderView(true)
-                    .enableOrientation(true)
-                    .pickPhoto(this, position);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        InvestigationActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        Intent intent = new Intent(mContext, SeletedDocsActivity.class);
+        intent.putExtra(FilePickerConst.MEDIA_ID, position);
+        startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
-
             int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
 
             if (resultCode == Activity.RESULT_OK) {
-                photoPaths = new ArrayList<>();
-                photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
                 ArrayList<String> photu = new ArrayList<>();
-                photu.addAll(photoPaths);
+                photu.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
                 investigation.get(id).setPhotos(photu);
-            }else if (resultCode == RESULT_CANCELED){
+            } else if (resultCode == RESULT_CANCELED) {
                 investigation.get(id).setUploaded(false);
                 mAdapter.notifyItemChanged(id);
             }
-
             CommonMethods.Log("SELECTED_PHOTOS " + id, investigation.toString());
         }
     }

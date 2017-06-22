@@ -46,7 +46,6 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
 
-
         @BindView(R.id.tv_instructions)
         TextView mTextViewInstructions;
         @BindView(R.id.detailedInstructions)
@@ -71,7 +70,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         @BindView(R.id.morningDoseQuantity)
         TextView mMorningDoseQuanity;
         @BindView(R.id.card_view)
-        CardView mCardViewLayout;
+        LinearLayout mCardViewLayout;
         @BindView(R.id.afternoonDoseQuantity)
         TextView mLunchDoseQuantity;
         @BindView(R.id.nightDoseQuantity)

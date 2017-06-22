@@ -94,7 +94,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         CustomTextView slotQuestionTextView = (CustomTextView) view.findViewById(R.id.slotQuestionTextView);
         CheckBox selectView = (CheckBox) view.findViewById(R.id.selectView);
         LinearLayout slotTabletListLayout = (LinearLayout) view.findViewById(R.id.slotTabletListLayout);
-        CardView slotCard = (CardView) view.findViewById(R.id.slotCard);
+        LinearLayout slotCard = (LinearLayout) view.findViewById(R.id.slotCard);
 
         slotTabletListLayout.setTag(slotType);
 
@@ -459,15 +459,12 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
         @BindView(R.id.list_item)
         LinearLayout list_item;
-
         @BindView(R.id.slotLayout)
         LinearLayout slotLayout;
-
         @BindView(R.id.titleTextView)
         CustomTextView titleTextView;
         @BindView(R.id.dateTextView)
         CustomTextView dateTextView;
-
         View view;
 
         ListViewHolder(View view) {

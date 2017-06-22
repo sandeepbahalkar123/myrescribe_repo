@@ -70,7 +70,7 @@
                 android:layout_weight="1"
                 android:textSize="@dimen/sp12"
                 android:textColor="@color/instruction_color"
-                android:text="Have you taken Rx Medicine?" />
+               />
 
             <!--<CheckBox
                 android:id="@+id/ButtonYes"

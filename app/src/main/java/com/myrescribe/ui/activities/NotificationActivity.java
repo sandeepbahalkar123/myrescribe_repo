@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -72,14 +73,16 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 //        medicines = (ArrayList<Medicine>) intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME).getSerializable(MyRescribeConstants.MEDICINE_NAME);
 
         recycler = (RecyclerView) findViewById(R.id.recycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recycler.setLayoutManager(layoutManager);
         recycler.setItemAnimator(null);
         recycler.setHasFixedSize(false);
         recycler.setNestedScrollingEnabled(false);
-        recycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recycler.getContext(),
+                layoutManager.getOrientation());
+        recycler.addItemDecoration(dividerItemDecoration);
         doGetPrescriptionList();
     }
-
     // Added Header
 
     private void addHeader(final ArrayList<PrescriptionData> data) {

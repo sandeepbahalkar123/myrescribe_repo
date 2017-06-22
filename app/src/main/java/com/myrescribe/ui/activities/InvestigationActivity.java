@@ -1,6 +1,5 @@
 package com.myrescribe.ui.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -72,6 +71,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     public void onCheckedClick(int position) {
         Intent intent = new Intent(mContext, SeletedDocsActivity.class);
         intent.putExtra(FilePickerConst.MEDIA_ID, position);
+        intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, investigation.get(position).getPhotos());
         startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
     }
 
@@ -81,11 +81,11 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
             int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
 
-            if (resultCode == Activity.RESULT_OK) {
-                ArrayList<String> photu = new ArrayList<>();
-                photu.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
-                investigation.get(id).setPhotos(photu);
-            } else if (resultCode == RESULT_CANCELED) {
+            ArrayList<String> photu = new ArrayList<>();
+            photu.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
+            investigation.get(id).setPhotos(photu);
+
+            if (resultCode == RESULT_CANCELED) {
                 investigation.get(id).setUploaded(false);
                 mAdapter.notifyItemChanged(id);
             }

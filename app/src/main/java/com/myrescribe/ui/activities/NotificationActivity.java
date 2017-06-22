@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,12 +24,11 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.Medicine;
 import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
-import com.myrescribe.util.SwipeDismissTouchListener;
+import com.myrescribe.listeners.SwipeDismissTouchListener;
 
 import java.util.ArrayList;
 
@@ -44,8 +44,6 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     private boolean isHeaderExpand = true;
     private LinearLayout tabletListLayout;
     private CheckBox selectView;
-    private ImageView trangleIconTop;
-    private ImageView trangleIconBottom;
     private LinearLayout headerLayout;
     private LinearLayout headerLayoutParent;
 
@@ -74,13 +72,16 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 //        medicines = (ArrayList<Medicine>) intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME).getSerializable(MyRescribeConstants.MEDICINE_NAME);
 
         recycler = (RecyclerView) findViewById(R.id.recycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recycler.setLayoutManager(layoutManager);
+        recycler.setItemAnimator(null);
         recycler.setHasFixedSize(false);
         recycler.setNestedScrollingEnabled(false);
-        recycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recycler.getContext(),
+                layoutManager.getOrientation());
+        recycler.addItemDecoration(dividerItemDecoration);
         doGetPrescriptionList();
     }
-
     // Added Header
 
     private void addHeader(final ArrayList<PrescriptionData> data) {
@@ -98,16 +99,11 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
         tabletListLayout = (LinearLayout) findViewById(R.id.tabletListLayout);
         selectView = (CheckBox) findViewById(R.id.selectView);
-        trangleIconBottom = (ImageView) findViewById(R.id.trangleIconBottom);
-        trangleIconTop = (ImageView) findViewById(R.id.trangleIconTop);
 
         addHeaderTabletView(tabletListLayout, data);
 
         tabletListLayout.setVisibility(View.VISIBLE);
         selectView.setVisibility(View.INVISIBLE);
-        trangleIconBottom.setVisibility(View.INVISIBLE);
-        trangleIconTop.setVisibility(View.VISIBLE);
-
         selectView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,8 +126,6 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                     }
                     tabletListLayout.setVisibility(View.VISIBLE);
                     selectView.setVisibility(View.INVISIBLE);
-                    trangleIconBottom.setVisibility(View.INVISIBLE);
-                    trangleIconTop.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -167,6 +161,10 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 if (!data.get(i).getDinnerA().isEmpty() || !data.get(i).getDinnerB().isEmpty()) {
                     medi.add(data.get(i));
                 }
+            }else if (mContext.getResources().getString(R.string.snacks_medication).equals(medicineSlot)) {
+              /*  if (!data.get(i).getEveningA().isEmpty() || !data.get(i).getEveningB().isEmpty()) {*/
+                    medi.add(data.get(i));
+
             }
         }
 
@@ -208,7 +206,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     }
 
     private void setDose(TextView tabCountTextView, String count, PrescriptionData prescriptionData) {
-        tabCountTextView.setText("( " + count + " " + PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + " )");
+        tabCountTextView.setText(count);
     }
 
     private void doGetPrescriptionList() {
@@ -233,7 +231,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                         data.get(i).setDate(CommonMethods.getCalculatedDate(MyRescribeConstants.DD_MM_YYYY, j));
                     }
 
-                    addHeader(data);
+                  addHeader(data);
 
                     notificationDummyData.addAll(data);
 
@@ -249,6 +247,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         String breakFast = "8:00 AM";
         String lunchTime = "2:00 PM";
         String dinnerTime = "8:00 PM";
+        String snacksTime = "8:00 PM";
 
         AppDBHelper appDBHelper = new AppDBHelper(mContext);
         Cursor cursor = appDBHelper.getPreferences("1");
@@ -257,12 +256,13 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 breakFast = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
                 lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
                 dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
+                snacksTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.SNACKS_TIME));
                 cursor.moveToNext();
             }
         }
         cursor.close();
 
-        return new String[]{dinnerTime, lunchTime, breakFast};
+        return new String[]{dinnerTime, lunchTime, breakFast,snacksTime};
     }
 
     @Override
@@ -284,8 +284,6 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     public void onHeaderCollapse() {
         tabletListLayout.setVisibility(View.GONE);
         selectView.setVisibility(View.VISIBLE);
-        trangleIconBottom.setVisibility(View.VISIBLE);
-        trangleIconTop.setVisibility(View.INVISIBLE);
         isHeaderExpand = false;
     }
 }

@@ -1,0 +1,19 @@
+{
+  "common": {
+    "success": 1,
+    "statusCode": 200,
+    "statusMessage": "USER AUTHENTICATED"
+  },
+  "data": {
+    "doctorList": [
+      {
+        "id": "007",
+        "name": "doctorName"
+      },
+      {
+        "id": "009",
+        "name": "doctorName"
+      }
+    ]
+  }
+}

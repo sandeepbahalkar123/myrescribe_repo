@@ -1,190 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/tools"
     android:id="@+id/card_view"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardUseCompatPadding="true"
-    card_view:cardCornerRadius="2dp">
-
+    app:cardUseCompatPadding="true">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/doseImageLinearLayout"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dp12"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/medicineType"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp12"
+        android:layout_weight="2.5"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/dp2"
+            android:layout_marginTop="@dimen/dp6">
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/medicineName"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp2"
-                android:layout_marginRight="@dimen/dp2"
-                android:layout_marginTop="@dimen/dp6"
-                android:layout_weight="2"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp16"
-                app:customFont="@string/helvetica_demi_bold"
-
+                android:textSize="@dimen/sp17"
+                app:customFont="@string/roboto_bold"
                 />
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/days"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp2"
-                android:layout_marginEnd="@dimen/dp12"
-                android:layout_marginRight="@dimen/dp12"
-                android:layout_marginTop="@dimen/dp6"
-                android:layout_weight="1"
-                android:gravity="end"
+                android:layout_marginLeft="@dimen/dp4"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp14"
-                android:textStyle="bold"
-                app:customFont="@string/helvetica_demi_bold"
-
+                android:textSize="@dimen/sp12"
+                app:customFont="@string/roboto_bold"
                 />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.myrescribe.ui.customesViews.CustomTextView
-                android:id="@+id/textviewTabletLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/dp6"
-                android:layout_weight="0.5"
-                android:textColor="@color/tablet_color"
-                android:textSize="@dimen/sp14"
-                android:textStyle="bold"
-                app:customFont="@string/helvetica_normal" />
-
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp05"
-            android:layout_marginRight="@dimen/dp12"
-            android:layout_marginTop="@dimen/dp2"
-            android:background="@color/grey" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
-                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/imageViewMorningDose"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
+                    android:paddingLeft="@dimen/dp8"
+                    android:src="@drawable/breakfast_normal"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:scaleType="centerInside"
                     android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/imageViewAfternoonDose"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp8"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:scaleType="centerInside"
+                    android:src="@drawable/lunch_highlighted"
+                    android:visibility="gone" />
+                <ImageView
+                    android:id="@+id/imageViewEveningDose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp8"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/evening_1"
                     android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/imageViewNightDose"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:scaleType="centerInside"
+                    android:paddingLeft="@dimen/dp8"
+                    android:paddingRight="@dimen/dp8"
+                    android:src="@drawable/night_dinner"
                     android:visibility="gone" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-
                 <View
-                    android:layout_width="@dimen/dp05"
-                    android:layout_height="@dimen/dp50"
+                    android:layout_width="@dimen/dp2"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/dp4"
                     android:layout_marginRight="@dimen/dp8"
                     android:layout_marginTop="@dimen/dp4"
-                    android:background="@color/grey" />
+                    android:background="@color/divider" />
 
-                <TextView
+                <com.myrescribe.ui.customesViews.CustomTextView
                     android:id="@+id/doseQuantityNumber"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|right"
-                    android:layout_marginBottom="@dimen/dp2"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/dp2"
-                    android:layout_marginTop="@dimen/dp2"
                     android:layout_weight="1"
-                    android:gravity="right|center_vertical"
+                    android:text="2"
+                    android:gravity="right"
                     android:paddingRight="@dimen/dp4"
+                    app:customFont="@string/roboto_bold"
                     android:textColor="@color/BlueAngel"
-                    android:textSize="@dimen/sp28"
+                    android:textSize="@dimen/sp38"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.7"
                     android:orientation="vertical">
 
                     <com.myrescribe.ui.customesViews.CustomTextView
                         android:id="@+id/dosePeriod"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="@dimen/dp2"
-                        android:layout_marginTop="@dimen/dp6"
+                        android:layout_marginTop="@dimen/dp4"
+                        android:textColor="@color/instruction_color"
                         android:textSize="@dimen/sp12"
-                        app:customFont="@string/helvetica_demi_bold" />
+                        app:customFont="@string/roboto_bold" />
 
                     <com.myrescribe.ui.customesViews.CustomTextView
                         android:id="@+id/doseSlot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp4"
+                        android:textColor="@color/instruction_color"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="@dimen/dp2"
-                        android:textSize="@dimen/sp14"
-                        app:customFont="@string/helvetica_demi_bold" />
+                        android:textSize="@dimen/sp12"
+                        app:customFont="@string/roboto_bold" />
                 </LinearLayout>
+
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imageViewdownArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:srcCompat="@drawable/ic_down"
-                android:textStyle="bold"
-                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -194,49 +172,36 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp05"
-                android:layout_marginRight="@dimen/dp12"
-                android:background="@color/grey" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/dp4"
+                >
 
                 <com.myrescribe.ui.customesViews.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp8"
-                    android:layout_marginTop="@dimen/dp8"
                     android:text="@string/instructions"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp12"
                     android:textStyle="bold"
-                    app:customFont="@string/helvetica_demi_bold" />
+                    app:customFont="@string/roboto_medium" />
 
                 <com.myrescribe.ui.customesViews.CustomTextView
                     android:id="@+id/textViewhightlightInstructions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp8"
                     android:layout_marginLeft="@dimen/dp4"
                     android:layout_marginRight="@dimen/dp12"
-                    android:layout_marginTop="@dimen/dp8"
                     android:layout_weight="1"
                     android:lineSpacingExtra="@dimen/dp1"
                     android:textColor="@color/instruction_color"
-                    android:textSize="@dimen/sp14"
-                    app:customFont="@string/helvetica_normal" />
+                    android:textSize="@dimen/sp10"
+                    app:customFont="@string/roboto_medium" />
 
-                <ImageView
-                    android:id="@+id/imageViewInstructiondownArrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    app:srcCompat="@drawable/ic_down"
-                    android:visibility="visible" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -249,4 +214,5 @@
             android:visibility="gone" />
 
     </LinearLayout>
-</android.support.v7.widget.CardView>
+</LinearLayout>
+</LinearLayout>

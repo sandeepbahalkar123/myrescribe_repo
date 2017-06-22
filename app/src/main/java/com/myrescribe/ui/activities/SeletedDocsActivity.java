@@ -42,7 +42,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
     @BindView(R.id.uploadButton)
     Button uploadButton;
 
-    private int MAX_ATTACHMENT_COUNT = 10;
+    private static final int MAX_ATTACHMENT_COUNT = 10;
     private Context mContext;
     private ArrayList<String> photoPaths = new ArrayList<>();
     private int media_id;
@@ -66,6 +66,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
 
         mContext = SeletedDocsActivity.this;
         media_id = getIntent().getIntExtra(FilePickerConst.MEDIA_ID, 0);
+        photoPaths = (ArrayList<String>) getIntent().getSerializableExtra(FilePickerConst.KEY_SELECTED_MEDIA);
 
         if (recyclerView != null) {
             StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, OrientationHelper.VERTICAL);
@@ -101,22 +102,17 @@ public class SeletedDocsActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent();
         intent.putExtra(FilePickerConst.MEDIA_ID, media_id);
-        if (photoPaths.size() > 0 && photoPaths != null) {
-            intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
-            setResult(RESULT_OK, intent);
-        } else
-            setResult(RESULT_CANCELED, intent);
-        finish();
+        intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
+        setResult(RESULT_CANCELED, intent);
         super.onBackPressed();
     }
 
     @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
     public void onPickPhoto(int position) {
-        int maxCount = MAX_ATTACHMENT_COUNT;
         if (photoPaths.size() == MAX_ATTACHMENT_COUNT)
             Toast.makeText(this, "Cannot select more than " + MAX_ATTACHMENT_COUNT + " items", Toast.LENGTH_SHORT).show();
         else
-            FilePickerBuilder.getInstance().setMaxCount(maxCount)
+            FilePickerBuilder.getInstance().setMaxCount(MAX_ATTACHMENT_COUNT)
                     .setSelectedFiles(photoPaths)
                     .setActivityTheme(R.style.AppTheme)
                     .enableVideoPicker(false)
@@ -137,13 +133,10 @@ public class SeletedDocsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        photoPaths.clear();
-
         if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
-
             int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
-
             if (resultCode == Activity.RESULT_OK) {
+                photoPaths.clear();
                 photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
                 if (imageAdapter != null)
                     imageAdapter.notifyDataSetChanged();
@@ -155,6 +148,15 @@ public class SeletedDocsActivity extends AppCompatActivity {
 
     @OnClick(R.id.uploadButton)
     public void onViewClicked() {
-        CommonMethods.showToast(mContext, "Clicked");
+        if (photoPaths.size() > 0 && photoPaths != null) {
+            CommonMethods.showToast(mContext, "Upload Successfully");
+            Intent intent = new Intent();
+            intent.putExtra(FilePickerConst.MEDIA_ID, media_id);
+            intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
+            setResult(RESULT_OK, intent);
+            finish();
+        } else {
+            CommonMethods.showToast(mContext, "please select at least one");
+        }
     }
 }

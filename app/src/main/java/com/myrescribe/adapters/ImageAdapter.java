@@ -1,6 +1,7 @@
 package com.myrescribe.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.myrescribe.R;
+import com.myrescribe.ui.activities.ZoomImageViewActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHold
 
     @Override
     public void onBindViewHolder(ImageAdapter.FileViewHolder holder, int position) {
-        String path = paths.get(position);
+        final String path = paths.get(position);
         Glide.with(context).load(new File(path))
                 .centerCrop()
                 .dontAnimate()
@@ -55,6 +57,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHold
                 .override(imageSize, imageSize)
                 .placeholder(droidninja.filepicker.R.drawable.image_placeholder)
                 .into(holder.imageView);
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ZoomImageViewActivity.class);
+                intent.putExtra("IMAGE", path);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

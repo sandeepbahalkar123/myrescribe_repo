@@ -4,9 +4,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,16 +53,13 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     private Boolean isclicked = false;
 
     @BindView(R.id.toolbar)
-    LinearLayout mToolbar;
+    Toolbar mToolbar;
 
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
 
     @BindView(R.id.recyclerViewShowMedicineDoseList)
     RecyclerView mRecyclerView;
-
-    @BindView(R.id.backArrow)
-    ImageView mBackArrow;
 
     private PrescriptionHelper mPrescriptionHelper;
 
@@ -84,6 +87,8 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         String breakFast = "9:17 AM";
         String lunchTime = "9:19 AM";
         String dinnerTime = "9:21 AM";
+        String snacksTime = "9:21 AM";
+
         AppDBHelper appDBHelper = new AppDBHelper(ShowMedicineDoseListActivity.this);
         Cursor cursor = appDBHelper.getPreferences("1");
         if (cursor.moveToFirst()) {
@@ -91,12 +96,13 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
                 breakFast = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
                 lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
                 dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
+                snacksTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.SNACKS_TIME));
                 cursor.moveToNext();
             }
         }
         cursor.close();
 
-        String times[] = {breakFast, lunchTime, dinnerTime};
+        String times[] = {breakFast, lunchTime, dinnerTime,snacksTime};
         String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY);
 
         /*ArrayList<Medicine> medicines = new ArrayList<Medicine>();
@@ -116,6 +122,18 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     private void initializeVariables() {
         mContext = ShowMedicineDoseListActivity.this;
         mPrescriptionHelper = new PrescriptionHelper(this, this);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(getString(R.string.going_medication));
+        mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //What to do on back clicked
+                onBackPressed();
+            }
+        });
+
+
     }
 
     private void bindView() {
@@ -123,7 +141,9 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mBackArrow.setOnClickListener(this);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                layoutManager.getOrientation());
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
     }
 
     @Override
@@ -135,7 +155,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main, menu);
+        //getMenuInflater().inflate(R.menu.main, menu);
 
         return true;
 
@@ -198,9 +218,9 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.backArrow:
+          /*  case R.id.backArrow:
                 finish();
-                break;
+                break;*/
         }
     }
 }

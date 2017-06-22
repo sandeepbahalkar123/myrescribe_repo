@@ -66,6 +66,7 @@ public class FolderGridAdapter extends SelectableAdapter<FolderGridAdapter.Photo
       final PhotoDirectory photoDirectory = getItems().get(showCamera?position-1:position);
 
       if(AndroidLifecycleUtils.canLoadImage(holder.imageView.getContext())) {
+        if (photoDirectory.getCoverPath() != null)
         glide.load(new File(photoDirectory.getCoverPath()))
                 .centerCrop()
                 .dontAnimate()

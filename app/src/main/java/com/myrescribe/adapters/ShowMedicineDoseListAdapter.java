@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
-import com.myrescribe.ui.customesViews.CustomTextView;
+import com.myrescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,18 +46,13 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.imageViewUpArrow)
-        ImageView mUpIcon;
-        @BindView(R.id.imageViewdownArrow)
-        ImageView mdownIcon;
         @BindView(R.id.tv_instructions)
         TextView mTextViewInstructions;
         @BindView(R.id.detailedInstructions)
         LinearLayout mDetailedInstructions;
         @BindView(R.id.medicineName)
         TextView mTextviewNameOfMedicine;
-        @BindView(R.id.textviewTabletLabel)
-        TextView mTextviewTabletLabel;
+
         @BindView(R.id.expandPrescriptionView)
         View mExpandLayout;
         @BindView(R.id.textViewhightlightInstructions)
@@ -75,7 +70,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         @BindView(R.id.morningDoseQuantity)
         TextView mMorningDoseQuanity;
         @BindView(R.id.card_view)
-        CardView mCardViewLayout;
+        LinearLayout mCardViewLayout;
         @BindView(R.id.afternoonDoseQuantity)
         TextView mLunchDoseQuantity;
         @BindView(R.id.nightDoseQuantity)
@@ -86,6 +81,9 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         ImageView mHightLightAfternoonDose;
         @BindView(R.id.imageViewNightDose)
         ImageView mHightLightNightDose;
+        @BindView(R.id.imageViewEveningDose)
+        ImageView mHightLightEveningDose;
+
         @BindView(R.id.dosePeriod)
         TextView mDosePeriod;
         @BindView(R.id.doseQuantityNumber)
@@ -96,9 +94,19 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         LinearLayout mShowMorningDosage;
         @BindView(R.id.showAfternoonDosage)
         LinearLayout mShowAfternoonDosage;
+        @BindView(R.id.showDinnerDosage)
+        LinearLayout mShowDinnerDosage;
+        View view;
+        @BindView(R.id.doseImageLinearLayout)
+        LinearLayout mDoseImageLinearLayout;
         @BindView(R.id.showEveningDosage)
         LinearLayout mShowEveningDosage;
-        View view;
+        @BindView(R.id.eveningDoseQuantity)
+        TextView mEveningDoseQuantity;
+        @BindView(R.id.eveningDose)
+        TextView mEveningDose;
+        @BindView(R.id.medicineType)
+        ImageView mMedicineType;
 
         ListViewHolder(View view) {
             super(view);
@@ -119,16 +127,13 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
     public void onBindViewHolder(final ShowMedicineDoseListAdapter.ListViewHolder holder, final int position) {
         final PrescriptionData prescriptionDataObject = mPrescriptionData.get(position);
 
+
         if (prescriptionDataObject.getExpanded()) {
             holder.mExpandLayout.setVisibility(View.VISIBLE);
-            holder.mUpIcon.setVisibility(View.VISIBLE);
-            holder.mdownIcon.setVisibility(View.INVISIBLE);
             holder.mHighlightedInstructionView.setVisibility(View.GONE);
 
         } else {
             holder.mExpandLayout.setVisibility(View.GONE);
-            holder.mUpIcon.setVisibility(View.GONE);
-            holder.mdownIcon.setVisibility(View.VISIBLE);
             holder.mHighlightedInstructionView.setVisibility(View.VISIBLE);
         }
 
@@ -142,6 +147,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
                     holder.mHighlightedInstructionView.setVisibility(View.GONE);
                     holder.mExpandLayout.setVisibility(View.VISIBLE);
                     prescriptionDataObject.setExpanded(true);
+
                 } else {
                     holder.mExpandLayout.setVisibility(View.GONE);
                     holder.mHighlightedInstructionView.setVisibility(View.VISIBLE);
@@ -151,25 +157,16 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             }
         });
         holder.mTextviewNameOfMedicine.setText(prescriptionDataObject.getMedicineName());
-        holder.mTextviewTabletLabel.setText(prescriptionDataObject.getMedicineTypeName() + " (" + prescriptionDataObject.getDosage() + ")");
         if (prescriptionDataObject.getInstruction().equals("")) {
             holder.mDetailedInstructions.setVisibility(View.GONE);
             holder.mHighlightedInstructionView.setVisibility(View.GONE);
         } else {
-            holder.mdownIcon.setVisibility(View.INVISIBLE);
             holder.mDetailedInstructions.setVisibility(View.VISIBLE);
             holder.mTextViewInstructions.setText(prescriptionDataObject.getInstruction());
             holder.mTextViewhightlightInstructions.setText(prescriptionDataObject.getInstruction());
         }
 
-        if(!prescriptionDataObject.getDays().equals("")) {
-            if (Integer.parseInt(prescriptionDataObject.getDays()) > 1) {
-                holder.mDays.setText("" + prescriptionDataObject.getDays() + " days");
-            } else {
-                holder.mDays.setText("" + prescriptionDataObject.getDays() + " day");
-            }
-        }else holder.mDays.setText("0 day");
-
+        holder.mDays.setText("" + prescriptionDataObject.getDosage());
         setPrescriptionDosageData(holder, position);
     }
 
@@ -178,25 +175,26 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         String quantityOfDose = "";
         String timeOfDosage = "";
         String durationOfBreakFast = "";
-        String showBreakFastLabel = "";
+        String showSlotLabel = "";
         String durationOfLunch = "";
         String durationOfDinner = "";
+        String durationOfEvening = "";
         String doseQuantity = "";
-
+        holder.mMedicineType.setBackgroundDrawable(CommonMethods.getMedicineTypeImage(prescriptionData.getMedicineTypeName(),mContext));
         //  **************************BreakFast********************************************
         if (!prescriptionData.getMorningB().isEmpty()) {
             quantityOfDose = prescriptionData.getDosage();
             durationOfBreakFast = mContext.getString(R.string.before) + " " + mContext.getString(R.string.breakfast);
             timeOfDosage = mContext.getString(R.string.before);
             doseQuantity = prescriptionData.getMorningB();
-            showBreakFastLabel = mContext.getString(R.string.breakfast);
+            showSlotLabel = mContext.getString(R.string.breakfast);
         }
         if (!prescriptionData.getMorningA().isEmpty()) {
             quantityOfDose = prescriptionData.getDosage();
             durationOfBreakFast = mContext.getString(R.string.after) + " " + mContext.getString(R.string.breakfast);
             timeOfDosage = mContext.getString(R.string.after);
             doseQuantity = prescriptionData.getMorningA();
-            showBreakFastLabel = mContext.getString(R.string.breakfast);
+            showSlotLabel = mContext.getString(R.string.breakfast);
         }
         if (quantityOfDose.isEmpty()) {
             holder.mHightLightMorningDose.setVisibility(View.GONE);
@@ -207,26 +205,17 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         //if current timeOfDosage is within breakfast timeOfDosage ie. 7 am to 11 am then breakfast image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.break_fast))) {
-            holder.mHightLightMorningDose.setImageResource(R.mipmap.breakfast_highlighted);
+
             holder.mDosePeriod.setText(timeOfDosage);
             holder.mDoseQuantityNumber.setText(doseQuantity);
-            holder.mDoseSlot.setText(showBreakFastLabel);
+            holder.mDoseSlot.setText(showSlotLabel);
             //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
             if (doseQuantity.contains("/")) {
                 holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp18));
             } else {
-                holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp40));
+                holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp28));
             }
-        } else {
-            holder.mHightLightMorningDose.setImageResource(R.mipmap.breakfast);
         }
-        //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
-        if (doseQuantity.contains("/")) {
-            holder.mMorningDoseQuanity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp16));
-        } else {
-            holder.mMorningDoseQuanity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp16));
-        }
-
         holder.mShowMorningFullFormOfDose.setText(durationOfBreakFast);
         holder.mMorningDoseQuanity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));// + PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
 
@@ -235,7 +224,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         quantityOfDose = "";
         timeOfDosage = "";
         durationOfBreakFast = "";
-        showBreakFastLabel = "";
+        showSlotLabel = "";
         durationOfLunch = "";
         durationOfDinner = "";
         doseQuantity = "";
@@ -245,14 +234,14 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             durationOfLunch = mContext.getString(R.string.before) + " " + mContext.getString(R.string.lunch);
             timeOfDosage = mContext.getString(R.string.before);
             doseQuantity = prescriptionData.getLunchB();
-            showBreakFastLabel = mContext.getString(R.string.lunch);
+            showSlotLabel = mContext.getString(R.string.lunch);
         }
         if (!prescriptionData.getLunchA().isEmpty()) {
             quantityOfDose = prescriptionData.getDosage();
             durationOfLunch = mContext.getString(R.string.after) + " " + mContext.getString(R.string.lunch);
             timeOfDosage = mContext.getString(R.string.after);
             doseQuantity = prescriptionData.getLunchA();
-            showBreakFastLabel = mContext.getString(R.string.lunch);
+            showSlotLabel = mContext.getString(R.string.lunch);
         }
         if (quantityOfDose.isEmpty()) {
             holder.mHightLightAfternoonDose.setVisibility(View.GONE);
@@ -265,36 +254,78 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         //if current timeOfDosage is within durationOfLunch timeOfDosage ie. 11 am to 3 pm then durationOfLunch image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.mlunch))) {
-            holder.mHightLightAfternoonDose.setImageResource(R.mipmap.lunch_highlighted);
+
             holder.mDosePeriod.setText(timeOfDosage);
             holder.mDoseQuantityNumber.setText(doseQuantity);
-            holder.mDoseSlot.setText(showBreakFastLabel);
+            holder.mDoseSlot.setText(showSlotLabel);
             //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
             if (doseQuantity.contains("/")) {
                 holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp18));
             } else {
-                holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp40));
+                holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp28));
             }
-        } else {
-            holder.mHightLightAfternoonDose.setImageResource(R.mipmap.lunch);
         }
-        //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
-        if (doseQuantity.contains("/")) {
-            holder.mLunchDoseQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp16));
-        } else {
-            holder.mLunchDoseQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp16));
-        }
-
         holder.mShowAfterNoonFullFormOfDose.setText(durationOfLunch);
         holder.mLunchDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));//PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
 
-        //************************************phora@146
+        //************************************Evening************************************************
+
+        quantityOfDose = "";
+        timeOfDosage = "";
+        durationOfBreakFast = "";
+        showSlotLabel = "";
+        durationOfLunch = "";
+        durationOfDinner = "";
+        durationOfEvening = "";
+        doseQuantity = "";
+/*
+        if (!prescriptionData.getEveningB().isEmpty()) { }*/
+            quantityOfDose = "10mg";/*prescriptionData.getDosage();*/
+            durationOfEvening = mContext.getString(R.string.before) + " " + mContext.getString(R.string.snacks);
+            timeOfDosage = mContext.getString(R.string.before);
+            doseQuantity = "2";
+            showSlotLabel = mContext.getString(R.string.snacks);
+
+       /* if (!prescriptionData.getEveningA().isEmpty()) {
+            quantityOfDose = prescriptionData.getDosage();
+            durationOfEvening = mContext.getString(R.string.after) + " " + mContext.getString(R.string.snacks);
+            timeOfDosage = mContext.getString(R.string.after);
+            doseQuantity = prescriptionData.getEveningA();
+            showSlotLabel = mContext.getString(R.string.snacks);
+        }*/
+        if (quantityOfDose.isEmpty()) {
+            holder.mHightLightEveningDose.setVisibility(View.GONE);
+            holder.mShowEveningDosage.setVisibility(View.GONE);
+
+        } else {
+
+            holder.mHightLightEveningDose.setVisibility(View.VISIBLE);
+            holder.mShowEveningDosage.setVisibility(View.VISIBLE);
+        }
+        //if current timeOfDosage is within durationOfLunch timeOfDosage ie. 11 am to 3 pm then durationOfLunch image highlighted with circular background
+        if (mGetMealTime.equals(mContext.getString(R.string.msnacks))) {
+
+            holder.mDosePeriod.setText(timeOfDosage);
+            holder.mDoseQuantityNumber.setText(doseQuantity);
+            holder.mDoseSlot.setText(showSlotLabel);
+            //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
+            if (doseQuantity.contains("/")) {
+                holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp18));
+            } else {
+                holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp28));
+            }
+        }
+        holder.mEveningDose.setText(durationOfEvening);
+        holder.mEveningDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));//PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
+
+
+
         // AmAAmAAmlA****Dinner********************************************
 
         quantityOfDose = "";
         timeOfDosage = "";
         durationOfBreakFast = "";
-        showBreakFastLabel = "";
+        showSlotLabel = "";
         durationOfLunch = "";
         durationOfDinner = "";
         doseQuantity = "";
@@ -302,46 +333,36 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         if (!prescriptionData.getDinnerB().isEmpty()) {
             timeOfDosage = mContext.getString(R.string.before);
             doseQuantity = prescriptionData.getDinnerB();
-            showBreakFastLabel = mContext.getString(R.string.dinner);
+            showSlotLabel = mContext.getString(R.string.dinner);
             quantityOfDose = prescriptionData.getDosage();
             durationOfDinner = mContext.getString(R.string.before) + " " + mContext.getString(R.string.dinner);
         }
         if (!prescriptionData.getDinnerA().isEmpty()) {
             timeOfDosage = mContext.getString(R.string.after);
             doseQuantity = prescriptionData.getDinnerA();
-            showBreakFastLabel = mContext.getString(R.string.dinner);
+            showSlotLabel = mContext.getString(R.string.dinner);
             quantityOfDose = prescriptionData.getDosage();
             durationOfDinner = mContext.getString(R.string.after) + " " + mContext.getString(R.string.dinner);
         }
         if (quantityOfDose.isEmpty()) {
             holder.mHightLightNightDose.setVisibility(View.GONE);
-            holder.mShowEveningDosage.setVisibility(View.GONE);
+            holder.mShowDinnerDosage.setVisibility(View.GONE);
         } else {
             holder.mHightLightNightDose.setVisibility(View.VISIBLE);
-            holder.mShowEveningDosage.setVisibility(View.VISIBLE);
+            holder.mShowDinnerDosage.setVisibility(View.VISIBLE);
         }
         //if current timeOfDosage is within durationOfDinner timeOfDosage ie. 7 pm to 11 pm then durationOfDinner image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.mdinner))) {
-            holder.mHightLightNightDose.setImageResource(R.mipmap.dinner_highlighted);
             holder.mDosePeriod.setText(timeOfDosage);
             holder.mDoseQuantityNumber.setText(doseQuantity);
-            holder.mDoseSlot.setText(showBreakFastLabel);
+            holder.mDoseSlot.setText(showSlotLabel);
             //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
             if (doseQuantity.contains("/")) {
                 holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp18));
             } else {
-                holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp40));
+                holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp28));
             }
-        } else {
-            holder.mHightLightNightDose.setImageResource(R.mipmap.night);
         }
-        //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
-        if (doseQuantity.contains("/")) {
-            holder.mDinnerDoseQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp16));
-        } else {
-            holder.mDinnerDoseQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp16));
-        }
-
         holder.mDinnerDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace)); //PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
         holder.mShowNightFullFormOfDose.setText(durationOfDinner);
     }

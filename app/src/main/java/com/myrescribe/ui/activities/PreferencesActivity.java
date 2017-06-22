@@ -32,6 +32,8 @@ public class PreferencesActivity extends AppCompatActivity {
     TextView mLunchTimeSelect;
     @BindView(R.id.dinnerTimeSelect)
     TextView mDinnerTimeSelect;
+    @BindView(R.id.snackstSelect)
+    TextView mSnackstSelect;
     @BindView(R.id.saveButton)
     Button mSaveButton;
 
@@ -47,7 +49,7 @@ public class PreferencesActivity extends AppCompatActivity {
         appDBHelper = AppDBHelper.getInstance(PreferencesActivity.this);
     }
 
-    @OnClick({R.id.breakFastSelect, R.id.lunchTimeSelect, R.id.dinnerTimeSelect, R.id.saveButton})
+    @OnClick({R.id.breakFastSelect, R.id.lunchTimeSelect,R.id.snackstSelect, R.id.dinnerTimeSelect, R.id.saveButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.breakFastSelect:
@@ -55,6 +57,9 @@ public class PreferencesActivity extends AppCompatActivity {
                 break;
             case R.id.lunchTimeSelect:
                 setTime(mLunchTimeSelect);
+                break;
+            case R.id.snackstSelect:
+                setTime(mSnackstSelect);
                 break;
             case R.id.dinnerTimeSelect:
                 setTime(mDinnerTimeSelect);
@@ -64,6 +69,7 @@ public class PreferencesActivity extends AppCompatActivity {
                 String breakFastSelect = "";
                 String lunchTimeSelect = "";
                 String dinnerTimeSelect = "";
+                String snacksTimeSelect = "";
 
                 if (!mBreakFastSelect.getText().toString().equals(""))
                     breakFastSelect = mBreakFastSelect.getText().toString();
@@ -71,10 +77,13 @@ public class PreferencesActivity extends AppCompatActivity {
                 if (!mLunchTimeSelect.getText().toString().equals(""))
                     lunchTimeSelect = mLunchTimeSelect.getText().toString();
 
+                if (!mSnackstSelect.getText().toString().equals(""))
+                    snacksTimeSelect = mSnackstSelect.getText().toString();
+
                 if (!mDinnerTimeSelect.getText().toString().equals(""))
                     dinnerTimeSelect = mDinnerTimeSelect.getText().toString();
 
-                appDBHelper.insertPreferences("1", breakFastSelect, lunchTimeSelect, dinnerTimeSelect);
+                appDBHelper.insertPreferences("1", breakFastSelect, lunchTimeSelect,snacksTimeSelect, dinnerTimeSelect);
 
                 break;
         }

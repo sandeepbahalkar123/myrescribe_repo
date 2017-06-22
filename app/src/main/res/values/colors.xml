@@ -22,7 +22,7 @@
     <color name="black">#000000</color>
     <color name="lightskyBlue">#b2e6fa</color>
     <color name="cobalt_blue">#0020C2</color>
-    <color name="BlueAngel">#0288d1</color>
+    <color name="BlueAngel">#04abdf</color>
     <color name="MediumSpringGreen">#348017</color>
     <color name="BlueDress">#157DEC</color>
     <color name="Red">#FF0000</color>
@@ -38,5 +38,6 @@
     <color name="divider">#265e5e5e</color>
     <color name="background_color">#F1F1F1</color>
     <color name="notification_header_text">#04abdf</color>
-
+    <color name="tab_unselected">#E0E0E0</color>
+    <color name="dose_completed">#666666</color>
 </resources>

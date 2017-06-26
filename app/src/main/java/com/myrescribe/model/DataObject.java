@@ -3,14 +3,24 @@ package com.myrescribe.model;
 import java.util.ArrayList;
 
 public class DataObject {
+    private int id;
     private String title;
     private boolean isUploaded;
     private ArrayList<String> photos;
 
-    public DataObject(String title, boolean isUploaded, ArrayList<String> photos) {
+    public DataObject(int id, String title, boolean isUploaded, ArrayList<String> photos) {
+        this.id = id;
         this.title = title;
         this.isUploaded = isUploaded;
         this.photos = photos;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

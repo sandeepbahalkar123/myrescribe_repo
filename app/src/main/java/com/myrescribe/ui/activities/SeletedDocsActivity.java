@@ -110,7 +110,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
     @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
     public void onPickPhoto(int position) {
         if (photoPaths.size() == MAX_ATTACHMENT_COUNT)
-            Toast.makeText(this, "Cannot select more than " + MAX_ATTACHMENT_COUNT + " items", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Cannot select more than " + MAX_ATTACHMENT_COUNT + " documents", Toast.LENGTH_SHORT).show();
         else
             FilePickerBuilder.getInstance().setMaxCount(MAX_ATTACHMENT_COUNT)
                     .setSelectedFiles(photoPaths)
@@ -156,7 +156,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
             setResult(RESULT_OK, intent);
             finish();
         } else {
-            CommonMethods.showToast(mContext, "please select at least one");
+            CommonMethods.showToast(mContext, "Please select at least one document");
         }
     }
 }

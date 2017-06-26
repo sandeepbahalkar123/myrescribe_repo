@@ -4,10 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 
-import com.myrescribe.R;
-import com.myrescribe.services.NotificationService;
+import com.myrescribe.services.AppointmentNotificationService;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -23,10 +21,10 @@ import java.util.Calendar;
  *
  * @author paul.blundell
  */
-public class DosesAlarmTask implements Runnable {
+public class AppointmentAlarmTask implements Runnable {
     // The time selected for the alarm
-    private final String time[];
-    private final String date;
+    private final String time;
+    private final String msg;
 
     // The android system alarm manager
     private final AlarmManager am;
@@ -34,11 +32,11 @@ public class DosesAlarmTask implements Runnable {
     private final Context context;
 //    private final ArrayList<Medicine> medicines;
 
-    public DosesAlarmTask(Context context, String time[], String date/*, ArrayList<Medicine> medicines*/) {
+    public AppointmentAlarmTask(Context context, String time, String msg/*, ArrayList<Medicine> medicines*/) {
         this.context = context;
         this.am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         this.time = time;
-        this.date = date;
+        this.msg = msg;
 //        this.medicines = medicines;
     }
 
@@ -61,22 +59,14 @@ public class DosesAlarmTask implements Runnable {
 
     @Override
     public void run() {
-        setAlarm(time[0], context.getResources().getString(R.string.breakfast_medication), 0/*, medicines*/);
-        setAlarm(time[1], context.getResources().getString(R.string.lunch_medication), 1/*, medicines*/);
-        setAlarm(time[2], context.getResources().getString(R.string.dinner_medication), 2/*, medicines*/);
-        setAlarm(time[3], context.getResources().getString(R.string.snacks_medication), 3/*, medicines*/);
+        setAlarm(time, msg, 5/*, medicines*/);
     }
 
-    private void setAlarm(String time, String medicineSlot, int requestCode/*, ArrayList<Medicine> medicines*/){
-        Intent intent = new Intent(context, NotificationService.class);
-        intent.putExtra(NotificationService.INTENT_NOTIFY, true);
+    private void setAlarm(String time, String msg, int requestCode/*, ArrayList<Medicine> medicines*/) {
+        Intent intent = new Intent(context, AppointmentNotificationService.class);
+        intent.putExtra(AppointmentNotificationService.INTENT_NOTIFY, true);
         intent.putExtra(MyRescribeConstants.TIME, time);
-        intent.putExtra(MyRescribeConstants.MEDICINE_SLOT, medicineSlot);
-        intent.putExtra(MyRescribeConstants.DATE, date);
-
-        Bundle bundle = new Bundle();
-//        bundle.putSerializable(MyRescribeConstants.MEDICINE_NAME, medicines);
-        intent.putExtra(MyRescribeConstants.MEDICINE_NAME, bundle);
+        intent.putExtra(MyRescribeConstants.APPOINTMENT_MESSAGE, msg);
 
         PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent, 0);
 

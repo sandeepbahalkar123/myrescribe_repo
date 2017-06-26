@@ -36,7 +36,7 @@ import droidninja.filepicker.utils.ImageCaptureManager;
 import droidninja.filepicker.utils.MediaStoreHelper;
 
 
-public class MediaFolderPickerFragment extends BaseFragment implements FolderGridAdapter.FolderGridAdapterListener{
+public class MediaFolderPickerFragment extends BaseFragment implements FolderGridAdapter.FolderGridAdapterListener {
 
     private static final String TAG = MediaFolderPickerFragment.class.getSimpleName();
     private static final int SCROLL_THRESHOLD = 30;
@@ -84,7 +84,7 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
         Bundle bun = new Bundle();
         bun.putInt(FILE_TYPE, fileType);
         photoPickerFragment.setArguments(bun);
-        return  photoPickerFragment;
+        return photoPickerFragment;
     }
 
     public interface PhotoPickerFragmentListener {
@@ -119,7 +119,8 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 // Log.d(">>> Picker >>>", "dy = " + dy);
                 if (Math.abs(dy) > SCROLL_THRESHOLD) {
@@ -128,13 +129,15 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
                     resumeRequestsIfNotDestroyed();
                 }
             }
-            @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     resumeRequestsIfNotDestroyed();
                 }
             }
         });
-        
+
         getDataFromMedia();
     }
 
@@ -143,7 +146,7 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
         mediaStoreArgs.putBoolean(FilePickerConst.EXTRA_SHOW_GIF, PickerManager.getInstance().isShowGif());
         mediaStoreArgs.putInt(FilePickerConst.EXTRA_FILE_TYPE, fileType);
 
-        if(fileType==FilePickerConst.MEDIA_TYPE_IMAGE) {
+        if (fileType == FilePickerConst.MEDIA_TYPE_IMAGE) {
             MediaStoreHelper.getPhotoDirs(getActivity(), mediaStoreArgs,
                     new FileResultCallback<PhotoDirectory>() {
                         @Override
@@ -151,9 +154,7 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
                             updateList(dirs);
                         }
                     });
-        }
-        else if(fileType==FilePickerConst.MEDIA_TYPE_VIDEO)
-        {
+        } else if (fileType == FilePickerConst.MEDIA_TYPE_VIDEO) {
             MediaStoreHelper.getVideoDirs(getActivity(), mediaStoreArgs,
                     new FileResultCallback<PhotoDirectory>() {
                         @Override
@@ -165,12 +166,11 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
     }
 
     private void updateList(List<PhotoDirectory> dirs) {
-        Log.i("updateList",""+dirs.size());
-        if(dirs.size()>0) {
+        Log.i("updateList", "" + dirs.size());
+        if (dirs.size() > 0) {
             emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             emptyView.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
             return;
@@ -179,19 +179,14 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
         PhotoDirectory photoDirectory = new PhotoDirectory();
         photoDirectory.setBucketId(FilePickerConst.ALL_PHOTOS_BUCKET_ID);
 
-        if(fileType==FilePickerConst.MEDIA_TYPE_VIDEO)
-        {
+        if (fileType == FilePickerConst.MEDIA_TYPE_VIDEO) {
             photoDirectory.setName(getString(R.string.all_videos));
-        }
-        else if(fileType==FilePickerConst.MEDIA_TYPE_IMAGE)
-        {
+        } else if (fileType == FilePickerConst.MEDIA_TYPE_IMAGE) {
             photoDirectory.setName(getString(R.string.all_photos));
-        }
-        else
+        } else
             photoDirectory.setName(getString(R.string.all_files));
 
-        if(dirs.size()>0 && dirs.get(0).getMedias().size()>0)
-        {
+        if (dirs.size() > 0 && dirs.get(0).getMedias().size() > 0) {
             photoDirectory.setDateAdded(dirs.get(0).getDateAdded());
             photoDirectory.setCoverPath(dirs.get(0).getMedias().get(0).getPath());
         }
@@ -200,20 +195,25 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
             photoDirectory.addPhotos(dirs.get(i).getMedias());
         }
 
-        dirs.add(0,photoDirectory);
+        dirs.add(0, photoDirectory);
 
-            if(photoGridAdapter!=null)
-            {
-                photoGridAdapter.setData(dirs);
-                photoGridAdapter.notifyDataSetChanged();
-            }
-            else
-            {
-                photoGridAdapter = new FolderGridAdapter(getActivity(), mGlideRequestManager, (ArrayList<PhotoDirectory>) dirs, null, (fileType==FilePickerConst.MEDIA_TYPE_IMAGE) && PickerManager.getInstance().isEnableCamera());
-                recyclerView.setAdapter(photoGridAdapter);
+        // Ganesh
+        // Added Code
 
-                photoGridAdapter.setFolderGridAdapterListener(this);
-            }
+        ArrayList<PhotoDirectory> directories = new ArrayList<>();
+        for (PhotoDirectory directory : dirs) {
+            if (directory.getName().equals("All Photos") || directory.getName().equals("Download") || directory.getName().equals("Pictures") || directory.getName().equals("Documents"))
+                directories.add(directory);
+        }
+
+        if (photoGridAdapter != null) {
+            photoGridAdapter.setData(directories);
+            photoGridAdapter.notifyDataSetChanged();
+        } else {
+            photoGridAdapter = new FolderGridAdapter(getActivity(), mGlideRequestManager, (ArrayList<PhotoDirectory>) directories, null, (fileType == FilePickerConst.MEDIA_TYPE_IMAGE) && PickerManager.getInstance().isEnableCamera());
+            recyclerView.setAdapter(photoGridAdapter);
+            photoGridAdapter.setFolderGridAdapterListener(this);
+        }
 
     }
 
@@ -221,7 +221,7 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
     public void onCameraClicked() {
         try {
             Intent intent = imageCaptureManager.dispatchTakePictureIntent(getActivity());
-            if(intent!=null)
+            if (intent != null)
                 startActivityForResult(intent, ImageCaptureManager.REQUEST_TAKE_PHOTO);
             else
                 Toast.makeText(getActivity(), R.string.no_camera_exists, Toast.LENGTH_SHORT).show();
@@ -233,19 +233,17 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
     @Override
     public void onFolderClicked(PhotoDirectory photoDirectory) {
         Intent intent = new Intent(getActivity(), MediaDetailsActivity.class);
-        intent.putExtra(PhotoDirectory.class.getSimpleName(),photoDirectory);
-        intent.putExtra(FilePickerConst.EXTRA_FILE_TYPE,fileType);
+        intent.putExtra(PhotoDirectory.class.getSimpleName(), photoDirectory);
+        intent.putExtra(FilePickerConst.EXTRA_FILE_TYPE, fileType);
         getActivity().startActivityForResult(intent, FilePickerConst.REQUEST_CODE_MEDIA_DETAIL);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case ImageCaptureManager.REQUEST_TAKE_PHOTO:
-                if(resultCode== Activity.RESULT_OK)
-                {
+                if (resultCode == Activity.RESULT_OK) {
                     imageCaptureManager.galleryAddPic();
 
                     new Handler().postDelayed(new Runnable() {
@@ -254,7 +252,7 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
                             getDataFromMedia();
 
                         }
-                    },1000);
+                    }, 1000);
                 }
                 break;
         }

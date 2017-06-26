@@ -13,11 +13,12 @@
         android:padding="1dip"
         android:scaleType="centerCrop" />
 
-    <View
-        android:id="@+id/transparent_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/transparent_black"
-        android:visibility="gone" />
+    <droidninja.filepicker.views.SmoothCheckBox
+        android:id="@+id/removeCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/dp10"
+        android:layout_alignParentRight="true" />
 
 </droidninja.filepicker.views.SquareRelativeLayout>

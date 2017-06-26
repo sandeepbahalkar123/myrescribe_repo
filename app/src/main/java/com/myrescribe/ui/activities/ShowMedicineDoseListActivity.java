@@ -28,7 +28,9 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
+import com.myrescribe.notification.AppointmentAlarmTask;
 import com.myrescribe.notification.DosesAlarmTask;
+import com.myrescribe.notification.InvestigationAlarmTask;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -117,6 +119,8 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         }*/
 
         new DosesAlarmTask(ShowMedicineDoseListActivity.this, times, date/*, medicines*/).run();
+        new InvestigationAlarmTask(ShowMedicineDoseListActivity.this, "9:00 am", getResources().getString(R.string.investigation_msg)).run();
+        new AppointmentAlarmTask(ShowMedicineDoseListActivity.this, "9:00 am", getResources().getString(R.string.appointment_msg)).run();
     }
 
     private void initializeVariables() {
@@ -132,8 +136,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
                 onBackPressed();
             }
         });
-
-
     }
 
     private void bindView() {

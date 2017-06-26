@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import droidninja.filepicker.views.SmoothCheckBox;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHolder> {
 
@@ -29,7 +30,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHold
     public ImageAdapter(Context context, ArrayList<String> paths) {
         this.context = context;
         this.paths = paths;
-        setColumnNumber(context, 3);
+        setColumnNumber(context, 2);
     }
 
     private void setColumnNumber(Context context, int columnNum) {
@@ -48,7 +49,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHold
     }
 
     @Override
-    public void onBindViewHolder(ImageAdapter.FileViewHolder holder, int position) {
+    public void onBindViewHolder(final ImageAdapter.FileViewHolder holder, final int position) {
         final String path = paths.get(position);
         Glide.with(context).load(new File(path))
                 .centerCrop()
@@ -66,6 +67,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHold
                 context.startActivity(intent);
             }
         });
+
+        holder.removeCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.removeCheckbox.setChecked(true);
+                paths.remove(position);
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -78,9 +88,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHold
         @BindView(R.id.iv_photo)
         ImageView imageView;
 
+        @BindView(R.id.removeCheckbox)
+        SmoothCheckBox removeCheckbox;
+
         FileViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            removeCheckbox.setChecked(true);
         }
     }
 }

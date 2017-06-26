@@ -1,7 +1,10 @@
 package com.myrescribe.ui.activities;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,6 +15,7 @@ import android.view.View;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.InvestigationViewAdapter;
+import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.model.DataObject;
 import com.myrescribe.util.CommonMethods;
 
@@ -32,6 +36,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     private InvestigationViewAdapter mAdapter;
     private Context mContext;
     private ArrayList<DataObject> investigation = new ArrayList<DataObject>();
+    private AppDBHelper appDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,19 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new InvestigationViewAdapter(mContext, getDataSet());
+        ArrayList<DataObject> data = getDataSet();
+
+        appDBHelper = new AppDBHelper(mContext);
+        for (DataObject dataObject:data){
+            appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.isUploaded());
+        }
+
+        for (DataObject dataObject:data){
+            boolean status = appDBHelper.getInvestigationData(dataObject.getId()).isUploaded();
+            dataObject.setUploaded(status);
+        }
+
+        mAdapter = new InvestigationViewAdapter(mContext, data);
         mRecyclerView.setAdapter(mAdapter);
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
@@ -61,9 +78,9 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     }
 
     private ArrayList<DataObject> getDataSet() {
-        investigation.add(new DataObject("CT Scan", false, new ArrayList<String>()));
-        investigation.add(new DataObject("Lipid", false, new ArrayList<String>()));
-        investigation.add(new DataObject("Liver Profile", false, new ArrayList<String>()));
+        investigation.add(new DataObject(1, "CT Scan", false, new ArrayList<String>()));
+        investigation.add(new DataObject(2, "Lipid", false, new ArrayList<String>()));
+        investigation.add(new DataObject(3, "Liver Profile", false, new ArrayList<String>()));
         return investigation;
     }
 
@@ -84,6 +101,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
             ArrayList<String> photu = new ArrayList<>();
             photu.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
             investigation.get(id).setPhotos(photu);
+            appDBHelper.updateInvestigationData(investigation.get(id).getId(), investigation.get(id).getTitle(), investigation.get(id).isUploaded());
 
             if (resultCode == RESULT_CANCELED) {
                 investigation.get(id).setUploaded(false);

@@ -26,7 +26,9 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
-import com.myrescribe.notification.AlarmTask;
+import com.myrescribe.notification.AppointmentAlarmTask;
+import com.myrescribe.notification.DosesAlarmTask;
+import com.myrescribe.notification.InvestigationAlarmTask;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -120,7 +122,9 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
             medicines.add(medicine1);
         }*/
 
-        new AlarmTask(ShowMedicineDoseListActivity.this, times, date/*, medicines*/).run();
+        new DosesAlarmTask(ShowMedicineDoseListActivity.this, times, date/*, medicines*/).run();
+        new InvestigationAlarmTask(ShowMedicineDoseListActivity.this, "9:00 am", getResources().getString(R.string.investigation_msg)).run();
+        new AppointmentAlarmTask(ShowMedicineDoseListActivity.this, "9:00 am", getResources().getString(R.string.appointment_msg)).run();
     }
 
     private void initializeVariables() {
@@ -136,6 +140,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
                 onBackPressed();
             }
         });
+<<<<<<< HEAD
 */
 
     }
@@ -189,6 +194,20 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
             // Handle the camera action
         }else  if (id == R.id.doctor_details) {
         Intent intent = new Intent(ShowMedicineDoseListActivity.this, DoctorListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        // Handle the camera action
+    }else  if (id == R.id.investigations) {
+        Intent intent = new Intent(ShowMedicineDoseListActivity.this, InvestigationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        // Handle the camera action
+    }else  if (id == R.id.appointments) {
+        Intent intent = new Intent(ShowMedicineDoseListActivity.this, AppoinmentActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

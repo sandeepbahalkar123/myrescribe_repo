@@ -1,33 +1,27 @@
 package com.myrescribe.broadcast_receivers;
 
-import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Toast;
 
-import com.myrescribe.ui.activities.NotificationActivity;
+import com.myrescribe.ui.activities.AppoinmentActivity;
+import com.myrescribe.ui.activities.InvestigationActivity;
 import com.myrescribe.util.MyRescribeConstants;
 
 /**
  * Created by jeetal on 16/5/17.
  */
-
-public class NoClickReceiver extends BroadcastReceiver {
-
+public class AppointmentNotificationYesClickReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         int notificationId = intent.getIntExtra("notificationId", 0);
 //        Toast.makeText(context,action + " " + "Dose Rejected", Toast.LENGTH_SHORT).show();
         // if you want cancel notification
 
-        Intent intentNotification = new Intent(context, NotificationActivity.class);
-        intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
-        intentNotification.putExtra(MyRescribeConstants.DATE, intent.getStringExtra(MyRescribeConstants.DATE));
+        Intent intentNotification = new Intent(context, AppoinmentActivity.class);
         intentNotification.putExtra(MyRescribeConstants.TIME, intent.getStringExtra(MyRescribeConstants.TIME));
-        intentNotification.putExtra(MyRescribeConstants.MEDICINE_NAME, intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME));
+        intentNotification.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, intent.getBundleExtra(MyRescribeConstants.APPOINTMENT_MESSAGE));
         intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                 Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -35,6 +29,5 @@ public class NoClickReceiver extends BroadcastReceiver {
 
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(notificationId);
-
     }
 }

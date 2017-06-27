@@ -1,6 +1,5 @@
-package com.myrescribe.util;
+package com.myrescribe.listeners;
 
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;

@@ -5,20 +5,17 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.myrescribe.R;
-import com.myrescribe.model.Medicine;
-import com.myrescribe.services.NotifyService;
+import com.myrescribe.services.NotificationService;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
  * Set an alarm for the time passed into the constructor
- * When the alarm is raised it will start the NotifyService
+ * When the alarm is raised it will start the NotificationService
  * <p>
  * This uses the android build in alarm manager *NOTE* if the phone is turned off this alarm will be cancelled
  * <p>
@@ -26,7 +23,7 @@ import java.util.Calendar;
  *
  * @author paul.blundell
  */
-public class AlarmTask implements Runnable {
+public class DosesAlarmTask implements Runnable {
     // The time selected for the alarm
     private final String time[];
     private final String date;
@@ -37,7 +34,7 @@ public class AlarmTask implements Runnable {
     private final Context context;
 //    private final ArrayList<Medicine> medicines;
 
-    public AlarmTask(Context context, String time[], String date/*, ArrayList<Medicine> medicines*/) {
+    public DosesAlarmTask(Context context, String time[], String date/*, ArrayList<Medicine> medicines*/) {
         this.context = context;
         this.am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         this.time = time;
@@ -71,8 +68,8 @@ public class AlarmTask implements Runnable {
     }
 
     private void setAlarm(String time, String medicineSlot, int requestCode/*, ArrayList<Medicine> medicines*/){
-        Intent intent = new Intent(context, NotifyService.class);
-        intent.putExtra(NotifyService.INTENT_NOTIFY, true);
+        Intent intent = new Intent(context, NotificationService.class);
+        intent.putExtra(NotificationService.INTENT_NOTIFY, true);
         intent.putExtra(MyRescribeConstants.TIME, time);
         intent.putExtra(MyRescribeConstants.MEDICINE_SLOT, medicineSlot);
         intent.putExtra(MyRescribeConstants.DATE, date);
@@ -84,9 +81,8 @@ public class AlarmTask implements Runnable {
         PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent, 0);
 
         // Sets an alarm - note this alarm will be lost if the phone is turned off and on again
-        am.set(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), pendingIntent);
+//        am.set(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), pendingIntent);
 
-//        am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
-
 }

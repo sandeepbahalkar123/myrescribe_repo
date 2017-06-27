@@ -10,6 +10,14 @@
             android:id="@+id/doctor_details"
             android:title="@string/doctor_details"
             android:icon="@mipmap/logoutblack"/>
+        <item
+            android:id="@+id/investigations"
+            android:title="@string/investigation"
+            android:icon="@mipmap/logoutblack"/>
+        <item
+            android:id="@+id/appointments"
+            android:title="@string/appointments"
+            android:icon="@mipmap/logoutblack"/>
 
     </group>
 

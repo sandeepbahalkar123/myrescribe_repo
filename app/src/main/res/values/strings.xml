@@ -143,6 +143,17 @@
     <string name="read_less">&#160;<u>
         less</u></string>
     <string name="no">No</string>
+    <string name="title_activity_investigation">Investigation Result</string>
+    <string name="title_activity_seleted_docs">Seleted Docs</string>
+    <string name="upload">Upload</string>
+    <string name="adddocs">Add Docs</string>
+    <string name="title_activity_zoomview">Zoom View</string>
+    <string name="investigation_msg">Have you done the investigations adviced by Dr. Shah?</string>
+    <string name="appointment_msg">You have an appointment with Dr. ---- on --th June at --:-- am.</string>
+    <string name="title_activity_appoinment">Appoinment</string>
+    <string name="appointment">Appointment</string>
+    <string name="investigation">Investigation</string>
+    <string name="appointments">Appointment</string>
 
 
 </resources>

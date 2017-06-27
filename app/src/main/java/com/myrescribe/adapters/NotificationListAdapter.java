@@ -1,7 +1,6 @@
 package com.myrescribe.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
-import com.myrescribe.util.SwipeDismissTouchListener;
+import com.myrescribe.listeners.SwipeDismissTouchListener;
 
 import java.util.ArrayList;
 

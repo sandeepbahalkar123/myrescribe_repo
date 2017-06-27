@@ -25,12 +25,11 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.Medicine;
 import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
-import com.myrescribe.util.SwipeDismissTouchListener;
+import com.myrescribe.listeners.SwipeDismissTouchListener;
 
 import java.util.ArrayList;
 

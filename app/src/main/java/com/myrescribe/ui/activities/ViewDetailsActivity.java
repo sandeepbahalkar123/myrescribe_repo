@@ -1,5 +1,6 @@
 package com.myrescribe.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -61,7 +62,11 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
             @Override
             public void onClick(View v) {
                 //What to do on back clicked
-                onBackPressed();
+                Intent intent = new Intent(ViewDetailsActivity.this, ShowMedicineDoseListActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
         mHistoryExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -148,13 +153,13 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
                     mHistoryDataList.put("Remarks", listObject.getRemarks());
                 }
             }
-           /* else if (listObject.getAdvice() != null) {
+           else if (listObject.getAdvice() != null) {
                 if (!listObject.getAdvice().equals(null)) {
                     mHeaderList.add("Advice");
-                    mHistoryDataList.put("Advice", listObject.getInvestigations());
+                    mHistoryDataList.put("Advice", listObject.getAdvice());
                 }
             }
-*/
+
         }
     }
 

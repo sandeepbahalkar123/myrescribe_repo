@@ -36,6 +36,14 @@ public class PrescriptionData {
     @Expose
     private String dinnerA;
 
+    @SerializedName("EveningB")
+    @Expose
+    private String eveningB;
+
+    @SerializedName("EveningA")
+    @Expose
+    private String eveningA;
+
     @SerializedName("Instruction")
     @Expose
     private String instruction;
@@ -72,6 +80,16 @@ public class PrescriptionData {
     private boolean isDinnerExpanded = false;
     private boolean isBreakFastExpanded = false;
 
+    public boolean isSnacksExpanded() {
+        return isSnacksExpanded;
+    }
+
+    public void setSnacksExpanded(boolean snacksExpanded) {
+        isSnacksExpanded = snacksExpanded;
+    }
+
+    private boolean isSnacksExpanded = false;
+
     public boolean isLunchExpanded() {
         return isLunchExpanded;
     }
@@ -99,6 +117,19 @@ public class PrescriptionData {
     private boolean isLunchThere = true;
     private boolean isDinnerThere = true;
     private boolean isBreakThere = true;
+
+    public boolean isSnacksThere() {
+        return isSnacksThere;
+    }
+
+    public void setSnacksThere(boolean snacksThere) {
+        isSnacksThere = snacksThere;
+    }
+
+    private boolean isSnacksThere = true;
+
+
+
 
     public boolean isLunchThere() {
         return isLunchThere;
@@ -161,7 +192,21 @@ public class PrescriptionData {
     public String getMorningB() {
         return morningB;
     }
+    public String getEveningA() {
+        return eveningA;
+    }
 
+    public void setEveningA(String eveningA) {
+        this.eveningA = eveningA;
+    }
+
+    public String getEveningB() {
+        return eveningB;
+    }
+
+    public void setEveningB(String eveningB) {
+        this.eveningB = eveningB;
+    }
     public void setMorningB(String morningB) {
         this.morningB = morningB;
     }

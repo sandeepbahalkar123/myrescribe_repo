@@ -7,6 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.myrescribe.model.DataObject;
 import com.myrescribe.util.CommonMethods;
 
 import java.io.File;
@@ -16,6 +17,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class AppDBHelper extends SQLiteOpenHelper {
+
+    private static final String INV_ID = "inv_id";
+    private static final String INV_NAME = "inv_name";
+    private static final String INV_UPLOAD_STATUS = "upload_status";
+    private static final String INVESTIGATION_TABLE = "investigation_table";
 
     private final String TAG = "MyRescribe/AppDBHelper";
     private static final String PREFERENCES_TABLE = "preferences_table";
@@ -30,6 +36,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public static final String BREAKFAST_TIME = "breakfastTime";
     public static final String LUNCH_TIME = "lunchTime";
     public static final String DINNER_TIME = "dinnerTime";
+    public static final String SNACKS_TIME = "snacksTime";
 
     static AppDBHelper instance = null;
     private Context mContext;
@@ -149,7 +156,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean insertPreferences(String userId, String breakfastTime, String lunchTime, String dinnerTime) {
+    public boolean insertPreferences(String userId, String breakfastTime, String lunchTime,String snacksTime, String dinnerTime) {
         if (preferencesTableNumberOfRows(userId) == 0) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
@@ -158,10 +165,11 @@ public class AppDBHelper extends SQLiteOpenHelper {
             contentValues.put(BREAKFAST_TIME, breakfastTime);
             contentValues.put(LUNCH_TIME, lunchTime);
             contentValues.put(DINNER_TIME, dinnerTime);
+            contentValues.put(SNACKS_TIME,snacksTime);
 
             db.insert(PREFERENCES_TABLE, null, contentValues);
         } else {
-            updatePreferences(userId, breakfastTime, lunchTime, dinnerTime);
+            updatePreferences(userId, breakfastTime, lunchTime, snacksTime, dinnerTime);
         }
         return true;
     }
@@ -176,12 +184,13 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + PREFERENCES_TABLE + " where " + USER_ID + "=" + userId + "", null);
     }
 
-    private boolean updatePreferences(String userId, String breakfastTime, String lunchTime, String dinnerTime) {
+    private boolean updatePreferences(String userId, String breakfastTime, String lunchTime,String snacksTime, String dinnerTime) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(BREAKFAST_TIME, breakfastTime);
         contentValues.put(LUNCH_TIME, lunchTime);
         contentValues.put(DINNER_TIME, dinnerTime);
+        contentValues.put(SNACKS_TIME,snacksTime);
 
         db.update(PREFERENCES_TABLE, contentValues, USER_ID + " = ? ", new String[]{userId});
         return true;
@@ -194,4 +203,58 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 new String[]{userId});
     }
 
+    // Investigation
+
+    public boolean insertInvestigationData(int id, String name, boolean isUploaded) {
+        if (investigationDataTableNumberOfRows(id) == 0) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(INV_ID, id);
+            contentValues.put(INV_NAME, name);
+            contentValues.put(INV_UPLOAD_STATUS, isUploaded ? 1 : 0);
+
+            db.insert(INVESTIGATION_TABLE, null, contentValues);
+        }
+        return true;
+    }
+
+    public int investigationDataTableNumberOfRows(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return (int) DatabaseUtils.queryNumEntries(db, INVESTIGATION_TABLE, INV_ID + " = ? ", new String[]{String.valueOf(id)});
+    }
+
+    public int updateInvestigationData(int id, String name, boolean isUploaded) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(INV_NAME, name);
+        contentValues.put(INV_UPLOAD_STATUS, isUploaded ? 1 : 0);
+
+        return db.update(INVESTIGATION_TABLE, contentValues, INV_ID + " = ? ", new String[]{String.valueOf(id)});
+    }
+
+    public DataObject getInvestigationData(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + INVESTIGATION_TABLE + " where " + INV_ID + "=" + id + "", null);
+
+        DataObject dataObject = null;
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+//                id = cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_ID));
+                dataObject = new DataObject(Integer.parseInt(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_ID))), cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME)), cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1, null);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+
+        return dataObject;
+    }
+
+    public int deleteInvestigation(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(INVESTIGATION_TABLE,
+                INV_ID + " = ? ",
+                new String[]{id});
+    }
 }

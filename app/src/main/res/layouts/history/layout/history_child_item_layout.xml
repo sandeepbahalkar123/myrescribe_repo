@@ -2,6 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/expandVisitDetailsLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,22 +20,21 @@
             android:layout_marginLeft="@dimen/dp40"
             android:background="@drawable/circular_bullet" />
 
-        <TextView
+        <com.myrescribe.ui.customesViews.CustomTextView
             android:id="@+id/textView_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dp4"
-            android:text="asdasd"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="@dimen/sp12" />
+            app:customFont="@string/roboto_medium"
+            android:textColor="@color/view_detail_color"
+            android:textSize="@dimen/sp18" />
     </LinearLayout>
 
-    <!-- <View
+    <View
          android:id="@+id/adapter_divider_bottom"
          android:layout_width="match_parent"
-         android:layout_height="3dp"
+         android:layout_height="1dp"
          android:layout_marginTop="@dimen/dp4"
          android:background="@color/divider"
-         android:visibility="gone" />-->
+         android:visibility="gone" />
 </LinearLayout>

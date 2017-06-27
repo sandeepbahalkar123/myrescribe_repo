@@ -66,7 +66,11 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
 
         } else {
             holder.date.setVisibility(View.INVISIBLE);
+
             holder.circularBullet.setVisibility(View.GONE);
+
+            //    holder.circularBullet.setVisibility(View.GONE);
+
         }
 
         return row;

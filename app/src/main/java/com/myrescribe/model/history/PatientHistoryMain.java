@@ -15,6 +15,9 @@ public class PatientHistoryMain implements CustomResponse {
     @SerializedName("complaints")
     @Expose
     private ArrayList<HistoryCommonDetails> complaints = null;
+    @SerializedName("remarks")
+    @Expose
+    private ArrayList<HistoryCommonDetails> remarks = null;
     @SerializedName("vitals")
     @Expose
     private ArrayList<HistoryCommonDetails> vitals = null;
@@ -30,9 +33,26 @@ public class PatientHistoryMain implements CustomResponse {
     @SerializedName("investigations")
     @Expose
     private ArrayList<HistoryCommonDetails> investigations = null;
+
+    public ArrayList<HistoryCommonDetails> getAdvice() {
+        return advice;
+    }
+
+    public void setAdvice(ArrayList<HistoryCommonDetails> advice) {
+        this.advice = advice;
+    }
+
     @SerializedName("advice")
     @Expose
-    private String advice;
+    private ArrayList<HistoryCommonDetails> advice = null;
+
+    public ArrayList<HistoryCommonDetails> getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(ArrayList<HistoryCommonDetails> remarks) {
+        this.remarks = remarks;
+    }
 
     public ArrayList<HistoryCommonDetails> getComplaints() {
         return complaints;
@@ -82,11 +102,4 @@ public class PatientHistoryMain implements CustomResponse {
         this.investigations = investigations;
     }
 
-    public String getAdvice() {
-        return advice;
-    }
-
-    public void setAdvice(String advice) {
-        this.advice = advice;
-    }
 }

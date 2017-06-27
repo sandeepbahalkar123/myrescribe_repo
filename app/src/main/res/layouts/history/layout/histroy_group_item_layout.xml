@@ -1,52 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="@dimen/dp2">
+   >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_margin="@dimen/dp8">
 
-        <com.myrescribe.ui.customesViews.CircularImageView
-            android:layout_width="@dimen/dp40"
-            android:layout_height="@dimen/dp40"
-            android:background="@drawable/circular_background" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:layout_gravity="top|center_vertical"
+            android:id="@+id/viewDetailIcon" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dp6"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/headerLabel"
+            <com.myrescribe.ui.customesViews.CustomTextView
+                android:id="@+id/viewDetailHeaderLabel"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center|left"
+                android:layout_height="wrap_content"
                 android:text="Complaints"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp14"
+                android:textSize="@dimen/sp19"
+                app:customFont="@string/roboto_bold"
                 android:textStyle="bold" />
-
-            <TextView
+            <View
+                android:id="@+id/headergroupDivider"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp1"
-                android:gravity="center"
-                android:layout_marginTop="@dimen/dp4"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/dp10"
                 android:background="@color/divider" />
+
+            <com.myrescribe.ui.customesViews.CustomTextView
+                android:id="@+id/detailFirstPoint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               android:textColor="@color/view_detail_color"
+                android:text="Complaints"
+                android:textSize="@dimen/sp17"
+                app:customFont="@string/roboto_medium"
+                />
 
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/groupDivider"
+    <View
+        android:id="@+id/adapter_divider_top"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp1"
-        android:layout_margin="@dimen/dp4"
+        android:layout_height="1dp"
         android:background="@color/divider" />
-
 </LinearLayout>

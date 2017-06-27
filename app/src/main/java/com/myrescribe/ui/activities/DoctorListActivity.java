@@ -2,26 +2,22 @@ package com.myrescribe.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ExpandableListView;
+
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.DoctorListAdapter;
-import com.myrescribe.adapters.ShowHistoryListAdapter;
-import com.myrescribe.helpers.doctor.DoctorHelper;
-import com.myrescribe.helpers.history.HistoryHelper;
+ import com.myrescribe.helpers.doctor.DoctorHelper;
+
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.doctors.DoctorDetail;
 import com.myrescribe.model.doctors.DoctorsModel;
-import com.myrescribe.model.history.HistoryCommonDetails;
-import com.myrescribe.model.history.PatientHistoryData;
-import com.myrescribe.model.history.PatientHistoryMain;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

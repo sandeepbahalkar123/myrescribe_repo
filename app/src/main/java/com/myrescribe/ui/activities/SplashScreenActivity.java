@@ -54,6 +54,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     //        Intent intentObj = new Intent(SplashScreenActivity.this, HistoryActivity.class);
                     Intent intentObj = new Intent(SplashScreenActivity.this, DoctorListActivity.class);
 
+
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

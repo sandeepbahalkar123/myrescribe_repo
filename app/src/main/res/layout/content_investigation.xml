@@ -11,6 +11,18 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/selectDocsButton" />
+
+    <Button
+        android:id="@+id/selectDocsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/dp10"
+        android:visibility="gone"
+        android:background="@drawable/button_back"
+        android:text="@string/select_documents"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

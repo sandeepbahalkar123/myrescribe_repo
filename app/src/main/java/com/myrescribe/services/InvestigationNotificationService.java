@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -13,6 +14,7 @@ import android.widget.RemoteViews;
 import com.myrescribe.R;
 import com.myrescribe.broadcast_receivers.InvestigationNotificationNoClickReceiver;
 import com.myrescribe.broadcast_receivers.InvestigationNotificationYesClickReceiver;
+import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.util.MyRescribeConstants;
 
 
@@ -39,13 +41,10 @@ public class InvestigationNotificationService extends Service {
 
     // Name of an intent extra we can use to identify if this service was started to create a notification
     public static final String INTENT_NOTIFY = "com.myrescribe";
-    // The system notification manager
-    private NotificationManager mNM;
 
     @Override
     public void onCreate() {
         Log.i("NotificationService", "onCreate()");
-        mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
     @Override
@@ -53,12 +52,44 @@ public class InvestigationNotificationService extends Service {
 
         // If this service was started by out DosesAlarmTask intent then we want to show our notification
         if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
-
-            CustomNotification(intent);
+            checkAllUploaded(intent);
         }
 
         // We don't care if this service is stopped as we have already delivered our notification
         return START_NOT_STICKY;
+    }
+
+    private void checkAllUploaded(Intent intentData) {
+        AppDBHelper appDBHelper = new AppDBHelper(this);
+        Cursor cursor = appDBHelper.getAllInvestigationData();
+        String docs = "";
+        int notUploaded = 0;
+        int uploaded = 0;
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                if (cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 0) {
+                    docs = docs + " " + cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME));
+                    notUploaded += 1;
+                } else uploaded += 1;
+                cursor.moveToNext();
+            }
+        }
+
+        String message = "";
+        if (cursor.getCount() == uploaded) {
+            // cancel notification
+
+        } else {
+            if (cursor.getCount() == notUploaded) {
+                message = intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_MESSAGE);
+            } else {
+                message = "Have you done the" + docs + " investigation adviced by Dr. Shah?";
+            }
+
+            intentData.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, message);
+            customNotification(intentData);
+        }
+        cursor.close();
     }
 
     @Override
@@ -69,7 +100,8 @@ public class InvestigationNotificationService extends Service {
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
 
-    public void CustomNotification(Intent intentData) {
+    public void customNotification(Intent intentData) {
+
         int NOTIFICATION_ID = (int) System.currentTimeMillis();
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
@@ -93,7 +125,7 @@ public class InvestigationNotificationService extends Service {
                 // Set Icon
                 .setSmallIcon(R.drawable.logosmall)
                 // Set Ticker Message
-                .setTicker(getString(R.string.customnotificationticker))
+                .setTicker(getString(R.string.investigation))
                 // Dismiss Notification
                 .setAutoCancel(true)
                 // Set RemoteViews into Notification

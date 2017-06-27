@@ -32,14 +32,12 @@ public class DosesAlarmTask implements Runnable {
     private final AlarmManager am;
     // Your context to retrieve the alarm manager from
     private final Context context;
-//    private final ArrayList<Medicine> medicines;
 
     public DosesAlarmTask(Context context, String time[], String date/*, ArrayList<Medicine> medicines*/) {
         this.context = context;
         this.am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         this.time = time;
         this.date = date;
-//        this.medicines = medicines;
     }
 
     private Calendar getCalendar(String time) {
@@ -61,10 +59,10 @@ public class DosesAlarmTask implements Runnable {
 
     @Override
     public void run() {
-        setAlarm(time[0], context.getResources().getString(R.string.breakfast_medication), 0/*, medicines*/);
-        setAlarm(time[1], context.getResources().getString(R.string.lunch_medication), 1/*, medicines*/);
-        setAlarm(time[2], context.getResources().getString(R.string.dinner_medication), 2/*, medicines*/);
-        setAlarm(time[3], context.getResources().getString(R.string.snacks_medication), 3/*, medicines*/);
+        setAlarm(time[0], context.getResources().getString(R.string.breakfast_medication), 0);
+        setAlarm(time[1], context.getResources().getString(R.string.lunch_medication), 1);
+        setAlarm(time[2], context.getResources().getString(R.string.dinner_medication), 2);
+        setAlarm(time[3], context.getResources().getString(R.string.snacks_medication), 3);
     }
 
     private void setAlarm(String time, String medicineSlot, int requestCode/*, ArrayList<Medicine> medicines*/){
@@ -75,7 +73,6 @@ public class DosesAlarmTask implements Runnable {
         intent.putExtra(MyRescribeConstants.DATE, date);
 
         Bundle bundle = new Bundle();
-//        bundle.putSerializable(MyRescribeConstants.MEDICINE_NAME, medicines);
         intent.putExtra(MyRescribeConstants.MEDICINE_NAME, bundle);
 
         PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent, 0);

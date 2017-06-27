@@ -30,14 +30,12 @@ public class AppointmentAlarmTask implements Runnable {
     private final AlarmManager am;
     // Your context to retrieve the alarm manager from
     private final Context context;
-//    private final ArrayList<Medicine> medicines;
 
     public AppointmentAlarmTask(Context context, String time, String msg/*, ArrayList<Medicine> medicines*/) {
         this.context = context;
         this.am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         this.time = time;
         this.msg = msg;
-//        this.medicines = medicines;
     }
 
     private Calendar getCalendar(String time) {

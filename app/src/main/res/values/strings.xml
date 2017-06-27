@@ -140,5 +140,6 @@
     <string name="title_activity_appoinment">Appoinment</string>
     <string name="appointment">Appointment</string>
     <string name="investigation">Investigation</string>
+    <string name="select_documents">Select Documents</string>
 
 </resources>

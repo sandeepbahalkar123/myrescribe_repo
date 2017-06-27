@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,39 +14,50 @@ import java.util.List;
 public class PatientHistoryMain implements CustomResponse {
     @SerializedName("complaints")
     @Expose
-    private List<HistoryCommonDetails> complaints = null;
+    private ArrayList<HistoryCommonDetails> complaints = null;
+    @SerializedName("remarks")
+    @Expose
+    private ArrayList<HistoryCommonDetails> remarks = null;
     @SerializedName("vitals")
     @Expose
-    private List<HistoryCommonDetails> vitals = null;
+    private ArrayList<HistoryCommonDetails> vitals = null;
     @SerializedName("findings")
     @Expose
     private String findings;
     @SerializedName("diagnosis")
     @Expose
-    private List<HistoryCommonDetails> diagnosis = null;
+    private ArrayList<HistoryCommonDetails> diagnosis = null;
     @SerializedName("prescriptions")
     @Expose
-    private List<HistoryCommonDetails> prescriptions = null;
+    private ArrayList<HistoryCommonDetails> prescriptions = null;
     @SerializedName("investigations")
     @Expose
-    private List<HistoryCommonDetails> investigations = null;
+    private ArrayList<HistoryCommonDetails> investigations = null;
     @SerializedName("advice")
     @Expose
     private String advice;
 
-    public List<HistoryCommonDetails> getComplaints() {
+    public ArrayList<HistoryCommonDetails> getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(ArrayList<HistoryCommonDetails> remarks) {
+        this.remarks = remarks;
+    }
+
+    public ArrayList<HistoryCommonDetails> getComplaints() {
         return complaints;
     }
 
-    public void setComplaints(List<HistoryCommonDetails> complaints) {
+    public void setComplaints(ArrayList<HistoryCommonDetails> complaints) {
         this.complaints = complaints;
     }
 
-    public List<HistoryCommonDetails> getVitals() {
+    public ArrayList<HistoryCommonDetails> getVitals() {
         return vitals;
     }
 
-    public void setVitals(List<HistoryCommonDetails> vitals) {
+    public void setVitals(ArrayList<HistoryCommonDetails> vitals) {
         this.vitals = vitals;
     }
 
@@ -57,27 +69,27 @@ public class PatientHistoryMain implements CustomResponse {
         this.findings = findings;
     }
 
-    public List<HistoryCommonDetails> getDiagnosis() {
+    public ArrayList<HistoryCommonDetails> getDiagnosis() {
         return diagnosis;
     }
 
-    public void setDiagnosis(List<HistoryCommonDetails> diagnosis) {
+    public void setDiagnosis(ArrayList<HistoryCommonDetails> diagnosis) {
         this.diagnosis = diagnosis;
     }
 
-    public List<HistoryCommonDetails> getPrescriptions() {
+    public ArrayList<HistoryCommonDetails> getPrescriptions() {
         return prescriptions;
     }
 
-    public void setPrescriptions(List<HistoryCommonDetails> prescriptions) {
+    public void setPrescriptions(ArrayList<HistoryCommonDetails> prescriptions) {
         this.prescriptions = prescriptions;
     }
 
-    public List<HistoryCommonDetails> getInvestigations() {
+    public ArrayList<HistoryCommonDetails> getInvestigations() {
         return investigations;
     }
 
-    public void setInvestigations(List<HistoryCommonDetails> investigations) {
+    public void setInvestigations(ArrayList<HistoryCommonDetails> investigations) {
         this.investigations = investigations;
     }
 

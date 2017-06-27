@@ -75,12 +75,13 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         if (mDataSet.get(position).isLunchThere()) {
             addSlotCards(holder.slotLayout, LUNCH, position);
         }
-        if (mDataSet.get(position).isBreakThere()) {
-            addSlotCards(holder.slotLayout, BREAK_FAST, position);
-        }
         if (mDataSet.get(position).isSnacksThere()) {
             addSlotCards(holder.slotLayout, SNACKS, position);
         }
+        if (mDataSet.get(position).isBreakThere()) {
+            addSlotCards(holder.slotLayout, BREAK_FAST, position);
+        }
+
     }
 
     // Added Slots
@@ -90,6 +91,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 .inflate(R.layout.notification_slot_card, parent, false);
 
         CustomTextView slotTextView = (CustomTextView) view.findViewById(R.id.slotTextView);
+        View dividerLine = (View) view.findViewById(R.id.dividerLineInHeader);
         CustomTextView slotTimeTextView = (CustomTextView) view.findViewById(R.id.slotTimeTextView);
         CustomTextView slotQuestionTextView = (CustomTextView) view.findViewById(R.id.slotQuestionTextView);
         CheckBox selectView = (CheckBox) view.findViewById(R.id.selectView);
@@ -105,9 +107,11 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 addTabletView(slotTabletListLayout, position, parent, view);
                 if (mDataSet.get(position).isDinnerExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
+                    dividerLine.setVisibility(View.VISIBLE);
                     selectView.setVisibility(View.INVISIBLE);
                 } else {
                     slotTabletListLayout.setVisibility(View.GONE);
+                    dividerLine.setVisibility(View.GONE);
                     selectView.setVisibility(View.VISIBLE);
                 }
 
@@ -174,9 +178,11 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 addTabletView(slotTabletListLayout, position, parent, view);
                 if (mDataSet.get(position).isLunchExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
+                    dividerLine.setVisibility(View.VISIBLE);
                     selectView.setVisibility(View.INVISIBLE);
                 } else {
                     slotTabletListLayout.setVisibility(View.GONE);
+                    dividerLine.setVisibility(View.GONE);
                     selectView.setVisibility(View.VISIBLE);
                 }
 
@@ -241,9 +247,10 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 addTabletView(slotTabletListLayout, position, parent, view);
                 if (mDataSet.get(position).isBreakFastExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
+                    dividerLine.setVisibility(View.VISIBLE);
                     selectView.setVisibility(View.INVISIBLE);
-
                 } else {
+                    dividerLine.setVisibility(View.GONE);
                     slotTabletListLayout.setVisibility(View.GONE);
                     selectView.setVisibility(View.VISIBLE);
                 }
@@ -309,10 +316,12 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 if (mDataSet.get(position).isSnacksExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
                     selectView.setVisibility(View.INVISIBLE);
+                    dividerLine.setVisibility(View.VISIBLE);
 
                 } else {
                     slotTabletListLayout.setVisibility(View.GONE);
                     selectView.setVisibility(View.VISIBLE);
+                    dividerLine.setVisibility(View.GONE);
                 }
 
                 selectView.setOnClickListener(new View.OnClickListener() {
@@ -381,6 +390,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             mDataSet.get(preExpandedPos).setBreakFastExpanded(false);
             mDataSet.get(preExpandedPos).setLunchExpanded(false);
             mDataSet.get(preExpandedPos).setDinnerExpanded(false);
+            mDataSet.get(preExpandedPos).setSnacksExpanded(false);
         }
     }
 

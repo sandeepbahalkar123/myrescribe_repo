@@ -3,14 +3,7 @@ package com.myrescribe.ui.activities;
 import android.content.Context;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -37,7 +30,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         mContext = SplashScreenActivity.this;
         doLogin();
-      //  doAppCheckLogin();
+        //  doAppCheckLogin();
 
     }
 
@@ -45,27 +38,33 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                 if(MyRescribePreferencesManager.getString(MyRescribeConstants.USERNAME,mContext).equals("")&&MyRescribePreferencesManager.getString(MyRescribeConstants.PHONE,mContext).equals("")) {
-                     Intent intentObj = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                     intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                     startActivity(intentObj);
-                 }else if(!MyRescribePreferencesManager.getString(MyRescribeConstants.USERNAME,mContext).equals("")&&MyRescribePreferencesManager.getString(MyRescribeConstants.PHONE,mContext).equals("")){
-                     Intent intentObj = new Intent(SplashScreenActivity.this, PhoneNoActivity.class);
-                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                     intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                     startActivity(intentObj);
-                 }
-                else if(!MyRescribePreferencesManager.getString(MyRescribeConstants.USERNAME,mContext).equals("") && (!MyRescribePreferencesManager.getString(MyRescribeConstants.PHONE,mContext).equals(""))){
-                     Intent intentObj = new Intent(SplashScreenActivity.this, ShowMedicineDoseListActivity.class);
-                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                     intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                     startActivity(intentObj);
+                if (MyRescribePreferencesManager.getString(MyRescribeConstants.USERNAME, mContext).equals("") && MyRescribePreferencesManager.getString(MyRescribeConstants.PHONE, mContext).equals("")) {
+                    Intent intentObj = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                    //---- TO show login screen enable below line
+                    //  Intent intentObj = new Intent(SplashScreenActivity.this, LoginMainActivity.class);
+                    //------------
 
-                 }
+                    intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intentObj);
+                } else if (!MyRescribePreferencesManager.getString(MyRescribeConstants.USERNAME, mContext).equals("") && MyRescribePreferencesManager.getString(MyRescribeConstants.PHONE, mContext).equals("")) {
+                    //TODO : UNCOMMET PhoneNoActivity to OTP screen
+                    //    Intent intentObj = new Intent(SplashScreenActivity.this, PhoneNoActivity.class);
+                    Intent intentObj = new Intent(SplashScreenActivity.this, ViewDetailsActivity.class);
+
+                    intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intentObj);
+                } else if (!MyRescribePreferencesManager.getString(MyRescribeConstants.USERNAME, mContext).equals("") && (!MyRescribePreferencesManager.getString(MyRescribeConstants.PHONE, mContext).equals(""))) {
+                    Intent intentObj = new Intent(SplashScreenActivity.this, ShowMedicineDoseListActivity.class);
+                    intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intentObj);
+
+                }
             }
         }, MyRescribeConstants.TIME_STAMPS.THREE_SECONDS);
 
@@ -90,7 +89,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 mDialog = dialog;
                                 mContext = context;
                                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, serverPath, context);
-                               // mLoginHelper.checkConnectionToServer(serverPath);
+
+                                // mLoginHelper.checkConnectionToServer(serverPath);
 
 
                             }

@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/dinner_medication"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp15"
+                android:textSize="@dimen/sp20"
                 app:customFont="@string/roboto_bold" />
 
             <com.myrescribe.ui.customesViews.CustomTextView
@@ -35,11 +35,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp12"
+                android:textSize="@dimen/sp16"
                 app:customFont="@string/roboto_bold" />
 
         </FrameLayout>
-
+        <View
+            android:id="@+id/dividerLineInHeader"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp05"
+            android:layout_marginBottom="@dimen/dp10"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:background="@color/divider" />
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -65,7 +72,7 @@
                         android:layout_toLeftOf="@+id/selectView"
                         android:layout_toStartOf="@+id/selectView"
                         android:text="@string/dosage_completed"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/sp19"
                         android:textColor="@color/dose_completed"
                         app:customFont="@string/roboto_medium" />
 

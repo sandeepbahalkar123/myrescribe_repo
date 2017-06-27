@@ -1,24 +1,22 @@
 package com.myrescribe.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.ShowMedicineDoseListAdapter;
@@ -26,7 +24,6 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.Medicine;
 import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.notification.AlarmTask;
@@ -55,12 +52,15 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawer;
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
 
     @BindView(R.id.recyclerViewShowMedicineDoseList)
     RecyclerView mRecyclerView;
+/*    @BindView(R.id.nav_view)
+    NavigationView navView;*/
 
     private PrescriptionHelper mPrescriptionHelper;
 
@@ -78,10 +78,13 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         initializeVariables();
         bindView();
         doGetPrescriptionList();
+
         Calendar c = Calendar.getInstance();
         int hour24 = c.get(Calendar.HOUR_OF_DAY);
         int Min = c.get(Calendar.MINUTE);
+
         mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
+
     }
 
     private void notificationForMedicine(ArrayList<PrescriptionData> data) {
@@ -126,18 +129,22 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.going_medication));
         mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+       /* mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //What to do on back clicked
                 onBackPressed();
             }
         });
-
+*/
 
     }
 
     private void bindView() {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.addDrawerListener(toggle);
+        toggle.syncState();
         mNavigationView.setNavigationItemSelectedListener(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -156,7 +163,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        //getMenuInflater().inflate(R.menu.main, menu);
+      //  getMenuInflater().inflate(R.menu.main, menu);
 
         return true;
 
@@ -173,9 +180,21 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-       /* if (id == R.id.nav_camera) {
+    if (id == R.id.visit_details) {
+        Intent intent = new Intent(ShowMedicineDoseListActivity.this, ViewDetailsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
             // Handle the camera action
-        }  */
+        }else  if (id == R.id.doctor_details) {
+        Intent intent = new Intent(ShowMedicineDoseListActivity.this, DoctorListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        // Handle the camera action
+    }
         return true;
     }
 

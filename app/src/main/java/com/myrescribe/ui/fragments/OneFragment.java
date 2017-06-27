@@ -1,3 +1,4 @@
+/*
 package com.myrescribe.ui.fragments;
 
 import android.os.Bundle;
@@ -111,4 +112,4 @@ public class OneFragment extends Fragment {
         listDataChild.put(listDataHeader.get(2), comingSoon);
     }
 
-}
+}*/

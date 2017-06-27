@@ -1,6 +1,9 @@
 package com.myrescribe.util;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Sandeep Bahalkar
  */
@@ -73,6 +76,8 @@ public class MyRescribeConstants {
     // Connection codes
 
     public static final String TASK_PRESCRIPTION_LIST = MyRescribeConstants.BLANK + 1;
+    public static final String TASK_HISTORY = MyRescribeConstants.BLANK + 2;
+    public static final String TASK_DOCTOR_LIST = MyRescribeConstants.BLANK + 3;
 
     public static class DATE_PATTERN {
         public static String YYYY_MM_DD = "yyyy-MM-dd";
@@ -103,4 +108,7 @@ public class MyRescribeConstants {
 
     public static final Integer SUCCESS = 200;
 
+
 }
+
+

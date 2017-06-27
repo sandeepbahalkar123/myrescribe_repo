@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp17"
+                android:textSize="@dimen/sp20"
                 app:customFont="@string/roboto_bold"
                 />
 
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp4"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp12"
+                android:textSize="@dimen/sp16"
                 app:customFont="@string/roboto_bold"
                 />
         </LinearLayout>
@@ -126,8 +126,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/dp2"
                     android:layout_weight="1"
-                    android:text="2"
-                    android:gravity="right"
+                    android:gravity="right|center_vertical"
                     android:paddingRight="@dimen/dp4"
                     app:customFont="@string/roboto_bold"
                     android:textColor="@color/BlueAngel"
@@ -146,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp4"
                         android:textColor="@color/instruction_color"
-                        android:textSize="@dimen/sp12"
+                        android:textSize="@dimen/sp14"
                         app:customFont="@string/roboto_bold" />
 
                     <com.myrescribe.ui.customesViews.CustomTextView
@@ -156,7 +155,7 @@
                         android:layout_marginBottom="@dimen/dp4"
                         android:textColor="@color/instruction_color"
                         android:layout_gravity="center_vertical"
-                        android:textSize="@dimen/sp12"
+                        android:textSize="@dimen/sp14"
                         app:customFont="@string/roboto_bold" />
                 </LinearLayout>
 
@@ -185,7 +184,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/instructions"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp12"
+                    android:textSize="@dimen/sp14"
                     android:textStyle="bold"
                     app:customFont="@string/roboto_medium" />
 
@@ -198,7 +197,7 @@
                     android:layout_weight="1"
                     android:lineSpacingExtra="@dimen/dp1"
                     android:textColor="@color/instruction_color"
-                    android:textSize="@dimen/sp10"
+                    android:textSize="@dimen/sp11"
                     app:customFont="@string/roboto_medium" />
 
 

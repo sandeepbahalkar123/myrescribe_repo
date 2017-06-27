@@ -83,7 +83,6 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         ImageView mHightLightNightDose;
         @BindView(R.id.imageViewEveningDose)
         ImageView mHightLightEveningDose;
-
         @BindView(R.id.dosePeriod)
         TextView mDosePeriod;
         @BindView(R.id.doseQuantityNumber)
@@ -133,7 +132,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             holder.mHighlightedInstructionView.setVisibility(View.GONE);
 
         } else {
-            holder.mExpandLayout.setVisibility(View.GONE);
+            holder.mExpandLayout.setVisibility(View.VISIBLE);
             holder.mHighlightedInstructionView.setVisibility(View.VISIBLE);
         }
 
@@ -172,6 +171,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
 
     private void setPrescriptionDosageData(ListViewHolder holder, int position) {
         final PrescriptionData prescriptionData = mPrescriptionData.get(position);
+        prescriptionData.setEveningB("2");
         String quantityOfDose = "";
         String timeOfDosage = "";
         String durationOfBreakFast = "";
@@ -278,14 +278,14 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         durationOfDinner = "";
         durationOfEvening = "";
         doseQuantity = "";
-/*
-        if (!prescriptionData.getEveningB().isEmpty()) { }*/
+
+        if (!prescriptionData.getEveningB().isEmpty()) {
             quantityOfDose = "10mg";/*prescriptionData.getDosage();*/
             durationOfEvening = mContext.getString(R.string.before) + " " + mContext.getString(R.string.snacks);
             timeOfDosage = mContext.getString(R.string.before);
-            doseQuantity = "2";
+            doseQuantity = prescriptionData.getEveningB();
             showSlotLabel = mContext.getString(R.string.snacks);
-
+        }
        /* if (!prescriptionData.getEveningA().isEmpty()) {
             quantityOfDose = prescriptionData.getDosage();
             durationOfEvening = mContext.getString(R.string.after) + " " + mContext.getString(R.string.snacks);

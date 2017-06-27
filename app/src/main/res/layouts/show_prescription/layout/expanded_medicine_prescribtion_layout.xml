@@ -28,7 +28,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/breakfast_normal_copy"
-                android:layout_weight="0.3"
+                android:layout_weight="0.2"
                 android:layout_marginBottom="@dimen/dp6"
                 android:layout_gravity="left"/>
 
@@ -41,7 +41,7 @@
                 android:paddingLeft="@dimen/dp10"
                 android:text=""
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp12"
+                android:textSize="@dimen/sp14"
                 android:visibility="visible"
                 app:customFont="@string/roboto_medium" />
 
@@ -55,7 +55,7 @@
                 android:textColor="@color/dose_completed"
                 android:layout_weight="1.5"
                 android:textStyle="bold"
-                android:textSize="@dimen/sp10"
+                android:textSize="@dimen/sp11"
                 android:visibility="visible"
                 app:customFont="@string/roboto_medium" />
 
@@ -71,7 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/lunch_highlighted_copy"
-                android:layout_weight="0.3"
+                android:layout_weight="0.2"
                 android:layout_marginBottom="@dimen/dp6"
                 android:layout_gravity="left"/>
             <com.myrescribe.ui.customesViews.CustomTextView
@@ -83,7 +83,7 @@
                 android:paddingLeft="@dimen/dp10"
                 android:text=""
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp12"
+                android:textSize="@dimen/sp14"
                 android:visibility="visible"
                 app:customFont="@string/roboto_medium" />
 
@@ -98,7 +98,7 @@
                 android:layout_weight="1.5"
                 android:text=""
                 android:textStyle="bold"
-                android:textSize="@dimen/sp10"
+                android:textSize="@dimen/sp11"
                 android:visibility="visible"
                 app:customFont="@string/roboto_medium" />
 
@@ -114,7 +114,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/evening_11_copy_2"
-                android:layout_weight="0.3"
+                android:layout_weight="0.2"
                 android:layout_marginBottom="@dimen/dp6"
                 android:layout_gravity="left"/>
             <com.myrescribe.ui.customesViews.CustomTextView
@@ -126,7 +126,7 @@
                 android:paddingLeft="@dimen/dp10"
                 android:text=""
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp12"
+                android:textSize="@dimen/sp14"
                 android:visibility="visible"
                 app:customFont="@string/roboto_medium" />
 
@@ -141,7 +141,7 @@
                 android:text=""
                 android:textStyle="bold"
                 android:textColor="@color/dose_completed"
-                android:textSize="@dimen/sp10"
+                android:textSize="@dimen/sp11"
                 android:visibility="visible"
                 app:customFont="@string/roboto_medium" />
 
@@ -157,7 +157,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/night_dinner_copy_5"
-                android:layout_weight="0.3"
+                android:layout_weight="0.2"
                 android:layout_marginBottom="@dimen/dp6"
                 android:layout_gravity="left"/>
 
@@ -169,7 +169,7 @@
                 android:paddingLeft="@dimen/dp10"
                 android:text=""
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp12"
+                android:textSize="@dimen/sp14"
                 android:visibility="visible"
                 app:customFont="@string/roboto_medium" />
 
@@ -182,7 +182,7 @@
                 android:layout_weight="1.5"
                 android:text=""
                 android:textColor="@color/dose_completed"
-                android:textSize="@dimen/sp10"
+                android:textSize="@dimen/sp11"
                 android:textStyle="bold"
                 android:visibility="visible"
                 app:customFont="@string/roboto_medium" />
@@ -210,7 +210,7 @@
                 android:layout_marginBottom="@dimen/dp6"
                 android:text="@string/instructions"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp12"
+                android:textSize="@dimen/sp14"
                 android:textStyle="bold"
                 app:customFont="@string/roboto_medium" />
 
@@ -225,7 +225,7 @@
                 android:layout_marginStart="@dimen/dp4"
                 android:layout_weight="1"
                 android:textColor="@color/instruction_color"
-                android:textSize="@dimen/sp10"
+                android:textSize="@dimen/sp11"
                 app:customFont="@string/roboto_medium" />
 
         </LinearLayout>

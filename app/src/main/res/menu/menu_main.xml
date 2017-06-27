@@ -3,8 +3,12 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_logout"
-            android:title="@string/logout"
+            android:id="@+id/visit_details"
+            android:title="@string/visit_details"
+            android:icon="@mipmap/logoutblack"/>
+        <item
+            android:id="@+id/doctor_details"
+            android:title="@string/doctor_details"
             android:icon="@mipmap/logoutblack"/>
 
     </group>

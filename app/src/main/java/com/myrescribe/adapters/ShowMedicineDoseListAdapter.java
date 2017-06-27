@@ -126,13 +126,12 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
     public void onBindViewHolder(final ShowMedicineDoseListAdapter.ListViewHolder holder, final int position) {
         final PrescriptionData prescriptionDataObject = mPrescriptionData.get(position);
 
-
         if (prescriptionDataObject.getExpanded()) {
             holder.mExpandLayout.setVisibility(View.VISIBLE);
             holder.mHighlightedInstructionView.setVisibility(View.GONE);
 
         } else {
-            holder.mExpandLayout.setVisibility(View.VISIBLE);
+            holder.mExpandLayout.setVisibility(View.GONE);
             holder.mHighlightedInstructionView.setVisibility(View.VISIBLE);
         }
 

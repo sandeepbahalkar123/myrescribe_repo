@@ -187,30 +187,18 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         int id = item.getItemId();
     if (id == R.id.visit_details) {
         Intent intent = new Intent(ShowMedicineDoseListActivity.this, ViewDetailsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
             // Handle the camera action
         }else  if (id == R.id.doctor_details) {
         Intent intent = new Intent(ShowMedicineDoseListActivity.this, DoctorListActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         // Handle the camera action
     }else  if (id == R.id.investigations) {
         Intent intent = new Intent(ShowMedicineDoseListActivity.this, InvestigationActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         // Handle the camera action
     }else  if (id == R.id.appointments) {
         Intent intent = new Intent(ShowMedicineDoseListActivity.this, AppoinmentActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         // Handle the camera action
     }

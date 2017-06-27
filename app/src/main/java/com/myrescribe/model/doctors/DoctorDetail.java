@@ -16,6 +16,10 @@ public class DoctorDetail implements CustomResponse {
     @Expose
     private String name;
 
+    private String respectiveDate;
+    private boolean isStartElement;
+    private boolean isExpanded;
+
     public String getId() {
         return id;
     }
@@ -30,5 +34,21 @@ public class DoctorDetail implements CustomResponse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getRespectiveDate() {
+        return respectiveDate;
+    }
+
+    public void setRespectiveDate(String respectiveDate) {
+        this.respectiveDate = respectiveDate;
+    }
+
+    public boolean getIsStartElement() {
+        return isStartElement;
+    }
+
+    public void setIsStartElement(boolean isStartElement) {
+        this.isStartElement = isStartElement;
     }
 }

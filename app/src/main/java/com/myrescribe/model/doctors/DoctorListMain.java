@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.model.history.PatientHistoryMain;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -12,15 +14,7 @@ import java.util.List;
  */
 
 public class DoctorListMain implements CustomResponse {
-    @SerializedName("doctorList")
-    @Expose
-    private List<DoctorDetail> doctorList = null;
 
-    public List<DoctorDetail> getDoctorList() {
-        return doctorList;
-    }
+    private HashMap<String,ArrayList<DoctorDetail>> doctorList = null;
 
-    public void setDoctorList(List<DoctorDetail> doctorList) {
-        this.doctorList = doctorList;
-    }
 }

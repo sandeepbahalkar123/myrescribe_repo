@@ -42,5 +42,5 @@
     <color name="background_color">#F1F1F1</color>
     <color name="notification_header_text">#04abdf</color>
 
-
+    <color name="accent">#FF4081</color>
 </resources>

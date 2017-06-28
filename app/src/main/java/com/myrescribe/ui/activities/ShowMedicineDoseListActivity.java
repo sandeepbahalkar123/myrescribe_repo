@@ -133,24 +133,22 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.going_medication));
         mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
-       /* mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+    mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //What to do on back clicked
-                onBackPressed();
+              finish();
             }
         });
-<<<<<<< HEAD
-*/
 
     }
 
     private void bindView() {
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+       /* ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.addDrawerListener(toggle);
         toggle.syncState();
-        mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setNavigationItemSelectedListener(this);*/
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
@@ -184,7 +182,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+ /*       int id = item.getItemId();
     if (id == R.id.visit_details) {
         Intent intent = new Intent(ShowMedicineDoseListActivity.this, ViewDetailsActivity.class);
         startActivity(intent);
@@ -201,7 +199,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         Intent intent = new Intent(ShowMedicineDoseListActivity.this, AppoinmentActivity.class);
         startActivity(intent);
         // Handle the camera action
-    }
+    }*/
         return true;
     }
 

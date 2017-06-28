@@ -1,6 +1,11 @@
 package com.myrescribe.ui.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,9 +20,13 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.doctors.DoctorDetail;
 import com.myrescribe.model.doctors.DoctorsModel;
+import com.myrescribe.ui.fragments.OneFragment;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,55 +34,39 @@ import butterknife.ButterKnife;
  * Created by jeetal on 14/6/17.
  */
 
-public class DoctorListActivity extends AppCompatActivity implements HelperResponse,View.OnClickListener {
+public class DoctorListActivity extends AppCompatActivity implements View.OnClickListener {
 
-    @BindView(R.id.doctorListView)
-    ListView mDoctorListView;
     @BindView(R.id.backArrow)
     ImageView mBackArrow;
-
-    private LinearLayout mToolbar;
-
-    private DoctorHelper mDoctorHelper;
+    @BindView(R.id.tabFragment)
+    TabLayout mTabFragment;
+    @BindView(R.id.viewpager)
+    ViewPager mViewpager;
+    private String[] nameOfMonths = {"JAN","FEB","MAR","APR","MAY","JUNE","JULY","AUG","SEP","OCT","NOV","DEC"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.doctor_activity);
         ButterKnife.bind(this);
-
-        mToolbar = (LinearLayout) findViewById(R.id.toolbar);
         initialize();
     }
 
     private void initialize() {
-        mDoctorHelper = new DoctorHelper(this, this);
-        mDoctorHelper.doGetDoctorList();
         mBackArrow.setOnClickListener(this);
-    }
-
-    @Override
-    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        DoctorsModel data = (DoctorsModel) customResponse;
-        ArrayList<DoctorDetail> doctorDetails = formatResponseDataForAdapter(data.getDoctorList());
-        DoctorListAdapter showDoctorListAdapter = new DoctorListAdapter(this, R.layout.item_doctor_list, doctorDetails);
-        mDoctorListView.setAdapter(showDoctorListAdapter);
-    }
-
-    @Override
-    public void onParseError(String mOldDataTag, String errorMessage) {
+        setupViewPager(mViewpager);
+        mTabFragment.setupWithViewPager(mViewpager);
 
     }
-
-    @Override
-    public void onServerError(String mOldDataTag, String serverErrorMessage) {
-
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        for (int i = 0; i < nameOfMonths.length; i++) {
+            Fragment fragment = OneFragment.createNewFragment(nameOfMonths[i]); // pass data here
+            adapter.addFragment(fragment,nameOfMonths[i] ); // pass title here
+        }
+        viewPager.setAdapter(adapter);
     }
 
-    @Override
-    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-
-    }
 
     //TODO : Here main lengthy parsing begins to format list properly.
     private ArrayList<DoctorDetail> formatResponseDataForAdapter(HashMap<String, ArrayList<DoctorDetail>> dataList) {
@@ -102,6 +95,34 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
                 finish();
                 break;
 
+        }
+    }
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
     }
 }

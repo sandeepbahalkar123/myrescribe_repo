@@ -1,29 +1,33 @@
-/*
 package com.myrescribe.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
-
 import com.myrescribe.R;
-import com.myrescribe.adapters.ShowHistoryListAdapter;
-
+import com.myrescribe.adapters.DoctorListAdapter;
+import com.myrescribe.helpers.doctor.DoctorHelper;
+import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.doctors.DoctorDetail;
+import com.myrescribe.model.doctors.DoctorsModel;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class OneFragment extends Fragment {
-    private  ExpandableListView expListView;
-    private List<String> listDataHeader;
-    private ShowHistoryListAdapter listAdapter;
+
+public class OneFragment extends Fragment implements HelperResponse,View.OnClickListener{
+
     private static final String COUNT = "column-count";
     private static final String VALUE = "VALUE";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private HashMap<String, List<String>> listDataChild;
+    RecyclerView mDoctorRecyclerView;
+    DoctorListAdapter showDoctorListAdapter;
+    private DoctorHelper mDoctorHelper;
+
     public OneFragment() {
         // Required empty public constructor
     }
@@ -40,7 +44,7 @@ public class OneFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View rootView = inflater.inflate(R.layout.fragment_one, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_all_view_doctor_history, container, false);
         init(rootView);
 
         return rootView;
@@ -49,67 +53,62 @@ public class OneFragment extends Fragment {
         OneFragment fragment = new OneFragment();
         Bundle args = new Bundle();
         args.putString(VALUE, dataString);
-     fragment.setArguments(args);
+       fragment.setArguments(args);
         return fragment;
     }
 
     private void init(View view) {
+        mDoctorRecyclerView = (RecyclerView)view.findViewById(R.id.doctorRecycleView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        mDoctorRecyclerView.setLayoutManager(layoutManager);
+        mDoctorHelper = new DoctorHelper(getActivity(), this);
+        mDoctorHelper.doGetDoctorList();
 
-        expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
-        prepareListData();
-        listAdapter = new ShowHistoryListAdapter(getActivity(), listDataHeader, listDataChild);
+    }
 
-        // setting list adapter
-        expListView.setAdapter(listAdapter);
-        for(int i=0; i < listAdapter.getGroupCount(); i++) {
-            expListView.expandGroup(i);
-        }
-        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
-                return true; // This way the expander cannot be collapsed
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        DoctorsModel data = (DoctorsModel) customResponse;
+        ArrayList<DoctorDetail> doctorDetails = formatResponseDataForAdapter(data.getDoctorList());
+        showDoctorListAdapter = new DoctorListAdapter(getActivity(), R.layout.item_doctor_list, doctorDetails);
+        mDoctorRecyclerView.setAdapter(showDoctorListAdapter);
+
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+    private ArrayList<DoctorDetail> formatResponseDataForAdapter(HashMap<String, ArrayList<DoctorDetail>> dataList) {
+        ArrayList<DoctorDetail> formattedDoctorList = new ArrayList<>();
+        for (String key : dataList.keySet()) {
+            boolean flag = true;
+            System.out.println(key);
+            ArrayList<DoctorDetail> doctorDetails = dataList.get(key);
+            for (DoctorDetail dataObject : doctorDetails) {
+                if (flag) {
+                    dataObject.setIsStartElement(true);
+                    flag = false;
+                }
+                dataObject.setRespectiveDate(key);
+                formattedDoctorList.add(dataObject);
             }
-        });
+        }
+        return formattedDoctorList;
     }
-
-    private void prepareListData() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
-
-        // Adding child data
-        listDataHeader.add("Top 250");
-        listDataHeader.add("Now Showing");
-        listDataHeader.add("Coming Soon..");
-
-        // Adding child data
-        List<String> top250 = new ArrayList<String>();
-        top250.add("The Shawshank Redemption");
-        top250.add("The Godfather");
-        top250.add("The Godfather: Part II");
-        top250.add("Pulp Fiction");
-        top250.add("The Good, the Bad and the Ugly");
-        top250.add("The Dark Knight");
-        top250.add("12 Angry Men");
-
-        List<String> nowShowing = new ArrayList<String>();
-        nowShowing.add("The Conjuring");
-        nowShowing.add("Despicable Me 2");
-        nowShowing.add("Turbo");
-        nowShowing.add("Grown Ups 2");
-        nowShowing.add("Red 2");
-        nowShowing.add("The Wolverine");
-
-        List<String> comingSoon = new ArrayList<String>();
-        comingSoon.add("2 Guns");
-        comingSoon.add("The Smurfs 2");
-        comingSoon.add("The Spectacular Now");
-        comingSoon.add("The Canyons");
-        comingSoon.add("Europa Report");
-
-        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), nowShowing);
-        listDataChild.put(listDataHeader.get(2), comingSoon);
-    }
-
-}*/
+}

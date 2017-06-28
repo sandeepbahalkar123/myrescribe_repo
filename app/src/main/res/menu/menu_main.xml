@@ -3,6 +3,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/onGoingMedication"
+            android:title="@string/going_medication"
+            android:icon="@mipmap/logoutblack"/>
+        <item
             android:id="@+id/visit_details"
             android:title="@string/visit_details"
             android:icon="@mipmap/logoutblack"/>

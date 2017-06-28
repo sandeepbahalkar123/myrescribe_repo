@@ -9,21 +9,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
-import com.facebook.login.LoginManager;
 import com.myrescribe.R;
-import com.myrescribe.adapters.DoctorListAdapter;
-import com.myrescribe.helpers.doctor.DoctorHelper;
-import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.doctors.DoctorDetail;
-import com.myrescribe.model.doctors.DoctorsModel;
-import com.myrescribe.ui.fragments.OneFragment;
+import com.myrescribe.ui.fragments.DynamicFragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,7 +52,7 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         for (int i = 0; i < nameOfMonths.length; i++) {
-            Fragment fragment = OneFragment.createNewFragment(nameOfMonths[i]); // pass data here
+            Fragment fragment = DynamicFragment.createNewFragment(nameOfMonths[i]); // pass data here
             adapter.addFragment(fragment,nameOfMonths[i] ); // pass title here
         }
         viewPager.setAdapter(adapter);

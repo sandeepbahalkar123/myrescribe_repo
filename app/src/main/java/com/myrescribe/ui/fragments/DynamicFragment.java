@@ -2,11 +2,11 @@ package com.myrescribe.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
 import com.myrescribe.R;
 import com.myrescribe.adapters.DoctorListAdapter;
 import com.myrescribe.helpers.doctor.DoctorHelper;
@@ -18,17 +18,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class OneFragment extends Fragment implements HelperResponse,View.OnClickListener{
+public class DynamicFragment extends Fragment implements HelperResponse,View.OnClickListener{
 
     private static final String COUNT = "column-count";
     private static final String VALUE = "VALUE";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    RecyclerView mDoctorRecyclerView;
+    ListView mDoctorListView;
     DoctorListAdapter showDoctorListAdapter;
     private DoctorHelper mDoctorHelper;
 
-    public OneFragment() {
+    public DynamicFragment() {
         // Required empty public constructor
     }
  
@@ -49,8 +49,8 @@ public class OneFragment extends Fragment implements HelperResponse,View.OnClick
 
         return rootView;
     }
-    public static OneFragment createNewFragment(String dataString) {
-        OneFragment fragment = new OneFragment();
+    public static DynamicFragment createNewFragment(String dataString) {
+        DynamicFragment fragment = new DynamicFragment();
         Bundle args = new Bundle();
         args.putString(VALUE, dataString);
        fragment.setArguments(args);
@@ -58,9 +58,7 @@ public class OneFragment extends Fragment implements HelperResponse,View.OnClick
     }
 
     private void init(View view) {
-        mDoctorRecyclerView = (RecyclerView)view.findViewById(R.id.doctorRecycleView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mDoctorRecyclerView.setLayoutManager(layoutManager);
+        mDoctorListView = (ListView) view.findViewById(R.id.doctorListView);
         mDoctorHelper = new DoctorHelper(getActivity(), this);
         mDoctorHelper.doGetDoctorList();
 
@@ -75,8 +73,8 @@ public class OneFragment extends Fragment implements HelperResponse,View.OnClick
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         DoctorsModel data = (DoctorsModel) customResponse;
         ArrayList<DoctorDetail> doctorDetails = formatResponseDataForAdapter(data.getDoctorList());
-        showDoctorListAdapter = new DoctorListAdapter(getActivity(), R.layout.item_doctor_list, doctorDetails);
-        mDoctorRecyclerView.setAdapter(showDoctorListAdapter);
+        showDoctorListAdapter = new DoctorListAdapter(getActivity(), R.layout.item_doctor_list_layout, doctorDetails);
+        mDoctorListView.setAdapter(showDoctorListAdapter);
 
     }
 

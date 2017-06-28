@@ -4,7 +4,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 
+import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.services.InvestigationNotificationService;
 import com.myrescribe.services.NotificationService;
 import com.myrescribe.util.CommonMethods;
@@ -31,14 +33,12 @@ public class InvestigationAlarmTask implements Runnable {
     private final AlarmManager am;
     // Your context to retrieve the alarm manager from
     private final Context context;
-//    private final ArrayList<Medicine> medicines;
 
     public InvestigationAlarmTask(Context context, String time, String msg/*, ArrayList<Medicine> medicines*/) {
         this.context = context;
         this.am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         this.time = time;
         this.msg = msg;
-//        this.medicines = medicines;
     }
 
     private Calendar getCalendar(String time) {
@@ -60,10 +60,10 @@ public class InvestigationAlarmTask implements Runnable {
 
     @Override
     public void run() {
-        setAlarm(time, msg, 5/*, medicines*/);
+        setAlarm(time, msg, 4);
     }
 
-    private void setAlarm(String time, String msg, int requestCode/*, ArrayList<Medicine> medicines*/){
+    private void setAlarm(String time, String msg, int requestCode){
         Intent intent = new Intent(context, InvestigationNotificationService.class);
         intent.putExtra(InvestigationNotificationService.INTENT_NOTIFY, true);
         intent.putExtra(MyRescribeConstants.TIME, time);

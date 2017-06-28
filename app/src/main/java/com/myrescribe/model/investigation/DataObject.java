@@ -1,16 +1,19 @@
-package com.myrescribe.model;
+package com.myrescribe.model.investigation;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DataObject {
+public class DataObject implements Serializable{
     private int id;
     private String title;
-    private boolean isUploaded;
+    private boolean isSelected = false;
+    private boolean isUploaded = false;
     private ArrayList<String> photos;
 
-    public DataObject(int id, String title, boolean isUploaded, ArrayList<String> photos) {
+    public DataObject(int id, String title, boolean isSelected, boolean isUploaded, ArrayList<String> photos) {
         this.id = id;
         this.title = title;
+        this.isSelected = isSelected;
         this.isUploaded = isUploaded;
         this.photos = photos;
     }
@@ -31,12 +34,12 @@ public class DataObject {
         this.title = title;
     }
 
-    public boolean isUploaded() {
-        return isUploaded;
+    public boolean isSelected() {
+        return isSelected;
     }
 
-    public void setUploaded(boolean uploaded) {
-        isUploaded = uploaded;
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
     public ArrayList<String> getPhotos() {
@@ -47,8 +50,16 @@ public class DataObject {
         this.photos = photos;
     }
 
+    public boolean isUploaded() {
+        return isUploaded;
+    }
+
+    public void setUploaded(boolean uploaded) {
+        isUploaded = uploaded;
+    }
+
     @Override
     public String toString() {
-        return title + " " + isUploaded + " " + photos.toString();
+        return title + " " + isSelected + " " + photos.toString();
     }
 }

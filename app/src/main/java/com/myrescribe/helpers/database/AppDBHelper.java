@@ -7,7 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.myrescribe.model.DataObject;
+import com.myrescribe.model.investigation.DataObject;
 import com.myrescribe.util.CommonMethods;
 
 import java.io.File;
@@ -18,10 +18,10 @@ import java.io.OutputStream;
 
 public class AppDBHelper extends SQLiteOpenHelper {
 
-    private static final String INV_ID = "inv_id";
-    private static final String INV_NAME = "inv_name";
-    private static final String INV_UPLOAD_STATUS = "upload_status";
-    private static final String INVESTIGATION_TABLE = "investigation_table";
+    public static final String INV_ID = "inv_id";
+    public static final String INV_NAME = "inv_name";
+    public static final String INV_UPLOAD_STATUS = "upload_status";
+    public static final String INVESTIGATION_TABLE = "investigation_table";
 
     private final String TAG = "MyRescribe/AppDBHelper";
     private static final String PREFERENCES_TABLE = "preferences_table";
@@ -242,13 +242,18 @@ public class AppDBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
 //                id = cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_ID));
-                dataObject = new DataObject(Integer.parseInt(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_ID))), cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME)), cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1, null);
+                dataObject = new DataObject(Integer.parseInt(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_ID))), cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME)), cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1, cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1, null);
                 cursor.moveToNext();
             }
         }
         cursor.close();
 
         return dataObject;
+    }
+
+    public Cursor getAllInvestigationData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("select * from " + INVESTIGATION_TABLE, null);
     }
 
     public int deleteInvestigation(String id) {

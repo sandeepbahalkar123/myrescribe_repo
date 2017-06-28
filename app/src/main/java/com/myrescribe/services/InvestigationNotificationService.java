@@ -1,8 +1,10 @@
 package com.myrescribe.services;
 
+import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Binder;
@@ -68,7 +70,11 @@ public class InvestigationNotificationService extends Service {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 if (cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 0) {
-                    docs = docs + " " + cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME));
+                    if (docs.equals("")){
+                        docs = docs + " " + cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME));
+                    }else {
+                        docs = docs + " | " + cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME));
+                    }
                     notUploaded += 1;
                 } else uploaded += 1;
                 cursor.moveToNext();
@@ -76,9 +82,15 @@ public class InvestigationNotificationService extends Service {
         }
 
         String message = "";
-        if (cursor.getCount() == uploaded) {
+        if (cursor.getCount() == uploaded && cursor.getCount() > 0) {
             // cancel notification
-
+            AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(this, InvestigationNotificationService.class);
+            PendingIntent pendingIntent = PendingIntent.getService(this, 4, intent, 0);
+            if (pendingIntent != null) {
+                alarmManager.cancel(pendingIntent);
+                pendingIntent.cancel();
+            }
         } else {
             if (cursor.getCount() == notUploaded) {
                 message = intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_MESSAGE);
@@ -115,8 +127,8 @@ public class InvestigationNotificationService extends Service {
         mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mYesPendingIntent);
 
         Intent mNotifyNoIntent = new Intent(this, InvestigationNotificationNoClickReceiver.class);
-        mNotifyNoIntent.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_MESSAGE));
-        mNotifyNoIntent.putExtra(MyRescribeConstants.TIME, intentData.getStringExtra(MyRescribeConstants.TIME));
+      /*  mNotifyNoIntent.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_MESSAGE));
+        mNotifyNoIntent.putExtra(MyRescribeConstants.TIME, intentData.getStringExtra(MyRescribeConstants.TIME));*/
         mNotifyNoIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);

@@ -20,7 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/dp10"
-        android:visibility="gone"
         android:background="@drawable/button_back"
         android:text="@string/select_documents"
         android:textColor="@color/white" />

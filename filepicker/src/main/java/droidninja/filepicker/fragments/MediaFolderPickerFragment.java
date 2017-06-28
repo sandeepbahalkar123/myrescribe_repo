@@ -202,7 +202,7 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
 
         ArrayList<PhotoDirectory> directories = new ArrayList<>();
         for (PhotoDirectory directory : dirs) {
-            if (directory.getName().equals("All Photos") || directory.getName().equals("Download") || directory.getName().equals("Pictures") || directory.getName().equals("Documents"))
+            if (directory.getName().equals("All Photos") || directory.getName().equals("Download"))
                 directories.add(directory);
         }
 

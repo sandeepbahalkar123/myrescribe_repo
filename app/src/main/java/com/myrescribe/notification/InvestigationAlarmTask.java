@@ -63,7 +63,7 @@ public class InvestigationAlarmTask implements Runnable {
         setAlarm(time, msg, 4);
     }
 
-    private void setAlarm(String time, String msg, int requestCode/*, ArrayList<Medicine> medicines*/){
+    private void setAlarm(String time, String msg, int requestCode){
         Intent intent = new Intent(context, InvestigationNotificationService.class);
         intent.putExtra(InvestigationNotificationService.INTENT_NOTIFY, true);
         intent.putExtra(MyRescribeConstants.TIME, time);

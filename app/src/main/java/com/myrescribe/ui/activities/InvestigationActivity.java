@@ -1,10 +1,7 @@
 package com.myrescribe.ui.activities;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,17 +9,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.InvestigationViewAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
-import com.myrescribe.model.DataObject;
+import com.myrescribe.model.investigation.DataObject;
 import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import droidninja.filepicker.FilePickerConst;
 
 public class InvestigationActivity extends AppCompatActivity implements InvestigationViewAdapter.CheckedClickListener {
@@ -31,11 +31,14 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     Toolbar toolbar;
     @BindView(R.id.recycler)
     RecyclerView mRecyclerView;
+    @BindView(R.id.selectDocsButton)
+    Button selectDocsButton;
 
     private LinearLayoutManager mLayoutManager;
     private InvestigationViewAdapter mAdapter;
     private Context mContext;
     private ArrayList<DataObject> investigation = new ArrayList<DataObject>();
+    private ArrayList<DataObject> investigationTemp = new ArrayList<DataObject>();
     private AppDBHelper appDBHelper;
 
     @Override
@@ -58,56 +61,86 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        ArrayList<DataObject> data = getDataSet();
+        getDataSet();
 
         appDBHelper = new AppDBHelper(mContext);
-        for (DataObject dataObject:data){
+        for (DataObject dataObject : investigation) {
             appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.isUploaded());
         }
 
-        for (DataObject dataObject:data){
-            boolean status = appDBHelper.getInvestigationData(dataObject.getId()).isUploaded();
-            dataObject.setUploaded(status);
+        for (int i = 0; i < investigation.size(); i++) {
+            boolean status = appDBHelper.getInvestigationData(investigation.get(i).getId()).isUploaded();
+            if (!status) {
+                DataObject dataObject = new DataObject(investigation.get(i).getId(), investigation.get(i).getTitle(), investigation.get(i).isSelected(), investigation.get(i).isUploaded(), new ArrayList<String>());
+                investigationTemp.add(dataObject);
+            }
+
         }
 
-        mAdapter = new InvestigationViewAdapter(mContext, data);
+        mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
         mRecyclerView.setAdapter(mAdapter);
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
     }
 
-    private ArrayList<DataObject> getDataSet() {
-        investigation.add(new DataObject(1, "CT Scan", false, new ArrayList<String>()));
-        investigation.add(new DataObject(2, "Lipid", false, new ArrayList<String>()));
-        investigation.add(new DataObject(3, "Liver Profile", false, new ArrayList<String>()));
-        return investigation;
+    private void getDataSet() {
+        investigation.add(new DataObject(1, "CT Scan", false, false, new ArrayList<String>()));
+        investigation.add(new DataObject(2, "Lipid", false, false, new ArrayList<String>()));
+        investigation.add(new DataObject(3, "Liver Profile", false, false, new ArrayList<String>()));
+        investigation.add(new DataObject(4, "X Ray", false, false, new ArrayList<String>()));
     }
 
     @Override
     public void onCheckedClick(int position) {
-        Intent intent = new Intent(mContext, SeletedDocsActivity.class);
-        intent.putExtra(FilePickerConst.MEDIA_ID, position);
-        intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, investigation.get(position).getPhotos());
-        startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
-            int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
-
+            /*int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
             ArrayList<String> photu = new ArrayList<>();
             photu.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
             investigation.get(id).setPhotos(photu);
-            appDBHelper.updateInvestigationData(investigation.get(id).getId(), investigation.get(id).getTitle(), investigation.get(id).isUploaded());
+            appDBHelper.updateInvestigationData(investigation.get(id).getId(), investigation.get(id).getTitle(), investigation.get(id).isSelected());
 
             if (resultCode == RESULT_CANCELED) {
-                investigation.get(id).setUploaded(false);
+                investigation.get(id).setSelected(false);
                 mAdapter.notifyItemChanged(id);
             }
-            CommonMethods.Log("SELECTED_PHOTOS " + id, investigation.toString());
+            CommonMethods.Log("SELECTED_PHOTOS " + id, investigation.toString());*/
+            if (resultCode == RESULT_OK) {
+                investigationTemp.clear();
+                ArrayList<DataObject> invest = (ArrayList<DataObject>) data.getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
+                investigationTemp.addAll(invest);
+                mAdapter.notifyDataSetChanged();
+            }
         }
+    }
+
+    @OnClick(R.id.selectDocsButton)
+    public void onViewClicked() {
+        boolean flag = false;
+        boolean selected = false;
+        for (int i = 0; i < investigationTemp.size(); i++) {
+            if (!investigationTemp.get(i).isUploaded() && investigationTemp.get(i).isSelected())
+                selected = true;
+            if (investigationTemp.get(i).isUploaded() && !selected)
+                flag = true;
+        }
+
+        if (flag)
+            CommonMethods.showToast(mContext, "Please select non Uploaded Document.");
+        else {
+            if (selected) {
+                Intent intent = new Intent(mContext, SeletedDocsActivity.class);
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigationTemp);
+                startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
+            } else
+                CommonMethods.showToast(mContext, "Please select at least one Document.");
+        }
+
     }
 }

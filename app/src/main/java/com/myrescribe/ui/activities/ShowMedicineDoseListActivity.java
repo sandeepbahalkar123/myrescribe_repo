@@ -48,12 +48,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     Context mContext;
     private String mGetMealTime;
 
-    public void setIsclicked(Boolean isclicked) {
-        this.isclicked = isclicked;
-    }
-
-    private Boolean isclicked = false;
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -85,7 +79,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
     }
 
-    private void notificationForMedicine(ArrayList<PrescriptionData> data) {
+    private void notificationForMedicine() {
         String breakFast = "9:17 AM";
         String lunchTime = "9:19 AM";
         String dinnerTime = "9:21 AM";
@@ -107,24 +101,14 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         String times[] = {breakFast, lunchTime, dinnerTime,snacksTime};
         String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY);
 
-        /*ArrayList<Medicine> medicines = new ArrayList<Medicine>();
-
-        for (PrescriptionData prescriptionData : data) {
-            Medicine medicine1 = new Medicine();
-            medicine1.setMedicineCount(prescriptionData.getDosage());
-            medicine1.setMedicineName(prescriptionData.getMedicineName());
-            medicine1.setMedicineType(prescriptionData.getMedicineTypeName());
-
-            medicines.add(medicine1);
-        }*/
-
-        new DosesAlarmTask(ShowMedicineDoseListActivity.this, times, date/*, medicines*/).run();
+        new DosesAlarmTask(ShowMedicineDoseListActivity.this, times, date).run();
         new InvestigationAlarmTask(ShowMedicineDoseListActivity.this, "9:00 am", getResources().getString(R.string.investigation_msg)).run();
         new AppointmentAlarmTask(ShowMedicineDoseListActivity.this, "9:00 am", getResources().getString(R.string.appointment_msg)).run();
     }
 
     private void initializeVariables() {
         mContext = ShowMedicineDoseListActivity.this;
+        notificationForMedicine();
         mPrescriptionHelper = new PrescriptionHelper(this, this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.going_medication));
@@ -151,7 +135,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
     }
 
     @Override
@@ -193,7 +176,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
             if (data != null) {
                 if (data.size() != 0) {
-                    notificationForMedicine(data);
                     mAdapter = new ShowMedicineDoseListAdapter(this, data, false, mGetMealTime);
                     mRecyclerView.setAdapter(mAdapter);
                 }

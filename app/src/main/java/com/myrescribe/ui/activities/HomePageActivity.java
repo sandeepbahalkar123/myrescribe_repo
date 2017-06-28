@@ -89,10 +89,10 @@ public class HomePageActivity  extends AppCompatActivity
         }else  if (id == R.id.investigations) {
             Intent intent = new Intent(HomePageActivity.this, InvestigationActivity.class);
             startActivity(intent);
-        }else  if (id == R.id.appointments) {
+        }/*else  if (id == R.id.appointments) {
             Intent intent = new Intent(HomePageActivity.this, AppoinmentActivity.class);
             startActivity(intent);
-        }else  if (id == R.id.onGoingMedication) {
+        }*/else  if (id == R.id.onGoingMedication) {
             Intent intent = new Intent(HomePageActivity.this, ShowMedicineDoseListActivity.class);
             startActivity(intent);
         }

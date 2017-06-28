@@ -157,6 +157,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
         if (photoPaths.size() > 0 && photoPaths != null) {
             CommonMethods.showToast(mContext, "Upload Successfully");
 
+            int selectedCount = 0;
             ArrayList<Integer> selectedInvestigationIds = new ArrayList<>();
 
             for (DataObject dataObject : investigation) {
@@ -165,6 +166,8 @@ public class SeletedDocsActivity extends AppCompatActivity {
                     dataObject.setUploaded(dataObject.isSelected());
                     appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.isSelected());
                 }
+                if (dataObject.isSelected())
+                    selectedCount +=1;
             }
 
             SelectedDocModel selectedDocModel = new SelectedDocModel();
@@ -173,12 +176,18 @@ public class SeletedDocsActivity extends AppCompatActivity {
 
             Log.d("JSON", new Gson().toJson(selectedDocModel));
 
-            Intent intent = new Intent();
-            intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
-            intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
-            setResult(RESULT_OK, intent);
-
+            if (selectedCount == investigation.size()){
+                /*Intent intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);*/
+            }else {
+                Intent intent = new Intent();
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
+                intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
+                setResult(RESULT_OK, intent);
+            }
             finish();
+
         } else {
             CommonMethods.showToast(mContext, "Please select at least one document");
         }

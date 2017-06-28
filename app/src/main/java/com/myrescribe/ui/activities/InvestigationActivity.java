@@ -100,17 +100,6 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
-            /*int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
-            ArrayList<String> photu = new ArrayList<>();
-            photu.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
-            investigation.get(id).setPhotos(photu);
-            appDBHelper.updateInvestigationData(investigation.get(id).getId(), investigation.get(id).getTitle(), investigation.get(id).isSelected());
-
-            if (resultCode == RESULT_CANCELED) {
-                investigation.get(id).setSelected(false);
-                mAdapter.notifyItemChanged(id);
-            }
-            CommonMethods.Log("SELECTED_PHOTOS " + id, investigation.toString());*/
             if (resultCode == RESULT_OK) {
                 investigationTemp.clear();
                 ArrayList<DataObject> invest = (ArrayList<DataObject>) data.getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);

@@ -15,7 +15,7 @@ public class SelectedDocModel {
     private ArrayList<String> selectedDocPaths;
     @SerializedName("investigations")
     @Expose
-    private ArrayList<String> selectedInvestigation;
+    private ArrayList<Integer> selectedInvestigationIds;
 
     public ArrayList<String> getSelectedDocPaths() {
         return selectedDocPaths;
@@ -25,11 +25,11 @@ public class SelectedDocModel {
         this.selectedDocPaths = selectedDocPaths;
     }
 
-    public ArrayList<String> getSelectedInvestigation() {
-        return selectedInvestigation;
+    public ArrayList<Integer> getSelectedInvestigation() {
+        return selectedInvestigationIds;
     }
 
-    public void setSelectedInvestigation(ArrayList<String> selectedInvestigation) {
-        this.selectedInvestigation = selectedInvestigation;
+    public void setSelectedInvestigation(ArrayList<Integer> selectedInvestigation) {
+        this.selectedInvestigationIds = selectedInvestigation;
     }
 }

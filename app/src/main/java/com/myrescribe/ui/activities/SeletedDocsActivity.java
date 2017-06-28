@@ -12,16 +12,19 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.ImageAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.model.investigation.DataObject;
+import com.myrescribe.model.investigation.SelectedDocModel;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -154,14 +157,21 @@ public class SeletedDocsActivity extends AppCompatActivity {
         if (photoPaths.size() > 0 && photoPaths != null) {
             CommonMethods.showToast(mContext, "Upload Successfully");
 
+            ArrayList<Integer> selectedInvestigationIds = new ArrayList<>();
+
             for (DataObject dataObject : investigation) {
                 if (dataObject.isSelected() && !dataObject.isUploaded()) {
-                    // create json for sending to server.
-
+                    selectedInvestigationIds.add(dataObject.getId());
                     dataObject.setUploaded(dataObject.isSelected());
                     appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.isSelected());
                 }
             }
+
+            SelectedDocModel selectedDocModel = new SelectedDocModel();
+            selectedDocModel.setSelectedDocPaths(photoPaths);
+            selectedDocModel.setSelectedInvestigation(selectedInvestigationIds);
+
+            Log.d("JSON", new Gson().toJson(selectedDocModel));
 
             Intent intent = new Intent();
             intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);

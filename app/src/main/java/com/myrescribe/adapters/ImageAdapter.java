@@ -71,7 +71,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHold
         holder.removeCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.removeCheckbox.setChecked(true);
                 paths.remove(position);
                 notifyDataSetChanged();
             }
@@ -89,12 +88,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHold
         ImageView imageView;
 
         @BindView(R.id.removeCheckbox)
-        SmoothCheckBox removeCheckbox;
+        ImageView removeCheckbox;
 
         FileViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            removeCheckbox.setChecked(true);
         }
     }
 }

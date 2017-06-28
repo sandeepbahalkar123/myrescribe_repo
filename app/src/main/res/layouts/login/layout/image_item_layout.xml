@@ -2,6 +2,7 @@
 <droidninja.filepicker.views.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <ImageView
@@ -13,12 +14,14 @@
         android:padding="1dip"
         android:scaleType="centerCrop" />
 
-    <droidninja.filepicker.views.SmoothCheckBox
+    <ImageView
         android:id="@+id/removeCheckbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
         android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/dp10"
+        android:padding="@dimen/dp8"
+        android:background="@color/transparent"
+        app:srcCompat="@drawable/cross_icon"
         android:layout_alignParentRight="true" />
 
 </droidninja.filepicker.views.SquareRelativeLayout>

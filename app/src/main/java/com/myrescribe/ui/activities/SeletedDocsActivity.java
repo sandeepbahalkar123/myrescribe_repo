@@ -177,9 +177,9 @@ public class SeletedDocsActivity extends AppCompatActivity {
             Log.d("JSON", new Gson().toJson(selectedDocModel));
 
             if (selectedCount == investigation.size()){
-                /*Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent = new Intent(this, HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);*/
+                startActivity(intent);
             }else {
                 Intent intent = new Intent();
                 intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);

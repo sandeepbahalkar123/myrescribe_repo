@@ -14,6 +14,16 @@ public class HistoryCommonDetails implements CustomResponse {
     @Expose
     private String name;
 
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
+    }
+
+    private boolean isExpanded = false;
+
     public String getId() {
         return id;
     }

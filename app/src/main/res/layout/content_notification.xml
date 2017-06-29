@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
+    android:background="@color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.myrescribe.ui.activities.NotificationActivity"
     tools:showIn="@layout/activity_notification">
@@ -29,12 +29,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/dp6"
-                    android:gravity="center_vertical"
                     android:paddingEnd="@dimen/horizontal_margin"
                     android:paddingStart="@dimen/horizontal_margin"
-                    android:paddingTop="@dimen/dp10">
+                    android:paddingTop="@dimen/dp10"
+                    android:visibility="gone">
 
                     <com.myrescribe.ui.customesViews.CustomTextView
                         android:id="@+id/titleTextView"
@@ -51,18 +52,17 @@
                         android:layout_height="wrap_content"
                         android:paddingEnd="@dimen/dp10"
                         android:paddingStart="@dimen/dp10"
-                        android:text="05-06-2017"
                         android:paddingTop="@dimen/dp2"
+                        android:text="05-06-2017"
                         android:textSize="12sp"
                         app:customFont="@string/helvetica_normal" />
 
                 </LinearLayout>
 
-                <android.support.v7.widget.CardView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardUseCompatPadding="true">
+                   android:background="@color/white">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -81,20 +81,18 @@
                                 android:id="@+id/slotTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Breakfast Medication"
                                 android:textColor="@color/black"
-                                android:textSize="20sp"
-                                app:customFont="@string/helvetica_demi_bold" />
+                                android:textSize="@dimen/sp20"
+                                app:customFont="@string/roboto_bold" />
 
                             <com.myrescribe.ui.customesViews.CustomTextView
                                 android:id="@+id/timeTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|end"
-                                android:text="05:06 am"
                                 android:textColor="@color/black"
-                                android:textSize="12sp"
-                                app:customFont="@string/helvetica_demi_bold" />
+                                android:textSize="@dimen/sp16"
+                                app:customFont="@string/roboto_bold" />
 
                         </FrameLayout>
 
@@ -108,14 +106,16 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end|top"
-                                android:src="@drawable/click_here" />
+                                android:src="@drawable/click_here"
+                                android:visibility="gone" />
 
                             <ImageView
                                 android:id="@+id/trangleIconBottom"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end|bottom"
-                                android:src="@drawable/click_here_copy" />
+                                android:src="@drawable/click_here_copy"
+                                android:visibility="gone" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -124,8 +124,9 @@
                                 android:paddingBottom="@dimen/dp10">
 
                                 <View
+                                    android:id="@+id/dividerLineInHeader"
                                     android:layout_width="match_parent"
-                                    android:layout_height="1dp"
+                                    android:layout_height="@dimen/dp05"
                                     android:layout_marginBottom="@dimen/dp10"
                                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                                     android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -145,8 +146,9 @@
                                         android:layout_toLeftOf="@+id/selectView"
                                         android:layout_toStartOf="@+id/selectView"
                                         android:text="@string/dosage_completed"
-                                        android:textSize="14sp"
-                                        app:customFont="@string/helvetica_normal" />
+                                        android:textColor="@color/dose_completed"
+                                        android:textSize="@dimen/sp19"
+                                        app:customFont="@string/roboto_medium" />
 
                                     <CheckBox
                                         android:id="@+id/selectView"
@@ -163,6 +165,7 @@
                                         android:visibility="invisible" />
 
                                 </RelativeLayout>
+
                             </LinearLayout>
                         </FrameLayout>
 
@@ -178,7 +181,14 @@
 
                     </LinearLayout>
 
-                </android.support.v7.widget.CardView>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/dividerLine"
+                    android:layout_marginTop="@dimen/dp4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
+                    android:background="@color/divider"/>
 
             </LinearLayout>
         </LinearLayout>

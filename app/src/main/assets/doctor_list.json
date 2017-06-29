@@ -5,14 +5,58 @@
     "statusMessage": "USER AUTHENTICATED"
   },
   "data": {
-    "doctorList": [
+    "2 Jun 2017": [
       {
-        "id": "007",
-        "name": "doctorName"
+        "id": "50",
+        "name": "Name 1"
       },
       {
-        "id": "009",
-        "name": "doctorName"
+        "id": "50",
+        "name": "Name 2"
+      },
+      {
+        "id": "50",
+        "name": "Name 3"
+      },
+      {
+        "id": "50",
+        "name": "Doctor 2"
+      },
+      {
+        "id": "50",
+        "name": "Doctor 2"
+      }
+    ],
+    "3 Jun 2017": [
+      {
+        "id": "50",
+        "name": "Doctor 1"
+      },
+      {
+        "id": "50",
+        "name": "Doctor 2"
+      }
+    ],
+    "4 Jun 2017": [
+      {
+        "id": "50",
+        "name": "Doctor 1"
+      },
+      {
+        "id": "50",
+        "name": "Doctor 2"
+      },
+      {
+        "id": "50",
+        "name": "Doctor 2"
+      },
+      {
+        "id": "50",
+        "name": "Doctor 2"
+      },
+      {
+        "id": "50",
+        "name": "Doctor 2"
       }
     ]
   }

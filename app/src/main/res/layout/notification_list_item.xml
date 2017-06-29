@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="@dimen/dp8"
+        android:visibility="gone"
         android:paddingBottom="@dimen/dp6"
         android:paddingEnd="@dimen/horizontal_margin"
         android:paddingStart="@dimen/horizontal_margin">
@@ -20,7 +21,6 @@
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Yesterday"
             android:textColor="@color/notification_header_text"
             android:textSize="20sp"
             app:customFont="@string/helvetica_normal" />
@@ -31,7 +31,6 @@
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/dp10"
             android:paddingStart="@dimen/dp10"
-            tools:text="05-06-2017"
             android:textSize="12sp"
             app:customFont="@string/helvetica_normal" />
 

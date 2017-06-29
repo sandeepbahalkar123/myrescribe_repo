@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/dp70"
+    android:background="@android:color/white"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/parentDataContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <com.myrescribe.ui.customesViews.CustomTextView
+            android:id="@+id/date"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:text="asdas"
+            android:textColor="@color/tagColor"
+            android:textSize="@dimen/sp14"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="@dimen/dp20"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="@dimen/dp1"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/dose_completed" />
+
+            <ImageView
+                android:id="@+id/circularBulletMainElement"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp20"
+                android:src="@drawable/blue_dot"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/circularBulletChildElement"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp10"
+                android:src="@drawable/small_blue_dot"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="@dimen/dp1"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/dose_completed" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mainDataContainer"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <!--  ListRow Left sied Thumbnail image -->
+            <LinearLayout
+                android:id="@+id/thumbnail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="5dip"
+                android:padding="3dip">
+
+                <com.myrescribe.ui.customesViews.CircularImageView
+                    android:id="@+id/list_image"
+                    android:layout_width="@dimen/dp50"
+                    android:layout_height="@dimen/dp50"
+                    android:layout_gravity="center"
+                    android:src="@drawable/layer_12" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:gravity="center|left"
+                android:orientation="vertical">
+
+                <!-- Title Of Song-->
+                <TextView
+                    android:id="@+id/doctorType"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/thumbnail"
+                    android:layout_marginTop="1dip"
+                    android:text="Just gona stand there and ..."
+                    android:textColor="@color/dose_completed"
+                    android:textSize="10dip" />
+
+                <!-- Artist Name -->
+                <com.myrescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctorType"
+                    android:layout_toRightOf="@+id/thumbnail"
+                    android:text="Rihanna Love the way lie"
+                    android:textColor="@color/tagColor"
+                    android:textSize="@dimen/dp15"
+                    android:textStyle="bold"
+                    android:typeface="sans" />
+
+                <!-- Rightend Duration -->
+                <TextView
+                    android:id="@+id/doctorAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctorName"
+                    android:layout_toRightOf="@+id/thumbnail"
+                    android:gravity="right"
+                    android:text="5:45asdasdasdasd"
+                    android:textColor="@color/dose_completed"
+                    android:textSize="10dip"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

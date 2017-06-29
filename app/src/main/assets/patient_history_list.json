@@ -10,11 +10,11 @@
         "complaints": [
           {
             "id": "50",
-            "name": "ABDOMINAL DISCOMFORT"
+            "name": "Abdominal Discomfort"
           },
           {
             "id": "50",
-            "name": "ABDOMINAL DISCOMFORT"
+            "name": "Abdominal Discomfort"
           }
         ]
       },
@@ -22,11 +22,11 @@
         "vitals": [
           {
             "id": "50",
-            "name": "ABDOMINAL DISCOMFORT"
+            "name": "Abdominal Discomfort"
           },
           {
             "id": "50",
-            "name": "ABDOMINAL DISCOMFORT"
+            "name": "Abdominal Discomfort"
           }
         ]
       },
@@ -37,11 +37,11 @@
         "diagnosis": [
           {
             "id": "1122",
-            "name": "ANXITY"
+            "name": "Anxity"
           },
           {
             "id": "1122",
-            "name": "ANXITY"
+            "name": "Anxity"
           }
         ]
       },
@@ -49,11 +49,23 @@
         "prescriptions": [
           {
             "id": "1122",
-            "name": "ANXITY"
+            "name": "Anxity"
           },
           {
             "id": "1122",
-            "name": "ANXITY"
+            "name": "Anxity"
+          }
+        ]
+      },
+      {
+        "remarks": [
+          {
+            "id": "1122",
+            "name": "Right renal cord mild obstructive"
+          },
+          {
+            "id": "1122",
+            "name": "Left renal cord mild obstructive"
           }
         ]
       },
@@ -61,16 +73,25 @@
         "investigations": [
           {
             "id": "1122",
-            "name": "ANXITY"
+            "name": "Anxity"
           },
           {
             "id": "1122",
-            "name": "ANXITY"
+            "name": "Anxity"
           }
         ]
       },
       {
-        "advice": "data"
+        "advice": [
+          {
+            "id": "1122",
+            "name": "Anxity"
+          },
+          {
+            "id": "1122",
+            "name": "Anxity"
+          }
+        ]
       }
     ]
   }

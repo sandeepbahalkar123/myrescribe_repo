@@ -1,6 +1,9 @@
 package com.myrescribe.util;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Sandeep Bahalkar
  */
@@ -13,6 +16,9 @@ public class MyRescribeConstants {
     public static final String MT_SYRUP = "SYRUP";
     public static final String MT_OINTMENT = "OINTMENT";
     public static final String DD_MM_YYYY = "dd-MM-yyyy";
+    public static final String INVESTIGATION_MESSAGE = "investigation_message";
+    public static final String APPOINTMENT_MESSAGE = "appointment_message";
+    public static final String INVESTIGATION_DATA  = "investigation_data";
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";
@@ -73,6 +79,8 @@ public class MyRescribeConstants {
     // Connection codes
 
     public static final String TASK_PRESCRIPTION_LIST = MyRescribeConstants.BLANK + 1;
+    public static final String TASK_HISTORY = MyRescribeConstants.BLANK + 2;
+    public static final String TASK_DOCTOR_LIST = MyRescribeConstants.BLANK + 3;
 
     public static class DATE_PATTERN {
         public static String YYYY_MM_DD = "yyyy-MM-dd";
@@ -103,4 +111,7 @@ public class MyRescribeConstants {
 
     public static final Integer SUCCESS = 200;
 
+
 }
+
+

@@ -1,7 +1,6 @@
 package com.myrescribe.helpers.prescription;
 
 import android.content.Context;
-
 import com.android.volley.Request;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
@@ -12,7 +11,6 @@ import com.myrescribe.network.ConnectionFactory;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,12 +48,10 @@ public class PrescriptionHelper implements ConnectionListener {
             case ConnectionListener.SERVER_ERROR:
                 CommonMethods.Log(TAG, "server error");
                 mHelperResponseManager.onServerError(mOldDataTag, "server error");
-
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
                 CommonMethods.Log(TAG, "no connection error");
                 mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");
-
                 break;
             default:
                 CommonMethods.Log(TAG, "default error");

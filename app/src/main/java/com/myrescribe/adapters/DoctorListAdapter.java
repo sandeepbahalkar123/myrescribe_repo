@@ -55,6 +55,8 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
             holder.circularBulletChildElement = (ImageView) row.findViewById(R.id.circularBulletChildElement);
 
             holder.parentDataContainer = (LinearLayout) row.findViewById(R.id.parentDataContainer);
+            holder.upperLine = (TextView) row.findViewById(R.id.upperLine);
+            holder.lowerLine = (TextView) row.findViewById(R.id.lowerLine);
             // holder.buttonMoreOrLess = (TextView) row.findViewById(R.id.button_toggle);
 
             row.setTag(holder);
@@ -77,6 +79,18 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
             holder.date.setVisibility(View.INVISIBLE);
             holder.circularBulletChildElement.setVisibility(View.VISIBLE);
             holder.circularBulletMainElement.setVisibility(View.GONE);
+            //---
+            if (position == mDataList.size() - 1)
+                holder.lowerLine.setVisibility(View.INVISIBLE);
+            else {
+                holder.lowerLine.setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (position == 0)
+            holder.upperLine.setVisibility(View.INVISIBLE);
+        else {
+            holder.upperLine.setVisibility(View.VISIBLE);
         }
 
        /* if (holder.parentDataContainer.getTag() == null) {
@@ -93,7 +107,7 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
         CustomTextView date;
 
         ImageView circularBulletChildElement, circularBulletMainElement;
-
+        TextView upperLine, lowerLine;
         CustomTextView doctorName;
         LinearLayout parentDataContainer;
         //   TextView buttonMoreOrLess;

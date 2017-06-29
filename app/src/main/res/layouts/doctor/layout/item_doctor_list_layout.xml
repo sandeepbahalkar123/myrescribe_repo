@@ -29,6 +29,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/upperLine"
                 android:layout_width="@dimen/dp1"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -50,6 +51,7 @@
                 android:visibility="visible" />
 
             <TextView
+                android:id="@+id/lowerLine"
                 android:layout_width="@dimen/dp1"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"

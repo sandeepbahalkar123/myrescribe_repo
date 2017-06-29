@@ -51,6 +51,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -307,6 +308,31 @@ public class CommonMethods {
         }
 
         return mDiff;
+    }
+    public static ArrayList<String> getMonthsWithYear(String startDate, String endDate, String dateFormat) {
+        ArrayList<String> monthsWithYear = new ArrayList<>();
+
+        try {
+
+            Calendar startCal = Calendar.getInstance();
+            Calendar endCal = Calendar.getInstance();
+
+            SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+
+            startCal.setTime(sdf.parse(startDate));
+
+            endCal.setTime(sdf.parse(endDate));
+
+            while (startCal.getTimeInMillis() <= endCal.getTimeInMillis()) {
+                monthsWithYear.add(String.valueOf(android.text.format.DateFormat.format("MMM-yyyy", startCal)));
+                startCal.add(Calendar.MONTH, 1);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return monthsWithYear;
     }
 
     public static void dateDifference(Date startDate, Date endDate) {

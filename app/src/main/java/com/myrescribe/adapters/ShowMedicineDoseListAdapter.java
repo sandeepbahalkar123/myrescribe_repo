@@ -34,7 +34,6 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
     private String mGetMealTime;
     private List<PrescriptionData> mSearchListByMedicineName;
 
-
     public ShowMedicineDoseListAdapter(Context context, ArrayList<PrescriptionData> dataSet, Boolean isPatientLogin, String mMealTime) {
         this.mPrescriptionData = dataSet;
         this.mContext = context;
@@ -52,7 +51,6 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         LinearLayout mDetailedInstructions;
         @BindView(R.id.medicineName)
         TextView mTextviewNameOfMedicine;
-
         @BindView(R.id.expandPrescriptionView)
         View mExpandLayout;
         @BindView(R.id.textViewhightlightInstructions)
@@ -247,13 +245,11 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             holder.mShowAfternoonDosage.setVisibility(View.GONE);
 
         } else {
-
             holder.mHightLightAfternoonDose.setVisibility(View.VISIBLE);
             holder.mShowAfternoonDosage.setVisibility(View.VISIBLE);
         }
         //if current timeOfDosage is within durationOfLunch timeOfDosage ie. 11 am to 3 pm then durationOfLunch image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.mlunch))) {
-
             holder.mDosePeriod.setText(timeOfDosage);
             holder.mDoseQuantityNumber.setText(doseQuantity);
             holder.mDoseSlot.setText(showSlotLabel);
@@ -266,9 +262,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         holder.mShowAfterNoonFullFormOfDose.setText(durationOfLunch);
         holder.mLunchDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));//PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
-
         //************************************Evening************************************************
-
         quantityOfDose = "";
         timeOfDosage = "";
         durationOfBreakFast = "";

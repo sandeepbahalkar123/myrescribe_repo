@@ -3,8 +3,12 @@ package com.myrescribe.ui.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
+import android.view.View;
+import android.widget.ImageView;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.DoctorListAdapter;
@@ -17,6 +21,7 @@ import com.myrescribe.model.doctors.DoctorsModel;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -26,10 +31,12 @@ import butterknife.ButterKnife;
  * Created by jeetal on 14/6/17.
  */
 
-public class DoctorListActivity extends AppCompatActivity implements HelperResponse {
+public class DoctorListActivity extends AppCompatActivity implements HelperResponse,View.OnClickListener {
 
     @BindView(R.id.doctorListView)
     ListView mDoctorListView;
+    @BindView(R.id.backArrow)
+    ImageView mBackArrow;
 
     private LinearLayout mToolbar;
 
@@ -48,13 +55,14 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     private void initialize() {
         mDoctorHelper = new DoctorHelper(this, this);
         mDoctorHelper.doGetDoctorList();
+        mBackArrow.setOnClickListener(this);
     }
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         DoctorsModel data = (DoctorsModel) customResponse;
         ArrayList<DoctorDetail> doctorDetails = formatResponseDataForAdapter(data.getDoctorList());
-        DoctorListAdapter showDoctorListAdapter = new DoctorListAdapter(this, R.layout.item_doctor_list, doctorDetails);
+        DoctorListAdapter showDoctorListAdapter = new DoctorListAdapter(this, R.layout.item_doctor_list_layout, doctorDetails);
         mDoctorListView.setAdapter(showDoctorListAdapter);
     }
 
@@ -92,4 +100,14 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         return formattedDoctorList;
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.backArrow:
+                finish();
+                break;
+
+        }
+    }
 }

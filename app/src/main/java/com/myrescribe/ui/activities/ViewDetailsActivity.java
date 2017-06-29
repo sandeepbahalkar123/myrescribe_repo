@@ -62,11 +62,7 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
             @Override
             public void onClick(View v) {
                 //What to do on back clicked
-                Intent intent = new Intent(ViewDetailsActivity.this, ShowMedicineDoseListActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+              finish();
             }
         });
         mHistoryExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {

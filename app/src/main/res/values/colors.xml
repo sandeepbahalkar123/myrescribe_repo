@@ -28,7 +28,7 @@
     <color name="BlueDress">#157DEC</color>
     <color name="Red">#FF0000</color>
     <color name="tagColor">#04abdf</color>
-    <color name="statusbar"> #0077a7</color>
+    <color name="statusbar">#0077a7</color>
     <color name="login_bg">#4FAFDC</color>
     <color name="login_button">#36657A</color>
     <color name="white">#ffffff</color>
@@ -44,5 +44,6 @@
     <color name="tab_unselected">#E0E0E0</color>
     <color name="dose_completed">#666666</color>
     <color name="accent">#FF4081</color>
+    <color name="gray_93">#ededed</color>
 
 </resources>

@@ -79,9 +79,6 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
         mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
         mRecyclerView.setAdapter(mAdapter);
-        RecyclerView.ItemDecoration itemDecoration =
-                new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
-        mRecyclerView.addItemDecoration(itemDecoration);
     }
 
     private void getDataSet() {

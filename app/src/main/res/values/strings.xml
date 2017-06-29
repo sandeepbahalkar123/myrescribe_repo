@@ -141,5 +141,7 @@
     <string name="appointment">Appointment</string>
     <string name="investigation">Investigation</string>
     <string name="select_documents">Select Documents</string>
+    <string name="investigation_title">We request you to upload &amp; share the results of the following investigation with Dr. shah:</string>
+    <string name="dummy">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
 
 </resources>

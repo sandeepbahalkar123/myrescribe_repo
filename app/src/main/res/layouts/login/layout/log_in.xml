@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/dp30"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp30"
+
+        android:paddingRight="@dimen/dp30">
+        <!--  Mobile Label -->
+        <android.support.design.widget.TextInputLayout style="@style/AppLoginMainStyle">
+
+            <EditText
+                android:id="@+id/editTextMobileNo"
+                style="@style/AppLoginMainStyle"
+                android:hint="@string/enter_mobile_no"
+                android:inputType="number" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!--  Password Label -->
+        <android.support.design.widget.TextInputLayout style="@style/AppLoginMainStyle">
+
+            <EditText
+                android:id="@+id/editTextPassword"
+                style="@style/AppLoginMainStyle"
+                android:hint="@string/enter_password"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
+
+        <CheckBox
+            style="@style/AppLoginMainStyle"
+            android:layout_marginBottom="@dimen/dp5"
+            android:text="@string/terms_conditions" />
+
+        <Button
+            android:id="@+id/btn_login"
+            style="@style/AppLoginMainStyle"
+            android:layout_height="@dimen/dp30"
+            android:background="@drawable/button_curve_background"
+            android:gravity="center"
+            android:text="@string/log_in"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/buttonLoginFacebook"
+            style="@style/AppLoginMainStyle"
+            android:layout_height="@dimen/dp30"
+            android:background="@drawable/button_curve_background"
+            android:gravity="center"
+            android:text="@string/loginfb"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/buttonLoginGPlus"
+            style="@style/AppLoginMainStyle"
+            android:layout_height="@dimen/dp30"
+            android:background="@drawable/button_curve_background"
+            android:gravity="center"
+            android:text="@string/logingmail"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+</ScrollView>
+
+
+

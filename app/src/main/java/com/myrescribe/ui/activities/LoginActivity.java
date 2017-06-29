@@ -51,6 +51,19 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+
+
+    String FIELDS = "fields";
+    String ID = "id";
+    String NAME = "name";
+    String PICTURE = "picture";
+    String EMAIL = "email";
+    String BIRTHDAY = "birthday";
+    String GENDER = "gender";
+    String KEY_USERNAME = "email_address";
+    String KEY_PASSWORD = "password";
+    String REQUEST_FIELDS = TextUtils.join(",", new String[]{ID, NAME, PICTURE, EMAIL, BIRTHDAY, GENDER});
+ 
     private final String TAG = "MyRescribe/LoginActivity";
     Context mContext;
     private CallbackManager mCallbackManager;
@@ -58,16 +71,6 @@ public class LoginActivity extends AppCompatActivity implements
     private static final int RC_SIGN_IN = 007;
     private static final int FACEBOOK_SIGN_IN = 001;
     private JSONObject json;
-    private String FIELDS = "fields";
-    private String ID = "id";
-    private String NAME = "name";
-    private String PICTURE = "picture";
-    private String EMAIL = "email";
-    private String BIRTHDAY = "birthday";
-    private String GENDER = "gender";
-    private String KEY_USERNAME = "email_address";
-    private String KEY_PASSWORD = "password";
-    private String REQUEST_FIELDS = TextUtils.join(",", new String[]{ID, NAME, PICTURE, EMAIL, BIRTHDAY, GENDER});
 
     @BindView(R.id.buttonLoginFacebook)
     AppCompatButton mLoginFacebookButton;
@@ -119,8 +122,6 @@ public class LoginActivity extends AppCompatActivity implements
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         requestUserInfo(loginResult.getAccessToken());
-
-
                     }
 
                     @Override

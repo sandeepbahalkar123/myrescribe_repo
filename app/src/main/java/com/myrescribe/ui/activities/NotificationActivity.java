@@ -10,6 +10,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     private LinearLayout tabletListLayout;
     private CheckBox selectView;
     private LinearLayout headerLayout;
+    private View mDividerLine;
     private LinearLayout headerLayoutParent;
 
     @Override
@@ -53,7 +55,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         setContentView(R.layout.activity_notification);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle(getString(R.string.notification));
         mContext = NotificationActivity.this;
 
         toolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
@@ -88,13 +90,13 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
         headerLayout = (LinearLayout) findViewById(R.id.headerLayout);
         headerLayoutParent = (LinearLayout) findViewById(R.id.headerLayoutParent);
-
+        mDividerLine = (View)findViewById(R.id.dividerLineInHeader);
         TextView slotTextView = (TextView) findViewById(R.id.slotTextView);
         TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
         TextView dateTextView = (TextView) findViewById(R.id.dateTextView);
 
         slotTextView.setText(medicineSlot);
-        timeTextView.setText(time);
+        timeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DD_MM_YYYY, CommonMethods.getCurrentDateTime()));
         dateTextView.setText(date);
 
         tabletListLayout = (LinearLayout) findViewById(R.id.tabletListLayout);
@@ -124,6 +126,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                         mAdapter.notifyItemChanged(mAdapter.preExpandedPos);
                         mAdapter.preExpandedPos = -1;
                     }
+                    mDividerLine.setVisibility(View.VISIBLE);
                     tabletListLayout.setVisibility(View.VISIBLE);
                     selectView.setVisibility(View.INVISIBLE);
                 }
@@ -148,6 +151,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
         final ArrayList<PrescriptionData> medi = new ArrayList<>();
 
+
         for (int i = 0; i < data.size(); i++) {
             if (mContext.getResources().getString(R.string.breakfast_medication).equals(medicineSlot)) {
                 if (!data.get(i).getMorningA().isEmpty() || !data.get(i).getMorningB().isEmpty()) {
@@ -162,14 +166,14 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                     medi.add(data.get(i));
                 }
             }else if (mContext.getResources().getString(R.string.snacks_medication).equals(medicineSlot)) {
-              /*  if (!data.get(i).getEveningA().isEmpty() || !data.get(i).getEveningB().isEmpty()) {*/
-                    medi.add(data.get(i));
+             /*if (!data.get(i).getEveningB().isEmpty()) {*/
+                 medi.add(data.get(i));
 
             }
         }
 
         for (int i = 0; i < medi.size(); i++) {
-
+              data.get(i).setEveningB("2");
             final View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.tablet_list, parent, false);
 
@@ -177,11 +181,6 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             ImageView tabTypeView = (ImageView) view.findViewById(R.id.tabTypeView);
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
-
-            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medi.get(i).getMedicineTypeName(), mContext));
-
-            tabNameTextView.setText(medi.get(i).getMedicineName());
-
             selectViewTab.setChecked(medi.get(i).isTabSelected());
 
             final int finalI = i;
@@ -199,8 +198,28 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 }
             });
 
-            setDose(tabCountTextView, data.get(i).getDinnerA() + data.get(i).getDinnerB(), medi.get(i));
-            parent.addView(view);
+            if (mContext.getResources().getString(R.string.breakfast_medication).equals(medicineSlot)) {
+                setDose(tabCountTextView, medi.get(i).getMorningA() + medi.get(i).getMorningB(), medi.get(i));
+                tabNameTextView.setText(medi.get(i).getMedicineName());
+                tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medi.get(i).getMedicineTypeName(), mContext));
+                parent.addView(view);
+            }else if (mContext.getResources().getString(R.string.lunch_medication).equals(medicineSlot)){
+                setDose(tabCountTextView, medi.get(i).getLunchA() + medi.get(i).getLunchB(), medi.get(i));
+                tabNameTextView.setText(medi.get(i).getMedicineName());
+                tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medi.get(i).getMedicineTypeName(), mContext));
+                parent.addView(view);
+            }else if (mContext.getResources().getString(R.string.snacks_medication).equals(medicineSlot)){
+                setDose(tabCountTextView, medi.get(i).getEveningB(), medi.get(i));
+                tabNameTextView.setText(medi.get(i).getMedicineName());
+                tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medi.get(i).getMedicineTypeName(), mContext));
+                parent.addView(view);
+            }else if (mContext.getResources().getString(R.string.dinner_medication).equals(medicineSlot)){
+                setDose(tabCountTextView, medi.get(i).getDinnerA() + medi.get(i).getDinnerB(), medi.get(i));
+                tabNameTextView.setText(medi.get(i).getMedicineName());
+                tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medi.get(i).getMedicineTypeName(), mContext));
+                parent.addView(view);
+            }
+
 
         }
     }
@@ -282,6 +301,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
     @Override
     public void onHeaderCollapse() {
+        mDividerLine.setVisibility(View.GONE);
         tabletListLayout.setVisibility(View.GONE);
         selectView.setVisibility(View.VISIBLE);
         isHeaderExpand = false;

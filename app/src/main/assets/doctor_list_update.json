@@ -1,0 +1,87 @@
+{
+  "common": {
+    "success": 1,
+    "statusCode": 200,
+    "statusMessage": "USER AUTHENTICATED"
+  },
+  "data": {
+    "2 Jun 2017": [
+      {
+        "id": "50",
+        "doctorName":"Ritesh",
+        "specailist":"Neuro Surgeon",
+        "name": "sdfdssdfsdsdfczcxzsdfsdfs\nssfsfsd\nsdfsdfsd\nsdfsdf\nsdfsfs\nsdfsdfsf\nsfsdfsdfsfssfs\nsfsdfssdfsdfsfdfsdsdsdfsdfsfsdfsfsdfsd"
+      },
+      {
+        "id": "50",
+        "doctorName":"Ganesh",
+        "specailist":"Cardiology",
+        "name": "sdsdfsdfsdzxczxczxfsdfs\nssfsfsd\nsdfsdfsd\nsdfsdf\nsdfsfs\nsdfsdfsf\nsfsdfsdfsfssfs\nsfsdfsdfsdfsdfsdfsdsdfsdfsdfsdfsfsdfsd"
+      },
+      {
+        "id": "50",
+        "doctorName":"Sandeep",
+        "specailist":"Surgeon",
+        "name": "sdfszxczxczxczczcxzczxczczxczxzcz\nssfsfsd\nsdfsdfsd\nsdfsdf\nsdfsfs\nsdfsdfsf\nsfsdfsdfsfssfs\nsfsdfsdfsdfsdfsfsdsdfsdfsdfsdfsdfsdfdsfsdfsdfsfsd"
+      },
+      {
+        "id": "50",
+        "doctorName":"Sudhir",
+        "specailist":"Cardiology",
+        "name": "Doctor 2"
+      },
+      {
+        "id": "50",
+        "doctorName":"Swapnil",
+        "specailist":"Obesetrian",
+        "name": "Doctor 2"
+      }
+    ],
+    "3 Jun 2017": [
+      {
+        "id": "50",
+        "doctorName":"Uren",
+        "specailist":"Skincare",
+        "name": "Doctor 1"
+      },
+      {
+        "id": "50",
+        "doctorName":"Rohit",
+        "specailist":"Cardiology",
+        "name": "Doctor 2"
+      }
+    ],
+    "4 Jun 2017": [
+      {
+        "id": "50",
+        "doctorName":"Pravin",
+        "specailist":"Cardiology",
+        "name": "Doctor 1"
+      },
+      {
+        "id": "50",
+        "doctorName":"Vishal",
+        "specailist":"Physician",
+        "name": "Doctor 2"
+      },
+      {
+        "id": "50",
+        "doctorName":"Ritesh",
+        "specailist":"Eyecare",
+        "name": "Doctor 2"
+      },
+      {
+        "id": "50",
+        "doctorName":"Amruta",
+        "specailist":"Cardiology",
+        "name": "Doctor 2"
+      },
+      {
+        "id": "50",
+        "doctorName":"Jeetal",
+        "specailist":"Cardiology",
+        "name": "Doctor 2"
+      }
+    ]
+  }
+}

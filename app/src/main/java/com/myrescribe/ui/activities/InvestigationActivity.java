@@ -53,7 +53,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                finish();
             }
         });
 

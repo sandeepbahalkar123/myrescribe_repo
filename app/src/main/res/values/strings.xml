@@ -6,9 +6,13 @@
     <string name="Syrup"> Syrup</string>
     <string name="after">After</string>
     <string name="going_medication">On Going Medication</string>
+    <string name="visit_details">Visit Details</string>
+    <string name="doctor_details">Doctor Details</string>
     <string name="before">Before</string>
     <string name="enter_mobile_no">Enter Mobile No</string>
+    <string name="enter_password">Enter Password</string>
     <string name="loginfb">Login with fb</string>
+    <string name="log_in">Log In</string>
     <string name="logingmail">Login with G+</string>
     <string name="btn_logout_from_google">Logout from Google</string>
     <string name="btn_revoke_access">Revoke Access</string>
@@ -43,8 +47,10 @@
     <string name="type">TYPE</string>
     <string name="delete">DELETE</string>
     <string name="search">Search</string>
+    <string name="resend_otp">Resend OTP</string>
     <string name="ok">OK</string>
     <string name="dose">DOSE</string>
+    <string name="sign_up">Sign Up</string>
     <string name="logout">Logout</string>
     <string name="medicine">MEDICINE</string>
     <string name="duration">DURATION</string>
@@ -117,6 +123,15 @@
     </string-array>
     <string name="title_activity_preferences">Preferences</string>
     <string name="save">Save</string>
+
+    <string name="terms_conditions">By continuing, you accept the <u>Terms of Use</u> and <u>Privacy Policy</u></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="generate_otp">Generate OTP</string>
+    <string name="enter_received_otp">Enter the OTP in case we fail to detect the SMS automatically</string>
+    <string name="waiting_for_sms">Auto verification of OTP in progress %1$d secs</string>
+
     <string name="title_activity_notification">Notification</string>
     <string name="dinner_medication">Dinner Medication</string>
     <string name="snacks_medication">Snacks Medication</string>
@@ -124,11 +139,9 @@
     <string name="breakfast_medication">Breakfast Medication</string>
     <string name="taken_medicine">Have you taken your medicine?</string>
     <string name="dosage_completed">Dosage completed?</string>
-    <string name="fraction_text">
-    <![CDATA[
-    <afrc>1/2</afrc>
-    ]]>
-  </string>
+    <string name="read_more"><u>more</u></string>
+    <string name="read_less">&#160;<u>
+        less</u></string>
     <string name="no">No</string>
     <string name="title_activity_investigation">Investigation Result</string>
     <string name="title_activity_seleted_docs">Seleted Docs</string>
@@ -140,6 +153,8 @@
     <string name="title_activity_appoinment">Appoinment</string>
     <string name="appointment">Appointment</string>
     <string name="investigation">Investigation</string>
+    <string name="appointments">Appointment</string>
+
     <string name="select_documents">Select Documents</string>
     <string name="investigation_title">We request you to upload &amp; share the results of the following investigation with Dr. shah:</string>
     <string name="dummy">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>

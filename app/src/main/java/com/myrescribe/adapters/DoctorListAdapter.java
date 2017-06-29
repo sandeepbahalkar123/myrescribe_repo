@@ -50,7 +50,10 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
 
             holder.date = (CustomTextView) row.findViewById(R.id.date);
             holder.doctorName = (CustomTextView) row.findViewById(R.id.doctorName);
-            holder.circularBullet = (ImageView) row.findViewById(R.id.circularBullet);
+
+            holder.circularBulletMainElement = (ImageView) row.findViewById(R.id.circularBulletMainElement);
+            holder.circularBulletChildElement = (ImageView) row.findViewById(R.id.circularBulletChildElement);
+
             holder.parentDataContainer = (LinearLayout) row.findViewById(R.id.parentDataContainer);
             // holder.buttonMoreOrLess = (TextView) row.findViewById(R.id.button_toggle);
 
@@ -66,14 +69,14 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
         if (dataObject.getIsStartElement()) {
             holder.date.setText(dataObject.getRespectiveDate());
             holder.date.setVisibility(View.VISIBLE);
-            holder.circularBullet.setVisibility(View.VISIBLE);
-            holder.circularBullet.setImageResource(R.drawable.blue_dot);
 
+            holder.circularBulletMainElement.setVisibility(View.VISIBLE);
+            holder.circularBulletChildElement.setVisibility(View.GONE);
         } else {
             holder.date.setVisibility(View.INVISIBLE);
-            holder.circularBullet.setImageResource(R.drawable.small_blue_dot);
-            holder.circularBullet.setVisibility(View.VISIBLE);
-            //    holder.circularBullet.setVisibility(View.GONE);
+            holder.date.setVisibility(View.INVISIBLE);
+            holder.circularBulletChildElement.setVisibility(View.VISIBLE);
+            holder.circularBulletMainElement.setVisibility(View.GONE);
         }
 
        /* if (holder.parentDataContainer.getTag() == null) {
@@ -88,7 +91,9 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
 
     static class DataHolder {
         CustomTextView date;
-        ImageView circularBullet;
+
+        ImageView circularBulletChildElement, circularBulletMainElement;
+
         CustomTextView doctorName;
         LinearLayout parentDataContainer;
         //   TextView buttonMoreOrLess;

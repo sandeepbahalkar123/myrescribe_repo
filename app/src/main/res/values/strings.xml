@@ -156,4 +156,6 @@
     <string name="investigation">Investigation</string>
     <string name="appointments">Appointment</string>
 
+    <string name="select_documents">Select Documents</string>
+
 </resources>

@@ -8,10 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.myrescribe.R;
-import com.myrescribe.model.DataObject;
+import com.myrescribe.model.investigation.DataObject;
 import com.myrescribe.util.CommonMethods;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class InvestigationViewAdapter extends RecyclerView
         DataObjectHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
-            uploaded = (CheckBox) itemView.findViewById(R.id.uploaded);
+            uploaded = (CheckBox) itemView.findViewById(R.id.selected);
             Log.i(TAG, "Adding Listener");
         }
     }
@@ -57,17 +56,22 @@ public class InvestigationViewAdapter extends RecyclerView
     @Override
     public void onBindViewHolder(final DataObjectHolder holder, final int position) {
         holder.title.setText(mDataset.get(position).getTitle());
-        holder.uploaded.setChecked(mDataset.get(position).isUploaded());
+        holder.uploaded.setChecked(mDataset.get(position).isSelected());
 
         holder.uploaded.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mDataset.get(position).isUploaded()){
+                    mDataset.get(position).setSelected(true);
                     mDataset.get(position).setUploaded(true);
                     CommonMethods.showToast(holder.title.getContext(), "Already Uploaded");
                 }else {
-                    mDataset.get(position).setUploaded(true);
-                    checkedClickListener.onCheckedClick(position);
+                    if (mDataset.get(position).isSelected()) {
+                        mDataset.get(position).setSelected(false);
+                    } else {
+                        mDataset.get(position).setSelected(true);
+                        checkedClickListener.onCheckedClick(position);
+                    }
                 }
                 notifyItemChanged(position);
             }

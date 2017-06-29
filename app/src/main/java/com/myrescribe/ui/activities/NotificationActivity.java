@@ -55,7 +55,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         setContentView(R.layout.activity_notification);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle(getString(R.string.notification));
         mContext = NotificationActivity.this;
 
         toolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));

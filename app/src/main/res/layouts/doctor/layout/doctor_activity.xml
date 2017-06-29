@@ -27,16 +27,6 @@
                 android:layout_weight="0.1"
                 app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
 
-            <com.myrescribe.ui.customesViews.CircularImageView
-                android:id="@+id/showPatientIcon"
-                android:layout_width="@dimen/dp30"
-                android:layout_height="@dimen/dp30"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginLeft="@dimen/dp12"
-                android:layout_weight="0.2"
-                android:src="@drawable/image_male"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -49,51 +39,38 @@
                     android:id="@+id/doctorSpecialization"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/dp4"
-                    android:text="Cardiologist"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:text="Doctor Visits"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp8" />
+                    android:textSize="@dimen/sp16" />
 
-                <TextView
-                    android:id="@+id/doctorName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/dp4"
-                    android:text="Dr.Suresh Patil"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp10"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/detailTimeDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/dp4"
-                    android:text="Friday,Jun 02:30 PM"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp8" />
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/add"
+            <TextView
+                android:id="@+id/detailTimeDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
                 android:layout_weight="0.2"
+                android:text="2017"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp16"
                 app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
         </LinearLayout>
 
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            app:tabMode="scrollable" />
+
     </android.support.design.widget.AppBarLayout>
 
-    <ListView
-        android:id="@+id/doctorListView"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/dp2"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"></ListView>
-
-
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </android.support.design.widget.CoordinatorLayout>

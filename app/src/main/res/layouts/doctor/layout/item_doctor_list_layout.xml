@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/dp70"
     android:background="@android:color/white"
     android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/parentDataContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <com.myrescribe.ui.customesViews.CustomTextView
@@ -24,7 +24,7 @@
             android:visibility="visible" />
 
         <LinearLayout
-            android:layout_width="@dimen/dp10"
+            android:layout_width="@dimen/dp20"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -36,10 +36,17 @@
                 android:background="@color/dose_completed" />
 
             <ImageView
-                android:id="@+id/circularBullet"
+                android:id="@+id/circularBulletMainElement"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp20"
+                android:src="@drawable/blue_dot"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/circularBulletChildElement"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp10"
-                android:src="@drawable/circular_bullet"
+                android:src="@drawable/small_blue_dot"
                 android:visibility="visible" />
 
             <TextView
@@ -53,14 +60,16 @@
         <LinearLayout
             android:id="@+id/mainDataContainer"
             android:layout_width="@dimen/dp0"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:orientation="horizontal">
             <!--  ListRow Left sied Thumbnail image -->
             <LinearLayout
                 android:id="@+id/thumbnail"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+
                 android:layout_alignParentLeft="true"
                 android:layout_marginRight="5dip"
                 android:padding="3dip">
@@ -69,6 +78,7 @@
                     android:id="@+id/list_image"
                     android:layout_width="@dimen/dp50"
                     android:layout_height="@dimen/dp50"
+                    android:layout_gravity="center"
                     android:src="@drawable/layer_12" />
 
             </LinearLayout>
@@ -76,7 +86,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:layout_toRightOf="@+id/thumbnail"
+                android:gravity="center|left"
                 android:orientation="vertical">
 
                 <!-- Title Of Song-->

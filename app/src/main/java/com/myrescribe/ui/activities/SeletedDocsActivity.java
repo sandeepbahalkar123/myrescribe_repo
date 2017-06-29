@@ -12,15 +12,21 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.ImageAdapter;
+import com.myrescribe.helpers.database.AppDBHelper;
+import com.myrescribe.model.investigation.DataObject;
+import com.myrescribe.model.investigation.SelectedDocModel;
 import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
 
@@ -45,8 +51,10 @@ public class SeletedDocsActivity extends AppCompatActivity {
     private static final int MAX_ATTACHMENT_COUNT = 10;
     private Context mContext;
     private ArrayList<String> photoPaths = new ArrayList<>();
-    private int media_id;
+    //    private int media_id;
     private ImageAdapter imageAdapter;
+    private ArrayList<DataObject> investigation;
+    private AppDBHelper appDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,19 +73,17 @@ public class SeletedDocsActivity extends AppCompatActivity {
         });
 
         mContext = SeletedDocsActivity.this;
-        media_id = getIntent().getIntExtra(FilePickerConst.MEDIA_ID, 0);
-        photoPaths = (ArrayList<String>) getIntent().getSerializableExtra(FilePickerConst.KEY_SELECTED_MEDIA);
 
-        if (recyclerView != null) {
+        appDBHelper = new AppDBHelper(mContext);
+
+//        media_id = getIntent().getIntExtra(FilePickerConst.MEDIA_ID, 0);
+//        photoPaths = (ArrayList<String>) getIntent().getSerializableExtra(FilePickerConst.KEY_SELECTED_MEDIA);
+        investigation = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
+
             StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, OrientationHelper.VERTICAL);
             layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
             recyclerView.setLayoutManager(layoutManager);
 
-            imageAdapter = new ImageAdapter(this, photoPaths);
-
-            recyclerView.setAdapter(imageAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-        }
     }
 
     @Override
@@ -91,7 +97,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_docs:
-                SeletedDocsActivityPermissionsDispatcher.onPickPhotoWithCheck(this, media_id);
+                SeletedDocsActivityPermissionsDispatcher.onPickPhotoWithCheck(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -101,14 +107,13 @@ public class SeletedDocsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-        intent.putExtra(FilePickerConst.MEDIA_ID, media_id);
         intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
         setResult(RESULT_CANCELED, intent);
         super.onBackPressed();
     }
 
     @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
-    public void onPickPhoto(int position) {
+    public void onPickPhoto() {
         if (photoPaths.size() == MAX_ATTACHMENT_COUNT)
             Toast.makeText(this, "Cannot select more than " + MAX_ATTACHMENT_COUNT + " documents", Toast.LENGTH_SHORT).show();
         else
@@ -120,7 +125,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
                     .showGifs(false)
                     .showFolderView(true)
                     .enableOrientation(true)
-                    .pickPhoto(this, position);
+                    .pickPhoto(this);
     }
 
     @Override
@@ -134,14 +139,15 @@ public class SeletedDocsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
-            int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
+//            int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
             if (resultCode == Activity.RESULT_OK) {
-                photoPaths.clear();
+                photoPaths = new ArrayList<>();
                 photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
-                if (imageAdapter != null)
-                    imageAdapter.notifyDataSetChanged();
+                imageAdapter = new ImageAdapter(this, photoPaths);
+                recyclerView.setAdapter(imageAdapter);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
             } else if (resultCode == RESULT_CANCELED) {
-                media_id = id;
+//                media_id = id;
             }
         }
     }
@@ -150,10 +156,28 @@ public class SeletedDocsActivity extends AppCompatActivity {
     public void onViewClicked() {
         if (photoPaths.size() > 0 && photoPaths != null) {
             CommonMethods.showToast(mContext, "Upload Successfully");
+
+            ArrayList<Integer> selectedInvestigationIds = new ArrayList<>();
+
+            for (DataObject dataObject : investigation) {
+                if (dataObject.isSelected() && !dataObject.isUploaded()) {
+                    selectedInvestigationIds.add(dataObject.getId());
+                    dataObject.setUploaded(dataObject.isSelected());
+                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.isSelected());
+                }
+            }
+
+            SelectedDocModel selectedDocModel = new SelectedDocModel();
+            selectedDocModel.setSelectedDocPaths(photoPaths);
+            selectedDocModel.setSelectedInvestigation(selectedInvestigationIds);
+
+            Log.d("JSON", new Gson().toJson(selectedDocModel));
+
             Intent intent = new Intent();
-            intent.putExtra(FilePickerConst.MEDIA_ID, media_id);
+            intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
             intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
             setResult(RESULT_OK, intent);
+
             finish();
         } else {
             CommonMethods.showToast(mContext, "Please select at least one document");

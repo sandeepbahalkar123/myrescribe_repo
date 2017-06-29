@@ -46,12 +46,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     Context mContext;
     private String mGetMealTime;
 
-    public void setIsclicked(Boolean isclicked) {
-        this.isclicked = isclicked;
-    }
-
-    private Boolean isclicked = false;
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.drawer_layout)
@@ -89,7 +83,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     }
 
-    private void notificationForMedicine(ArrayList<PrescriptionData> data) {
+    private void notificationForMedicine() {
         String breakFast = "9:17 AM";
         String lunchTime = "9:19 AM";
         String dinnerTime = "9:21 AM";
@@ -111,46 +105,34 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         String times[] = {breakFast, lunchTime, dinnerTime,snacksTime};
         String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY);
 
-        /*ArrayList<Medicine> medicines = new ArrayList<Medicine>();
-
-        for (PrescriptionData prescriptionData : data) {
-            Medicine medicine1 = new Medicine();
-            medicine1.setMedicineCount(prescriptionData.getDosage());
-            medicine1.setMedicineName(prescriptionData.getMedicineName());
-            medicine1.setMedicineType(prescriptionData.getMedicineTypeName());
-
-            medicines.add(medicine1);
-        }*/
-
-        new DosesAlarmTask(ShowMedicineDoseListActivity.this, times, date/*, medicines*/).run();
+        new DosesAlarmTask(ShowMedicineDoseListActivity.this, times, date).run();
         new InvestigationAlarmTask(ShowMedicineDoseListActivity.this, "9:00 am", getResources().getString(R.string.investigation_msg)).run();
         new AppointmentAlarmTask(ShowMedicineDoseListActivity.this, "9:00 am", getResources().getString(R.string.appointment_msg)).run();
     }
 
     private void initializeVariables() {
         mContext = ShowMedicineDoseListActivity.this;
+        notificationForMedicine();
         mPrescriptionHelper = new PrescriptionHelper(this, this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.going_medication));
         mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
-       /* mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+    mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //What to do on back clicked
-                onBackPressed();
+              finish();
             }
         });
-<<<<<<< HEAD
-*/
 
     }
 
     private void bindView() {
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+       /* ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.addDrawerListener(toggle);
         toggle.syncState();
-        mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setNavigationItemSelectedListener(this);*/
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
@@ -162,7 +144,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
     }
 
     @Override
@@ -184,7 +165,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+ /*       int id = item.getItemId();
     if (id == R.id.visit_details) {
         Intent intent = new Intent(ShowMedicineDoseListActivity.this, ViewDetailsActivity.class);
         startActivity(intent);
@@ -201,7 +182,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         Intent intent = new Intent(ShowMedicineDoseListActivity.this, AppoinmentActivity.class);
         startActivity(intent);
         // Handle the camera action
-    }
+    }*/
         return true;
     }
 
@@ -218,7 +199,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
             if (data != null) {
                 if (data.size() != 0) {
-                    notificationForMedicine(data);
                     mAdapter = new ShowMedicineDoseListAdapter(this, data, false, mGetMealTime);
                     mRecyclerView.setAdapter(mAdapter);
                 }

@@ -17,10 +17,10 @@ public class InvestigationNotificationNoClickReceiver extends BroadcastReceiver 
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String action = (String) intent.getExtras().get(MyRescribeConstants.INVESTIGATION_MESSAGE);
+//        String action = (String) intent.getExtras().get(MyRescribeConstants.INVESTIGATION_MESSAGE);
         int notificationId = intent.getIntExtra("notificationId", 0);
 
-        Toast.makeText(context,action + " " + "Not Accepted", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context,action + " " + "Not Accepted", Toast.LENGTH_SHORT).show();
 
         // if you want cancel notification
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

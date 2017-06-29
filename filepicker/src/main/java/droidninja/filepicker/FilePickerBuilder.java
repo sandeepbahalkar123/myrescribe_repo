@@ -85,9 +85,19 @@ public class FilePickerBuilder {
         return this;
     }
 
+    public void pickPhoto(Activity context) {
+        mPickerOptionsBundle.putInt(FilePickerConst.EXTRA_PICKER_TYPE, FilePickerConst.MEDIA_PICKER);
+        start(context, FilePickerConst.MEDIA_PICKER);
+    }
+
     public void pickPhoto(Activity context, int id) {
         mPickerOptionsBundle.putInt(FilePickerConst.EXTRA_PICKER_TYPE, FilePickerConst.MEDIA_PICKER);
         mPickerOptionsBundle.putInt(FilePickerConst.MEDIA_ID, id);
+        start(context, FilePickerConst.MEDIA_PICKER);
+    }
+
+    public void pickPhoto(Fragment context) {
+        mPickerOptionsBundle.putInt(FilePickerConst.EXTRA_PICKER_TYPE, FilePickerConst.MEDIA_PICKER);
         start(context, FilePickerConst.MEDIA_PICKER);
     }
 
@@ -97,9 +107,19 @@ public class FilePickerBuilder {
         start(context, FilePickerConst.MEDIA_PICKER);
     }
 
+    public void pickFile(Activity context) {
+        mPickerOptionsBundle.putInt(FilePickerConst.EXTRA_PICKER_TYPE, FilePickerConst.DOC_PICKER);
+        start(context, FilePickerConst.DOC_PICKER);
+    }
+
     public void pickFile(Activity context, int id) {
         mPickerOptionsBundle.putInt(FilePickerConst.EXTRA_PICKER_TYPE, FilePickerConst.DOC_PICKER);
         mPickerOptionsBundle.putInt(FilePickerConst.MEDIA_ID, id);
+        start(context, FilePickerConst.DOC_PICKER);
+    }
+
+    public void pickFile(Fragment context) {
+        mPickerOptionsBundle.putInt(FilePickerConst.EXTRA_PICKER_TYPE, FilePickerConst.DOC_PICKER);
         start(context, FilePickerConst.DOC_PICKER);
     }
 

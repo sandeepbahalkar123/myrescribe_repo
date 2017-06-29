@@ -39,13 +39,10 @@ public class AppointmentNotificationService extends Service {
 
     // Name of an intent extra we can use to identify if this service was started to create a notification
     public static final String INTENT_NOTIFY = "com.myrescribe";
-    // The system notification manager
-    private NotificationManager mNM;
 
     @Override
     public void onCreate() {
         Log.i("NotificationService", "onCreate()");
-        mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
     @Override
@@ -53,7 +50,7 @@ public class AppointmentNotificationService extends Service {
 
         // If this service was started by out DosesAlarmTask intent then we want to show our notification
         if (intent.getBooleanExtra(INTENT_NOTIFY, false))
-            CustomNotification(intent);
+            customNotification(intent);
 
         // We don't care if this service is stopped as we have already delivered our notification
         return START_NOT_STICKY;
@@ -67,7 +64,7 @@ public class AppointmentNotificationService extends Service {
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
 
-    public void CustomNotification(Intent intentData) {
+    public void customNotification(Intent intentData) {
         int NOTIFICATION_ID = (int) System.currentTimeMillis();
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
@@ -91,7 +88,7 @@ public class AppointmentNotificationService extends Service {
                 // Set Icon
                 .setSmallIcon(R.drawable.logosmall)
                 // Set Ticker Message
-                .setTicker(getString(R.string.customnotificationticker))
+                .setTicker(getString(R.string.appointment))
                 // Dismiss Notification
                 .setAutoCancel(true)
                 // Set RemoteViews into Notification

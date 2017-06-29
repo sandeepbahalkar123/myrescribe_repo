@@ -8,20 +8,61 @@
     tools:context="com.myrescribe.ui.activities.InvestigationActivity"
     tools:showIn="@layout/activity_investigation">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
+    <com.myrescribe.ui.customesViews.CustomTextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="@string/investigation_title"
+        android:textColor="@color/black" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/selectDocsButton" />
+        android:layout_above="@+id/selectDocsButton"
+        android:layout_below="@+id/title">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="30dp"
+            app:cardBackgroundColor="@color/background_grey"
+            app:cardUseCompatPadding="true">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/dp10"
+                android:layout_marginTop="@dimen/dp10" />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/topIcon"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/circle_back"
+            android:elevation="@dimen/dp5"
+            android:padding="@dimen/dp14"
+            app:srcCompat="@drawable/ic_search_file" />
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/selectDocsButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/dp10"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
         android:background="@drawable/button_back"
-        android:text="@string/select_documents"
+        android:paddingEnd="@dimen/dp40"
+        android:paddingStart="@dimen/dp40"
+        android:text="@string/upload"
         android:textColor="@color/white" />
 
 </RelativeLayout>

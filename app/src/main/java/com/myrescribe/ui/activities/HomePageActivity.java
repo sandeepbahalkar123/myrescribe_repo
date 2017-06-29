@@ -1,6 +1,7 @@
 package com.myrescribe.ui.activities;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,6 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.myrescribe.R;
+import com.myrescribe.helpers.database.AppDBHelper;
+import com.myrescribe.notification.AppointmentAlarmTask;
+import com.myrescribe.notification.DosesAlarmTask;
+import com.myrescribe.notification.InvestigationAlarmTask;
+import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.MyRescribeConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +40,8 @@ public class HomePageActivity  extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        notificationForMedicine();
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -41,6 +50,33 @@ public class HomePageActivity  extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void notificationForMedicine() {
+        String breakFast = "9:17 AM";
+        String lunchTime = "9:19 AM";
+        String dinnerTime = "9:21 AM";
+        String snacksTime = "9:21 AM";
+
+        AppDBHelper appDBHelper = new AppDBHelper(HomePageActivity.this);
+        Cursor cursor = appDBHelper.getPreferences("1");
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                breakFast = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
+                lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
+                dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
+                snacksTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.SNACKS_TIME));
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+
+        String times[] = {breakFast, lunchTime, dinnerTime,snacksTime};
+        String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY);
+
+        new DosesAlarmTask(HomePageActivity.this, times, date).run();
+        new InvestigationAlarmTask(HomePageActivity.this, "9:00 am", getResources().getString(R.string.investigation_msg)).run();
+        new AppointmentAlarmTask(HomePageActivity.this, "9:00 am", getResources().getString(R.string.appointment_msg)).run();
     }
 
     @Override

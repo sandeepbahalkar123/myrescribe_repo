@@ -63,7 +63,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             @Override
             public void onClick(View v) {
                 //What to do on back clicked
-                onBackPressed();
+               onBackPressed();
             }
         });
 
@@ -84,8 +84,16 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         recycler.addItemDecoration(dividerItemDecoration);
         doGetPrescriptionList();
     }
-    // Added Header
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(NotificationActivity.this, HomePageActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        super.onBackPressed();
+    }
+
+    // Added Header
     private void addHeader(final ArrayList<PrescriptionData> data) {
 
         headerLayout = (LinearLayout) findViewById(R.id.headerLayout);

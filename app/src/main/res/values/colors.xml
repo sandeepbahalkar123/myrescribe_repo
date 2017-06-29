@@ -44,6 +44,7 @@
 
     <color name="tab_unselected">#E0E0E0</color>
     <color name="dose_completed">#666666</color>
+    <color name="background_grey">#EDEDED</color>
     <color name="accent">#FF4081</color>
 
 </resources>

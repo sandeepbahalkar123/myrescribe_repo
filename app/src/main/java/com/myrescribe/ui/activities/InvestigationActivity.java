@@ -53,7 +53,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+               onBackPressed();
             }
         });
 
@@ -79,6 +79,14 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
         mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(InvestigationActivity.this, HomePageActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        super.onBackPressed();
     }
 
     private void getDataSet() {

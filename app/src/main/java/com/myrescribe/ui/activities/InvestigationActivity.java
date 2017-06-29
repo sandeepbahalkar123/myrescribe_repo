@@ -84,6 +84,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(InvestigationActivity.this, HomePageActivity.class);
+        intent.putExtra("ALERT", false);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         super.onBackPressed();

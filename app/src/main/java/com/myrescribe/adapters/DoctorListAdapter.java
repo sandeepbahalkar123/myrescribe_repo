@@ -74,23 +74,26 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
 
             holder.circularBulletMainElement.setVisibility(View.VISIBLE);
             holder.circularBulletChildElement.setVisibility(View.GONE);
+
         } else {
             holder.date.setVisibility(View.INVISIBLE);
             holder.date.setVisibility(View.INVISIBLE);
             holder.circularBulletChildElement.setVisibility(View.VISIBLE);
             holder.circularBulletMainElement.setVisibility(View.GONE);
-            //---
-            if (position == mDataList.size() - 1)
-                holder.lowerLine.setVisibility(View.INVISIBLE);
-            else {
-                holder.lowerLine.setVisibility(View.VISIBLE);
-            }
+
         }
 
         if (position == 0)
             holder.upperLine.setVisibility(View.INVISIBLE);
         else {
             holder.upperLine.setVisibility(View.VISIBLE);
+        }
+
+        //---
+        if (position == mDataList.size() - 1)
+            holder.lowerLine.setVisibility(View.INVISIBLE);
+        else {
+            holder.lowerLine.setVisibility(View.VISIBLE);
         }
 
        /* if (holder.parentDataContainer.getTag() == null) {

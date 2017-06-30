@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,8 +50,13 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
 
             holder.date = (CustomTextView) row.findViewById(R.id.date);
             holder.doctorName = (CustomTextView) row.findViewById(R.id.doctorName);
-            holder.circularBullet = (CircularImageView) row.findViewById(R.id.circularBullet);
+
+            holder.circularBulletMainElement = (ImageView) row.findViewById(R.id.circularBulletMainElement);
+            holder.circularBulletChildElement = (ImageView) row.findViewById(R.id.circularBulletChildElement);
+
             holder.parentDataContainer = (LinearLayout) row.findViewById(R.id.parentDataContainer);
+            holder.upperLine = (TextView) row.findViewById(R.id.upperLine);
+            holder.lowerLine = (TextView) row.findViewById(R.id.lowerLine);
             // holder.buttonMoreOrLess = (TextView) row.findViewById(R.id.button_toggle);
 
             row.setTag(holder);
@@ -65,16 +71,29 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
         if (dataObject.getIsStartElement()) {
             holder.date.setText(dataObject.getRespectiveDate());
             holder.date.setVisibility(View.VISIBLE);
-            holder.circularBullet.setVisibility(View.VISIBLE);
-            holder.circularBullet.setImageResource(R.drawable.blue_dot);
 
-
+            holder.circularBulletMainElement.setVisibility(View.VISIBLE);
+            holder.circularBulletChildElement.setVisibility(View.GONE);
 
         } else {
             holder.date.setVisibility(View.INVISIBLE);
-            holder.circularBullet.setImageResource(R.drawable.small_blue_dot);
-            holder.circularBullet.setVisibility(View.VISIBLE);
-            //    holder.circularBullet.setVisibility(View.GONE);
+            holder.date.setVisibility(View.INVISIBLE);
+            holder.circularBulletChildElement.setVisibility(View.VISIBLE);
+            holder.circularBulletMainElement.setVisibility(View.GONE);
+
+        }
+
+        if (position == 0)
+            holder.upperLine.setVisibility(View.INVISIBLE);
+        else {
+            holder.upperLine.setVisibility(View.VISIBLE);
+        }
+
+        //---
+        if (position == mDataList.size() - 1)
+            holder.lowerLine.setVisibility(View.INVISIBLE);
+        else {
+            holder.lowerLine.setVisibility(View.VISIBLE);
         }
 
        /* if (holder.parentDataContainer.getTag() == null) {
@@ -89,7 +108,9 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
 
     static class DataHolder {
         CustomTextView date;
-        CircularImageView circularBullet;
+
+        ImageView circularBulletChildElement, circularBulletMainElement;
+        TextView upperLine, lowerLine;
         CustomTextView doctorName;
         LinearLayout parentDataContainer;
         //   TextView buttonMoreOrLess;

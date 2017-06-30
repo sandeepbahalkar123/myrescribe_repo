@@ -51,7 +51,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                 } else if (!MyRescribePreferencesManager.getString(MyRescribeConstants.USERNAME, mContext).equals("") && MyRescribePreferencesManager.getString(MyRescribeConstants.PHONE, mContext).equals("")) {
                     //TODO : UNCOMMET PhoneNoActivity to OTP screen
                     //    Intent intentObj = new Intent(SplashScreenActivity.this, PhoneNoActivity.class);
-                    Intent intentObj = new Intent(SplashScreenActivity.this, ViewDetailsActivity.class);
+                    //        Intent intentObj = new Intent(SplashScreenActivity.this, HistoryActivity.class);
+                    Intent intentObj = new Intent(SplashScreenActivity.this, DoctorListActivity.class);
+
 
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

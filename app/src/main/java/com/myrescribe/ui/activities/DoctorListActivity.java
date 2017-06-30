@@ -39,7 +39,7 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
     TextView mYear;
     ArrayList<String> monthValues;
     ArrayList<String> yearValues;
-    private String[] nameOfMonths = {"JAN","FEB","MAR","APR","MAY","JUNE","JULY","AUG","SEP","OCT","NOV","DEC"};
+    private String[] nameOfMonths = {"JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEP", "OCT", "NOV", "DEC"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,15 +78,16 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
         });
 
     }
+
     private void setupViewPager(ViewPager viewPager) {
         monthValues = new ArrayList<String>();
         yearValues = new ArrayList<String>();
-        ArrayList<String> getMonthOfYearList  = CommonMethods.getMonthsWithYear("2015-01-01","2017-06-01","yyyy-MM-dd");
+        ArrayList<String> getMonthOfYearList = CommonMethods.getMonthsWithYear("2015-01-01", "2017-06-01", "yyyy-MM-dd");
         String startDate = "2015-01-01";
         String[] splitStartDate = startDate.split("-");
         String startD = splitStartDate[0];
         mYear.setText(startD);
-        for(int j = 0;j<getMonthOfYearList.size();j++){
+        for (int j = 0; j < getMonthOfYearList.size(); j++) {
             String monthyear = getMonthOfYearList.get(j);
             String[] splitValues = monthyear.split("-");
             String month = splitValues[0];
@@ -98,7 +99,7 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         for (int i = 0; i < getMonthOfYearList.size(); i++) {
             Fragment fragment = DynamicFragment.createNewFragment(monthValues.get(i)); // pass data here
-            adapter.addFragment(fragment,monthValues.get(i) ); // pass title here
+            adapter.addFragment(fragment, monthValues.get(i)); // pass title here
         }
         viewPager.setAdapter(adapter);
     }
@@ -133,6 +134,7 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
 
         }
     }
+
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();

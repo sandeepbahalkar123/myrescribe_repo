@@ -29,9 +29,17 @@ public class AppoinmentActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             finish();
+               onBackPressed();
             }
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(AppoinmentActivity.this, HomePageActivity.class);
+        intent.putExtra("ALERT", false);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        super.onBackPressed();
+    }
 }

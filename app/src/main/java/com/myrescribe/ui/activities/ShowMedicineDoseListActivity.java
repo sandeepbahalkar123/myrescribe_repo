@@ -83,36 +83,8 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     }
 
-    private void notificationForMedicine() {
-        String breakFast = "9:17 AM";
-        String lunchTime = "9:19 AM";
-        String dinnerTime = "9:21 AM";
-        String snacksTime = "9:21 AM";
-
-        AppDBHelper appDBHelper = new AppDBHelper(ShowMedicineDoseListActivity.this);
-        Cursor cursor = appDBHelper.getPreferences("1");
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                breakFast = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
-                lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
-                dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
-                snacksTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.SNACKS_TIME));
-                cursor.moveToNext();
-            }
-        }
-        cursor.close();
-
-        String times[] = {breakFast, lunchTime, dinnerTime,snacksTime};
-        String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY);
-
-        new DosesAlarmTask(ShowMedicineDoseListActivity.this, times, date).run();
-        new InvestigationAlarmTask(ShowMedicineDoseListActivity.this, "9:00 am", getResources().getString(R.string.investigation_msg)).run();
-        new AppointmentAlarmTask(ShowMedicineDoseListActivity.this, "9:00 am", getResources().getString(R.string.appointment_msg)).run();
-    }
-
     private void initializeVariables() {
         mContext = ShowMedicineDoseListActivity.this;
-        notificationForMedicine();
         mPrescriptionHelper = new PrescriptionHelper(this, this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.going_medication));

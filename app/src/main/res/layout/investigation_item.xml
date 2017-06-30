@@ -2,17 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <com.myrescribe.ui.customesViews.CustomTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/selected"
         android:layout_toStartOf="@+id/selected"
         tools:text="Text"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:textColor="@color/black" />
+        android:textSize="16sp"
+        app:customFont="@string/helvetica_demi_bold"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/horizontal_margin"
+        android:textColor="@color/tagColor"
+        android:paddingLeft="@dimen/horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" />
 
     <CheckBox
         android:id="@+id/selected"
@@ -23,7 +31,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:button="@drawable/checkboxselecter"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin" />
+        android:paddingEnd="@dimen/horizontal_margin"
+        android:paddingTop="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/horizontal_margin" />
 
 </RelativeLayout>

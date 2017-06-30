@@ -143,6 +143,7 @@
     <string name="read_less">&#160;<u>
         less</u></string>
     <string name="no">No</string>
+
     <string name="title_activity_investigation">Investigation Result</string>
     <string name="title_activity_seleted_docs">Seleted Docs</string>
     <string name="upload">Upload</string>
@@ -155,8 +156,9 @@
     <string name="investigation">Investigation</string>
     <string name="appointments">Appointment</string>
 
-
     <string name="select_documents">Select Documents</string>
->>>>>>> ganesh
+
+    <string name="investigation_title">We request you to upload &amp; share the results of the following investigation with Dr. shah:</string>
+    <string name="dummy">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
 
 </resources>

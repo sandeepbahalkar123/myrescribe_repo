@@ -16,6 +16,8 @@
     <color name="instruction_color">#5e5e5e</color>
     <color name="transparent">#00000000</color>
     <color name="placeHolder">#55000000</color>
+    <color name="viewBg">#f1f5f8</color>
+    <color name="album_title">#4c4c4c</color>
     <item name="errorColor" type="color">#BD362F</item>
     <color name="refId_color">#8dc63f</color>
     <color name="recentblue">#04abdf</color>

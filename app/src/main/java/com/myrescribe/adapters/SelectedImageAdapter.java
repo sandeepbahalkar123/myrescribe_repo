@@ -19,15 +19,14 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import droidninja.filepicker.views.SmoothCheckBox;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHolder> {
+public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageAdapter.FileViewHolder> {
 
     private final ArrayList<String> paths;
     private final Context context;
     private int imageSize;
 
-    public ImageAdapter(Context context, ArrayList<String> paths) {
+    public SelectedImageAdapter(Context context, ArrayList<String> paths) {
         this.context = context;
         this.paths = paths;
         setColumnNumber(context, 2);
@@ -44,12 +43,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHold
     @Override
     public FileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.image_item_layout, parent, false);
-        return new ImageAdapter.FileViewHolder(view);
+                .inflate(R.layout.selected_image_item_layout, parent, false);
+        return new SelectedImageAdapter.FileViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ImageAdapter.FileViewHolder holder, final int position) {
+    public void onBindViewHolder(final SelectedImageAdapter.FileViewHolder holder, final int position) {
         final String path = paths.get(position);
         Glide.with(context).load(new File(path))
                 .centerCrop()

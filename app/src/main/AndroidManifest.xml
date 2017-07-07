@@ -127,7 +127,11 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ui.activities.SeletedDocsActivity"
-            android:label="@string/title_activity_seleted_docs"
+            android:label="@string/title_activity_selected_docs"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.UploadedDocsActivity"
+            android:label="@string/title_activity_uploaded_docs"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.ZoomImageViewActivity"

@@ -7,7 +7,9 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.google.gson.Gson;
 import com.myrescribe.model.investigation.DataObject;
+import com.myrescribe.model.investigation.Images;
 import com.myrescribe.util.CommonMethods;
 
 import java.io.File;
@@ -15,12 +17,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 public class AppDBHelper extends SQLiteOpenHelper {
 
     public static final String INV_ID = "inv_id";
     public static final String INV_NAME = "inv_name";
     public static final String INV_UPLOAD_STATUS = "upload_status";
+    public static final String INV_UPLOADED_IMAGES = "uploaded_images";
     public static final String INVESTIGATION_TABLE = "investigation_table";
 
     private final String TAG = "MyRescribe/AppDBHelper";
@@ -205,7 +209,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     // Investigation
 
-    public boolean insertInvestigationData(int id, String name, boolean isUploaded) {
+    public boolean insertInvestigationData(int id, String name, boolean isUploaded, String imageJson) {
         if (investigationDataTableNumberOfRows(id) == 0) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
@@ -213,6 +217,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
             contentValues.put(INV_ID, id);
             contentValues.put(INV_NAME, name);
             contentValues.put(INV_UPLOAD_STATUS, isUploaded ? 1 : 0);
+            contentValues.put(INV_UPLOADED_IMAGES, imageJson);
 
             db.insert(INVESTIGATION_TABLE, null, contentValues);
         }
@@ -224,11 +229,11 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return (int) DatabaseUtils.queryNumEntries(db, INVESTIGATION_TABLE, INV_ID + " = ? ", new String[]{String.valueOf(id)});
     }
 
-    public int updateInvestigationData(int id, String name, boolean isUploaded) {
+    public int updateInvestigationData(int id, boolean isUploaded, String imageJson) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(INV_NAME, name);
         contentValues.put(INV_UPLOAD_STATUS, isUploaded ? 1 : 0);
+        contentValues.put(INV_UPLOADED_IMAGES, imageJson);
 
         return db.update(INVESTIGATION_TABLE, contentValues, INV_ID + " = ? ", new String[]{String.valueOf(id)});
     }
@@ -242,7 +247,8 @@ public class AppDBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
 //                id = cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_ID));
-                dataObject = new DataObject(Integer.parseInt(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_ID))), cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME)), cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1, cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1, null);
+                ArrayList<String> imageArray = new Gson().fromJson(cursor.getString(cursor.getColumnIndex(INV_UPLOADED_IMAGES)), Images.class).getImageArray();
+                dataObject = new DataObject(Integer.parseInt(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_ID))), cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME)), cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1, cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1, imageArray);
                 cursor.moveToNext();
             }
         }

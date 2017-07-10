@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/dp6"
+        android:layout_marginLeft="@dimen/dp14"
         android:orientation="horizontal">
 
         <com.myrescribe.ui.customesViews.CircularImageView

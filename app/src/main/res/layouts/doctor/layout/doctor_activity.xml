@@ -48,12 +48,11 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/detailTimeDate"
+                android:id="@+id/year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
                 android:layout_weight="0.2"
-                android:text="2017"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp16"
                 app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
@@ -73,5 +72,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
 </android.support.design.widget.CoordinatorLayout>

@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.model.requestmodel.login.LoginRequestModel;
 import com.myrescribe.network.ConnectRequest;
@@ -38,9 +39,9 @@ public class LoginHelper implements ConnectionListener{
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == MyRescribeConstants.TASK_LOGIN) {
-                    PatientPrescriptionModel model = (PatientPrescriptionModel) customResponse;
-                    mHelperResponseManager.onSuccess(mOldDataTag, model);
+                if (mOldDataTag.equals(MyRescribeConstants.TASK_LOGIN)) {
+                    LoginModel loginModel = (LoginModel) customResponse;
+                    mHelperResponseManager.onSuccess(mOldDataTag, loginModel);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
@@ -66,7 +67,7 @@ public class LoginHelper implements ConnectionListener{
 
     }
 
-    public void doLogin(String userName, String emailId) {
+    public void doLogin(String userName, String password) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN, Request.Method.POST, false);
         Map<String, String> headerParams = new HashMap<String, String>();
 
@@ -75,7 +76,7 @@ public class LoginHelper implements ConnectionListener{
 
         LoginRequestModel loginRequestModel = new LoginRequestModel();
         loginRequestModel.setUsername(userName);
-        loginRequestModel.setPassword(emailId);
+        loginRequestModel.setPassword(password);
 
         mConnectionFactory.setPostParams(loginRequestModel);
 

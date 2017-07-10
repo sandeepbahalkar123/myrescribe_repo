@@ -1,18 +1,17 @@
 package com.myrescribe.ui.activities;
 
-import android.content.Context;
-
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-
 import android.support.v7.app.AppCompatActivity;
 
 import com.myrescribe.R;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -29,9 +28,26 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         mContext = SplashScreenActivity.this;
-        doLogin();
+        MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, Config.BASE_URL, mContext);
+        doNext();
         //  doAppCheckLogin();
 
+    }
+
+    private void doNext() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, mContext).equals(MyRescribeConstants.YES)) {
+                    Intent intentObj = new Intent(SplashScreenActivity.this, HomePageActivity.class);
+                    startActivity(intentObj);
+                } else {
+                    Intent intentObj = new Intent(SplashScreenActivity.this, LoginMainActivity.class);
+                    startActivity(intentObj);
+                }
+                finish();
+            }
+        }, MyRescribeConstants.TIME_STAMPS.THREE_SECONDS);
     }
 
     private void doLogin() {

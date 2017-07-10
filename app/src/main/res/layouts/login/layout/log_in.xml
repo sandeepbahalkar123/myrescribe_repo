@@ -19,8 +19,7 @@
             <EditText
                 android:id="@+id/editTextMobileNo"
                 style="@style/AppLoginMainStyle"
-                android:hint="@string/enter_mobile_no"
-                android:inputType="number" />
+                android:hint="@string/enter_mobile_no" />
         </android.support.design.widget.TextInputLayout>
 
         <!--  Password Label -->

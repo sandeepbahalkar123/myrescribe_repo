@@ -19,6 +19,7 @@ public class MyRescribeConstants {
     public static final String INVESTIGATION_MESSAGE = "investigation_message";
     public static final String APPOINTMENT_MESSAGE = "appointment_message";
     public static final String INVESTIGATION_DATA  = "investigation_data";
+    public static final String YES = "yes";
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";

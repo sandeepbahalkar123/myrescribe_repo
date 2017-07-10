@@ -32,6 +32,8 @@ public class MyRescribePreferencesManager {
         String USER_GENDER = "user_gender";
         String SERVER_CONNECTION_SUCCESS = "success";
         String IS_VALID_IP_CONFIG = "isvalidipconfig";
+        String AUTHTOKEN = "authToken";
+        String LOGIN_STATUS = "login_status";
     }
 
     public static SharedPreferences getSharedPreference(final Context context) {

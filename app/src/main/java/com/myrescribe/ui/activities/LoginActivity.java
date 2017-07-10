@@ -53,7 +53,7 @@ import butterknife.ButterKnife;
  */
 
 public class LoginActivity extends AppCompatActivity implements
-        View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, HelperResponse {
+        View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
 
     String FIELDS = "fields";
@@ -260,8 +260,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void isValidate(String userName, String emailId) {
-        LoginHelper loginHelper = new LoginHelper(this, this);
-        loginHelper.doLogin(userName, emailId);
+
     }
 
     private void signIn() {
@@ -272,26 +271,6 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-
-    }
-
-    @Override
-    public void onParseError(String mOldDataTag, String errorMessage) {
-
-    }
-
-    @Override
-    public void onServerError(String mOldDataTag, String serverErrorMessage) {
-
-    }
-
-    @Override
-    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
     }
 }

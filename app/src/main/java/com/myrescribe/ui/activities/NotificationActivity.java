@@ -62,7 +62,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //What to do on back clicked
+                // What to do on back clicked
                onBackPressed();
             }
         });

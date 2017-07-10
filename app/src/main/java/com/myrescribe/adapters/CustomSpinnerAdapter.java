@@ -9,25 +9,25 @@ import android.widget.TextView;
 
 import com.myrescribe.R;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by root on 22/6/16.
  */
 public class CustomSpinnerAdapter extends BaseAdapter {
     Context mContext;
-    String[] mSpinIds;
-    String[] mSelectedOption;
+    ArrayList<String> mSelectedOption;
 
 
-    public CustomSpinnerAdapter(Context context, String[] ids, String[] spinner_data) {
+    public CustomSpinnerAdapter(Context context, ArrayList<String> spinner_data) {
         this.mContext = context;
-        this.mSpinIds = ids;
         this.mSelectedOption = spinner_data;
     }
 
     @Override
     public int getCount() {
-        return mSelectedOption.length;
+        return mSelectedOption.size();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class CustomSpinnerAdapter extends BaseAdapter {
         TextView txt_id = (TextView) view.findViewById(R.id.custom_spinner_txt_view_Id);
         TextView txt_data = (TextView) view.findViewById(R.id.custom_spinner_txt_view_txtField);
 
-        txt_data.setText(mSelectedOption[position]);
+        txt_data.setText(mSelectedOption.get(position));
         txt_id.setVisibility(View.GONE);
         return view;
     }

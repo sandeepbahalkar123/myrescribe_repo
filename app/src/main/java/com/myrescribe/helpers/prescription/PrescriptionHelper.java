@@ -5,7 +5,7 @@ import com.android.volley.Request;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
+import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
 import com.myrescribe.util.CommonMethods;
@@ -37,7 +37,7 @@ public class PrescriptionHelper implements ConnectionListener {
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag == MyRescribeConstants.TASK_PRESCRIPTION_LIST) {
-                    PatientPrescriptionModel model = (PatientPrescriptionModel) customResponse;
+                   PrescriptionModel model = (PrescriptionModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
                 }
                 break;
@@ -67,13 +67,8 @@ public class PrescriptionHelper implements ConnectionListener {
     public void doGetPrescriptionList() {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_PRESCRIPTION_LIST, Request.Method.GET, true);
         Map<String, String> testParams = new HashMap<String, String>();
-        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, "$1$7JGbvFlO$9MgDz8g6P9mAEFRucIork1");
-
-        testParams.put(MyRescribeConstants.AUTH_KEY, "simplerestapi");
-        testParams.put(MyRescribeConstants.CLIENT_SERVICE, "frontend-client");
-        testParams.put(MyRescribeConstants.USER_ID, "18");
+        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtcm1vYmlsZSIsInBhc3N3b3JkIjoic2NvcmdAMTIzIiwiaWF0IjoxNDk5Njg0MzU4LCJleHAiOjE0OTk2OTQzNTh9.lE2V043s7TtQk6Vqg7EGoPIgFroHoiS-RBHsqqNLCV8");
         mConnectionFactory.setHeaderParams(testParams);
-        // mConnectionFactory.setPostParams(testParams);
         mConnectionFactory.setUrl(Config.PRESCRIPTION_URL);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_PRESCRIPTION_LIST);
     }

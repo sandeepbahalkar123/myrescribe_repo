@@ -12,7 +12,7 @@
         <LinearLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp40"
+            android:layout_height="?attr/actionBarSize"
             android:layout_marginLeft="@dimen/dp10"
             android:layout_marginRight="@dimen/dp10"
             android:layout_marginTop="@dimen/dp2"
@@ -41,13 +41,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:text="Doctor Visits"
+                    android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp16" />
+                    android:textSize="@dimen/sp18" />
 
 
             </LinearLayout>
 
-            <TextView
+            <Spinner
                 android:id="@+id/year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,6 +56,7 @@
                 android:layout_weight="0.2"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp16"
+                android:textStyle="bold"
                 app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
         </LinearLayout>
 

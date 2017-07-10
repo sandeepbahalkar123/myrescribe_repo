@@ -12,16 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import com.myrescribe.R;
 import com.myrescribe.model.Album;
 import com.myrescribe.model.history.HistoryCommonDetails;
 import com.myrescribe.util.CommonMethods;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -30,9 +27,26 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private Activity context;
     private AlbumsAdapter adapter;
+    String[] firstRow = {
+            "Weight",
+            "BMI",
+            "Heart Rate"
+    } ;
+    String[] secondRow = {
+            "Blood Pressure",
+            "Blood Glucose"
+    };
+    Integer[] firstRowImage = {
+            R.drawable.weight,
+            R.drawable.bmi_1,
+            R.drawable.heart_rate,
+    };
+    Integer[] SecondRowImage = {
+            R.drawable.blood_pressure,
+            R.drawable.layer_10
+    };
     private List<Album> albumList = new ArrayList<>();
     private static final String CHILD_TYPE_1 = "Vitals";
-
     private ArrayList<HistoryCommonDetails> mHistoryCommonDetailses;
     private ArrayList<String> mListDataHeader; // header titles
 
@@ -76,17 +90,31 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
                     convertView = inflater.inflate(R.layout.vitals_main_activity, null);
                     convertView.setTag(headerName);
                     TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.table);
+                    View divider = (View)convertView.findViewById(R.id.adapter_divider);
                     tableLayout.removeAllViews();
-                    tableLayout.addView(addTableRow(3));
-                    tableLayout.addView(addTableRow(1));
-                    tableLayout.addView(addTableRow(2));
-                    tableLayout.addView(addTableRow(4));
+                    tableLayout.addView(addTableRow(3,firstRow,firstRowImage));
+                    tableLayout.addView(addTableRow(2, secondRow, SecondRowImage));
+                    if(isLastChild){
+                        divider.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        divider.setVisibility(View.GONE);
+                    }
                     break;
+
                 default:
                     convertView = inflater.inflate(R.layout.history_child_item_layout, null);
                     convertView.setTag(headerName);
                     TextView txtListChild = (TextView) convertView.findViewById(R.id.textView_name);
+                    View dividerLine = (View)convertView.findViewById(R.id.adapter_divider_bottom);
                     txtListChild.setText(childObject.getName());
+
+                    if(isLastChild){
+                        dividerLine.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        dividerLine.setVisibility(View.GONE);
+                    }
                     break;
             }
 //        }
@@ -98,12 +126,16 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
     return convertView;
 }
 
-    private View addTableRow(int columnCount) {
+    private View addTableRow(int columnCount, String[] rowText, Integer[] rowImage) {
         TableRow tableRow = new TableRow(mContext);
 
         for (int i = 0; i < columnCount; i++) {
             View item = LayoutInflater.from(mContext)
                     .inflate(R.layout.item, tableRow, false);
+            ImageView vitalImage = (ImageView)item.findViewById(R.id.vitalImage);
+            TextView vital_name = (TextView)item.findViewById(R.id.vital_name) ;
+            vitalImage.setImageResource(rowImage[i]);
+            vital_name.setText(rowText[i]);
             tableRow.addView(item);
         }
         return tableRow;
@@ -164,7 +196,7 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
         groupViewHolder.lblListHeader.setText(headerTitle);
         groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getVisitDetailsIcons(headerTitle, mContext));
         ArrayList<HistoryCommonDetails> historyCommonDetailses = getChildList(groupPosition);
-        groupViewHolder.mDetailFirstPoint.setText(historyCommonDetailses.get(0).getName());
+        groupViewHolder.mDetailFirstPoint.setText(historyCommonDetailses.get(0).getName()+".......");
         return convertView;
     }
 

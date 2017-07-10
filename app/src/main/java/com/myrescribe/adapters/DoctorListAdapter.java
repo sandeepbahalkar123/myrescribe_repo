@@ -71,10 +71,8 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
         if (dataObject.getIsStartElement()) {
             holder.date.setText(dataObject.getRespectiveDate());
             holder.date.setVisibility(View.VISIBLE);
-
             holder.circularBulletMainElement.setVisibility(View.VISIBLE);
             holder.circularBulletChildElement.setVisibility(View.GONE);
-
         } else {
             holder.date.setVisibility(View.INVISIBLE);
             holder.date.setVisibility(View.INVISIBLE);
@@ -108,7 +106,6 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
 
     static class DataHolder {
         CustomTextView date;
-
         ImageView circularBulletChildElement, circularBulletMainElement;
         TextView upperLine, lowerLine;
         CustomTextView doctorName;

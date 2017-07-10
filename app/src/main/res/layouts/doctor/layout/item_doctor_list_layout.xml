@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="@dimen/dp70"
     android:background="@android:color/white"
     android:orientation="horizontal">
+  <!--  android:layout_marginTop="@dimen/dp16"
+    android:layout_marginLeft="@dimen/dp4"
+    android:layout_marginRight="@dimen/dp4"-->
 
     <LinearLayout
         android:id="@+id/parentDataContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <com.myrescribe.ui.customesViews.CustomTextView
             android:id="@+id/date"
             android:layout_width="@dimen/dp0"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="0.2"
-            android:text="asdas"
             android:textColor="@color/tagColor"
-            android:textSize="@dimen/sp14"
-            android:visibility="visible" />
+            android:textSize="@dimen/sp20"
+            android:visibility="visible"
+         />
 
         <LinearLayout
             android:layout_width="@dimen/dp20"
@@ -94,16 +97,17 @@
                 android:orientation="vertical">
 
                 <!-- Title Of Song-->
-                <TextView
+                <com.myrescribe.ui.customesViews.CustomTextView
                     android:textStyle="bold"
                     android:id="@+id/doctorType"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/thumbnail"
-                    android:layout_marginTop="1dip"
+                    android:layout_marginTop="@dimen/dp4"
                     android:text="Just gona stand there and ..."
-                    android:textColor="@color/dose_completed"
-                    android:textSize="10dip" />
+                    android:textColor="@color/doctor_specialist_color"
+                    android:textSize="@dimen/sp18"
+                    app:customFont="@string/roboto_bold"/>
 
                 <!-- Artist Name -->
                 <com.myrescribe.ui.customesViews.CustomTextView
@@ -112,24 +116,25 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctorType"
                     android:layout_toRightOf="@+id/thumbnail"
-                    android:text="Rihanna Love the way lie"
                     android:textColor="@color/tagColor"
-                    android:textSize="@dimen/dp15"
+                    android:textSize="@dimen/sp20"
                     android:textStyle="bold"
-                    android:typeface="sans" />
+                    app:customFont="@string/roboto_bold" />
 
                 <!-- Rightend Duration -->
-                <TextView
+                <com.myrescribe.ui.customesViews.CustomTextView
                     android:id="@+id/doctorAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/doctorName"
                     android:layout_toRightOf="@+id/thumbnail"
                     android:gravity="right"
-                    android:text="5:45asdasdasdasd"
-                    android:textColor="@color/dose_completed"
-                    android:textSize="10dip" />
+                    android:text="Aundh, Pune"
+                    android:textColor="@color/doctor_specialist_color"
+                    android:textSize="@dimen/sp14"
+                    app:customFont="@string/roboto_bold"
+                    />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

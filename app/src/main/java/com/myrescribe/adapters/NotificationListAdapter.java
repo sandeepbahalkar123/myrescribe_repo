@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
+import com.myrescribe.model.prescription_response_model.PrescriptionD;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
@@ -18,6 +19,7 @@ import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.listeners.SwipeDismissTouchListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,12 +39,12 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
     private final String time[];
 
-    private ArrayList<PrescriptionData> mDataSet;
+    private List<PrescriptionD> mDataSet;
     private Context mContext;
 
     private OnHeaderClickListener onHeaderClickListener;
 
-    public NotificationListAdapter(Context context, ArrayList<PrescriptionData> dataSet, String time[]) {
+    public NotificationListAdapter(Context context, List<PrescriptionD> dataSet, String time[]) {
         this.mDataSet = dataSet;
         this.mContext = context;
         this.time = time;
@@ -397,7 +399,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
     private void addTabletView(final ViewGroup parent, final int position, final ViewGroup slotCardParent, final View slotCardView) {
 
-        final ArrayList<PrescriptionData> prescription = new ArrayList<>();
+        final List<PrescriptionD> prescription = new ArrayList<>();
         prescription.addAll(mDataSet);
 
         for (int i = 0; i < prescription.size(); i++) {
@@ -410,7 +412,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
 
-            tabCountTextView.setText(prescription.get(i).getDinnerA() + prescription.get(i).getDinnerB());
+            tabCountTextView.setText(prescription.get(i).getDinnerAfter() + prescription.get(i).getDinnerBefore());
             tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(prescription.get(i).getMedicineTypeName(), mContext));
             tabNameTextView.setText(prescription.get(i).getMedicineName());
 
@@ -450,9 +452,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         }
     }
 
-    public int getSelectedCount(ArrayList<PrescriptionData> data) {
+    public int getSelectedCount(List<PrescriptionD> data) {
         int count = 0;
-        for (PrescriptionData prescriptionData : data) {
+        for (PrescriptionD prescriptionData : data) {
             if (prescriptionData.isTabSelected())
                 count += 1;
         }

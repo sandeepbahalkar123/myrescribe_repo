@@ -8,17 +8,24 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.myrescribe.R;
+import com.myrescribe.adapters.CustomSpinnerAdapter;
 import com.myrescribe.model.doctors.DoctorDetail;
 import com.myrescribe.ui.fragments.DynamicFragment;
 import com.myrescribe.util.CommonMethods;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +34,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 14/6/17.
  */
 
-public class DoctorListActivity extends AppCompatActivity implements View.OnClickListener {
+public class DoctorListActivity extends AppCompatActivity implements View.OnClickListener ,AdapterView.OnItemSelectedListener{
 
     @BindView(R.id.backArrow)
     ImageView mBackArrow;
@@ -35,11 +42,24 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
     TabLayout mTabFragment;
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
+    private CustomSpinnerAdapter mCustomSpinAdapter;
     @BindView(R.id.year)
-    TextView mYear;
+    Spinner mYear;
     ArrayList<String> monthValues;
     ArrayList<String> yearValues;
-    private String[] nameOfMonths = {"JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEP", "OCT", "NOV", "DEC"};
+    private ArrayList<String> allMonthsList ;
+    private String mSelectedYear;
+    ArrayList<String> getMonthOfYearList;
+
+    public boolean isSetCurrentTabSetFirstTime() {
+        return isSetCurrentTabSetFirstTime;
+    }
+
+    public void setSetCurrentTabSetFirstTime(boolean setCurrentTabSetFirstTime) {
+        isSetCurrentTabSetFirstTime = setCurrentTabSetFirstTime;
+    }
+
+    private boolean isSetCurrentTabSetFirstTime = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +70,39 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initialize() {
+        allMonthsList = new ArrayList<>();
+        allMonthsList.add("2017");
+        allMonthsList.add("2016");
+        allMonthsList.add("2015");
+        mYear.setOnItemSelectedListener(this);
         mBackArrow.setOnClickListener(this);
+        mCustomSpinAdapter = new CustomSpinnerAdapter(this, allMonthsList);
+        mYear.setAdapter(mCustomSpinAdapter);
         setupViewPager(mViewpager);
         mTabFragment.setupWithViewPager(mViewpager);
+        mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+
+            }
+        });
         mTabFragment.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 String year = yearValues.get(position);
-                mYear.setText(year);
+              mYear.setSelection(allMonthsList.indexOf(yearValues.get(position)));
 
 
             }
@@ -72,8 +116,7 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
             public void onTabReselected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 String year = yearValues.get(position);
-                mYear.setText(year);
-
+                mYear.setSelection(allMonthsList.indexOf(year));
             }
         });
 
@@ -82,11 +125,12 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
     private void setupViewPager(ViewPager viewPager) {
         monthValues = new ArrayList<String>();
         yearValues = new ArrayList<String>();
-        ArrayList<String> getMonthOfYearList = CommonMethods.getMonthsWithYear("2015-01-01", "2017-06-01", "yyyy-MM-dd");
-        String startDate = "2015-01-01";
+        getMonthOfYearList = CommonMethods.getMonthsWithYear("2015-01-01", "2017-06-01", "yyyy-MM-dd");
+// add elements to al, including duplicates
+
+        String startDate = "2017-06-01";
         String[] splitStartDate = startDate.split("-");
-        String startD = splitStartDate[0];
-        mYear.setText(startD);
+        mYear.setSelection(0);
         for (int j = 0; j < getMonthOfYearList.size(); j++) {
             String monthyear = getMonthOfYearList.get(j);
             String[] splitValues = monthyear.split("-");
@@ -98,10 +142,18 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
         }
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         for (int i = 0; i < getMonthOfYearList.size(); i++) {
-            Fragment fragment = DynamicFragment.createNewFragment(monthValues.get(i)); // pass data here
+            Fragment fragment = DynamicFragment.createNewFragment(getMonthOfYearList.get(i)); // pass data here
             adapter.addFragment(fragment, monthValues.get(i)); // pass title here
         }
         viewPager.setAdapter(adapter);
+        Set<String> hs = new HashSet<>();
+        hs.addAll(monthValues);
+        monthValues.clear();
+        monthValues.addAll(hs);
+
+
+       viewPager.setCurrentItem(getMonthOfYearList.size()-1);
+
     }
 
 
@@ -133,6 +185,34 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
                 break;
 
         }
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getId() == R.id.year) {
+            int indexSselectedId = parent.getSelectedItemPosition();
+            mSelectedYear = allMonthsList.get(indexSselectedId);
+            String monthYear = "JAN-"+mSelectedYear;
+
+            for(int i = 0 ; i<getMonthOfYearList.size();i++) {
+                if (monthYear.equalsIgnoreCase(getMonthOfYearList.get(i))) {
+                    if(isSetCurrentTabSetFirstTime) {
+                        mViewpager.setCurrentItem(i);
+                    }
+                    break;
+                }
+
+
+            }
+            setSetCurrentTabSetFirstTime(true);
+            //mViewpager.setCurrentItem(indexSselectedId);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="@dimen/dp6"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_weight="1">
 
     <LinearLayout
@@ -12,8 +14,9 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/vitalImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="22dp"
             android:src="@drawable/remarks" />
@@ -25,19 +28,38 @@
             android:layout_margin="1dp"
             android:padding="5dp">
 
-            <TextView
+            <com.myrescribe.ui.customesViews.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Weight"
-                android:textStyle="bold" />
+                android:id="@+id/vital_name"
+                android:textColor="@color/vitals_name"
+                android:textSize="@dimen/sp14"
+               app:customFont="@string/roboto_bold"/>
 
-            <TextView
+            <com.myrescribe.ui.customesViews.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:text="90kg"
+                android:text="kg"
+                android:textSize="@dimen/sp14"
+                android:textColor="@color/measure_of_vitals_color"
+                android:paddingLeft="@dimen/dp4"
+                android:id="@+id/measureVitals"
+                android:layout_alignBaseline="@id/vital_name"
+                app:customFont="@string/roboto_bold"
                 android:textStyle="bold" />
+            <com.myrescribe.ui.customesViews.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="90"
+                android:id="@+id/noOfVitals"
+                android:textSize="@dimen/sp16"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_toLeftOf="@id/measureVitals"
+               app:customFont="@string/roboto_medium" />
 
         </RelativeLayout>
     </LinearLayout>

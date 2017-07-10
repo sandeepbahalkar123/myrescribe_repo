@@ -15,7 +15,7 @@ public class Config {
     public Context mContext;
     //Declared all URL used in app here
 
-    public static final String PRESCRIPTION_URL = "http://myrescribe.com/medsonit-be/patient/getPatientPrescription/10682";
+    public static final String PRESCRIPTION_URL = "http://192.168.0.182:3003/api/patient/getPatientPrescriptions/2606";
 
  }
 

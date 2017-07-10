@@ -55,7 +55,7 @@ public class MyRescribeConstants {
 
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String AUTHORIZATION = "Authorization";
-    public static final String AUTHORIZATION_TOKEN = "Authorization-Token";
+    public static final String AUTHORIZATION_TOKEN = "authtoken";
     public static final String AUTH_KEY = "Auth-Key";
     public static final String CLIENT_SERVICE = "Client-Service";
     public static final String GRANT_TYPE_KEY = "grant_type";

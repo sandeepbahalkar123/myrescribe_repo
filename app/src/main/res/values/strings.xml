@@ -67,7 +67,7 @@
     <string name="facebook_app_id">297092640737799</string>
     <string name="fb_login_protocol_scheme">fb1879555372255897</string>
 
-    <string name="gotham_black">gotham_black.ttf</string>
+    <!--<string name="gotham_black">gotham_black.ttf</string>
     <string name="gotham_blackitalic">gotham_blackitalic.ttf</string>
     <string name="gotham_bold">gotham_bold.ttf</string>
     <string name="gotham_bolditalic">gotham_bolditalic.ttf</string>
@@ -89,7 +89,7 @@
     <string name="helvetica_light_normal">helvetica_light_normal.ttf</string>
     <string name="helvetica_lt_condensed_black_obliq">helvetica_lt_condensed_black_obliq.ttf</string>
     <string name="helvetica_medium_italic.otf">helvetica_medium_italic.otf</string>
-    <string name="helvetica_normal">helvetica_normal.ttf</string>
+    <string name="helvetica_normal">helvetica_normal.ttf</string>-->
 
     <string name="roboto_bold">roboto_bold.ttf</string>
     <string name="roboto_medium">roboto_medium.ttf</string>
@@ -143,7 +143,7 @@
         less</u></string>
     <string name="no">No</string>
     <string name="title_activity_investigation">Investigation Result</string>
-    <string name="title_activity_seleted_docs">Seleted Docs</string>
+    <string name="title_activity_selected_docs">Seleted Docs</string>
     <string name="upload">Upload</string>
     <string name="adddocs">Add Docs</string>
     <string name="title_activity_zoomview">Zoom View</string>
@@ -156,5 +156,9 @@
     <string name="select_documents">Select Documents</string>
     <string name="investigation_title">We request you to upload &amp; share the results of the following investigation with Dr. shah:</string>
     <string name="dummy">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="gmail">Gmail</string>
+    <string name="already_upload">Already Uploaded</string>
+    <string name="new_document">New Document</string>
+    <string name="title_activity_uploaded_docs">Uploaded Documents</string>
 
 </resources>

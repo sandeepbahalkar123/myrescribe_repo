@@ -19,6 +19,7 @@ public class MyRescribeConstants {
     public static final String INVESTIGATION_MESSAGE = "investigation_message";
     public static final String APPOINTMENT_MESSAGE = "appointment_message";
     public static final String INVESTIGATION_DATA  = "investigation_data";
+    public static final String YES = "yes";
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";
@@ -81,6 +82,7 @@ public class MyRescribeConstants {
     public static final String TASK_PRESCRIPTION_LIST = MyRescribeConstants.BLANK + 1;
     public static final String TASK_HISTORY = MyRescribeConstants.BLANK + 2;
     public static final String TASK_DOCTOR_LIST = MyRescribeConstants.BLANK + 3;
+    public static final String TASK_LOGIN = MyRescribeConstants.BLANK + 4;
 
     public static class DATE_PATTERN {
         public static String YYYY_MM_DD = "yyyy-MM-dd";

@@ -70,8 +70,8 @@ public class InvestigationViewAdapter extends RecyclerView
                         mDataset.get(position).setSelected(false);
                     } else {
                         mDataset.get(position).setSelected(true);
-                        checkedClickListener.onCheckedClick(position);
                     }
+                    checkedClickListener.onCheckedClick(position);
                 }
                 notifyItemChanged(position);
             }

@@ -87,7 +87,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
             if (!status) {
                 DataObject dataObject = new DataObject(investigation.get(i).getId(), investigation.get(i).getTitle(), investigation.get(i).isSelected(), investigation.get(i).isUploaded(), imageArray);
                 investigationTemp.add(dataObject);
-            }else {
+            } else {
                 investigation.get(i).setPhotos(data.getPhotos());
             }
         }
@@ -138,6 +138,13 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
             if (resultCode == RESULT_OK) {
                 investigationTemp.clear();
                 ArrayList<DataObject> invest = (ArrayList<DataObject>) data.getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
+                for (int i = 0; i < investigation.size(); i++) {
+                    for (DataObject objectTemp : invest) {
+                        if (investigation.get(i).getId() == objectTemp.getId()) {
+                           investigation.set(i, objectTemp);
+                        }
+                    }
+                }
                 investigationTemp.addAll(invest);
                 mAdapter.notifyDataSetChanged();
                 buttonEnable();
@@ -149,25 +156,17 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.selectDocsButton:
-                boolean flag = false;
                 boolean selected = false;
                 for (int i = 0; i < investigationTemp.size(); i++) {
                     if (!investigationTemp.get(i).isUploaded() && investigationTemp.get(i).isSelected())
                         selected = true;
-                    /*if (investigationTemp.get(i).isUploaded() && !selected)
-                        flag = true;*/
                 }
-
-               /* if (flag)
-                    CommonMethods.showToast(mContext, "Please select non Uploaded Document.");
-                else {*/
-                    if (selected) {
-                        Intent intent = new Intent(mContext, SeletedDocsActivity.class);
-                        intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigationTemp);
-                        startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
-                    } else
-                        CommonMethods.showToast(mContext, "Please select at least one Document.");
-//                }
+                if (selected) {
+                    Intent intent = new Intent(mContext, SeletedDocsActivity.class);
+                    intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigationTemp);
+                    startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
+                } else
+                    CommonMethods.showToast(mContext, "Please select at least one Document.");
                 break;
             case R.id.selectUploededButton:
                 Intent intent = new Intent(mContext, UploadedDocsActivity.class);
@@ -189,7 +188,6 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         Intent i = manager.getLaunchIntentForPackage(packageName);
         if (i == null) {
             return false;
-            //throw new PackageManager.NameNotFoundException();
         }
         i.addCategory(Intent.CATEGORY_LAUNCHER);
         startActivityForResult(i, 1);

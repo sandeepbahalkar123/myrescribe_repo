@@ -178,6 +178,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
                     dataObject.setUploaded(dataObject.isSelected());
                     Images images = new Images();
                     images.setImageArray(photoPaths);
+                    dataObject.setPhotos(photoPaths);
                     appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), new Gson().toJson(images));
                 }
                 if (dataObject.isSelected())
@@ -197,7 +198,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
             } else {
                 Intent intent = new Intent();
                 intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
-                intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
+//                intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
                 setResult(RESULT_OK, intent);
             }
             finish();

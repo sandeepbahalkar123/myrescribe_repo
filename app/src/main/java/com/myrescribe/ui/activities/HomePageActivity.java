@@ -1,5 +1,6 @@
 package com.myrescribe.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.notification.AppointmentAlarmTask;
 import com.myrescribe.notification.DosesAlarmTask;
 import com.myrescribe.notification.InvestigationAlarmTask;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -27,13 +29,15 @@ import com.myrescribe.util.MyRescribeConstants;
 public class HomePageActivity  extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        mContext = HomePageActivity.this;
         if (getIntent().getBooleanExtra("ALERT", true))
             notificationForMedicine();
 
@@ -53,7 +57,7 @@ public class HomePageActivity  extends AppCompatActivity
         String dinnerTime = "9:21 AM";
         String snacksTime = "9:21 AM";
 
-        AppDBHelper appDBHelper = new AppDBHelper(HomePageActivity.this);
+        AppDBHelper appDBHelper = new AppDBHelper(mContext);
         Cursor cursor = appDBHelper.getPreferences("1");
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
@@ -69,9 +73,9 @@ public class HomePageActivity  extends AppCompatActivity
         String times[] = {breakFast, lunchTime, dinnerTime,snacksTime};
         String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY);
 
-        new DosesAlarmTask(HomePageActivity.this, times, date).run();
-        new InvestigationAlarmTask(HomePageActivity.this, "9:00 am", getResources().getString(R.string.investigation_msg)).run();
-        new AppointmentAlarmTask(HomePageActivity.this, "9:00 am", getResources().getString(R.string.appointment_msg)).run();
+        new DosesAlarmTask(mContext, times, date).run();
+        new InvestigationAlarmTask(mContext, "9:00 am", getResources().getString(R.string.investigation_msg)).run();
+        new AppointmentAlarmTask(mContext, "9:00 am", getResources().getString(R.string.appointment_msg)).run();
     }
 
     @Override
@@ -112,25 +116,34 @@ public class HomePageActivity  extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.visit_details) {
-            Intent intent = new Intent(HomePageActivity.this, ViewDetailsActivity.class);
+            Intent intent = new Intent(mContext, ViewDetailsActivity.class);
             startActivity(intent);
         }else  if (id == R.id.doctor_details) {
-            Intent intent = new Intent(HomePageActivity.this, DoctorListActivity.class);
+            Intent intent = new Intent(mContext, DoctorListActivity.class);
             startActivity(intent);
         }else  if (id == R.id.investigations) {
-            Intent intent = new Intent(HomePageActivity.this, InvestigationActivity.class);
+            Intent intent = new Intent(mContext, InvestigationActivity.class);
             startActivity(intent);
         }/*else  if (id == R.id.appointments) {
-            Intent intent = new Intent(HomePageActivity.this, AppoinmentActivity.class);
+            Intent intent = new Intent(mContext, AppoinmentActivity.class);
             startActivity(intent);
         }*/else  if (id == R.id.onGoingMedication) {
-            Intent intent = new Intent(HomePageActivity.this, ShowMedicineDoseListActivity.class);
+            Intent intent = new Intent(mContext, ShowMedicineDoseListActivity.class);
             startActivity(intent);
+        } else if (id == R.id.logout) {
+            logout();
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void logout() {
+        MyRescribePreferencesManager.clearSharedPref(mContext);
+        Intent intent = new Intent(mContext, LoginMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 }

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.myrescribe.R;
 import com.myrescribe.ui.customesViews.zoomview.ZoomageView;
+import com.myrescribe.util.MyRescribeConstants;
 
 import java.io.File;
 
@@ -31,7 +32,7 @@ public class ZoomImageViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_zoom_image_view);
         ButterKnife.bind(this);
 
-        Glide.with(this).load(new File(getIntent().getStringExtra("IMAGE")))
+        Glide.with(this).load(new File(getIntent().getStringExtra(MyRescribeConstants.DOCUMENTS)))
                 .placeholder(droidninja.filepicker.R.drawable.image_placeholder)
                 .into(zoomView);
     }

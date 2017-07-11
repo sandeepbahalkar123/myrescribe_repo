@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.myrescribe.R;
 import com.myrescribe.ui.activities.ZoomImageViewActivity;
+import com.myrescribe.util.MyRescribeConstants;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageAdap
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ZoomImageViewActivity.class);
-                intent.putExtra("IMAGE", path);
+                intent.putExtra(MyRescribeConstants.DOCUMENTS, path);
                 context.startActivity(intent);
             }
         });

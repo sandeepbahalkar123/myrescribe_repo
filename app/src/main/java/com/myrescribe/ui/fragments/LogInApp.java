@@ -30,8 +30,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.myrescribe.R;
+import com.myrescribe.helpers.login.LoginHelper;
+import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
+import com.myrescribe.ui.activities.HomePageActivity;
 import com.myrescribe.ui.activities.PhoneNoActivity;
+import com.myrescribe.ui.activities.SplashScreenActivity;
+import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import org.json.JSONException;
@@ -43,29 +50,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LogInApp.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LogInApp#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class LogInApp extends Fragment implements
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, HelperResponse {
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     private final String TAG = this.getClass().getName();
 
     Context mContext;
     private GoogleApiClient mGoogleApiClient;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     @BindView(R.id.editTextMobileNo)
     EditText mMobileNo;
@@ -79,32 +70,14 @@ public class LogInApp extends Fragment implements
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SignUp.
-     */
-    // TODO: Rename and change types and number of parameters
     public static LogInApp newInstance(String param1, String param2) {
         LogInApp fragment = new LogInApp();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
     }
 
     @Override
@@ -199,7 +172,8 @@ public class LogInApp extends Fragment implements
                 break;
             case R.id.btn_login:
                 String userName = mMobileNo.getText().toString();
-                String emailId = mPassword.getText().toString();
+                String password = mPassword.getText().toString();
+                isValidate(userName, password);
                 break;
         }
     }
@@ -287,4 +261,38 @@ public class LogInApp extends Fragment implements
         request.executeAsync();
     }
 
+    private void isValidate(String userName, String password) {
+        LoginHelper loginHelper = new LoginHelper(getActivity(), this);
+        loginHelper.doLogin(userName, password);
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if (mOldDataTag.equals(MyRescribeConstants.TASK_LOGIN)) {
+            LoginModel loginModel = (LoginModel) customResponse;
+            CommonMethods.Log(TAG + " Token", loginModel.getAuthToken());
+            MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
+            MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
+
+            Intent intentObj = new Intent(mContext, HomePageActivity.class);
+            startActivity(intentObj);
+
+            getActivity().finish();
+        }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
+    }
 }

@@ -32,6 +32,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.myrescribe.R;
+import com.myrescribe.helpers.login.LoginHelper;
+import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.MyRescribeConstants;
 

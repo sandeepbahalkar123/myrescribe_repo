@@ -38,7 +38,7 @@ public class HomePageActivity  extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContext = HomePageActivity.this;
-        if (getIntent().getBooleanExtra("ALERT", true))
+        if (getIntent().getBooleanExtra(MyRescribeConstants.ALERT, true))
             notificationForMedicine();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

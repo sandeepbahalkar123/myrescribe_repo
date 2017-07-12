@@ -12,7 +12,7 @@
         android:layout_toLeftOf="@+id/selected"
         android:layout_toStartOf="@+id/selected"
         tools:text="Text"
-        android:textSize="16sp"
+        android:textSize="23sp"
         app:customFont="@string/roboto_bold"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_horizontal_margin"

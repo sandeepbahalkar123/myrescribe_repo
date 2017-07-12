@@ -12,13 +12,13 @@ import java.util.ArrayList;
 public class Images {
     @SerializedName("images")
     @Expose
-    ArrayList<String> imageArray;
+    ArrayList<Image> imageArray;
 
-    public ArrayList<String> getImageArray() {
+    public ArrayList<Image> getImageArray() {
         return imageArray;
     }
 
-    public void setImageArray(ArrayList<String> imageArray) {
+    public void setImageArray(ArrayList<Image> imageArray) {
         this.imageArray = imageArray;
     }
 }

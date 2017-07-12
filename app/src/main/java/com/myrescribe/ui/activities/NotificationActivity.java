@@ -88,7 +88,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(NotificationActivity.this, HomePageActivity.class);
-        intent.putExtra("ALERT", false);
+        intent.putExtra(MyRescribeConstants.ALERT, false);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         super.onBackPressed();

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.myrescribe.R;
+import com.myrescribe.model.investigation.Image;
 import com.myrescribe.ui.activities.ZoomImageViewActivity;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -23,11 +24,11 @@ import butterknife.ButterKnife;
 
 public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageAdapter.FileViewHolder> {
 
-    private final ArrayList<String> paths;
+    private final ArrayList<Image> paths;
     private final Context context;
     private int imageSize;
 
-    public SelectedImageAdapter(Context context, ArrayList<String> paths) {
+    public SelectedImageAdapter(Context context, ArrayList<Image> paths) {
         this.context = context;
         this.paths = paths;
         setColumnNumber(context, 2);
@@ -50,8 +51,8 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageAdap
 
     @Override
     public void onBindViewHolder(final SelectedImageAdapter.FileViewHolder holder, final int position) {
-        final String path = paths.get(position);
-        Glide.with(context).load(new File(path))
+        final Image path = paths.get(position);
+        Glide.with(context).load(new File(path.getImagePath()))
                 .centerCrop()
                 .dontAnimate()
                 .thumbnail(0.5f)
@@ -63,7 +64,7 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageAdap
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ZoomImageViewActivity.class);
-                intent.putExtra(MyRescribeConstants.DOCUMENTS, path);
+                intent.putExtra(MyRescribeConstants.DOCUMENTS, path.getImagePath());
                 context.startActivity(intent);
             }
         });

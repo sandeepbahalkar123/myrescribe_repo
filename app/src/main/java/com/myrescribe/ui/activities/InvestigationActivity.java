@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -19,11 +20,13 @@ import com.myrescribe.R;
 import com.myrescribe.adapters.InvestigationViewAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.model.investigation.DataObject;
+import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.investigation.Images;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +42,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     RecyclerView mRecyclerView;
     @BindView(R.id.selectDocsButton)
     Button selectDocsButton;
-    @BindView(R.id.selectUploededButton)
+    @BindView(R.id.selectUploadedButton)
     Button selectUploadedButton;
     @BindView(R.id.gmailButton)
     Button gmailButton;
@@ -80,36 +83,48 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
             appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.isUploaded(), new Gson().toJson(images));
         }
 
+        int isAlreadyUploadedButtonVisible = View.GONE;
+
         for (int i = 0; i < investigation.size(); i++) {
             DataObject data = appDBHelper.getInvestigationData(investigation.get(i).getId());
             boolean status = data.isUploaded();
-            ArrayList<String> imageArray = data.getPhotos();
+            ArrayList<Image> imageArray = data.getPhotos();
             if (!status) {
                 DataObject dataObject = new DataObject(investigation.get(i).getId(), investigation.get(i).getTitle(), investigation.get(i).isSelected(), investigation.get(i).isUploaded(), imageArray);
                 investigationTemp.add(dataObject);
             } else {
+                isAlreadyUploadedButtonVisible = View.VISIBLE;
                 investigation.get(i).setPhotos(data.getPhotos());
             }
         }
+
+        buttonManage(isAlreadyUploadedButtonVisible);
 
         mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    private void buttonManage(int isAlreadyUploadedButtonVisible) {
+        if (isAlreadyUploadedButtonVisible == View.VISIBLE)
+            selectDocsButton.setText(getResources().getString(R.string.new_document));
+        else selectDocsButton.setText(getResources().getString(R.string.upload));
+        selectUploadedButton.setVisibility(isAlreadyUploadedButtonVisible);
+    }
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(InvestigationActivity.this, HomePageActivity.class);
-        intent.putExtra("ALERT", false);
+        intent.putExtra(MyRescribeConstants.ALERT, false);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         super.onBackPressed();
     }
 
     private void getDataSet() {
-        investigation.add(new DataObject(1, "CT Scan", false, false, new ArrayList<String>()));
-        investigation.add(new DataObject(2, "Lipid", false, false, new ArrayList<String>()));
-        investigation.add(new DataObject(3, "Liver Profile", false, false, new ArrayList<String>()));
-        investigation.add(new DataObject(4, "X Ray", false, false, new ArrayList<String>()));
+        investigation.add(new DataObject(1, "CT Scan", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(2, "Lipid", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(3, "Liver Profile", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(4, "X Ray", false, false, new ArrayList<Image>()));
     }
 
     @Override
@@ -134,25 +149,30 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
+        if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO || requestCode == UPLOADED_DOCS) {
             if (resultCode == RESULT_OK) {
                 investigationTemp.clear();
                 ArrayList<DataObject> invest = (ArrayList<DataObject>) data.getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
-                for (int i = 0; i < investigation.size(); i++) {
-                    for (DataObject objectTemp : invest) {
-                        if (investigation.get(i).getId() == objectTemp.getId()) {
-                           investigation.set(i, objectTemp);
-                        }
-                    }
-                }
+                changeOriginalData(invest);
                 investigationTemp.addAll(invest);
                 mAdapter.notifyDataSetChanged();
                 buttonEnable();
+                buttonManage(View.VISIBLE);
             }
         }
     }
 
-    @OnClick({R.id.selectUploededButton, R.id.gmailButton, R.id.selectDocsButton})
+    private void changeOriginalData(ArrayList<DataObject> invest) {
+        for (int i = 0; i < investigation.size(); i++) {
+            for (DataObject objectTemp : invest) {
+                if (investigation.get(i).getId() == objectTemp.getId()) {
+                    investigation.set(i, objectTemp);
+                }
+            }
+        }
+    }
+
+    @OnClick({R.id.selectUploadedButton, R.id.gmailButton, R.id.selectDocsButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.selectDocsButton:
@@ -168,7 +188,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 } else
                     CommonMethods.showToast(mContext, "Please select at least one Document.");
                 break;
-            case R.id.selectUploededButton:
+            case R.id.selectUploadedButton:
                 Intent intent = new Intent(mContext, UploadedDocsActivity.class);
                 intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
                 startActivityForResult(intent, UPLOADED_DOCS);
@@ -177,8 +197,20 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("email", "dr.shah@gmail.com");
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(InvestigationActivity.this, "dr.shah@gmail.com email Id copied.", Toast.LENGTH_SHORT).show();
-                openApp("com.google.android.gm");
+
+                if (openApp("com.google.android.gm")) {
+                    for (DataObject dataObject : investigationTemp) {
+                        if (dataObject.isSelected()) {
+                            dataObject.setUploaded(dataObject.isSelected());
+                        }
+                    }
+                    changeOriginalData(investigationTemp);
+                    buttonEnable();
+                    buttonManage(View.VISIBLE);
+                    Toast.makeText(InvestigationActivity.this, "dr.shah@gmail.com email Id copied.", Toast.LENGTH_SHORT).show();
+                } else {
+                    CommonMethods.showToast(mContext, "Gmail application not found");
+                }
                 break;
         }
     }
@@ -190,7 +222,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
             return false;
         }
         i.addCategory(Intent.CATEGORY_LAUNCHER);
-        startActivityForResult(i, 1);
+        startActivity(i);
         return true;
     }
 }

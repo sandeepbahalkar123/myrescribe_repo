@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
 import com.myrescribe.model.investigation.DataObject;
+import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.investigation.Images;
 import com.myrescribe.util.CommonMethods;
 
@@ -246,8 +247,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-//                id = cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_ID));
-                ArrayList<String> imageArray = new Gson().fromJson(cursor.getString(cursor.getColumnIndex(INV_UPLOADED_IMAGES)), Images.class).getImageArray();
+                ArrayList<Image> imageArray = new Gson().fromJson(cursor.getString(cursor.getColumnIndex(INV_UPLOADED_IMAGES)), Images.class).getImageArray();
                 dataObject = new DataObject(Integer.parseInt(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_ID))), cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME)), cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1, cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1, imageArray);
                 cursor.moveToNext();
             }

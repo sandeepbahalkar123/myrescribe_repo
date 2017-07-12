@@ -22,12 +22,14 @@ import com.myrescribe.R;
 import com.myrescribe.adapters.SelectedImageAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.model.investigation.DataObject;
+import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.investigation.Images;
 import com.myrescribe.model.investigation.SelectedDocModel;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,7 +51,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
 
     private static final int MAX_ATTACHMENT_COUNT = 10;
     private Context mContext;
-    private ArrayList<String> photoPaths = new ArrayList<>();
+    private ArrayList<Image> photoPaths = new ArrayList<>();
     private int media_id = -1;
     private SelectedImageAdapter selectedImageAdapter;
     private ArrayList<DataObject> investigation;
@@ -127,9 +129,14 @@ public class SeletedDocsActivity extends AppCompatActivity {
     public void onPickPhoto() {
         if (photoPaths.size() == MAX_ATTACHMENT_COUNT)
             Toast.makeText(this, "Cannot select more than " + MAX_ATTACHMENT_COUNT + " documents", Toast.LENGTH_SHORT).show();
-        else
+        else {
+
+            ArrayList photos = new ArrayList();
+            for (Image photo : photoPaths)
+                photos.add(photo.getImagePath());
+
             FilePickerBuilder.getInstance().setMaxCount(MAX_ATTACHMENT_COUNT)
-                    .setSelectedFiles(photoPaths)
+                    .setSelectedFiles(photos)
                     .setActivityTheme(R.style.AppTheme)
                     .enableVideoPicker(false)
                     .enableCameraSupport(true)
@@ -137,6 +144,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
                     .showFolderView(true)
                     .enableOrientation(true)
                     .pickPhoto(this);
+        }
     }
 
     @Override
@@ -152,14 +160,15 @@ public class SeletedDocsActivity extends AppCompatActivity {
         if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA) == null)
             finish();
         else if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA).size() == 0)
-            finish();
-
-        if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
+            finish(); else {
+            if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
 //            int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
-            if (resultCode == Activity.RESULT_OK) {
-                photoPaths.clear();
-                photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
-                selectedImageAdapter.notifyDataSetChanged();
+                if (resultCode == Activity.RESULT_OK) {
+                    photoPaths.clear();
+                    for (String imagePath :data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA))
+                        photoPaths.add(new Image(UUID.randomUUID().toString(), imagePath, false));
+                    selectedImageAdapter.notifyDataSetChanged();
+                }
             }
         }
     }

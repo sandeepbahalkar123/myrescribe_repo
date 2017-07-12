@@ -1,6 +1,7 @@
 package com.myrescribe.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,15 +10,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.UploadedImageAdapter;
+import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.model.investigation.DataObject;
+import com.myrescribe.model.investigation.Image;
+import com.myrescribe.model.investigation.Images;
+import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class UploadedDocsActivity extends AppCompatActivity {
 
@@ -31,7 +38,8 @@ public class UploadedDocsActivity extends AppCompatActivity {
     private Context mContext;
     private UploadedImageAdapter uploadedImageAdapter;
     private ArrayList<DataObject> investigation;
-    private ArrayList<String> photoPaths = new ArrayList<>();
+    private ArrayList<Image> photoPaths = new ArrayList<>();
+    private AppDBHelper appDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,7 @@ public class UploadedDocsActivity extends AppCompatActivity {
         });
 
         mContext = UploadedDocsActivity.this;
+        appDBHelper = new AppDBHelper(mContext);
 
         investigation = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
 
@@ -61,5 +70,50 @@ public class UploadedDocsActivity extends AppCompatActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
         recyclerView.setLayoutManager(layoutManager);
 
+    }
+
+    @OnClick(R.id.uploadButton)
+    public void onViewClicked() {
+
+        int selectedCount = 0;
+        int selectedImageCount = 0;
+        ArrayList<Image> photos = new ArrayList<>();
+
+        for (Image image : photoPaths) {
+            if (image.isSelected()) {
+                photos.add(image);
+                selectedImageCount++;
+            }
+        }
+
+        if (selectedImageCount > 0) {
+            for (DataObject dataObject : investigation) {
+                if (dataObject.isSelected() && !dataObject.isUploaded()) {
+                    dataObject.setUploaded(dataObject.isSelected());
+                    dataObject.setPhotos(photos);
+                    Images images = new Images();
+                    images.setImageArray(photoPaths);
+                    dataObject.setPhotos(photoPaths);
+                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), new Gson().toJson(images));
+                }
+
+                if (dataObject.isSelected())
+                    selectedCount += 1;
+            }
+
+            if (selectedCount == investigation.size()) {
+                Intent intent = new Intent(this, HomePageActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent();
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
+                setResult(RESULT_OK, intent);
+            }
+            finish();
+
+        } else {
+            CommonMethods.showToast(mContext, "Please select at least one document");
+        }
     }
 }

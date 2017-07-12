@@ -16,8 +16,9 @@ public class Config {
     public Context mContext;
     //Declared all URL used in app here
 
-    public static final String PRESCRIPTION_URL = "http://192.168.0.182:3003/api/patient/getPatientPrescriptions/2606";
+    public static final String PRESCRIPTION_URL = "api/patient/getPatientPrescriptions/4092";
 
+    public static final String ONE_DAY_VISIT_URL = "http://192.168.0.182:3003/api/patient/getPatientOneDayVisit/4092/10/08-06-2017";
  }
 
 

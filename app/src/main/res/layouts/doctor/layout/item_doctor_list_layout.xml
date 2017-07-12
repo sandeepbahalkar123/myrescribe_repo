@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/doctorListLinearLayout"
     android:orientation="horizontal">
   <!--  android:layout_marginTop="@dimen/dp16"
     android:layout_marginLeft="@dimen/dp4"
@@ -19,10 +19,11 @@
             android:id="@+id/date"
             android:layout_width="@dimen/dp0"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.2"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_weight="0.1"
             android:textColor="@color/tagColor"
-            android:textSize="@dimen/sp20"
+            android:textSize="@dimen/sp16"
             android:visibility="visible"
          />
 
@@ -36,7 +37,7 @@
                 android:layout_width="@dimen/dp1"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:background="@color/dose_completed" />
 
             <ImageView
@@ -106,7 +107,7 @@
                     android:layout_marginTop="@dimen/dp4"
                     android:text="Just gona stand there and ..."
                     android:textColor="@color/doctor_specialist_color"
-                    android:textSize="@dimen/sp18"
+                    android:textSize="@dimen/sp16"
                     app:customFont="@string/roboto_bold"/>
 
                 <!-- Artist Name -->
@@ -117,7 +118,7 @@
                     android:layout_below="@id/doctorType"
                     android:layout_toRightOf="@+id/thumbnail"
                     android:textColor="@color/tagColor"
-                    android:textSize="@dimen/sp20"
+                    android:textSize="@dimen/sp18"
                     android:textStyle="bold"
                     app:customFont="@string/roboto_bold" />
 

@@ -83,6 +83,7 @@ public class MyRescribeConstants {
     public static final String TASK_HISTORY = MyRescribeConstants.BLANK + 2;
     public static final String TASK_DOCTOR_LIST = MyRescribeConstants.BLANK + 3;
     public static final String TASK_LOGIN = MyRescribeConstants.BLANK + 4;
+    public static final String TASK_ONE_DAY_VISIT = MyRescribeConstants.BLANK + 5;
 
     public static class DATE_PATTERN {
         public static String YYYY_MM_DD = "yyyy-MM-dd";

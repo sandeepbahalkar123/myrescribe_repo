@@ -2,12 +2,17 @@ package com.myrescribe.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.myrescribe.R;
+import com.myrescribe.adapters.DoctorAdapter;
 import com.myrescribe.adapters.DoctorListAdapter;
 import com.myrescribe.helpers.doctor.DoctorHelper;
 import com.myrescribe.interfaces.CustomResponse;
@@ -24,8 +29,8 @@ public class DynamicFragment extends Fragment implements HelperResponse,View.OnC
     private static final String VALUE = "VALUE";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    ListView mDoctorListView;
-    DoctorListAdapter showDoctorListAdapter;
+    RecyclerView mDoctorListView;
+    DoctorAdapter showDoctorListAdapter;
     private DoctorHelper mDoctorHelper;
 
     public DynamicFragment() {
@@ -58,7 +63,7 @@ public class DynamicFragment extends Fragment implements HelperResponse,View.OnC
     }
 
     private void init(View view) {
-        mDoctorListView = (ListView) view.findViewById(R.id.doctorListView);
+        mDoctorListView = (RecyclerView) view.findViewById(R.id.doctorListView);
         mDoctorHelper = new DoctorHelper(getActivity(), this);
         mDoctorHelper.doGetDoctorList();
 
@@ -73,7 +78,13 @@ public class DynamicFragment extends Fragment implements HelperResponse,View.OnC
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         DoctorsModel data = (DoctorsModel) customResponse;
         ArrayList<DoctorDetail> doctorDetails = formatResponseDataForAdapter(data.getDoctorList());
-        showDoctorListAdapter = new DoctorListAdapter(getActivity(), R.layout.item_doctor_list_layout, doctorDetails);
+        showDoctorListAdapter = new DoctorAdapter(getActivity(), doctorDetails);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        mDoctorListView.setLayoutManager(layoutManager);
+        mDoctorListView.setHasFixedSize(true);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mDoctorListView.getContext(),
+                layoutManager.getOrientation());
+        mDoctorListView.addItemDecoration(dividerItemDecoration);
         mDoctorListView.setAdapter(showDoctorListAdapter);
 
     }

@@ -28,6 +28,7 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
     private int mParentDataContainerBackground;
     Context mContext;
     int layoutResourceId;
+    int colorId = 0;
     ArrayList<DoctorDetail> mDataList;
 
     public DoctorListAdapter(Context context, int layoutResourceId, ArrayList<DoctorDetail> dataList) {
@@ -55,6 +56,7 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
             holder.circularBulletChildElement = (ImageView) row.findViewById(R.id.circularBulletChildElement);
 
             holder.parentDataContainer = (LinearLayout) row.findViewById(R.id.parentDataContainer);
+            holder.doctorListLinearLayout = (LinearLayout) row.findViewById(R.id.doctorListLinearLayout);
             holder.upperLine = (TextView) row.findViewById(R.id.upperLine);
             holder.lowerLine = (TextView) row.findViewById(R.id.lowerLine);
             // holder.buttonMoreOrLess = (TextView) row.findViewById(R.id.button_toggle);
@@ -73,11 +75,20 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
             holder.date.setVisibility(View.VISIBLE);
             holder.circularBulletMainElement.setVisibility(View.VISIBLE);
             holder.circularBulletChildElement.setVisibility(View.GONE);
+            if(colorId==dataObject.getColor()) {
+                holder.doctorListLinearLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
+                dataObject.setColor(ContextCompat.getColor(mContext,R.color.white));
+                colorId = dataObject.getColor();
+            }else{
+                holder.doctorListLinearLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey));
+                dataObject.setColor(ContextCompat.getColor(mContext,R.color.grey));
+                colorId = dataObject.getColor();
+            }
         } else {
-            holder.date.setVisibility(View.INVISIBLE);
             holder.date.setVisibility(View.INVISIBLE);
             holder.circularBulletChildElement.setVisibility(View.VISIBLE);
             holder.circularBulletMainElement.setVisibility(View.GONE);
+            holder.doctorListLinearLayout.setBackgroundColor(dataObject.getColor());
 
         }
 
@@ -110,6 +121,7 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
         TextView upperLine, lowerLine;
         CustomTextView doctorName;
         LinearLayout parentDataContainer;
+        LinearLayout doctorListLinearLayout;
         //   TextView buttonMoreOrLess;
     }
 

@@ -1,6 +1,7 @@
-package com.myrescribe.helpers.prescription;
+package com.myrescribe.helpers.one_day_visit;
 
 import android.content.Context;
+
 import com.android.volley.Request;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
@@ -12,22 +13,23 @@ import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by riteshpandhurkar on 1/3/17.
+ * Created by jeetal on 11/7/17.
  */
 
-public class PrescriptionHelper implements ConnectionListener {
+public class OneDayVisitHelper implements ConnectionListener {
 
     String TAG = "MyRescribe/PrescriptionHelper";
     Context mContext;
     HelperResponse mHelperResponseManager;
 
-    public PrescriptionHelper(Context context, HelperResponse loginActivity1) {
+    public OneDayVisitHelper(Context context, HelperResponse oneDayVisitActivity) {
         this.mContext = context;
-        this.mHelperResponseManager = loginActivity1;
+        this.mHelperResponseManager = oneDayVisitActivity;
     }
 
 
@@ -37,8 +39,8 @@ public class PrescriptionHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == MyRescribeConstants.TASK_PRESCRIPTION_LIST) {
-                   PrescriptionModel model = (PrescriptionModel) customResponse;
+                if (mOldDataTag == MyRescribeConstants.TASK_ONE_DAY_VISIT) {
+                    PrescriptionModel model = (PrescriptionModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
                 }
                 break;
@@ -65,13 +67,13 @@ public class PrescriptionHelper implements ConnectionListener {
 
     }
 
-    public void doGetPrescriptionList() {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_PRESCRIPTION_LIST, Request.Method.GET, true);
+    public void doGetOneDayVisit() {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_ONE_DAY_VISIT, Request.Method.GET, true);
         Map<String, String> testParams = new HashMap<String, String>();
-        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN,mContext));
+        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext));
         mConnectionFactory.setHeaderParams(testParams);
-        mConnectionFactory.setUrl(Config.PRESCRIPTION_URL);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_PRESCRIPTION_LIST);
+        mConnectionFactory.setUrl(Config.ONE_DAY_VISIT_URL);
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_ONE_DAY_VISIT);
     }
-
 }
+

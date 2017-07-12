@@ -15,7 +15,25 @@ public class DoctorDetail implements CustomResponse {
     @SerializedName("name")
     @Expose
     private String name;
+    private boolean isColored = false;
 
+    public boolean isColored() {
+        return isColored;
+    }
+
+    public void setColored(boolean colored) {
+        isColored = colored;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    private  int color;
     private String respectiveDate;
     private boolean isStartElement;
     private boolean isExpanded;

@@ -28,6 +28,7 @@ import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.prescription_response_model.PrescriptionD;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
+import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.listeners.SwipeDismissTouchListener;
@@ -44,11 +45,13 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     private String time;
 //    private ArrayList<Medicine> medicines;
     private Context mContext;
+    CustomProgressDialog mProgressDialog;
     private boolean isHeaderExpand = true;
     private LinearLayout tabletListLayout;
     private CheckBox selectView;
     private LinearLayout headerLayout;
     private View mDividerLine;
+
     private LinearLayout headerLayoutParent;
 
     @Override
@@ -59,6 +62,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.notification));
         mContext = NotificationActivity.this;
+       mProgressDialog = new CustomProgressDialog(mContext);
 
         toolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -246,6 +250,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        mProgressDialog.show();
         if (mOldDataTag.equals(MyRescribeConstants.TASK_PRESCRIPTION_LIST)) {
             PrescriptionModel prescriptionDataReceived = (PrescriptionModel) customResponse;
 
@@ -266,6 +271,8 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
                     mAdapter = new NotificationListAdapter(mContext, notificationDummyData, getTimeArray());
                     recycler.setAdapter(mAdapter);
+                    mProgressDialog.dismiss();
+
                 }
             }
 

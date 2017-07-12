@@ -13,7 +13,7 @@
         android:paddingLeft="@dimen/dp12"
         android:paddingRight="@dimen/dp12">
 
-        <ImageView android:src="@mipmap/ic_launcher"
+        <ImageView android:src="@drawable/ic_launcher"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp72"
             android:layout_marginBottom="@dimen/dp12"

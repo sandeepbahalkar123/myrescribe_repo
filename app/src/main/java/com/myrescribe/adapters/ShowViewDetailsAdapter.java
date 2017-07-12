@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.myrescribe.R;
 import com.myrescribe.model.Album;
 import com.myrescribe.model.history.HistoryCommonDetails;
+import com.myrescribe.model.visit_details.Diagnosi;
 import com.myrescribe.util.CommonMethods;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,10 +52,10 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
     private ArrayList<String> mListDataHeader; // header titles
 
     // child data in format of header title, child title
-    private HashMap<String, ArrayList<HistoryCommonDetails>> mListDataChild;
+    private HashMap<String, ArrayList<Diagnosi>> mListDataChild;
 
     public ShowViewDetailsAdapter(Context context, ArrayList<String> listDataHeader,
-                                  HashMap<String, ArrayList<HistoryCommonDetails>> listChildData) {
+                                  HashMap<String, ArrayList<Diagnosi>> listChildData) {
         this.mContext = context;
         this.mListDataHeader = listDataHeader;
         this.mListDataChild = listChildData;
@@ -67,7 +68,7 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
     }
 
 
-    public ArrayList<HistoryCommonDetails> getChildList(int groupPosition) {
+    public ArrayList<Diagnosi> getChildList(int groupPosition) {
         return this.mListDataChild.get(this.mListDataHeader.get(groupPosition));
     }
 
@@ -78,7 +79,7 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
 
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         //final String incoming_text = (String) getChild(groupPosition, childPosition);
-        final HistoryCommonDetails childObject = (HistoryCommonDetails) getChild(groupPosition, childPosition);
+        final Diagnosi childObject = (Diagnosi) getChild(groupPosition, childPosition);
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
 
         Integer childType = getChildType(groupPosition, childPosition);
@@ -195,7 +196,7 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
         }
         groupViewHolder.lblListHeader.setText(headerTitle);
         groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getVisitDetailsIcons(headerTitle, mContext));
-        ArrayList<HistoryCommonDetails> historyCommonDetailses = getChildList(groupPosition);
+        ArrayList<Diagnosi> historyCommonDetailses = getChildList(groupPosition);
         groupViewHolder.mDetailFirstPoint.setText(historyCommonDetailses.get(0).getName()+".......");
         return convertView;
     }

@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.model.prescription_response_model.PrescriptionD;
-import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;

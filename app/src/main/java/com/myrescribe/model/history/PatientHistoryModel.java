@@ -5,9 +5,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.model.Common;
-import com.myrescribe.model.prescription_response_model.PrescriptionData;
-
-import java.util.ArrayList;
 
 public class PatientHistoryModel implements CustomResponse {
 

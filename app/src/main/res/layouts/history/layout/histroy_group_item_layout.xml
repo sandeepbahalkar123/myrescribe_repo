@@ -34,7 +34,6 @@
                 android:id="@+id/viewDetailHeaderLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Complaints"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp19"
                 android:textStyle="bold"
@@ -52,7 +51,6 @@
                 android:id="@+id/detailFirstPoint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Complaints"
                 android:textColor="@color/view_detail_color"
                 android:textSize="@dimen/sp17"
                 app:customFont="@string/roboto_medium" />

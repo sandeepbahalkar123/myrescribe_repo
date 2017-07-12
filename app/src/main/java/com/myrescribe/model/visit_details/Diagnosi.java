@@ -2,8 +2,9 @@ package com.myrescribe.model.visit_details;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.myrescribe.interfaces.CustomResponse;
 
-public class Diagnosi {
+public class Diagnosi implements CustomResponse {
 
 @SerializedName("id")
 @Expose

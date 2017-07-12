@@ -1,78 +1,79 @@
 package com.myrescribe.model.visit_details;
 
-import java.util.List;
+import java.util.ArrayList;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.myrescribe.interfaces.CustomResponse;
 
-public class PatientHistory {
+public class PatientHistory implements CustomResponse {
 
 @SerializedName("complaints")
 @Expose
-private List<Object> complaints = null;
+private ArrayList<Diagnosi> complaints = null;
 @SerializedName("vitals")
 @Expose
-private List<Object> vitals = null;
+private ArrayList<Diagnosi> vitals = null;
 @SerializedName("remarks")
 @Expose
-private List<Object> remarks = null;
+private ArrayList<Diagnosi> remarks = null;
 @SerializedName("diagnosis")
 @Expose
-private List<Diagnosi> diagnosis = null;
+private ArrayList<Diagnosi> diagnosis = null;
 @SerializedName("prescriptions")
 @Expose
-private List<Prescription> prescriptions = null;
+private ArrayList<Diagnosi> prescriptions = null;
 @SerializedName("investigations")
 @Expose
-private List<Object> investigations = null;
+private ArrayList<Diagnosi> investigations = null;
 @SerializedName("advice")
 @Expose
 private String advice;
 
-public List<Object> getComplaints() {
+public ArrayList<Diagnosi> getComplaints() {
 return complaints;
 }
 
-public void setComplaints(List<Object> complaints) {
+public void setComplaints(ArrayList<Diagnosi> complaints) {
 this.complaints = complaints;
 }
 
-public List<Object> getVitals() {
+public ArrayList<Diagnosi> getVitals() {
 return vitals;
 }
 
-public void setVitals(List<Object> vitals) {
+public void setVitals(ArrayList<Diagnosi> vitals) {
 this.vitals = vitals;
 }
 
-public List<Object> getRemarks() {
+public ArrayList<Diagnosi> getRemarks() {
 return remarks;
 }
 
-public void setRemarks(List<Object> remarks) {
+public void setRemarks(ArrayList<Diagnosi> remarks) {
 this.remarks = remarks;
 }
 
-public List<Diagnosi> getDiagnosis() {
+public ArrayList<Diagnosi> getDiagnosis() {
 return diagnosis;
 }
 
-public void setDiagnosis(List<Diagnosi> diagnosis) {
+public void setDiagnosis(ArrayList<Diagnosi> diagnosis) {
 this.diagnosis = diagnosis;
 }
 
-public List<Prescription> getPrescriptions() {
+public ArrayList<Diagnosi> getPrescriptions() {
 return prescriptions;
 }
 
-public void setPrescriptions(List<Prescription> prescriptions) {
+public void setPrescriptions(ArrayList<Diagnosi> prescriptions) {
 this.prescriptions = prescriptions;
 }
 
-public List<Object> getInvestigations() {
+public ArrayList<Diagnosi> getInvestigations() {
 return investigations;
 }
 
-public void setInvestigations(List<Object> investigations) {
+public void setInvestigations(ArrayList<Diagnosi> investigations) {
 this.investigations = investigations;
 }
 

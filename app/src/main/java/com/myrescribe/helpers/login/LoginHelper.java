@@ -7,7 +7,6 @@ import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.login.LoginModel;
-import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.model.requestmodel.login.LoginRequestModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;

@@ -7,6 +7,8 @@ import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
+import com.myrescribe.model.visit_details.Data;
+import com.myrescribe.model.visit_details.VisitDetailsModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
 import com.myrescribe.preference.MyRescribePreferencesManager;
@@ -40,8 +42,9 @@ public class OneDayVisitHelper implements ConnectionListener {
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag == MyRescribeConstants.TASK_ONE_DAY_VISIT) {
-                    PrescriptionModel model = (PrescriptionModel) customResponse;
-                    mHelperResponseManager.onSuccess(mOldDataTag, model);
+                    VisitDetailsModel model = (VisitDetailsModel) customResponse;
+                    Data mData = model.getData();
+                    mHelperResponseManager.onSuccess(mOldDataTag, mData);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:

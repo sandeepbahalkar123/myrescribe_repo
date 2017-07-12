@@ -19,6 +19,7 @@
     <string name="loading">Loading...</string>
     <string name="enter_full_name">Enter Full Name</string>
     <string name="enter_email_id">Enter Email ID Name</string>
+    <string name="enter_user_name">Enter User Name</string>
     <string name="cancel">Cancel</string>
     <string name="error_in_ip">Please enter valid IP address</string>
     <string name="action_settings">Settings</string>

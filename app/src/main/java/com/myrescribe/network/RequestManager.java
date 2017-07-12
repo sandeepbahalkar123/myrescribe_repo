@@ -35,6 +35,7 @@ import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.model.login.LoginModel;
+import com.myrescribe.model.visit_details.VisitDetailsModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.activities.SplashScreenActivity;
 import com.myrescribe.ui.customesViews.CustomProgressDialog;
@@ -372,6 +373,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case MyRescribeConstants.TASK_LOGIN: //This is for get archived list
                         LoginModel loginModel = gson.fromJson(data, LoginModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginModel, mOldDataTag);
+                        break;
+                    case MyRescribeConstants.TASK_ONE_DAY_VISIT: //This is for get archived list
+                        VisitDetailsModel visitDetailsModel = gson.fromJson(data, VisitDetailsModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, visitDetailsModel, mOldDataTag);
                         break;
                     /*
                     default:

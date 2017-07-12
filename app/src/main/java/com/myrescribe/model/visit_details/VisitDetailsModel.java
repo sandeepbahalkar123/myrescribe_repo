@@ -2,13 +2,14 @@ package com.myrescribe.model.visit_details;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.model.prescription_response_model.PrescribeCommon;
 
 /**
  * Created by jeetal on 11/7/17.
  */
 
-public class VisitDetailsModel {
+public class VisitDetailsModel implements CustomResponse {
 
     @SerializedName("common")
     @Expose

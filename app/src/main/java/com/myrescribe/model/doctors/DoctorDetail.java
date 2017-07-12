@@ -12,12 +12,20 @@ public class DoctorDetail implements CustomResponse {
     @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("name")
+    @SerializedName("doctorName")
     @Expose
-    private String name;
+    private String doctorName;
 
-    private String respectiveDate;
+    @SerializedName("address")
+    @Expose
+    private String address;
+
+    @SerializedName("date")
+    @Expose
+    private String date;
+
     private boolean isStartElement;
+    private int rowColor;
     private boolean isExpanded;
 
     public String getId() {
@@ -28,27 +36,63 @@ public class DoctorDetail implements CustomResponse {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getDoctorName() {
+        return doctorName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
     }
 
-    public String getRespectiveDate() {
-        return respectiveDate;
+    public String getAddress() {
+        return address;
     }
 
-    public void setRespectiveDate(String respectiveDate) {
-        this.respectiveDate = respectiveDate;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public boolean getIsStartElement() {
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public boolean isStartElement() {
         return isStartElement;
     }
 
-    public void setIsStartElement(boolean isStartElement) {
-        this.isStartElement = isStartElement;
+    public void setStartElement(boolean startElement) {
+        isStartElement = startElement;
+    }
+
+    public int getRowColor() {
+        return rowColor;
+    }
+
+    public void setRowColor(int rowColor) {
+        this.rowColor = rowColor;
+    }
+
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
+    }
+
+    @Override
+    public String toString() {
+        return "DoctorDetail{" +
+                "id='" + id + '\'' +
+                ", doctorName='" + doctorName + '\'' +
+                ", address='" + address + '\'' +
+                ", date='" + date + '\'' +
+                ", isStartElement=" + isStartElement +
+                ", isExpanded=" + isExpanded +
+                '}';
     }
 }

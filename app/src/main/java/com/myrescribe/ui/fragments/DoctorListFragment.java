@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.DoctorListAdapter;
@@ -13,12 +14,17 @@ import com.myrescribe.helpers.doctor.DoctorHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.doctors.DoctorDetail;
-import com.myrescribe.model.doctors.DoctorsModel;
+import com.myrescribe.model.doctors.DoctorModel;
+import com.myrescribe.ui.customesViews.tree_view_structure.DoctorListIconTreeItemHolder;
+import com.myrescribe.ui.customesViews.tree_view_structure.DoctorListMainHeaderHolder;
+import com.unnamed.b.atv.model.TreeNode;
+import com.unnamed.b.atv.view.AndroidTreeView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class DynamicFragment extends Fragment implements HelperResponse,View.OnClickListener{
+public class DoctorListFragment extends Fragment implements HelperResponse, View.OnClickListener {
 
     private static final String COUNT = "column-count";
     private static final String VALUE = "VALUE";
@@ -27,11 +33,12 @@ public class DynamicFragment extends Fragment implements HelperResponse,View.OnC
     ListView mDoctorListView;
     DoctorListAdapter showDoctorListAdapter;
     private DoctorHelper mDoctorHelper;
+    private RelativeLayout mTreeViewContainer;
 
-    public DynamicFragment() {
+    public DoctorListFragment() {
         // Required empty public constructor
     }
- 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +46,7 @@ public class DynamicFragment extends Fragment implements HelperResponse,View.OnC
             mColumnCount = getArguments().getInt(COUNT);
         }
     }
- 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,16 +56,18 @@ public class DynamicFragment extends Fragment implements HelperResponse,View.OnC
 
         return rootView;
     }
-    public static DynamicFragment createNewFragment(String dataString) {
-        DynamicFragment fragment = new DynamicFragment();
+
+    public static DoctorListFragment createNewFragment(String dataString) {
+        DoctorListFragment fragment = new DoctorListFragment();
         Bundle args = new Bundle();
         args.putString(VALUE, dataString);
-       fragment.setArguments(args);
+        fragment.setArguments(args);
         return fragment;
     }
 
     private void init(View view) {
         mDoctorListView = (ListView) view.findViewById(R.id.doctorListView);
+        mTreeViewContainer = (RelativeLayout) view.findViewById(R.id.treeViewContainer);
         mDoctorHelper = new DoctorHelper(getActivity(), this);
         mDoctorHelper.doGetDoctorList();
 
@@ -71,11 +80,11 @@ public class DynamicFragment extends Fragment implements HelperResponse,View.OnC
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        DoctorsModel data = (DoctorsModel) customResponse;
-        ArrayList<DoctorDetail> doctorDetails = formatResponseDataForAdapter(data.getDoctorList());
-        showDoctorListAdapter = new DoctorListAdapter(getActivity(), R.layout.item_doctor_list_layout, doctorDetails);
-        mDoctorListView.setAdapter(showDoctorListAdapter);
-
+        DoctorModel data = (DoctorModel) customResponse;
+        //ArrayList<DoctorDetail> doctorDetails = formatResponseDataForAdapter(data.getDoctorList());
+        //   showDoctorListAdapter = new DoctorListAdapter(getActivity(), R.layout.item_doctor_list_layout, doctorDetails);
+        // mDoctorListView.setAdapter(showDoctorListAdapter);
+        //createTreeStructure(doctorDetails);
     }
 
     @Override
@@ -92,21 +101,20 @@ public class DynamicFragment extends Fragment implements HelperResponse,View.OnC
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
     }
-    private ArrayList<DoctorDetail> formatResponseDataForAdapter(HashMap<String, ArrayList<DoctorDetail>> dataList) {
-        ArrayList<DoctorDetail> formattedDoctorList = new ArrayList<>();
-        for (String key : dataList.keySet()) {
-            boolean flag = true;
-            System.out.println(key);
-            ArrayList<DoctorDetail> doctorDetails = dataList.get(key);
-            for (DoctorDetail dataObject : doctorDetails) {
-                if (flag) {
-                    dataObject.setIsStartElement(true);
-                    flag = false;
-                }
-                dataObject.setRespectiveDate(key);
-                formattedDoctorList.add(dataObject);
-            }
+
+    private void createTreeStructure(ArrayList<DoctorDetail> doctorDetails) {
+        TreeNode root = TreeNode.root();
+        for (DoctorDetail data : doctorDetails) {
+            TreeNode mainListObjectItemNode = new TreeNode(new DoctorListIconTreeItemHolder.IconTreeItem
+                    (R.drawable.cross_icon, data)).setViewHolder(new DoctorListMainHeaderHolder(getActivity()));
+            root.addChildren(mainListObjectItemNode);
         }
-        return formattedDoctorList;
+        AndroidTreeView mAndroidTreeView = new AndroidTreeView(this.getContext(), root);
+        mAndroidTreeView.setDefaultAnimation(true);
+        mAndroidTreeView.setUse2dScroll(true);
+        mAndroidTreeView.setDefaultContainerStyle(R.style.TreeNodeStyleDivided, true);
+        View view = mAndroidTreeView.getView();
+        mTreeViewContainer.addView(view);
     }
+
 }

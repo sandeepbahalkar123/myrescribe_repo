@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="@dimen/dp70"
-    android:background="@android:color/white"
+    android:background="@color/white"
+    android:minHeight="@dimen/dp70"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="0.2"
-            android:text="asdas"
+            android:text="12th\nJust\now"
             android:textColor="@color/tagColor"
             android:textSize="@dimen/sp14"
             android:visibility="visible" />
@@ -34,7 +34,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:background="@color/dose_completed" />
+                android:background="@color/tagColor" />
 
             <ImageView
                 android:id="@+id/circularBulletMainElement"
@@ -56,7 +56,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:background="@color/dose_completed" />
+                android:background="@color/tagColor" />
         </LinearLayout>
 
         <LinearLayout
@@ -78,6 +78,7 @@
 
                 <com.myrescribe.ui.customesViews.CircularImageView
                     android:id="@+id/list_image"
+
                     android:layout_width="@dimen/dp50"
                     android:layout_height="@dimen/dp50"
                     android:layout_gravity="center"
@@ -95,15 +96,15 @@
 
                 <!-- Title Of Song-->
                 <TextView
-                    android:textStyle="bold"
                     android:id="@+id/doctorType"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/thumbnail"
                     android:layout_marginTop="1dip"
-                    android:text="Just gona stand there and ..."
+                    android:text="Just gona stand there and  "
                     android:textColor="@color/dose_completed"
-                    android:textSize="10dip" />
+                    android:textSize="10dip"
+                    android:textStyle="bold" />
 
                 <!-- Artist Name -->
                 <com.myrescribe.ui.customesViews.CustomTextView

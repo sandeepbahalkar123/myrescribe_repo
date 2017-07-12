@@ -4,18 +4,18 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.doctors.DoctorsModel;
-import com.myrescribe.model.history.PatientHistoryData;
-import com.myrescribe.model.history.PatientHistoryModel;
+import com.myrescribe.model.doctors.DoctorModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 
 /**
  * Created by riteshpandhurkar on 1/3/17.
@@ -40,7 +40,7 @@ public class DoctorHelper implements ConnectionListener {
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag == MyRescribeConstants.TASK_DOCTOR_LIST) {
-                    DoctorsModel model = (DoctorsModel) customResponse;
+                    DoctorModel model = (DoctorModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
                 }
                 break;
@@ -87,7 +87,7 @@ public class DoctorHelper implements ConnectionListener {
 
         // TODO : HARDCODED JSON STRING PARSING FROM assets foler
         try {
-            InputStream is = mContext.getAssets().open("doctor_list.json");
+            InputStream is = mContext.getAssets().open("doctor_list_update.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -95,7 +95,14 @@ public class DoctorHelper implements ConnectionListener {
             String json = new String(buffer, "UTF-8");
             Log.e(TAG, "doGetHistory" + json);
 
-            DoctorsModel doctorsModel = new Gson().fromJson(json, DoctorsModel.class);
+            //  Type mapType = new TypeToken<Map<String, Map<String, Map<String, Map<String, String>>>>>() {
+/*
+            Type mapType = new TypeToken<DoctorModel>() {
+            }.getType();*/
+
+            DoctorModel doctorsModel = new Gson().fromJson(json, DoctorModel.class);
+
+            CommonMethods.Log("doGetDoctorList", "" + doctorsModel.toString());
             onResponse(ConnectionListener.RESPONSE_OK, doctorsModel, MyRescribeConstants.TASK_DOCTOR_LIST);
 
         } catch (IOException ex) {

@@ -90,7 +90,7 @@ public class MyRescribeConstants {
         public static String HH_MM = "hh:mm";
         public static String EEE_MMM_DD_MMM = "EEEE dd MMM yyyy HH:mm";
         public final static String yyyy_MM_dd = "yyyy-MM-dd";
-        public final static String DD_MM_YYYY = "dd/MM/yyyy";
+        public final static String DD_MM_YYYY = "dd-MM-yyyy";
         public final static String EEEE_dd_MMM_yyyy_hh_mm_a = "EEEE dd MMM yyyy | hh:mm a";
     }
 

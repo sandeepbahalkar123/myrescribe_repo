@@ -12,12 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.model.doctors.DoctorDetail;
-import com.myrescribe.ui.fragments.DynamicFragment;
+import com.myrescribe.ui.fragments.DoctorListFragment;
 import com.myrescribe.util.CommonMethods;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -98,31 +96,12 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
         }
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         for (int i = 0; i < getMonthOfYearList.size(); i++) {
-            Fragment fragment = DynamicFragment.createNewFragment(monthValues.get(i)); // pass data here
+            Fragment fragment = DoctorListFragment.createNewFragment(monthValues.get(i)); // pass data here
             adapter.addFragment(fragment, monthValues.get(i)); // pass title here
         }
         viewPager.setAdapter(adapter);
     }
 
-
-    //TODO : Here main lengthy parsing begins to format list properly.
-    private ArrayList<DoctorDetail> formatResponseDataForAdapter(HashMap<String, ArrayList<DoctorDetail>> dataList) {
-        ArrayList<DoctorDetail> formattedDoctorList = new ArrayList<>();
-        for (String key : dataList.keySet()) {
-            boolean flag = true;
-            System.out.println(key);
-            ArrayList<DoctorDetail> doctorDetails = dataList.get(key);
-            for (DoctorDetail dataObject : doctorDetails) {
-                if (flag) {
-                    dataObject.setIsStartElement(true);
-                    flag = false;
-                }
-                dataObject.setRespectiveDate(key);
-                formattedDoctorList.add(dataObject);
-            }
-        }
-        return formattedDoctorList;
-    }
 
     @Override
     public void onClick(View v) {

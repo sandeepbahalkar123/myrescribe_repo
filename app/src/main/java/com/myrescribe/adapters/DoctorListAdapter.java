@@ -3,6 +3,7 @@ package com.myrescribe.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,15 @@ import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.model.doctors.DoctorDetail;
-import com.myrescribe.ui.customesViews.CircularImageView;
 import com.myrescribe.ui.customesViews.CustomTextView;
-import com.myrescribe.ui.customesViews.ReadMoreTextView;
+import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.MyRescribeConstants;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -25,6 +30,7 @@ import java.util.ArrayList;
  */
 public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
     private final String TAG = getClass().getName();
+    private SimpleDateFormat mDateFormat;
     private int mParentDataContainerBackground;
     Context mContext;
     int layoutResourceId;
@@ -36,6 +42,8 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
         this.mContext = context;
         mDataList = dataList;
         mParentDataContainerBackground = ContextCompat.getColor(mContext, R.color.gray_93);
+        mDateFormat = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+
     }
 
     @Override
@@ -66,10 +74,28 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
 
         DoctorDetail dataObject = mDataList.get(position);
 
-        holder.doctorName.setText(dataObject.getName());
+        holder.doctorName.setText(dataObject.getDoctorName());
 
-        if (dataObject.getIsStartElement()) {
-            holder.date.setText(dataObject.getRespectiveDate());
+        if (dataObject.isStartElement()) {
+            //----
+            Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            //----
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+
+            String toDisplay = day + "<sup>" + CommonMethods.getSuffixForNumber(day) + "</sup>";
+            //------
+            if (dataObject.getDate().equalsIgnoreCase(mDateFormat.format(new Date()))) {
+                toDisplay = toDisplay + "\n" + mContext.getString(R.string.just_now);
+            }
+            //------
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                holder.date.setText(Html.fromHtml(toDisplay, Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                holder.date.setText(Html.fromHtml(toDisplay));
+            }
+
             holder.date.setVisibility(View.VISIBLE);
 
             holder.circularBulletMainElement.setVisibility(View.VISIBLE);
@@ -82,6 +108,8 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
             holder.circularBulletMainElement.setVisibility(View.GONE);
 
         }
+
+        holder.parentDataContainer.setBackgroundColor(dataObject.getRowColor());
 
         if (position == 0)
             holder.upperLine.setVisibility(View.INVISIBLE);

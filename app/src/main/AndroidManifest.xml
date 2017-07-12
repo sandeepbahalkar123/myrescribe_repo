@@ -69,6 +69,13 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+        <activity
+            android:name=".ui.activities.TEMP_DoctorListActivity"
+            android:label="@string/title_activity_preferences"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
         <service android:name=".services.NotificationService" />
 
 
@@ -118,6 +125,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>

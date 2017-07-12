@@ -309,6 +309,7 @@ public class CommonMethods {
 
         return mDiff;
     }
+
     public static ArrayList<String> getMonthsWithYear(String startDate, String endDate, String dateFormat) {
         ArrayList<String> monthsWithYear = new ArrayList<>();
 
@@ -463,7 +464,7 @@ public class CommonMethods {
     }
 
     public static void Log(String tag, String message) {
-        Log.e(tag, message);
+        Log.e(tag, "" + message);
     }
 
 
@@ -485,7 +486,7 @@ public class CommonMethods {
 
 
     public static String getFormatedDate(String strDate, String sourceFormate,
-                                                   String destinyFormate) {
+                                         String destinyFormate) {
         SimpleDateFormat df;
         df = new SimpleDateFormat(sourceFormate, Locale.US);
         Date date = null;
@@ -512,7 +513,7 @@ public class CommonMethods {
 
 
         if (formatString.equalsIgnoreCase(MyRescribeConstants.TIME)) {
-            SimpleDateFormat ft = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.HH_MM,Locale.US);
+            SimpleDateFormat ft = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.HH_MM, Locale.US);
 
             Date dateObj = null;
 
@@ -530,7 +531,7 @@ public class CommonMethods {
         }//if
 
         else if (formatString.equalsIgnoreCase(MyRescribeConstants.DATE)) {
-            SimpleDateFormat ft = new SimpleDateFormat(currentDateFormat,Locale.US);
+            SimpleDateFormat ft = new SimpleDateFormat(currentDateFormat, Locale.US);
 
             Date dateObj = null;
 
@@ -748,7 +749,7 @@ public class CommonMethods {
             time = context.getString(R.string.mlunch);
         } else if (hour >= 15 && hour <= 17) {
             time = context.getString(R.string.msnacks);
-        }else if (hour >= 17 && hour <= 24) {
+        } else if (hour >= 17 && hour <= 24) {
             time = context.getString(R.string.mdinner);
         }
         CommonMethods.Log(TAG, "hour" + hour);
@@ -806,6 +807,7 @@ public class CommonMethods {
         }
         return abbreviation;
     }
+
     public static Drawable getMedicineTypeImage(String medicineTypeName, Context context) {
 
         Drawable abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);
@@ -854,20 +856,21 @@ public class CommonMethods {
         }
         return abbreviation;
     }
+
     public static int getVisitDetailsIcons(String visitDetailName, Context context) {
 
-       // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
+        // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.ellipse_2;
         if (visitDetailName.equalsIgnoreCase("complaints")) {
             abbreviation = R.drawable.complaints;
         } else if (visitDetailName.equalsIgnoreCase("vitals")) {
-            abbreviation =  R.drawable.vitals;
+            abbreviation = R.drawable.vitals;
         } else if (visitDetailName.equalsIgnoreCase("remarks")) {
-            abbreviation =  R.drawable.remarks;
+            abbreviation = R.drawable.remarks;
         } else if (visitDetailName.equalsIgnoreCase("diagnosis")) {
             abbreviation = R.drawable.diagnosis;
         } else if (visitDetailName.equalsIgnoreCase("prescription")) {
-            abbreviation =  R.drawable.prescription;
+            abbreviation = R.drawable.prescription;
         } else if (visitDetailName.equalsIgnoreCase("investigations")) {
             abbreviation = R.drawable.investigations;
         } else if (visitDetailName.equalsIgnoreCase("advice")) {
@@ -877,6 +880,45 @@ public class CommonMethods {
     }
 
 
+    public static Date convertStringToDate(String dateString, String dateFormat) {
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        String dateInString = dateString;
+        Date date = null;
+        try {
+            date = formatter.parse(dateInString);
+            System.out.println(date);
+            System.out.println(formatter.format(date));
+            return date;
 
+        } catch (ParseException e) {
+            e.printStackTrace();
+            CommonMethods.Log("convertStringToDate", "convertStringToDate EXCEPTION OCCURS : " + e.getMessage());
+        }
+        return null;
+    }
+
+    public static String getSuffixForNumber(final int n) {
+        //  checkArgument(n >= 1 && n <= 31, "illegal day of month: " + n);
+        String returnValue;
+        if (n >= 11 && n <= 13) {
+            returnValue = "th";
+        }
+        switch (n % 10) {
+            case 1:
+                returnValue = "st";
+                break;
+            case 2:
+                returnValue = "nd";
+                break;
+            case 3:
+                returnValue = "rd";
+                break;
+            default:
+                returnValue = "th";
+                break;
+        }
+        return returnValue;
+
+    }
 }
 

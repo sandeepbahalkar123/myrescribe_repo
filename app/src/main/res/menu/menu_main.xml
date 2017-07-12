@@ -18,11 +18,17 @@
             android:id="@+id/investigations"
             android:title="@string/investigation"
             android:icon="@mipmap/logoutblack"/>
+
         <!--<item
             android:id="@+id/appointments"
             android:title="@string/appointments"
             android:icon="@mipmap/logoutblack"/>
 -->
+
+        <item
+            android:id="@+id/logout"
+            android:title="@string/logout"
+            android:icon="@mipmap/logoutblack"/>
     </group>
 
 

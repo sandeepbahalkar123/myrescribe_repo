@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.myrescribe.R;
 import com.myrescribe.ui.activities.ZoomImageViewActivity;
+import com.myrescribe.util.MyRescribeConstants;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -63,16 +64,15 @@ public class UploadedImageAdapter extends RecyclerView.Adapter<UploadedImageAdap
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ZoomImageViewActivity.class);
-                intent.putExtra("IMAGE", path);
+                intent.putExtra(MyRescribeConstants.DOCUMENTS, path);
                 context.startActivity(intent);
             }
         });
 
-        holder.removeCheckbox.setOnClickListener(new View.OnClickListener() {
+        holder.selectCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*paths.remove(position);
-                notifyDataSetChanged();*/
+
             }
         });
     }
@@ -88,7 +88,7 @@ public class UploadedImageAdapter extends RecyclerView.Adapter<UploadedImageAdap
         ImageView imageView;
 
         @BindView(R.id.removeCheckbox)
-        CheckBox removeCheckbox;
+        CheckBox selectCheckbox;
 
         FileViewHolder(View itemView) {
             super(itemView);

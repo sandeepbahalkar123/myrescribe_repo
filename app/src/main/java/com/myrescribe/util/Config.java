@@ -12,7 +12,7 @@ public class Config {
     public static final String TOKEN_TYPE = "Bearer";
     public static final String LOGIN_URL = "authApi/authenticate/login";
     public static boolean DEV_BUILD = true;
-    public static String BASE_URL = "http://192.168.0.182:3003/";
+    public static String BASE_URL = " http://192.168.0.95:3003/";
     public Context mContext;
     //Declared all URL used in app here
 

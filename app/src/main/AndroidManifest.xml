@@ -17,11 +17,22 @@
     <application
         android:name=".singleton.MyRescribeApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity
+            android:name="com.myrescribe.ui.activities.SplashScreenActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.activities.ViewDetailsActivity"
@@ -38,20 +49,18 @@
             android:name="com.myrescribe.ui.activities.HomePageActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.activities.LoginActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name="com.myrescribe.ui.activities.LoginMainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
 
         <activity
@@ -65,12 +74,6 @@
 
         <activity
             android:name=".ui.activities.DoctorListActivity"
-            android:label="@string/title_activity_preferences"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".ui.activities.TEMP_DoctorListActivity"
             android:label="@string/title_activity_preferences"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -135,7 +138,11 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ui.activities.SeletedDocsActivity"
-            android:label="@string/title_activity_seleted_docs"
+            android:label="@string/title_activity_selected_docs"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.UploadedDocsActivity"
+            android:label="@string/title_activity_uploaded_docs"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.ZoomImageViewActivity"

@@ -7,10 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -21,9 +19,10 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.myrescribe.R;
-import com.myrescribe.adapters.ImageAdapter;
+import com.myrescribe.adapters.SelectedImageAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.model.investigation.DataObject;
+import com.myrescribe.model.investigation.Images;
 import com.myrescribe.model.investigation.SelectedDocModel;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -51,8 +50,8 @@ public class SeletedDocsActivity extends AppCompatActivity {
     private static final int MAX_ATTACHMENT_COUNT = 10;
     private Context mContext;
     private ArrayList<String> photoPaths = new ArrayList<>();
-    //    private int media_id;
-    private ImageAdapter imageAdapter;
+    private int media_id = -1;
+    private SelectedImageAdapter selectedImageAdapter;
     private ArrayList<DataObject> investigation;
     private AppDBHelper appDBHelper;
 
@@ -73,16 +72,28 @@ public class SeletedDocsActivity extends AppCompatActivity {
         });
 
         mContext = SeletedDocsActivity.this;
-
         appDBHelper = new AppDBHelper(mContext);
 
-//        media_id = getIntent().getIntExtra(FilePickerConst.MEDIA_ID, 0);
-//        photoPaths = (ArrayList<String>) getIntent().getSerializableExtra(FilePickerConst.KEY_SELECTED_MEDIA);
         investigation = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
 
-            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, OrientationHelper.VERTICAL);
-            layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-            recyclerView.setLayoutManager(layoutManager);
+        for (int i = 0; i < investigation.size(); i++) {
+            if (investigation.get(i).isSelected() && !investigation.get(i).isUploaded() && investigation.get(i).getPhotos().size() > 0) {
+                media_id = i;
+                break;
+            }
+        }
+
+        if (media_id == -1) {
+            SeletedDocsActivityPermissionsDispatcher.onPickPhotoWithCheck(SeletedDocsActivity.this);
+            photoPaths = new ArrayList<>();
+        }else {
+            photoPaths = investigation.get(media_id).getPhotos();
+        }
+
+        selectedImageAdapter = new SelectedImageAdapter(mContext, photoPaths);
+        recyclerView.setAdapter(selectedImageAdapter);
+        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
+        recyclerView.setLayoutManager(layoutManager);
 
     }
 
@@ -138,16 +149,17 @@ public class SeletedDocsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA) == null)
+            finish();
+        else if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA).size() == 0)
+            finish();
+
         if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
 //            int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
             if (resultCode == Activity.RESULT_OK) {
-                photoPaths = new ArrayList<>();
+                photoPaths.clear();
                 photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
-                imageAdapter = new ImageAdapter(this, photoPaths);
-                recyclerView.setAdapter(imageAdapter);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-            } else if (resultCode == RESULT_CANCELED) {
-//                media_id = id;
+                selectedImageAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -164,10 +176,13 @@ public class SeletedDocsActivity extends AppCompatActivity {
                 if (dataObject.isSelected() && !dataObject.isUploaded()) {
                     selectedInvestigationIds.add(dataObject.getId());
                     dataObject.setUploaded(dataObject.isSelected());
-                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.isSelected());
+                    Images images = new Images();
+                    images.setImageArray(photoPaths);
+                    dataObject.setPhotos(photoPaths);
+                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), new Gson().toJson(images));
                 }
                 if (dataObject.isSelected())
-                    selectedCount +=1;
+                    selectedCount += 1;
             }
 
             SelectedDocModel selectedDocModel = new SelectedDocModel();
@@ -176,14 +191,14 @@ public class SeletedDocsActivity extends AppCompatActivity {
 
             Log.d("JSON", new Gson().toJson(selectedDocModel));
 
-            if (selectedCount == investigation.size()){
+            if (selectedCount == investigation.size()) {
                 Intent intent = new Intent(this, HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-            }else {
+            } else {
                 Intent intent = new Intent();
                 intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
-                intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
+//                intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
                 setResult(RESULT_OK, intent);
             }
             finish();

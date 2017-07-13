@@ -1,6 +1,9 @@
 package com.myrescribe.util;
 
 
+import android.content.Intent;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +22,8 @@ public class MyRescribeConstants {
     public static final String INVESTIGATION_MESSAGE = "investigation_message";
     public static final String APPOINTMENT_MESSAGE = "appointment_message";
     public static final String INVESTIGATION_DATA  = "investigation_data";
+    public static final String YES = "yes";
+    public static final String DOCUMENTS = "documents";
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";
@@ -55,7 +60,7 @@ public class MyRescribeConstants {
 
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String AUTHORIZATION = "Authorization";
-    public static final String AUTHORIZATION_TOKEN = "Authorization-Token";
+    public static final String AUTHORIZATION_TOKEN = "authtoken";
     public static final String AUTH_KEY = "Auth-Key";
     public static final String CLIENT_SERVICE = "Client-Service";
     public static final String GRANT_TYPE_KEY = "grant_type";
@@ -81,20 +86,23 @@ public class MyRescribeConstants {
     public static final String TASK_PRESCRIPTION_LIST = MyRescribeConstants.BLANK + 1;
     public static final String TASK_HISTORY = MyRescribeConstants.BLANK + 2;
     public static final String TASK_DOCTOR_LIST = MyRescribeConstants.BLANK + 3;
+    public static final String TASK_LOGIN = MyRescribeConstants.BLANK + 4;
+    public static final String TASK_ONE_DAY_VISIT = MyRescribeConstants.BLANK + 5;
 
     public static class DATE_PATTERN {
-        public static String YYYY_MM_DD = "yyyy-MM-dd";
-        public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
+         public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
         public static String DD_MM_YYYY_hh_mm = "dd/MM/yyyy hh:mm aa";
 
         public static String HH_MM = "hh:mm";
         public static String EEE_MMM_DD_MMM = "EEEE dd MMM yyyy HH:mm";
-        public final static String yyyy_MM_dd = "yyyy-MM-dd";
+        public final static String YYYY_MM_DD = "yyyy-MM-dd";
         public final static String DD_MM_YYYY = "dd-MM-yyyy";
         public final static String EEEE_dd_MMM_yyyy_hh_mm_a = "EEEE dd MMM yyyy | hh:mm a";
     }
 
     public static final String TIME = "time";
+    public static final String MONTH = "month";
+    public static final String YEAR = "year";
     public static final String DATE = "date";
     public static final String MEDICINE_NAME = "medicine_name";
     public static final String MEDICINE_SLOT = "edicine_slot";

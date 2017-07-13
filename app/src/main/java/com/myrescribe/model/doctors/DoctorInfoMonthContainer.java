@@ -52,6 +52,8 @@ public class DoctorInfoMonthContainer implements CustomResponse {
         //-----------
         int color = ContextCompat.getColor(context, R.color.white);
         int previousColor = color;
+        int sideViewColor = ContextCompat.getColor(context, R.color.recentblue);
+        int previousSideViewCColor = sideViewColor;
         for (String dateString :
                 dateHashSet) {
             boolean flag = true;
@@ -60,6 +62,8 @@ public class DoctorInfoMonthContainer implements CustomResponse {
                 if (dateString.equalsIgnoreCase(data.getDate())) {
                     if (flag) {
                         data.setRowColor(color);
+                        data.setSideBarViewColor(sideViewColor);
+                        //--background color---
                         if (color == ContextCompat.getColor(context, R.color.white)) {
                             previousColor = color;
                             color = ContextCompat.getColor(context, R.color.divider);
@@ -67,10 +71,20 @@ public class DoctorInfoMonthContainer implements CustomResponse {
                             previousColor = color;
                             color = ContextCompat.getColor(context, R.color.white);
                         }
+                        //-----
+                        //--sideView color---
+                        if (sideViewColor == ContextCompat.getColor(context, R.color.recentblue)) {
+                            previousSideViewCColor = sideViewColor;
+                            sideViewColor = ContextCompat.getColor(context, R.color.darkblue);
+                        } else if (sideViewColor == ContextCompat.getColor(context, R.color.darkblue)) {
+                            previousSideViewCColor = sideViewColor;
+                            sideViewColor = ContextCompat.getColor(context, R.color.recentblue);
+                        }
                         data.setStartElement(true);
                         flag = false;
                     } else if (!flag) {
                         data.setRowColor(previousColor);
+                        data.setSideBarViewColor(previousSideViewCColor);
                     }
                     map.add(data);
                 }

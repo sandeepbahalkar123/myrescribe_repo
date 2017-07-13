@@ -33,7 +33,8 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
+import com.myrescribe.model.prescription_response_model.PrescriptionModel;
+import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.activities.SplashScreenActivity;
 import com.myrescribe.ui.customesViews.CustomProgressDialog;
@@ -73,7 +74,6 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         this.mProgressDialog = new CustomProgressDialog(mContext);
         this.connectionType = connectionType;
         this.isOffline = isOffline;
-
         this.dbHelper = new AppDBHelper(mContext);
     }
 
@@ -365,8 +365,13 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     // Need to add
 
                     case MyRescribeConstants.TASK_PRESCRIPTION_LIST: //This is for get archived list
-                        PatientPrescriptionModel ipTestResponseModel = gson.fromJson(data, PatientPrescriptionModel.class);
+                      PrescriptionModel ipTestResponseModel = gson.fromJson(data, PrescriptionModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, ipTestResponseModel, mOldDataTag);
+                        break;
+
+                    case MyRescribeConstants.TASK_LOGIN: //This is for get archived list
+                        LoginModel loginModel = gson.fromJson(data, LoginModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginModel, mOldDataTag);
                         break;
                     /*
                     default:

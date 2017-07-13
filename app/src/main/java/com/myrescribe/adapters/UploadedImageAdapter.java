@@ -8,26 +8,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.myrescribe.R;
 import com.myrescribe.ui.activities.ZoomImageViewActivity;
+import com.myrescribe.util.MyRescribeConstants;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import droidninja.filepicker.views.SmoothCheckBox;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHolder> {
+public class UploadedImageAdapter extends RecyclerView.Adapter<UploadedImageAdapter.FileViewHolder> {
 
     private final ArrayList<String> paths;
     private final Context context;
     private int imageSize;
 
-    public ImageAdapter(Context context, ArrayList<String> paths) {
+    public UploadedImageAdapter(Context context, ArrayList<String> paths) {
         this.context = context;
         this.paths = paths;
         setColumnNumber(context, 2);
@@ -44,12 +45,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHold
     @Override
     public FileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.image_item_layout, parent, false);
-        return new ImageAdapter.FileViewHolder(view);
+                .inflate(R.layout.uploded_image_item_layout, parent, false);
+        return new UploadedImageAdapter.FileViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ImageAdapter.FileViewHolder holder, final int position) {
+    public void onBindViewHolder(final UploadedImageAdapter.FileViewHolder holder, final int position) {
         final String path = paths.get(position);
         Glide.with(context).load(new File(path))
                 .centerCrop()
@@ -63,16 +64,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ZoomImageViewActivity.class);
-                intent.putExtra("IMAGE", path);
+                intent.putExtra(MyRescribeConstants.DOCUMENTS, path);
                 context.startActivity(intent);
             }
         });
 
-        holder.removeCheckbox.setOnClickListener(new View.OnClickListener() {
+        holder.selectCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                paths.remove(position);
-                notifyDataSetChanged();
+
             }
         });
     }
@@ -88,7 +88,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.FileViewHold
         ImageView imageView;
 
         @BindView(R.id.removeCheckbox)
-        ImageView removeCheckbox;
+        CheckBox selectCheckbox;
 
         FileViewHolder(View itemView) {
             super(itemView);

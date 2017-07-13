@@ -14,6 +14,7 @@ public class DoctorDetail implements CustomResponse {
     private String id;
     @SerializedName("doctorName")
     @Expose
+
     private String doctorName;
 
     @SerializedName("address")
@@ -23,9 +24,23 @@ public class DoctorDetail implements CustomResponse {
     @SerializedName("date")
     @Expose
     private String date;
+    @SerializedName("specialization")
+    @Expose
+    private String specialization;
+    private int color;
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
 
     private boolean isStartElement;
     private int rowColor;
+    private int sideBarViewColor;
     private boolean isExpanded;
 
     public String getId() {
@@ -84,6 +99,22 @@ public class DoctorDetail implements CustomResponse {
         isExpanded = expanded;
     }
 
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public int getSideBarViewColor() {
+        return sideBarViewColor;
+    }
+
+    public void setSideBarViewColor(int sideBarViewColor) {
+        this.sideBarViewColor = sideBarViewColor;
+    }
+
     @Override
     public String toString() {
         return "DoctorDetail{" +
@@ -91,7 +122,11 @@ public class DoctorDetail implements CustomResponse {
                 ", doctorName='" + doctorName + '\'' +
                 ", address='" + address + '\'' +
                 ", date='" + date + '\'' +
+                ", specialization='" + specialization + '\'' +
+                ", color=" + color +
                 ", isStartElement=" + isStartElement +
+                ", rowColor=" + rowColor +
+                ", sideBarViewColor=" + sideBarViewColor +
                 ", isExpanded=" + isExpanded +
                 '}';
     }

@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.myrescribe.R;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
+import com.myrescribe.model.util.TimePeriod;
 import com.myrescribe.ui.activities.ShowMedicineDoseListActivity;
 
 import java.io.BufferedReader;
@@ -310,30 +311,31 @@ public class CommonMethods {
         return mDiff;
     }
 
-    public static ArrayList<String> getMonthsWithYear(String startDate, String endDate, String dateFormat) {
+    public static ArrayList<TimePeriod> getMonthsWithYear(String startDate, String endDate, String dateFormat) {
         ArrayList<String> monthsWithYear = new ArrayList<>();
-
         try {
-
             Calendar startCal = Calendar.getInstance();
             Calendar endCal = Calendar.getInstance();
-
             SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
-
             startCal.setTime(sdf.parse(startDate));
-
             endCal.setTime(sdf.parse(endDate));
-
             while (startCal.getTimeInMillis() <= endCal.getTimeInMillis()) {
                 monthsWithYear.add(String.valueOf(android.text.format.DateFormat.format("MMM-yyyy", startCal)));
                 startCal.add(Calendar.MONTH, 1);
             }
-
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        return monthsWithYear;
+        ArrayList<TimePeriod> timePeriods = new ArrayList<>();
+        for (String data :
+                monthsWithYear) {
+            String[] splitValues = data.split("-");
+            TimePeriod timePeriod = new TimePeriod();
+            timePeriod.setMonthName(splitValues[0]);
+            timePeriod.setYear(splitValues[1]);
+            timePeriods.add(timePeriod);
+        }
+        return timePeriods;
     }
 
     public static void dateDifference(Date startDate, Date endDate) {
@@ -919,6 +921,15 @@ public class CommonMethods {
         }
         return returnValue;
 
+    }
+
+    //TODO : this is done for temp
+    public static ArrayList<String> getYearForDoctorList() {
+        ArrayList<String> a = new ArrayList<>();
+        a.add("2015");
+        a.add("2016");
+        a.add("2017");
+        return a;
     }
 }
 

@@ -48,7 +48,6 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_details_activity);
         ButterKnife.bind(this);
-
         initialize();
     }
 

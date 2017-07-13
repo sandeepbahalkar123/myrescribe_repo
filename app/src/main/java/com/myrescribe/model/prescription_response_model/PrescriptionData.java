@@ -1,4 +1,3 @@
-
 package com.myrescribe.model.prescription_response_model;
 
 import android.util.Log;
@@ -73,12 +72,16 @@ public class PrescriptionData {
     private String dosage;
 
     private boolean isExpanded = false;
-
-    // ganesh
-
+    private boolean isLunchThere = true;
+    private boolean isDinnerThere = true;
+    private boolean isBreakThere = true;
+    private boolean isSnacksThere = true;
     private boolean isLunchExpanded = false;
     private boolean isDinnerExpanded = false;
     private boolean isBreakFastExpanded = false;
+    private boolean isSnacksExpanded = false;
+    private String date;
+    private boolean isTabSelected = false;
 
     public boolean isSnacksExpanded() {
         return isSnacksExpanded;
@@ -87,8 +90,6 @@ public class PrescriptionData {
     public void setSnacksExpanded(boolean snacksExpanded) {
         isSnacksExpanded = snacksExpanded;
     }
-
-    private boolean isSnacksExpanded = false;
 
     public boolean isLunchExpanded() {
         return isLunchExpanded;
@@ -114,10 +115,6 @@ public class PrescriptionData {
         isBreakFastExpanded = breakFastExpanded;
     }
 
-    private boolean isLunchThere = true;
-    private boolean isDinnerThere = true;
-    private boolean isBreakThere = true;
-
     public boolean isSnacksThere() {
         return isSnacksThere;
     }
@@ -125,11 +122,6 @@ public class PrescriptionData {
     public void setSnacksThere(boolean snacksThere) {
         isSnacksThere = snacksThere;
     }
-
-    private boolean isSnacksThere = true;
-
-
-
 
     public boolean isLunchThere() {
         return isLunchThere;
@@ -157,8 +149,6 @@ public class PrescriptionData {
 
     // for date
 
-    private String date;
-
     public String getDate() {
         return date;
     }
@@ -169,7 +159,6 @@ public class PrescriptionData {
 
     // for tab selection fun
 
-    private boolean isTabSelected = false;
 
     public boolean isTabSelected() {
         return isTabSelected;

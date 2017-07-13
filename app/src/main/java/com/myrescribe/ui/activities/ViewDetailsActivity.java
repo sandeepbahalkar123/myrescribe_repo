@@ -155,7 +155,7 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
                 mHeaderList.add("Vitals");
                 ArrayList<Diagnosi> diagnosis = new ArrayList<>();
                 Diagnosi mDiagnosiList = new Diagnosi();
-                mDiagnosiList.setName("vitals");
+                mDiagnosiList.setName("BP-130/86 mm of hg");
                 diagnosis.add(mDiagnosiList);
                 mHistoryDataList.put("Vitals", diagnosis);
 

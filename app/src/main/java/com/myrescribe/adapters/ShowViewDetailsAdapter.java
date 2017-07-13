@@ -197,7 +197,7 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
         groupViewHolder.lblListHeader.setText(headerTitle);
         groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getVisitDetailsIcons(headerTitle, mContext));
         ArrayList<Diagnosi> historyCommonDetailses = getChildList(groupPosition);
-        groupViewHolder.mDetailFirstPoint.setText(historyCommonDetailses.get(0).getName()+".......");
+        groupViewHolder.mDetailFirstPoint.setText(test(historyCommonDetailses.get(0).getName())+".......");
         return convertView;
     }
 
@@ -308,6 +308,21 @@ static class GroupViewHolder {
         a = new Album("Greatest Hits", 17, covers[9]);
         albumList.add(a);
 
+
+    }
+  public String test(String t){
+    String o = null;
+        if(t.length() > 4){
+             o = t.substring(0,10);
+            System.out.println(o);
+          /*  String x = t.substring(5,t.length());
+            test(x);*/
+            return o;
+        }
+        else{
+            System.out.println(t);
+            return t;
+        }
 
     }
 

@@ -137,9 +137,9 @@ public class HomePageActivity extends AppCompatActivity
             Intent intent = new Intent(mContext, ShowMedicineDoseListActivity.class);
 
             startActivity(intent);
-        } else if (id == R.id.logout) {
+        } /*else if (id == R.id.logout) {
             logout();
-        }
+        }*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

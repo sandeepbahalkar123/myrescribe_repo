@@ -312,8 +312,8 @@ static class GroupViewHolder {
     }
   public String test(String t){
     String o = null;
-        if(t.length() > 4){
-             o = t.substring(0,10);
+        if(t.length() >= 40){
+             o = t.substring(0,40);
             System.out.println(o);
           /*  String x = t.substring(5,t.length());
             test(x);*/

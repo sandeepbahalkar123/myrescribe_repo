@@ -25,10 +25,10 @@
             android:icon="@mipmap/logoutblack"/>
 -->
 
-        <item
+        <!--<item
             android:id="@+id/logout"
             android:title="@string/logout"
-            android:icon="@mipmap/logoutblack"/>
+            android:icon="@mipmap/logoutblack"/>-->
     </group>
 
 

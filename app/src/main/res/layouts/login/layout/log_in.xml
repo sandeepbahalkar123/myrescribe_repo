@@ -19,6 +19,7 @@
             <EditText
                 android:id="@+id/editTextMobileNo"
                 style="@style/AppLoginMainStyle"
+                android:text="amruta@gmail.com"
                 android:hint="@string/enter_user_name" />
         </android.support.design.widget.TextInputLayout>
 
@@ -29,6 +30,7 @@
                 android:id="@+id/editTextPassword"
                 style="@style/AppLoginMainStyle"
                 android:hint="@string/enter_password"
+                android:text="scorg@123"
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 

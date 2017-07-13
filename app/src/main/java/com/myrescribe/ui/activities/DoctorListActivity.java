@@ -55,12 +55,14 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
 
     private ArrayList<String> mYearList;
     private ArrayList<TimePeriod> mTimePeriodList;
+    private TimePeriod mCurrentSelectedTimePeriodTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.doctor_activity);
         ButterKnife.bind(this);
+
         initialize();
     }
 
@@ -75,9 +77,9 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                TimePeriod timePeriod = mTimePeriodList.get(position);
+                mCurrentSelectedTimePeriodTab = mTimePeriodList.get(position);
                 for (int i = 0; i < mYearList.size(); i++) {
-                    if (mYearList.get(i).equalsIgnoreCase(timePeriod.getYear())) {
+                    if (mYearList.get(i).equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear())) {
                         mYearSpinnerView.setSelection(i);
                         break;
                     }
@@ -122,13 +124,14 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
             Fragment fragment = DoctorListFragment.createNewFragment(data); // pass data here
             adapter.addFragment(fragment, data); // pass title here
         }
+        mViewpager.setOffscreenPageLimit(0);
         mViewpager.setAdapter(adapter);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mViewpager.setCurrentItem(mTimePeriodList.size() - 1);
             }
-        }, 100);
+        }, 00);
         //---------
 
     }
@@ -189,12 +192,11 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
             if (mYearSpinnerConfigChange) {
                 // Your selection handling code here
                 mYearSpinnerConfigChange = false;
-
                 if (parent.getId() == R.id.year && !mYearSpinnerConfigChange) {
                     String selectedYear = mYearList.get(parent.getSelectedItemPosition());
-
                     for (int i = 0; i < mTimePeriodList.size(); i++) {
                         if (mTimePeriodList.get(i).getYear().equalsIgnoreCase("" + selectedYear)) {
+                            mCurrentSelectedTimePeriodTab = mTimePeriodList.get(i);
                             mViewpager.setCurrentItem(i);
                             break;
                         }
@@ -210,5 +212,9 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
 
         }
 
+    }
+
+    public TimePeriod getCurrentSelectedTimePeriodTab() {
+        return mCurrentSelectedTimePeriodTab;
     }
 }

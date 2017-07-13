@@ -1,6 +1,6 @@
 {
   "common": {
-    "success": 1,
+    "success": true,
     "statusCode": 200,
     "statusMessage": "USER AUTHENTICATED"
   },

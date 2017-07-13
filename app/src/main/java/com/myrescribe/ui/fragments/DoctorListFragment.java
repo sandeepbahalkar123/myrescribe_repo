@@ -16,11 +16,15 @@ import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.doctors.DoctorDetail;
 import com.myrescribe.model.doctors.DoctorModel;
 import com.myrescribe.model.util.TimePeriod;
+import com.myrescribe.ui.activities.DoctorListActivity;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import static android.R.attr.data;
 
 
 public class DoctorListFragment extends Fragment implements HelperResponse, View.OnClickListener {
@@ -28,23 +32,15 @@ public class DoctorListFragment extends Fragment implements HelperResponse, View
     private static final String COUNT = "column-count";
     private static final String MONT = "VALUE";
     private static final String VALUE = "VALUE";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     RecyclerView mDoctorListView;
     DoctorListAdapter showDoctorListAdapter;
     private DoctorHelper mDoctorHelper;
     private View mRootView;
+    private DoctorListActivity mParentActivity;
+    private TimePeriod mCurrentSelectedTimePeriodTab;
 
     public DoctorListFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(COUNT);
-        }
     }
 
     @Override
@@ -53,6 +49,7 @@ public class DoctorListFragment extends Fragment implements HelperResponse, View
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_all_view_doctor_history, container, false);
         init();
+        mParentActivity = (DoctorListActivity) getActivity();
         return mRootView;
     }
 
@@ -68,7 +65,6 @@ public class DoctorListFragment extends Fragment implements HelperResponse, View
     private void init() {
         mDoctorListView = (RecyclerView) mRootView.findViewById(R.id.doctorListView);
         mDoctorHelper = new DoctorHelper(getActivity(), this);
-        mDoctorHelper.doGetDoctorList();
     }
 
     @Override
@@ -77,15 +73,25 @@ public class DoctorListFragment extends Fragment implements HelperResponse, View
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mCurrentSelectedTimePeriodTab = mParentActivity.getCurrentSelectedTimePeriodTab();
+        if (mCurrentSelectedTimePeriodTab != null) {
+            HashMap<String, HashMap<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = mDoctorHelper.getYearWiseSortedDoctorList();
+            if (yearWiseSortedDoctorList.get(mCurrentSelectedTimePeriodTab.getYear()) != null) {
+                setDoctorListAdapter();
+            } else {
+                mDoctorHelper.doGetDoctorList();
+            }
+        } else {
+            mDoctorHelper.doGetDoctorList();
+        }
+
+    }
+
+    @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        DoctorModel data = (DoctorModel) customResponse;
-        CommonMethods.Log("onSuccess", data.toString());
-        ArrayList<DoctorDetail> jan = data.getDoctorInfoMonthContainer().getFormattedDoctorList("JAN", getActivity());
-        showDoctorListAdapter = new DoctorListAdapter(getActivity(), jan);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mDoctorListView.setLayoutManager(layoutManager);
-        mDoctorListView.setHasFixedSize(true);
-        mDoctorListView.setAdapter(showDoctorListAdapter);
+        setDoctorListAdapter();
     }
 
     @Override
@@ -101,5 +107,24 @@ public class DoctorListFragment extends Fragment implements HelperResponse, View
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
+    }
+
+    private void setDoctorListAdapter() {
+        HashMap<String, HashMap<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = mDoctorHelper.getYearWiseSortedDoctorList();
+        if (yearWiseSortedDoctorList.size() != 0) {
+            if (mCurrentSelectedTimePeriodTab != null) {
+                HashMap<String, ArrayList<DoctorDetail>> monthArrayListHashMap = yearWiseSortedDoctorList.get(mCurrentSelectedTimePeriodTab.getYear());
+                if (monthArrayListHashMap != null) {
+                    ArrayList<DoctorDetail> formattedDoctorList = mDoctorHelper.getFormattedDoctorList(mCurrentSelectedTimePeriodTab.getMonthName(), monthArrayListHashMap);
+                    showDoctorListAdapter = new DoctorListAdapter(getActivity(), formattedDoctorList);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                    mDoctorListView.setLayoutManager(layoutManager);
+                    mDoctorListView.setHasFixedSize(true);
+                    mDoctorListView.setAdapter(showDoctorListAdapter);
+                }
+
+            }
+
+        }
     }
 }

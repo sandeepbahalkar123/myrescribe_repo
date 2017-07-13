@@ -8,7 +8,7 @@ public class Common implements CustomResponse {
 
     @SerializedName("success")
     @Expose
-    private Integer success;
+    private boolean success;
     @SerializedName("statusCode")
     @Expose
     private Integer statusCode;
@@ -16,11 +16,12 @@ public class Common implements CustomResponse {
     @Expose
     private String statusMessage;
 
-    public Integer getSuccess() {
+
+    public boolean isSuccess() {
         return success;
     }
 
-    public void setSuccess(Integer success) {
+    public void setSuccess(boolean success) {
         this.success = success;
     }
 

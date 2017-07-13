@@ -1,13 +1,17 @@
 package com.myrescribe.helpers.doctor;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.myrescribe.R;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.doctors.DoctorDetail;
+import com.myrescribe.model.doctors.DoctorInfoMonthContainer;
 import com.myrescribe.model.doctors.DoctorModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.util.CommonMethods;
@@ -16,6 +20,13 @@ import com.myrescribe.util.MyRescribeConstants;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Created by riteshpandhurkar on 1/3/17.
@@ -26,6 +37,7 @@ public class DoctorHelper implements ConnectionListener {
     String TAG = this.getClass().getName();
     Context mContext;
     HelperResponse mHelperResponseManager;
+    private Map<String, Map<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     public DoctorHelper(Context context, HelperResponse activity) {
         this.mContext = context;
@@ -95,12 +107,11 @@ public class DoctorHelper implements ConnectionListener {
             String json = new String(buffer, "UTF-8");
             Log.e(TAG, "doGetHistory" + json);
 
-            //  Type mapType = new TypeToken<Map<String, Map<String, Map<String, Map<String, String>>>>>() {
-/*
-            Type mapType = new TypeToken<DoctorModel>() {
-            }.getType();*/
-
             DoctorModel doctorsModel = new Gson().fromJson(json, DoctorModel.class);
+            if (doctorsModel.getDoctorInfoMonthContainer() != null) {
+                DoctorInfoMonthContainer doctorInfoMonthContainer = doctorsModel.getDoctorInfoMonthContainer();
+                yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
+            }
 
             CommonMethods.Log("doGetDoctorList", "" + doctorsModel.toString());
             onResponse(ConnectionListener.RESPONSE_OK, doctorsModel, MyRescribeConstants.TASK_DOCTOR_LIST);
@@ -110,4 +121,80 @@ public class DoctorHelper implements ConnectionListener {
         }
     }
 
+    public Map<String, Map<String, ArrayList<DoctorDetail>>> getYearWiseSortedDoctorList() {
+        return yearWiseSortedDoctorList;
+    }
+
+    public ArrayList<DoctorDetail> getFormattedDoctorList(String month, Map<String, ArrayList<DoctorDetail>> monthList) {
+
+        ArrayList<DoctorDetail> doctorDetails = monthList.get(month.toUpperCase());
+        ArrayList<DoctorDetail> map = new ArrayList<>();
+
+        if (doctorDetails != null) {
+
+
+            //-----------
+            TreeSet<String> dateHashSet = new TreeSet<String>(new DateWiseComparator());
+            for (DoctorDetail data :
+                    doctorDetails) {
+                dateHashSet.add(data.getDate());
+            }
+            //-----------
+            int color = ContextCompat.getColor(mContext, R.color.white);
+            int previousColor = color;
+            int sideViewColor = ContextCompat.getColor(mContext, R.color.recentblue);
+            int previousSideViewCColor = sideViewColor;
+            for (String dateString :
+                    dateHashSet) {
+                boolean flag = true;
+                for (DoctorDetail data :
+                        doctorDetails) {
+                    if (dateString.equalsIgnoreCase(data.getDate())) {
+                        if (flag) {
+                            data.setRowColor(color);
+                            data.setSideBarViewColor(sideViewColor);
+                            //--background color---
+                            if (color == ContextCompat.getColor(mContext, R.color.white)) {
+                                previousColor = color;
+                                color = ContextCompat.getColor(mContext, R.color.divider);
+                            } else if (color == ContextCompat.getColor(mContext, R.color.divider)) {
+                                previousColor = color;
+                                color = ContextCompat.getColor(mContext, R.color.white);
+                            }
+                            //-----
+                            //--sideView color---
+                            if (sideViewColor == ContextCompat.getColor(mContext, R.color.recentblue)) {
+                                previousSideViewCColor = sideViewColor;
+                                sideViewColor = ContextCompat.getColor(mContext, R.color.darkblue);
+                            } else if (sideViewColor == ContextCompat.getColor(mContext, R.color.darkblue)) {
+                                previousSideViewCColor = sideViewColor;
+                                sideViewColor = ContextCompat.getColor(mContext, R.color.recentblue);
+                            }
+                            data.setStartElement(true);
+                            flag = false;
+                        } else if (!flag) {
+                            data.setRowColor(previousColor);
+                            data.setSideBarViewColor(previousSideViewCColor);
+                        }
+                        map.add(data);
+                    }
+                }
+            }
+        }
+        //----------
+        return map;
+    }
+
+    //-- Sort date in descending order, copied from SRDaoImplManager.java
+    private class DateWiseComparator implements Comparator<String> {
+
+        public int compare(String m1, String m2) {
+
+            //possibly check for nulls to avoid NullPointerException
+            Date m1Date = CommonMethods.convertStringToDate(m1, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+            Date m2Date = CommonMethods.convertStringToDate(m2, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+
+            return m2Date.compareTo(m1Date);
+        }
+    }
 }

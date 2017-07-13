@@ -8,12 +8,12 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:paddingLeft="@dimen/dp30"
-        android:paddingRight="@dimen/dp30"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp30"
+        android:paddingRight="@dimen/dp30">
 
         <!--  FullName Label -->
         <android.support.design.widget.TextInputLayout style="@style/AppLoginMainStyle">
@@ -63,10 +63,10 @@
         <Button
             style="@style/AppLoginMainStyle"
             android:layout_height="@dimen/dp30"
+            android:layout_marginBottom="@dimen/dp8"
+            android:layout_marginTop="@dimen/dp8"
             android:background="@drawable/button_curve_background"
             android:gravity="center"
-            android:layout_marginTop="@dimen/dp8"
-            android:layout_marginBottom="@dimen/dp8"
             android:text="@string/sign_up"
             android:textAllCaps="false"
             android:textColor="@android:color/black" />

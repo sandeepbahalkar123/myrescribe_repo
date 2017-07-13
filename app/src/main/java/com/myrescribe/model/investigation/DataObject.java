@@ -8,9 +8,9 @@ public class DataObject implements Serializable{
     private String title;
     private boolean isSelected = false;
     private boolean isUploaded = false;
-    private ArrayList<String> photos;
+    private ArrayList<Image> photos;
 
-    public DataObject(int id, String title, boolean isSelected, boolean isUploaded, ArrayList<String> photos) {
+    public DataObject(int id, String title, boolean isSelected, boolean isUploaded, ArrayList<Image> photos) {
         this.id = id;
         this.title = title;
         this.isSelected = isSelected;
@@ -42,11 +42,11 @@ public class DataObject implements Serializable{
         isSelected = selected;
     }
 
-    public ArrayList<String> getPhotos() {
+    public ArrayList<Image> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(ArrayList<String> photos) {
+    public void setPhotos(ArrayList<Image> photos) {
         this.photos = photos;
     }
 

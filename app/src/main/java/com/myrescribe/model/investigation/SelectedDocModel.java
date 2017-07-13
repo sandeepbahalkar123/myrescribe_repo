@@ -12,16 +12,16 @@ import java.util.ArrayList;
 public class SelectedDocModel {
     @SerializedName("documents")
     @Expose
-    private ArrayList<String> selectedDocPaths;
+    private ArrayList<Image> selectedDocPaths;
     @SerializedName("investigations")
     @Expose
     private ArrayList<Integer> selectedInvestigationIds;
 
-    public ArrayList<String> getSelectedDocPaths() {
+    public ArrayList<Image> getSelectedDocPaths() {
         return selectedDocPaths;
     }
 
-    public void setSelectedDocPaths(ArrayList<String> selectedDocPaths) {
+    public void setSelectedDocPaths(ArrayList<Image> selectedDocPaths) {
         this.selectedDocPaths = selectedDocPaths;
     }
 

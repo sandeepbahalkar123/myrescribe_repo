@@ -242,13 +242,14 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
     private void doGetPrescriptionList() {
         PrescriptionHelper mPrescriptionHelper = new PrescriptionHelper(this, this);
+        mProgressDialog.show();
         mPrescriptionHelper.doGetPrescriptionList();
     }
 
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        mProgressDialog.show();
+
         if (mOldDataTag.equals(MyRescribeConstants.TASK_PRESCRIPTION_LIST)) {
             PrescriptionModel prescriptionDataReceived = (PrescriptionModel) customResponse;
 

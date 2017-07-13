@@ -54,6 +54,8 @@ public class CustomSpinnerAdapter extends BaseAdapter {
 
         txt_data.setText(mSelectedOption.get(position));
         txt_id.setVisibility(View.GONE);
+        txt_data.setTag(mSelectedOption.get(position));
+        txt_id.setTag(mSelectedOption.get(position));
         return view;
     }
 

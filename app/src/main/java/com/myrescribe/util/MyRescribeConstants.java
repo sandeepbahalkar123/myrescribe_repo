@@ -1,6 +1,9 @@
 package com.myrescribe.util;
 
 
+import android.content.Intent;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,18 +91,19 @@ public class MyRescribeConstants {
     public static final String TASK_ONE_DAY_VISIT = MyRescribeConstants.BLANK + 5;
 
     public static class DATE_PATTERN {
-        public static String YYYY_MM_DD = "yyyy-MM-dd";
-        public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
+         public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
         public static String DD_MM_YYYY_hh_mm = "dd/MM/yyyy hh:mm aa";
 
         public static String HH_MM = "hh:mm";
         public static String EEE_MMM_DD_MMM = "EEEE dd MMM yyyy HH:mm";
-        public final static String yyyy_MM_dd = "yyyy-MM-dd";
-        public final static String DD_MM_YYYY = "dd/MM/yyyy";
+        public final static String YYYY_MM_DD = "yyyy-MM-dd";
+        public final static String DD_MM_YYYY = "dd-MM-yyyy";
         public final static String EEEE_dd_MMM_yyyy_hh_mm_a = "EEEE dd MMM yyyy | hh:mm a";
     }
 
     public static final String TIME = "time";
+    public static final String MONTH = "month";
+    public static final String YEAR = "year";
     public static final String DATE = "date";
     public static final String MEDICINE_NAME = "medicine_name";
     public static final String MEDICINE_SLOT = "edicine_slot";

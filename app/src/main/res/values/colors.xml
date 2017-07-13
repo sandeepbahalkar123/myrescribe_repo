@@ -21,6 +21,7 @@
     <item name="errorColor" type="color">#BD362F</item>
     <color name="refId_color">#8dc63f</color>
     <color name="recentblue">#04abdf</color>
+    <color name="darkblue">#0E7EAB</color>
     <color name="Gray">#736F6E</color>
     <color name="black">#000000</color>
     <color name="view_detail_color">#737373</color>

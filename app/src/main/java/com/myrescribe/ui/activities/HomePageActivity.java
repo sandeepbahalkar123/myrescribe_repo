@@ -26,7 +26,7 @@ import com.myrescribe.util.MyRescribeConstants;
  * Created by jeetal on 28/6/17.
  */
 
-public class HomePageActivity  extends AppCompatActivity
+public class HomePageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Context mContext;
@@ -70,7 +70,7 @@ public class HomePageActivity  extends AppCompatActivity
         }
         cursor.close();
 
-        String times[] = {breakFast, lunchTime, dinnerTime,snacksTime};
+        String times[] = {breakFast, lunchTime, dinnerTime, snacksTime};
         String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY);
 
         new DosesAlarmTask(mContext, times, date).run();
@@ -91,7 +91,7 @@ public class HomePageActivity  extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-     //   getMenuInflater().inflate(R.menu.main, menu);
+        //   getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -118,17 +118,24 @@ public class HomePageActivity  extends AppCompatActivity
         if (id == R.id.visit_details) {
             Intent intent = new Intent(mContext, ViewDetailsActivity.class);
             startActivity(intent);
-        }else  if (id == R.id.doctor_details) {
+
+        } else if (id == R.id.doctor_details) {
             Intent intent = new Intent(mContext, DoctorListActivity.class);
             startActivity(intent);
-        }else  if (id == R.id.investigations) {
+        } else if (id == R.id.investigations) {
             Intent intent = new Intent(mContext, InvestigationActivity.class);
+
             startActivity(intent);
         }/*else  if (id == R.id.appointments) {
             Intent intent = new Intent(mContext, AppoinmentActivity.class);
             startActivity(intent);
-        }*/else  if (id == R.id.onGoingMedication) {
+<<<<<<< HEAD
+        }*/ else if (id == R.id.onGoingMedication) {
+            Intent intent = new Intent(HomePageActivity.this, ShowMedicineDoseListActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.onGoingMedication) {
             Intent intent = new Intent(mContext, ShowMedicineDoseListActivity.class);
+
             startActivity(intent);
         } else if (id == R.id.logout) {
             logout();

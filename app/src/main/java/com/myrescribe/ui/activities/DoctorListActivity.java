@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -40,7 +41,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 14/6/17.
  */
 
-public class DoctorListActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class DoctorListActivity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.backArrow)
     ImageView mBackArrow;
@@ -50,7 +51,7 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
     ViewPager mViewpager;
     private CustomSpinnerAdapter mCustomSpinAdapter;
     @BindView(R.id.year)
-    Spinner mYearSpinner;
+    Spinner mYearSpinnerView;
 
     private ArrayList<String> mYearList;
     private ArrayList<TimePeriod> mTimePeriodList;
@@ -65,41 +66,19 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
 
     private void initialize() {
         mYearList = CommonMethods.getYearForDoctorList();
-        mYearSpinner.setOnItemSelectedListener(this);
         mBackArrow.setOnClickListener(this);
-        //----
-        mCustomSpinAdapter = new CustomSpinnerAdapter(this, mYearList);
-        mYearSpinner.setAdapter(mCustomSpinAdapter);
         //----
         setupViewPager();
         mTabLayout.setupWithViewPager(mViewpager);
-        mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-
-            }
-        });
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-//                String year = yearValues.get(position);
-//                mYear.setSelection(allYearList.indexOf(yearValues.get(position)));
                 TimePeriod timePeriod = mTimePeriodList.get(position);
                 for (int i = 0; i < mYearList.size(); i++) {
                     if (mYearList.get(i).equalsIgnoreCase(timePeriod.getYear())) {
-                        mYearSpinner.setSelection(i);
+                        mYearSpinnerView.setSelection(i);
                         break;
                     }
                 }
@@ -112,12 +91,16 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-//                int position = tab.getPosition();
-//                String year = yearValues.get(position);
-//                mYear.setSelection(allYearList.indexOf(year));
+
             }
         });
-
+        //----
+        mCustomSpinAdapter = new CustomSpinnerAdapter(this, mYearList);
+        mYearSpinnerView.setAdapter(mCustomSpinAdapter);
+        YearSpinnerInteractionListener listener = new YearSpinnerInteractionListener();
+        mYearSpinnerView.setOnTouchListener(listener);
+        mYearSpinnerView.setOnItemSelectedListener(listener);
+        //----
     }
 
     private void setupViewPager() {
@@ -150,24 +133,6 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        /*if (parent.getId() == R.id.year) {
-            String selectedYear = mYearList.get(parent.getSelectedItemPosition());
-
-            for (int i = 0; i < mTimePeriodList.size(); i++) {
-                if (mTimePeriodList.get(i).getYear().equalsIgnoreCase("" + selectedYear)) {
-                    mViewpager.setCurrentItem(i);
-                    break;
-                }
-            }
-        }*/
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -206,5 +171,44 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
         }
+    }
+
+
+    private class YearSpinnerInteractionListener implements AdapterView.OnItemSelectedListener, View.OnTouchListener {
+
+        boolean mYearSpinnerConfigChange = false;
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            mYearSpinnerConfigChange = true;
+            return false;
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            if (mYearSpinnerConfigChange) {
+                // Your selection handling code here
+                mYearSpinnerConfigChange = false;
+
+                if (parent.getId() == R.id.year && !mYearSpinnerConfigChange) {
+                    String selectedYear = mYearList.get(parent.getSelectedItemPosition());
+
+                    for (int i = 0; i < mTimePeriodList.size(); i++) {
+                        if (mTimePeriodList.get(i).getYear().equalsIgnoreCase("" + selectedYear)) {
+                            mViewpager.setCurrentItem(i);
+                            break;
+                        }
+                    }
+                } else {
+                    mYearSpinnerConfigChange = false;
+                }
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+
     }
 }

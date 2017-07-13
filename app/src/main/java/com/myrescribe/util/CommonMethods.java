@@ -901,25 +901,23 @@ public class CommonMethods {
 
     public static String getSuffixForNumber(final int n) {
         //  checkArgument(n >= 1 && n <= 31, "illegal day of month: " + n);
-        String returnValue;
+
         if (n >= 11 && n <= 13) {
-            returnValue = "th";
+            return "th";
         }
         switch (n % 10) {
             case 1:
-                returnValue = "st";
-                break;
+                return "st";
+
             case 2:
-                returnValue = "nd";
-                break;
+                return "nd";
+
             case 3:
-                returnValue = "rd";
-                break;
+                return "rd";
+
             default:
-                returnValue = "th";
-                break;
+                return "th";
         }
-        return returnValue;
 
     }
 

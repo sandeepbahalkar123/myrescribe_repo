@@ -171,12 +171,7 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
            else if (listObject.getAdvice() != null) {
                 if (!listObject.getAdvice().equals(null)) {
                     mHeaderList.add("Advice");
-                    ArrayList<Diagnosi> diagnosis = new ArrayList<>();
-                    Diagnosi mDiagnosiList = new Diagnosi();
-                    mDiagnosiList.setName(listObject.getAdvice());
-                    diagnosis.add(mDiagnosiList);
-                 //  diagnosis.add(1,listObject.getAdvice());  listObject.getAdvice();
-                    mHistoryDataList.put("Advice", diagnosis);
+                    mHistoryDataList.put("Advice", listObject.getAdvice());
                 }
             }
 

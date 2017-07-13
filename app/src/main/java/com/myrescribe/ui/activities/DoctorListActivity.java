@@ -123,12 +123,13 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
             adapter.addFragment(fragment, data); // pass title here
         }
         mViewpager.setAdapter(adapter);
-        new Handler().postDelayed(new Runnable() {
+        mViewpager.setCurrentItem(mTimePeriodList.size() - 1);
+       /* new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mViewpager.setCurrentItem(mTimePeriodList.size() - 1);
+
             }
-        }, 100);
+        }, 100);*/
         //---------
 
     }

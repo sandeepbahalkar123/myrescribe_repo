@@ -6,8 +6,8 @@
     <string name="Syrup"> Syrup</string>
     <string name="after">After</string>
     <string name="going_medication">On Going Medication</string>
-    <string name="visit_details">Visit Details</string>
-    <string name="doctor_details">Doctor Details</string>
+    <string name="visit_details">Single Visit Details</string>
+    <string name="doctor_details">Doctor Visits</string>
     <string name="before">Before</string>
     <string name="enter_mobile_no">Enter Mobile No</string>
     <string name="enter_password">Enter Password</string>

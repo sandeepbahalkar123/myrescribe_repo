@@ -242,7 +242,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
     private void doGetPrescriptionList() {
         PrescriptionHelper mPrescriptionHelper = new PrescriptionHelper(this, this);
-        mProgressDialog.show();
+       mProgressDialog.show();
         mPrescriptionHelper.doGetPrescriptionList();
     }
 
@@ -270,7 +270,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
                     mAdapter = new NotificationListAdapter(mContext, notificationDummyData, getTimeArray());
                     recycler.setAdapter(mAdapter);
-                    mProgressDialog.dismiss();
+                 mProgressDialog.dismiss();
 
                 }
             }

@@ -17,6 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.myrescribe.R;
+import com.myrescribe.helpers.doctor.DoctorHelper;
+import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.doctors.DoctorDetail;
 import com.myrescribe.model.util.TimePeriod;
 import com.myrescribe.ui.fragments.DoctorListFragment;
 import com.myrescribe.adapters.CustomSpinnerAdapter;
@@ -32,6 +36,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import butterknife.BindView;
@@ -41,7 +46,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 14/6/17.
  */
 
-public class DoctorListActivity extends AppCompatActivity implements View.OnClickListener {
+public class DoctorListActivity extends AppCompatActivity implements HelperResponse, View.OnClickListener {
 
     @BindView(R.id.backArrow)
     ImageView mBackArrow;
@@ -56,6 +61,8 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
     private ArrayList<String> mYearList;
     private ArrayList<TimePeriod> mTimePeriodList;
     private TimePeriod mCurrentSelectedTimePeriodTab;
+
+    private DoctorHelper mDoctorHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +109,9 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
         YearSpinnerInteractionListener listener = new YearSpinnerInteractionListener();
         mYearSpinnerView.setOnTouchListener(listener);
         mYearSpinnerView.setOnItemSelectedListener(listener);
-        //----
+        //-------
+        mDoctorHelper = new DoctorHelper(this, this);
+        //-------
     }
 
     private void setupViewPager() {
@@ -136,7 +145,7 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-
+    //---------------
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<TimePeriod> mFragmentTitleList = new ArrayList<>();
@@ -166,6 +175,8 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    //---------------
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -176,7 +187,7 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-
+    //---------------
     private class YearSpinnerInteractionListener implements AdapterView.OnItemSelectedListener, View.OnTouchListener {
 
         boolean mYearSpinnerConfigChange = false;
@@ -213,8 +224,49 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
         }
 
     }
+    //---------------
 
     public TimePeriod getCurrentSelectedTimePeriodTab() {
         return mCurrentSelectedTimePeriodTab;
+    }
+
+    //---------------
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+    //---------------
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mCurrentSelectedTimePeriodTab != null) {
+            Map<String, Map<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = mDoctorHelper.getYearWiseSortedDoctorList();
+            if (yearWiseSortedDoctorList.get(mCurrentSelectedTimePeriodTab.getYear()) == null) {
+                mDoctorHelper.doGetDoctorList();
+            }
+        } else {
+            mDoctorHelper.doGetDoctorList();
+        }
+    }
+
+    public DoctorHelper getParentDoctorHelper() {
+        return mDoctorHelper;
     }
 }

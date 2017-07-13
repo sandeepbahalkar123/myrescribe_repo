@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -25,7 +27,7 @@ public class DoctorInfoMonthContainer implements CustomResponse {
     @SerializedName("year")
     private String year;
     @SerializedName("months")
-    private HashMap<String, ArrayList<DoctorDetail>> monthWiseSortedDoctorList = null;
+    private Map<String, ArrayList<DoctorDetail>> monthWiseSortedDoctorList = new TreeMap<String, ArrayList<DoctorDetail>>(String.CASE_INSENSITIVE_ORDER);
 
     public String getYear() {
         return year;
@@ -35,12 +37,9 @@ public class DoctorInfoMonthContainer implements CustomResponse {
         this.year = year;
     }
 
-    public HashMap<String, ArrayList<DoctorDetail>> getMonthWiseSortedDoctorList() {
+    public Map<String, ArrayList<DoctorDetail>> getMonthWiseSortedDoctorList() {
         return monthWiseSortedDoctorList;
     }
-
-
-
 
     @Override
     public String toString() {

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -35,7 +37,7 @@ public class DoctorHelper implements ConnectionListener {
     String TAG = this.getClass().getName();
     Context mContext;
     HelperResponse mHelperResponseManager;
-    private HashMap<String, HashMap<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = new HashMap<>();
+    private Map<String, Map<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     public DoctorHelper(Context context, HelperResponse activity) {
         this.mContext = context;
@@ -119,13 +121,13 @@ public class DoctorHelper implements ConnectionListener {
         }
     }
 
-    public HashMap<String, HashMap<String, ArrayList<DoctorDetail>>> getYearWiseSortedDoctorList() {
+    public Map<String, Map<String, ArrayList<DoctorDetail>>> getYearWiseSortedDoctorList() {
         return yearWiseSortedDoctorList;
     }
 
-    public ArrayList<DoctorDetail> getFormattedDoctorList(String month, HashMap<String, ArrayList<DoctorDetail>> monthList) {
+    public ArrayList<DoctorDetail> getFormattedDoctorList(String month, Map<String, ArrayList<DoctorDetail>> monthList) {
 
-        ArrayList<DoctorDetail> doctorDetails = monthList.get(month);
+        ArrayList<DoctorDetail> doctorDetails = monthList.get(month.toUpperCase());
         ArrayList<DoctorDetail> map = new ArrayList<>();
 
         if (doctorDetails != null) {

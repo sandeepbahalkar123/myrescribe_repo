@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp0"
         android:layout_weight="1"
-        android:background="@drawable/home_screen"
+        android:background="@drawable/home_new"
         android:orientation="vertical">
 
     </LinearLayout>
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp0"
         android:layout_weight="1"
-        android:background="@color/app_background"
+        android:background="@color/tagColor"
         android:orientation="vertical">
     </FrameLayout>
 

@@ -5,6 +5,13 @@
     <string name="Tablet"> Tab</string>
     <string name="Syrup"> Syrup</string>
     <string name="after">After</string>
+    <string name="compalints">Complaints</string>
+    <string name="diagnosis">Diagnosis</string>
+    <string name="prescription">Prescription</string>
+    <string name="investigations">Investigations</string>
+    <string name="vitals">Vitals</string>
+    <string name="remarks">Remarks</string>
+    <string name="advice">Advice</string>
     <string name="going_medication">On Going Medication</string>
     <string name="visit_details">Single Visit Details</string>
     <string name="doctor_details">Doctor Visits</string>

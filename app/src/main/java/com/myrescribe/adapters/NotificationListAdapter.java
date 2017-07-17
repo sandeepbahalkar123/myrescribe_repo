@@ -33,10 +33,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     private static final String LUNCH = "lunch";
     private static final String BREAK_FAST = "breakfast";
     private static final String SNACKS = "snacks";
-
     public int preExpandedPos = -1;
-
-    private final String time[];
 
     private List<PrescriptionD> mDataSet;
     private Context mContext;
@@ -46,7 +43,6 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     public NotificationListAdapter(Context context, List<PrescriptionD> dataSet, String time[]) {
         this.mDataSet = dataSet;
         this.mContext = context;
-        this.time = time;
 
         try {
             this.onHeaderClickListener = ((OnHeaderClickListener) mContext);

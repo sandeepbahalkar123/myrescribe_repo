@@ -8,15 +8,9 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Spinner;
-
-import com.facebook.login.LoginManager;
 import com.myrescribe.R;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.MyRescribeConstants;
-
-import java.util.Arrays;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

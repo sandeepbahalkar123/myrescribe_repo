@@ -66,7 +66,6 @@ public class LoginActivity extends AppCompatActivity implements
     String KEY_USERNAME = "email_address";
     String KEY_PASSWORD = "password";
     String REQUEST_FIELDS = TextUtils.join(",", new String[]{ID, NAME, PICTURE, EMAIL, BIRTHDAY, GENDER});
- 
     private final String TAG = "MyRescribe/LoginActivity";
     Context mContext;
     private CallbackManager mCallbackManager;

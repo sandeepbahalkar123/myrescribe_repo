@@ -26,6 +26,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -741,6 +742,37 @@ public class CommonMethods {
 
         return dialog;
     }
+    public static Dialog showVitalDialog(Context context, String unit ,String unitValue, int color , String normalRange,Integer drawable) {
+        final Context mContext = context;
+        final Dialog dialog = new Dialog(context);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.vitals_dialog);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+
+            ((TextView) dialog.findViewById(R.id.vitalNameDialog)).setText(unit);
+        ((TextView) dialog.findViewById(R.id.noOfVitalsDialog)).setText(unitValue);
+        ((TextView) dialog.findViewById(R.id.normalRangeDialog)).setText(normalRange);
+        ((TextView) dialog.findViewById(R.id.noOfVitalsDialog)).setTextColor(color);
+        ((ImageView) dialog.findViewById(R.id.vitalImageDialog)).setImageResource(drawable);
+
+
+
+
+        dialog.findViewById(R.id.imageView_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+
+        dialog.show();
+
+        return dialog;
+    }
 
     public static String getMealTime(int hour, int mint, Context context) {
         //BB : 7-11,lunch : 11-3,dinner :7-11
@@ -880,6 +912,51 @@ public class CommonMethods {
         }
         return abbreviation;
     }
+
+    public static int getVisitDetailsIconsAsPerID(int visitDetailId, Context context) {
+
+        // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
+        int abbreviation = R.drawable.case_paper;
+        if (visitDetailId== 1) {
+            abbreviation = R.drawable.treatment_plan;
+        } else if (visitDetailId== 2) {
+            abbreviation = R.drawable.surgery;
+        } else if (visitDetailId== 3) {
+            abbreviation = R.drawable.vaccination;
+        } else if (visitDetailId== 4) {
+            abbreviation = R.drawable.general_precautions;
+        } else if (visitDetailId== 5) {
+            abbreviation = R.drawable.pre_operative_precautions;
+        } else if (visitDetailId== 6) {
+            abbreviation = R.drawable.post_operative_care;
+        } else if (visitDetailId== 7) {
+            abbreviation = R.drawable.pain_score; // not found
+        }else if (visitDetailId== 8) {
+            abbreviation = R.drawable.exercise; // not found
+        }else if (visitDetailId== 9) {
+            abbreviation = R.drawable.case_paper; // not found
+        }else if (visitDetailId== 10) {
+            abbreviation = R.drawable.vitals; // not found
+        }else if (visitDetailId== 11) {
+            abbreviation = R.drawable.investigations; // not found
+        }else if (visitDetailId== 12) {
+            abbreviation = R.drawable.complaints; // not found
+        }else if (visitDetailId== 13) {
+            abbreviation = R.drawable.prescription; // not found
+        }else if (visitDetailId== 14) {
+            abbreviation = R.drawable.advice; // not found
+        }else if (visitDetailId== 15) {
+            abbreviation = R.drawable.diagnosis; // not found
+        }else if (visitDetailId== 16) {
+            abbreviation = R.drawable.finding; // not found
+        }else if (visitDetailId== 17) {
+            abbreviation = R.drawable.remarks; // not found
+        }else if (visitDetailId== 18) {
+            abbreviation = R.drawable.allergy; // not found
+        }
+        return abbreviation;
+    }
+
 
     public static int getVitalsDetails(String vitalDetailName, Context context) {
 

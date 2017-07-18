@@ -2,6 +2,8 @@ package com.myrescribe.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,40 +14,50 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.myrescribe.R;
-import com.myrescribe.model.Album;
 import com.myrescribe.model.history.HistoryCommonDetails;
 import com.myrescribe.model.visit_details.Diagnosi;
+import com.myrescribe.model.visit_details.Vital;
 import com.myrescribe.util.CommonMethods;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
 
+    private final List<Vital> mVitalList;
     private Context mContext;
-    private Activity context;
     String[] firstRow = {
             "Weight",
             "BMI",
-            "Heart Rate"
-    } ;
+            "Heart Rate"} ;
+    String[] normalRangeFirstRow = {
+            "60 to 90",
+            "70 to 110",
+            "80 to 120"} ;
+    String[] normalRangeSecondRow = {
+            "50 to 80",
+            "70 to 95"} ;
+
     String[] secondRow = {
             "Blood Pressure",
-            "Blood Glucose"
-    };
+            "Blood Glucose"};
     Integer[] firstRowImage = {
             R.drawable.weight,
             R.drawable.bmi_1,
-            R.drawable.heart_rate,
-    };
+            R.drawable.heart_rate,};
     Integer[] SecondRowImage = {
             R.drawable.blood_pressure,
-            R.drawable.layer_10
-    };
-    private List<Album> albumList = new ArrayList<>();
+            R.drawable.layer_10};
+    int[] colorSecond = {R.color.yellow,R.color.parrot,R.color.red_red};
+    String[] unitFirstRow = {"65","35","77"};
+    String[] unitSecondRow = {"80","90"};
+    int[] colorFirstRow = {R.color.yellow,R.color.parrot};
     private static final String CHILD_TYPE_1 = "Vitals";
     private ArrayList<HistoryCommonDetails> mHistoryCommonDetailses;
     private ArrayList<String> mListDataHeader; // header titles
@@ -54,10 +66,11 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
     private HashMap<String, ArrayList<Diagnosi>> mListDataChild;
 
     public ShowViewDetailsAdapter(Context context, ArrayList<String> listDataHeader,
-                                  HashMap<String, ArrayList<Diagnosi>> listChildData) {
+                                  HashMap<String, ArrayList<Diagnosi>> listChildData, List<Vital> vitalList) {
         this.mContext = context;
         this.mListDataHeader = listDataHeader;
         this.mListDataChild = listChildData;
+        this.mVitalList = vitalList;
     }
 
     @Override
@@ -92,8 +105,14 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
                     TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.table);
                     View divider = (View)convertView.findViewById(R.id.adapter_divider);
                     tableLayout.removeAllViews();
-                    tableLayout.addView(addTableRow(3,firstRow,firstRowImage));
-                    tableLayout.addView(addTableRow(2, secondRow, SecondRowImage));
+                    /*if(mVitalList.size()==8) {
+                        for (int i = 0; i < 4; i++) {
+
+                        }
+                    }*/
+                        tableLayout.addView(addTableRow(3, firstRow, firstRowImage,unitFirstRow,R.array.colors_first,normalRangeFirstRow));
+                        tableLayout.addView(addTableRow(2, secondRow, SecondRowImage,unitSecondRow,R.array.colors_second,normalRangeSecondRow));
+
                     if(isLastChild){
                         divider.setVisibility(View.VISIBLE);
                     }
@@ -126,14 +145,27 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
     return convertView;
 }
 
-    private View addTableRow(int columnCount, String[] rowText, Integer[] rowImage) {
+    private View addTableRow(int columnCount, final String[] rowText, final Integer[] rowImage, final String[] unitSecondRow, int colorSecond,final String[] normalRangeList) {
+        int i;
         TableRow tableRow = new TableRow(mContext);
-
-        for (int i = 0; i < columnCount; i++) {
+        final String[] allColors = mContext.getResources().getStringArray(colorSecond);
+        for (i = 0; i < columnCount; i++) {
             View item = LayoutInflater.from(mContext)
                     .inflate(R.layout.item, tableRow, false);
+            LinearLayout vitalLinearlayout =  (LinearLayout)item.findViewById(R.id.vitalCellLinearLayout) ;
             ImageView vitalImage = (ImageView)item.findViewById(R.id.vitalImage);
             TextView vital_name = (TextView)item.findViewById(R.id.vital_name) ;
+            TextView noOfVitals = (TextView)item.findViewById(R.id.noOfVitals) ;
+            noOfVitals.setText(unitSecondRow[i]);
+            final int finalI = i;
+            final int finalI1 = i;
+            vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CommonMethods.showVitalDialog(mContext,rowText[finalI1],unitSecondRow[finalI1],Color.parseColor(allColors[finalI1]),normalRangeList[finalI1],rowImage[finalI1]);
+                }
+            });
+            noOfVitals.setTextColor(Color.parseColor(allColors[i]));
             vitalImage.setImageResource(rowImage[i]);
             vital_name.setText(rowText[i]);
             tableRow.addView(item);

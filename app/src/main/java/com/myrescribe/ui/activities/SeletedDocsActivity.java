@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.SelectedImageAdapter;
@@ -27,10 +26,8 @@ import com.myrescribe.model.investigation.Images;
 import com.myrescribe.model.investigation.SelectedDocModel;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
-
 import java.util.ArrayList;
 import java.util.UUID;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

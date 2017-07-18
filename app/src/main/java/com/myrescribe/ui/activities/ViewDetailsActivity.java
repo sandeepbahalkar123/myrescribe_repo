@@ -1,6 +1,7 @@
 package com.myrescribe.ui.activities;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,12 +17,15 @@ import android.widget.ExpandableListView;
 import com.myrescribe.adapters.ShowViewDetailsAdapter;
 import com.myrescribe.helpers.history.HistoryHelper;
 import com.myrescribe.helpers.one_day_visit.OneDayVisitHelper;
+import com.myrescribe.helpers.one_day_visit.VitalHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.visit_details.Data;
 import com.myrescribe.model.visit_details.Diagnosi;
 import com.myrescribe.model.visit_details.PatientHistory;
+import com.myrescribe.model.visit_details.Vital;
 import com.myrescribe.ui.customesViews.CustomTextView;
+import com.myrescribe.util.CommonMethods;
 
 import java.util.HashMap;
 
@@ -57,6 +61,8 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
     Intent intent;
     private HashMap<String, ArrayList<Diagnosi>> mHistoryDataList;
     private OneDayVisitHelper mOneDayVisitHelper;
+    private List<Vital> mVitalList;
+    private VitalHelper mVitalHelper;
 
 
     @Override
@@ -69,6 +75,7 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
 
     private void initialize() {
          intent = getIntent();
+        CommonMethods.Log("Hi",VitalHelper.isBetween(5,1,6)+"");
         if(getIntent().getExtras() != null){
             mDoctorName.setText(intent.getStringExtra("DOCTOR_NAME"));
             mDoctorSpecialization.setText(intent.getStringExtra("DOCTOR_SPECIALIST"));
@@ -82,6 +89,7 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
             mDoctor_address.setText("Aundh, Pune");
             mDateTextView.setText("17th Jul 2017");
         }
+
 
         mOneDayVisitHelper = new OneDayVisitHelper(this, this);
         mOneDayVisitHelper.doGetOneDayVisit();
@@ -122,9 +130,11 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        mVitalHelper = new VitalHelper(this,this);
+        mVitalList = mVitalHelper.doGetVitalsList();
         Data data = (Data) customResponse;
         formatResponseDataForAdapter(data.getPatientHistory());
-        ShowViewDetailsAdapter showHistoryListAdapter = new ShowViewDetailsAdapter(this, mHeaderList, mHistoryDataList);
+        ShowViewDetailsAdapter showHistoryListAdapter = new ShowViewDetailsAdapter(this, mHeaderList, mHistoryDataList,mVitalList);
         mHistoryExpandableListView.setAdapter(showHistoryListAdapter);
 
 

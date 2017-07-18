@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 
 public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.ListViewHolder> {
 
-    private final String TAG = getClass().getName();
+    private final String TAG = "DoctorListAdapter";
     private SimpleDateFormat mDateFormat;
     Context mContext;
     ArrayList<DoctorDetail> mDataList;
@@ -98,8 +98,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
 
         if (dataObject.isStartElement()) {
-            //----
-           // CommonMethods.Log(TAG,CommonMethods.getDateSelectedDoctorVisit(dataObject.getDate()));
+
             Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);

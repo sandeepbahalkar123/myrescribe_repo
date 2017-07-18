@@ -172,5 +172,13 @@
     <string name="new_document">New Document</string>
     <string name="title_activity_uploaded_docs">Uploaded Documents</string>
     <string name="no_data_available">No data available</string>
-
+    <string-array name="colors_first">
+        <item>#ff0000</item>
+        <item>#00ff00</item>
+        <item>#ffff33</item>
+    </string-array>
+    <string-array name="colors_second">
+        <item>#ff0000</item>
+        <item>#00ff00</item>
+    </string-array>
 </resources>

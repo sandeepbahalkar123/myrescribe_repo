@@ -14,8 +14,8 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.myrescribe.R;
-import com.myrescribe.broadcast_receivers.InvestigationNotificationNoClickReceiver;
-import com.myrescribe.broadcast_receivers.InvestigationNotificationYesClickReceiver;
+import com.myrescribe.broadcast_receivers.NoClickReceiver;
+import com.myrescribe.broadcast_receivers.YesClickReceiver;
 import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -114,23 +114,23 @@ public class InvestigationNotificationService extends Service {
 
     public void customNotification(Intent intentData) {
 
-        int NOTIFICATION_ID = (int) System.currentTimeMillis();
+        int notification_id = intentData.getIntExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, 0);
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
                 R.layout.investigation_notification_layout);
 
-        Intent mNotifyYesIntent = new Intent(this, InvestigationNotificationYesClickReceiver.class);
-        mNotifyYesIntent.putExtra("notificationId", NOTIFICATION_ID);
-        mNotifyYesIntent.putExtra(MyRescribeConstants.TIME, intentData.getStringExtra(MyRescribeConstants.TIME));
+        Intent mNotifyYesIntent = new Intent(this, YesClickReceiver.class);
+        mNotifyYesIntent.putExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, notification_id);
+        mNotifyYesIntent.putExtra(MyRescribeConstants.INVESTIGATION_TIME, intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_TIME));
         mNotifyYesIntent.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_MESSAGE));
-        PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyYesIntent, 0);
+        PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mYesPendingIntent);
 
-        Intent mNotifyNoIntent = new Intent(this, InvestigationNotificationNoClickReceiver.class);
+        Intent mNotifyNoIntent = new Intent(this, NoClickReceiver.class);
       /*  mNotifyNoIntent.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_MESSAGE));
         mNotifyNoIntent.putExtra(MyRescribeConstants.TIME, intentData.getStringExtra(MyRescribeConstants.TIME));*/
-        mNotifyNoIntent.putExtra("notificationId", NOTIFICATION_ID);
-        PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyNoIntent, 0);
+        mNotifyNoIntent.putExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, notification_id);
+        PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -145,9 +145,9 @@ public class InvestigationNotificationService extends Service {
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.investigation));
         mRemoteViews.setTextViewText(R.id.questionText, intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_MESSAGE));
-        mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.TIME));
+        mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_TIME));
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationmanager.notify(NOTIFICATION_ID, builder.build());
+        notificationmanager.notify(notification_id, builder.build());
 
         stopSelf();
     }

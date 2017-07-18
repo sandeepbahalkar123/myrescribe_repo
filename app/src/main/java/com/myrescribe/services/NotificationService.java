@@ -11,8 +11,8 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.myrescribe.R;
-import com.myrescribe.broadcast_receivers.NotificationNoClickReceiver;
-import com.myrescribe.broadcast_receivers.NotificationYesClickReceiver;
+import com.myrescribe.broadcast_receivers.NoClickReceiver;
+import com.myrescribe.broadcast_receivers.YesClickReceiver;
 import com.myrescribe.util.MyRescribeConstants;
 
 
@@ -65,24 +65,25 @@ public class NotificationService extends Service {
     private final IBinder mBinder = new ServiceBinder();
 
     public void customNotification(Intent intentData) {
-        int NOTIFICATION_ID = (int) System.currentTimeMillis();
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
                 R.layout.notification_layout);
 
-        Intent mNotifyYesIntent = new Intent(this, NotificationYesClickReceiver.class);
+        int notification_id = intentData.getIntExtra(MyRescribeConstants.NOTIFICATION_ID, 0);
+
+        Intent mNotifyYesIntent = new Intent(this, YesClickReceiver.class);
         mNotifyYesIntent.putExtra(MyRescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
-        mNotifyYesIntent.putExtra("notificationId", NOTIFICATION_ID);
-        PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyYesIntent, 0);
+        mNotifyYesIntent.putExtra(MyRescribeConstants.NOTIFICATION_ID, notification_id);
+        PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mYesPendingIntent);
 
-        Intent mNotifyNoIntent = new Intent(this, NotificationNoClickReceiver.class);
+        Intent mNotifyNoIntent = new Intent(this, NoClickReceiver.class);
         mNotifyNoIntent.putExtra(MyRescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
-        mNotifyNoIntent.putExtra(MyRescribeConstants.DATE, intentData.getStringExtra(MyRescribeConstants.DATE));
-        mNotifyNoIntent.putExtra(MyRescribeConstants.TIME, intentData.getStringExtra(MyRescribeConstants.TIME));
+        mNotifyNoIntent.putExtra(MyRescribeConstants.NOTIFICATION_DATE, intentData.getStringExtra(MyRescribeConstants.NOTIFICATION_DATE));
+        mNotifyNoIntent.putExtra(MyRescribeConstants.NOTIFICATION_TIME, intentData.getStringExtra(MyRescribeConstants.NOTIFICATION_TIME));
         mNotifyNoIntent.putExtra(MyRescribeConstants.MEDICINE_NAME, intentData.getBundleExtra(MyRescribeConstants.MEDICINE_NAME));
-        mNotifyNoIntent.putExtra("notificationId", NOTIFICATION_ID);
-        PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyNoIntent, 0);
+        mNotifyNoIntent.putExtra(MyRescribeConstants.NOTIFICATION_ID, notification_id);
+        PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -96,10 +97,10 @@ public class NotificationService extends Service {
                 .setContent(mRemoteViews);
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
-        mRemoteViews.setTextViewText(R.id.questionText,getText(R.string.taken_medicine));
-        mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.TIME));
+        mRemoteViews.setTextViewText(R.id.questionText, getText(R.string.taken_medicine));
+        mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.NOTIFICATION_TIME));
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationmanager.notify(NOTIFICATION_ID, builder.build());
+        notificationmanager.notify(notification_id, builder.build());
 
         stopSelf();
     }

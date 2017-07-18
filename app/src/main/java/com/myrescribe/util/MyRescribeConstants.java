@@ -16,12 +16,12 @@ public class MyRescribeConstants {
     public static final String MT_SYRUP = "SYRUP";
     public static final String MT_OINTMENT = "OINTMENT";
     public static final String DD_MM_YYYY = "dd-MM-yyyy";
-    public static final String INVESTIGATION_MESSAGE = "investigation_message";
-    public static final String APPOINTMENT_MESSAGE = "appointment_message";
-    public static final String INVESTIGATION_DATA  = "investigation_data";
+
     public static final String YES = "yes";
     public static final String DOCUMENTS = "documents";
     public static final String ALERT = "alert";
+    public static final String TIME = "time";
+    public static final String DATE = "date";
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";
@@ -98,11 +98,26 @@ public class MyRescribeConstants {
         public final static String EEEE_dd_MMM_yyyy_hh_mm_a = "EEEE dd MMM yyyy | hh:mm a";
     }
 
-    public static final String TIME = "time";
-    public static final String DATE = "date";
+    public static final String INVESTIGATION_TIME = "investigation_time";
+    public static final String APPOINTMENT_TIME = "appointment_time";
+    public static final String NOTIFICATION_TIME = "notification_time";
+
+    public static final String INVESTIGATION_DATE = "investigation_date";
+    public static final String APPOINTMENT_DATE = "appointment_date";
+    public static final String NOTIFICATION_DATE = "notification_date";
+
     public static final String MEDICINE_NAME = "medicine_name";
     public static final String MEDICINE_SLOT = "edicine_slot";
     public static final String MEDICINE_TYPE = "medicine_type";
+
+    public static final String NOTIFICATION_ID = "notification_id";
+    public static final String INVESTIGATION_NOTIFICATION_ID = "investigation_notification_id";
+    public static final String APPOINTMENT_NOTIFICATION_ID = "appointment_notification_id";
+
+    public static final String INVESTIGATION_MESSAGE = "investigation_message";
+    public static final String APPOINTMENT_MESSAGE = "appointment_message";
+
+    public static final String INVESTIGATION_DATA  = "investigation_data";
 
     public static final String BLANK = "";
     public static final String DATA = "DATA";

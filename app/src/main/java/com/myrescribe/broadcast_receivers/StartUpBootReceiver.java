@@ -4,14 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.widget.Toast;
 
 import com.myrescribe.R;
 import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.notification.AppointmentAlarmTask;
 import com.myrescribe.notification.DosesAlarmTask;
 import com.myrescribe.notification.InvestigationAlarmTask;
-import com.myrescribe.ui.activities.ShowMedicineDoseListActivity;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 

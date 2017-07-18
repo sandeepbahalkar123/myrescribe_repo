@@ -1,5 +1,6 @@
 package com.myrescribe.ui.activities;
 
+import android.animation.ValueAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -10,9 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -26,7 +28,6 @@ import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +35,11 @@ import butterknife.OnClick;
 import droidninja.filepicker.FilePickerConst;
 
 public class InvestigationActivity extends AppCompatActivity implements InvestigationViewAdapter.CheckedClickListener {
+
+    private boolean isCompareDialogCollapsed = true;
+    private static final long ANIMATION_DURATION = 500; // in milliseconds
+    private static final int ANIMATION_LAYOUT_MAX_HEIGHT = 180; // in milliseconds
+    private static final int ANIMATION_LAYOUT_MIN_HEIGHT = 0; // in milliseconds
 
     private static final int UPLOADED_DOCS = 121;
     @BindView(R.id.toolbar)
@@ -46,6 +52,8 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     Button selectUploadedButton;
     @BindView(R.id.gmailButton)
     Button gmailButton;
+    @BindView(R.id.buttonLayout)
+    LinearLayout buttonLayout;
 
     private LinearLayoutManager mLayoutManager;
     private InvestigationViewAdapter mAdapter;
@@ -104,6 +112,42 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    public void collapseCompareDialog() {
+        if (!isCompareDialogCollapsed) {
+            isCompareDialogCollapsed = true;
+            ValueAnimator valueAnimator = ValueAnimator.ofInt(ANIMATION_LAYOUT_MAX_HEIGHT, ANIMATION_LAYOUT_MIN_HEIGHT);
+            valueAnimator.setDuration(ANIMATION_DURATION);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    Integer value = (Integer) animation.getAnimatedValue();
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonLayout.getLayoutParams();
+                    params.height = CommonMethods.convertDpToPixel(value.intValue());
+                    buttonLayout.setLayoutParams(params);
+                }
+            });
+
+            valueAnimator.start();
+        }
+    }
+
+    public void expandCompareDialog() {
+        if (isCompareDialogCollapsed) {
+            isCompareDialogCollapsed = false;
+            ValueAnimator valueAnimator = ValueAnimator.ofInt(ANIMATION_LAYOUT_MIN_HEIGHT, ANIMATION_LAYOUT_MAX_HEIGHT);
+            valueAnimator.setDuration(ANIMATION_DURATION);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    Integer value = (Integer) animation.getAnimatedValue();
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonLayout.getLayoutParams();
+                    params.height = CommonMethods.convertDpToPixel(value.intValue());
+                    buttonLayout.setLayoutParams(params);
+                }
+            });
+
+            valueAnimator.start();
+        }
+    }
+
     private void buttonManage(int isAlreadyUploadedButtonVisible) {
         if (isAlreadyUploadedButtonVisible == View.VISIBLE)
             selectDocsButton.setText(getResources().getString(R.string.new_document));
@@ -139,6 +183,12 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 uploadButton = true;
                 break;
             }
+        }
+
+        if (uploadButton) {
+            expandCompareDialog();
+        } else {
+            collapseCompareDialog();
         }
 
         selectDocsButton.setEnabled(uploadButton);

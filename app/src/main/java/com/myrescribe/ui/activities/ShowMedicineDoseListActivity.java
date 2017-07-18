@@ -1,13 +1,10 @@
 package com.myrescribe.ui.activities;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,15 +17,11 @@ import android.view.WindowManager;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.ShowMedicineDoseListAdapter;
-import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionData;
-import com.myrescribe.notification.AppointmentAlarmTask;
-import com.myrescribe.notification.DosesAlarmTask;
-import com.myrescribe.notification.InvestigationAlarmTask;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 

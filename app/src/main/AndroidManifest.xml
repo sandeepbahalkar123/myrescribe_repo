@@ -71,30 +71,21 @@
             android:label="@string/title_activity_preferences"
             android:theme="@style/AppTheme.NoActionBar" />
 
-
         <activity
             android:name=".ui.activities.DoctorListActivity"
             android:label="@string/title_activity_preferences"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <service android:name=".services.NotificationService" />
-
-
-        <receiver android:name=".broadcast_receivers.NotificationYesClickReceiver" />
-        <receiver android:name=".broadcast_receivers.NotificationNoClickReceiver" />
 
         <service android:name=".services.InvestigationNotificationService" />
-
-
-        <receiver android:name=".broadcast_receivers.InvestigationNotificationYesClickReceiver" />
-        <receiver android:name=".broadcast_receivers.InvestigationNotificationNoClickReceiver" />
-
         <service android:name=".services.AppointmentNotificationService" />
+        <service android:name=".services.NotificationService" />
 
-        <receiver android:name=".broadcast_receivers.AppointmentNotificationNoClickReceiver" />
-        <receiver android:name=".broadcast_receivers.AppointmentNotificationYesClickReceiver" />
-
+        <!--Common Broadcast Receiver-->
+        <receiver android:name=".broadcast_receivers.YesClickReceiver" />
+        <receiver android:name=".broadcast_receivers.NoClickReceiver" />
+        <!--End-->
 
         <receiver android:name=".broadcast_receivers.StartUpBootReceiver">
             <intent-filter>

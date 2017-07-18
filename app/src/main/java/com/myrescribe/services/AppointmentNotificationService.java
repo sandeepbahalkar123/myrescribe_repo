@@ -11,8 +11,8 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.myrescribe.R;
-import com.myrescribe.broadcast_receivers.AppointmentNotificationNoClickReceiver;
-import com.myrescribe.broadcast_receivers.AppointmentNotificationYesClickReceiver;
+import com.myrescribe.broadcast_receivers.NoClickReceiver;
+import com.myrescribe.broadcast_receivers.YesClickReceiver;
 import com.myrescribe.util.MyRescribeConstants;
 
 
@@ -65,23 +65,24 @@ public class AppointmentNotificationService extends Service {
     private final IBinder mBinder = new ServiceBinder();
 
     public void customNotification(Intent intentData) {
-        int NOTIFICATION_ID = (int) System.currentTimeMillis();
+
+        int notification_id = intentData.getIntExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, 0);
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
                 R.layout.appointment_notification_layout);
 
-        Intent mNotifyYesIntent = new Intent(this, AppointmentNotificationYesClickReceiver.class);
-        mNotifyYesIntent.putExtra("notificationId", NOTIFICATION_ID);
-        mNotifyYesIntent.putExtra(MyRescribeConstants.TIME, intentData.getStringExtra(MyRescribeConstants.TIME));
+        Intent mNotifyYesIntent = new Intent(this, YesClickReceiver.class);
+        mNotifyYesIntent.putExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, notification_id);
+        mNotifyYesIntent.putExtra(MyRescribeConstants.APPOINTMENT_TIME, intentData.getStringExtra(MyRescribeConstants.APPOINTMENT_TIME));
         mNotifyYesIntent.putExtra(MyRescribeConstants.APPOINTMENT_MESSAGE, intentData.getStringExtra(MyRescribeConstants.APPOINTMENT_MESSAGE));
-        PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyYesIntent, 0);
+        PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
 
-        Intent mNotifyNoIntent = new Intent(this, AppointmentNotificationNoClickReceiver.class);
+        Intent mNotifyNoIntent = new Intent(this, NoClickReceiver.class);
+        mNotifyNoIntent.putExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, notification_id);
+        mNotifyNoIntent.putExtra(MyRescribeConstants.APPOINTMENT_TIME, intentData.getStringExtra(MyRescribeConstants.APPOINTMENT_TIME));
         mNotifyNoIntent.putExtra(MyRescribeConstants.APPOINTMENT_MESSAGE, intentData.getStringExtra(MyRescribeConstants.APPOINTMENT_MESSAGE));
-        mNotifyNoIntent.putExtra(MyRescribeConstants.TIME, intentData.getStringExtra(MyRescribeConstants.TIME));
-        mNotifyNoIntent.putExtra("notificationId", NOTIFICATION_ID);
-        PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, mNotifyNoIntent, 0);
+        PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mNoPendingIntent);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -96,9 +97,9 @@ public class AppointmentNotificationService extends Service {
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.appointment));
         mRemoteViews.setTextViewText(R.id.questionText, intentData.getStringExtra(MyRescribeConstants.APPOINTMENT_MESSAGE));
-        mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.TIME));
+        mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.APPOINTMENT_TIME));
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationmanager.notify(NOTIFICATION_ID, builder.build());
+        notificationmanager.notify(notification_id, builder.build());
 
         stopSelf();
     }

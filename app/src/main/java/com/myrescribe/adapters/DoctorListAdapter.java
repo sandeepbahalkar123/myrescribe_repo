@@ -99,6 +99,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
         if (dataObject.isStartElement()) {
             //----
+           // CommonMethods.Log(TAG,CommonMethods.getDateSelectedDoctorVisit(dataObject.getDate()));
             Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
@@ -157,6 +158,8 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
             intent.putExtra("DOCTOR_NAME",dataObject.getDoctorName());
             intent.putExtra("DOCTOR_SPECIALIST",dataObject.getSpecialization());
             intent.putExtra("DOCTOR_ADDRESS",dataObject.getAddress());
+           intent.putExtra("VISIT_DATE",CommonMethods.getDateSelectedDoctorVisit(dataObject.getDate(),MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+
             mContext.startActivity(intent);
 
         }

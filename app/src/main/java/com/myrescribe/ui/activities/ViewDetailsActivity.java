@@ -48,6 +48,9 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
 
     @BindView(R.id.doctor_address)
     CustomTextView mDoctor_address;
+    @BindView(R.id.dateTextView)
+    CustomTextView mDateTextView;
+
 
     private int lastExpandedPosition = -1;
     private ArrayList<String> mHeaderList;
@@ -66,11 +69,18 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
 
     private void initialize() {
          intent = getIntent();
-        if(intent!=null){
+        if(getIntent().getExtras() != null){
             mDoctorName.setText(intent.getStringExtra("DOCTOR_NAME"));
             mDoctorSpecialization.setText(intent.getStringExtra("DOCTOR_SPECIALIST"));
             mDoctor_address.setText(intent.getStringExtra("DOCTOR_ADDRESS"));
+            mDateTextView.setText(intent.getStringExtra("VISIT_DATE"));
 
+
+        }else{
+            mDoctorName.setText("Ritesh Deshmukh ");
+            mDoctorSpecialization.setText("Cardiologist");
+            mDoctor_address.setText("Aundh, Pune");
+            mDateTextView.setText("17th Jul 2017");
         }
 
         mOneDayVisitHelper = new OneDayVisitHelper(this, this);

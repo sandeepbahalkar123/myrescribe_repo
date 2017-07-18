@@ -880,29 +880,62 @@ public class CommonMethods {
         }
         return abbreviation;
     }
-/*
+
     public static int getVitalsDetails(String vitalDetailName, Context context) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.ellipse_2;
-        if (vitalDetailName.equalsIgnoreCase("")) {
+        if (vitalDetailName.equalsIgnoreCase("BP Max")) {
             abbreviation = R.drawable.complaints;
-        } else if (vitalDetailName.equalsIgnoreCase("vitals")) {
+        } else if (vitalDetailName.equalsIgnoreCase("BP Min")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("Weight")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("Height")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("BMI")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("Total")) {
             abbreviation = R.drawable.vitals;
-        } else if (vitalDetailName.equalsIgnoreCase("remarks")) {
+        } else if (vitalDetailName.equalsIgnoreCase("Cholesterol")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("HDL")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("LDL")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("Triglycerides")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("HDL Cholesterol")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("LDL Cholesterol")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("GFR")) {
             abbreviation = R.drawable.remarks;
-        } else if (vitalDetailName.equalsIgnoreCase("diagnosis")) {
-            abbreviation = R.drawable.diagnosis;
-        } else if (vitalDetailName.equalsIgnoreCase("prescription")) {
-            abbreviation = R.drawable.prescription;
-        } else if (vitalDetailName.equalsIgnoreCase("investigations")) {
-            abbreviation = R.drawable.investigations;
-        } else if (vitalDetailName.equalsIgnoreCase("advice")) {
-            abbreviation = R.drawable.advice; // not found
+        } else if (vitalDetailName.equalsIgnoreCase("BUN")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("Sr. Creatinine")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("Respiratory Rate")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("Heart Rate")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("Temperature")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("Fasting Blood Sugar")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("PP Blood Sugar")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("Oxygen Saturation")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("Platelet Count")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("ESR")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("Hb")) {
+            abbreviation = R.drawable.complaints;
         }
         return abbreviation;
     }
-*/
 
 
     public static Date convertStringToDate(String dateString, String dateFormat) {
@@ -920,6 +953,22 @@ public class CommonMethods {
             CommonMethods.Log("convertStringToDate", "convertStringToDate EXCEPTION OCCURS : " + e.getMessage());
         }
         return null;
+    }
+
+    public static String getDateSelectedDoctorVisit(String visitdate, String dateFormat) {
+        String yourDate = null;
+
+        DateFormat format = new SimpleDateFormat(dateFormat);
+
+        try {
+            Date date = format.parse(visitdate);
+            format = new SimpleDateFormat("d'th' MMM, yyyy");
+            yourDate = format.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return yourDate;
+
     }
 
     public static String getSuffixForNumber(final int n) {

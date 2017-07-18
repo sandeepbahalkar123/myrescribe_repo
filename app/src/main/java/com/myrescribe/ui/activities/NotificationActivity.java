@@ -10,7 +10,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,13 +24,15 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
-import com.myrescribe.model.prescription_response_model.PrescriptionData;
+import com.myrescribe.model.prescription_response_model.PrescriptionD;
+import com.myrescribe.model.prescription_response_model.PrescriptionModel;
+import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.listeners.SwipeDismissTouchListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationListAdapter.OnHeaderClickListener{
 
@@ -42,11 +43,13 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     private String time;
 //    private ArrayList<Medicine> medicines;
     private Context mContext;
+    CustomProgressDialog mProgressDialog;
     private boolean isHeaderExpand = true;
     private LinearLayout tabletListLayout;
     private CheckBox selectView;
     private LinearLayout headerLayout;
     private View mDividerLine;
+
     private LinearLayout headerLayoutParent;
 
     @Override
@@ -57,6 +60,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.notification));
         mContext = NotificationActivity.this;
+       mProgressDialog = new CustomProgressDialog(mContext);
 
         toolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -95,7 +99,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     }
 
     // Added Header
-    private void addHeader(final ArrayList<PrescriptionData> data) {
+    private void addHeader(final List<PrescriptionD> data) {
 
         headerLayout = (LinearLayout) findViewById(R.id.headerLayout);
         headerLayoutParent = (LinearLayout) findViewById(R.id.headerLayoutParent);
@@ -156,33 +160,32 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         headerLayout.setOnTouchListener(swipeDismissTouchListener);
     }
 
-    private void addHeaderTabletView(final ViewGroup parent, final ArrayList<PrescriptionData> data) {
+    private void addHeaderTabletView(final ViewGroup parent, final List<PrescriptionD> data) {
 
-        final ArrayList<PrescriptionData> medi = new ArrayList<>();
-
+        final ArrayList<PrescriptionD> medi = new ArrayList<>();
 
         for (int i = 0; i < data.size(); i++) {
             if (mContext.getResources().getString(R.string.breakfast_medication).equals(medicineSlot)) {
-                if (!data.get(i).getMorningA().isEmpty() || !data.get(i).getMorningB().isEmpty()) {
+                if (!data.get(i).getBreakfastAfter().isEmpty() || !data.get(i).getBreakfastBefore().isEmpty()) {
                     medi.add(data.get(i));
                 }
             } else if (mContext.getResources().getString(R.string.lunch_medication).equals(medicineSlot)) {
-                if (!data.get(i).getLunchA().isEmpty() || !data.get(i).getLunchB().isEmpty()) {
+                if (!data.get(i).getLunchAfter().isEmpty() || !data.get(i).getLunchBefore().isEmpty()) {
                     medi.add(data.get(i));
                 }
             } else if (mContext.getResources().getString(R.string.dinner_medication).equals(medicineSlot)) {
-                if (!data.get(i).getDinnerA().isEmpty() || !data.get(i).getDinnerB().isEmpty()) {
+                if (!data.get(i).getDinnerAfter().isEmpty() || !data.get(i).getDinnerBefore().isEmpty()) {
                     medi.add(data.get(i));
                 }
             }else if (mContext.getResources().getString(R.string.snacks_medication).equals(medicineSlot)) {
-             /*if (!data.get(i).getEveningB().isEmpty()) {*/
+             if (!data.get(i).getSnacksAfter().isEmpty()|| !data.get(i).getSnacksBefore().isEmpty()) {
                  medi.add(data.get(i));
-
+             }
             }
         }
 
         for (int i = 0; i < medi.size(); i++) {
-              data.get(i).setEveningB("2");
+
             final View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.tablet_list, parent, false);
 
@@ -208,22 +211,22 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             });
 
             if (mContext.getResources().getString(R.string.breakfast_medication).equals(medicineSlot)) {
-                setDose(tabCountTextView, medi.get(i).getMorningA() + medi.get(i).getMorningB(), medi.get(i));
+                setDose(tabCountTextView, medi.get(i).getBreakfastAfter() + medi.get(i).getBreakfastBefore(), medi.get(i));
                 tabNameTextView.setText(medi.get(i).getMedicineName());
                 tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medi.get(i).getMedicineTypeName(), mContext));
                 parent.addView(view);
             }else if (mContext.getResources().getString(R.string.lunch_medication).equals(medicineSlot)){
-                setDose(tabCountTextView, medi.get(i).getLunchA() + medi.get(i).getLunchB(), medi.get(i));
+                setDose(tabCountTextView, medi.get(i).getLunchAfter() + medi.get(i).getLunchBefore(), medi.get(i));
                 tabNameTextView.setText(medi.get(i).getMedicineName());
                 tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medi.get(i).getMedicineTypeName(), mContext));
                 parent.addView(view);
             }else if (mContext.getResources().getString(R.string.snacks_medication).equals(medicineSlot)){
-                setDose(tabCountTextView, medi.get(i).getEveningB(), medi.get(i));
+                setDose(tabCountTextView, medi.get(i).getSnacksBefore()+medi.get(i).getSnacksAfter(), medi.get(i));
                 tabNameTextView.setText(medi.get(i).getMedicineName());
                 tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medi.get(i).getMedicineTypeName(), mContext));
                 parent.addView(view);
             }else if (mContext.getResources().getString(R.string.dinner_medication).equals(medicineSlot)){
-                setDose(tabCountTextView, medi.get(i).getDinnerA() + medi.get(i).getDinnerB(), medi.get(i));
+                setDose(tabCountTextView, medi.get(i).getDinnerAfter() + medi.get(i).getDinnerBefore(), medi.get(i));
                 tabNameTextView.setText(medi.get(i).getMedicineName());
                 tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medi.get(i).getMedicineTypeName(), mContext));
                 parent.addView(view);
@@ -233,26 +236,28 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         }
     }
 
-    private void setDose(TextView tabCountTextView, String count, PrescriptionData prescriptionData) {
+    private void setDose(TextView tabCountTextView, String count, PrescriptionD prescriptionData) {
         tabCountTextView.setText(count);
     }
 
     private void doGetPrescriptionList() {
         PrescriptionHelper mPrescriptionHelper = new PrescriptionHelper(this, this);
+       mProgressDialog.show();
         mPrescriptionHelper.doGetPrescriptionList();
     }
 
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (mOldDataTag.equals(MyRescribeConstants.TASK_PRESCRIPTION_LIST)) {
-            PatientPrescriptionModel prescriptionDataReceived = (PatientPrescriptionModel) customResponse;
 
-            ArrayList<PrescriptionData> data = prescriptionDataReceived.getData();
+        if (mOldDataTag.equals(MyRescribeConstants.TASK_PRESCRIPTION_LIST)) {
+            PrescriptionModel prescriptionDataReceived = (PrescriptionModel) customResponse;
+
+          List<PrescriptionD> data = prescriptionDataReceived.getData();
             if (data != null) {
                 if (data.size() != 0) {
 
-                    ArrayList<PrescriptionData> notificationDummyData = new ArrayList<>();
+                 List<PrescriptionD> notificationDummyData = new ArrayList<>();
 
                     int j = -1;
                     for (int i = 0; i < data.size(); i++, --j) {
@@ -265,6 +270,8 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
                     mAdapter = new NotificationListAdapter(mContext, notificationDummyData, getTimeArray());
                     recycler.setAdapter(mAdapter);
+                 mProgressDialog.dismiss();
+
                 }
             }
 

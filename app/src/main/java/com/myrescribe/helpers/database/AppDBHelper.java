@@ -208,7 +208,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 new String[]{userId});
     }
 
-    // Investigation
+    // investigation
 
     public boolean insertInvestigationData(int id, String name, boolean isUploaded, String imageJson) {
         if (investigationDataTableNumberOfRows(id) == 0) {

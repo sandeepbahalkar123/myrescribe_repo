@@ -92,6 +92,7 @@ public class LoginMainTabFragment extends Fragment {
         mViewPagerAdapter.addFragment(new SignUp(), getString(R.string.sign_up));
         mViewPagerAdapter.addFragment(new LogInApp(), getString(R.string.log_in));
         viewPager.setAdapter(mViewPagerAdapter);
+        viewPager.setCurrentItem(1);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -116,6 +117,7 @@ public class LoginMainTabFragment extends Fragment {
 
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
+
         }
 
         @Override

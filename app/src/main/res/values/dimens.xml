@@ -34,11 +34,14 @@
     <dimen name="dp35">35dp</dimen>
     <dimen name="dp15">15dp</dimen>
     <dimen name="dp56">56dp</dimen>
-    <dimen name="dp72">72dp</dimen>
+
     <dimen name="dp40">40dp</dimen>
     <dimen name="dp50">50dp</dimen>
     <dimen name="dp60">60dp</dimen>
     <dimen name="dp70">70dp</dimen>
+    <dimen name="dp72">72dp</dimen>
+    <dimen name="dp75">75dp</dimen>
+    <dimen name="dp78">78dp</dimen>
     <dimen name="dp80">80dp</dimen>
     <dimen name="sp10">10sp</dimen>
     <dimen name="sp8">8sp</dimen>

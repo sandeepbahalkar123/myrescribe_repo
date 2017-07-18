@@ -12,7 +12,6 @@ import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.history.PatientHistoryData;
 import com.myrescribe.model.history.PatientHistoryMain;
 import com.myrescribe.model.history.PatientHistoryModel;
-import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
 import com.myrescribe.util.CommonMethods;

@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="top"
+        android:layout_marginLeft="@dimen/dp8"
+        android:layout_marginRight="@dimen/dp8"
+        android:layout_marginTop="@dimen/dp8"
         android:background="@color/white"
-        android:layout_margin="@dimen/dp8">
+        android:gravity="top"
+        android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/viewDetailIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="centerInside"
             android:layout_gravity="top|center_vertical"
-            android:id="@+id/viewDetailIcon" />
+            android:scaleType="centerInside" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,28 +34,26 @@
                 android:id="@+id/viewDetailHeaderLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Complaints"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp19"
-                app:customFont="@string/roboto_bold"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:customFont="@string/roboto_bold" />
+
             <View
                 android:id="@+id/headergroupDivider"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp1"
-                android:visibility="gone"
                 android:layout_marginTop="@dimen/dp10"
-                android:background="@color/divider" />
+                android:background="@color/divider"
+                android:visibility="gone" />
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/detailFirstPoint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-               android:textColor="@color/view_detail_color"
-                android:text="Complaints"
+                android:textColor="@color/view_detail_color"
                 android:textSize="@dimen/sp17"
-                app:customFont="@string/roboto_medium"
-                />
+                app:customFont="@string/roboto_medium" />
         </LinearLayout>
     </LinearLayout>
 
@@ -61,5 +61,6 @@
         android:id="@+id/adapter_divider_top"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="@dimen/dp8"
         android:background="@color/divider" />
 </LinearLayout>

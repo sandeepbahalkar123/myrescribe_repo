@@ -20,13 +20,15 @@ import com.myrescribe.adapters.ShowMedicineDoseListAdapter;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.prescription_response_model.PatientPrescriptionModel;
-import com.myrescribe.model.prescription_response_model.PrescriptionData;
+
+import com.myrescribe.model.prescription_response_model.PrescriptionD;
+import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -158,9 +160,9 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equals(MyRescribeConstants.TASK_PRESCRIPTION_LIST)) {
-            PatientPrescriptionModel prescriptionDataReceived = (PatientPrescriptionModel) customResponse;
+            PrescriptionModel prescriptionDataReceived = (PrescriptionModel) customResponse;
 
-            ArrayList<PrescriptionData> data = prescriptionDataReceived.getData();
+            List<PrescriptionD> data = prescriptionDataReceived.getData();
 
             if (data != null) {
                 if (data.size() != 0) {

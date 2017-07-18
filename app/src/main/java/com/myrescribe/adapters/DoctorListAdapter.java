@@ -1,75 +1,122 @@
 package com.myrescribe.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
+import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.myrescribe.R;
 import com.myrescribe.model.doctors.DoctorDetail;
-import com.myrescribe.ui.customesViews.CircularImageView;
+import com.myrescribe.ui.activities.ViewDetailsActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
-import com.myrescribe.ui.customesViews.ReadMoreTextView;
-
+import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.MyRescribeConstants;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Calendar;
+import java.util.Date;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
- * Created by root on 22/6/16.
+ * Created by jeetal on 11/7/17.
  */
-public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
+
+public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.ListViewHolder> {
+
     private final String TAG = getClass().getName();
-    private int mParentDataContainerBackground;
+    private SimpleDateFormat mDateFormat;
     Context mContext;
-    int layoutResourceId;
     ArrayList<DoctorDetail> mDataList;
 
-    public DoctorListAdapter(Context context, int layoutResourceId, ArrayList<DoctorDetail> dataList) {
-        super(context, layoutResourceId, dataList);
-        this.layoutResourceId = layoutResourceId;
+
+    public DoctorListAdapter(Context context, ArrayList<DoctorDetail> dataList) {
+
         this.mContext = context;
         mDataList = dataList;
-        mParentDataContainerBackground = ContextCompat.getColor(mContext, R.color.gray_93);
+        mDateFormat = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        DataHolder holder = null;
+    static class ListViewHolder extends RecyclerView.ViewHolder {
 
-        if (row == null) {
-            holder = new DataHolder();
-            LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId, parent, false);
+        @BindView(R.id.date)
+        CustomTextView date;
 
-            holder.date = (CustomTextView) row.findViewById(R.id.date);
-            holder.doctorName = (CustomTextView) row.findViewById(R.id.doctorName);
+        @BindView(R.id.clickOnDoctorVisitLinearLayout)
+        LinearLayout mClickOnDoctorVisitLinearLayout;
 
-            holder.circularBulletMainElement = (ImageView) row.findViewById(R.id.circularBulletMainElement);
-            holder.circularBulletChildElement = (ImageView) row.findViewById(R.id.circularBulletChildElement);
+        @BindView(R.id.circularBulletChildElement)
+        ImageView circularBulletChildElement;
+        @BindView(R.id.circularBulletMainElement)
+        ImageView circularBulletMainElement;
 
-            holder.parentDataContainer = (LinearLayout) row.findViewById(R.id.parentDataContainer);
-            holder.upperLine = (TextView) row.findViewById(R.id.upperLine);
-            holder.lowerLine = (TextView) row.findViewById(R.id.lowerLine);
-            // holder.buttonMoreOrLess = (TextView) row.findViewById(R.id.button_toggle);
+        @BindView(R.id.upperLine)
+        TextView upperLine;
+        @BindView(R.id.lowerLine)
+        TextView lowerLine;
 
-            row.setTag(holder);
-        } else {
-            holder = (DataHolder) row.getTag();
+        @BindView(R.id.doctorName)
+        CustomTextView doctorName;
+        @BindView(R.id.doctorType)
+        TextView doctorType;
+        @BindView(R.id.doctorAddress)
+        TextView doctorAddress;
+
+        @BindView(R.id.parentDataContainer)
+        LinearLayout parentDataContainer;
+        @BindView(R.id.sideBarView)
+        TextView sideBarView;
+
+        View view;
+
+        ListViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+            this.view = view;
         }
+    }
 
-        DoctorDetail dataObject = mDataList.get(position);
 
-        holder.doctorName.setText(dataObject.getName());
+    @Override
+    public DoctorListAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext)
+                .inflate(R.layout.item_doctor_list_layout, parent, false);
+        return new DoctorListAdapter.ListViewHolder(view);
+    }
 
-        if (dataObject.getIsStartElement()) {
-            holder.date.setText(dataObject.getRespectiveDate());
+
+    @Override
+    public void onBindViewHolder(final DoctorListAdapter.ListViewHolder holder, final int position) {
+
+        final DoctorDetail dataObject = mDataList.get(position);
+
+
+        if (dataObject.isStartElement()) {
+            //----
+            Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            //----
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+
+            String toDisplay = day + "<sup>" + CommonMethods.getSuffixForNumber(day) + "</sup>";
+            //------
+            if (dataObject.getDate().equalsIgnoreCase(mDateFormat.format(new Date()))) {
+                toDisplay = toDisplay + "\n" + mContext.getString(R.string.just_now);
+            }
+            //------
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                holder.date.setText(Html.fromHtml(toDisplay, Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                holder.date.setText(Html.fromHtml(toDisplay));
+            }
+
             holder.date.setVisibility(View.VISIBLE);
 
             holder.circularBulletMainElement.setVisibility(View.VISIBLE);
@@ -83,6 +130,13 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
 
         }
 
+        holder.doctorName.setText(dataObject.getDoctorName());
+        holder.doctorAddress.setText(dataObject.getAddress());
+        holder.doctorType.setText(dataObject.getSpecialization());
+
+        holder.parentDataContainer.setBackgroundColor(dataObject.getRowColor());
+        holder.sideBarView.setBackgroundColor(dataObject.getSideBarViewColor());
+
         if (position == 0)
             holder.upperLine.setVisibility(View.INVISIBLE);
         else {
@@ -95,25 +149,25 @@ public class DoctorListAdapter extends ArrayAdapter<DoctorDetail> {
         else {
             holder.lowerLine.setVisibility(View.VISIBLE);
         }
+        //---
+    holder.mClickOnDoctorVisitLinearLayout.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(mContext, ViewDetailsActivity.class);
+            intent.putExtra("DOCTOR_NAME",dataObject.getDoctorName());
+            intent.putExtra("DOCTOR_SPECIALIST",dataObject.getSpecialization());
+            intent.putExtra("DOCTOR_ADDRESS",dataObject.getAddress());
+            mContext.startActivity(intent);
 
-       /* if (holder.parentDataContainer.getTag() == null) {
-            holder.parentDataContainer.setTag((Integer) mParentDataContainerBackground);
-            holder.parentDataContainer.setBackgroundColor(mParentDataContainerBackground);
-        } else {
-            holder.parentDataContainer.setBackgroundColor((Integer) holder.parentDataContainer.getTag());
         }
-*/
-        return row;
+    });
+
     }
 
-    static class DataHolder {
-        CustomTextView date;
 
-        ImageView circularBulletChildElement, circularBulletMainElement;
-        TextView upperLine, lowerLine;
-        CustomTextView doctorName;
-        LinearLayout parentDataContainer;
-        //   TextView buttonMoreOrLess;
+    @Override
+    public int getItemCount() {
+        return mDataList.size();
     }
 
 

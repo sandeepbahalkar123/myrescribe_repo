@@ -59,7 +59,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                     //---- TO show login screen enable below line
                     //  Intent intentObj = new Intent(SplashScreenActivity.this, LoginMainActivity.class);
                     //------------
-
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -69,8 +68,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                     //    Intent intentObj = new Intent(SplashScreenActivity.this, PhoneNoActivity.class);
                     //        Intent intentObj = new Intent(SplashScreenActivity.this, HistoryActivity.class);
                     Intent intentObj = new Intent(SplashScreenActivity.this, DoctorListActivity.class);
-
-
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

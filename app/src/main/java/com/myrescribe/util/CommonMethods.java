@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.myrescribe.R;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
+import com.myrescribe.model.util.TimePeriod;
 import com.myrescribe.ui.activities.ShowMedicineDoseListActivity;
 
 import java.io.BufferedReader;
@@ -309,30 +310,32 @@ public class CommonMethods {
 
         return mDiff;
     }
-    public static ArrayList<String> getMonthsWithYear(String startDate, String endDate, String dateFormat) {
+
+    public static ArrayList<TimePeriod> getMonthsWithYear(String startDate, String endDate, String dateFormat) {
         ArrayList<String> monthsWithYear = new ArrayList<>();
-
         try {
-
             Calendar startCal = Calendar.getInstance();
             Calendar endCal = Calendar.getInstance();
-
             SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
-
             startCal.setTime(sdf.parse(startDate));
-
             endCal.setTime(sdf.parse(endDate));
-
             while (startCal.getTimeInMillis() <= endCal.getTimeInMillis()) {
                 monthsWithYear.add(String.valueOf(android.text.format.DateFormat.format("MMM-yyyy", startCal)));
                 startCal.add(Calendar.MONTH, 1);
             }
-
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        return monthsWithYear;
+        ArrayList<TimePeriod> timePeriods = new ArrayList<>();
+        for (String data :
+                monthsWithYear) {
+            String[] splitValues = data.split("-");
+            TimePeriod timePeriod = new TimePeriod();
+            timePeriod.setMonthName(splitValues[0]);
+            timePeriod.setYear(splitValues[1]);
+            timePeriods.add(timePeriod);
+        }
+        return timePeriods;
     }
 
     public static void dateDifference(Date startDate, Date endDate) {
@@ -463,7 +466,7 @@ public class CommonMethods {
     }
 
     public static void Log(String tag, String message) {
-        Log.e(tag, message);
+        Log.e(tag, "" + message);
     }
 
 
@@ -485,7 +488,7 @@ public class CommonMethods {
 
 
     public static String getFormatedDate(String strDate, String sourceFormate,
-                                                   String destinyFormate) {
+                                         String destinyFormate) {
         SimpleDateFormat df;
         df = new SimpleDateFormat(sourceFormate, Locale.US);
         Date date = null;
@@ -512,7 +515,7 @@ public class CommonMethods {
 
 
         if (formatString.equalsIgnoreCase(MyRescribeConstants.TIME)) {
-            SimpleDateFormat ft = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.HH_MM,Locale.US);
+            SimpleDateFormat ft = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.HH_MM, Locale.US);
 
             Date dateObj = null;
 
@@ -530,7 +533,7 @@ public class CommonMethods {
         }//if
 
         else if (formatString.equalsIgnoreCase(MyRescribeConstants.DATE)) {
-            SimpleDateFormat ft = new SimpleDateFormat(currentDateFormat,Locale.US);
+            SimpleDateFormat ft = new SimpleDateFormat(currentDateFormat, Locale.US);
 
             Date dateObj = null;
 
@@ -748,7 +751,7 @@ public class CommonMethods {
             time = context.getString(R.string.mlunch);
         } else if (hour >= 15 && hour <= 17) {
             time = context.getString(R.string.msnacks);
-        }else if (hour >= 17 && hour <= 24) {
+        } else if (hour >= 17 && hour <= 24) {
             time = context.getString(R.string.mdinner);
         }
         CommonMethods.Log(TAG, "hour" + hour);
@@ -806,6 +809,7 @@ public class CommonMethods {
         }
         return abbreviation;
     }
+
     public static Drawable getMedicineTypeImage(String medicineTypeName, Context context) {
 
         Drawable abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);
@@ -854,20 +858,21 @@ public class CommonMethods {
         }
         return abbreviation;
     }
+
     public static int getVisitDetailsIcons(String visitDetailName, Context context) {
 
-       // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
+        // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.ellipse_2;
         if (visitDetailName.equalsIgnoreCase("complaints")) {
             abbreviation = R.drawable.complaints;
         } else if (visitDetailName.equalsIgnoreCase("vitals")) {
-            abbreviation =  R.drawable.vitals;
+            abbreviation = R.drawable.vitals;
         } else if (visitDetailName.equalsIgnoreCase("remarks")) {
-            abbreviation =  R.drawable.remarks;
+            abbreviation = R.drawable.remarks;
         } else if (visitDetailName.equalsIgnoreCase("diagnosis")) {
             abbreviation = R.drawable.diagnosis;
         } else if (visitDetailName.equalsIgnoreCase("prescription")) {
-            abbreviation =  R.drawable.prescription;
+            abbreviation = R.drawable.prescription;
         } else if (visitDetailName.equalsIgnoreCase("investigations")) {
             abbreviation = R.drawable.investigations;
         } else if (visitDetailName.equalsIgnoreCase("advice")) {
@@ -875,8 +880,77 @@ public class CommonMethods {
         }
         return abbreviation;
     }
+/*
+    public static int getVitalsDetails(String vitalDetailName, Context context) {
+
+        // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
+        int abbreviation = R.drawable.ellipse_2;
+        if (vitalDetailName.equalsIgnoreCase("")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("vitals")) {
+            abbreviation = R.drawable.vitals;
+        } else if (vitalDetailName.equalsIgnoreCase("remarks")) {
+            abbreviation = R.drawable.remarks;
+        } else if (vitalDetailName.equalsIgnoreCase("diagnosis")) {
+            abbreviation = R.drawable.diagnosis;
+        } else if (vitalDetailName.equalsIgnoreCase("prescription")) {
+            abbreviation = R.drawable.prescription;
+        } else if (vitalDetailName.equalsIgnoreCase("investigations")) {
+            abbreviation = R.drawable.investigations;
+        } else if (vitalDetailName.equalsIgnoreCase("advice")) {
+            abbreviation = R.drawable.advice; // not found
+        }
+        return abbreviation;
+    }
+*/
 
 
+    public static Date convertStringToDate(String dateString, String dateFormat) {
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        String dateInString = dateString;
+        Date date = null;
+        try {
+            date = formatter.parse(dateInString);
+            System.out.println(date);
+            System.out.println(formatter.format(date));
+            return date;
 
+        } catch (ParseException e) {
+            e.printStackTrace();
+            CommonMethods.Log("convertStringToDate", "convertStringToDate EXCEPTION OCCURS : " + e.getMessage());
+        }
+        return null;
+    }
+
+    public static String getSuffixForNumber(final int n) {
+        //  checkArgument(n >= 1 && n <= 31, "illegal day of month: " + n);
+
+        if (n >= 11 && n <= 13) {
+            return "th";
+        }
+        switch (n % 10) {
+            case 1:
+                return "st";
+
+            case 2:
+                return "nd";
+
+            case 3:
+                return "rd";
+
+            default:
+                return "th";
+        }
+
+    }
+
+    //TODO : this is done for temp
+    public static ArrayList<String> getYearForDoctorList() {
+        ArrayList<String> a = new ArrayList<>();
+        a.add("2015");
+        a.add("2016");
+        a.add("2017");
+        return a;
+    }
 }
 

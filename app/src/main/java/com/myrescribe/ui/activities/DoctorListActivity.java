@@ -61,11 +61,9 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     private CustomSpinnerAdapter mCustomSpinAdapter;
     @BindView(R.id.year)
     Spinner mYearSpinnerView;
-
     private ArrayList<String> mYearList;
     private ArrayList<TimePeriod> mTimePeriodList;
     private TimePeriod mCurrentSelectedTimePeriodTab;
-
     private DoctorHelper mDoctorHelper;
     private ViewPagerAdapter mViewPagerAdapter;
     private HashSet<String> mGeneratedRequestForYearList = new HashSet<>();

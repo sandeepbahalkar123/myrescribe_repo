@@ -881,6 +881,29 @@ public class CommonMethods {
         }
         return abbreviation;
     }
+/*
+    public static int getVitalsDetails(String vitalDetailName, Context context) {
+
+        // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
+        int abbreviation = R.drawable.ellipse_2;
+        if (vitalDetailName.equalsIgnoreCase("")) {
+            abbreviation = R.drawable.complaints;
+        } else if (vitalDetailName.equalsIgnoreCase("vitals")) {
+            abbreviation = R.drawable.vitals;
+        } else if (vitalDetailName.equalsIgnoreCase("remarks")) {
+            abbreviation = R.drawable.remarks;
+        } else if (vitalDetailName.equalsIgnoreCase("diagnosis")) {
+            abbreviation = R.drawable.diagnosis;
+        } else if (vitalDetailName.equalsIgnoreCase("prescription")) {
+            abbreviation = R.drawable.prescription;
+        } else if (vitalDetailName.equalsIgnoreCase("investigations")) {
+            abbreviation = R.drawable.investigations;
+        } else if (vitalDetailName.equalsIgnoreCase("advice")) {
+            abbreviation = R.drawable.advice; // not found
+        }
+        return abbreviation;
+    }
+*/
 
     public static String getSuffixForNumber(final int n) {
         //  checkArgument(n >= 1 && n <= 31, "illegal day of month: " + n);

@@ -1,7 +1,7 @@
 package com.myrescribe.adapters;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.myrescribe.R;
 import com.myrescribe.model.Common;
 import com.myrescribe.model.doctors.DoctorDetail;
+import com.myrescribe.ui.activities.ViewDetailsActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -34,10 +35,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
     private final String TAG = getClass().getName();
     private SimpleDateFormat mDateFormat;
-    private int mParentDataContainerBackground;
     Context mContext;
-    int layoutResourceId;
-    int colorId = 0;
     ArrayList<DoctorDetail> mDataList;
 
 
@@ -53,6 +51,9 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
         @BindView(R.id.date)
         CustomTextView date;
+
+        @BindView(R.id.clickOnDoctorVisitLinearLayout)
+        LinearLayout mClickOnDoctorVisitLinearLayout;
 
         @BindView(R.id.circularBulletChildElement)
         ImageView circularBulletChildElement;
@@ -96,7 +97,9 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
     @Override
     public void onBindViewHolder(final DoctorListAdapter.ListViewHolder holder, final int position) {
-        DoctorDetail dataObject = mDataList.get(position);
+
+        final DoctorDetail dataObject = mDataList.get(position);
+
         if (dataObject.isStartElement()) {
             //----
             //   String s = CommonMethods.formatDateTime(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
@@ -151,16 +154,22 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
             holder.lowerLine.setVisibility(View.VISIBLE);
         }
         //---
-
-
+        holder.mClickOnDoctorVisitLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ViewDetailsActivity.class);
+                intent.putExtra(mContext.getString(R.string.name), dataObject.getDoctorName());
+                intent.putExtra(mContext.getString(R.string.specialization), dataObject.getSpecialization());
+                intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());
+                mContext.startActivity(intent);
+            }
+        });
     }
-
 
     @Override
     public int getItemCount() {
         return mDataList.size();
     }
-
 
 }
 

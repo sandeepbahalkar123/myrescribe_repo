@@ -2,7 +2,11 @@ package com.myrescribe.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,18 +14,26 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.bumptech.glide.Glide;
 import com.myrescribe.R;
 import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.notification.AppointmentAlarmTask;
 import com.myrescribe.notification.DosesAlarmTask;
 import com.myrescribe.notification.InvestigationAlarmTask;
 import com.myrescribe.preference.MyRescribePreferencesManager;
+import com.myrescribe.ui.customesViews.ScrollableImageView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 /**
@@ -37,12 +49,13 @@ public class HomePageActivity extends AppCompatActivity
     String lunchTime = "";
     String dinnerTime = "";
     String snacksTime = "";
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContext = HomePageActivity.this;
         if (getIntent().getBooleanExtra(MyRescribeConstants.ALERT, true))
@@ -57,6 +70,47 @@ public class HomePageActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
+        new BitmapLoaderTask().execute("home_page2.jpeg");
+
+
+    }
+
+    private void setImageBitmap(Bitmap bmp) {
+        ImageView imageView = new ScrollableImageView(this);
+        imageView.setLayoutParams(new ViewGroup.LayoutParams(bmp.getWidth(), bmp.getHeight() - toolbar.getHeight()));
+        imageView.setImageBitmap(bmp);
+        ViewGroup container = (ViewGroup) findViewById(R.id.container);
+        container.addView(imageView);
+    }
+
+    private class BitmapLoaderTask extends AsyncTask<String, Void, Bitmap> {
+
+        private ProgressBar progress;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress = (ProgressBar) findViewById(android.R.id.progress);
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            AssetManager assets = getAssets();
+            Bitmap bmp = null;
+            try {
+                bmp = BitmapFactory.decodeStream(assets.open(params[0]));
+            } catch (IOException e) {
+                // Log.e(DEBUG_TAG, e.getMessage(), e);
+            }
+            return bmp;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+            progress.setVisibility(View.INVISIBLE);
+            setImageBitmap(result);
+        }
     }
 
     private void notificationForMedicine() {
@@ -76,7 +130,7 @@ public class HomePageActivity extends AppCompatActivity
         cursor.close();
 
         String times[] = {breakFastTime, lunchTime, dinnerTime, snacksTime};
-        String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY);
+        String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
 
         new DosesAlarmTask(mContext, times, date).run();
         new InvestigationAlarmTask(mContext, "9:00 am", getResources().getString(R.string.investigation_msg)).run();
@@ -96,7 +150,7 @@ public class HomePageActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-         getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -105,52 +159,52 @@ public class HomePageActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
+        int id = item.getItemId();
 
 //        //noinspection SimplifiableIfStatement
-   if (id == R.id.notification) {
-       Calendar c = Calendar.getInstance();
-       int hour24 = c.get(Calendar.HOUR_OF_DAY);
-       int Min = c.get(Calendar.MINUTE);
-       mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
-       if (mGetMealTime.equals(getString(R.string.break_fast))) {
-           Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
-           intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT,getString(R.string.breakfast_medication) );
-           intentNotification.putExtra(MyRescribeConstants.DATE,CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY));
-           intentNotification.putExtra(MyRescribeConstants.TIME, breakFastTime);
-           intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                   Intent.FLAG_ACTIVITY_CLEAR_TOP);
-           startActivity(intentNotification);
+        if (id == R.id.notification) {
+            Calendar c = Calendar.getInstance();
+            int hour24 = c.get(Calendar.HOUR_OF_DAY);
+            int Min = c.get(Calendar.MINUTE);
+            mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
+            if (mGetMealTime.equals(getString(R.string.break_fast))) {
+                Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
+                intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
+                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intentNotification.putExtra(MyRescribeConstants.TIME, breakFastTime);
+                intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentNotification);
 
-       }else if (mGetMealTime.equals(getString(R.string.mlunch))) {
-           Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
-           intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT,getString(R.string.lunch_medication) );
-           intentNotification.putExtra(MyRescribeConstants.DATE,CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY));
-           intentNotification.putExtra(MyRescribeConstants.TIME,lunchTime);
-           intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                   Intent.FLAG_ACTIVITY_CLEAR_TOP);
-           startActivity(intentNotification);
+            } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
+                Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
+                intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
+                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intentNotification.putExtra(MyRescribeConstants.TIME, lunchTime);
+                intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentNotification);
 
-       }else  if (mGetMealTime.equals(getString(R.string.msnacks))) {
-           Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
-           intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT,getString(R.string.snacks_medication) );
-           intentNotification.putExtra(MyRescribeConstants.DATE,CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY));
-           intentNotification.putExtra(MyRescribeConstants.TIME,snacksTime);
-           intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                   Intent.FLAG_ACTIVITY_CLEAR_TOP);
-           startActivity(intentNotification);
+            } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
+                Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
+                intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
+                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intentNotification.putExtra(MyRescribeConstants.TIME, snacksTime);
+                intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentNotification);
 
-       }else   if (mGetMealTime.equals(getString(R.string.mdinner))) {
-           Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
-           intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT,getString(R.string.dinner_medication) );
-           intentNotification.putExtra(MyRescribeConstants.DATE,CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY));
-           intentNotification.putExtra(MyRescribeConstants.TIME,dinnerTime);
-           intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                   Intent.FLAG_ACTIVITY_CLEAR_TOP);
-           startActivity(intentNotification);
-       }
-        return true;
-  }
+            } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
+                Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
+                intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
+                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intentNotification.putExtra(MyRescribeConstants.TIME, dinnerTime);
+                intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentNotification);
+            }
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

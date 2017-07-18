@@ -1,5 +1,6 @@
 package com.myrescribe.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.myrescribe.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,7 @@ import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.visit_details.Data;
 import com.myrescribe.model.visit_details.Diagnosi;
 import com.myrescribe.model.visit_details.PatientHistory;
+import com.myrescribe.ui.customesViews.CustomTextView;
 
 import java.util.HashMap;
 
@@ -37,12 +40,22 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
     ExpandableListView mHistoryExpandableListView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+    @BindView(R.id.doctorSpecialization)
+    CustomTextView mDoctorSpecialization;
+
+    @BindView(R.id.doctorName)
+    CustomTextView mDoctorName;
+
+    @BindView(R.id.doctor_address)
+    CustomTextView mDoctor_address;
+
     private int lastExpandedPosition = -1;
-    private int lastChildExpandedPosition = -1;
-    private HistoryHelper mHistoryHelper;
     private ArrayList<String> mHeaderList;
+    Intent intent;
     private HashMap<String, ArrayList<Diagnosi>> mHistoryDataList;
     private OneDayVisitHelper mOneDayVisitHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +66,13 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
     }
 
     private void initialize() {
+        intent = getIntent();
+        if (intent != null) {
+            mDoctorName.setText(intent.getStringExtra(getString(R.string.name)));
+            mDoctorSpecialization.setText(intent.getStringExtra(getString(R.string.specialization)));
+            mDoctor_address.setText(intent.getStringExtra(getString(R.string.address)));
+        }
+
         mOneDayVisitHelper = new OneDayVisitHelper(this, this);
         mOneDayVisitHelper.doGetOneDayVisit();
        /* mHistoryHelper = new HistoryHelper(this, this);
@@ -64,7 +84,7 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
             @Override
             public void onClick(View v) {
                 //What to do on back clicked
-              finish();
+                finish();
             }
         });
         mHistoryExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -125,53 +145,51 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
                 dataList) {
             if (listObject.getComplaints() != null) {
                /* if (listObject.getComplaints().size() != 0) {*/
-                    mHeaderList.add("Complaints");
+                mHeaderList.add(getString(R.string.compalints));
                 ArrayList<Diagnosi> diagnosis = new ArrayList<>();
                 Diagnosi mDiagnosiList = new Diagnosi();
                 mDiagnosiList.setName("Medicine not available");
                 diagnosis.add(mDiagnosiList);
-                mHistoryDataList.put("Complaints", diagnosis);
+                mHistoryDataList.put(getString(R.string.compalints), diagnosis);
 
             } else if (listObject.getDiagnosis() != null) {
 
-                    mHeaderList.add("Diagnosis");
-                    mHistoryDataList.put("Diagnosis", listObject.getDiagnosis());
+                mHeaderList.add(getString(R.string.diagnosis));
+                mHistoryDataList.put(getString(R.string.diagnosis), listObject.getDiagnosis());
 
             } else if (listObject.getPrescriptions() != null) {
 
-                    mHeaderList.add("Prescription");
-                    mHistoryDataList.put("Prescription", listObject.getPrescriptions());
+                mHeaderList.add(getString(R.string.prescription));
+                mHistoryDataList.put(getString(R.string.prescription), listObject.getPrescriptions());
 
             } else if (listObject.getInvestigations() != null) {
 
-                    mHeaderList.add("Investigations");
+                mHeaderList.add(getString(R.string.investigations));
                 ArrayList<Diagnosi> diagnosis = new ArrayList<>();
                 Diagnosi mDiagnosiList = new Diagnosi();
                 mDiagnosiList.setName("Need to investigate");
                 diagnosis.add(mDiagnosiList);
-                mHistoryDataList.put("Investigations", diagnosis);
+                mHistoryDataList.put(getString(R.string.investigations), diagnosis);
 
-            }else if (listObject.getVitals() != null) {
-                mHeaderList.add("Vitals");
+            } else if (listObject.getVitals() != null) {
+                mHeaderList.add(getString(R.string.vitals));
                 ArrayList<Diagnosi> diagnosis = new ArrayList<>();
                 Diagnosi mDiagnosiList = new Diagnosi();
                 mDiagnosiList.setName("BP-130/86 mm of hg");
                 diagnosis.add(mDiagnosiList);
-                mHistoryDataList.put("Vitals", diagnosis);
+                mHistoryDataList.put(getString(R.string.vitals), diagnosis);
 
-            }
-            else if (listObject.getRemarks() != null) {
-                    mHeaderList.add("Remarks");
+            } else if (listObject.getRemarks() != null) {
+                mHeaderList.add(getString(R.string.remarks));
                 ArrayList<Diagnosi> diagnosis = new ArrayList<>();
                 Diagnosi mDiagnosiList = new Diagnosi();
                 mDiagnosiList.setName("Please drink water");
                 diagnosis.add(mDiagnosiList);
-                    mHistoryDataList.put("Remarks", diagnosis);
-            }
-           else if (listObject.getAdvice() != null) {
+                mHistoryDataList.put(getString(R.string.remarks), diagnosis);
+            } else if (listObject.getAdvice() != null) {
                 if (!listObject.getAdvice().equals(null)) {
-                    mHeaderList.add("Advice");
-                    mHistoryDataList.put("Advice", listObject.getAdvice());
+                    mHeaderList.add(getString(R.string.advice));
+                    mHistoryDataList.put(getString(R.string.advice), listObject.getAdvice());
                 }
             }
 

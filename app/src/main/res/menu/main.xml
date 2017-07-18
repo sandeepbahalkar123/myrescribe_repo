@@ -5,6 +5,6 @@
         android:id="@+id/notification"
         android:orderInCategory="100"
         android:title="@string/search"
-        android:icon="@drawable/notification_icon"
+        android:icon="@drawable/notify"
         app:showAsAction="always" />
 </menu>

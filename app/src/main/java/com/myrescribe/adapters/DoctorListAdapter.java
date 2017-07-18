@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
+import com.myrescribe.model.Common;
 import com.myrescribe.model.doctors.DoctorDetail;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
@@ -95,13 +96,11 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
     @Override
     public void onBindViewHolder(final DoctorListAdapter.ListViewHolder holder, final int position) {
-
         DoctorDetail dataObject = mDataList.get(position);
-
-
         if (dataObject.isStartElement()) {
             //----
-            Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+            //   String s = CommonMethods.formatDateTime(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
+            Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
             //----

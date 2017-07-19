@@ -1,5 +1,6 @@
 package com.myrescribe.ui.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -30,6 +31,7 @@ public class AppointmentFragment extends Fragment {
     private int mColumnCount = 1;
     RecyclerView mRecyclerView;
     AppointmentAdapter mAdapter;
+    private Context context;
     private List<Movie> movieList = new ArrayList<>();
 
     /**
@@ -62,9 +64,10 @@ public class AppointmentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_appoinment, container, false);
+        context = getActivity();
         mRecyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
 
-        mAdapter = new AppointmentAdapter(movieList);
+        mAdapter = new AppointmentAdapter(context,movieList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());

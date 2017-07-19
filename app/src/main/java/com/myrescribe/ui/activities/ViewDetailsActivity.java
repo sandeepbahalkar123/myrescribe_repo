@@ -76,7 +76,7 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
 
     private void initialize() {
         intent = getIntent();
-        if (intent != null) {
+        if (getIntent().getExtras() != null) {
             mDoctorName.setText(intent.getStringExtra(getString(R.string.name)));
             mDoctorSpecialization.setText(intent.getStringExtra(getString(R.string.specialization)));
             mDoctor_address.setText(intent.getStringExtra(getString(R.string.address)));

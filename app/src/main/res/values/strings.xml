@@ -172,6 +172,7 @@
     <string name="new_document">New Document</string>
     <string name="title_activity_uploaded_docs">Uploaded Documents</string>
     <string name="no_data_available">No data available</string>
+    <string name="google_maps_key">AIzaSyCnnUyKo4ktLqWLTKXtO2jp1AtIt0u9TEA</string>
 
     <string-array name="colors_first">
         <item>#ff0000</item>

@@ -10,16 +10,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.myrescribe.R;
 import com.myrescribe.model.doctors.DoctorDetail;
 import com.myrescribe.ui.activities.ViewDetailsActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -30,9 +33,9 @@ import butterknife.ButterKnife;
 public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.ListViewHolder> {
 
     private final String TAG = getClass().getName();
-    private SimpleDateFormat mDateFormat;
     Context mContext;
     ArrayList<DoctorDetail> mDataList;
+    private SimpleDateFormat mDateFormat;
 
 
     public DoctorListAdapter(Context context, ArrayList<DoctorDetail> dataList) {
@@ -43,53 +46,12 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
     }
 
-    static class ListViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.date)
-        CustomTextView date;
-
-        @BindView(R.id.clickOnDoctorVisitLinearLayout)
-        LinearLayout mClickOnDoctorVisitLinearLayout;
-
-        @BindView(R.id.circularBulletChildElement)
-        ImageView circularBulletChildElement;
-        @BindView(R.id.circularBulletMainElement)
-        ImageView circularBulletMainElement;
-
-        @BindView(R.id.upperLine)
-        TextView upperLine;
-        @BindView(R.id.lowerLine)
-        TextView lowerLine;
-
-        @BindView(R.id.doctorName)
-        CustomTextView doctorName;
-        @BindView(R.id.doctorType)
-        TextView doctorType;
-        @BindView(R.id.doctorAddress)
-        TextView doctorAddress;
-
-        @BindView(R.id.parentDataContainer)
-        LinearLayout parentDataContainer;
-        @BindView(R.id.sideBarView)
-        TextView sideBarView;
-
-        View view;
-
-        ListViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-            this.view = view;
-        }
-    }
-
-
     @Override
     public DoctorListAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_doctor_list_layout, parent, false);
         return new DoctorListAdapter.ListViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(final DoctorListAdapter.ListViewHolder holder, final int position) {
@@ -150,24 +112,62 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
             holder.lowerLine.setVisibility(View.VISIBLE);
         }
         //---
-    holder.mClickOnDoctorVisitLinearLayout.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(mContext, ViewDetailsActivity.class);
-            intent.putExtra("DOCTOR_NAME",dataObject.getDoctorName());
-            intent.putExtra("DOCTOR_SPECIALIST",dataObject.getSpecialization());
-            intent.putExtra("DOCTOR_ADDRESS",dataObject.getAddress());
-            mContext.startActivity(intent);
+        holder.mClickOnDoctorVisitLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ViewDetailsActivity.class);
+                intent.putExtra("DOCTOR_NAME", dataObject.getDoctorName());
+                intent.putExtra("DOCTOR_SPECIALIST", dataObject.getSpecialization());
+                intent.putExtra("DOCTOR_ADDRESS", dataObject.getAddress());
+                mContext.startActivity(intent);
 
-        }
-    });
+            }
+        });
 
     }
-
 
     @Override
     public int getItemCount() {
         return mDataList.size();
+    }
+
+    static class ListViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.date)
+        CustomTextView date;
+
+        @BindView(R.id.clickOnDoctorVisitLinearLayout)
+        LinearLayout mClickOnDoctorVisitLinearLayout;
+
+        @BindView(R.id.circularBulletChildElement)
+        ImageView circularBulletChildElement;
+        @BindView(R.id.circularBulletMainElement)
+        ImageView circularBulletMainElement;
+
+        @BindView(R.id.upperLine)
+        TextView upperLine;
+        @BindView(R.id.lowerLine)
+        TextView lowerLine;
+
+        @BindView(R.id.doctorName)
+        CustomTextView doctorName;
+        @BindView(R.id.doctorType)
+        TextView doctorType;
+        @BindView(R.id.doctorAddress)
+        TextView doctorAddress;
+
+        @BindView(R.id.parentDataContainer)
+        LinearLayout parentDataContainer;
+        @BindView(R.id.sideBarView)
+        TextView sideBarView;
+
+        View view;
+
+        ListViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+            this.view = view;
+        }
     }
 
 

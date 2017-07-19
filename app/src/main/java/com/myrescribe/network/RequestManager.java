@@ -28,13 +28,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myrescribe.R;
-
 import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.model.login.LoginModel;
+import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.model.visit_details.VisitDetailsModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.activities.SplashScreenActivity;
@@ -42,8 +41,10 @@ import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.util.NetworkUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Map;
@@ -366,7 +367,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     // Need to add
 
                     case MyRescribeConstants.TASK_PRESCRIPTION_LIST: //This is for get archived list
-                      PrescriptionModel ipTestResponseModel = gson.fromJson(data, PrescriptionModel.class);
+                        PrescriptionModel ipTestResponseModel = gson.fromJson(data, PrescriptionModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, ipTestResponseModel, mOldDataTag);
                         break;
 

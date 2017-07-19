@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.myrescribe.services.NotificationService;
 import com.myrescribe.services.InvestigationNotificationService;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -61,7 +60,7 @@ public class InvestigationAlarmTask implements Runnable {
         setAlarm(time, msg, 4);
     }
 
-    private void setAlarm(String time, String msg, int requestCode){
+    private void setAlarm(String time, String msg, int requestCode) {
         Intent intent = new Intent(context, InvestigationNotificationService.class);
         intent.putExtra(InvestigationNotificationService.INTENT_NOTIFY, true);
         intent.putExtra(MyRescribeConstants.INVESTIGATION_TIME, time);

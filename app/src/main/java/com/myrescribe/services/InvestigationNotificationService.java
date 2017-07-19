@@ -32,17 +32,10 @@ public class InvestigationNotificationService extends Service {
 
 //    static int mNotificationNoTextField = 0;
 
-    /**
-     * Class for clients to access
-     */
-    public class ServiceBinder extends Binder {
-        InvestigationNotificationService getService() {
-            return InvestigationNotificationService.this;
-        }
-    }
-
     // Name of an intent extra we can use to identify if this service was started to create a notification
     public static final String INTENT_NOTIFY = "com.myrescribe";
+    // This is the object that receives interactions from clients
+    private final IBinder mBinder = new ServiceBinder();
 
     @Override
     public void onCreate() {
@@ -70,9 +63,9 @@ public class InvestigationNotificationService extends Service {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 if (cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 0) {
-                    if (docs.equals("")){
+                    if (docs.equals("")) {
                         docs = docs + " " + cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME));
-                    }else {
+                    } else {
                         docs = docs + " | " + cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME));
                     }
                     notUploaded += 1;
@@ -108,9 +101,6 @@ public class InvestigationNotificationService extends Service {
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
-
-    // This is the object that receives interactions from clients
-    private final IBinder mBinder = new ServiceBinder();
 
     public void customNotification(Intent intentData) {
 
@@ -150,6 +140,15 @@ public class InvestigationNotificationService extends Service {
         notificationmanager.notify(notification_id, builder.build());
 
         stopSelf();
+    }
+
+    /**
+     * Class for clients to access
+     */
+    public class ServiceBinder extends Binder {
+        InvestigationNotificationService getService() {
+            return InvestigationNotificationService.this;
+        }
     }
 
 }

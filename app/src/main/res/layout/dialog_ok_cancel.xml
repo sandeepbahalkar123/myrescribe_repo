@@ -32,16 +32,14 @@
                     android:layout_centerInParent="true"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="@string/app_name"
-                    android:textSize="@dimen/sp14"
-                    android:textStyle="bold"
                     android:textColor="@color/black"
-                    />
+                    android:textSize="@dimen/sp14"
+                    android:textStyle="bold" />
 
 
             </RelativeLayout>
 
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -53,16 +51,14 @@
             android:paddingLeft="@dimen/dp16"
             android:paddingRight="@dimen/dp16"
             android:paddingTop="@dimen/dp10">
-
 
 
             <TextView
+                android:id="@+id/textview_sucess"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:id="@+id/textview_sucess"
-                android:textColor="@color/black"
-                />
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
@@ -76,20 +72,15 @@
             android:paddingTop="@dimen/dp10">
 
 
-
             <Button
+                android:id="@+id/button_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:background="@color/tagColor"
+                android:gravity="center"
                 android:text="@string/ok"
-                android:id="@+id/button_ok"
-                android:textColor="@color/black"
-                />
+                android:textColor="@color/black" />
         </LinearLayout>
-
-
-
 
 
     </LinearLayout>

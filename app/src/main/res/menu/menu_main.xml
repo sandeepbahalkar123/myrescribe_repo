@@ -4,21 +4,21 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/onGoingMedication"
-            android:title="@string/going_medication"
-            android:icon="@drawable/menu_prescription"/>
+            android:icon="@drawable/menu_prescription"
+            android:title="@string/going_medication" />
         <item
             android:id="@+id/doctor_details"
-            android:title="@string/doctor_details"
-            android:icon="@drawable/doctor_visit"/>
+            android:icon="@drawable/doctor_visit"
+            android:title="@string/doctor_details" />
         <item
             android:id="@+id/visit_details"
-            android:title="@string/visit_details"
-            android:icon="@drawable/visit_detail"/>
+            android:icon="@drawable/visit_detail"
+            android:title="@string/visit_details" />
 
         <item
             android:id="@+id/investigations"
-            android:title="@string/investigation"
-            android:icon="@drawable/investigation"/>
+            android:icon="@drawable/investigation"
+            android:title="@string/investigation" />
 
         <!--<item
             android:id="@+id/appointments"
@@ -26,10 +26,10 @@
             android:icon="@mipmap/logoutblack"/>
 -->
 
-       <item
+        <item
             android:id="@+id/logout"
-            android:title="@string/logout"
-            android:icon="@drawable/logout"/>
+            android:icon="@drawable/logout"
+            android:title="@string/logout" />
     </group>
 
 

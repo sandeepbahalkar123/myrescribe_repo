@@ -11,11 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.myrescribe.R;
@@ -102,6 +102,8 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 investigationTemp.add(dataObject);
             } else {
                 isAlreadyUploadedButtonVisible = View.VISIBLE;
+                investigation.get(i).setSelected(true);
+                investigation.get(i).setUploaded(true);
                 investigation.get(i).setPhotos(data.getPhotos());
             }
         }
@@ -156,6 +158,12 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("Restart", "onRestart");
+    }
+
+    @Override
     public void onBackPressed() {
         Intent intent = new Intent(InvestigationActivity.this, HomePageActivity.class);
         intent.putExtra(MyRescribeConstants.ALERT, false);
@@ -169,6 +177,14 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         investigation.add(new DataObject(2, "Lipid", false, false, new ArrayList<Image>()));
         investigation.add(new DataObject(3, "Liver Profile", false, false, new ArrayList<Image>()));
         investigation.add(new DataObject(4, "X Ray", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(5, "HB", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(6, "PCV", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(7, "EHR", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(8, "B.T.C.T", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(9, "G6", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(10, "PV", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(11, "ER", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(12, "C.T", false, false, new ArrayList<Image>()));
     }
 
     @Override
@@ -241,6 +257,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
             case R.id.selectUploadedButton:
                 Intent intent = new Intent(mContext, UploadedDocsActivity.class);
                 intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA, investigationTemp);
                 startActivityForResult(intent, UPLOADED_DOCS);
                 break;
             case R.id.gmailButton:

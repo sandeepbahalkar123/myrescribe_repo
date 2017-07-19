@@ -26,17 +26,6 @@ public class MyRescribePreferencesManager {
     private static SharedPreferences sharedPreferences = null;
     private static byte[] sKey;
 
-    public interface MYRESCRIBE_PREFERENCES_KEY {
-
-        String SERVER_PATH = "server_path";
-        String USER_GENDER = "user_gender";
-        String SERVER_CONNECTION_SUCCESS = "success";
-        String IS_VALID_IP_CONFIG = "isvalidipconfig";
-        String AUTHTOKEN = "authToken";
-        String PATEINTID = "patientId";
-        String LOGIN_STATUS = "login_status";
-    }
-
     public static SharedPreferences getSharedPreference(final Context context) {
         if (context != null) {
             if (sharedPreferences == null) {
@@ -147,7 +136,6 @@ public class MyRescribePreferencesManager {
         getSharedPreference(context).edit().clear().apply();
     }
 
-
     private static String encode(byte[] input) {
         return Base64.encodeToString(input, Base64.NO_PADDING | Base64.NO_WRAP);
     }
@@ -202,7 +190,6 @@ public class MyRescribePreferencesManager {
         return encode(generator.generateKey().getEncoded());
     }
 
-
     private static String generateAesKeyName(Context context) throws InvalidKeySpecException,
             NoSuchAlgorithmException {
         final char[] password = context.getPackageName().toCharArray();
@@ -220,5 +207,17 @@ public class MyRescribePreferencesManager {
         final KeySpec spec = new PBEKeySpec(password, salt, iterations, keyLength);
         return encode(SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
                 .generateSecret(spec).getEncoded());
+    }
+
+
+    public interface MYRESCRIBE_PREFERENCES_KEY {
+
+        String SERVER_PATH = "server_path";
+        String USER_GENDER = "user_gender";
+        String SERVER_CONNECTION_SUCCESS = "success";
+        String IS_VALID_IP_CONFIG = "isvalidipconfig";
+        String AUTHTOKEN = "authToken";
+        String PATEINTID = "patientId";
+        String LOGIN_STATUS = "login_status";
     }
 }

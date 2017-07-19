@@ -46,7 +46,7 @@ public class StartUpBootReceiver extends BroadcastReceiver {
         }
         cursor.close();
 
-        String times[] = {breakFast, lunchTime, dinnerTime,snacksTime};
+        String times[] = {breakFast, lunchTime, dinnerTime, snacksTime};
         String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY);
 
         new DosesAlarmTask(context, times, date).run();

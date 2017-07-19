@@ -43,6 +43,7 @@ public class UploadedDocsActivity extends AppCompatActivity {
 //    private Set<Image> photoSet = new HashSet<>();
     private ArrayList<Image> photoPaths = new ArrayList<>();
     private AppDBHelper appDBHelper;
+    private ArrayList<DataObject> investigationTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +65,10 @@ public class UploadedDocsActivity extends AppCompatActivity {
         appDBHelper = new AppDBHelper(mContext);
 
         investigation = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
+        investigationTemp = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA);
 
-        for (DataObject dataObject : investigation) {
-           /* photoSet.addAll(dataObject.getPhotos());*/
+        for (DataObject dataObject : investigation)
             photoPaths.addAll(dataObject.getPhotos());
-        }
 
         uploadedImageAdapter = new UploadedImageAdapter(mContext, photoPaths);
         recyclerView.setAdapter(uploadedImageAdapter);
@@ -94,7 +94,7 @@ public class UploadedDocsActivity extends AppCompatActivity {
         // Update server status with image id
 
         if (selectedImageCount > 0) {
-            for (DataObject dataObject : investigation) {
+            for (DataObject dataObject : investigationTemp) {
                 if (dataObject.isSelected() && !dataObject.isUploaded()) {
                     dataObject.setUploaded(dataObject.isSelected());
                     appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), "");
@@ -104,13 +104,13 @@ public class UploadedDocsActivity extends AppCompatActivity {
                     selectedCount += 1;
             }
 
-            if (selectedCount == investigation.size()) {
+            if (selectedCount == investigationTemp.size()) {
                 Intent intent = new Intent(this, HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent();
-                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigationTemp);
                 setResult(RESULT_OK, intent);
             }
             finish();

@@ -2,25 +2,24 @@ package com.myrescribe.interfaces;
 
 /**
  * @author Sandeep Bahalkar
- *
  */
 
 import java.util.Map;
 
 public interface Connector {
 
-	void setPostParams(CustomResponse customResponse);
+    void setPostParams(CustomResponse customResponse);
 
-	void setPostParams(Map<String, String> postParams);
+    void setPostParams(Map<String, String> postParams);
 
-	void setHeaderParams(Map<String, String> headerParams);
+    void setHeaderParams(Map<String, String> headerParams);
 
-	void connect();
+    void connect();
 
-	void parseJson(String data, boolean isTokenExpired);
+    void parseJson(String data, boolean isTokenExpired);
 
-	void abort();
+    void abort();
 
-	void setUrl(String url);
+    void setUrl(String url);
 
 }

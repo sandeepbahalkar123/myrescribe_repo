@@ -12,17 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/buttonLayout"
-        android:paddingBottom="@dimen/dp10"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp10">
 
         <com.myrescribe.ui.customesViews.CustomTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp20"
-            android:textSize="@dimen/sp18"
             android:text="@string/investigation_title"
             android:textColor="@color/black"
+            android:textSize="@dimen/sp18"
             app:customFont="@string/roboto_bold" />
 
         <RelativeLayout
@@ -43,6 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/dp12"
+                    style="@style/scrollbar_style"
                     android:layout_marginTop="@dimen/dp12" />
 
             </android.support.v7.widget.CardView>
@@ -85,11 +86,11 @@
                 android:background="@drawable/button_selector"
                 android:enabled="false"
                 android:paddingEnd="@dimen/dp10"
-                android:textSize="@dimen/sp18"
                 android:paddingStart="@dimen/dp10"
                 android:text="@string/already_upload"
                 android:textAllCaps="false"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp18" />
 
             <Button
                 android:id="@+id/selectDocsButton"
@@ -98,16 +99,16 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginLeft="@dimen/dp10"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/button_selector"
-                android:enabled="false"
                 android:layout_marginStart="@dimen/dp10"
                 android:layout_weight="1"
-                android:textAllCaps="false"
+                android:background="@drawable/button_selector"
+                android:enabled="false"
                 android:paddingEnd="@dimen/dp10"
                 android:paddingStart="@dimen/dp10"
-                android:textSize="@dimen/sp18"
                 android:text="@string/new_document"
-                android:textColor="@color/white" />
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp18" />
 
         </LinearLayout>
 

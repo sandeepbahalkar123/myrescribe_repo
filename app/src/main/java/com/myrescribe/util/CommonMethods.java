@@ -70,10 +70,9 @@ public class CommonMethods {
     private static final String TAG = "MyRescribe/CommonMethods";
     private static boolean encryptionIsOn = true;
     private static String aBuffer = "";
+    private static CheckIpConnection mCheckIpConnection;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private DatePickerDialogListener mDatePickerDialogListener;
-    private static CheckIpConnection mCheckIpConnection;
-
 
     public static void showToast(Context context, String error) {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
@@ -554,54 +553,6 @@ public class CommonMethods {
 
     }
 
-    public void datePickerDialog(Context context, DatePickerDialogListener datePickerDialogListener, Date dateToSet, final Boolean isFromDateClicked, final Date date) {
-        // Get Current Date
-        final Calendar c = Calendar.getInstance();
-        if (dateToSet != null) {
-            c.setTime(dateToSet);
-        }
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        mDatePickerDialogListener = datePickerDialogListener;
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
-
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-
-                        if (isFromDateClicked) {
-                            mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                        } else {
-                            mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                        }
-
-
-                    }
-                }, mYear, mMonth, mDay);
-        if (isFromDateClicked) {
-            datePickerDialog.getDatePicker().setCalendarViewShown(false);
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-            datePickerDialog.show();
-        } else {
-            if (date != null) {
-                datePickerDialog.getDatePicker().setCalendarViewShown(false);
-                datePickerDialog.getDatePicker().setMinDate(date.getTime());
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-                datePickerDialog.show();
-            } else {
-                datePickerDialog.getDatePicker().setCalendarViewShown(false);
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-                datePickerDialog.show();
-            }
-        }
-
-    }
-
     private static boolean isValidIP(String ipAddr) {
 
         Pattern ptn = Pattern.compile("(\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b)\\.(\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b)\\.(\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b)\\.(\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b)\\:(\\d{1,4})$");
@@ -759,8 +710,6 @@ public class CommonMethods {
         return time;
     }
 
-    // Return medicine Icon's
-
     public static Drawable getMedicalTypeIcon(String medicineTypeName, Context context) {
 
         Drawable abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);
@@ -809,6 +758,8 @@ public class CommonMethods {
         }
         return abbreviation;
     }
+
+    // Return medicine Icon's
 
     public static Drawable getMedicineTypeImage(String medicineTypeName, Context context) {
 
@@ -880,6 +831,23 @@ public class CommonMethods {
         }
         return abbreviation;
     }
+
+    public static Date convertStringToDate(String dateString, String dateFormat) {
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        String dateInString = dateString;
+        Date date = null;
+        try {
+            date = formatter.parse(dateInString);
+            System.out.println(date);
+            System.out.println(formatter.format(date));
+            return date;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            CommonMethods.Log("convertStringToDate", "convertStringToDate EXCEPTION OCCURS : " + e.getMessage());
+        }
+        return null;
+    }
 /*
     public static int getVitalsDetails(String vitalDetailName, Context context) {
 
@@ -903,24 +871,6 @@ public class CommonMethods {
         return abbreviation;
     }
 */
-
-
-    public static Date convertStringToDate(String dateString, String dateFormat) {
-        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
-        String dateInString = dateString;
-        Date date = null;
-        try {
-            date = formatter.parse(dateInString);
-            System.out.println(date);
-            System.out.println(formatter.format(date));
-            return date;
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-            CommonMethods.Log("convertStringToDate", "convertStringToDate EXCEPTION OCCURS : " + e.getMessage());
-        }
-        return null;
-    }
 
     public static String getSuffixForNumber(final int n) {
         //  checkArgument(n >= 1 && n <= 31, "illegal day of month: " + n);
@@ -951,6 +901,54 @@ public class CommonMethods {
         a.add("2016");
         a.add("2017");
         return a;
+    }
+
+    public void datePickerDialog(Context context, DatePickerDialogListener datePickerDialogListener, Date dateToSet, final Boolean isFromDateClicked, final Date date) {
+        // Get Current Date
+        final Calendar c = Calendar.getInstance();
+        if (dateToSet != null) {
+            c.setTime(dateToSet);
+        }
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        mDatePickerDialogListener = datePickerDialogListener;
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                new DatePickerDialog.OnDateSetListener() {
+
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        if (isFromDateClicked) {
+                            mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        } else {
+                            mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        }
+
+
+                    }
+                }, mYear, mMonth, mDay);
+        if (isFromDateClicked) {
+            datePickerDialog.getDatePicker().setCalendarViewShown(false);
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+            datePickerDialog.show();
+        } else {
+            if (date != null) {
+                datePickerDialog.getDatePicker().setCalendarViewShown(false);
+                datePickerDialog.getDatePicker().setMinDate(date.getTime());
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                datePickerDialog.show();
+            } else {
+                datePickerDialog.getDatePicker().setCalendarViewShown(false);
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                datePickerDialog.show();
+            }
+        }
+
     }
 }
 

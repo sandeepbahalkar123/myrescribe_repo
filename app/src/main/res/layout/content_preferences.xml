@@ -12,76 +12,77 @@
 
     <TextView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
-        android:layout_height="wrap_content"
-        android:text="Select your breakfast time"/>
+        android:text="Select your breakfast time" />
 
     <TextView
         android:id="@+id/breakFastSelect"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="HH:MM AM/PM"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:layout_height="wrap_content"
-        android:hint="HH:MM AM/PM"/>
+        android:paddingStart="@dimen/activity_horizontal_margin" />
 
     <TextView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
-        android:layout_height="wrap_content"
-        android:text="Select your Lunch time"/>
+        android:text="Select your Lunch time" />
 
     <TextView
         android:id="@+id/lunchTimeSelect"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="HH:MM AM/PM"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:layout_height="wrap_content"
-        android:hint="HH:MM AM/PM"/>
+        android:paddingStart="@dimen/activity_horizontal_margin" />
 
     <TextView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
-        android:layout_height="wrap_content"
-        android:text="Select your Snacks time"/>
+        android:text="Select your Snacks time" />
 
     <TextView
         android:id="@+id/snackstSelect"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="HH:MM AM/PM"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:layout_height="wrap_content"
-        android:hint="HH:MM AM/PM"/>
+        android:paddingStart="@dimen/activity_horizontal_margin" />
+
     <TextView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
-        android:layout_height="wrap_content"
-        android:text="Select your Dinner time"/>
+        android:text="Select your Dinner time" />
 
     <TextView
         android:id="@+id/dinnerTimeSelect"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="HH:MM AM/PM"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:layout_height="wrap_content"
-        android:hint="HH:MM AM/PM"/>
+        android:paddingStart="@dimen/activity_horizontal_margin" />
 
     <Button
-        android:layout_gravity="center_horizontal"
         android:id="@+id/saveButton"
-        android:text="@string/save"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/save" />
 
 </LinearLayout>

@@ -28,17 +28,10 @@ public class AppointmentNotificationService extends Service {
 
 //    static int mNotificationNoTextField = 0;
 
-    /**
-     * Class for clients to access
-     */
-    public class ServiceBinder extends Binder {
-        AppointmentNotificationService getService() {
-            return AppointmentNotificationService.this;
-        }
-    }
-
     // Name of an intent extra we can use to identify if this service was started to create a notification
     public static final String INTENT_NOTIFY = "com.myrescribe";
+    // This is the object that receives interactions from clients
+    private final IBinder mBinder = new ServiceBinder();
 
     @Override
     public void onCreate() {
@@ -60,9 +53,6 @@ public class AppointmentNotificationService extends Service {
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
-
-    // This is the object that receives interactions from clients
-    private final IBinder mBinder = new ServiceBinder();
 
     public void customNotification(Intent intentData) {
 
@@ -102,6 +92,15 @@ public class AppointmentNotificationService extends Service {
         notificationmanager.notify(notification_id, builder.build());
 
         stopSelf();
+    }
+
+    /**
+     * Class for clients to access
+     */
+    public class ServiceBinder extends Binder {
+        AppointmentNotificationService getService() {
+            return AppointmentNotificationService.this;
+        }
     }
 
 }

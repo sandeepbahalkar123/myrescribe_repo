@@ -1,13 +1,10 @@
 package com.myrescribe.ui.activities;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,10 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-
 import com.myrescribe.R;
 import com.myrescribe.adapters.ShowMedicineDoseListAdapter;
-import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
@@ -28,8 +23,6 @@ import com.myrescribe.model.prescription_response_model.PrescriptionD;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -149,7 +142,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         startActivity(intent);
         // Handle the camera action
     }else  if (id == R.id.appointments) {
-        Intent intent = new Intent(ShowMedicineDoseListActivity.this, AppoinmentActivity.class);
+        Intent intent = new Intent(ShowMedicineDoseListActivity.this, AppointmentActivity.class);
         startActivity(intent);
         // Handle the camera action
     }*/

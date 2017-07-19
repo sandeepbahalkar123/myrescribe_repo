@@ -17,7 +17,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.myrescribe.R;
 import com.myrescribe.adapters.NotificationListAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
@@ -30,7 +29,6 @@ import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.listeners.SwipeDismissTouchListener;
-
 import java.util.ArrayList;
 import java.util.List;
 

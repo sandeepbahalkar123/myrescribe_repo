@@ -5,8 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.myrescribe.ui.activities.AppoinmentActivity;
-import com.myrescribe.ui.activities.InvestigationActivity;
+import com.myrescribe.ui.activities.AppointmentActivity;
 import com.myrescribe.util.MyRescribeConstants;
 
 /**
@@ -19,7 +18,7 @@ public class AppointmentNotificationYesClickReceiver extends BroadcastReceiver {
 //        Toast.makeText(context,action + " " + "Dose Rejected", Toast.LENGTH_SHORT).show();
         // if you want cancel notification
 
-        Intent intentNotification = new Intent(context, AppoinmentActivity.class);
+        Intent intentNotification = new Intent(context, AppointmentActivity.class);
         intentNotification.putExtra(MyRescribeConstants.TIME, intent.getStringExtra(MyRescribeConstants.TIME));
         intentNotification.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, intent.getBundleExtra(MyRescribeConstants.APPOINTMENT_MESSAGE));
         intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |

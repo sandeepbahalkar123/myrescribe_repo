@@ -46,7 +46,6 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     Button selectUploadedButton;
     @BindView(R.id.gmailButton)
     Button gmailButton;
-
     private LinearLayoutManager mLayoutManager;
     private InvestigationViewAdapter mAdapter;
     private Context mContext;

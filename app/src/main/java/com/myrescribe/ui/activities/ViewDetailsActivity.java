@@ -1,6 +1,7 @@
 package com.myrescribe.ui.activities;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,12 +18,15 @@ import android.widget.ExpandableListView;
 import com.myrescribe.adapters.ShowViewDetailsAdapter;
 import com.myrescribe.helpers.history.HistoryHelper;
 import com.myrescribe.helpers.one_day_visit.OneDayVisitHelper;
+import com.myrescribe.helpers.one_day_visit.VitalHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.visit_details.Data;
 import com.myrescribe.model.visit_details.Diagnosi;
 import com.myrescribe.model.visit_details.PatientHistory;
+import com.myrescribe.model.visit_details.Vital;
 import com.myrescribe.ui.customesViews.CustomTextView;
+import com.myrescribe.util.CommonMethods;
 
 import java.util.HashMap;
 
@@ -49,12 +53,17 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
 
     @BindView(R.id.doctor_address)
     CustomTextView mDoctor_address;
+    @BindView(R.id.dateTextView)
+    CustomTextView mDateTextView;
+
 
     private int lastExpandedPosition = -1;
     private ArrayList<String> mHeaderList;
     Intent intent;
     private HashMap<String, ArrayList<Diagnosi>> mHistoryDataList;
     private OneDayVisitHelper mOneDayVisitHelper;
+    private List<Vital> mVitalList;
+    private VitalHelper mVitalHelper;
 
 
     @Override
@@ -71,7 +80,15 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
             mDoctorName.setText(intent.getStringExtra(getString(R.string.name)));
             mDoctorSpecialization.setText(intent.getStringExtra(getString(R.string.specialization)));
             mDoctor_address.setText(intent.getStringExtra(getString(R.string.address)));
+            mDateTextView.setText(intent.getStringExtra(getString(R.string.one_day_visit_date)));
+
+        } else {
+            mDoctorName.setText("Ritesh Deshmukh ");
+            mDoctorSpecialization.setText("Cardiologist");
+            mDoctor_address.setText("Aundh, Pune");
+            mDateTextView.setText("17th Jul 2017");
         }
+
 
         mOneDayVisitHelper = new OneDayVisitHelper(this, this);
         mOneDayVisitHelper.doGetOneDayVisit();
@@ -112,9 +129,11 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        mVitalHelper = new VitalHelper(this, this);
+        mVitalList = mVitalHelper.doGetVitalsList();
         Data data = (Data) customResponse;
         formatResponseDataForAdapter(data.getPatientHistory());
-        ShowViewDetailsAdapter showHistoryListAdapter = new ShowViewDetailsAdapter(this, mHeaderList, mHistoryDataList);
+        ShowViewDetailsAdapter showHistoryListAdapter = new ShowViewDetailsAdapter(this, mHeaderList, mHistoryDataList, mVitalList);
         mHistoryExpandableListView.setAdapter(showHistoryListAdapter);
 
 

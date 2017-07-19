@@ -14,7 +14,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.bumptech.glide.Glide;
 import com.myrescribe.R;
 import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.notification.AppointmentAlarmTask;
@@ -226,14 +224,14 @@ public class HomePageActivity extends AppCompatActivity
 
             startActivity(intent);
         }/*else  if (id == R.id.appointments) {
-            Intent intent = new Intent(mContext, AppoinmentActivity.class);
+            Intent intent = new Intent(mContext, AppointmentActivity.class);
             startActivity(intent);
 <<<<<<< HEAD
         }*/ else if (id == R.id.onGoingMedication) {
             Intent intent = new Intent(HomePageActivity.this, ShowMedicineDoseListActivity.class);
             startActivity(intent);
-        } else if (id == R.id.onGoingMedication) {
-            Intent intent = new Intent(mContext, ShowMedicineDoseListActivity.class);
+        } else if (id == R.id.appointments) {
+            Intent intent = new Intent(mContext, AppointmentActivity.class);
             startActivity(intent);
         } else if (id == R.id.logout) {
             logout();

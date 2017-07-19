@@ -1,6 +1,6 @@
 package com.myrescribe.ui.activities;
 
-import android.database.Cursor;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,16 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.myrescribe.R;
 import com.myrescribe.helpers.database.AppDBHelper;
-import com.myrescribe.util.CommonMethods;
 import com.philliphsu.bottomsheetpickers.time.BottomSheetTimePickerDialog;
 import com.philliphsu.bottomsheetpickers.time.grid.GridTimePickerDialog;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

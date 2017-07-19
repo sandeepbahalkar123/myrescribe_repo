@@ -73,6 +73,10 @@
             android:name=".ui.activities.PreferencesActivity"
             android:label="@string/title_activity_preferences"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.AppointmentActivity"
+            android:label="@string/title_activity_preferences"
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
         <activity
@@ -151,10 +155,7 @@
             android:name=".ui.activities.ZoomImageViewActivity"
             android:label="@string/title_activity_zoomview"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.activities.AppoinmentActivity"
-            android:label="@string/title_activity_appoinment"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+
     </application>
 
 </manifest>

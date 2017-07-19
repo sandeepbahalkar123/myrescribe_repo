@@ -7,6 +7,8 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.model.Common;
 import com.myrescribe.model.doctors.doctor_info.DoctorInfoMonthContainer;
 
+import java.util.ArrayList;
+
 public class DoctorAppointmentModel implements CustomResponse {
 
     @SerializedName("common")
@@ -14,7 +16,7 @@ public class DoctorAppointmentModel implements CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private DoctorAppointment doctorAppointmentList;
+    private ArrayList<DoctorAppointment> doctorAppointmentList;
 
     public Common getCommon() {
         return common;
@@ -24,11 +26,11 @@ public class DoctorAppointmentModel implements CustomResponse {
         this.common = common;
     }
 
-    public DoctorAppointment getDoctorAppointmentList() {
+    public ArrayList<DoctorAppointment> getDoctorAppointmentList() {
         return doctorAppointmentList;
     }
 
-    public void setDoctorAppointmentList(DoctorAppointment doctorAppointmentList) {
+    public void setDoctorAppointmentList(ArrayList<DoctorAppointment> doctorAppointmentList) {
         this.doctorAppointmentList = doctorAppointmentList;
     }
 

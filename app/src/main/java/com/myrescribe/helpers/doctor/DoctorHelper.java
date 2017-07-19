@@ -61,6 +61,8 @@ public class DoctorHelper implements ConnectionListener {
                         yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
                     }
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
+                } else if (mOldDataTag == MyRescribeConstants.TASK_DOCTOR_APPOINTMENT) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
@@ -229,10 +231,10 @@ public class DoctorHelper implements ConnectionListener {
             String json = new String(buffer, "UTF-8");
             Log.e(TAG, "doGetDoctorAppointment" + json);
 
-            DoctorAppointmentModel doctorsModel = new Gson().fromJson(json, DoctorAppointmentModel.class);
+            DoctorAppointmentModel model = new Gson().fromJson(json, DoctorAppointmentModel.class);
 
-            CommonMethods.Log("doGetDoctorAppointment", "" + doctorsModel.toString());
-            onResponse(ConnectionListener.RESPONSE_OK, doctorsModel, MyRescribeConstants.TASK_DOCTOR_APPOINTMENT);
+            CommonMethods.Log("doGetDoctorAppointment", "" + model.toString());
+            onResponse(ConnectionListener.RESPONSE_OK, model, MyRescribeConstants.TASK_DOCTOR_APPOINTMENT);
 
         } catch (IOException ex) {
             ex.printStackTrace();

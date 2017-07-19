@@ -2,6 +2,8 @@ package com.myrescribe.model.doctors.appointments;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.MyRescribeConstants;
 
 /**
  * Created by riteshpandhurkar on 19/7/17.
@@ -96,6 +98,9 @@ public class DoctorAppointment {
     }
 
     public String getTimeStamp() {
+        if (timeStamp.contains("T")) {
+            timeStamp = CommonMethods.formatDateTime(timeStamp, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
+        }
         return timeStamp;
     }
 

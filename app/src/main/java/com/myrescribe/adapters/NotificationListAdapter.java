@@ -9,17 +9,14 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.myrescribe.R;
 import com.myrescribe.model.prescription_response_model.PrescriptionD;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.listeners.SwipeDismissTouchListener;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -34,10 +31,8 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     private static final String BREAK_FAST = "breakfast";
     private static final String SNACKS = "snacks";
     public int preExpandedPos = -1;
-
     private List<PrescriptionD> mDataSet;
     private Context mContext;
-
     private OnHeaderClickListener onHeaderClickListener;
 
     public NotificationListAdapter(Context context, List<PrescriptionD> dataSet, String time[]) {

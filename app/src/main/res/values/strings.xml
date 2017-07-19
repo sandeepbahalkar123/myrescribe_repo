@@ -160,7 +160,8 @@
     <string name="title_activity_appoinment">Appoinment</string>
     <string name="appointment">Appointment</string>
     <string name="investigation">Investigation</string>
-    <string name="appointments">Appointment</string>
+    <string name="appointments">Appointments</string>
+    <string name="my_appointments">My Appointments</string>
     <string name="select_documents">Select Documents</string>
 
     <string name="just_now">Just\nNow</string>

@@ -935,23 +935,23 @@ public class CommonMethods {
             abbreviation = R.drawable.exercise; // not found
         }else if (visitDetailId== 9) {
             abbreviation = R.drawable.case_paper; // not found
-        }else if (visitDetailId== 10) {
+        }else if (visitDetailId== 3) {
             abbreviation = R.drawable.vitals; // not found
         }else if (visitDetailId== 11) {
             abbreviation = R.drawable.investigations; // not found
-        }else if (visitDetailId== 12) {
+        }else if (visitDetailId== 1) {
             abbreviation = R.drawable.complaints; // not found
-        }else if (visitDetailId== 13) {
+        }else if (visitDetailId== 5) {
             abbreviation = R.drawable.prescription; // not found
         }else if (visitDetailId== 14) {
             abbreviation = R.drawable.advice; // not found
-        }else if (visitDetailId== 15) {
+        }else if (visitDetailId== 4) {
             abbreviation = R.drawable.diagnosis; // not found
         }else if (visitDetailId== 16) {
             abbreviation = R.drawable.finding; // not found
         }else if (visitDetailId== 17) {
             abbreviation = R.drawable.remarks; // not found
-        }else if (visitDetailId== 18) {
+        }else if (visitDetailId== 2) {
             abbreviation = R.drawable.allergy; // not found
         }
         return abbreviation;

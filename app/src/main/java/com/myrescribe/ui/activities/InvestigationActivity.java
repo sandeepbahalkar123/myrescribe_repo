@@ -250,14 +250,15 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
                 if (openApp("com.google.android.gm")) {
                     for (DataObject dataObject : investigationTemp) {
-                        if (dataObject.isSelected()) {
+                        if (dataObject.isSelected() && !dataObject.isUploaded()) {
                             dataObject.setUploaded(dataObject.isSelected());
+                            appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), "");
                         }
                     }
                     changeOriginalData(investigationTemp);
                     buttonEnable();
                     buttonManage(View.VISIBLE);
-                    Toast.makeText(InvestigationActivity.this, "dr.shah@gmail.com email Id copied.", Toast.LENGTH_SHORT).show();
+                    CommonMethods.showToast(mContext, "dr.shah@gmail.com email Id copied.");
                 } else {
                     CommonMethods.showToast(mContext, "Gmail application not found");
                 }

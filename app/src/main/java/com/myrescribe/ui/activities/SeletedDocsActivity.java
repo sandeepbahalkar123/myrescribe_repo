@@ -188,7 +188,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
                     Images images = new Images();
                     images.setImageArray(photoPaths);
                     dataObject.setPhotos(photoPaths);
-                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), new Gson().toJson(images));
+                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), new Gson().toJson(images));
                 }
                 if (dataObject.isSelected())
                     selectedCount += 1;

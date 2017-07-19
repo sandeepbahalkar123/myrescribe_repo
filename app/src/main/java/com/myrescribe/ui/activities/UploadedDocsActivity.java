@@ -21,6 +21,8 @@ import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +40,7 @@ public class UploadedDocsActivity extends AppCompatActivity {
     private Context mContext;
     private UploadedImageAdapter uploadedImageAdapter;
     private ArrayList<DataObject> investigation;
+//    private Set<Image> photoSet = new HashSet<>();
     private ArrayList<Image> photoPaths = new ArrayList<>();
     private AppDBHelper appDBHelper;
 
@@ -62,8 +65,10 @@ public class UploadedDocsActivity extends AppCompatActivity {
 
         investigation = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
 
-        for (DataObject dataObject : investigation)
+        for (DataObject dataObject : investigation) {
+           /* photoSet.addAll(dataObject.getPhotos());*/
             photoPaths.addAll(dataObject.getPhotos());
+        }
 
         uploadedImageAdapter = new UploadedImageAdapter(mContext, photoPaths);
         recyclerView.setAdapter(uploadedImageAdapter);
@@ -86,15 +91,13 @@ public class UploadedDocsActivity extends AppCompatActivity {
             }
         }
 
+        // Update server status with image id
+
         if (selectedImageCount > 0) {
             for (DataObject dataObject : investigation) {
                 if (dataObject.isSelected() && !dataObject.isUploaded()) {
                     dataObject.setUploaded(dataObject.isSelected());
-                    dataObject.setPhotos(photos);
-                    Images images = new Images();
-                    images.setImageArray(photoPaths);
-                    dataObject.setPhotos(photoPaths);
-                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), new Gson().toJson(images));
+                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), "");
                 }
 
                 if (dataObject.isSelected())

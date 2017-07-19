@@ -19,7 +19,7 @@ public class Config {
     public static final String PRESCRIPTION_URL = "api/patient/getPatientPrescriptions/4092";
 
     public static final String ONE_DAY_VISIT_URL = "api/patient/getPatientOneDayVisit/4092/10/08-06-2017";
-    public static final String DOCTOR_LIST_URL = "api/patient/getDoctorList?patientId=4092&year=2017";
+    public static final String DOCTOR_LIST_URL = "api/patient/getDoctorList?patientId=4092&year=";
 
 }
 

@@ -8,8 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.model.doctors.DoctorDetail;
-import com.myrescribe.ui.customesViews.CustomTextView;
+import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 import com.unnamed.b.atv.model.TreeNode;
 
 /**

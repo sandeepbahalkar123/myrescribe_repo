@@ -12,8 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.model.Common;
-import com.myrescribe.model.doctors.DoctorDetail;
+import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 import com.myrescribe.ui.activities.ViewDetailsActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;

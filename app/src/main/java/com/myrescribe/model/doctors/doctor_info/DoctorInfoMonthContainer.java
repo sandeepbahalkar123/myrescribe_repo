@@ -1,22 +1,11 @@
-package com.myrescribe.model.doctors;
+package com.myrescribe.model.doctors.doctor_info;
 
-import android.content.Context;
-import android.support.v4.content.ContextCompat;
-
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.myrescribe.R;
 import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.util.CommonMethods;
-import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * Created by riteshpandhurkar on 15/6/17.

@@ -18,10 +18,9 @@ public class MyRescribeConstants {
     public static final String MT_TABLET = "TABLET";
     public static final String MT_SYRUP = "SYRUP";
     public static final String MT_OINTMENT = "OINTMENT";
-    public static final String DD_MM_YYYY = "dd-MM-yyyy";
     public static final String INVESTIGATION_MESSAGE = "investigation_message";
     public static final String APPOINTMENT_MESSAGE = "appointment_message";
-    public static final String INVESTIGATION_DATA  = "investigation_data";
+    public static final String INVESTIGATION_DATA = "investigation_data";
     public static final String YES = "yes";
     public static final String DOCUMENTS = "documents";
     public static final String ALERT = "alert";
@@ -92,13 +91,14 @@ public class MyRescribeConstants {
     public static final String VITALS_LIST = MyRescribeConstants.BLANK + 6;
 
     public static class DATE_PATTERN {
-         public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
-        public static String DD_MM_YYYY_hh_mm = "dd/MM/yyyy hh:mm aa";
-
+        public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
+        public static String DD_MM_YYYY_hh_mm = "dd/MM/yyyy hh:mm a";
+        public static final String UTC_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
         public static String HH_MM = "hh:mm";
         public static String EEE_MMM_DD_MMM = "EEEE dd MMM yyyy HH:mm";
         public final static String YYYY_MM_DD = "yyyy-MM-dd";
         public final static String DD_MM_YYYY = "dd-MM-yyyy";
+        public static final String TOTIMEZONE = "Asia/Kolkata";
         public final static String EEEE_dd_MMM_yyyy_hh_mm_a = "EEEE dd MMM yyyy | hh:mm a";
     }
 

@@ -107,7 +107,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         TextView dateTextView = (TextView) findViewById(R.id.dateTextView);
 
         slotTextView.setText(medicineSlot);
-        timeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DD_MM_YYYY, CommonMethods.getCurrentDateTime()));
+        timeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, CommonMethods.getCurrentDateTime()));
         dateTextView.setText(date);
 
         tabletListLayout = (LinearLayout) findViewById(R.id.tabletListLayout);
@@ -259,7 +259,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
                     int j = -1;
                     for (int i = 0; i < data.size(); i++, --j) {
-                        data.get(i).setDate(CommonMethods.getCalculatedDate(MyRescribeConstants.DD_MM_YYYY, j));
+                        data.get(i).setDate(CommonMethods.getCalculatedDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, j));
                     }
 
                   addHeader(data);

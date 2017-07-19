@@ -163,9 +163,8 @@
     <string name="appointments">Appointments</string>
     <string name="my_appointments">My Appointments</string>
     <string name="select_documents">Select Documents</string>
-
+    <string name="one_day_visit_date">VISIT_DATE</string>
     <string name="just_now">Just\nNow</string>
-
     <string name="investigation_title">We request you to upload &amp; share the results of the following investigation with Dr. shah:</string>
     <string name="dummy">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
     <string name="gmail">Share With Gmail</string>
@@ -173,6 +172,7 @@
     <string name="new_document">New Document</string>
     <string name="title_activity_uploaded_docs">Uploaded Documents</string>
     <string name="no_data_available">No data available</string>
+
     <string-array name="colors_first">
         <item>#ff0000</item>
         <item>#00ff00</item>
@@ -182,4 +182,10 @@
         <item>#ff0000</item>
         <item>#00ff00</item>
     </string-array>
+
+    <string name="name">NAME</string>
+    <string name="specialization">SPECIALIZATION</string>
+    <string name="address">ADDRESS</string>
+
+
 </resources>

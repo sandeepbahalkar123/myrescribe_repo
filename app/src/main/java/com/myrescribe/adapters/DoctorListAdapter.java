@@ -10,16 +10,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.myrescribe.R;
+import com.myrescribe.model.Common;
 import com.myrescribe.model.doctors.DoctorDetail;
 import com.myrescribe.ui.activities.ViewDetailsActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -96,10 +100,12 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
         final DoctorDetail dataObject = mDataList.get(position);
 
-
         if (dataObject.isStartElement()) {
 
-            Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+            //----
+            //   String s = CommonMethods.formatDateTime(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
+            Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
             //----
@@ -149,29 +155,24 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
         else {
             holder.lowerLine.setVisibility(View.VISIBLE);
         }
-        //---
-    holder.mClickOnDoctorVisitLinearLayout.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(mContext, ViewDetailsActivity.class);
-            intent.putExtra("DOCTOR_NAME",dataObject.getDoctorName());
-            intent.putExtra("DOCTOR_SPECIALIST",dataObject.getSpecialization());
-            intent.putExtra("DOCTOR_ADDRESS",dataObject.getAddress());
-           intent.putExtra("VISIT_DATE",CommonMethods.getDateSelectedDoctorVisit(dataObject.getDate(),MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-
-            mContext.startActivity(intent);
-
-        }
-    });
+        holder.mClickOnDoctorVisitLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ViewDetailsActivity.class);
+                intent.putExtra(mContext.getString(R.string.name), dataObject.getDoctorName());
+                intent.putExtra(mContext.getString(R.string.specialization), dataObject.getSpecialization());
+                intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());
+                intent.putExtra(mContext.getString(R.string.one_day_visit_date),CommonMethods.getDateSelectedDoctorVisit(dataObject.getDate(),MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                mContext.startActivity(intent);
+            }
+        });
 
     }
-
 
     @Override
     public int getItemCount() {
         return mDataList.size();
     }
-
 
 }
 

@@ -57,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -917,39 +918,39 @@ public class CommonMethods {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.case_paper;
-        if (visitDetailId== 1) {
+        if (visitDetailId== 11) {
             abbreviation = R.drawable.treatment_plan;
-        } else if (visitDetailId== 2) {
+        } else if (visitDetailId== 13) {
             abbreviation = R.drawable.surgery;
-        } else if (visitDetailId== 3) {
+        } else if (visitDetailId== 15) {
             abbreviation = R.drawable.vaccination;
-        } else if (visitDetailId== 4) {
+        } else if (visitDetailId== 17) {
             abbreviation = R.drawable.general_precautions;
-        } else if (visitDetailId== 5) {
+        } else if (visitDetailId== 12) {
             abbreviation = R.drawable.pre_operative_precautions;
-        } else if (visitDetailId== 6) {
+        } else if (visitDetailId== 14) {
             abbreviation = R.drawable.post_operative_care;
-        } else if (visitDetailId== 7) {
+        } else if (visitDetailId== 10) {
             abbreviation = R.drawable.pain_score; // not found
-        }else if (visitDetailId== 8) {
+        }else if (visitDetailId== 16) {
             abbreviation = R.drawable.exercise; // not found
         }else if (visitDetailId== 9) {
             abbreviation = R.drawable.case_paper; // not found
         }else if (visitDetailId== 3) {
             abbreviation = R.drawable.vitals; // not found
-        }else if (visitDetailId== 11) {
+        }else if (visitDetailId== 7) {
             abbreviation = R.drawable.investigations; // not found
         }else if (visitDetailId== 1) {
             abbreviation = R.drawable.complaints; // not found
         }else if (visitDetailId== 5) {
             abbreviation = R.drawable.prescription; // not found
-        }else if (visitDetailId== 14) {
+        }else if (visitDetailId== 9) {
             abbreviation = R.drawable.advice; // not found
         }else if (visitDetailId== 4) {
             abbreviation = R.drawable.diagnosis; // not found
-        }else if (visitDetailId== 16) {
+        }else if (visitDetailId== 8) {
             abbreviation = R.drawable.finding; // not found
-        }else if (visitDetailId== 17) {
+        }else if (visitDetailId== 6) {
             abbreviation = R.drawable.remarks; // not found
         }else if (visitDetailId== 2) {
             abbreviation = R.drawable.allergy; // not found
@@ -1015,21 +1016,19 @@ public class CommonMethods {
     }
 
 
+
+
     public static Date convertStringToDate(String dateString, String dateFormat) {
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
-        String dateInString = dateString;
         Date date = null;
-        try {
-            date = formatter.parse(dateInString);
-            System.out.println(date);
-            System.out.println(formatter.format(date));
-            return date;
 
+        try {
+            date = formatter.parse(dateString.trim());
         } catch (ParseException e) {
             e.printStackTrace();
             CommonMethods.Log("convertStringToDate", "convertStringToDate EXCEPTION OCCURS : " + e.getMessage());
         }
-        return null;
+        return date;
     }
 
     public static String getDateSelectedDoctorVisit(String visitdate, String dateFormat) {
@@ -1048,22 +1047,19 @@ public class CommonMethods {
 
     }
 
+
     public static String getSuffixForNumber(final int n) {
         //  checkArgument(n >= 1 && n <= 31, "illegal day of month: " + n);
-
         if (n >= 11 && n <= 13) {
             return "th";
         }
         switch (n % 10) {
             case 1:
                 return "st";
-
             case 2:
                 return "nd";
-
             case 3:
                 return "rd";
-
             default:
                 return "th";
         }
@@ -1078,5 +1074,18 @@ public class CommonMethods {
         a.add("2017");
         return a;
     }
+
+    /*public static String convertDateStringFormat(String strDate, String fromFormat, String toFormat) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(fromFormat);
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat(toFormat.trim());
+            return dateFormat2.format(sdf.parse(strDate));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }*/
+
 }
 

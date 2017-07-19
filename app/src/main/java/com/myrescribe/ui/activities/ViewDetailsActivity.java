@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.myrescribe.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,14 +75,12 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
     }
 
     private void initialize() {
-         intent = getIntent();
-        CommonMethods.Log("Hi",VitalHelper.isBetween(5,1,6)+"");
-        if(getIntent().getExtras() != null){
-            mDoctorName.setText(intent.getStringExtra("DOCTOR_NAME"));
-            mDoctorSpecialization.setText(intent.getStringExtra("DOCTOR_SPECIALIST"));
-            mDoctor_address.setText(intent.getStringExtra("DOCTOR_ADDRESS"));
-            mDateTextView.setText(intent.getStringExtra("VISIT_DATE"));
-
+        intent = getIntent();
+        if (intent != null) {
+            mDoctorName.setText(intent.getStringExtra(getString(R.string.name)));
+            mDoctorSpecialization.setText(intent.getStringExtra(getString(R.string.specialization)));
+            mDoctor_address.setText(intent.getStringExtra(getString(R.string.address)));
+            mDateTextView.setText(intent.getStringExtra(getString(R.string.one_day_visit_date)));
 
         }else{
             mDoctorName.setText("Ritesh Deshmukh ");
@@ -102,7 +101,7 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
             @Override
             public void onClick(View v) {
                 //What to do on back clicked
-              finish();
+                finish();
             }
         });
         mHistoryExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -165,7 +164,7 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
                 dataList) {
             if (listObject.getComplaints() != null) {
                /* if (listObject.getComplaints().size() != 0) {*/
-                    mHeaderList.add(getString(R.string.compalints));
+                mHeaderList.add(getString(R.string.compalints));
                 ArrayList<Diagnosi> diagnosis = new ArrayList<>();
                 Diagnosi mDiagnosiList = new Diagnosi();
                 mDiagnosiList.setName("Medicine not available");
@@ -174,24 +173,24 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
 
             } else if (listObject.getDiagnosis() != null) {
 
-                    mHeaderList.add(getString(R.string.diagnosis));
-                    mHistoryDataList.put(getString(R.string.diagnosis), listObject.getDiagnosis());
+                mHeaderList.add(getString(R.string.diagnosis));
+                mHistoryDataList.put(getString(R.string.diagnosis), listObject.getDiagnosis());
 
             } else if (listObject.getPrescriptions() != null) {
 
-                    mHeaderList.add(getString(R.string.prescription));
-                    mHistoryDataList.put(getString(R.string.prescription), listObject.getPrescriptions());
+                mHeaderList.add(getString(R.string.prescription));
+                mHistoryDataList.put(getString(R.string.prescription), listObject.getPrescriptions());
 
             } else if (listObject.getInvestigations() != null) {
 
-                    mHeaderList.add(getString(R.string.investigations));
+                mHeaderList.add(getString(R.string.investigations));
                 ArrayList<Diagnosi> diagnosis = new ArrayList<>();
                 Diagnosi mDiagnosiList = new Diagnosi();
                 mDiagnosiList.setName("Need to investigate");
                 diagnosis.add(mDiagnosiList);
                 mHistoryDataList.put(getString(R.string.investigations), diagnosis);
 
-            }else if (listObject.getVitals() != null) {
+            } else if (listObject.getVitals() != null) {
                 mHeaderList.add(getString(R.string.vitals));
                 ArrayList<Diagnosi> diagnosis = new ArrayList<>();
                 Diagnosi mDiagnosiList = new Diagnosi();
@@ -199,16 +198,14 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
                 diagnosis.add(mDiagnosiList);
                 mHistoryDataList.put(getString(R.string.vitals), diagnosis);
 
-            }
-            else if (listObject.getRemarks() != null) {
-                    mHeaderList.add(getString(R.string.remarks));
+            } else if (listObject.getRemarks() != null) {
+                mHeaderList.add(getString(R.string.remarks));
                 ArrayList<Diagnosi> diagnosis = new ArrayList<>();
                 Diagnosi mDiagnosiList = new Diagnosi();
                 mDiagnosiList.setName("Please drink water");
                 diagnosis.add(mDiagnosiList);
-                    mHistoryDataList.put(getString(R.string.remarks), diagnosis);
-            }
-           else if (listObject.getAdvice() != null) {
+                mHistoryDataList.put(getString(R.string.remarks), diagnosis);
+            } else if (listObject.getAdvice() != null) {
                 if (!listObject.getAdvice().equals(null)) {
                     mHeaderList.add(getString(R.string.advice));
                     mHistoryDataList.put(getString(R.string.advice), listObject.getAdvice());

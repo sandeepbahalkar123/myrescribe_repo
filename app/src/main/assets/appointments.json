@@ -1,0 +1,31 @@
+{
+  "common": {
+    "success": 1,
+    "statusCode": 200,
+    "statusMessage": "USER AUTHENTICATED"
+  },
+  "data": [
+    {
+      "id": 1,
+      "doctorName": "Dr. Abhay Kamat",
+      "specialization": "Gynecologist",
+      "address": "Aundh,Pune",
+      "latitude": "18.5204",
+      "longitude": "73.8567",
+      "imageUrl": "imageUrl",
+      "timeStamp": "2017-06-08T09:51:37.000Z",
+      "appointmentType": "upcoming/completed/cancelled"
+    },
+    {
+      "id": 2,
+      "doctorName": "Dr. Abhay Kamat",
+      "specialization": "Gynecologist",
+      "address": "Aundh,Pune",
+      "latitude": "18.5204",
+      "longitude": "73.8567",
+      "imageUrl": "imageUrl",
+      "timeStamp": "2017-06-08T09:51:37.000Z",
+      "appointmentType": "upcoming/completed/cancelled"
+    }
+  ]
+}

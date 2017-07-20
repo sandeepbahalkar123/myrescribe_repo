@@ -31,6 +31,8 @@ public class DoctorDetail implements CustomResponse {
     private String specialization;
     private int color;
 
+    private boolean isDoctorSelected = false;
+
     public int getColor() {
         return color;
     }
@@ -118,6 +120,14 @@ public class DoctorDetail implements CustomResponse {
 
     public void setSideBarViewColor(int sideBarViewColor) {
         this.sideBarViewColor = sideBarViewColor;
+    }
+
+    public boolean isDoctorSelected() {
+        return isDoctorSelected;
+    }
+
+    public void setDoctorSelected(boolean doctorSelected) {
+        isDoctorSelected = doctorSelected;
     }
 
     @Override

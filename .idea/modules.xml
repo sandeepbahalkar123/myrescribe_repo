@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/filepicker/filepicker.iml" filepath="$PROJECT_DIR$/filepicker/filepicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/myrescribe_repo.iml" filepath="$PROJECT_DIR$/myrescribe_repo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rescribe_repo.iml" filepath="$PROJECT_DIR$/rescribe_repo.iml" />
     </modules>
   </component>
 </project>

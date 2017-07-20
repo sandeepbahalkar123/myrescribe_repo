@@ -62,7 +62,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     public void onBindViewHolder(final NotificationListAdapter.ListViewHolder holder, final int position) {
 
         holder.dateTextView.setText(mDataSet.get(position).getDate());
-        holder.titleTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DD_MM_YYYY, mDataSet.get(position).getDate()));
+        holder.titleTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getDate()));
 
         holder.slotLayout.removeAllViews();
         if (mDataSet.get(position).isDinnerThere()) {
@@ -99,7 +99,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         switch (slotType) {
             case DINNER:
                 slotTextView.setText(mContext.getResources().getString(R.string.dinner_medication));
-                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DD_MM_YYYY, mDataSet.get(position).getDate()));
+                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getDate()));
                 addTabletView(slotTabletListLayout, position, parent, view);
                 if (mDataSet.get(position).isDinnerExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
@@ -170,7 +170,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 break;
             case LUNCH:
                 slotTextView.setText(mContext.getResources().getString(R.string.lunch_medication));
-                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DD_MM_YYYY, mDataSet.get(position).getDate()));
+                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getDate()));
                 addTabletView(slotTabletListLayout, position, parent, view);
                 if (mDataSet.get(position).isLunchExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
@@ -239,7 +239,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 break;
             case BREAK_FAST:
                 slotTextView.setText(mContext.getResources().getString(R.string.breakfast_medication));
-                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DD_MM_YYYY, mDataSet.get(position).getDate()));
+                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getDate()));
                 addTabletView(slotTabletListLayout, position, parent, view);
                 if (mDataSet.get(position).isBreakFastExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
@@ -307,7 +307,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 break;
             case SNACKS:
                 slotTextView.setText(mContext.getResources().getString(R.string.snacks_medication));
-                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DD_MM_YYYY, mDataSet.get(position).getDate()));
+                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getDate()));
                 addTabletView(slotTabletListLayout, position, parent, view);
                 if (mDataSet.get(position).isSnacksExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);

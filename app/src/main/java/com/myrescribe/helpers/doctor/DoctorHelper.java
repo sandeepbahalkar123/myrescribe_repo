@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.android.volley.Request;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.myrescribe.R;
@@ -14,7 +15,10 @@ import com.myrescribe.model.doctors.DoctorDetail;
 import com.myrescribe.model.doctors.DoctorInfoMonthContainer;
 import com.myrescribe.model.doctors.DoctorModel;
 import com.myrescribe.network.ConnectRequest;
+import com.myrescribe.network.ConnectionFactory;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.io.IOException;
@@ -53,6 +57,10 @@ public class DoctorHelper implements ConnectionListener {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag == MyRescribeConstants.TASK_DOCTOR_LIST) {
                     DoctorModel model = (DoctorModel) customResponse;
+                    if (model.getDoctorInfoMonthContainer() != null) {
+                        DoctorInfoMonthContainer doctorInfoMonthContainer = model.getDoctorInfoMonthContainer();
+                        yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
+                    }
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
                 }
                 break;
@@ -82,22 +90,20 @@ public class DoctorHelper implements ConnectionListener {
     }
 
     //TODO: This is done for temp purpose
-    public void doGetDoctorList() {
-     /*   ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_HISTORY, Request.Method.GET, true);
+    public void doGetDoctorList(String year) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
         Map<String, String> testParams = new HashMap<String, String>();
 
-        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, "$1$7bSdP6L.$XQW6i4Tj2Z2WeTanfgp2y1");
+        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext));
+        testParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
 
-        testParams.put(MyRescribeConstants.AUTH_KEY, "simplerestapi");
-        testParams.put(MyRescribeConstants.CLIENT_SERVICE, "frontend-client");
-        testParams.put(MyRescribeConstants.USER_ID, "18");
         mConnectionFactory.setHeaderParams(testParams);
         // mConnectionFactory.setPostParams(testParams);
-        mConnectionFactory.setUrl(Config.PRESCRIPTION_URL);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_HISTORY);*/
+        mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL);
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_LIST);
 
 
-        // TODO : HARDCODED JSON STRING PARSING FROM assets foler
+     /*   // TODO : HARDCODED JSON STRING PARSING FROM assets folder, will get remove
         try {
             InputStream is = mContext.getAssets().open("doctor_list_update.json");
             int size = is.available();
@@ -118,7 +124,7 @@ public class DoctorHelper implements ConnectionListener {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        }*/
     }
 
     public Map<String, Map<String, ArrayList<DoctorDetail>>> getYearWiseSortedDoctorList() {
@@ -127,12 +133,10 @@ public class DoctorHelper implements ConnectionListener {
 
     public ArrayList<DoctorDetail> getFormattedDoctorList(String month, Map<String, ArrayList<DoctorDetail>> monthList) {
 
-        ArrayList<DoctorDetail> doctorDetails = monthList.get(month.toUpperCase());
+        ArrayList<DoctorDetail> doctorDetails = monthList.get(month);
         ArrayList<DoctorDetail> map = new ArrayList<>();
 
         if (doctorDetails != null) {
-
-
             //-----------
             TreeSet<String> dateHashSet = new TreeSet<String>(new DateWiseComparator());
             for (DoctorDetail data :
@@ -191,10 +195,11 @@ public class DoctorHelper implements ConnectionListener {
         public int compare(String m1, String m2) {
 
             //possibly check for nulls to avoid NullPointerException
-            Date m1Date = CommonMethods.convertStringToDate(m1, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
-            Date m2Date = CommonMethods.convertStringToDate(m2, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
-
-            return m2Date.compareTo(m1Date);
+            //  String s = CommonMethods.formatDateTime(m1, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
+            Date m1Date = CommonMethods.convertStringToDate(m1, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            Date m2Date = CommonMethods.convertStringToDate(m2, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            int i = m2Date.compareTo(m1Date);
+            return i;
         }
     }
 }

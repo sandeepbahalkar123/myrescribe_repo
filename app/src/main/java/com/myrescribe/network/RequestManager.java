@@ -32,6 +32,7 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.model.doctors.DoctorModel;
 import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.model.visit_details.VisitDetailsModel;
@@ -217,12 +218,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         );
         stringRequest.setTag(requestTag);
         requestTimer.start();
-        RequestPool.getInstance(this.mContext).
-
-                addToRequestQueue(stringRequest);
-
-        //
-
+        RequestPool.getInstance(this.mContext).addToRequestQueue(stringRequest);
     }
 
     private void succesResponse(String response, boolean isTokenExpired) {
@@ -378,6 +374,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case MyRescribeConstants.TASK_ONE_DAY_VISIT: //This is for get archived list
                         VisitDetailsModel visitDetailsModel = gson.fromJson(data, VisitDetailsModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, visitDetailsModel, mOldDataTag);
+                        break;
+                    case MyRescribeConstants.TASK_DOCTOR_LIST: //This is for get archived list
+                        DoctorModel doctorsModel = new Gson().fromJson(data, DoctorModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorsModel, mOldDataTag);
                         break;
                     /*
                     default:

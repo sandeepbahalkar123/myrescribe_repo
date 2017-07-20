@@ -56,6 +56,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -832,22 +833,6 @@ public class CommonMethods {
         return abbreviation;
     }
 
-    public static Date convertStringToDate(String dateString, String dateFormat) {
-        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
-        String dateInString = dateString;
-        Date date = null;
-        try {
-            date = formatter.parse(dateInString);
-            System.out.println(date);
-            System.out.println(formatter.format(date));
-            return date;
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-            CommonMethods.Log("convertStringToDate", "convertStringToDate EXCEPTION OCCURS : " + e.getMessage());
-        }
-        return null;
-    }
 /*
     public static int getVitalsDetails(String vitalDetailName, Context context) {
 
@@ -874,20 +859,16 @@ public class CommonMethods {
 
     public static String getSuffixForNumber(final int n) {
         //  checkArgument(n >= 1 && n <= 31, "illegal day of month: " + n);
-
         if (n >= 11 && n <= 13) {
             return "th";
         }
         switch (n % 10) {
             case 1:
                 return "st";
-
             case 2:
                 return "nd";
-
             case 3:
                 return "rd";
-
             default:
                 return "th";
         }
@@ -948,7 +929,20 @@ public class CommonMethods {
                 datePickerDialog.show();
             }
         }
+    }
 
+
+    public static Date convertStringToDate(String dateString, String dateFormat) {
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        Date date = null;
+
+        try {
+            date = formatter.parse(dateString.trim());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            CommonMethods.Log("convertStringToDate", "convertStringToDate EXCEPTION OCCURS : " + e.getMessage());
+        }
+        return date;
     }
 }
 

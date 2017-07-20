@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +43,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
         this.mContext = context;
         mDataList = dataList;
-        mDateFormat = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+        mDateFormat = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, Locale.US);
 
     }
 
@@ -58,10 +59,10 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
         final DoctorDetail dataObject = mDataList.get(position);
 
-
         if (dataObject.isStartElement()) {
             //----
-            Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+            //   String s = CommonMethods.formatDateTime(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
+            Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
             //----
@@ -116,11 +117,10 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ViewDetailsActivity.class);
-                intent.putExtra("DOCTOR_NAME", dataObject.getDoctorName());
-                intent.putExtra("DOCTOR_SPECIALIST", dataObject.getSpecialization());
-                intent.putExtra("DOCTOR_ADDRESS", dataObject.getAddress());
+                intent.putExtra(mContext.getString(R.string.name), dataObject.getDoctorName());
+                intent.putExtra(mContext.getString(R.string.specialization), dataObject.getSpecialization());
+                intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());
                 mContext.startActivity(intent);
-
             }
         });
 
@@ -169,7 +169,6 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
             this.view = view;
         }
     }
-
 
 }
 

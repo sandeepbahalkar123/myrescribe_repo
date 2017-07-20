@@ -130,7 +130,7 @@ public class HomePageActivity extends AppCompatActivity
         cursor.close();
 
         String times[] = {breakFastTime, lunchTime, dinnerTime, snacksTime};
-        String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY);
+        String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
 
         new DosesAlarmTask(mContext, times, date).run();
         new InvestigationAlarmTask(mContext, "9:00 am", getResources().getString(R.string.investigation_msg)).run();
@@ -170,7 +170,7 @@ public class HomePageActivity extends AppCompatActivity
             if (mGetMealTime.equals(getString(R.string.break_fast))) {
                 Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
                 intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
-                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY));
+                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
                 intentNotification.putExtra(MyRescribeConstants.TIME, breakFastTime);
                 intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -179,7 +179,7 @@ public class HomePageActivity extends AppCompatActivity
             } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
                 Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
                 intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
-                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY));
+                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
                 intentNotification.putExtra(MyRescribeConstants.TIME, lunchTime);
                 intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -188,7 +188,7 @@ public class HomePageActivity extends AppCompatActivity
             } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
                 Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
                 intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
-                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY));
+                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
                 intentNotification.putExtra(MyRescribeConstants.TIME, snacksTime);
                 intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -197,7 +197,7 @@ public class HomePageActivity extends AppCompatActivity
             } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
                 Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
                 intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DD_MM_YYYY));
+                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
                 intentNotification.putExtra(MyRescribeConstants.TIME, dinnerTime);
                 intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);

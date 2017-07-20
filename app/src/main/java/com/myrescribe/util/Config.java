@@ -17,6 +17,9 @@ public class Config {
     //Declared all URL used in app here
     public static String BASE_URL = "http://192.168.0.182:3003/";
     public Context mContext;
+    //Declared all URL used in app here
+
+    public static final String DOCTOR_LIST_URL = "api/patient/getDoctorList/4092/2017";
 
 }
 

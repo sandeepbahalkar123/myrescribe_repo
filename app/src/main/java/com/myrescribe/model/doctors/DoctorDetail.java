@@ -3,6 +3,8 @@ package com.myrescribe.model.doctors;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.MyRescribeConstants;
 
 /**
  * Created by riteshpandhurkar on 16/6/17.
@@ -21,7 +23,7 @@ public class DoctorDetail implements CustomResponse {
     @Expose
     private String address;
 
-    @SerializedName("date")
+    @SerializedName("visitDate")
     @Expose
     private String date;
     @SerializedName("specialization")
@@ -68,6 +70,9 @@ public class DoctorDetail implements CustomResponse {
     }
 
     public String getDate() {
+        if (date.contains("T")) {
+            date = CommonMethods.formatDateTime(date, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
+        }
         return date;
     }
 

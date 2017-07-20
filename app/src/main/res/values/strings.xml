@@ -172,5 +172,8 @@
     <string name="new_document">New Document</string>
     <string name="title_activity_uploaded_docs">Uploaded Documents</string>
     <string name="no_data_available">No data available</string>
+    <string name="name">NAME</string>
+    <string name="specialization">SPECIALIZATION</string>
+    <string name="address">ADDRESS</string>
 
 </resources>

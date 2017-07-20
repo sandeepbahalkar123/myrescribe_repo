@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
@@ -20,7 +21,9 @@ import com.myrescribe.R;
 import com.myrescribe.helpers.doctor.DoctorHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.Common;
 import com.myrescribe.model.doctors.DoctorDetail;
+import com.myrescribe.model.doctors.DoctorInfoMonthContainer;
 import com.myrescribe.model.util.TimePeriod;
 import com.myrescribe.ui.fragments.DoctorListFragment;
 import com.myrescribe.adapters.CustomSpinnerAdapter;
@@ -28,6 +31,7 @@ import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import java.util.Arrays;
@@ -61,6 +65,8 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     private ArrayList<TimePeriod> mTimePeriodList;
     private TimePeriod mCurrentSelectedTimePeriodTab;
     private DoctorHelper mDoctorHelper;
+    private ViewPagerAdapter mViewPagerAdapter;
+    private HashSet<String> mGeneratedRequestForYearList = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,21 +80,18 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     private void initialize() {
         mYearList = CommonMethods.getYearForDoctorList();
         mBackArrow.setOnClickListener(this);
-        //----
-        setupViewPager();
-        mTabLayout.setupWithViewPager(mViewpager);
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                mCurrentSelectedTimePeriodTab = mTimePeriodList.get(position);
+              /*  mCurrentSelectedTimePeriodTab = mTimePeriodList.get(position);
                 for (int i = 0; i < mYearList.size(); i++) {
                     if (mYearList.get(i).equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear())) {
                         mYearSpinnerView.setSelection(i);
                         break;
                     }
-                }
+                }*/
             }
 
             @Override
@@ -110,13 +113,13 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         //-------
         mDoctorHelper = new DoctorHelper(this, this);
         //-------
-    }
-
-    private void setupViewPager() {
+        mCurrentSelectedTimePeriodTab = new TimePeriod();
+        mCurrentSelectedTimePeriodTab.setMonthName(new SimpleDateFormat("MMM").format(new Date()));
+        mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy").format(new Date()));
+        //-------
         //----
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
-        //----
         int month = cal.get(Calendar.MONTH) + 1;
         int year = cal.get(Calendar.YEAR);
         if (year == Integer.parseInt(mYearList.get(mYearList.size() - 1))) {
@@ -125,26 +128,81 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
             mTimePeriodList = CommonMethods.getMonthsWithYear(mYearList.get(0) + "-01-01", mYearList.get(mYearList.size() - 1) + "-12-01", MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
         }
         //---------
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        //----
+        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mTabLayout.setupWithViewPager(mViewpager);
+    }
+
+    private void setupViewPager() {
         for (TimePeriod data :
                 mTimePeriodList) {
             Fragment fragment = DoctorListFragment.createNewFragment(data); // pass data here
-            adapter.addFragment(fragment, data); // pass title here
+            mViewPagerAdapter.addFragment(fragment, data); // pass title here
         }
         mViewpager.setOffscreenPageLimit(0);
-        mViewpager.setAdapter(adapter);
+        mViewpager.setAdapter(mViewPagerAdapter);
+
+        //------------
+        mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                DoctorListFragment item = (DoctorListFragment) mViewPagerAdapter.getItem(position);
+                Bundle arguments = item.getArguments();
+                String month = arguments.getString(MyRescribeConstants.MONTH);
+                String year = arguments.getString(MyRescribeConstants.YEAR);
+                CommonMethods.Log("onPageSelected", month + " " + year);
+                mCurrentSelectedTimePeriodTab.setMonthName(month);
+                mCurrentSelectedTimePeriodTab.setYear(year);
+
+                for (int i = 0; i < mYearList.size(); i++) {
+                    if (mYearList.get(i).equalsIgnoreCase(year)) {
+                        mYearSpinnerView.setSelection(i);
+                        break;
+                    }
+                }
+
+                //-----THis condition calls API only once for that specific year.----
+                if (!mGeneratedRequestForYearList.contains(year)) {
+                    Map<String, Map<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = mDoctorHelper.getYearWiseSortedDoctorList();
+                    if (yearWiseSortedDoctorList.get(year) == null) {
+                        mGeneratedRequestForYearList.add(year);
+                        mDoctorHelper.doGetDoctorList(year);
+                    }
+                }
+                //---------
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        //------------
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mViewpager.setCurrentItem(mTimePeriodList.size() - 1);
+                for (int i = 0; i < mTimePeriodList.size(); i++) {
+                    TimePeriod temp = mTimePeriodList.get(i);
+                    if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear()) &&
+                            temp.getMonthName().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getMonthName())) {
+                        mViewpager.setCurrentItem(i);
+                        break;
+                    }
+                }
             }
         }, 00);
         //---------
-
     }
 
     //---------------
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+    class ViewPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<TimePeriod> mFragmentTitleList = new ArrayList<>();
 
@@ -170,6 +228,11 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position).getMonthName();
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
     }
 
@@ -220,18 +283,13 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         public void onNothingSelected(AdapterView<?> parent) {
 
         }
-
-    }
-    //---------------
-
-    public TimePeriod getCurrentSelectedTimePeriodTab() {
-        return mCurrentSelectedTimePeriodTab;
     }
 
     //---------------
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-
+        //  mViewPagerAdapter.notifyDataSetChanged();
+        setupViewPager();
     }
 
     @Override
@@ -254,13 +312,12 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     @Override
     protected void onResume() {
         super.onResume();
-        if (mCurrentSelectedTimePeriodTab != null) {
+        if (!mGeneratedRequestForYearList.contains(mCurrentSelectedTimePeriodTab.getYear())) {
             Map<String, Map<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = mDoctorHelper.getYearWiseSortedDoctorList();
             if (yearWiseSortedDoctorList.get(mCurrentSelectedTimePeriodTab.getYear()) == null) {
-                mDoctorHelper.doGetDoctorList();
+                mDoctorHelper.doGetDoctorList(mCurrentSelectedTimePeriodTab.getYear());
+                mGeneratedRequestForYearList.add(mCurrentSelectedTimePeriodTab.getYear());
             }
-        } else {
-            mDoctorHelper.doGetDoctorList();
         }
     }
 

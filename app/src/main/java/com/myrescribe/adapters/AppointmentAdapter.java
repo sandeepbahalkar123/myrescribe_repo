@@ -63,7 +63,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         this.mAppointmentType = appointmentType;
         this.appointmentsList = appointmentsList;
         this.mContext = mContext;
-        DateFormat dateFormat = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD,Locale.US);
+        DateFormat dateFormat = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, Locale.US);
         mCurrentDate = dateFormat.format(new Date());
     }
 
@@ -117,13 +117,18 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         } else {
             holder.appointmentsTimeStamp.setText("" + timeToShow);
         }
-      holder.mGmapLocationView.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              Intent intent = new Intent(mContext, MapsActivity.class);
-              mContext.startActivity(intent);
-          }
-      });
+
+        holder.mGmapLocationView.setTag("" + position);
+        holder.mGmapLocationView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DoctorAppointment appointment1 = appointmentsList.get(Integer.parseInt("" + v.getTag()));
+                Intent intent = new Intent(mContext, MapsActivity.class);
+                intent.putExtra(mContext.getString(R.string.latitude), appointment1.getLatitude());
+                intent.putExtra(mContext.getString(R.string.longitude), appointment1.getLongitude());
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 

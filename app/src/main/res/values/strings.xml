@@ -190,6 +190,8 @@
     <string name="upcoming">upcoming</string>
     <string name="cancelled">cancelled</string>
     <string name="completed">completed</string>
+    <string name="latitude">latitude</string>
+    <string name="longitude">longitude</string>
 
 
 </resources>

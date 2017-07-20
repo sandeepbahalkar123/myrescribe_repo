@@ -83,7 +83,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         holder.doctorType.setText(appointment.getSpecialization());
 
         //--- For address
-        if (mAppointmentType.equalsIgnoreCase(mContext.getString(R.string.upcoming))) {
+        if (!mAppointmentType.equalsIgnoreCase(mContext.getString(R.string.completed))) {
             Date timeStamp = CommonMethods.convertStringToDate(appointment.getTimeStamp(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
             Calendar cal = Calendar.getInstance();
             cal.setTime(timeStamp);

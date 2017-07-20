@@ -29,40 +29,38 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp12"
-                >
+                android:layout_margin="@dimen/dp12">
 
                 <EditText
                     android:id="@+id/editTextUserPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/dp4"
-                    android:textSize="@dimen/sp12"
-                    android:inputType="phone"
                     android:hint="@string/enter_mobile_no"
+                    android:inputType="phone"
+                    android:padding="@dimen/dp4"
                     android:textColor="@color/black"
+                    android:textSize="@dimen/sp12"
 
                     />
             </android.support.design.widget.TextInputLayout>
 
 
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/buttonOk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/tagColor"
+                android:gravity="center"
+                android:padding="@dimen/dp4"
+                android:text="@string/ok"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp12"
 
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/buttonOk"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/dp4"
-                    android:gravity="center"
-                    android:background="@color/tagColor"
-                    android:textSize="@dimen/sp12"
-                    android:text="@string/ok"
-                    android:textColor="@color/black"
-
-                    />
-
+                />
 
 
             <!--  Name Label -->
@@ -88,16 +86,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:textColor="@color/white"
 
-            android:textColor="@color/white" />
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp12"
-            android:visibility="gone"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
     </LinearLayout>
 </LinearLayout>

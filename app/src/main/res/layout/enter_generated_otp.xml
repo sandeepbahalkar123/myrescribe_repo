@@ -60,7 +60,6 @@
                 android:textColor="@android:color/black" />
 
             <TextView
-                android:visibility="invisible"
                 android:id="@+id/resendOtpBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp30"
@@ -68,7 +67,8 @@
                 android:gravity="center"
                 android:text="@string/resend_otp"
                 android:textAllCaps="false"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:visibility="invisible" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

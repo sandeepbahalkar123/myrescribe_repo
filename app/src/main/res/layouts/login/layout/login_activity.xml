@@ -2,77 +2,81 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dp56"
+        android:orientation="vertical"
         android:paddingLeft="@dimen/dp12"
-        android:paddingRight="@dimen/dp12">
+        android:paddingRight="@dimen/dp12"
+        android:paddingTop="@dimen/dp56">
 
-        <ImageView android:src="@drawable/ic_launcher"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp72"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/dp12"
-            android:layout_gravity="center_horizontal" />
+            android:src="@drawable/ic_launcher" />
 
         <!--  Email Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp8"
-            android:layout_marginBottom="@dimen/dp8">
+            android:layout_marginBottom="@dimen/dp8"
+            android:layout_marginTop="@dimen/dp8">
+
             <EditText
                 android:id="@+id/editTextFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="@string/enter_full_name" />
+                android:hint="@string/enter_full_name"
+                android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
 
         <!--  Password Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp8"
-            android:layout_marginBottom="@dimen/dp8">
+            android:layout_marginBottom="@dimen/dp8"
+            android:layout_marginTop="@dimen/dp8">
+
             <EditText
                 android:id="@+id/editTextEmailId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="@string/enter_email_id"/>
+                android:hint="@string/enter_email_id"
+                android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp12"
             android:layout_marginBottom="@dimen/dp12"
+            android:layout_marginTop="@dimen/dp12"
             android:padding="@dimen/dp12"
-            android:text="Login"/>
+            android:text="Login" />
 
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/buttonLoginFacebook"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp12"
             android:layout_marginBottom="@dimen/dp12"
+            android:layout_marginTop="@dimen/dp12"
             android:padding="@dimen/dp12"
-            android:text="@string/loginfb"/>
+            android:text="@string/loginfb" />
+
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/buttonLoginGPlus"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp12"
             android:layout_marginBottom="@dimen/dp12"
+            android:layout_marginTop="@dimen/dp12"
             android:padding="@dimen/dp12"
-            android:text="@string/logingmail"/>
+            android:text="@string/logingmail" />
 
     </LinearLayout>
 </LinearLayout>

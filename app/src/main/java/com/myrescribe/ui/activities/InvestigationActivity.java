@@ -1,5 +1,6 @@
 package com.myrescribe.ui.activities;
 
+import android.animation.ValueAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -13,7 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 import com.myrescribe.R;
@@ -26,7 +28,6 @@ import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +35,11 @@ import butterknife.OnClick;
 import droidninja.filepicker.FilePickerConst;
 
 public class InvestigationActivity extends AppCompatActivity implements InvestigationViewAdapter.CheckedClickListener {
+
+    private boolean isCompareDialogCollapsed = true;
+    private static final long ANIMATION_DURATION = 500; // in milliseconds
+    private static final int ANIMATION_LAYOUT_MAX_HEIGHT = 180; // in milliseconds
+    private static final int ANIMATION_LAYOUT_MIN_HEIGHT = 0; // in milliseconds
 
     private static final int UPLOADED_DOCS = 121;
     @BindView(R.id.toolbar)
@@ -46,6 +52,10 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     Button selectUploadedButton;
     @BindView(R.id.gmailButton)
     Button gmailButton;
+
+    @BindView(R.id.buttonLayout)
+    LinearLayout buttonLayout;
+
     private LinearLayoutManager mLayoutManager;
     private InvestigationViewAdapter mAdapter;
     private Context mContext;
@@ -93,6 +103,8 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 investigationTemp.add(dataObject);
             } else {
                 isAlreadyUploadedButtonVisible = View.VISIBLE;
+                investigation.get(i).setSelected(true);
+                investigation.get(i).setUploaded(true);
                 investigation.get(i).setPhotos(data.getPhotos());
             }
         }
@@ -103,11 +115,53 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    public void collapseCompareDialog() {
+        if (!isCompareDialogCollapsed) {
+            isCompareDialogCollapsed = true;
+            ValueAnimator valueAnimator = ValueAnimator.ofInt(ANIMATION_LAYOUT_MAX_HEIGHT, ANIMATION_LAYOUT_MIN_HEIGHT);
+            valueAnimator.setDuration(ANIMATION_DURATION);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    Integer value = (Integer) animation.getAnimatedValue();
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonLayout.getLayoutParams();
+                    params.height = CommonMethods.convertDpToPixel(value.intValue());
+                    buttonLayout.setLayoutParams(params);
+                }
+            });
+
+            valueAnimator.start();
+        }
+    }
+
+    public void expandCompareDialog() {
+        if (isCompareDialogCollapsed) {
+            isCompareDialogCollapsed = false;
+            ValueAnimator valueAnimator = ValueAnimator.ofInt(ANIMATION_LAYOUT_MIN_HEIGHT, ANIMATION_LAYOUT_MAX_HEIGHT);
+            valueAnimator.setDuration(ANIMATION_DURATION);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    Integer value = (Integer) animation.getAnimatedValue();
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonLayout.getLayoutParams();
+                    params.height = CommonMethods.convertDpToPixel(value.intValue());
+                    buttonLayout.setLayoutParams(params);
+                }
+            });
+
+            valueAnimator.start();
+        }
+    }
+
     private void buttonManage(int isAlreadyUploadedButtonVisible) {
         if (isAlreadyUploadedButtonVisible == View.VISIBLE)
             selectDocsButton.setText(getResources().getString(R.string.new_document));
         else selectDocsButton.setText(getResources().getString(R.string.upload));
         selectUploadedButton.setVisibility(isAlreadyUploadedButtonVisible);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("Restart", "onRestart");
     }
 
     @Override
@@ -124,6 +178,14 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         investigation.add(new DataObject(2, "Lipid", false, false, new ArrayList<Image>()));
         investigation.add(new DataObject(3, "Liver Profile", false, false, new ArrayList<Image>()));
         investigation.add(new DataObject(4, "X Ray", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(5, "HB", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(6, "PCV", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(7, "EHR", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(8, "B.T.C.T", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(9, "G6", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(10, "PV", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(11, "ER", false, false, new ArrayList<Image>()));
+        investigation.add(new DataObject(12, "C.T", false, false, new ArrayList<Image>()));
     }
 
     @Override
@@ -138,6 +200,12 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 uploadButton = true;
                 break;
             }
+        }
+
+        if (uploadButton) {
+            expandCompareDialog();
+        } else {
+            collapseCompareDialog();
         }
 
         selectDocsButton.setEnabled(uploadButton);
@@ -190,6 +258,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
             case R.id.selectUploadedButton:
                 Intent intent = new Intent(mContext, UploadedDocsActivity.class);
                 intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA, investigationTemp);
                 startActivityForResult(intent, UPLOADED_DOCS);
                 break;
             case R.id.gmailButton:
@@ -199,14 +268,15 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
                 if (openApp("com.google.android.gm")) {
                     for (DataObject dataObject : investigationTemp) {
-                        if (dataObject.isSelected()) {
+                        if (dataObject.isSelected() && !dataObject.isUploaded()) {
                             dataObject.setUploaded(dataObject.isSelected());
+                            appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), "");
                         }
                     }
                     changeOriginalData(investigationTemp);
                     buttonEnable();
                     buttonManage(View.VISIBLE);
-                    Toast.makeText(InvestigationActivity.this, "dr.shah@gmail.com email Id copied.", Toast.LENGTH_SHORT).show();
+                    CommonMethods.showToast(mContext, "dr.shah@gmail.com email Id copied.");
                 } else {
                     CommonMethods.showToast(mContext, "Gmail application not found");
                 }

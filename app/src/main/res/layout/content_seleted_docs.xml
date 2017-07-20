@@ -20,8 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/dp10"
-        android:textColor="@color/white"
         android:background="@drawable/button_enable"
-        android:text="@string/upload" />
+        android:text="@string/upload"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

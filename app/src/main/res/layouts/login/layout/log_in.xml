@@ -20,8 +20,8 @@
             <EditText
                 android:id="@+id/editTextMobileNo"
                 style="@style/AppLoginMainStyle"
-                android:text="amruta@gmail.com"
-                android:hint="@string/enter_user_name" />
+                android:hint="@string/enter_user_name"
+                android:text="amruta@gmail.com" />
         </android.support.design.widget.TextInputLayout>
 
         <!--  Password Label -->
@@ -31,8 +31,8 @@
                 android:id="@+id/editTextPassword"
                 style="@style/AppLoginMainStyle"
                 android:hint="@string/enter_password"
-                android:text="scorg@123"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:text="scorg@123" />
         </android.support.design.widget.TextInputLayout>
 
         <CheckBox
@@ -44,10 +44,10 @@
             android:id="@+id/btn_login"
             style="@style/AppLoginMainStyle"
             android:layout_height="@dimen/dp30"
+            android:layout_marginTop="@dimen/dp8"
             android:background="@drawable/button_curve_background"
             android:gravity="center"
             android:text="@string/log_in"
-            android:layout_marginTop="@dimen/dp8"
             android:textAllCaps="false"
             android:textColor="@android:color/black" />
 
@@ -55,9 +55,9 @@
             android:id="@+id/buttonLoginFacebook"
             style="@style/AppLoginMainStyle"
             android:layout_height="@dimen/dp30"
+            android:layout_marginTop="@dimen/dp8"
             android:background="@drawable/button_curve_background"
             android:gravity="center"
-            android:layout_marginTop="@dimen/dp8"
             android:text="@string/loginfb"
             android:textAllCaps="false"
             android:textColor="@android:color/black" />
@@ -66,10 +66,10 @@
             android:id="@+id/buttonLoginGPlus"
             style="@style/AppLoginMainStyle"
             android:layout_height="@dimen/dp30"
+            android:layout_marginBottom="@dimen/dp8"
+            android:layout_marginTop="@dimen/dp8"
             android:background="@drawable/button_curve_background"
             android:gravity="center"
-            android:layout_marginTop="@dimen/dp8"
-            android:layout_marginBottom="@dimen/dp8"
             android:text="@string/logingmail"
             android:textAllCaps="false"
             android:textColor="@android:color/black" />

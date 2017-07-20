@@ -21,7 +21,6 @@ import com.myrescribe.model.history.HistoryCommonDetails;
 import com.myrescribe.model.visit_details.Diagnosi;
 import com.myrescribe.model.visit_details.Vital;
 import com.myrescribe.util.CommonMethods;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,14 +35,14 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
     String[] firstRow = {
             "Weight",
             "BMI",
-            "Heart Rate"};
+            "Heart Rate"} ;
     String[] normalRangeFirstRow = {
             "60 to 90",
             "70 to 110",
-            "80 to 120"};
+            "80 to 120"} ;
     String[] normalRangeSecondRow = {
             "50 to 80",
-            "70 to 95"};
+            "70 to 95"} ;
 
     String[] secondRow = {
             "Blood Pressure",
@@ -55,10 +54,10 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
     Integer[] SecondRowImage = {
             R.drawable.blood_pressure,
             R.drawable.layer_10};
-    int[] colorSecond = {R.color.yellow, R.color.parrot, R.color.red_red};
-    String[] unitFirstRow = {"65", "35", "77"};
-    String[] unitSecondRow = {"80", "90"};
-    int[] colorFirstRow = {R.color.yellow, R.color.parrot};
+    int[] colorSecond = {R.color.yellow,R.color.parrot,R.color.red_red};
+    String[] unitFirstRow = {"65","35","77"};
+    String[] unitSecondRow = {"80","90"};
+    int[] colorFirstRow = {R.color.yellow,R.color.parrot};
     private static final String CHILD_TYPE_1 = "Vitals";
     private ArrayList<HistoryCommonDetails> mHistoryCommonDetailses;
     private ArrayList<String> mListDataHeader; // header titles
@@ -104,19 +103,19 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
                 convertView = inflater.inflate(R.layout.vitals_main_activity, null);
                 convertView.setTag(headerName);
                 TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.table);
-                View divider = (View) convertView.findViewById(R.id.adapter_divider);
+                View divider = (View)convertView.findViewById(R.id.adapter_divider);
                 tableLayout.removeAllViews();
                     /*if(mVitalList.size()==8) {
                         for (int i = 0; i < 4; i++) {
-
                         }
                     }*/
-                tableLayout.addView(addTableRow(3, firstRow, firstRowImage, unitFirstRow, R.array.colors_first, normalRangeFirstRow));
-                tableLayout.addView(addTableRow(2, secondRow, SecondRowImage, unitSecondRow, R.array.colors_second, normalRangeSecondRow));
+                tableLayout.addView(addTableRow(3, firstRow, firstRowImage,unitFirstRow,R.array.colors_first,normalRangeFirstRow));
+                tableLayout.addView(addTableRow(2, secondRow, SecondRowImage,unitSecondRow,R.array.colors_second,normalRangeSecondRow));
 
-                if (isLastChild) {
+                if(isLastChild){
                     divider.setVisibility(View.VISIBLE);
-                } else {
+                }
+                else{
                     divider.setVisibility(View.GONE);
                 }
                 break;
@@ -125,12 +124,13 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
                 convertView = inflater.inflate(R.layout.history_child_item_layout, null);
                 convertView.setTag(headerName);
                 TextView txtListChild = (TextView) convertView.findViewById(R.id.textView_name);
-                View dividerLine = (View) convertView.findViewById(R.id.adapter_divider_bottom);
+                View dividerLine = (View)convertView.findViewById(R.id.adapter_divider_bottom);
                 txtListChild.setText(childObject.getName());
 
-                if (isLastChild) {
+                if(isLastChild){
                     dividerLine.setVisibility(View.VISIBLE);
-                } else {
+                }
+                else{
                     dividerLine.setVisibility(View.GONE);
                 }
                 break;
@@ -144,24 +144,24 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    private View addTableRow(int columnCount, final String[] rowText, final Integer[] rowImage, final String[] unitSecondRow, int colorSecond, final String[] normalRangeList) {
+    private View addTableRow(int columnCount, final String[] rowText, final Integer[] rowImage, final String[] unitSecondRow, int colorSecond,final String[] normalRangeList) {
         int i;
         TableRow tableRow = new TableRow(mContext);
         final String[] allColors = mContext.getResources().getStringArray(colorSecond);
         for (i = 0; i < columnCount; i++) {
             View item = LayoutInflater.from(mContext)
                     .inflate(R.layout.item, tableRow, false);
-            LinearLayout vitalLinearlayout = (LinearLayout) item.findViewById(R.id.vitalCellLinearLayout);
-            ImageView vitalImage = (ImageView) item.findViewById(R.id.vitalImage);
-            TextView vital_name = (TextView) item.findViewById(R.id.vital_name);
-            TextView noOfVitals = (TextView) item.findViewById(R.id.noOfVitals);
+            LinearLayout vitalLinearlayout =  (LinearLayout)item.findViewById(R.id.vitalCellLinearLayout) ;
+            ImageView vitalImage = (ImageView)item.findViewById(R.id.vitalImage);
+            TextView vital_name = (TextView)item.findViewById(R.id.vital_name) ;
+            TextView noOfVitals = (TextView)item.findViewById(R.id.noOfVitals) ;
             noOfVitals.setText(unitSecondRow[i]);
             final int finalI = i;
             final int finalI1 = i;
             vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CommonMethods.showVitalDialog(mContext, rowText[finalI1], unitSecondRow[finalI1], Color.parseColor(allColors[finalI1]), normalRangeList[finalI1], rowImage[finalI1]);
+                    CommonMethods.showVitalDialog(mContext,rowText[finalI1],unitSecondRow[finalI1],Color.parseColor(allColors[finalI1]),normalRangeList[finalI1],rowImage[finalI1]);
                 }
             });
             noOfVitals.setTextColor(Color.parseColor(allColors[i]));
@@ -227,7 +227,7 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
         groupViewHolder.lblListHeader.setText(headerTitle);
         groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getVisitDetailsIcons(headerTitle, mContext));
         ArrayList<Diagnosi> historyCommonDetailses = getChildList(groupPosition);
-        groupViewHolder.mDetailFirstPoint.setText(test(historyCommonDetailses.get(0).getName()) + ".......");
+        groupViewHolder.mDetailFirstPoint.setText(test(historyCommonDetailses.get(0).getName())+".......");
         return convertView;
     }
 
@@ -294,15 +294,16 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
 
     }
 
-    public String test(String t) {
+    public String test(String t){
         String o = null;
-        if (t.length() >= 30) {
-            o = t.substring(0, 30);
+        if(t.length() >= 30){
+            o = t.substring(0,30);
             System.out.println(o);
           /*  String x = t.substring(5,t.length());
             test(x);*/
             return o;
-        } else {
+        }
+        else{
             System.out.println(t);
             return t;
         }

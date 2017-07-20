@@ -57,14 +57,15 @@ public class AppointmentAlarmTask implements Runnable {
 
     @Override
     public void run() {
-        setAlarm(time, msg, 5/*, medicines*/);
+        setAlarm(time, msg, 5);
     }
 
-    private void setAlarm(String time, String msg, int requestCode/*, ArrayList<Medicine> medicines*/) {
+    private void setAlarm(String time, String msg, int requestCode) {
         Intent intent = new Intent(context, AppointmentNotificationService.class);
         intent.putExtra(AppointmentNotificationService.INTENT_NOTIFY, true);
-        intent.putExtra(MyRescribeConstants.TIME, time);
+        intent.putExtra(MyRescribeConstants.APPOINTMENT_TIME, time);
         intent.putExtra(MyRescribeConstants.APPOINTMENT_MESSAGE, msg);
+        intent.putExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, requestCode);
 
         PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent, 0);
 

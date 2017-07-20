@@ -1,12 +1,6 @@
 package com.myrescribe.util;
 
 
-import android.content.Intent;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Sandeep Bahalkar
  */
@@ -18,30 +12,12 @@ public class MyRescribeConstants {
     public static final String MT_TABLET = "TABLET";
     public static final String MT_SYRUP = "SYRUP";
     public static final String MT_OINTMENT = "OINTMENT";
-    public static final String INVESTIGATION_MESSAGE = "investigation_message";
-    public static final String APPOINTMENT_MESSAGE = "appointment_message";
-    public static final String INVESTIGATION_DATA = "investigation_data";
+    public static final String DD_MM_YYYY = "dd-MM-yyyy";
     public static final String YES = "yes";
     public static final String DOCUMENTS = "documents";
     public static final String ALERT = "alert";
-
-    //This is for bydefault textcolor,headercolor,buttoncolor etc.
-    public static String HEADER_COLOR = "#E4422C";
-    public static String BUTTON_TEXT_COLOR = "#FFFFFF";
-    public static String TEXT_COLOR = "#000000";
     public static final String ID = "_id";
     public static final String USER_ID = "User-ID";
-
-    public static class PRESCRIPTION_LIST_PARAMS {
-        public static final String PATIENT_NAME = "User-ID";
-        public static final String FILE_TYPE = "fileType";
-        public static final String DATE_TYPE = "dateType";
-        public static final String FROM_DATE = "fromDate";
-        public static final String TO_DATE = "toDate";
-        public static final String ANNOTATION_TEXT = "annotationText";
-        public static final String DOC_TYPE_ID = "DocTypeId";
-    }
-
     public static final String DEVICEID = "Device-Id";
     public static final String OS = "OS";
     public static final String OSVERSION = "OS-Version";
@@ -56,8 +32,6 @@ public class MyRescribeConstants {
     public static final String XXXHDPI = "/XXXHDPI/";
     public static final String TABLET = "Tablet";
     public static final String PHONE = "Phone";
-
-
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String AUTHORIZATION = "Authorization";
     public static final String AUTHORIZATION_TOKEN = "authtoken";
@@ -66,7 +40,6 @@ public class MyRescribeConstants {
     public static final String GRANT_TYPE_KEY = "grant_type";
     public static final String APPLICATION_URL_ENCODED = "application/x-www-form-urlencoded; charset=UTF-8";
     public static final String APPLICATION_JSON = "application/json; charset=utf-8";
-
     //--- Request Params
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
@@ -75,53 +48,79 @@ public class MyRescribeConstants {
     public static final String CLIENT_ID_VALUE = "334a059d82304f4e9892ee5932f81425";
     public static final String TRUE = "true";
     public static final String FALSE = "false";
-
-    //Click codes
-    public static final String CLICK_DELETE = MyRescribeConstants.BLANK + 0;
-    public static final String CLICK_EXPAND_VIEW = MyRescribeConstants.BLANK + 1;
-    public static final String CLICK_EDIT = MyRescribeConstants.BLANK + 2;
+    public static final String INVESTIGATION_TIME = "investigation_time";
+    public static final String APPOINTMENT_TIME = "appointment_time";
+    public static final String NOTIFICATION_TIME = "notification_time";
+    public static final String INVESTIGATION_DATE = "investigation_date";
+    public static final String APPOINTMENT_DATE = "appointment_date";
+    public static final String NOTIFICATION_DATE = "notification_date";
+    public static final String TIME = "time";
 
     // Connection codes
-
-    public static final String TASK_PRESCRIPTION_LIST = MyRescribeConstants.BLANK + 1;
-    public static final String TASK_HISTORY = MyRescribeConstants.BLANK + 2;
-    public static final String TASK_DOCTOR_LIST = MyRescribeConstants.BLANK + 3;
-    public static final String TASK_LOGIN = MyRescribeConstants.BLANK + 4;
-    public static final String TASK_ONE_DAY_VISIT = MyRescribeConstants.BLANK + 5;
-    public static final String VITALS_LIST = MyRescribeConstants.BLANK + 6;
-    public static final String TASK_DOCTOR_APPOINTMENT = MyRescribeConstants.BLANK + 6;
-
-    public static class DATE_PATTERN {
-        public static String YYYY_MM_DD_hh_mm_a = "yyyy-MM-dd hh:mm a";
-        public static String DD_MM = "dd/MM";
-        public static final String UTC_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-        public static String HH_MM = "hh:mm";
-        public static String EEE_MMM_DD_MMM = "EEEE dd MMM yyyy HH:mm";
-        public final static String YYYY_MM_DD = "yyyy-MM-dd";
-        public final static String DD_MM_YYYY = "dd-MM-yyyy";
-        public final static String hh_mm_a = "hh:mm a";
-        public static final String TOTIMEZONE = "Asia/Kolkata";
-        public final static String EEEE_dd_MMM_yyyy_hh_mm_a = "EEEE dd MMM yyyy | hh:mm a";
-    }
-
-    public static final String TIME = "time";
     public static final String MONTH = "month";
     public static final String YEAR = "year";
     public static final String DATE = "date";
     public static final String MEDICINE_NAME = "medicine_name";
     public static final String MEDICINE_SLOT = "edicine_slot";
     public static final String MEDICINE_TYPE = "medicine_type";
-
+    public static final String NOTIFICATION_ID = "notification_id";
+    public static final String INVESTIGATION_NOTIFICATION_ID = "investigation_notification_id";
+    public static final String APPOINTMENT_NOTIFICATION_ID = "appointment_notification_id";
+    public static final String INVESTIGATION_MESSAGE = "investigation_message";
+    public static final String APPOINTMENT_MESSAGE = "appointment_message";
+    public static final String INVESTIGATION_DATA = "investigation_data";
     public static final String BLANK = "";
+    //Click codes
+    public static final String CLICK_DELETE = MyRescribeConstants.BLANK + 0;
+    public static final String CLICK_EXPAND_VIEW = MyRescribeConstants.BLANK + 1;
+    public static final String CLICK_EDIT = MyRescribeConstants.BLANK + 2;
+    public static final String TASK_PRESCRIPTION_LIST = MyRescribeConstants.BLANK + 1;
+    public static final String TASK_HISTORY = MyRescribeConstants.BLANK + 2;
+    public static final String TASK_DOCTOR_LIST = MyRescribeConstants.BLANK + 3;
+    public static final String TASK_LOGIN = MyRescribeConstants.BLANK + 4;
+    public static final String TASK_ONE_DAY_VISIT = MyRescribeConstants.BLANK + 5;
+
+    public static final String VITALS_LIST = MyRescribeConstants.BLANK + 6;
+    public static final String TASK_DOCTOR_APPOINTMENT = MyRescribeConstants.BLANK + 7;
+
     public static final String DATA = "DATA";
+    public static final Integer SUCCESS = 200;
+    public static final String INVESTIGATION_TEMP_DATA = "investigation_temp_data";
+    //This is for bydefault textcolor,headercolor,buttoncolor etc.
+    public static String HEADER_COLOR = "#E4422C";
+    public static String BUTTON_TEXT_COLOR = "#FFFFFF";
+    public static String TEXT_COLOR = "#000000";
+
+    public static class PRESCRIPTION_LIST_PARAMS {
+        public static final String PATIENT_NAME = "User-ID";
+        public static final String FILE_TYPE = "fileType";
+        public static final String DATE_TYPE = "dateType";
+        public static final String FROM_DATE = "fromDate";
+        public static final String TO_DATE = "toDate";
+        public static final String ANNOTATION_TEXT = "annotationText";
+        public static final String DOC_TYPE_ID = "DocTypeId";
+    }
+
+    public static class DATE_PATTERN {
+        public static String YYYY_MM_DD_hh_mm_a = "yyyy-MM-dd hh:mm a";
+        public static String DD_MM = "dd/MM";
+        public static final String UTC_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+        public final static String YYYY_MM_DD = "yyyy-MM-dd";
+        public final static String DD_MM_YYYY = "dd-MM-yyyy";
+        public final static String hh_mm_a = "hh:mm a";
+        public static final String TOTIMEZONE = "Asia/Kolkata";
+        public final static String EEEE_dd_MMM_yyyy_hh_mm_a = "EEEE dd MMM yyyy | hh:mm a";
+        public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
+        public static String DD_MM_YYYY_hh_mm = "dd/MM/yyyy hh:mm aa";
+        public static String HH_MM = "hh:mm";
+        public static String EEE_MMM_DD_MMM = "EEEE dd MMM yyyy HH:mm";
+    }
 
     public static class TIME_STAMPS {
         public static int ONE_SECONDS = 1000;
         public static int TWO_SECONDS = 2000;
         public static int THREE_SECONDS = 3000;
     }
-
-    public static final Integer SUCCESS = 200;
 
 
 }

@@ -1,7 +1,6 @@
 package com.myrescribe.network;
 /**
  * @author Sandeep Bahalkar
- *
  */
 
 import android.content.Context;
@@ -25,9 +24,10 @@ public class RequestPool {
         return new RequestPool(context);
     }
 
-    public void cancellAllPreviousRequestWithSameTag(String tag){
-    	mRequestQueue.cancelAll(tag);
+    public void cancellAllPreviousRequestWithSameTag(String tag) {
+        mRequestQueue.cancelAll(tag);
     }
+
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
             // getApplicationContext() is key, it keeps you from leaking the

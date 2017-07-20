@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/expandVisitDetailsLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/expandVisitDetailsLayout"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -25,16 +25,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp4"
-            app:customFont="@string/roboto_medium"
             android:textColor="@color/view_detail_color"
-            android:textSize="@dimen/sp18" />
+            android:textSize="@dimen/sp18"
+            app:customFont="@string/roboto_medium" />
     </LinearLayout>
 
     <View
-         android:id="@+id/adapter_divider_bottom"
-         android:layout_width="match_parent"
-         android:layout_height="1dp"
-         android:layout_marginTop="@dimen/dp4"
-         android:background="@color/divider"
-         android:visibility="gone" />
+        android:id="@+id/adapter_divider_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/dp4"
+        android:background="@color/divider"
+        android:visibility="gone" />
 </LinearLayout>

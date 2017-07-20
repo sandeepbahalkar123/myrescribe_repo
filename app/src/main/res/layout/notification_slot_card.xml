@@ -39,6 +39,7 @@
                 app:customFont="@string/roboto_bold" />
 
         </FrameLayout>
+
         <View
             android:id="@+id/dividerLineInHeader"
             android:layout_width="match_parent"
@@ -47,6 +48,7 @@
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:background="@color/divider" />
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -72,8 +74,8 @@
                         android:layout_toLeftOf="@+id/selectView"
                         android:layout_toStartOf="@+id/selectView"
                         android:text="@string/dosage_completed"
-                        android:textSize="@dimen/sp19"
                         android:textColor="@color/dose_completed"
+                        android:textSize="@dimen/sp19"
                         app:customFont="@string/roboto_medium" />
 
                     <CheckBox
@@ -105,11 +107,12 @@
             <!--<include layout="@layout/tablet_list"/>-->
 
         </LinearLayout>
-<View
-    android:id="@+id/dividerLine"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/dp1"
-    android:background="@color/divider"/>
+
+        <View
+            android:id="@+id/dividerLine"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/divider" />
     </LinearLayout>
 
 </LinearLayout>

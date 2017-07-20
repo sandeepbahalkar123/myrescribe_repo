@@ -20,26 +20,26 @@ public class Device {
     private Context context;
     private WindowManager windowManager;
 
-    /**
-     * Create a static method to get instance.
-     */
-
-    public static Device getInstance(Context context){
-
-        return new Device(context);
-    }
-
-    public static Device getInstance(WindowManager windowManager){
-
-        return new Device(windowManager);
-    }
-
     public Device(WindowManager windowManager) {
         this.windowManager = windowManager;
     }
 
     public Device(Context context) {
         this.context = context;
+    }
+
+    /**
+     * Create a static method to get instance.
+     */
+
+    public static Device getInstance(Context context) {
+
+        return new Device(context);
+    }
+
+    public static Device getInstance(WindowManager windowManager) {
+
+        return new Device(windowManager);
     }
 
     public String getDensity() {

@@ -72,10 +72,9 @@ public class CommonMethods {
     private static final String TAG = "MyRescribe/CommonMethods";
     private static boolean encryptionIsOn = true;
     private static String aBuffer = "";
+    private static CheckIpConnection mCheckIpConnection;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private DatePickerDialogListener mDatePickerDialogListener;
-    private static CheckIpConnection mCheckIpConnection;
-
 
     public static void showToast(Context context, String error) {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
@@ -557,54 +556,6 @@ public class CommonMethods {
 
     }
 
-    public void datePickerDialog(Context context, DatePickerDialogListener datePickerDialogListener, Date dateToSet, final Boolean isFromDateClicked, final Date date) {
-        // Get Current Date
-        final Calendar c = Calendar.getInstance();
-        if (dateToSet != null) {
-            c.setTime(dateToSet);
-        }
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        mDatePickerDialogListener = datePickerDialogListener;
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
-
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-
-                        if (isFromDateClicked) {
-                            mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                        } else {
-                            mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                        }
-
-
-                    }
-                }, mYear, mMonth, mDay);
-        if (isFromDateClicked) {
-            datePickerDialog.getDatePicker().setCalendarViewShown(false);
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-            datePickerDialog.show();
-        } else {
-            if (date != null) {
-                datePickerDialog.getDatePicker().setCalendarViewShown(false);
-                datePickerDialog.getDatePicker().setMinDate(date.getTime());
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-                datePickerDialog.show();
-            } else {
-                datePickerDialog.getDatePicker().setCalendarViewShown(false);
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-                datePickerDialog.show();
-            }
-        }
-
-    }
-
     private static boolean isValidIP(String ipAddr) {
 
         Pattern ptn = Pattern.compile("(\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b)\\.(\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b)\\.(\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b)\\.(\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b)\\:(\\d{1,4})$");
@@ -792,8 +743,6 @@ public class CommonMethods {
         return time;
     }
 
-    // Return medicine Icon's
-
     public static Drawable getMedicalTypeIcon(String medicineTypeName, Context context) {
 
         Drawable abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);
@@ -842,6 +791,8 @@ public class CommonMethods {
         }
         return abbreviation;
     }
+
+    // Return medicine Icon's
 
     public static Drawable getMedicineTypeImage(String medicineTypeName, Context context) {
 
@@ -914,6 +865,7 @@ public class CommonMethods {
         return abbreviation;
     }
 
+
     public static int getVisitDetailsIconsAsPerID(int visitDetailId, Context context) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
@@ -957,7 +909,6 @@ public class CommonMethods {
         }
         return abbreviation;
     }
-
 
     public static int getVitalsDetails(String vitalDetailName, Context context) {
 
@@ -1073,17 +1024,53 @@ public class CommonMethods {
         return a;
     }
 
-    /*public static String convertDateStringFormat(String strDate, String fromFormat, String toFormat) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat(fromFormat);
-            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-            SimpleDateFormat dateFormat2 = new SimpleDateFormat(toFormat.trim());
-            return dateFormat2.format(sdf.parse(strDate));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
+    public void datePickerDialog(Context context, DatePickerDialogListener datePickerDialogListener, Date dateToSet, final Boolean isFromDateClicked, final Date date) {
+        // Get Current Date
+        final Calendar c = Calendar.getInstance();
+        if (dateToSet != null) {
+            c.setTime(dateToSet);
         }
-    }*/
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        mDatePickerDialogListener = datePickerDialogListener;
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                new DatePickerDialog.OnDateSetListener() {
+
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        if (isFromDateClicked) {
+                            mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        } else {
+                            mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        }
+
+
+                    }
+                }, mYear, mMonth, mDay);
+        if (isFromDateClicked) {
+            datePickerDialog.getDatePicker().setCalendarViewShown(false);
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+            datePickerDialog.show();
+        } else {
+            if (date != null) {
+                datePickerDialog.getDatePicker().setCalendarViewShown(false);
+                datePickerDialog.getDatePicker().setMinDate(date.getTime());
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                datePickerDialog.show();
+            } else {
+                datePickerDialog.getDatePicker().setCalendarViewShown(false);
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                datePickerDialog.show();
+            }
+        }
+    }
+
 
 }
 

@@ -33,7 +33,7 @@ public class DosesAlarmTask implements Runnable {
     // Your context to retrieve the alarm manager from
     private final Context context;
 
-    public DosesAlarmTask(Context context, String time[], String date/*, ArrayList<Medicine> medicines*/) {
+    public DosesAlarmTask(Context context, String time[], String date) {
         this.context = context;
         this.am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         this.time = time;
@@ -65,12 +65,13 @@ public class DosesAlarmTask implements Runnable {
         setAlarm(time[3], context.getResources().getString(R.string.snacks_medication), 3);
     }
 
-    private void setAlarm(String time, String medicineSlot, int requestCode/*, ArrayList<Medicine> medicines*/){
+    private void setAlarm(String time, String medicineSlot, int requestCode) {
         Intent intent = new Intent(context, NotificationService.class);
         intent.putExtra(NotificationService.INTENT_NOTIFY, true);
-        intent.putExtra(MyRescribeConstants.TIME, time);
+        intent.putExtra(MyRescribeConstants.NOTIFICATION_TIME, time);
         intent.putExtra(MyRescribeConstants.MEDICINE_SLOT, medicineSlot);
-        intent.putExtra(MyRescribeConstants.DATE, date);
+        intent.putExtra(MyRescribeConstants.NOTIFICATION_DATE, date);
+        intent.putExtra(MyRescribeConstants.NOTIFICATION_ID, requestCode);
 
         Bundle bundle = new Bundle();
         intent.putExtra(MyRescribeConstants.MEDICINE_NAME, bundle);

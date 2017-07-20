@@ -20,8 +20,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:button="@drawable/checkboxselecter"
-        android:paddingTop="@dimen/dp10"
         android:paddingEnd="@dimen/dp8"
-        android:paddingRight="@dimen/dp8" />
+        android:paddingRight="@dimen/dp8"
+        android:paddingTop="@dimen/dp10" />
 
 </droidninja.filepicker.views.SquareRelativeLayout>

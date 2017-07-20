@@ -1,7 +1,6 @@
 package com.myrescribe.network;
 /**
  * @author Sandeep Bahalkar
- *
  */
 
 import android.content.Context;
@@ -20,27 +19,30 @@ public class Request {
 
     public Request() {
     }
+
     public Request(Context mContext) {
         this.mContext = mContext;
     }
+
     public Request(Context mContext, Map<String, String> mPostParams) {
         this(mContext);
         this.mPostParams = mPostParams;
     }
-    public Request(Context mContext, ConnectionListener connectionListener){
+
+    public Request(Context mContext, ConnectionListener connectionListener) {
         this(mContext);
         this.mConnectionListener = mConnectionListener;
     }
 
     public Request(Context mContext, Map<String, String> mPostParams,
                    Map<String, String> mHeaderParams) {
-        this(mContext,mPostParams);
+        this(mContext, mPostParams);
         this.mHeaderParams = mHeaderParams;
     }
 
     public Request(Context mContext, Map<String, String> mPostParams,
                    Map<String, String> mHeaderParams, ConnectionListener mConnectionListener) {
-        this(mContext,mPostParams,mHeaderParams);
+        this(mContext, mPostParams, mHeaderParams);
         this.mConnectionListener = mConnectionListener;
     }
 
@@ -55,14 +57,6 @@ public class Request {
         this.mHeaderParams = mHeaderParams;
         this.mConnectionListener = mConnectionListener;
         this.mProgressDialog = mProgressDialog;
-    }
-
-    public void setHeaderParams(Map<String, String> headerParams) {
-        this.mHeaderParams = headerParams;
-    }
-
-    public void setPostParams(Map<String, String> postParams) {
-        this.mPostParams = postParams;
     }
 
     /**
@@ -86,6 +80,9 @@ public class Request {
         return mPostParams;
     }
 
+    public void setPostParams(Map<String, String> postParams) {
+        this.mPostParams = postParams;
+    }
 
     /**
      * @return the mHeaderParams
@@ -94,6 +91,9 @@ public class Request {
         return mHeaderParams;
     }
 
+    public void setHeaderParams(Map<String, String> headerParams) {
+        this.mHeaderParams = headerParams;
+    }
 
     /**
      * @return the mConnectionListener

@@ -7,11 +7,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 
 public class RequestTimer {
-    public interface RequestTimerListener {
-        public void onTimeout(RequestTimer requestTimer);
-    }
-    private static final String TAG = "RequestTimer";
     public static final long DEFAULT_TIMEOUT = 1000 * 40; //40 seconds for timeout
+    private static final String TAG = "RequestTimer";
     /* Public attributes */
     private long timeoutMillis;
     private RequestTimerListener listener;
@@ -20,7 +17,6 @@ public class RequestTimer {
     private HandlerThread threadTimer;
     private Handler handlerTimer;
     private Runnable runnableTimeout;
-
     public RequestTimer(long timeoutMillis, Handler handlerMain) {
         this.setTimeoutMillis(timeoutMillis);
         threadTimer = new HandlerThread("timer");
@@ -36,16 +32,16 @@ public class RequestTimer {
         return timeoutMillis;
     }
 
+    public void setTimeoutMillis(long timeoutMillis) {
+        this.timeoutMillis = timeoutMillis;
+    }
+
     public RequestTimerListener getListener() {
         return listener;
     }
 
     public void setListener(RequestTimerListener listener) {
         this.listener = listener;
-    }
-
-    public void setTimeoutMillis(long timeoutMillis) {
-        this.timeoutMillis = timeoutMillis;
     }
 
     public Handler getCallbackHandler() {
@@ -93,5 +89,9 @@ public class RequestTimer {
             runnableTimeout = null;
         }
         threadTimer.quit();
+    }
+
+    public interface RequestTimerListener {
+        public void onTimeout(RequestTimer requestTimer);
     }
 }

@@ -199,6 +199,8 @@
     <string name="case_details">Case Details</string>
     <string name="back">Back</string>
     <string name="dr_shaha">Dr. Shaha</string>
+    <string name="latitude">latitude</string>
+    <string name="longitude">longitude</string>
 
 
 </resources>

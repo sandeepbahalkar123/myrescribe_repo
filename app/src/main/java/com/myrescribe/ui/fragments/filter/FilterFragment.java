@@ -1,6 +1,7 @@
 package com.myrescribe.ui.fragments.filter;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +36,7 @@ public class FilterFragment extends Fragment {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     Unbinder unbinder;
+    private OnDrawerInteractionListener mListener;
 
     public FilterFragment() {
         // Required empty public constructor
@@ -71,21 +73,45 @@ public class FilterFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.closeButton, R.id.titleTextView, R.id.resetButton, R.id.selectDoctorLayout, R.id.selectSpecialityLayout, R.id.selectMonthLayout})
+    @OnClick({R.id.closeButton, R.id.resetButton, R.id.selectDoctorLayout, R.id.selectSpecialityLayout, R.id.selectMonthLayout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.closeButton:
-                break;
-            case R.id.titleTextView:
+                mListener.onDrawerClose();
                 break;
             case R.id.resetButton:
                 break;
             case R.id.selectDoctorLayout:
+                mListener.onSelectDoctors();
                 break;
             case R.id.selectSpecialityLayout:
+                mListener.onSelectSpeciality();
                 break;
             case R.id.selectMonthLayout:
                 break;
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnDrawerInteractionListener) {
+            mListener = (OnDrawerInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnDrawerInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnDrawerInteractionListener {
+        void onDrawerClose();
+        void onSelectDoctors();
+        void onSelectSpeciality();
     }
 }

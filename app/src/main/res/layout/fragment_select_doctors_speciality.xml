@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.myrescribe.ui.fragments.filter.SelectDoctorsorSpecialityFragment">
+    tools:context="com.myrescribe.ui.fragments.filter.SelectDoctorsOrSpecialityFragment">
 
     <RelativeLayout
         android:id="@+id/headerBar"
@@ -29,10 +30,15 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            tools:text="@string/select_doctors"
+            android:layout_toEndOf="@+id/closeButton"
+            android:layout_toLeftOf="@+id/resetButton"
+            android:layout_toRightOf="@+id/closeButton"
+            android:layout_toStartOf="@+id/resetButton"
             android:textColor="@color/white"
             android:textSize="@dimen/sp23"
-            app:customFont="@string/roboto_bold" />
+            android:gravity="center"
+            app:customFont="@string/roboto_bold"
+            tools:text="@string/select_doctors_speciality" />
 
         <Button
             android:id="@+id/resetButton"

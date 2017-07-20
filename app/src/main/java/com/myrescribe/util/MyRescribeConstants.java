@@ -114,7 +114,7 @@ public class MyRescribeConstants {
         public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
         public static String DD_MM_YYYY_hh_mm = "dd/MM/yyyy hh:mm aa";
         public static String HH_MM = "hh:mm";
-        public static String EEE_MMM_DD_MMM = "EEEE dd MMM yyyy HH:mm";
+        public static String MMM_YYYY = "MMM, yyyy";
     }
 
     public static class TIME_STAMPS {

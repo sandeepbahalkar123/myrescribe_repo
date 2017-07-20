@@ -6,28 +6,33 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.myrescribe.R;
+import com.myrescribe.adapters.CustomSpinnerAdapter;
 import com.myrescribe.helpers.doctor.DoctorHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 import com.myrescribe.model.util.TimePeriod;
 import com.myrescribe.ui.fragments.DoctorListFragment;
-import com.myrescribe.adapters.CustomSpinnerAdapter;
+import com.myrescribe.ui.fragments.filter.FilterFragment;
+import com.myrescribe.ui.fragments.filter.SelectDoctorsOrSpecialityFragment;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -41,7 +46,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 14/6/17.
  */
 
-public class DoctorListActivity extends AppCompatActivity implements HelperResponse, View.OnClickListener {
+public class DoctorListActivity extends AppCompatActivity implements HelperResponse, View.OnClickListener, FilterFragment.OnDrawerInteractionListener, SelectDoctorsOrSpecialityFragment.OnSelectDoctorInteractionListener {
 
     @BindView(R.id.backArrow)
     ImageView mBackArrow;
@@ -52,23 +57,43 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     private CustomSpinnerAdapter mCustomSpinAdapter;
     @BindView(R.id.year)
     Spinner mYearSpinnerView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.nav_view)
+    FrameLayout nav_view;
+
     private ArrayList<String> mYearList;
     private ArrayList<TimePeriod> mTimePeriodList;
     private TimePeriod mCurrentSelectedTimePeriodTab;
     private DoctorHelper mDoctorHelper;
     private ViewPagerAdapter mViewPagerAdapter;
     private HashSet<String> mGeneratedRequestForYearList = new HashSet<>();
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.doctor_activity);
         ButterKnife.bind(this);
-
         initialize();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.END)) {
+            drawer.closeDrawer(GravityCompat.END);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private void initialize() {
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FilterFragment filterFragment = FilterFragment.newInstance();
+        fragmentTransaction.add(R.id.nav_view, filterFragment, "Filter");
+        fragmentTransaction.commit();
+
         mYearList = CommonMethods.getYearForDoctorList();
         mBackArrow.setOnClickListener(this);
 
@@ -190,6 +215,34 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
             }
         }, 00);
         //---------
+    }
+
+    @Override
+    public void onDrawerClose() {
+        drawer.closeDrawer(GravityCompat.END);
+    }
+
+    @Override
+    public void onSelectDoctors() {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        SelectDoctorsOrSpecialityFragment selectDoctorsOrSpecialityFragment = SelectDoctorsOrSpecialityFragment.newInstance(getResources().getString(R.string.select_doctors));
+        fragmentTransaction.add(R.id.nav_view, selectDoctorsOrSpecialityFragment, getResources().getString(R.string.select_doctors));
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onSelectSpeciality() {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        SelectDoctorsOrSpecialityFragment selectDoctorsOrSpecialityFragment = SelectDoctorsOrSpecialityFragment.newInstance(getResources().getString(R.string.select_doctors_speciality));
+        fragmentTransaction.add(R.id.nav_view, selectDoctorsOrSpecialityFragment, getResources().getString(R.string.select_doctors_speciality));
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBack() {
+        fragmentManager.popBackStack();
     }
 
     //---------------

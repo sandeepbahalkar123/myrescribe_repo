@@ -25,10 +25,10 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/drIcon"
-            android:layout_toLeftOf="@id/arrowIcon1"
-            android:layout_toRightOf="@id/drIcon"
-            android:layout_toStartOf="@id/arrowIcon1"
+            android:layout_toEndOf="@+id/drIcon"
+            android:layout_toLeftOf="@+id/selectCheckbox"
+            android:layout_toRightOf="@+id/drIcon"
+            android:layout_toStartOf="@+id/selectCheckbox"
             android:padding="@dimen/dp8"
             tools:text="@string/select_doctors"
             android:textColor="@color/tagColor"
@@ -36,7 +36,7 @@
             app:customFont="@string/roboto_bold" />
 
         <CheckBox
-            android:id="@+id/arrowIcon1"
+            android:id="@+id/selectCheckbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

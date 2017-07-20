@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,7 +30,7 @@ public class FilterDoctorsAdapter extends RecyclerView.Adapter<FilterDoctorsAdap
     @Override
     public FileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.selected_image_item_layout, parent, false);
+                .inflate(R.layout.doctor_list_row, parent, false);
         return new FilterDoctorsAdapter.FileViewHolder(view);
     }
 
@@ -58,7 +59,7 @@ public class FilterDoctorsAdapter extends RecyclerView.Adapter<FilterDoctorsAdap
         TextView drName;
 
         @BindView(R.id.selectCheckbox)
-        ImageView selectCheckbox;
+        CheckBox selectCheckbox;
 
         FileViewHolder(View itemView) {
             super(itemView);

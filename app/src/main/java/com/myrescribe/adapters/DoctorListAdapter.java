@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
- 
+
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 
 import com.myrescribe.ui.activities.ViewDetailsActivity;
@@ -122,7 +122,18 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
                 intent.putExtra(mContext.getString(R.string.name), dataObject.getDoctorName());
                 intent.putExtra(mContext.getString(R.string.specialization), dataObject.getSpecialization());
                 intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());
-                intent.putExtra(mContext.getString(R.string.one_day_visit_date), CommonMethods.getDateSelectedDoctorVisit(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+
+                //--------
+                String timeToShow = CommonMethods.formatDateTime(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.MMM_YYYY,
+                        MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE).toLowerCase();
+                Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                timeToShow = timeToShow.substring(0, 1).toUpperCase() + timeToShow.substring(1);
+                String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup> " + timeToShow;
+                intent.putExtra(mContext.getString(R.string.one_day_visit_date), toDisplay);
+                //--------
+
                 mContext.startActivity(intent);
             }
         });

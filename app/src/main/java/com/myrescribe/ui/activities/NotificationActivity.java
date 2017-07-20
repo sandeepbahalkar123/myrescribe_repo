@@ -71,8 +71,8 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
         Intent intent = getIntent();
         medicineSlot = intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT);
-        date = intent.getStringExtra(MyRescribeConstants.DATE);
-        time = intent.getStringExtra(MyRescribeConstants.TIME);
+        date = intent.getStringExtra(MyRescribeConstants.NOTIFICATION_DATE);
+        time = intent.getStringExtra(MyRescribeConstants.NOTIFICATION_TIME);
 //        medicines = (ArrayList<Medicine>) intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME).getSerializable(MyRescribeConstants.MEDICINE_NAME);
 
         recycler = (RecyclerView) findViewById(R.id.recycler);

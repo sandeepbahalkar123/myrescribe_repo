@@ -4,11 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 
-import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.services.InvestigationNotificationService;
-import com.myrescribe.services.NotificationService;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -34,7 +31,7 @@ public class InvestigationAlarmTask implements Runnable {
     // Your context to retrieve the alarm manager from
     private final Context context;
 
-    public InvestigationAlarmTask(Context context, String time, String msg/*, ArrayList<Medicine> medicines*/) {
+    public InvestigationAlarmTask(Context context, String time, String msg) {
         this.context = context;
         this.am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         this.time = time;
@@ -63,11 +60,12 @@ public class InvestigationAlarmTask implements Runnable {
         setAlarm(time, msg, 4);
     }
 
-    private void setAlarm(String time, String msg, int requestCode){
+    private void setAlarm(String time, String msg, int requestCode) {
         Intent intent = new Intent(context, InvestigationNotificationService.class);
         intent.putExtra(InvestigationNotificationService.INTENT_NOTIFY, true);
-        intent.putExtra(MyRescribeConstants.TIME, time);
+        intent.putExtra(MyRescribeConstants.INVESTIGATION_TIME, time);
         intent.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, msg);
+        intent.putExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, requestCode);
 
         PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent, 0);
 

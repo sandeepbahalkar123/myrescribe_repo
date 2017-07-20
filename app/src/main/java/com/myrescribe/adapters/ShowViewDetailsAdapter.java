@@ -98,52 +98,51 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
         String headerName = getGroupName(groupPosition);
         // We need to create a new "cell container"
 //        if (convertView == null) {
-            switch (headerName) {
-                case CHILD_TYPE_1:
-                    convertView = inflater.inflate(R.layout.vitals_main_activity, null);
-                    convertView.setTag(headerName);
-                    TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.table);
-                    View divider = (View)convertView.findViewById(R.id.adapter_divider);
-                    tableLayout.removeAllViews();
+        switch (headerName) {
+            case CHILD_TYPE_1:
+                convertView = inflater.inflate(R.layout.vitals_main_activity, null);
+                convertView.setTag(headerName);
+                TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.table);
+                View divider = (View)convertView.findViewById(R.id.adapter_divider);
+                tableLayout.removeAllViews();
                     /*if(mVitalList.size()==8) {
                         for (int i = 0; i < 4; i++) {
-
                         }
                     }*/
-                        tableLayout.addView(addTableRow(3, firstRow, firstRowImage,unitFirstRow,R.array.colors_first,normalRangeFirstRow));
-                        tableLayout.addView(addTableRow(2, secondRow, SecondRowImage,unitSecondRow,R.array.colors_second,normalRangeSecondRow));
+                tableLayout.addView(addTableRow(3, firstRow, firstRowImage,unitFirstRow,R.array.colors_first,normalRangeFirstRow));
+                tableLayout.addView(addTableRow(2, secondRow, SecondRowImage,unitSecondRow,R.array.colors_second,normalRangeSecondRow));
 
-                    if(isLastChild){
-                        divider.setVisibility(View.VISIBLE);
-                    }
-                    else{
-                        divider.setVisibility(View.GONE);
-                    }
-                    break;
+                if(isLastChild){
+                    divider.setVisibility(View.VISIBLE);
+                }
+                else{
+                    divider.setVisibility(View.GONE);
+                }
+                break;
 
-                default:
-                    convertView = inflater.inflate(R.layout.history_child_item_layout, null);
-                    convertView.setTag(headerName);
-                    TextView txtListChild = (TextView) convertView.findViewById(R.id.textView_name);
-                    View dividerLine = (View)convertView.findViewById(R.id.adapter_divider_bottom);
-                    txtListChild.setText(childObject.getName());
+            default:
+                convertView = inflater.inflate(R.layout.history_child_item_layout, null);
+                convertView.setTag(headerName);
+                TextView txtListChild = (TextView) convertView.findViewById(R.id.textView_name);
+                View dividerLine = (View)convertView.findViewById(R.id.adapter_divider_bottom);
+                txtListChild.setText(childObject.getName());
 
-                    if(isLastChild){
-                        dividerLine.setVisibility(View.VISIBLE);
-                    }
-                    else{
-                        dividerLine.setVisibility(View.GONE);
-                    }
-                    break;
-            }
+                if(isLastChild){
+                    dividerLine.setVisibility(View.VISIBLE);
+                }
+                else{
+                    dividerLine.setVisibility(View.GONE);
+                }
+                break;
+        }
 //        }
        /* // We'll reuse the existing one
         else {
             // There is nothing to do here really we just need to set the content of view which we do in both cases
         }*/
 
-    return convertView;
-}
+        return convertView;
+    }
 
     private View addTableRow(int columnCount, final String[] rowText, final Integer[] rowImage, final String[] unitSecondRow, int colorSecond,final String[] normalRangeList) {
         int i;
@@ -243,62 +242,62 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-static class ChildViewHolder {
-    //---------
+    static class ChildViewHolder {
+        //---------
 
-    @BindView(R.id.textView_name)
-    TextView txtListChild;
+        @BindView(R.id.textView_name)
+        TextView txtListChild;
 
-    @BindView(R.id.adapter_divider_bottom)
-    View mDividerLine;
+        @BindView(R.id.adapter_divider_bottom)
+        View mDividerLine;
 
-    @BindView(R.id.expandVisitDetailsLayout)
-    LinearLayout mExpandVisitDetailsLayout;
-
-
-    ChildViewHolder(View view) {
-        ButterKnife.bind(this, view);
-    }
-}
-
-static class ChildViewHolderVitals {
-    //---------
-
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecycler_view;
+        @BindView(R.id.expandVisitDetailsLayout)
+        LinearLayout mExpandVisitDetailsLayout;
 
 
-    ChildViewHolderVitals(View view) {
-        ButterKnife.bind(this, view);
-    }
-}
-
-static class GroupViewHolder {
-    //---------
-
-    @BindView(R.id.viewDetailHeaderLabel)
-    TextView lblListHeader;
-    @BindView(R.id.viewDetailIcon)
-    ImageView mViewDetailIcon;
-    @BindView(R.id.headergroupDivider)
-    View mHeadergroupDivider;
-    @BindView(R.id.adapter_divider_top)
-    View mDivider;
-
-
-    @BindView(R.id.detailFirstPoint)
-    TextView mDetailFirstPoint;
-
-    GroupViewHolder(View view) {
-        ButterKnife.bind(this, view);
+        ChildViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 
-}
+    static class ChildViewHolderVitals {
+        //---------
 
-  public String test(String t){
-    String o = null;
+        @BindView(R.id.recycler_view)
+        RecyclerView mRecycler_view;
+
+
+        ChildViewHolderVitals(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    static class GroupViewHolder {
+        //---------
+
+        @BindView(R.id.viewDetailHeaderLabel)
+        TextView lblListHeader;
+        @BindView(R.id.viewDetailIcon)
+        ImageView mViewDetailIcon;
+        @BindView(R.id.headergroupDivider)
+        View mHeadergroupDivider;
+        @BindView(R.id.adapter_divider_top)
+        View mDivider;
+
+
+        @BindView(R.id.detailFirstPoint)
+        TextView mDetailFirstPoint;
+
+        GroupViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+
+    }
+
+    public String test(String t){
+        String o = null;
         if(t.length() >= 30){
-             o = t.substring(0,30);
+            o = t.substring(0,30);
             System.out.println(o);
           /*  String x = t.substring(5,t.length());
             test(x);*/

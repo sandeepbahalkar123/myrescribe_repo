@@ -1,4 +1,4 @@
-package com.myrescribe.model.doctors;
+package com.myrescribe.model.doctors.doctor_info;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

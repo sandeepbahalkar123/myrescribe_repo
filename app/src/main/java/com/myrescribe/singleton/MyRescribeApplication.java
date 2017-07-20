@@ -19,24 +19,12 @@ import com.google.android.gms.analytics.Tracker;*/
  */
 public class MyRescribeApplication extends Application /*MultiDexApplication*/ {
     public static final String TAG = "MyRescribe/MyRescribeApplication";
-
+    private static final Hashtable<String, Typeface> cache = new Hashtable<String, Typeface>();
     private static MyRescribeApplication singleton;
 
     public static MyRescribeApplication getInstance() {
         return singleton;
     }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        //------------
-        AppDBHelper.getInstance(this);
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
-        //--------------
-    }
-
-    private static final Hashtable<String, Typeface> cache = new Hashtable<String, Typeface>();
 
     public static Typeface get(Context c, String name) {
         synchronized (cache) {
@@ -47,5 +35,15 @@ public class MyRescribeApplication extends Application /*MultiDexApplication*/ {
             }
             return cache.get(name);
         }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        //------------
+        AppDBHelper.getInstance(this);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+        //--------------
     }
 }

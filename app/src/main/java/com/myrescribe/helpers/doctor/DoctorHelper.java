@@ -6,14 +6,14 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.myrescribe.R;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.doctors.DoctorDetail;
-import com.myrescribe.model.doctors.DoctorInfoMonthContainer;
-import com.myrescribe.model.doctors.DoctorModel;
+import com.myrescribe.model.doctors.appointments.DoctorAppointmentModel;
+import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
+import com.myrescribe.model.doctors.doctor_info.DoctorInfoMonthContainer;
+import com.myrescribe.model.doctors.doctor_info.DoctorModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
 import com.myrescribe.preference.MyRescribePreferencesManager;
@@ -23,7 +23,6 @@ import com.myrescribe.util.MyRescribeConstants;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -62,6 +61,8 @@ public class DoctorHelper implements ConnectionListener {
                         yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
                     }
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
+                } else if (mOldDataTag == MyRescribeConstants.TASK_DOCTOR_APPOINTMENT) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
@@ -89,43 +90,6 @@ public class DoctorHelper implements ConnectionListener {
 
     }
 
-    //TODO: This is done for temp purpose
-    public void doGetDoctorList(String year) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
-        Map<String, String> testParams = new HashMap<String, String>();
-
-        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext));
-        testParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
-
-        mConnectionFactory.setHeaderParams(testParams);
-        // mConnectionFactory.setPostParams(testParams);
-        mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_LIST);
-
-
-     /*   // TODO : HARDCODED JSON STRING PARSING FROM assets folder, will get remove
-        try {
-            InputStream is = mContext.getAssets().open("doctor_list_update.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "doGetHistory" + json);
-
-            DoctorModel doctorsModel = new Gson().fromJson(json, DoctorModel.class);
-            if (doctorsModel.getDoctorInfoMonthContainer() != null) {
-                DoctorInfoMonthContainer doctorInfoMonthContainer = doctorsModel.getDoctorInfoMonthContainer();
-                yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
-            }
-
-            CommonMethods.Log("doGetDoctorList", "" + doctorsModel.toString());
-            onResponse(ConnectionListener.RESPONSE_OK, doctorsModel, MyRescribeConstants.TASK_DOCTOR_LIST);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
-    }
 
     public Map<String, Map<String, ArrayList<DoctorDetail>>> getYearWiseSortedDoctorList() {
         return yearWiseSortedDoctorList;
@@ -200,6 +164,80 @@ public class DoctorHelper implements ConnectionListener {
             Date m2Date = CommonMethods.convertStringToDate(m2, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
             int i = m2Date.compareTo(m1Date);
             return i;
+        }
+    }
+
+
+    //TODO: This is done for temp purpose
+    public void doGetDoctorList(String year) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
+        Map<String, String> testParams = new HashMap<String, String>();
+
+        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext));
+        testParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
+
+        mConnectionFactory.setHeaderParams(testParams);
+        // mConnectionFactory.setPostParams(testParams);
+        mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + year);
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_LIST);
+
+
+     /*   // TODO : HARDCODED JSON STRING PARSING FROM assets folder, will get remove
+        try {
+            InputStream is = mContext.getAssets().open("doctor_list_update.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+            Log.e(TAG, "doGetHistory" + json);
+
+            DoctorModel doctorsModel = new Gson().fromJson(json, DoctorModel.class);
+            if (doctorsModel.getDoctorInfoMonthContainer() != null) {
+                DoctorInfoMonthContainer doctorInfoMonthContainer = doctorsModel.getDoctorInfoMonthContainer();
+                yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
+            }
+
+            CommonMethods.Log("doGetDoctorList", "" + doctorsModel.toString());
+            onResponse(ConnectionListener.RESPONSE_OK, doctorsModel, MyRescribeConstants.TASK_DOCTOR_LIST);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }*/
+    }
+
+
+    //TODO: This is done for temp purpose
+    public void doGetDoctorAppointment() {
+      /*  ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
+        Map<String, String> testParams = new HashMap<String, String>();
+
+        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext));
+        testParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
+
+        mConnectionFactory.setHeaderParams(testParams);
+        // mConnectionFactory.setPostParams(testParams);
+        mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + year);
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_LIST);
+*/
+
+        // TODO : HARDCODED JSON STRING PARSING FROM assets folder, will get remove
+        try {
+            InputStream is = mContext.getAssets().open("appointments.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+            Log.e(TAG, "doGetDoctorAppointment" + json);
+
+            DoctorAppointmentModel model = new Gson().fromJson(json, DoctorAppointmentModel.class);
+
+            CommonMethods.Log("doGetDoctorAppointment", "" + model.toString());
+            onResponse(ConnectionListener.RESPONSE_OK, model, MyRescribeConstants.TASK_DOCTOR_APPOINTMENT);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 }

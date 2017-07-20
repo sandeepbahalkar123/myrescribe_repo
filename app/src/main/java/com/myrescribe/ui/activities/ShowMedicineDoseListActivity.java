@@ -19,6 +19,7 @@ import com.myrescribe.adapters.ShowMedicineDoseListAdapter;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
+
 import com.myrescribe.model.prescription_response_model.PrescriptionD;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.util.CommonMethods;
@@ -142,7 +143,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
         startActivity(intent);
         // Handle the camera action
     }else  if (id == R.id.appointments) {
-        Intent intent = new Intent(ShowMedicineDoseListActivity.this, AppoinmentActivity.class);
+        Intent intent = new Intent(ShowMedicineDoseListActivity.this, AppointmentActivity.class);
         startActivity(intent);
         // Handle the camera action
     }*/

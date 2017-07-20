@@ -1,13 +1,10 @@
 
-package com.myrescribe.model.doctors;
+package com.myrescribe.model.doctors.doctor_info;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.model.Common;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DoctorModel implements CustomResponse {
 

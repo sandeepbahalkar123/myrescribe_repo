@@ -8,7 +8,6 @@ import com.myrescribe.R;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.doctors.DoctorModel;
 import com.myrescribe.model.visit_details.Vital;
 import com.myrescribe.model.visit_details.VitalsList;
 import com.myrescribe.network.ConnectRequest;
@@ -28,10 +27,12 @@ public class VitalHelper implements ConnectionListener {
     String TAG = this.getClass().getName();
     static Context mContext;
     HelperResponse mHelperResponseManager;
+
     public VitalHelper(Context context, HelperResponse vitalsActivity) {
         this.mContext = context;
         this.mHelperResponseManager = vitalsActivity;
     }
+
     @Override
     public void onResponse(int responseResult, CustomResponse customResponse, String mOldDataTag) {
         switch (responseResult) {
@@ -65,9 +66,10 @@ public class VitalHelper implements ConnectionListener {
     public void onTimeout(ConnectRequest request) {
 
     }
+
     public List<Vital> doGetVitalsList() {
 
-        List<Vital> vitalsList = null ;
+        List<Vital> vitalsList = null;
 
         // TODO : HARDCODED JSON STRING PARSING FROM assets foler
         try {
@@ -81,8 +83,8 @@ public class VitalHelper implements ConnectionListener {
 
             VitalsList vitalsModel = new Gson().fromJson(json, VitalsList.class);
             if (vitalsModel.getVitals() != null) {
-                vitalsList  = vitalsModel.getVitals();
-               // yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
+                vitalsList = vitalsModel.getVitals();
+                // yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
             }
 
             CommonMethods.Log("doGetDoctorList", "" + vitalsModel.toString());
@@ -93,9 +95,9 @@ public class VitalHelper implements ConnectionListener {
         }
         return vitalsList;
     }
-    public static boolean isBetween(int value, int min, int max)
-    {
-        return((value > min) && (value < max));
+
+    public static boolean isBetween(int value, int min, int max) {
+        return ((value > min) && (value < max));
     }
 
 /*

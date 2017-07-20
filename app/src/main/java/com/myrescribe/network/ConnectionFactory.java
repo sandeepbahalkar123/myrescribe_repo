@@ -1,4 +1,3 @@
-
 package com.myrescribe.network;
 
 /**
@@ -79,7 +78,7 @@ public class ConnectionFactory extends ConnectRequest {
     public void setUrl(String url) {
         String baseUrl = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext);
         this.mURL = baseUrl + url;
-        CommonMethods.Log(TAG,"mURL: "+this.mURL);
+        CommonMethods.Log(TAG, "mURL: " + this.mURL);
     }
 
     public Connector createConnection(String type) {

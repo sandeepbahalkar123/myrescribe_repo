@@ -9,11 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.myrescribe.R;
 import com.myrescribe.model.prescription_response_model.PrescriptionD;
 import com.myrescribe.util.CommonMethods;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -38,76 +41,6 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         this.mSearchListByMedicineName = new ArrayList<>();
         this.mSearchListByMedicineName.addAll(mPrescriptionData);
     }
-
-    static class ListViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.tv_instructions)
-        TextView mTextViewInstructions;
-        @BindView(R.id.detailedInstructions)
-        LinearLayout mDetailedInstructions;
-        @BindView(R.id.medicineName)
-        TextView mTextviewNameOfMedicine;
-        @BindView(R.id.expandPrescriptionView)
-        View mExpandLayout;
-        @BindView(R.id.textViewhightlightInstructions)
-        TextView mTextViewhightlightInstructions;
-        @BindView(R.id.highlightedInstructionView)
-        LinearLayout mHighlightedInstructionView;
-        @BindView(R.id.days)
-        TextView mDays;
-        @BindView(R.id.morningDose)
-        TextView mShowMorningFullFormOfDose;
-        @BindView(R.id.afternoonDose)
-        TextView mShowAfterNoonFullFormOfDose;
-        @BindView(R.id.nightDose)
-        TextView mShowNightFullFormOfDose;
-        @BindView(R.id.morningDoseQuantity)
-        TextView mMorningDoseQuanity;
-        @BindView(R.id.card_view)
-        LinearLayout mCardViewLayout;
-        @BindView(R.id.afternoonDoseQuantity)
-        TextView mLunchDoseQuantity;
-        @BindView(R.id.nightDoseQuantity)
-        TextView mDinnerDoseQuantity;
-        @BindView(R.id.imageViewMorningDose)
-        ImageView mHightLightMorningDose;
-        @BindView(R.id.imageViewAfternoonDose)
-        ImageView mHightLightAfternoonDose;
-        @BindView(R.id.imageViewNightDose)
-        ImageView mHightLightNightDose;
-        @BindView(R.id.imageViewEveningDose)
-        ImageView mHightLightEveningDose;
-        @BindView(R.id.dosePeriod)
-        TextView mDosePeriod;
-        @BindView(R.id.doseQuantityNumber)
-        TextView mDoseQuantityNumber;
-        @BindView(R.id.doseSlot)
-        TextView mDoseSlot;
-        @BindView(R.id.showMorningDosage)
-        LinearLayout mShowMorningDosage;
-        @BindView(R.id.showAfternoonDosage)
-        LinearLayout mShowAfternoonDosage;
-        @BindView(R.id.showDinnerDosage)
-        LinearLayout mShowDinnerDosage;
-        View view;
-        @BindView(R.id.doseImageLinearLayout)
-        LinearLayout mDoseImageLinearLayout;
-        @BindView(R.id.showEveningDosage)
-        LinearLayout mShowEveningDosage;
-        @BindView(R.id.eveningDoseQuantity)
-        TextView mEveningDoseQuantity;
-        @BindView(R.id.eveningDose)
-        TextView mEveningDose;
-        @BindView(R.id.medicineType)
-        ImageView mMedicineType;
-
-        ListViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-            this.view = view;
-        }
-    }
-
 
     @Override
     public ShowMedicineDoseListAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -172,7 +105,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         String durationOfDinner = "";
         String durationOfEvening = "";
         String doseQuantity = "";
-        holder.mMedicineType.setBackgroundDrawable(CommonMethods.getMedicineTypeImage(prescriptionData.getMedicineTypeName(),mContext));
+        holder.mMedicineType.setBackgroundDrawable(CommonMethods.getMedicineTypeImage(prescriptionData.getMedicineTypeName(), mContext));
         //  **************************BreakFast********************************************
         if (!prescriptionData.getBreakfastBefore().isEmpty()) {
             quantityOfDose = prescriptionData.getDosage();
@@ -274,7 +207,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
             doseQuantity = prescriptionData.getSnacksBefore();
             showSlotLabel = mContext.getString(R.string.snacks);
         }
-     if (!prescriptionData.getSnacksAfter().isEmpty()) {
+        if (!prescriptionData.getSnacksAfter().isEmpty()) {
             quantityOfDose = prescriptionData.getDosage();
             durationOfEvening = mContext.getString(R.string.after) + " " + mContext.getString(R.string.snacks);
             timeOfDosage = mContext.getString(R.string.after);
@@ -305,7 +238,6 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         }
         holder.mEveningDose.setText(durationOfEvening);
         holder.mEveningDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));//PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
-
 
 
         // AmAAmAAmlA****Dinner********************************************
@@ -355,10 +287,78 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         holder.mShowNightFullFormOfDose.setText(durationOfDinner);
     }
 
-
     @Override
     public int getItemCount() {
         return mPrescriptionData.size();
+    }
+
+    static class ListViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.tv_instructions)
+        TextView mTextViewInstructions;
+        @BindView(R.id.detailedInstructions)
+        LinearLayout mDetailedInstructions;
+        @BindView(R.id.medicineName)
+        TextView mTextviewNameOfMedicine;
+        @BindView(R.id.expandPrescriptionView)
+        View mExpandLayout;
+        @BindView(R.id.textViewhightlightInstructions)
+        TextView mTextViewhightlightInstructions;
+        @BindView(R.id.highlightedInstructionView)
+        LinearLayout mHighlightedInstructionView;
+        @BindView(R.id.days)
+        TextView mDays;
+        @BindView(R.id.morningDose)
+        TextView mShowMorningFullFormOfDose;
+        @BindView(R.id.afternoonDose)
+        TextView mShowAfterNoonFullFormOfDose;
+        @BindView(R.id.nightDose)
+        TextView mShowNightFullFormOfDose;
+        @BindView(R.id.morningDoseQuantity)
+        TextView mMorningDoseQuanity;
+        @BindView(R.id.card_view)
+        LinearLayout mCardViewLayout;
+        @BindView(R.id.afternoonDoseQuantity)
+        TextView mLunchDoseQuantity;
+        @BindView(R.id.nightDoseQuantity)
+        TextView mDinnerDoseQuantity;
+        @BindView(R.id.imageViewMorningDose)
+        ImageView mHightLightMorningDose;
+        @BindView(R.id.imageViewAfternoonDose)
+        ImageView mHightLightAfternoonDose;
+        @BindView(R.id.imageViewNightDose)
+        ImageView mHightLightNightDose;
+        @BindView(R.id.imageViewEveningDose)
+        ImageView mHightLightEveningDose;
+        @BindView(R.id.dosePeriod)
+        TextView mDosePeriod;
+        @BindView(R.id.doseQuantityNumber)
+        TextView mDoseQuantityNumber;
+        @BindView(R.id.doseSlot)
+        TextView mDoseSlot;
+        @BindView(R.id.showMorningDosage)
+        LinearLayout mShowMorningDosage;
+        @BindView(R.id.showAfternoonDosage)
+        LinearLayout mShowAfternoonDosage;
+        @BindView(R.id.showDinnerDosage)
+        LinearLayout mShowDinnerDosage;
+        View view;
+        @BindView(R.id.doseImageLinearLayout)
+        LinearLayout mDoseImageLinearLayout;
+        @BindView(R.id.showEveningDosage)
+        LinearLayout mShowEveningDosage;
+        @BindView(R.id.eveningDoseQuantity)
+        TextView mEveningDoseQuantity;
+        @BindView(R.id.eveningDose)
+        TextView mEveningDose;
+        @BindView(R.id.medicineType)
+        ImageView mMedicineType;
+
+        ListViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+            this.view = view;
+        }
     }
 
 

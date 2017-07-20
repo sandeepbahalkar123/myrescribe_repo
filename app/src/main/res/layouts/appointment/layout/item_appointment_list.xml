@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:clickable="true"
-    android:layout_marginTop="@dimen/dp16"
     android:layout_marginBottom="@dimen/dp16"
     android:layout_marginEnd="@dimen/dp6"
-    android:layout_marginRight="@dimen/dp6"
     android:layout_marginLeft="@dimen/dp16"
-    android:background="@color/white">
+    android:layout_marginRight="@dimen/dp6"
+    android:layout_marginTop="@dimen/dp16"
+    android:background="@color/white"
+    android:clickable="true">
 
     <LinearLayout
         android:id="@+id/mainDataContainer"
@@ -41,8 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
             android:layout_toRightOf="@+id/thumbnail"
+            android:layout_weight="1"
             android:gravity="center|left"
             android:orientation="vertical">
 
@@ -65,10 +65,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/doctorType"
                 android:layout_toRightOf="@+id/thumbnail"
+                android:text="Dr. Sandeep Patil"
                 android:textColor="@color/tagColor"
                 android:textSize="@dimen/sp18"
                 android:textStyle="bold"
-                android:text="Dr. Sandeep Patil"
                 android:typeface="sans" />
 
             <!-- Rightend Duration -->
@@ -84,24 +84,29 @@
                 android:textSize="@dimen/sp12"
                 android:textStyle="bold" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical">
+
             <com.myrescribe.ui.customesViews.CustomTextView
+                android:id="@+id/appointmentsTimeStamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="6:30 pm"
+                android:textAllCaps="false"
                 android:textColor="@color/dose_completed"
-                app:customFont="@string/roboto_bold"
-                android:text="6:30 pm"/>
-      <ImageView
-          android:id="@+id/locationImageView"
-            android:layout_marginRight="@dimen/dp16"
-            android:layout_width="@dimen/dp35"
-          android:paddingTop="@dimen/dp6"
-            android:layout_height="@dimen/dp35"
-            android:src="@drawable/location"/>
+                app:customFont="@string/roboto_bold" />
+
+            <ImageView
+                android:id="@+id/gMapLocationView"
+                android:layout_width="@dimen/dp35"
+                android:layout_height="@dimen/dp35"
+                android:layout_marginRight="@dimen/dp16"
+                android:paddingTop="@dimen/dp6"
+                android:src="@drawable/location" />
         </LinearLayout>
     </LinearLayout>
 

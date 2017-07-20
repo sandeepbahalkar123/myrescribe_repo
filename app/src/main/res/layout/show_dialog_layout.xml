@@ -40,16 +40,15 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginRight="@dimen/dp6"
+                    android:layout_alignParentRight="true"
                     android:layout_marginEnd="@dimen/dp6"
+                    android:layout_marginRight="@dimen/dp6"
                     android:background="@android:color/transparent"
                     android:padding="@dimen/dp4"
                     android:src="@drawable/ic_action_close"
                     android:visibility="gone" />
             </RelativeLayout>
-
 
 
         </LinearLayout>
@@ -69,11 +68,11 @@
                 android:id="@+id/et_server_path"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text=""
-                android:inputType="text"
                 android:digits="0123456789.:"
+                android:gravity="center"
+                android:inputType="text"
                 android:maxLines="1"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="@dimen/dp6" />
 
@@ -113,10 +112,10 @@
                 android:id="@+id/button_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_toRightOf="@id/seperator"
+                android:layout_alignParentRight="true"
                 android:layout_toEndOf="@+id/seperator"
+                android:layout_toRightOf="@id/seperator"
                 android:background="@drawable/selector_dialog_button_right"
                 android:text="@string/cancel"
                 android:textColor="@color/white" />

@@ -29,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="2"
-            android:paddingLeft="@dimen/dp16"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp16">
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorSpecialization"

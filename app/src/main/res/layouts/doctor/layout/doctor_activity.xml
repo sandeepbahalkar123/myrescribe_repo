@@ -41,9 +41,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:text="Doctor Visits"
-                    android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp18" />
+                    android:textSize="@dimen/sp18"
+                    android:textStyle="bold" />
 
 
             </LinearLayout>

@@ -12,21 +12,13 @@ import android.widget.TextView;
 import com.myrescribe.R;
 import com.myrescribe.adapters.DoctorListAdapter;
 import com.myrescribe.helpers.doctor.DoctorHelper;
-import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.doctors.DoctorDetail;
-import com.myrescribe.model.doctors.DoctorModel;
+import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 import com.myrescribe.model.util.TimePeriod;
 import com.myrescribe.ui.activities.DoctorListActivity;
-import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-
-import static android.R.attr.data;
 
 
 public class DoctorListFragment extends Fragment implements View.OnClickListener {
@@ -119,7 +111,6 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
                         mDoctorListView.setHasFixedSize(true);
                         mDoctorListView.setAdapter(showDoctorListAdapter);
                     }
-
                 }
             }
         }

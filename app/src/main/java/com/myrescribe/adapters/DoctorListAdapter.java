@@ -12,8 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.model.Common;
-import com.myrescribe.model.doctors.DoctorDetail;
+ 
+import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
+
 import com.myrescribe.ui.activities.ViewDetailsActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
@@ -23,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,59 +35,20 @@ import butterknife.ButterKnife;
 
 public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.ListViewHolder> {
 
-    private final String TAG = "DoctorListAdapter";
-    private SimpleDateFormat mDateFormat;
+    private final String TAG = getClass().getName();
+
     Context mContext;
     ArrayList<DoctorDetail> mDataList;
+    private SimpleDateFormat mDateFormat;
 
 
     public DoctorListAdapter(Context context, ArrayList<DoctorDetail> dataList) {
 
         this.mContext = context;
         mDataList = dataList;
-        mDateFormat = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+        mDateFormat = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, Locale.US);
 
     }
-
-    static class ListViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.date)
-        CustomTextView date;
-
-        @BindView(R.id.clickOnDoctorVisitLinearLayout)
-        LinearLayout mClickOnDoctorVisitLinearLayout;
-
-        @BindView(R.id.circularBulletChildElement)
-        ImageView circularBulletChildElement;
-        @BindView(R.id.circularBulletMainElement)
-        ImageView circularBulletMainElement;
-
-        @BindView(R.id.upperLine)
-        TextView upperLine;
-        @BindView(R.id.lowerLine)
-        TextView lowerLine;
-
-        @BindView(R.id.doctorName)
-        CustomTextView doctorName;
-        @BindView(R.id.doctorType)
-        TextView doctorType;
-        @BindView(R.id.doctorAddress)
-        TextView doctorAddress;
-
-        @BindView(R.id.parentDataContainer)
-        LinearLayout parentDataContainer;
-        @BindView(R.id.sideBarView)
-        TextView sideBarView;
-
-        View view;
-
-        ListViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-            this.view = view;
-        }
-    }
-
 
     @Override
     public DoctorListAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -94,7 +57,6 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
         return new DoctorListAdapter.ListViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(final DoctorListAdapter.ListViewHolder holder, final int position) {
 
@@ -102,8 +64,6 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
         if (dataObject.isStartElement()) {
 
-            //----
-            //   String s = CommonMethods.formatDateTime(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
             Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
 
             Calendar cal = Calendar.getInstance();
@@ -162,7 +122,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
                 intent.putExtra(mContext.getString(R.string.name), dataObject.getDoctorName());
                 intent.putExtra(mContext.getString(R.string.specialization), dataObject.getSpecialization());
                 intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());
-                intent.putExtra(mContext.getString(R.string.one_day_visit_date),CommonMethods.getDateSelectedDoctorVisit(dataObject.getDate(),MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intent.putExtra(mContext.getString(R.string.one_day_visit_date), CommonMethods.getDateSelectedDoctorVisit(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
                 mContext.startActivity(intent);
             }
         });
@@ -172,6 +132,45 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
     @Override
     public int getItemCount() {
         return mDataList.size();
+    }
+
+    static class ListViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.date)
+        CustomTextView date;
+
+        @BindView(R.id.clickOnDoctorVisitLinearLayout)
+        LinearLayout mClickOnDoctorVisitLinearLayout;
+
+        @BindView(R.id.circularBulletChildElement)
+        ImageView circularBulletChildElement;
+        @BindView(R.id.circularBulletMainElement)
+        ImageView circularBulletMainElement;
+
+        @BindView(R.id.upperLine)
+        TextView upperLine;
+        @BindView(R.id.lowerLine)
+        TextView lowerLine;
+
+        @BindView(R.id.doctorName)
+        CustomTextView doctorName;
+        @BindView(R.id.doctorType)
+        TextView doctorType;
+        @BindView(R.id.doctorAddress)
+        TextView doctorAddress;
+
+        @BindView(R.id.parentDataContainer)
+        LinearLayout parentDataContainer;
+        @BindView(R.id.sideBarView)
+        TextView sideBarView;
+
+        View view;
+
+        ListViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+            this.view = view;
+        }
     }
 
 }

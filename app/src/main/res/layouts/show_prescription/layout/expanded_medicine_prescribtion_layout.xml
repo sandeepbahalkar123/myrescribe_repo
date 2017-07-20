@@ -24,13 +24,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="visible">
+
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/breakfast_normal_copy"
-                android:layout_weight="0.2"
+                android:layout_gravity="left"
                 android:layout_marginBottom="@dimen/dp6"
-                android:layout_gravity="left"/>
+                android:layout_weight="0.2"
+                android:src="@drawable/breakfast_normal_copy" />
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/morningDose"
@@ -52,10 +53,10 @@
                 android:layout_marginBottom="@dimen/dp6"
                 android:layout_marginEnd="@dimen/dp12"
                 android:layout_marginRight="@dimen/dp12"
-                android:textColor="@color/dose_completed"
                 android:layout_weight="1.5"
-                android:textStyle="bold"
+                android:textColor="@color/dose_completed"
                 android:textSize="@dimen/sp11"
+                android:textStyle="bold"
                 android:visibility="visible"
                 app:customFont="@string/roboto_medium" />
 
@@ -67,13 +68,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="gone">
+
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/lunch_highlighted_copy"
-                android:layout_weight="0.2"
+                android:layout_gravity="left"
                 android:layout_marginBottom="@dimen/dp6"
-                android:layout_gravity="left"/>
+                android:layout_weight="0.2"
+                android:src="@drawable/lunch_highlighted_copy" />
+
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/afternoonDose"
                 android:layout_width="0dp"
@@ -94,11 +97,11 @@
                 android:layout_marginBottom="@dimen/dp6"
                 android:layout_marginEnd="@dimen/dp12"
                 android:layout_marginRight="@dimen/dp12"
-                android:textColor="@color/dose_completed"
                 android:layout_weight="1.5"
                 android:text=""
-                android:textStyle="bold"
+                android:textColor="@color/dose_completed"
                 android:textSize="@dimen/sp11"
+                android:textStyle="bold"
                 android:visibility="visible"
                 app:customFont="@string/roboto_medium" />
 
@@ -110,13 +113,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="gone">
+
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/evening_11_copy_2"
-                android:layout_weight="0.2"
+                android:layout_gravity="left"
                 android:layout_marginBottom="@dimen/dp6"
-                android:layout_gravity="left"/>
+                android:layout_weight="0.2"
+                android:src="@drawable/evening_11_copy_2" />
+
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/eveningDose"
                 android:layout_width="0dp"
@@ -139,9 +144,9 @@
                 android:layout_marginRight="@dimen/dp12"
                 android:layout_weight="1.5"
                 android:text=""
-                android:textStyle="bold"
                 android:textColor="@color/dose_completed"
                 android:textSize="@dimen/sp11"
+                android:textStyle="bold"
                 android:visibility="visible"
                 app:customFont="@string/roboto_medium" />
 
@@ -153,13 +158,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="gone">
+
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/night_dinner_copy_5"
-                android:layout_weight="0.2"
+                android:layout_gravity="left"
                 android:layout_marginBottom="@dimen/dp6"
-                android:layout_gravity="left"/>
+                android:layout_weight="0.2"
+                android:src="@drawable/night_dinner_copy_5" />
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/nightDose"

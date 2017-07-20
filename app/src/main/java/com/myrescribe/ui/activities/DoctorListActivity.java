@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,34 +13,26 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.myrescribe.R;
 import com.myrescribe.helpers.doctor.DoctorHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.Common;
-import com.myrescribe.model.doctors.DoctorDetail;
-import com.myrescribe.model.doctors.DoctorInfoMonthContainer;
+import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 import com.myrescribe.model.util.TimePeriod;
 import com.myrescribe.ui.fragments.DoctorListFragment;
 import com.myrescribe.adapters.CustomSpinnerAdapter;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

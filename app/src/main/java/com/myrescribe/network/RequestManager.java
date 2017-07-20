@@ -28,14 +28,16 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myrescribe.R;
-
 import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.model.doctors.DoctorModel;
+
+import com.myrescribe.model.doctors.doctor_info.DoctorModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
+
 import com.myrescribe.model.login.LoginModel;
+import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.model.visit_details.VisitDetailsModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.activities.SplashScreenActivity;

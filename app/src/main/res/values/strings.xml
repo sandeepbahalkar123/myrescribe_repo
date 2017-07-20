@@ -187,6 +187,9 @@
     <string name="name">NAME</string>
     <string name="specialization">SPECIALIZATION</string>
     <string name="address">ADDRESS</string>
+    <string name="upcoming">upcoming</string>
+    <string name="cancelled">cancelled</string>
+    <string name="completed">completed</string>
 
 
 </resources>

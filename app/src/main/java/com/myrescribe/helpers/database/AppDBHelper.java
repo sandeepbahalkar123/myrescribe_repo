@@ -247,7 +247,11 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-                ArrayList<Image> imageArray = new Gson().fromJson(cursor.getString(cursor.getColumnIndex(INV_UPLOADED_IMAGES)), Images.class).getImageArray();
+                ArrayList<Image> imageArray;
+                if (cursor.getString(cursor.getColumnIndex(INV_UPLOADED_IMAGES)).equals(""))
+                    imageArray = new ArrayList<>();
+                else
+                    imageArray = new Gson().fromJson(cursor.getString(cursor.getColumnIndex(INV_UPLOADED_IMAGES)), Images.class).getImageArray();
                 dataObject = new DataObject(Integer.parseInt(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_ID))), cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME)), cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1, cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1, imageArray);
                 cursor.moveToNext();
             }

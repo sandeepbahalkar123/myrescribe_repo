@@ -22,18 +22,6 @@ public class InvestigationViewAdapter extends RecyclerView
     private ArrayList<DataObject> mDataset;
     private CheckedClickListener checkedClickListener;
 
-    static class DataObjectHolder extends RecyclerView.ViewHolder {
-        TextView title;
-        CheckBox uploaded;
-
-        DataObjectHolder(View itemView) {
-            super(itemView);
-            title = (TextView) itemView.findViewById(R.id.title);
-            uploaded = (CheckBox) itemView.findViewById(R.id.selected);
-            Log.i(TAG, "Adding Listener");
-        }
-    }
-
     public InvestigationViewAdapter(Context mContext, ArrayList<DataObject> myDataset) {
         mDataset = myDataset;
 
@@ -61,11 +49,11 @@ public class InvestigationViewAdapter extends RecyclerView
         holder.uploaded.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mDataset.get(position).isUploaded()){
+                if (mDataset.get(position).isUploaded()) {
                     mDataset.get(position).setSelected(true);
                     mDataset.get(position).setUploaded(true);
                     CommonMethods.showToast(holder.title.getContext(), "Already Uploaded");
-                }else {
+                } else {
                     if (mDataset.get(position).isSelected()) {
                         mDataset.get(position).setSelected(false);
                     } else {
@@ -85,5 +73,17 @@ public class InvestigationViewAdapter extends RecyclerView
 
     public interface CheckedClickListener {
         void onCheckedClick(int position);
+    }
+
+    static class DataObjectHolder extends RecyclerView.ViewHolder {
+        TextView title;
+        CheckBox uploaded;
+
+        DataObjectHolder(View itemView) {
+            super(itemView);
+            title = (TextView) itemView.findViewById(R.id.title);
+            uploaded = (CheckBox) itemView.findViewById(R.id.selected);
+            Log.i(TAG, "Adding Listener");
+        }
     }
 }

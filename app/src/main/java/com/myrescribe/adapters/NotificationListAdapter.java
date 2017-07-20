@@ -10,11 +10,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.myrescribe.R;
+import com.myrescribe.listeners.SwipeDismissTouchListener;
 import com.myrescribe.model.prescription_response_model.PrescriptionD;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
-import com.myrescribe.listeners.SwipeDismissTouchListener;
+
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -320,7 +321,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                     public void onClick(View v) {
                         mDataSet.get(position).setSnacksThere(false);
                         parent.removeView(view);
-                        if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere()  && !mDataSet.get(position).isSnacksThere()) {
+                        if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere() && !mDataSet.get(position).isSnacksThere()) {
                             mDataSet.remove(position);
                             notifyDataSetChanged();
                         } else {
@@ -418,9 +419,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                                 mDataSet.get(position).setDinnerThere(false);
                             else if (view.getTag().equals(LUNCH))
                                 mDataSet.get(position).setLunchThere(false);
-                            else if(view.getTag().equals(BREAK_FAST))
+                            else if (view.getTag().equals(BREAK_FAST))
                                 mDataSet.get(position).setBreakThere(false);
-                            else if(view.getTag().equals(SNACKS))
+                            else if (view.getTag().equals(SNACKS))
                                 mDataSet.get(position).setSnacksThere(false);
 
                             if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere() && !mDataSet.get(position).isSnacksThere()) {
@@ -456,6 +457,10 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         return mDataSet.size();
     }
 
+    public interface OnHeaderClickListener {
+        void onHeaderCollapse();
+    }
+
     static class ListViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.list_item)
@@ -473,9 +478,5 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             ButterKnife.bind(this, view);
             this.view = view;
         }
-    }
-
-    public interface OnHeaderClickListener {
-        void onHeaderCollapse();
     }
 }

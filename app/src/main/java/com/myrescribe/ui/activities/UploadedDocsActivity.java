@@ -21,6 +21,8 @@ import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,8 +40,10 @@ public class UploadedDocsActivity extends AppCompatActivity {
     private Context mContext;
     private UploadedImageAdapter uploadedImageAdapter;
     private ArrayList<DataObject> investigation;
+//    private Set<Image> photoSet = new HashSet<>();
     private ArrayList<Image> photoPaths = new ArrayList<>();
     private AppDBHelper appDBHelper;
+    private ArrayList<DataObject> investigationTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,7 @@ public class UploadedDocsActivity extends AppCompatActivity {
         appDBHelper = new AppDBHelper(mContext);
 
         investigation = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
+        investigationTemp = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA);
 
         for (DataObject dataObject : investigation)
             photoPaths.addAll(dataObject.getPhotos());
@@ -86,28 +91,26 @@ public class UploadedDocsActivity extends AppCompatActivity {
             }
         }
 
+        // Update server status with image id
+
         if (selectedImageCount > 0) {
-            for (DataObject dataObject : investigation) {
+            for (DataObject dataObject : investigationTemp) {
                 if (dataObject.isSelected() && !dataObject.isUploaded()) {
                     dataObject.setUploaded(dataObject.isSelected());
-                    dataObject.setPhotos(photos);
-                    Images images = new Images();
-                    images.setImageArray(photoPaths);
-                    dataObject.setPhotos(photoPaths);
-                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), new Gson().toJson(images));
+                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), "");
                 }
 
                 if (dataObject.isSelected())
                     selectedCount += 1;
             }
 
-            if (selectedCount == investigation.size()) {
+            if (selectedCount == investigationTemp.size()) {
                 Intent intent = new Intent(this, HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent();
-                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigationTemp);
                 setResult(RESULT_OK, intent);
             }
             finish();

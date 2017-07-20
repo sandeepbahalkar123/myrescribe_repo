@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/dp8"
-        android:visibility="gone"
         android:paddingBottom="@dimen/dp6"
         android:paddingEnd="@dimen/horizontal_margin"
-        android:paddingStart="@dimen/horizontal_margin">
+        android:paddingStart="@dimen/horizontal_margin"
+        android:paddingTop="@dimen/dp8"
+        android:visibility="gone">
 
         <com.myrescribe.ui.customesViews.CustomTextView
             android:id="@+id/titleTextView"

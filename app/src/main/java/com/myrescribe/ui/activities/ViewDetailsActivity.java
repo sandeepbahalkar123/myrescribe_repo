@@ -82,7 +82,7 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
             mDoctor_address.setText(intent.getStringExtra(getString(R.string.address)));
             mDateTextView.setText(intent.getStringExtra(getString(R.string.one_day_visit_date)));
 
-        }else{
+        } else {
             mDoctorName.setText("Ritesh Deshmukh ");
             mDoctorSpecialization.setText("Cardiologist");
             mDoctor_address.setText("Aundh, Pune");
@@ -129,11 +129,11 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        mVitalHelper = new VitalHelper(this,this);
+        mVitalHelper = new VitalHelper(this, this);
         mVitalList = mVitalHelper.doGetVitalsList();
         Data data = (Data) customResponse;
         formatResponseDataForAdapter(data.getPatientHistory());
-        ShowViewDetailsAdapter showHistoryListAdapter = new ShowViewDetailsAdapter(this, mHeaderList, mHistoryDataList,mVitalList);
+        ShowViewDetailsAdapter showHistoryListAdapter = new ShowViewDetailsAdapter(this, mHeaderList, mHistoryDataList, mVitalList);
         mHistoryExpandableListView.setAdapter(showHistoryListAdapter);
 
 

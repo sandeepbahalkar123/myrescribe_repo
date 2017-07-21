@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="95dp"
+    android:layout_height="wrap_content"
     android:background="@color/white"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/clickOnDoctorVisitLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="95dp"
         android:orientation="horizontal">
 
         <TextView
@@ -33,7 +33,7 @@
                 android:gravity="center"
                 android:text="12th\nJust\now"
                 android:textColor="@color/tagColor"
-                android:textSize="@dimen/sp18"
+                android:textSize="@dimen/sp14"
                 android:textStyle="bold"
                 android:visibility="visible" />
 
@@ -149,5 +149,29 @@
         </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:orientation="horizontal">
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.42"
+            android:background="@color/transparent" />
+
+        <TextView
+            android:layout_width="@dimen/dp1"
+            android:layout_height="match_parent"
+            android:background="@color/tagColor" />
+
+        <TextView
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1.5"
+            android:background="@color/divider" />
+
+    </LinearLayout>
+
+</LinearLayout>

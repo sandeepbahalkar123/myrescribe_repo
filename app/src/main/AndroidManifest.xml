@@ -145,8 +145,12 @@
             android:label="@string/title_activity_zoomview"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.activities.DoctorFilteredListActivity"
+            android:label="@string/doctor_details" />
+        <activity
             android:name=".ui.activities.MapsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

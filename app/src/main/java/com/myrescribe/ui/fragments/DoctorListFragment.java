@@ -43,7 +43,7 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_all_view_doctor_history, container, false);
+        mRootView = inflater.inflate(R.layout.global_recycle_view_list, container, false);
         init();
         mParentActivity = (DoctorListActivity) getActivity();
 
@@ -65,7 +65,7 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
     }
 
     private void init() {
-        mDoctorListView = (RecyclerView) mRootView.findViewById(R.id.doctorListView);
+        mDoctorListView = (RecyclerView) mRootView.findViewById(R.id.listView);
         mEmptyListView = (TextView) mRootView.findViewById(R.id.emptyListView);
     }
 
@@ -77,17 +77,6 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-       /* mCurrentSelectedTimePeriodTab = mParentActivity.getCurrentSelectedTimePeriodTab();
-        if (mCurrentSelectedTimePeriodTab != null) {
-            HashMap<String, HashMap<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = mDoctorHelper.getYearWiseSortedDoctorList();
-            if (yearWiseSortedDoctorList.get(mCurrentSelectedTimePeriodTab.getYear()) != null) {
-                setDoctorListAdapter();
-            } else {
-                mDoctorHelper.doGetDoctorList();
-            }
-        } else {
-            mDoctorHelper.doGetDoctorList();
-        }*/
         setDoctorListAdapter();
     }
 

@@ -1,0 +1,61 @@
+{
+  "common": {
+    "success": true,
+    "statusCode": 200,
+    "statusMessage": "USER AUTHENTICATED"
+  },
+  "data": [
+    {
+      "id": 10,
+      "doctorName": "Dr. Shalu Gupta",
+      "specialization": "General Physician",
+      "address": "Hadapsar, Pune",
+      "visitDate": "2017-06-07T11:02:19.000Z",
+      "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
+      "caseDetails": {
+        "Complaints": [
+          {
+            "id": 23,
+            "name": "Excessive Sweating"
+          },
+          {
+            "id": 23,
+            "name": "Polyuria"
+          }
+        ],
+        "Diagnosis": [
+          {
+            "id": 23,
+            "name": "Diabetes Mellitus"
+          }
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "doctorName": "Dr. Amita Kaul",
+      "specialization": "Physician",
+      "address": "Pimple Saudagar, Pune.",
+      "visitDate": "2017-06-07T11:02:19.000Z",
+      "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
+      "caseDetails": {
+        "Complaints": [
+          {
+            "id": 23,
+            "name": "Excessive Sweating"
+          },
+          {
+            "id": 23,
+            "name": "Tingling Sensation"
+          }
+        ],
+        "Diagnosis": [
+          {
+            "id": 23,
+            "name": "Diabetes Mellitus"
+          }
+        ]
+      }
+    }
+  ]
+}

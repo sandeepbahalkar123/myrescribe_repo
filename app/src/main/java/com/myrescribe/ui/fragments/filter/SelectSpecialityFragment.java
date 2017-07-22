@@ -99,6 +99,7 @@ public class SelectSpecialityFragment extends Fragment {
                 mListener.onBack();
                 break;
             case R.id.resetButton:
+                mListener.onBack();
                 break;
         }
     }

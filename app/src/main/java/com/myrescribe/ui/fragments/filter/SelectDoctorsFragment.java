@@ -17,7 +17,6 @@ import com.myrescribe.R;
 import com.myrescribe.adapters.filter.FilterDoctorsAdapter;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 import com.myrescribe.ui.customesViews.CustomTextView;
-import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
@@ -101,6 +100,7 @@ public class SelectDoctorsFragment extends Fragment {
                 mListener.onBack();
                 break;
             case R.id.resetButton:
+                mListener.onBack();
                 break;
         }
     }

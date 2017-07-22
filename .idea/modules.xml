@@ -5,7 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/filepicker/filepicker.iml" filepath="$PROJECT_DIR$/filepicker/filepicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/monthPicker/monthPicker.iml" filepath="$PROJECT_DIR$/monthPicker/monthPicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/myrescribe_repo.iml" filepath="$PROJECT_DIR$/myrescribe_repo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rackmonthPicker/rackmonthPicker.iml" filepath="$PROJECT_DIR$/rackmonthPicker/rackmonthPicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/rescribe_repo.iml" filepath="$PROJECT_DIR$/rescribe_repo.iml" />
     </modules>
   </component>

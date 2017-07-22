@@ -6,10 +6,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="56dp">
 
         <ImageView
-            android:id="@+id/drIcon"
+            android:id="@+id/caseIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -20,19 +20,19 @@
             tools:src="@drawable/select_doctor" />
 
         <com.myrescribe.ui.customesViews.CustomTextView
-            android:id="@+id/drNameTextView"
+            android:id="@+id/caseTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/drIcon"
+            android:layout_toEndOf="@+id/caseIcon"
             android:layout_toLeftOf="@+id/selectCheckbox"
-            android:layout_toRightOf="@+id/drIcon"
+            android:layout_toRightOf="@+id/caseIcon"
             android:layout_toStartOf="@+id/selectCheckbox"
             android:padding="@dimen/dp8"
             tools:text="@string/select_doctors"
             android:textColor="@color/tagColor"
-            android:textSize="@dimen/sp23"
+            android:textSize="@dimen/sp19"
             app:customFont="@string/roboto_bold" />
 
         <CheckBox

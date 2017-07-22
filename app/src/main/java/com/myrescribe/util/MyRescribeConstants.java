@@ -88,6 +88,8 @@ public class MyRescribeConstants {
     public static final Integer SUCCESS = 200;
     public static final String INVESTIGATION_TEMP_DATA = "investigation_temp_data";
     public static final String TITLE = "title";
+    public static final String DOCTORS_LIST = "doctors_list";
+    public static final String CASE_DETAILS = "case_details";
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";
     public static String BUTTON_TEXT_COLOR = "#FFFFFF";

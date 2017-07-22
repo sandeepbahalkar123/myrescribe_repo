@@ -62,7 +62,6 @@
                     android:textSize="@dimen/sp12"
                     android:textColor="@color/measure_of_vitals_color"
                     android:paddingLeft="@dimen/dp4"
-                    android:id="@+id/measureVitals"
                     android:layout_alignBaseline="@id/vital_name"
                     app:customFont="@string/roboto_bold"
                     android:textStyle="bold" />

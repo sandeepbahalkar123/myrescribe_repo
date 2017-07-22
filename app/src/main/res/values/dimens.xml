@@ -1,17 +1,8 @@
 <resources>
 
-    <dimen name="title_padding">20dp</dimen>
-    <dimen name="background_radius">4dp</dimen>
-    <dimen name="recycler_divider_width">1dp</dimen>
-    <dimen name="header_height">200dp</dimen>
-    <dimen name="header_height_huge">1500dp</dimen>
-
-    <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="horizontal_margin">26dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
     <dimen name="dp0">0dp</dimen>
     <dimen name="dp05">0.5dp</dimen>
     <dimen name="dp1">1dp</dimen>
@@ -24,51 +15,25 @@
     <dimen name="dp12">12dp</dimen>
     <dimen name="dp14">14dp</dimen>
     <dimen name="dp16">16dp</dimen>
-    <dimen name="dp18">18dp</dimen>
     <dimen name="dp20">20dp</dimen>
-    <dimen name="dp22">22dp</dimen>
     <dimen name="dp24">24dp</dimen>
     <dimen name="dp26">26dp</dimen>
-    <dimen name="dp28">28dp</dimen>
     <dimen name="dp30">30dp</dimen>
     <dimen name="dp35">35dp</dimen>
-    <dimen name="dp15">15dp</dimen>
     <dimen name="dp56">56dp</dimen>
 
     <dimen name="dp40">40dp</dimen>
     <dimen name="dp50">50dp</dimen>
-    <dimen name="dp60">60dp</dimen>
-    <dimen name="dp70">70dp</dimen>
     <dimen name="dp72">72dp</dimen>
-    <dimen name="dp75">75dp</dimen>
-    <dimen name="dp78">78dp</dimen>
-    <dimen name="dp80">80dp</dimen>
-    <dimen name="sp10">10sp</dimen>
-    <dimen name="sp8">8sp</dimen>
     <dimen name="sp11">11sp</dimen>
     <dimen name="sp12">12sp</dimen>
     <dimen name="sp18">18sp</dimen>
     <dimen name="sp19">19sp</dimen>
     <dimen name="sp22">22sp</dimen>
     <dimen name="sp20">20sp</dimen>
-    <dimen name="sp24">24sp</dimen>
-    <dimen name="sp26">26sp</dimen>
-    <dimen name="sp29">29sp</dimen>
-    <dimen name="sp30">30sp</dimen>
-    <dimen name="sp13">13sp</dimen>
     <dimen name="sp14">14sp</dimen>
-    <dimen name="sp23">23sp</dimen>
-    <dimen name="sp15">15sp</dimen>
     <dimen name="sp16">16sp</dimen>
     <dimen name="sp17">17sp</dimen>
-    <dimen name="sp40">40sp</dimen>
     <dimen name="sp38">38sp</dimen>
-    <dimen name="sp36">36sp</dimen>
-    <dimen name="sp34">34sp</dimen>
-    <dimen name="sp32">32sp</dimen>
     <dimen name="sp28">28sp</dimen>
-    <dimen name="tab_max_width">264dp</dimen>
-    <dimen name="tab_padding_bottom">16dp</dimen>
-    <dimen name="tab_label">14sp</dimen>
-    <dimen name="custom_tab_layout_height">72dp</dimen>
 </resources>

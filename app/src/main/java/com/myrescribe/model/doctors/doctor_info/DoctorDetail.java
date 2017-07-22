@@ -32,6 +32,7 @@ public class DoctorDetail implements CustomResponse {
     private int color;
 
     private boolean isDoctorSelected = false;
+    private boolean isDoctorSpecialitySelected = false;
 
     public int getColor() {
         return color;
@@ -125,9 +126,14 @@ public class DoctorDetail implements CustomResponse {
     public boolean isDoctorSelected() {
         return isDoctorSelected;
     }
-
     public void setDoctorSelected(boolean doctorSelected) {
         isDoctorSelected = doctorSelected;
+    }
+    public boolean isDoctorSpecialitySelected() {
+        return isDoctorSpecialitySelected;
+    }
+    public void setDoctorSpecialitySelected(boolean doctorSpecialitySelected) {
+        isDoctorSpecialitySelected = doctorSpecialitySelected;
     }
 
     @Override

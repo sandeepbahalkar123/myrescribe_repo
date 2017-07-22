@@ -260,18 +260,6 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
         }
     }
 
-    static class ChildViewHolderVitals {
-        //---------
-
-        @BindView(R.id.recycler_view)
-        RecyclerView mRecycler_view;
-
-
-        ChildViewHolderVitals(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
-
     static class GroupViewHolder {
         //---------
 

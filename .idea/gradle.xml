@@ -11,7 +11,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/filepicker" />
             <option value="$PROJECT_DIR$/library" />
-            <option value="$PROJECT_DIR$/rackmonthPicker" />
+            <option value="$PROJECT_DIR$/monthPicker" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

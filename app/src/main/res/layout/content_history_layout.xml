@@ -14,7 +14,6 @@
         android:orientation="horizontal">
 
         <com.myrescribe.ui.customesViews.CircularImageView
-            android:id="@+id/showPatientIcon"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="right|center_vertical"

@@ -61,7 +61,7 @@ dependencies {
     }
 
     // File Picker
-    compile project(':rackmonthPicker')
+    compile project(':monthPicker')
     compile project(':filepicker')
     compile files('libs/nineoldandroids-2.4.0.jar')
     testCompile 'junit:junit:4.12'

@@ -24,12 +24,14 @@
             android:icon="@drawable/investigation"
             android:title="@string/appointments" />
 
+        <!--
+                TODO// REMOVE doctorFilteredList THIS ONCE DONE WITH ACTUAL FLOW
+        -->
+        <item
+            android:id="@+id/doctorFilteredList"
+            android:icon="@mipmap/logoutblack"
+            android:title="Doctor Filtered List" />
 
-        <!--<item
-            android:id="@+id/appointments"
-            android:title="@string/appointments"
-            android:icon="@mipmap/logoutblack"/>
--->
 
         <item
             android:id="@+id/logout"

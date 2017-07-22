@@ -97,30 +97,6 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         mYearList = CommonMethods.getYearForDoctorList();
         mBackArrow.setOnClickListener(this);
 
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int position = tab.getPosition();
-              /*  mCurrentSelectedTimePeriodTab = mTimePeriodList.get(position);
-                for (int i = 0; i < mYearList.size(); i++) {
-                    if (mYearList.get(i).equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear())) {
-                        mYearSpinnerView.setSelection(i);
-                        break;
-                    }
-                }*/
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-        //----
         mCustomSpinAdapter = new CustomSpinnerAdapter(this, mYearList);
         mYearSpinnerView.setAdapter(mCustomSpinAdapter);
         YearSpinnerInteractionListener listener = new YearSpinnerInteractionListener();

@@ -201,6 +201,7 @@
     <string name="dr_shaha">Dr. Shaha</string>
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
+    <string name="details">&#160;Details</string>
 
 
 </resources>

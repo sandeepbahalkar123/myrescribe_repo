@@ -82,6 +82,7 @@ public class MyRescribeConstants {
 
     public static final String VITALS_LIST = MyRescribeConstants.BLANK + 6;
     public static final String TASK_DOCTOR_APPOINTMENT = MyRescribeConstants.BLANK + 7;
+    public static final String TASK_DOCTOR_LIST_FILTERING = MyRescribeConstants.BLANK + 8;
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;

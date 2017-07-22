@@ -7,7 +7,7 @@
   "data": {
     "year": "2017",
     "months": {
-      "JUN": [
+      "Jun": [
         {
           "id": 1,
           "doctorName": "Dr. Shalu Gupta 07|1",
@@ -89,7 +89,7 @@
           "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
         }
       ],
-      "JUL": [
+      "Jul": [
         {
           "id": 1,
           "doctorName": "Dr. Shalu Gupta 07|1",

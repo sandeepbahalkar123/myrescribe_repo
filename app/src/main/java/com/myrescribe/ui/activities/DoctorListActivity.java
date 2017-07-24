@@ -265,6 +265,16 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     }
 
     @Override
+    public void setDoctorSpeciality(String speciality) {
+        filterFragment.setDoctorSpeciality(speciality);
+    }
+
+    @Override
+    public void setDoctorName(String name) {
+        filterFragment.setDoctorName(name);
+    }
+
+    @Override
     public void onDoctorClick() {
         String doctorName = getResources().getString(R.string.select_doctors);
         int count = 0;

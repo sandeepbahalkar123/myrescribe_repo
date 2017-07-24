@@ -35,8 +35,8 @@ import butterknife.Unbinder;
 
 public class FilterFragment extends Fragment {
 
-    @BindView(R.id.closeButton)
-    Button closeButton;
+    @BindView(R.id.applyButton)
+    Button applyButton;
     @BindView(R.id.titleTextView)
     CustomTextView titleTextView;
     @BindView(R.id.resetButton)
@@ -140,10 +140,10 @@ public class FilterFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.closeButton, R.id.resetButton, R.id.selectDoctorLayout, R.id.selectSpecialityLayout, R.id.selectMonthLayout})
+    @OnClick({R.id.applyButton, R.id.resetButton, R.id.selectDoctorLayout, R.id.selectSpecialityLayout, R.id.selectMonthLayout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.closeButton:
+            case R.id.applyButton:
                 mListener.onDrawerClose();
                 break;
             case R.id.resetButton:

@@ -12,12 +12,12 @@
         android:background="@color/tagColor">
 
         <Button
-            android:id="@+id/closeButton"
+            android:id="@+id/applyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:background="@color/transparent"
-            android:text="@string/close"
+            android:text="@string/apply"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/sp19" />

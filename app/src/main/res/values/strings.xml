@@ -148,5 +148,6 @@
     <string name="details">&#160;Details</string>
     <string name="doctors">Doctors</string>
     <string name="doctors_speciality">Doctors Speciality</string>
+    <string name="apply">Apply</string>
 
 </resources>

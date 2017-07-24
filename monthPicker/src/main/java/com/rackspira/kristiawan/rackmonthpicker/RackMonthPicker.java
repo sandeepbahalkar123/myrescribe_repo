@@ -246,7 +246,7 @@ public class RackMonthPicker {
                         }
                         previous.setAlpha(.4f);
                         isFrom = false;
-                        mPositiveButton.setText("Done");
+                        mPositiveButton.setText(context.getResources().getString(R.string.done));
                     } else {
                         dateMonthDialogListener.onDateMonth(
                                 monthRadioButton.getIdMonth(),
@@ -262,7 +262,7 @@ public class RackMonthPicker {
                         for (int month = 0; month < monthRadioButtonList.size(); month++) {
                             monthRadioButtonList.get(month).setEnabled(true);
                         }
-                        mPositiveButton.setText("Next");
+                        mPositiveButton.setText(context.getResources().getString(R.string.next));
                         mAlertDialog.dismiss();
                     }
                 }
@@ -278,6 +278,7 @@ public class RackMonthPicker {
                     fromMonth = -1;
                     fromYear = -1;
                     previous.setAlpha(1f);
+                    mPositiveButton.setText(context.getResources().getString(R.string.next));
                     for (int month = 0; month < monthRadioButtonList.size(); month++) {
                         monthRadioButtonList.get(month).setEnabled(true);
                     }

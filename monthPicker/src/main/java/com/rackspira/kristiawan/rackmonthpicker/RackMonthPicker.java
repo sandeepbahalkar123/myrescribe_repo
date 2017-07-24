@@ -66,7 +66,7 @@ public class RackMonthPicker {
         return this;
     }
 
-    public RackMonthPicker setPositiveText(String text){
+    /*public RackMonthPicker setPositiveText(String text){
         mPositiveButton.setText(text);
         return this;
     }
@@ -78,7 +78,7 @@ public class RackMonthPicker {
 
     public void dismiss() {
         mAlertDialog.dismiss();
-    }
+    }*/
 
     private class Builder implements MonthButtonListener {
 
@@ -139,7 +139,6 @@ public class RackMonthPicker {
                 }
 
                 radioButton.setMonthListener(this, radioButton);
-//                monthRadioButton = radioButton;
                 monthRadioButtonList.add(radioButton);
                 gridLayout.addView(radioButton);
             }
@@ -164,18 +163,20 @@ public class RackMonthPicker {
                     mYear.setText(year + "");
                     mTitle.setText(monthRadioButton.getMonth() + ", " + year);
 
-                    boolean isDisableNext = false;
+                    boolean isDisableNext = true;
                     for (int month = 0; month < monthRadioButtonList.size(); month++) {
 
                         monthRadioButtonList.get(month).setEnabled(true);
 
                         if (!isFrom) {
-                            monthRadioButtonList.get(month).setAlpha(1f);
-                            if (isDisableNext)
-                                monthRadioButtonList.get(month).setAlpha(.4f);
 
                             if (monthRadioButtonList.get(month).isChecked())
-                                isDisableNext = true;
+                                isDisableNext = false;
+
+                            monthRadioButtonList.get(month).setButtonDrawable(MonthOfYear.getIcons(month));
+                            if (isDisableNext)
+                                monthRadioButtonList.get(month).setButtonDrawable(MonthOfYear.getActiveIcons(month));
+
                         }
                     }
 
@@ -200,6 +201,7 @@ public class RackMonthPicker {
                                     isChecked = true;
 
                                 monthRadioButtonList.get(month).setEnabled(false);
+                                monthRadioButtonList.get(month).setButtonDrawable(MonthOfYear.getIcons(month));
                                 monthRadioButtonList.get(month).setChecked(false);
                                 previous.setAlpha(.4f);
 
@@ -230,19 +232,9 @@ public class RackMonthPicker {
                         fromMonth = monthRadioButton.getIdMonth();
                         fromYear = year;
 
-                        boolean isDisableNext = false;
                         for (int month = 0; month < monthRadioButtonList.size(); month++) {
-
                             if (month < (fromMonth - 1))
                                 monthRadioButtonList.get(month).setEnabled(false);
-                            else {
-                                monthRadioButtonList.get(month).setAlpha(1f);
-                                if (isDisableNext)
-                                    monthRadioButtonList.get(month).setAlpha(.4f);
-
-                                if (monthRadioButtonList.get(month).isChecked())
-                                    isDisableNext = true;
-                            }
                         }
                         previous.setAlpha(.4f);
                         isFrom = false;
@@ -261,6 +253,7 @@ public class RackMonthPicker {
 
                         for (int month = 0; month < monthRadioButtonList.size(); month++) {
                             monthRadioButtonList.get(month).setEnabled(true);
+                            monthRadioButtonList.get(month).setButtonDrawable(MonthOfYear.getIcons(month));
                         }
                         mPositiveButton.setText(context.getResources().getString(R.string.next));
                         mAlertDialog.dismiss();
@@ -281,6 +274,7 @@ public class RackMonthPicker {
                     mPositiveButton.setText(context.getResources().getString(R.string.next));
                     for (int month = 0; month < monthRadioButtonList.size(); month++) {
                         monthRadioButtonList.get(month).setEnabled(true);
+                        monthRadioButtonList.get(month).setButtonDrawable(MonthOfYear.getIcons(month));
                     }
                     onCancelMonthDialogListener.onCancel(mAlertDialog);
                 }
@@ -292,18 +286,18 @@ public class RackMonthPicker {
             mTitle.setText(objectMonth.getMonth() + ", " + year);
             monthRadioButton = objectMonth;
 
-            boolean isDisableNext = false;
-            for (MonthRadioButton radioButton : monthRadioButtonList) {
+            boolean isDisableNext = true;
+            for (int i = 0; i < 12; i++) {
 
-                if (!isFrom && radioButton.isEnabled()) {
-                    radioButton.setAlpha(1f);
+                if (monthRadioButtonList.get(i) != objectMonth) {
+                    monthRadioButtonList.get(i).setChecked(false);
+                } else isDisableNext = false;
+
+                if (!isFrom && monthRadioButtonList.get(i).isEnabled()) {
+                    monthRadioButtonList.get(i).setButtonDrawable(MonthOfYear.getIcons(i));
                     if (isDisableNext)
-                        radioButton.setAlpha(.4f);
+                        monthRadioButtonList.get(i).setButtonDrawable(MonthOfYear.getActiveIcons(i));
                 }
-
-                if (radioButton != objectMonth) {
-                    radioButton.setChecked(false);
-                } else isDisableNext = true;
             }
         }
     }

@@ -4,7 +4,15 @@
     <string name="closing_brace">)</string>
     <string name="Tablet"> Tab</string>
     <string name="Syrup"> Syrup</string>
+    <string name="breakfast_after">breakfastAfter</string>
+    <string name="breakfast_before">breakfastBefore</string>
+    <string name="lunch_before">lunchBefore</string>
+    <string name="lunch_after">lunchAfter</string>
+    <string name="dinner_after">dinnerAfter</string>
+    <string name="dinner_before">dinnerBefore</string>
+    <string name="snacks_after">snacksAfter</string>
     <string name="after">After</string>
+    <string name="snacks_before">snacksBefore</string>
     <string name="compalints">Complaints</string>
     <string name="diagnosis">Diagnosis</string>
     <string name="prescription">Prescription</string>
@@ -46,6 +54,10 @@
     <string name="mlunch">LUNCH</string>
     <string name="msnacks">SNACKS</string>
     <string name="dinner">Dinner</string>
+    <string name="smallcasedinner">dinner</string>
+    <string name="smallcaselunch">lunch</string>
+    <string name="smallcasesnacks">snacks</string>
+    <string name="smallcasebreakfast">breakfast</string>
     <string name="mdinner">DINNER</string>
     <string name="instructions">Instruction:</string>
     <string name="for_example_server_path">e.g. 192.168.0.180:80</string>

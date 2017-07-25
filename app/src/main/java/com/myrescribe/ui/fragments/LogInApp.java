@@ -273,7 +273,8 @@ public class LogInApp extends Fragment implements
             CommonMethods.Log(TAG + " Token", loginModel.getAuthToken());
             MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
             MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
-
+            MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, loginModel.getPatientId(), mContext);
+            CommonMethods.Log(TAG,"PATIENT_ID"+MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID,mContext));
             Intent intentObj = new Intent(mContext, HomePageActivity.class);
             startActivity(intentObj);
 

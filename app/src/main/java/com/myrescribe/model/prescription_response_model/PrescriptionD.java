@@ -219,10 +219,7 @@ public class PrescriptionD {
     }
 
 
-    private boolean isExpanded = false;
-    private boolean isLunchThere = true;
-    private boolean isDinnerThere = true;
-    private boolean isBreakThere = true;
+
 
 
     public void setSnacksThere(boolean snacksThere) {
@@ -292,6 +289,11 @@ public class PrescriptionD {
     private boolean isBreakFastExpanded = false;
     private boolean isSnacksExpanded = false;
     private String date;
+    private boolean isExpanded = false;
+    private boolean isLunchThere = true;
+    private boolean isDinnerThere = true;
+    private boolean isBreakThere = true;
+    private boolean isTabSelected = false;
 
     public boolean isTabSelected() {
         return isTabSelected;
@@ -308,9 +310,6 @@ public class PrescriptionD {
     public void setDate(String date) {
         this.date = date;
     }
-
-    private boolean isTabSelected = false;
-
 
     public boolean isBreakThere() {
         return isBreakThere;

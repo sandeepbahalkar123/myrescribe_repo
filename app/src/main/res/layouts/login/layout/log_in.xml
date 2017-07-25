@@ -21,7 +21,7 @@
                 android:id="@+id/editTextMobileNo"
                 style="@style/AppLoginMainStyle"
                 android:hint="@string/enter_user_name"
-                android:text="amruta@gmail.com" />
+                android:text="7738477306" />
         </android.support.design.widget.TextInputLayout>
 
         <!--  Password Label -->

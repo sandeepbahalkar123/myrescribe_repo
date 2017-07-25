@@ -9,15 +9,26 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.myrescribe.R;
+import com.myrescribe.helpers.notification.RespondToNotificationHelper;
+import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.listeners.SwipeDismissTouchListener;
-import com.myrescribe.model.prescription_response_model.PrescriptionD;
+import com.myrescribe.model.notification.Common;
+import com.myrescribe.model.notification.NotificationData;
+import com.myrescribe.model.notification.Medication;
+import com.myrescribe.model.notification.NotificationModel;
+import com.myrescribe.model.response_model_notification.ResponseNotificationModel;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,20 +36,32 @@ import butterknife.ButterKnife;
  * Created by ganesh on 10/5/17.
  */
 
-public class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapter.ListViewHolder> {
+public class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapter.ListViewHolder> implements HelperResponse {
 
     private static final String DINNER = "dinner";
     private static final String LUNCH = "lunch";
     private static final String BREAK_FAST = "breakfast";
     private static final String SNACKS = "snacks";
+    private static final String TAG = "NotificationListAdapter";
     public int preExpandedPos = -1;
-    private List<PrescriptionD> mDataSet;
+    String notificationDate = null;
+    private List<NotificationData> mDataSet;
+    private RespondToNotificationHelper mRespondToNotificationHelper;
     private Context mContext;
     private OnHeaderClickListener onHeaderClickListener;
+    List<Medication> medicationList = null;
+    private Integer medicineID = null;
 
-    public NotificationListAdapter(Context context, List<PrescriptionD> dataSet, String time[]) {
+
+    public NotificationListAdapter(Context context, List<NotificationData> dataSet, String time[]) {
+
         this.mDataSet = dataSet;
         this.mContext = context;
+        mRespondToNotificationHelper = new RespondToNotificationHelper(mContext,this);
+       /* for(int i = 0;i<mDataSet.size();i++){
+            medicationList = mDataSet.get(i).getMedication();
+
+        }*/
 
         try {
             this.onHeaderClickListener = ((OnHeaderClickListener) mContext);
@@ -56,22 +79,27 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
     @Override
     public void onBindViewHolder(final NotificationListAdapter.ListViewHolder holder, final int position) {
-
-        holder.dateTextView.setText(mDataSet.get(position).getDate());
-        holder.titleTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getDate()));
+        medicationList = new ArrayList<>();
+        notificationDate = mDataSet.get(position).getPrescriptionDate();
+        if(mDataSet.get(position).getMedication().size()>0) {
+            medicationList = mDataSet.get(position).getMedication();
+        }
 
         holder.slotLayout.removeAllViews();
-        if (mDataSet.get(position).isDinnerThere()) {
-            addSlotCards(holder.slotLayout, DINNER, position);
-        }
-        if (mDataSet.get(position).isLunchThere()) {
-            addSlotCards(holder.slotLayout, LUNCH, position);
-        }
-        if (mDataSet.get(position).isSnacksThere()) {
-            addSlotCards(holder.slotLayout, SNACKS, position);
-        }
-        if (mDataSet.get(position).isBreakThere()) {
-            addSlotCards(holder.slotLayout, BREAK_FAST, position);
+        if(medicationList.size()>0) {
+            if (mDataSet.get(position).isDinnerThere()) {
+
+                addSlotCards(holder.slotLayout, DINNER, position);
+            }
+            if (mDataSet.get(position).isLunchThere()) {
+                addSlotCards(holder.slotLayout, LUNCH, position);
+            }
+            if (mDataSet.get(position).isSnacksThere()) {
+                addSlotCards(holder.slotLayout, SNACKS, position);
+            }
+            if (mDataSet.get(position).isBreakThere()) {
+                addSlotCards(holder.slotLayout, BREAK_FAST, position);
+            }
         }
 
     }
@@ -81,7 +109,12 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     private void addSlotCards(final ViewGroup parent, final String slotType, final int position) {
         final View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.notification_slot_card, parent, false);
-
+        List<Medication> dinnerMedicationList = null;
+        List<Medication> lunchMedicationList = null;
+        List<Medication> snacksMedicationList = null;
+        List<Medication> breakFastMedicationList = null;
+        String tabletName = null;
+        String tabletQuantity = null;
         CustomTextView slotTextView = (CustomTextView) view.findViewById(R.id.slotTextView);
         View dividerLine = (View) view.findViewById(R.id.dividerLineInHeader);
         CustomTextView slotTimeTextView = (CustomTextView) view.findViewById(R.id.slotTimeTextView);
@@ -94,9 +127,24 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
         switch (slotType) {
             case DINNER:
+                dinnerMedicationList = new ArrayList<>();
                 slotTextView.setText(mContext.getResources().getString(R.string.dinner_medication));
-                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getDate()));
-                addTabletView(slotTabletListLayout, position, parent, view);
+                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
+                for (int l = 0; l < medicationList.size(); l++) {
+                    if (medicationList.get(l).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.dinner_after)) || medicationList.get(l).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.dinner_before))) {
+                        Medication medication = new Medication();
+                        medication.setMedicineName(medicationList.get(l).getMedicineName());
+                        medication.setQuantity(medicationList.get(l).getQuantity());
+                        medication.setMedicineId(medicationList.get(l).getMedicineId());
+                        medication.setMedicinSlot(medicationList.get(l).getMedicinSlot());
+                        medication.setMedicineTypeName(medicationList.get(l).getMedicineTypeName());
+                        medication.setDate(notificationDate);
+                        dinnerMedicationList.add(medication);
+                    }
+
+                }
+
+                addTabletView(slotTabletListLayout, position, parent, view, DINNER, dinnerMedicationList,medicationList);
                 if (mDataSet.get(position).isDinnerExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
                     dividerLine.setVisibility(View.VISIBLE);
@@ -107,10 +155,16 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                     selectView.setVisibility(View.VISIBLE);
                 }
 
+
+                final List<Medication> finalDinnerMedicationList = dinnerMedicationList;
                 selectView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         mDataSet.get(position).setDinnerThere(false);
+                        if(!finalDinnerMedicationList.isEmpty()) {
+                            mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, mContext)), mContext.getString(R.string.smallcasedinner), medicineID,CommonMethods.formatDateTime(finalDinnerMedicationList.get(position).getDate(),MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD,MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY,MyRescribeConstants.DATE), 1);
+                        }
                         parent.removeView(view);
 
                         if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere() && !mDataSet.get(position).isSnacksThere()) {
@@ -149,9 +203,10 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                             public void onDismiss(View view, Object token) {
 
                                 mDataSet.get(position).setDinnerThere(false);
+
                                 parent.removeView(view);
 
-                                if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere() && !mDataSet.get(position).isSnacksThere()) {
+                               if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere() && !mDataSet.get(position).isSnacksThere()) {
                                     mDataSet.remove(position);
                                     notifyDataSetChanged();
                                 } else {
@@ -165,9 +220,23 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 view.setOnTouchListener(swipeDismissTouchListener);
                 break;
             case LUNCH:
+                lunchMedicationList = new ArrayList<>();
                 slotTextView.setText(mContext.getResources().getString(R.string.lunch_medication));
-                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getDate()));
-                addTabletView(slotTabletListLayout, position, parent, view);
+                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
+                for (int l = 0; l < medicationList.size(); l++) {
+                    if (medicationList.get(l).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.lunch_after)) || medicationList.get(l).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.lunch_before))) {
+                        Medication medication = new Medication();
+                        medication.setMedicineName(medicationList.get(l).getMedicineName());
+                        medication.setQuantity(medicationList.get(l).getQuantity());
+                        medication.setMedicineId(medicationList.get(l).getMedicineId());
+                        medication.setMedicinSlot(medicationList.get(l).getMedicinSlot());
+                        medication.setMedicineTypeName(medicationList.get(l).getMedicineTypeName());
+                        medication.setDate(notificationDate);
+                        lunchMedicationList.add(medication);
+                    }
+
+                }
+                addTabletView(slotTabletListLayout, position, parent, view, LUNCH, lunchMedicationList, medicationList);
                 if (mDataSet.get(position).isLunchExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
                     dividerLine.setVisibility(View.VISIBLE);
@@ -178,11 +247,15 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                     selectView.setVisibility(View.VISIBLE);
                 }
 
+                final List<Medication> finalLunchMedicationList = lunchMedicationList;
                 selectView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mDataSet.get(position).setLunchThere(false);
+                        medicationList.get(position).setLunchThere(false);
                         parent.removeView(view);
+                        if(!finalLunchMedicationList.isEmpty()) {
+                            mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, mContext)), mContext.getString(R.string.smallcaselunch),medicineID, CommonMethods.formatDateTime(finalLunchMedicationList.get(position).getDate(),MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD,MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY,MyRescribeConstants.DATE), 1);
+                        }
 
                         if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere() && !mDataSet.get(position).isSnacksThere()) {
                             mDataSet.remove(position);
@@ -234,9 +307,23 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                         }));
                 break;
             case BREAK_FAST:
+                breakFastMedicationList = new ArrayList<>();
                 slotTextView.setText(mContext.getResources().getString(R.string.breakfast_medication));
-                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getDate()));
-                addTabletView(slotTabletListLayout, position, parent, view);
+                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
+                for (int l = 0; l < medicationList.size(); l++) {
+                    if (medicationList.get(l).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.breakfast_after)) || medicationList.get(l).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.breakfast_before))) {
+                        Medication medication = new Medication();
+                        medication.setMedicineName(medicationList.get(l).getMedicineName());
+                        medication.setQuantity(medicationList.get(l).getQuantity());
+                        medication.setMedicineId(medicationList.get(l).getMedicineId());
+                        medication.setMedicinSlot(medicationList.get(l).getMedicinSlot());
+                        medication.setMedicineTypeName(medicationList.get(l).getMedicineTypeName());
+                        medication.setDate(notificationDate);
+                        breakFastMedicationList.add(medication);
+                    }
+
+                }
+                addTabletView(slotTabletListLayout, position, parent, view, BREAK_FAST, breakFastMedicationList, medicationList);
                 if (mDataSet.get(position).isBreakFastExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
                     dividerLine.setVisibility(View.VISIBLE);
@@ -247,11 +334,17 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                     selectView.setVisibility(View.VISIBLE);
                 }
 
+                final List<Medication> finalBreakFastMedicationList = breakFastMedicationList;
+
                 selectView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mDataSet.get(position).setBreakThere(false);
                         parent.removeView(view);
+                        if(!finalBreakFastMedicationList.isEmpty()) {
+                            mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, mContext)), mContext.getString(R.string.smallcasebreakfast), medicineID, CommonMethods.formatDateTime(finalBreakFastMedicationList.get(position).getDate(),MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD,MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY,MyRescribeConstants.DATE), 1);
+                        }
+
                         if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere() && !mDataSet.get(position).isSnacksThere()) {
                             mDataSet.remove(position);
                             notifyDataSetChanged();
@@ -290,7 +383,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                                 mDataSet.get(position).setBreakThere(false);
                                 parent.removeView(view);
 
-                                if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere() && !mDataSet.get(position).isSnacksThere()) {
+                               if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere() && !mDataSet.get(position).isSnacksThere()) {
                                     mDataSet.remove(position);
                                     notifyDataSetChanged();
                                 } else {
@@ -302,9 +395,23 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                         }));
                 break;
             case SNACKS:
+                snacksMedicationList = new ArrayList<>();
                 slotTextView.setText(mContext.getResources().getString(R.string.snacks_medication));
-                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getDate()));
-                addTabletView(slotTabletListLayout, position, parent, view);
+                slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
+                for (int l = 0; l < medicationList.size(); l++) {
+                    if (medicationList.get(l).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.snacks_after)) || medicationList.get(l).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.snacks_before))) {
+                        Medication medication = new Medication();
+                        medication.setMedicineName(medicationList.get(l).getMedicineName());
+                        medication.setQuantity(medicationList.get(l).getQuantity());
+                        medication.setMedicineId(medicationList.get(l).getMedicineId());
+                        medication.setMedicinSlot(medicationList.get(l).getMedicinSlot());
+                        medication.setMedicineTypeName(medicationList.get(l).getMedicineTypeName());
+                        medication.setDate(notificationDate);
+                        snacksMedicationList.add(medication);
+                    }
+
+                }
+                addTabletView(slotTabletListLayout, position, parent, view, SNACKS, snacksMedicationList, medicationList);
                 if (mDataSet.get(position).isSnacksExpanded()) {
                     slotTabletListLayout.setVisibility(View.VISIBLE);
                     selectView.setVisibility(View.INVISIBLE);
@@ -316,11 +423,15 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                     dividerLine.setVisibility(View.GONE);
                 }
 
+                final List<Medication> finalSnacksMedicationList = snacksMedicationList;
                 selectView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mDataSet.get(position).setSnacksThere(false);
                         parent.removeView(view);
+                        if(!finalSnacksMedicationList.isEmpty()) {
+                            mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, mContext)), mContext.getString(R.string.smallcasesnacks), medicineID, CommonMethods.formatDateTime(finalSnacksMedicationList.get(position).getDate(),MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD,MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY,MyRescribeConstants.DATE), 1);
+                        }
                         if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere() && !mDataSet.get(position).isSnacksThere()) {
                             mDataSet.remove(position);
                             notifyDataSetChanged();
@@ -388,54 +499,59 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
     // Added Tablet View
 
-    private void addTabletView(final ViewGroup parent, final int position, final ViewGroup slotCardParent, final View slotCardView) {
+    private void addTabletView(final ViewGroup parent, final int position, final ViewGroup slotCardParent, final View slotCardView, String slotType, final List<Medication> medicationList, final List<Medication> list) {
 
-        final List<PrescriptionD> prescription = new ArrayList<>();
-        prescription.addAll(mDataSet);
-
-        for (int i = 0; i < prescription.size(); i++) {
+        for (int i = 0; i < medicationList.size(); i++) {
             final View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.tablet_list, parent, false);
 
             final CheckBox selectViewTab = (CheckBox) view.findViewById(R.id.selectViewTab);
-            selectViewTab.setChecked(prescription.get(i).isTabSelected());
+
             ImageView tabTypeView = (ImageView) view.findViewById(R.id.tabTypeView);
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
 
-            tabCountTextView.setText(prescription.get(i).getDinnerAfter() + prescription.get(i).getDinnerBefore());
-            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(prescription.get(i).getMedicineTypeName(), mContext));
-            tabNameTextView.setText(prescription.get(i).getMedicineName());
+            tabCountTextView.setText(medicationList.get(i).getQuantity());
+            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medicationList.get(i).getMedicineTypeName(), mContext));
+            tabNameTextView.setText(medicationList.get(i).getMedicineName());
+
 
             final int finalI = i;
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (selectViewTab.isChecked()) {
-                        prescription.get(finalI).setTabSelected(true);
-                        if (getSelectedCount(prescription) == prescription.size()) {
-
-                            if (view.getTag().equals(DINNER))
+                        medicationList.get(finalI).setTabSelected(true);
+                        selectViewTab.setChecked(medicationList.get(finalI).isTabSelected());
+                        mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, mContext)), medicationList.get(finalI).getMedicinSlot(), medicationList.get(finalI).getMedicineId(), CommonMethods.formatDateTime(medicationList.get(finalI).getDate(),MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD,MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY,MyRescribeConstants.DATE), 0);
+                        if (getSelectedCount(medicationList) == medicationList.size()) {
+                            if(view.getTag().equals(DINNER)) {
                                 mDataSet.get(position).setDinnerThere(false);
-                            else if (view.getTag().equals(LUNCH))
-                                mDataSet.get(position).setLunchThere(false);
-                            else if (view.getTag().equals(BREAK_FAST))
-                                mDataSet.get(position).setBreakThere(false);
-                            else if (view.getTag().equals(SNACKS))
+                              slotCardParent.removeView(slotCardView);
+                            }else  if(view.getTag().equals(SNACKS)) {
                                 mDataSet.get(position).setSnacksThere(false);
-
-                            if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere() && !mDataSet.get(position).isSnacksThere()) {
-                                mDataSet.remove(position);
-                                notifyDataSetChanged();
-                            } else {
                                 slotCardParent.removeView(slotCardView);
-                                notifyItemChanged(position);
+                                selectViewTab.setChecked(medicationList.get(finalI).isTabSelected());
+                            }else  if(view.getTag().equals(LUNCH)) {
+                                mDataSet.get(position).setLunchThere(false);
+                               slotCardParent.removeView(slotCardView);
+                            }else  if(view.getTag().equals(BREAK_FAST)) {
+                                mDataSet.get(position).setBreakThere(false);
+                                slotCardParent.removeView(slotCardView);
                             }
                         }
+                       /* if (!mDataSet.get(position).isDinnerThere() && !mDataSet.get(position).isLunchThere() && !mDataSet.get(position).isBreakThere() && !mDataSet.get(position).isSnacksThere()) {
+                            mDataSet.remove(position);
+                            notifyDataSetChanged();
+                        } else {
+                            slotCardParent.removeView(slotCardView);
+                            notifyItemChanged(position);
+                        }*/
                     } else {
-                        prescription.get(finalI).setTabSelected(false);
+                        medicationList.get(finalI).setTabSelected(false);
+
+
                     }
-//                    CommonMethods.showToast(mContext, "Checked in " + position + " " + selectViewTab.isChecked());
                 }
             });
             view.setTag(parent.getTag());
@@ -443,9 +559,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         }
     }
 
-    public int getSelectedCount(List<PrescriptionD> data) {
+    public int getSelectedCount(List<Medication> data) {
         int count = 0;
-        for (PrescriptionD prescriptionData : data) {
+        for (Medication prescriptionData : data) {
             if (prescriptionData.isTabSelected())
                 count += 1;
         }
@@ -455,6 +571,29 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     @Override
     public int getItemCount() {
         return mDataSet.size();
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        Common common = (Common) customResponse;
+        String successMessage = common.getStatusMessage();
+        CommonMethods.showToast(mContext,successMessage);
+
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
     }
 
     public interface OnHeaderClickListener {

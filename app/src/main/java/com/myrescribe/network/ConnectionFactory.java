@@ -37,32 +37,21 @@ public class ConnectionFactory extends ConnectRequest {
         device = Device.getInstance(mContext);
     }
 
-    public void setHeaderParams(Map<String, String> headerParams) {
+   /* public void setHeaderParams(Map<String, String> headerParams) {
         this.mHeaderParams = headerParams;
-    }
+    }*/
 
     public void setHeaderParams() {
 
         Map<String, String> headerParams = new HashMap<>();
-
         String authorizationString = "";
-        String contentType = MyRescribePreferencesManager.getString(MyRescribeConstants.LOGIN_SUCCESS, mContext);
-
-        if (contentType.equalsIgnoreCase(MyRescribeConstants.TRUE)) {
-            authorizationString = MyRescribePreferencesManager.getString(MyRescribeConstants.TOKEN_TYPE, mContext)
-                    + " " + MyRescribePreferencesManager.getString(MyRescribeConstants.ACCESS_TOKEN, mContext);
-            headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
-        } else {
-            headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_URL_ENCODED);
-        }
-
-        headerParams.put(MyRescribeConstants.AUTHORIZATION, authorizationString);
+        authorizationString = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
+        headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
+        headerParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, authorizationString);
         headerParams.put(MyRescribeConstants.DEVICEID, device.getDeviceId());
-
         headerParams.put(MyRescribeConstants.OS, device.getOS());
         headerParams.put(MyRescribeConstants.OSVERSION, device.getOSVersion());
-        //  headerParams.put(MyRescribeConstants.DEVICETYPE, device.getDeviceType());
-//        headerParams.put(MyRescribeConstants.ACCESS_TOKEN, "");
+        headerParams.put(MyRescribeConstants.DEVICE_TYPE, device.getDeviceType());
         CommonMethods.Log(TAG, "setHeaderParams:" + headerParams.toString());
         this.mHeaderParams = headerParams;
     }

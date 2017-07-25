@@ -76,43 +76,29 @@ public class LoginHelper implements ConnectionListener {
 
     public void doLogin(String mobileNo, String password) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN, Request.Method.POST, false);
-        Map<String, String> headerParams = new HashMap<String, String>();
-
-        headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
-        mConnectionFactory.setHeaderParams(headerParams);
-
+        mConnectionFactory.setHeaderParams();
         LoginRequestModel loginRequestModel = new LoginRequestModel();
+
         loginRequestModel.setMobileNumber(mobileNo);
+
         loginRequestModel.setPassword(password);
-
         mConnectionFactory.setPostParams(loginRequestModel);
-
         mConnectionFactory.setUrl(Config.LOGIN_URL);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_LOGIN);
     }
 
     public void doVerifyGeneratedSignUpOTP(SignUpVerifyOTPRequestModel requestModel) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP, Request.Method.POST, false);
-        Map<String, String> headerParams = new HashMap<String, String>();
-
-        headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
-        mConnectionFactory.setHeaderParams(headerParams);
-
+        mConnectionFactory.setHeaderParams();
         mConnectionFactory.setPostParams(requestModel);
-
         mConnectionFactory.setUrl(Config.VERIFY_SIGN_UP_OTP);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP);
     }
 
     public void doSignUp(SignUpRequestModel signUpRequestModel) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_SIGN_UP, Request.Method.POST, false);
-        Map<String, String> headerParams = new HashMap<String, String>();
-
-        headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
-        mConnectionFactory.setHeaderParams(headerParams);
-
+        mConnectionFactory.setHeaderParams();
         mConnectionFactory.setPostParams(signUpRequestModel);
-
         mConnectionFactory.setUrl(Config.SIGN_UP_URL);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_SIGN_UP);
 

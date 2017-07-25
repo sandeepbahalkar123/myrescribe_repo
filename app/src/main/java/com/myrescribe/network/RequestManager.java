@@ -35,12 +35,15 @@ import com.myrescribe.interfaces.CustomResponse;
 
 import com.myrescribe.model.Common;
 import com.myrescribe.model.doctors.doctor_info.DoctorModel;
+
 import com.myrescribe.model.login.SignUpModel;
 import com.myrescribe.model.login.VerifyOTPSignUpResponseModel;
+
+import com.myrescribe.model.notification.NotificationModel;
+
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 
 import com.myrescribe.model.login.LoginModel;
-import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.model.visit_details.VisitDetailsModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.activities.SplashScreenActivity;
@@ -385,11 +388,21 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         DoctorModel doctorsModel = new Gson().fromJson(data, DoctorModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorsModel, mOldDataTag);
                         break;
+
                     case MyRescribeConstants.TASK_SIGN_UP: //This is for get sign-up
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, new Gson().fromJson(data, SignUpModel.class), mOldDataTag);
                         break;
                     case MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP: //This is for to verify sign-up otp
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, new Gson().fromJson(data, VerifyOTPSignUpResponseModel.class), mOldDataTag);
+                        break;
+                    case MyRescribeConstants.TASK_NOTIFICATION: //This is for get archived list
+                        NotificationModel notificationModel = new Gson().fromJson(data, NotificationModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, notificationModel, mOldDataTag);
+                        break;
+                    case MyRescribeConstants.TASK_RESPOND_NOTIFICATION: //This is for get archived list
+                        Common common = new Gson().fromJson(data, Common.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, common, mOldDataTag);
+
                         break;
                     /*
                     default:

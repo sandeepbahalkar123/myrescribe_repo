@@ -74,7 +74,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/mainDataContainer"
                 android:layout_width="@dimen/dp0"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -91,7 +90,6 @@
                     android:padding="3dip">
 
                     <com.myrescribe.ui.customesViews.CircularImageView
-                        android:id="@+id/list_image"
                         android:layout_width="@dimen/dp50"
                         android:layout_height="@dimen/dp50"
                         android:layout_gravity="center"

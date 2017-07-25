@@ -13,7 +13,6 @@ public class LoginRequestModel implements CustomResponse {
     @Expose
     private String password;
 
-
     public String getMobileNumber() {
         return mobileNumber;
     }

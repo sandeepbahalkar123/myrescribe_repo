@@ -14,14 +14,12 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/userImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="@dimen/dp6"
         app:srcCompat="@drawable/image_male" />
 
     <TextView
-        android:id="@+id/userName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/dp10"

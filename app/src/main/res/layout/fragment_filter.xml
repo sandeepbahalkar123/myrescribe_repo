@@ -7,21 +7,20 @@
     tools:context="com.myrescribe.ui.fragments.filter.FilterFragment">
 
     <RelativeLayout
-        android:id="@+id/headerBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp56"
-        android:background="@color/recentblue">
+        android:background="@color/tagColor">
 
         <Button
-            android:id="@+id/closeButton"
+            android:id="@+id/applyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:background="@color/transparent"
-            android:text="@string/close"
+            android:text="@string/apply"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp20" />
+            android:textSize="@dimen/sp19" />
 
         <com.myrescribe.ui.customesViews.CustomTextView
             android:id="@+id/titleTextView"
@@ -31,7 +30,7 @@
             android:layout_centerVertical="true"
             android:text="@string/filter"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp23"
+            android:textSize="@dimen/sp22"
             app:customFont="@string/roboto_bold" />
 
         <Button
@@ -45,7 +44,7 @@
             android:text="@string/reset"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp20" />
+            android:textSize="@dimen/sp19" />
 
     </RelativeLayout>
 
@@ -57,7 +56,7 @@
         <RelativeLayout
             android:id="@+id/selectDoctorLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="56dp">
 
             <ImageView
                 android:id="@+id/drIcon"
@@ -80,10 +79,11 @@
                 android:layout_toLeftOf="@+id/arrowIcon1"
                 android:layout_toRightOf="@+id/drIcon"
                 android:layout_toStartOf="@+id/arrowIcon1"
-                android:padding="@dimen/dp8"
+                android:paddingEnd="@dimen/dp8"
+                android:paddingStart="@dimen/dp8"
                 android:text="@string/select_doctors"
-                android:textColor="@color/recentblue"
-                android:textSize="@dimen/sp23"
+                android:textColor="@color/tagColor"
+                android:textSize="@dimen/sp19"
                 app:customFont="@string/roboto_bold" />
 
             <ImageView
@@ -101,13 +101,13 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1.5dp"
+            android:layout_height="1dp"
             android:background="@color/grey_300" />
 
         <RelativeLayout
             android:id="@+id/selectSpecialityLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="56dp">
 
             <ImageView
                 android:id="@+id/drSpecialityIcon"
@@ -130,10 +130,11 @@
                 android:layout_toLeftOf="@+id/arrowIcon2"
                 android:layout_toRightOf="@+id/drSpecialityIcon"
                 android:layout_toStartOf="@+id/arrowIcon2"
-                android:padding="@dimen/dp8"
+                android:paddingEnd="@dimen/dp8"
+                android:paddingStart="@dimen/dp8"
                 android:text="@string/select_doctors_speciality"
-                android:textColor="@color/recentblue"
-                android:textSize="@dimen/sp23"
+                android:textColor="@color/tagColor"
+                android:textSize="@dimen/sp19"
                 app:customFont="@string/roboto_bold" />
 
             <ImageView
@@ -151,13 +152,13 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1.5dp"
+            android:layout_height="1dp"
             android:background="@color/grey_300" />
 
         <RelativeLayout
             android:id="@+id/selectMonthLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="56dp">
 
             <ImageView
                 android:id="@+id/calIcon"
@@ -180,10 +181,11 @@
                 android:layout_toLeftOf="@+id/arrowIcon3"
                 android:layout_toRightOf="@+id/calIcon"
                 android:layout_toStartOf="@+id/arrowIcon3"
-                android:padding="@dimen/dp8"
+                android:paddingEnd="@dimen/dp8"
+                android:paddingStart="@dimen/dp8"
                 android:text="@string/select_month_year"
-                android:textColor="@color/recentblue"
-                android:textSize="@dimen/sp23"
+                android:textColor="@color/tagColor"
+                android:textSize="@dimen/sp19"
                 app:customFont="@string/roboto_bold" />
 
             <ImageView
@@ -209,15 +211,15 @@
         android:paddingBottom="@dimen/dp8"
         android:paddingLeft="@dimen/dp16"
         android:paddingStart="@dimen/dp16"
-        android:paddingTop="@dimen/dp20"
+        android:paddingTop="@dimen/activity_horizontal_margin"
         android:text="@string/case_details"
-        android:textSize="@dimen/sp20"
+        android:textSize="@dimen/sp19"
         app:customFont="@string/roboto_bold" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/case_details_row"/>
+        tools:listitem="@layout/case_details_row" />
 
 </LinearLayout>

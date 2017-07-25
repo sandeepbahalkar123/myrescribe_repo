@@ -20,7 +20,8 @@ public class MyRescribeConstants {
     public static final String USER_ID = "User-ID";
     public static final String DEVICEID = "Device-Id";
     public static final String OS = "OS";
-    public static final String OSVERSION = "OS-Version";
+    public static final String OSVERSION = "OsVersion";
+    public static final String DEVICE_TYPE = "DeviceType";
     public static final String ACCESS_TOKEN = "accessToken";
     public static final String TOKEN_TYPE = "token_type";
     public static final String REFRESH_TOKEN = "refresh_token";
@@ -82,14 +83,25 @@ public class MyRescribeConstants {
 
     public static final String VITALS_LIST = MyRescribeConstants.BLANK + 6;
     public static final String TASK_DOCTOR_APPOINTMENT = MyRescribeConstants.BLANK + 7;
-    public static final String TASK_DOCTOR_LIST_FILTERING = MyRescribeConstants.BLANK + 8;
-    public static final String TASK_SIGN_UP = MyRescribeConstants.BLANK + 9;
-    public static final String TASK_VERIFY_SIGN_UP_OTP = MyRescribeConstants.BLANK + 10;
+
+    public static final String TASK_NOTIFICATION = MyRescribeConstants.BLANK + 8;
+    public static final String TASK_RESPOND_NOTIFICATION = MyRescribeConstants.BLANK + 9;
+
+    public static final String TASK_DOCTOR_LIST_FILTERING = MyRescribeConstants.BLANK + 10;
+    public static final String TASK_SIGN_UP = MyRescribeConstants.BLANK + 11;
+    public static final String TASK_VERIFY_SIGN_UP_OTP = MyRescribeConstants.BLANK + 12;
+
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
     public static final String INVESTIGATION_TEMP_DATA = "investigation_temp_data";
+
+    public static final String TAKEN_DATE = "takenDate";
+
     public static final String TITLE = "title";
+    public static final String DOCTORS_LIST = "doctors_list";
+    public static final String CASE_DETAILS = "case_details";
+
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";
     public static String BUTTON_TEXT_COLOR = "#FFFFFF";

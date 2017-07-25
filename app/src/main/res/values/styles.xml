@@ -72,11 +72,6 @@
         </attr>
     </declare-styleable>
 
-    <style name="TreeNodeStyleDivided">
-        <item name="android:showDividers">middle</item>
-        <item name="android:divider">@android:drawable/divider_horizontal_bright</item>
-    </style>
-
     <style name="NavigationViewStyle">
         <item name="android:textSize">14sp</item> <!-- menu item text size-->
         <!--<item name="android:listPreferredItemHeightSmall">40dp</item>--><!-- menu item height-->

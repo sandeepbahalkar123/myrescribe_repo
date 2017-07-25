@@ -290,10 +290,10 @@ public class LogInApp extends Fragment implements
 
             LoginModel loginModel = (LoginModel) customResponse;
             CommonMethods.Log(TAG + " Token", loginModel.getAuthToken());
-
             if (loginModel.getCommon().isSuccess()) {
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, loginModel.getPatientId(), mContext);
 
                 Intent intentObj = new Intent(mContext, HomePageActivity.class);
                 startActivity(intentObj);
@@ -301,6 +301,7 @@ public class LogInApp extends Fragment implements
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
             }
+
 
         }
     }

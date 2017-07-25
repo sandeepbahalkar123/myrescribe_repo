@@ -11,7 +11,7 @@
     {
       "id": 2,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Allergist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-07T09:51:37.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -19,7 +19,7 @@
     {
       "id": 3,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Audiologist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-09T00:00:00.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -27,7 +27,7 @@
     {
       "id": 4,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Anesthesiologist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-09T00:00:00.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -35,7 +35,7 @@
     {
       "id": 5,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Cardiologist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-09T10:22:51.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -43,7 +43,7 @@
     {
       "id": 6,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Dentist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-19T11:21:52.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -51,7 +51,7 @@
     {
       "id": 7,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Dermatologist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-19T13:41:32.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -59,7 +59,7 @@
     {
       "id": 8,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Endocrinologist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-09T13:12:15.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -67,7 +67,7 @@
     {
       "id": 9,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Epidemiologist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-22T09:53:30.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -75,7 +75,7 @@
     {
       "id": 10,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Gynecologist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-22T07:18:36.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -83,7 +83,7 @@
     {
       "id": 11,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Immunologist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-07T11:02:19.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -91,7 +91,7 @@
     {
       "id": 12,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Infectious Disease Specialist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-07T09:51:37.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -99,15 +99,15 @@
     {
       "id": 13,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Internal Medicine Specialist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-09T00:00:00.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
     },
     {
       "id": 14,
-      "doctorName": "Dr. Shalu Gupta 09|4",
-      "specialization": "General Physician",
+      "doctorName": "Dr. Shalu Gupta",
+      "specialization": "Medical Geneticist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-09T00:00:00.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -115,15 +115,15 @@
     {
       "id": 15,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Microbiologist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-09T10:22:51.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
     },
     {
       "id": 16,
-      "doctorName": "Dr. Shalu Gupta 19|6",
-      "specialization": "General Physician",
+      "doctorName": "Dr. Shalu Gupta",
+      "specialization": "Neonatologist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-19T11:21:52.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -131,7 +131,7 @@
     {
       "id": 17,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Neurologist",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-19T13:41:32.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -139,7 +139,7 @@
     {
       "id": 18,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Neurosurgeon",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-09T13:12:15.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"
@@ -147,7 +147,7 @@
     {
       "id": 19,
       "doctorName": "Dr. Shalu Gupta",
-      "specialization": "General Physician",
+      "specialization": "Obstetrician",
       "address": "Hadapsar, Pune",
       "visitDate": "2017-06-22T09:53:30.000Z",
       "docImg": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png"

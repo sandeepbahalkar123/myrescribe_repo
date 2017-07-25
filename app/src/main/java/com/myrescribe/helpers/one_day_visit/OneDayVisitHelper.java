@@ -72,9 +72,7 @@ public class OneDayVisitHelper implements ConnectionListener {
 
     public void doGetOneDayVisit() {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_ONE_DAY_VISIT, Request.Method.GET, true);
-        Map<String, String> testParams = new HashMap<String, String>();
-        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext));
-        mConnectionFactory.setHeaderParams(testParams);
+        mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.ONE_DAY_VISIT_URL);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_ONE_DAY_VISIT);
     }

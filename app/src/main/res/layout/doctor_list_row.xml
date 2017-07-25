@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="56dp">
 
         <com.myrescribe.ui.customesViews.CustomTextView
             android:id="@+id/drNameTextView"
@@ -21,8 +21,8 @@
             android:layout_toLeftOf="@+id/arrowIcon1"
             android:layout_toStartOf="@+id/arrowIcon1"
             android:padding="@dimen/dp8"
-            android:textColor="@color/recentblue"
-            android:textSize="@dimen/sp23"
+            android:textColor="@color/tagColor"
+            android:textSize="@dimen/sp19"
             app:customFont="@string/roboto_bold"
             tools:text="@string/dr_shaha" />
 
@@ -35,7 +35,8 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/dp30"
             android:layout_marginRight="@dimen/dp30"
-            android:button="@drawable/checkboxselecter" />
+            android:button="@drawable/checkboxselecter"
+            android:clickable="false" />
 
     </RelativeLayout>
 

@@ -2,6 +2,7 @@ package com.myrescribe.ui.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,35 +19,42 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.CustomSpinnerAdapter;
+import com.myrescribe.adapters.filter.FilterDoctorSpecialitiesAdapter;
+import com.myrescribe.adapters.filter.FilterDoctorsAdapter;
 import com.myrescribe.helpers.doctor.DoctorHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
+import com.myrescribe.model.filter.CaseDetails;
+import com.myrescribe.model.filter.FilterDoctorModel;
 import com.myrescribe.model.util.TimePeriod;
 import com.myrescribe.ui.fragments.DoctorListFragment;
 import com.myrescribe.ui.fragments.filter.FilterFragment;
-import com.myrescribe.ui.fragments.filter.SelectDoctorsOrSpecialityFragment;
+import com.myrescribe.ui.fragments.filter.SelectDoctorsFragment;
+import com.myrescribe.ui.fragments.filter.SelectSpecialityFragment;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by jeetal on 14/6/17.
  */
 
-public class DoctorListActivity extends AppCompatActivity implements HelperResponse, View.OnClickListener, FilterFragment.OnDrawerInteractionListener, SelectDoctorsOrSpecialityFragment.OnSelectDoctorInteractionListener {
+public class DoctorListActivity extends AppCompatActivity implements HelperResponse, FilterFragment.OnDrawerInteractionListener, SelectDoctorsFragment.OnSelectDoctorInteractionListener, SelectSpecialityFragment.OnSelectSpecialityInteractionListener, FilterDoctorsAdapter.ItemClickListener, FilterDoctorSpecialitiesAdapter.ItemClickListener {
 
     @BindView(R.id.backArrow)
     ImageView mBackArrow;
@@ -57,18 +65,29 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     private CustomSpinnerAdapter mCustomSpinAdapter;
     @BindView(R.id.year)
     Spinner mYearSpinnerView;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+
+    // Filter Start
+
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
     FrameLayout nav_view;
 
+    // Filter End
+
     private ArrayList<String> mYearList;
-    private ArrayList<TimePeriod> mTimePeriodList;
+    private ArrayList<TimePeriod> mTimePeriodList = new ArrayList<>();
     private TimePeriod mCurrentSelectedTimePeriodTab;
     private DoctorHelper mDoctorHelper;
     private ViewPagerAdapter mViewPagerAdapter;
     private HashSet<String> mGeneratedRequestForYearList = new HashSet<>();
+
     private FragmentManager fragmentManager;
+    private ArrayList<DoctorDetail> doctorList;
+    private ArrayList<CaseDetails> caseDetailsList = new ArrayList<>();
+    private FilterFragment filterFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,14 +107,34 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     }
 
     private void initialize() {
+
+        // Filter Start
+
+        // Dummy Case Details Data
+
+        caseDetailsList.add(new CaseDetails(1, "Complaints", R.drawable.case_complaints));
+        caseDetailsList.add(new CaseDetails(2, "Vitals", R.drawable.case_vitals));
+        caseDetailsList.add(new CaseDetails(3, "Remarks", R.drawable.case_remarks));
+        caseDetailsList.add(new CaseDetails(4, "Diagnosis", R.drawable.case_diagnosis));
+        caseDetailsList.add(new CaseDetails(5, "Prescription", R.drawable.case_prescription));
+        caseDetailsList.add(new CaseDetails(6, "Investigations", R.drawable.case_investigations));
+        caseDetailsList.add(new CaseDetails(7, "Advice", R.drawable.case_advice));
+        caseDetailsList.add(new CaseDetails(8, "Pain Score", R.drawable.case_pain_score));
+
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        FilterFragment filterFragment = FilterFragment.newInstance();
+        filterFragment = FilterFragment.newInstance(caseDetailsList);
         fragmentTransaction.add(R.id.nav_view, filterFragment, "Filter");
         fragmentTransaction.commit();
+        // Dummy Doctors Data
+        String doctorListJson = CommonMethods.readJsonFile(this, "filterdoctor.json");
+        Gson gson = new Gson();
+        FilterDoctorModel filterDoctorModel = gson.fromJson(doctorListJson, FilterDoctorModel.class);
+        doctorList = filterDoctorModel.getDoctors();
+
+        // Filter End
 
         mYearList = CommonMethods.getYearForDoctorList();
-        mBackArrow.setOnClickListener(this);
 
         mCustomSpinAdapter = new CustomSpinnerAdapter(this, mYearList);
         mYearSpinnerView.setAdapter(mCustomSpinAdapter);
@@ -106,11 +145,28 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         mDoctorHelper = new DoctorHelper(this, this);
         //-------
         mCurrentSelectedTimePeriodTab = new TimePeriod();
-        mCurrentSelectedTimePeriodTab.setMonthName(new SimpleDateFormat("MMM").format(new Date()));
-        mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy").format(new Date()));
+        mCurrentSelectedTimePeriodTab.setMonthName(new SimpleDateFormat("MMM", Locale.US).format(new Date()));
+        mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy", Locale.US).format(new Date()));
         //-------
         //----
-        Calendar cal = Calendar.getInstance();
+
+        TimePeriod timePeriod1 = new TimePeriod();
+        timePeriod1.setMonthName("Jan");
+        timePeriod1.setYear("2015");
+
+        TimePeriod timePeriod2 = new TimePeriod();
+        timePeriod2.setMonthName("Jun");
+        timePeriod2.setYear("2016");
+
+        TimePeriod timePeriod3 = new TimePeriod();
+        timePeriod3.setMonthName("Jun");
+        timePeriod3.setYear("2017");
+
+        mTimePeriodList.add(timePeriod1);
+        mTimePeriodList.add(timePeriod2);
+        mTimePeriodList.add(timePeriod3);
+
+        /*Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         int month = cal.get(Calendar.MONTH) + 1;
         int year = cal.get(Calendar.YEAR);
@@ -118,7 +174,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
             mTimePeriodList = CommonMethods.getMonthsWithYear(mYearList.get(0) + "-01-01", year + "-" + month + "-01", MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
         } else {
             mTimePeriodList = CommonMethods.getMonthsWithYear(mYearList.get(0) + "-01-01", mYearList.get(mYearList.size() - 1) + "-12-01", MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
-        }
+        }*/
         //---------
         //----
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -126,6 +182,8 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     }
 
     private void setupViewPager() {
+        mViewPagerAdapter.mFragmentList.clear();
+        mViewPagerAdapter.mFragmentTitleList.clear();
         for (TimePeriod data :
                 mTimePeriodList) {
             Fragment fragment = DoctorListFragment.createNewFragment(data); // pass data here
@@ -136,7 +194,6 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
         //------------
         mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -186,12 +243,17 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
                             temp.getMonthName().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getMonthName())) {
                         mViewpager.setCurrentItem(i);
                         break;
+                    } else if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear())) {
+                        mViewpager.setCurrentItem(i);
+                        break;
                     }
                 }
             }
-        }, 00);
+        }, 0);
         //---------
     }
+
+    // Filter Start
 
     @Override
     public void onDrawerClose() {
@@ -201,8 +263,9 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     @Override
     public void onSelectDoctors() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        SelectDoctorsOrSpecialityFragment selectDoctorsOrSpecialityFragment = SelectDoctorsOrSpecialityFragment.newInstance(getResources().getString(R.string.select_doctors));
-        fragmentTransaction.add(R.id.nav_view, selectDoctorsOrSpecialityFragment, getResources().getString(R.string.select_doctors));
+        SelectDoctorsFragment selectDoctorsFragment = SelectDoctorsFragment.newInstance(doctorList, getResources().getString(R.string.doctors));
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        fragmentTransaction.add(R.id.nav_view, selectDoctorsFragment, getResources().getString(R.string.doctors));
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -210,23 +273,101 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     @Override
     public void onSelectSpeciality() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        SelectDoctorsOrSpecialityFragment selectDoctorsOrSpecialityFragment = SelectDoctorsOrSpecialityFragment.newInstance(getResources().getString(R.string.select_doctors_speciality));
-        fragmentTransaction.add(R.id.nav_view, selectDoctorsOrSpecialityFragment, getResources().getString(R.string.select_doctors_speciality));
+        SelectSpecialityFragment selectSpecialityFragment = SelectSpecialityFragment.newInstance(doctorList, getResources().getString(R.string.doctors_speciality));
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        fragmentTransaction.add(R.id.nav_view, selectSpecialityFragment, getResources().getString(R.string.doctors_speciality));
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
     @Override
-    public void onBack() {
+    public void onReset() {
+        for (DoctorDetail doctorDetail : doctorList) {
+            doctorDetail.setDoctorSelected(false);
+            doctorDetail.setDoctorSpecialitySelected(false);
+        }
+
+        for (CaseDetails caseDetails : caseDetailsList)
+            caseDetails.setSelected(false);
+
+        filterFragment.notifyCaseDetails();
+    }
+
+    @Override
+    public void onFragmentBack() {
         fragmentManager.popBackStack();
     }
 
+    @Override
+    public void setDoctorSpeciality(String speciality) {
+        filterFragment.setDoctorSpeciality(speciality);
+    }
+
+    @Override
+    public void setDoctorName(String name) {
+        filterFragment.setDoctorName(name);
+    }
+
+    @Override
+    public void onDoctorClick() {
+        String doctorName = getResources().getString(R.string.select_doctors);
+        int count = 0;
+        for (DoctorDetail doctorDetail : doctorList) {
+            if (doctorDetail.isDoctorSelected()) {
+                count++;
+                if (count == 1)
+                    doctorName = doctorDetail.getDoctorName();
+            }
+
+        }
+        if (count > 1)
+            filterFragment.setDoctorName(doctorName + " + " + (count - 1));
+        else if (count == 1) filterFragment.setDoctorName(doctorName);
+        else filterFragment.setDoctorName(doctorName);
+    }
+
+    @Override
+    public void onDoctorSpecialityClick() {
+        String doctorSpeciality = getResources().getString(R.string.select_doctors_speciality);
+        int count = 0;
+        for (DoctorDetail doctorDetail : doctorList) {
+            if (doctorDetail.isDoctorSpecialitySelected()) {
+                count++;
+                if (count == 1)
+                    doctorSpeciality = doctorDetail.getSpecialization();
+            }
+
+        }
+        if (count > 1)
+            filterFragment.setDoctorSpeciality(doctorSpeciality + " + " + (count - 1));
+        else if (count == 1) filterFragment.setDoctorSpeciality(doctorSpeciality);
+        else filterFragment.setDoctorSpeciality(doctorSpeciality);
+    }
+
+    @OnClick({R.id.backArrow, R.id.fab})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.backArrow:
+                finish();
+                break;
+            case R.id.fab:
+                if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
+                } else {
+                    drawer.openDrawer(GravityCompat.END);
+                }
+                break;
+        }
+    }
+
+    // Filter End
+
     //---------------
-    class ViewPagerAdapter extends FragmentStatePagerAdapter {
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<TimePeriod> mFragmentTitleList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -256,19 +397,6 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         }
     }
 
-    //---------------
-
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id) {
-            case R.id.backArrow:
-                finish();
-                break;
-        }
-    }
-
-    //---------------
     private class YearSpinnerInteractionListener implements AdapterView.OnItemSelectedListener, View.OnTouchListener {
 
         boolean mYearSpinnerConfigChange = false;

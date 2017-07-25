@@ -172,13 +172,7 @@ public class DoctorHelper implements ConnectionListener {
 
     public void doGetDoctorList(String year) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
-        Map<String, String> testParams = new HashMap<String, String>();
-
-        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext));
-        testParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
-
-        mConnectionFactory.setHeaderParams(testParams);
-        // mConnectionFactory.setPostParams(testParams);
+        mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + year);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_LIST);
 

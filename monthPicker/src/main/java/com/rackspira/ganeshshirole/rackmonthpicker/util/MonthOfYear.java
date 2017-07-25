@@ -1,9 +1,9 @@
-package com.rackspira.kristiawan.rackmonthpicker.util;
+package com.rackspira.ganeshshirole.rackmonthpicker.util;
 
-import com.rackspira.kristiawan.rackmonthpicker.R;
+import com.rackspira.ganeshshirole.rackmonthpicker.R;
 
 /**
- * Created by kristiawan on 31/12/16.
+ * Created by ganeshshirole on 31/12/16.
  */
 
 public class MonthOfYear {
@@ -23,11 +23,30 @@ public class MonthOfYear {
             R.drawable.radio_button_background_dec
     };
 
+    private static int activeIcons[] = {
+            R.drawable.jan_active,
+            R.drawable.feb_active,
+            R.drawable.mar_active,
+            R.drawable.apr_active,
+            R.drawable.may_active,
+            R.drawable.jun_active,
+            R.drawable.jul_active,
+            R.drawable.aug_active,
+            R.drawable.sep_active,
+            R.drawable.oct_active,
+            R.drawable.nov_active,
+            R.drawable.dec_active
+    };
+
     public static String getMonth(int idx) {
         return months[idx];
     }
 
     public static int getIcons(int idx) {
         return icons[idx];
+    }
+
+    public static int getActiveIcons(int idx) {
+        return activeIcons[idx];
     }
 }

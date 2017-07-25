@@ -39,6 +39,7 @@ public class SelectSpecialityFragment extends Fragment {
     Unbinder unbinder;
     private OnSelectSpecialityInteractionListener mListener;
     private ArrayList<DoctorDetail> doctorList;
+    private FilterDoctorSpecialitiesAdapter filterDoctorSpecialitiesAdapter;
 
     public SelectSpecialityFragment() {
         // Required empty public constructor
@@ -81,7 +82,7 @@ public class SelectSpecialityFragment extends Fragment {
                 linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
         recyclerView.setLayoutManager(linearLayoutManager);
-        FilterDoctorSpecialitiesAdapter filterDoctorSpecialitiesAdapter = new FilterDoctorSpecialitiesAdapter(getContext(), doctorList);
+        filterDoctorSpecialitiesAdapter = new FilterDoctorSpecialitiesAdapter(getContext(), doctorList);
         recyclerView.setAdapter(filterDoctorSpecialitiesAdapter);
         return view;
     }
@@ -96,10 +97,14 @@ public class SelectSpecialityFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.closeButton:
-                mListener.onBack();
+                mListener.onFragmentBack();
                 break;
             case R.id.resetButton:
-                mListener.onBack();
+                for (DoctorDetail doctorDetail : doctorList) {
+                    doctorDetail.setDoctorSpecialitySelected(false);
+                }
+                filterDoctorSpecialitiesAdapter.notifyDataSetChanged();
+                mListener.setDoctorSpeciality(getResources().getString(R.string.select_doctors_speciality));
                 break;
         }
     }
@@ -122,6 +127,7 @@ public class SelectSpecialityFragment extends Fragment {
     }
 
     public interface OnSelectSpecialityInteractionListener {
-        void onBack();
+        void onFragmentBack();
+        void setDoctorSpeciality(String speciality);
     }
 }

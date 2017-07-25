@@ -21,10 +21,10 @@ import com.myrescribe.model.filter.CaseDetails;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
-import com.rackspira.kristiawan.rackmonthpicker.RackMonthPicker;
-import com.rackspira.kristiawan.rackmonthpicker.listener.DateMonthDialogListener;
-import com.rackspira.kristiawan.rackmonthpicker.listener.OnCancelMonthDialogListener;
-import com.rackspira.kristiawan.rackmonthpicker.util.MonthOfYear;
+import com.rackspira.ganeshshirole.rackmonthpicker.RackMonthPicker;
+import com.rackspira.ganeshshirole.rackmonthpicker.listener.DateMonthDialogListener;
+import com.rackspira.ganeshshirole.rackmonthpicker.listener.OnCancelMonthDialogListener;
+import com.rackspira.ganeshshirole.rackmonthpicker.util.MonthOfYear;
 
 import java.util.ArrayList;
 
@@ -35,8 +35,8 @@ import butterknife.Unbinder;
 
 public class FilterFragment extends Fragment {
 
-    @BindView(R.id.closeButton)
-    Button closeButton;
+    @BindView(R.id.applyButton)
+    Button applyButton;
     @BindView(R.id.titleTextView)
     CustomTextView titleTextView;
     @BindView(R.id.resetButton)
@@ -121,8 +121,6 @@ public class FilterFragment extends Fragment {
                 .setNegativeButton(new OnCancelMonthDialogListener() {
                     @Override
                     public void onCancel(AlertDialog dialog) {
-                       /* monthSelected = getResources().getString(R.string.select_month_year);
-                        drCalenderTextView.setText(monthSelected);*/
                         dialog.dismiss();
                     }
                 });
@@ -140,10 +138,10 @@ public class FilterFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.closeButton, R.id.resetButton, R.id.selectDoctorLayout, R.id.selectSpecialityLayout, R.id.selectMonthLayout})
+    @OnClick({R.id.applyButton, R.id.resetButton, R.id.selectDoctorLayout, R.id.selectSpecialityLayout, R.id.selectMonthLayout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.closeButton:
+            case R.id.applyButton:
                 mListener.onDrawerClose();
                 break;
             case R.id.resetButton:
@@ -193,7 +191,6 @@ public class FilterFragment extends Fragment {
         void onDrawerClose();
         void onSelectDoctors();
         void onSelectSpeciality();
-
         void onReset();
     }
 }

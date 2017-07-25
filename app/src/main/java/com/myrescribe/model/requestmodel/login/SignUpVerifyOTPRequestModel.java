@@ -4,15 +4,24 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 
-public class LoginRequestModel implements CustomResponse {
+import java.io.Serializable;
+
+public class SignUpVerifyOTPRequestModel implements CustomResponse, Serializable {
 
     @SerializedName("mobileNumber")
     @Expose
     private String mobileNumber;
-    @SerializedName("password")
+    @SerializedName("otp")
     @Expose
-    private String password;
+    private String OTP;
 
+    public String getOTP() {
+        return OTP;
+    }
+
+    public void setOTP(String OTP) {
+        this.OTP = OTP;
+    }
 
     public String getMobileNumber() {
         return mobileNumber;
@@ -21,13 +30,4 @@ public class LoginRequestModel implements CustomResponse {
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
 }

@@ -9,5 +9,5 @@
         android:height="120dp" />
     <stroke
         android:width="1dp"
-        android:color="@color/tagColor" />
+        android:color="@color/recentblue" />
 </shape>

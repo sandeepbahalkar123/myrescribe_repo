@@ -33,7 +33,10 @@ import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
 
+import com.myrescribe.model.Common;
 import com.myrescribe.model.doctors.doctor_info.DoctorModel;
+import com.myrescribe.model.login.SignUpModel;
+import com.myrescribe.model.login.VerifyOTPSignUpResponseModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 
 import com.myrescribe.model.login.LoginModel;
@@ -381,6 +384,12 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case MyRescribeConstants.TASK_DOCTOR_LIST: //This is for get archived list
                         DoctorModel doctorsModel = new Gson().fromJson(data, DoctorModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorsModel, mOldDataTag);
+                        break;
+                    case MyRescribeConstants.TASK_SIGN_UP: //This is for get sign-up
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, new Gson().fromJson(data, SignUpModel.class), mOldDataTag);
+                        break;
+                    case MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP: //This is for to verify sign-up otp
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, new Gson().fromJson(data, VerifyOTPSignUpResponseModel.class), mOldDataTag);
                         break;
                     /*
                     default:

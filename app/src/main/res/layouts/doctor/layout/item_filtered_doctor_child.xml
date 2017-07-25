@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@color/tagColor" />
+                    android:background="@color/recentblue" />
 
             </LinearLayout>
 
@@ -67,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/dp2"
                         android:text="Rihanna Love the way lie"
-                        android:textColor="@color/tagColor"
+                        android:textColor="@color/recentblue"
                         android:textSize="@dimen/sp16"
                         android:textStyle="bold"
                         android:typeface="sans" />

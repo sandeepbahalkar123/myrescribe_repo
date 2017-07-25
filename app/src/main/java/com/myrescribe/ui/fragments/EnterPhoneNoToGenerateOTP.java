@@ -64,7 +64,7 @@ public class EnterPhoneNoToGenerateOTP extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View inflate = inflater.inflate(R.layout.enter_mobile_number_to_generate_otp, container, false);
+        View inflate = inflater.inflate(R.layout.forgot_password, container, false);
         ButterKnife.bind(this, inflate);
         return inflate;
     }
@@ -74,12 +74,12 @@ public class EnterPhoneNoToGenerateOTP extends Fragment {
         super.onDetach();
     }
 
-    @OnClick(R.id.generateOTP)
+    //@OnClick(R.id.generateOTP)
     public void onGenerateOTPClick() {
         MyRescribePreferencesManager.putString(MyRescribeConstants.PHONE, mEditTextMobileNo.getText().toString(), getContext());
         FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, new EnterGeneratedOTP());
+        fragmentTransaction.replace(R.id.container, new OTPConfirmationForSignUp());
         fragmentTransaction.commit();
     }
 }

@@ -11,7 +11,7 @@
         android:id="@+id/headerBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp56"
-        android:background="@color/tagColor">
+        android:background="@color/recentblue">
 
         <Button
             android:id="@+id/closeButton"

@@ -117,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="OR"
-            android:textColor="@color/tagColor"
+            android:textColor="@color/recentblue"
             android:textSize="@dimen/sp20"
             app:customFont="@string/roboto_bold" />
 

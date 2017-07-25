@@ -76,7 +76,7 @@
                 android:id="@+id/button_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/tagColor"
+                android:background="@color/recentblue"
                 android:gravity="center"
                 android:text="@string/ok"
                 android:textColor="@color/black" />

@@ -31,7 +31,7 @@
             android:layout_toStartOf="@+id/selectCheckbox"
             android:padding="@dimen/dp8"
             tools:text="@string/select_doctors"
-            android:textColor="@color/tagColor"
+            android:textColor="@color/recentblue"
             android:textSize="@dimen/sp23"
             app:customFont="@string/roboto_bold" />
 

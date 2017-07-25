@@ -45,6 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +53,6 @@ import butterknife.OnClick;
 
 public class LogInApp extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener, HelperResponse {
-    // TODO: Rename parameter arguments, choose names that match
     private final String TAG = this.getClass().getName();
 
     Context mContext;
@@ -171,9 +171,12 @@ public class LogInApp extends Fragment implements
                 getActivity().startActivityForResult(signInIntent, RC_SIGN_IN);
                 break;
             case R.id.btn_login:
-                String userName = mMobileNo.getText().toString();
+                String mobileNo = mMobileNo.getText().toString();
                 String password = mPassword.getText().toString();
-                isValidate(userName, password);
+                if (!validate(mobileNo, password)) {
+                    LoginHelper loginHelper = new LoginHelper(getActivity(), this);
+                    loginHelper.doLogin(mobileNo, password);
+                }
                 break;
         }
     }
@@ -261,38 +264,62 @@ public class LogInApp extends Fragment implements
         request.executeAsync();
     }
 
-    private void isValidate(String userName, String password) {
-        LoginHelper loginHelper = new LoginHelper(getActivity(), this);
-        loginHelper.doLogin(userName, password);
+    /**
+     * Return true if fields empty/validation failed, else false.
+     *
+     * @return
+     */
+    private boolean validate(String mobileNo, String password) {
+        String message = null;
+        if (mobileNo.isEmpty()) {
+            message = getString(R.string.enter_mobile_no).toLowerCase(Locale.US);
+        } else if (password.isEmpty()) {
+            message = getString(R.string.enter_password).toLowerCase(Locale.US);
+        }
+        if (message != null) {
+            CommonMethods.showSnack(mMobileNo, getString(R.string.enter) + message);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (mOldDataTag.equals(MyRescribeConstants.TASK_LOGIN)) {
+        if (mOldDataTag.equalsIgnoreCase(MyRescribeConstants.TASK_LOGIN)) {
+
             LoginModel loginModel = (LoginModel) customResponse;
             CommonMethods.Log(TAG + " Token", loginModel.getAuthToken());
-            MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
-            MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
 
-            Intent intentObj = new Intent(mContext, HomePageActivity.class);
-            startActivity(intentObj);
+            if (loginModel.getCommon().isSuccess()) {
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
 
-            getActivity().finish();
+                Intent intentObj = new Intent(mContext, HomePageActivity.class);
+                startActivity(intentObj);
+                getActivity().finish();
+            } else {
+                CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
+            }
+
         }
     }
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
+        CommonMethods.showToast(getActivity(), errorMessage);
 
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
+        CommonMethods.showToast(getActivity(), serverErrorMessage);
 
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+        CommonMethods.showToast(getActivity(), serverErrorMessage);
 
     }
 }

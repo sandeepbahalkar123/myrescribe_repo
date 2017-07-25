@@ -8,8 +8,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+
 import com.myrescribe.R;
 import com.myrescribe.ui.fragments.LoginMainTabFragment;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -28,11 +30,8 @@ public class LoginMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_main);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ButterKnife.bind(this);
-
         mContext = this;
-
         mLoginMainTabFragment = new LoginMainTabFragment();
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();

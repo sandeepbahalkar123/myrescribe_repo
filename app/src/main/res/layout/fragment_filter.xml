@@ -10,7 +10,7 @@
         android:id="@+id/headerBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp56"
-        android:background="@color/tagColor">
+        android:background="@color/recentblue">
 
         <Button
             android:id="@+id/closeButton"
@@ -82,7 +82,7 @@
                 android:layout_toStartOf="@+id/arrowIcon1"
                 android:padding="@dimen/dp8"
                 android:text="@string/select_doctors"
-                android:textColor="@color/tagColor"
+                android:textColor="@color/recentblue"
                 android:textSize="@dimen/sp23"
                 app:customFont="@string/roboto_bold" />
 
@@ -132,7 +132,7 @@
                 android:layout_toStartOf="@+id/arrowIcon2"
                 android:padding="@dimen/dp8"
                 android:text="@string/select_doctors_speciality"
-                android:textColor="@color/tagColor"
+                android:textColor="@color/recentblue"
                 android:textSize="@dimen/sp23"
                 app:customFont="@string/roboto_bold" />
 
@@ -182,7 +182,7 @@
                 android:layout_toStartOf="@+id/arrowIcon3"
                 android:padding="@dimen/dp8"
                 android:text="@string/select_month_year"
-                android:textColor="@color/tagColor"
+                android:textColor="@color/recentblue"
                 android:textSize="@dimen/sp23"
                 app:customFont="@string/roboto_bold" />
 

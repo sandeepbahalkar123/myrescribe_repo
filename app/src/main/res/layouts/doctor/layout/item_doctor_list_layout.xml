@@ -32,7 +32,7 @@
                 android:layout_weight="0.2"
                 android:gravity="center"
                 android:text="12th\nJust\now"
-                android:textColor="@color/tagColor"
+                android:textColor="@color/recentblue"
                 android:textSize="@dimen/sp16"
                 android:textStyle="bold"
                 android:visibility="visible" />
@@ -48,7 +48,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@color/tagColor" />
+                    android:background="@color/recentblue" />
 
                 <ImageView
                     android:id="@+id/circularBulletMainElement"
@@ -70,7 +70,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@color/tagColor" />
+                    android:background="@color/recentblue" />
             </LinearLayout>
 
             <LinearLayout
@@ -127,7 +127,7 @@
                         android:layout_below="@id/doctorType"
                         android:layout_toRightOf="@+id/thumbnail"
                         android:text="Rihanna Love the way lie"
-                        android:textColor="@color/tagColor"
+                        android:textColor="@color/recentblue"
                         android:textSize="@dimen/sp18"
                         android:textStyle="bold"
                         android:typeface="sans" />
@@ -171,7 +171,7 @@
         <TextView
             android:layout_width="@dimen/dp1"
             android:layout_height="match_parent"
-            android:background="@color/tagColor" />
+            android:background="@color/recentblue" />
 
         <TextView
             android:layout_width="@dimen/dp0"

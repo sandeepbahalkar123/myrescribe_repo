@@ -16,16 +16,16 @@
     <string name="visit_details">Single Visit Details</string>
     <string name="doctor_details">Doctor Visits</string>
     <string name="before">Before</string>
-    <string name="enter_mobile_no">Enter Mobile No</string>
-    <string name="enter_password">Enter Password</string>
+    <string name="enter_mobile_no">Mobile No.</string>
+    <string name="enter_password">Password</string>
     <string name="loginfb">Login with fb</string>
-    <string name="log_in">Log In</string>
+    <string name="log_in">Login</string>
     <string name="logingmail">Login with G+</string>
     <string name="btn_logout_from_google">Logout from Google</string>
     <string name="btn_revoke_access">Revoke Access</string>
     <string name="loading">Loading...</string>
-    <string name="enter_full_name">Enter Full Name</string>
-    <string name="enter_email_id">Enter Email ID Name</string>
+    <string name="enter_full_name">Name</string>
+    <string name="enter_email_id">Email ID</string>
     <string name="enter_user_name">Enter User Name</string>
     <string name="cancel">Cancel</string>
     <string name="error_in_ip">Please enter valid IP address</string>
@@ -55,10 +55,11 @@
     <string name="type">TYPE</string>
     <string name="delete">DELETE</string>
     <string name="search">Search</string>
-    <string name="resend_otp">Resend OTP</string>
+    <string name="resend_otp">Resend in</string>
     <string name="ok">OK</string>
     <string name="dose">DOSE</string>
     <string name="sign_up">Sign Up</string>
+    <string name="sign_up_confirmation">Sign Up Confirmation</string>
     <string name="logout">Logout</string>
     <string name="medicine">MEDICINE</string>
     <string name="duration">DURATION</string>
@@ -74,30 +75,6 @@
     <string name="customnotification">Custom Notification</string>
     <string name="facebook_app_id">297092640737799</string>
     <string name="fb_login_protocol_scheme">fb1879555372255897</string>
-
-    <!--<string name="gotham_black">gotham_black.ttf</string>
-    <string name="gotham_blackitalic">gotham_blackitalic.ttf</string>
-    <string name="gotham_bold">gotham_bold.ttf</string>
-    <string name="gotham_bolditalic">gotham_bolditalic.ttf</string>
-    <string name="gotham_light">gotham_light.ttf</string>
-    <string name="gotham_lightitalic">gotham_lightitalic.ttf</string>
-    <string name="gotham_medium">gotham_medium.ttf</string>
-    <string name="gotham_mediumitalic">gotham_mediumitalic.ttf</string>
-    <string name="gotham_thin">gotham_thin.ttf</string>
-    <string name="gotham_thinitalic">gotham_thinitalic.ttf</string>
-    <string name="gotham_ultra">gotham_ultra.ttf</string>
-
-    <string name="helvetica_47_light_condensed">helvetica_47_light_condensed.otf</string>
-    <string name="helvetica_76_bold_italic">helvetica_76_bold_italic.otf</string>
-    <string name="helvetica_77_bold_condensed">helvetica_77_bold_condensed.otf</string>
-    <string name="helvetica_96_black_italic">helvetica_96_black_italic.otf</string>
-    <string name="helvetica_97_black_condensed">helvetica_97_black_condensed.otf</string>
-    <string name="helvetica_bold_outline">helvetica_bold_outline.otf</string>
-    <string name="helvetica_demi_bold">helvetica_demi_bold.otf</string>
-    <string name="helvetica_light_normal">helvetica_light_normal.ttf</string>
-    <string name="helvetica_lt_condensed_black_obliq">helvetica_lt_condensed_black_obliq.ttf</string>
-    <string name="helvetica_medium_italic.otf">helvetica_medium_italic.otf</string>
-    <string name="helvetica_normal">helvetica_normal.ttf</string>-->
 
     <string name="roboto_bold">roboto_bold.ttf</string>
     <string name="roboto_medium">roboto_medium.ttf</string>
@@ -136,8 +113,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="generate_otp">Generate OTP</string>
-    <string name="enter_received_otp">Enter the OTP in case we fail to detect the SMS automatically</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="enter">Enter&#160;</string>
     <string name="waiting_for_sms">Auto verification of OTP in progress %1$d secs</string>
     <string name="title_activity_notification">Notification</string>
     <string name="dinner_medication">Dinner Medication</string>
@@ -202,6 +179,11 @@
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
     <string name="details">&#160;Details</string>
-
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="message_for_mobile_otp">Please input the OTP received on your Mobile No.&#160; %1$s</string>
+    <string name="message_forgot_password">Please provide your email id to access the reset password link.</string>
+    <string name="submit">Submit</string>
+    <string name="err_email_invalid">Enter valid email.</string>
+    <string name="err_maximum_otp_retries">You have exceeded maximum retry of OTP generation, please try after sometime.</string>
 
 </resources>

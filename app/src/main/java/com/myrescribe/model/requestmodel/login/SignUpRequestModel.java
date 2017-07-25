@@ -4,8 +4,16 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 
-public class LoginRequestModel implements CustomResponse {
+import java.io.Serializable;
 
+public class SignUpRequestModel implements CustomResponse,Serializable {
+
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("emailId")
+    @Expose
+    private String emailId;
     @SerializedName("mobileNumber")
     @Expose
     private String mobileNumber;
@@ -13,6 +21,21 @@ public class LoginRequestModel implements CustomResponse {
     @Expose
     private String password;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
 
     public String getMobileNumber() {
         return mobileNumber;
@@ -29,5 +52,4 @@ public class LoginRequestModel implements CustomResponse {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }

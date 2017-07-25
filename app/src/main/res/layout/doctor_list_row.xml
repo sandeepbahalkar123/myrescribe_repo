@@ -21,7 +21,7 @@
             android:layout_toLeftOf="@+id/arrowIcon1"
             android:layout_toStartOf="@+id/arrowIcon1"
             android:padding="@dimen/dp8"
-            android:textColor="@color/tagColor"
+            android:textColor="@color/recentblue"
             android:textSize="@dimen/sp23"
             app:customFont="@string/roboto_bold"
             tools:text="@string/dr_shaha" />

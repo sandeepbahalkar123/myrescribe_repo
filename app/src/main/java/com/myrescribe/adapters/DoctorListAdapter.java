@@ -118,12 +118,6 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
         holder.mClickOnDoctorVisitLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ViewDetailsActivity.class);
-                intent.putExtra(mContext.getString(R.string.name), dataObject.getDoctorName());
-                intent.putExtra(mContext.getString(R.string.specialization), dataObject.getSpecialization());
-                intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());
-
-                //--------
                 String timeToShow = CommonMethods.formatDateTime(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.MMM_YYYY,
                         MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE).toLowerCase();
                 Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
@@ -131,9 +125,11 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
                 cal.setTime(date);
                 timeToShow = timeToShow.substring(0, 1).toUpperCase() + timeToShow.substring(1);
                 String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup> " + timeToShow;
+                Intent intent = new Intent(mContext, ViewDetailsActivity.class);
+                intent.putExtra(mContext.getString(R.string.name), dataObject.getDoctorName());
+                intent.putExtra(mContext.getString(R.string.specialization), dataObject.getSpecialization());
+                intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());
                 intent.putExtra(mContext.getString(R.string.one_day_visit_date), toDisplay);
-                //--------
-
                 mContext.startActivity(intent);
             }
         });

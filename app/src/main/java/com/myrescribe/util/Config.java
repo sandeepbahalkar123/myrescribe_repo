@@ -21,6 +21,8 @@ public class Config {
 
     public static final String ONE_DAY_VISIT_URL = "api/patient/getPatientOneDayVisit/4092/10/08-06-2017";
     public static final String DOCTOR_LIST_URL = "api/patient/getDoctorList?patientId=4092&year=";
+    public static final String NOTIFICATION_URL = "api/patient/getPrescriptionNotifications?patientId=4092";
+    public static final String RESPOND_TO_NOTIFICATION_URL = "api/patient/logMedicinesTakenInfo";
 
 
 }

@@ -3,7 +3,6 @@ package com.myrescribe.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.myrescribe.R;
 import com.myrescribe.model.history.HistoryCommonDetails;
@@ -150,7 +148,7 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
         final String[] allColors = mContext.getResources().getStringArray(colorSecond);
         for (i = 0; i < columnCount; i++) {
             View item = LayoutInflater.from(mContext)
-                    .inflate(R.layout.item, tableRow, false);
+                    .inflate(R.layout.vital_item_row, tableRow, false);
             LinearLayout vitalLinearlayout =  (LinearLayout)item.findViewById(R.id.vitalCellLinearLayout) ;
             ImageView vitalImage = (ImageView)item.findViewById(R.id.vitalImage);
             TextView vital_name = (TextView)item.findViewById(R.id.vital_name) ;
@@ -227,7 +225,7 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
         groupViewHolder.lblListHeader.setText(headerTitle);
         groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getVisitDetailsIcons(headerTitle, mContext));
         ArrayList<Diagnosi> historyCommonDetailses = getChildList(groupPosition);
-        groupViewHolder.mDetailFirstPoint.setText(test(historyCommonDetailses.get(0).getName())+".......");
+        groupViewHolder.mDetailFirstPoint.setText(setStringLength(historyCommonDetailses.get(0).getName())+".......");
         return convertView;
     }
 
@@ -282,13 +280,11 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
 
     }
 
-    public String test(String t){
+    public String setStringLength(String t){
         String o = null;
         if(t.length() >= 30){
             o = t.substring(0,30);
             System.out.println(o);
-          /*  String x = t.substring(5,t.length());
-            test(x);*/
             return o;
         }
         else{

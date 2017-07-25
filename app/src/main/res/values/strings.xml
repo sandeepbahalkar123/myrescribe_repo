@@ -2,7 +2,17 @@
     <string name="app_name">Rescribe</string>
     <string name="opening_brace">(</string>
     <string name="closing_brace">)</string>
+    <string name="Tablet"> Tab</string>
+    <string name="Syrup"> Syrup</string>
+    <string name="breakfast_after">breakfastAfter</string>
+    <string name="breakfast_before">breakfastBefore</string>
+    <string name="lunch_before">lunchBefore</string>
+    <string name="lunch_after">lunchAfter</string>
+    <string name="dinner_after">dinnerAfter</string>
+    <string name="dinner_before">dinnerBefore</string>
+    <string name="snacks_after">snacksAfter</string>
     <string name="after">After</string>
+    <string name="snacks_before">snacksBefore</string>
     <string name="compalints">Complaints</string>
     <string name="diagnosis">Diagnosis</string>
     <string name="prescription">Prescription</string>
@@ -37,6 +47,10 @@
     <string name="mlunch">LUNCH</string>
     <string name="msnacks">SNACKS</string>
     <string name="dinner">Dinner</string>
+    <string name="smallcasedinner">dinner</string>
+    <string name="smallcaselunch">lunch</string>
+    <string name="smallcasesnacks">snacks</string>
+    <string name="smallcasebreakfast">breakfast</string>
     <string name="mdinner">DINNER</string>
     <string name="instructions">Instruction:</string>
     <string name="for_example_server_path">e.g. 192.168.0.180:80</string>
@@ -49,37 +63,10 @@
     <string name="notification">Notification</string>
     <string name="facebook_app_id">297092640737799</string>
     <string name="fb_login_protocol_scheme">fb1879555372255897</string>
-
-    <!--<string name="gotham_black">gotham_black.ttf</string>
-    <string name="gotham_blackitalic">gotham_blackitalic.ttf</string>
-    <string name="gotham_bold">gotham_bold.ttf</string>
-    <string name="gotham_bolditalic">gotham_bolditalic.ttf</string>
-    <string name="gotham_light">gotham_light.ttf</string>
-    <string name="gotham_lightitalic">gotham_lightitalic.ttf</string>
-    <string name="gotham_medium">gotham_medium.ttf</string>
-    <string name="gotham_mediumitalic">gotham_mediumitalic.ttf</string>
-    <string name="gotham_thin">gotham_thin.ttf</string>
-    <string name="gotham_thinitalic">gotham_thinitalic.ttf</string>
-    <string name="gotham_ultra">gotham_ultra.ttf</string>
-
-    <string name="helvetica_47_light_condensed">helvetica_47_light_condensed.otf</string>
-    <string name="helvetica_76_bold_italic">helvetica_76_bold_italic.otf</string>
-    <string name="helvetica_77_bold_condensed">helvetica_77_bold_condensed.otf</string>
-    <string name="helvetica_96_black_italic">helvetica_96_black_italic.otf</string>
-    <string name="helvetica_97_black_condensed">helvetica_97_black_condensed.otf</string>
-    <string name="helvetica_bold_outline">helvetica_bold_outline.otf</string>
-    <string name="helvetica_demi_bold">helvetica_demi_bold.otf</string>
-    <string name="helvetica_light_normal">helvetica_light_normal.ttf</string>
-    <string name="helvetica_lt_condensed_black_obliq">helvetica_lt_condensed_black_obliq.ttf</string>
-    <string name="helvetica_medium_italic.otf">helvetica_medium_italic.otf</string>
-    <string name="helvetica_normal">helvetica_normal.ttf</string>-->
-
     <string name="roboto_bold">roboto_bold.ttf</string>
     <string name="roboto_medium">roboto_medium.ttf</string>
-
     <string name="title_activity_preferences">Preferences</string>
     <string name="save">Save</string>
-
     <string name="terms_conditions">By continuing, you accept the <u>Terms of Use</u> and <u>Privacy Policy</u></string>
 
     <!-- TODO: Remove or change this placeholder text -->

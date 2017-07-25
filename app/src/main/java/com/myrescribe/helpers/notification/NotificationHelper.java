@@ -1,4 +1,4 @@
-package com.myrescribe.helpers.login;
+package com.myrescribe.helpers.notification;
 
 import android.content.Context;
 
@@ -6,29 +6,25 @@ import com.android.volley.Request;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.login.LoginModel;
-import com.myrescribe.model.requestmodel.login.LoginRequestModel;
+import com.myrescribe.model.notification.NotificationModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * Created by ganeshshirole on 10/7/17.
+ * Created by jeetal on 20/7/17.
  */
 
-public class LoginHelper implements ConnectionListener{
-    String TAG = "MyRescribe/LoginHelper";
+public class NotificationHelper implements ConnectionListener {
+
+    String TAG = "MyRescribe/NotificationHelper";
     Context mContext;
     HelperResponse mHelperResponseManager;
-
-    public LoginHelper(Context context, HelperResponse loginActivity) {
+    public NotificationHelper(Context context, HelperResponse notificationActivity) {
         this.mContext = context;
-        this.mHelperResponseManager = loginActivity;
+        this.mHelperResponseManager = notificationActivity;
     }
 
 
@@ -38,9 +34,9 @@ public class LoginHelper implements ConnectionListener{
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag.equals(MyRescribeConstants.TASK_LOGIN)) {
-                    LoginModel loginModel = (LoginModel) customResponse;
-                    mHelperResponseManager.onSuccess(mOldDataTag, loginModel);
+                if (mOldDataTag == MyRescribeConstants.TASK_NOTIFICATION) {
+                    NotificationModel model = (NotificationModel) customResponse;
+                    mHelperResponseManager.onSuccess(mOldDataTag, model);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
@@ -66,14 +62,12 @@ public class LoginHelper implements ConnectionListener{
 
     }
 
-    public void doLogin(String userName, String password) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN, Request.Method.POST, false);
+    public void doGetNotificationList() {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, MyRescribeConstants.TASK_NOTIFICATION, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        LoginRequestModel loginRequestModel = new LoginRequestModel();
-        loginRequestModel.setMobileNumber(userName);
-        loginRequestModel.setPassword(password);
-        mConnectionFactory.setPostParams(loginRequestModel);
-        mConnectionFactory.setUrl(Config.LOGIN_URL);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_LOGIN);
+        mConnectionFactory.setUrl(Config.NOTIFICATION_URL);
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_NOTIFICATION);
     }
+
+
 }

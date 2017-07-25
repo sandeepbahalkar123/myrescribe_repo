@@ -6,20 +6,24 @@ import com.myrescribe.interfaces.CustomResponse;
 
 public class LoginRequestModel implements CustomResponse{
 
-    @SerializedName("username")
+    @SerializedName("mobileNumber")
     @Expose
-    private String username;
+    private String mobileNumber;
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
     @SerializedName("password")
+
     @Expose
     private String password;
 
-    public String getUsername() {
-        return username;
-    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getPassword() {
         return password;

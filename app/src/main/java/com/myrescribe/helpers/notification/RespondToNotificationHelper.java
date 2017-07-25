@@ -1,4 +1,4 @@
-package com.myrescribe.helpers.login;
+package com.myrescribe.helpers.notification;
 
 import android.content.Context;
 
@@ -6,10 +6,13 @@ import com.android.volley.Request;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.login.LoginModel;
+import com.myrescribe.model.notification.Common;
+import com.myrescribe.model.notification.NotificationModel;
 import com.myrescribe.model.requestmodel.login.LoginRequestModel;
+import com.myrescribe.model.response_model_notification.ResponseNotificationModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
@@ -18,17 +21,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by ganeshshirole on 10/7/17.
+ * Created by jeetal on 20/7/17.
  */
 
-public class LoginHelper implements ConnectionListener{
-    String TAG = "MyRescribe/LoginHelper";
+public class RespondToNotificationHelper implements ConnectionListener {
+
+    String TAG = "MyRescribe/RespondToNotificationHelper";
     Context mContext;
     HelperResponse mHelperResponseManager;
-
-    public LoginHelper(Context context, HelperResponse loginActivity) {
+    public RespondToNotificationHelper(Context context, HelperResponse respondNotificationActivity) {
         this.mContext = context;
-        this.mHelperResponseManager = loginActivity;
+        this.mHelperResponseManager = respondNotificationActivity;
     }
 
 
@@ -38,9 +41,11 @@ public class LoginHelper implements ConnectionListener{
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag.equals(MyRescribeConstants.TASK_LOGIN)) {
-                    LoginModel loginModel = (LoginModel) customResponse;
-                    mHelperResponseManager.onSuccess(mOldDataTag, loginModel);
+                if (mOldDataTag == MyRescribeConstants.TASK_RESPOND_NOTIFICATION) {
+
+                    Common common = (Common) customResponse;
+                    CommonMethods.Log(TAG,common.getStatusMessage());
+                    mHelperResponseManager.onSuccess(mOldDataTag, common);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
@@ -66,14 +71,19 @@ public class LoginHelper implements ConnectionListener{
 
     }
 
-    public void doLogin(String userName, String password) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN, Request.Method.POST, false);
+    public void doRespondToNotification(Integer patientID,String slot,Integer medicineId,String takenDate,Integer isBundle) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_RESPOND_NOTIFICATION, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
-        LoginRequestModel loginRequestModel = new LoginRequestModel();
-        loginRequestModel.setMobileNumber(userName);
-        loginRequestModel.setPassword(password);
-        mConnectionFactory.setPostParams(loginRequestModel);
-        mConnectionFactory.setUrl(Config.LOGIN_URL);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_LOGIN);
+        ResponseNotificationModel responseNotificationModel = new ResponseNotificationModel();
+        responseNotificationModel.setPatientId(patientID);
+        responseNotificationModel.setSlot(slot);
+        responseNotificationModel.setMedicineId(medicineId);
+        responseNotificationModel.setTakenDate(takenDate);
+        responseNotificationModel.setIsBundle(isBundle);
+        mConnectionFactory.setPostParams(responseNotificationModel);
+        mConnectionFactory.setUrl(Config.RESPOND_TO_NOTIFICATION_URL);
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_RESPOND_NOTIFICATION);
     }
+
+
 }

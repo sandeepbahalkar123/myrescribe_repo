@@ -2,6 +2,7 @@ package com.myrescribe.ui.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,7 +40,6 @@ import com.myrescribe.util.MyRescribeConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -48,12 +48,13 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by jeetal on 14/6/17.
  */
 
-public class DoctorListActivity extends AppCompatActivity implements HelperResponse, View.OnClickListener, FilterFragment.OnDrawerInteractionListener, SelectDoctorsFragment.OnSelectDoctorInteractionListener, SelectSpecialityFragment.OnSelectSpecialityInteractionListener, FilterDoctorsAdapter.ItemClickListener, FilterDoctorSpecialitiesAdapter.ItemClickListener {
+public class DoctorListActivity extends AppCompatActivity implements HelperResponse, FilterFragment.OnDrawerInteractionListener, SelectDoctorsFragment.OnSelectDoctorInteractionListener, SelectSpecialityFragment.OnSelectSpecialityInteractionListener, FilterDoctorsAdapter.ItemClickListener, FilterDoctorSpecialitiesAdapter.ItemClickListener {
 
     @BindView(R.id.backArrow)
     ImageView mBackArrow;
@@ -64,6 +65,8 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     private CustomSpinnerAdapter mCustomSpinAdapter;
     @BindView(R.id.year)
     Spinner mYearSpinnerView;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     // Filter Start
 
@@ -75,7 +78,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     // Filter End
 
     private ArrayList<String> mYearList;
-    private ArrayList<TimePeriod> mTimePeriodList;
+    private ArrayList<TimePeriod> mTimePeriodList = new ArrayList<>();
     private TimePeriod mCurrentSelectedTimePeriodTab;
     private DoctorHelper mDoctorHelper;
     private ViewPagerAdapter mViewPagerAdapter;
@@ -132,7 +135,6 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         // Filter End
 
         mYearList = CommonMethods.getYearForDoctorList();
-        mBackArrow.setOnClickListener(this);
 
         mCustomSpinAdapter = new CustomSpinnerAdapter(this, mYearList);
         mYearSpinnerView.setAdapter(mCustomSpinAdapter);
@@ -147,7 +149,24 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy", Locale.US).format(new Date()));
         //-------
         //----
-        Calendar cal = Calendar.getInstance();
+
+        TimePeriod timePeriod1 = new TimePeriod();
+        timePeriod1.setMonthName("Jan");
+        timePeriod1.setYear("2015");
+
+        TimePeriod timePeriod2 = new TimePeriod();
+        timePeriod2.setMonthName("Jun");
+        timePeriod2.setYear("2016");
+
+        TimePeriod timePeriod3 = new TimePeriod();
+        timePeriod3.setMonthName("Jun");
+        timePeriod3.setYear("2017");
+
+        mTimePeriodList.add(timePeriod1);
+        mTimePeriodList.add(timePeriod2);
+        mTimePeriodList.add(timePeriod3);
+
+        /*Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         int month = cal.get(Calendar.MONTH) + 1;
         int year = cal.get(Calendar.YEAR);
@@ -155,7 +174,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
             mTimePeriodList = CommonMethods.getMonthsWithYear(mYearList.get(0) + "-01-01", year + "-" + month + "-01", MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
         } else {
             mTimePeriodList = CommonMethods.getMonthsWithYear(mYearList.get(0) + "-01-01", mYearList.get(mYearList.size() - 1) + "-12-01", MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
-        }
+        }*/
         //---------
         //----
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -163,6 +182,8 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     }
 
     private void setupViewPager() {
+        mViewPagerAdapter.mFragmentList.clear();
+        mViewPagerAdapter.mFragmentTitleList.clear();
         for (TimePeriod data :
                 mTimePeriodList) {
             Fragment fragment = DoctorListFragment.createNewFragment(data); // pass data here
@@ -220,6 +241,9 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
                     TimePeriod temp = mTimePeriodList.get(i);
                     if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear()) &&
                             temp.getMonthName().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getMonthName())) {
+                        mViewpager.setCurrentItem(i);
+                        break;
+                    } else if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear())) {
                         mViewpager.setCurrentItem(i);
                         break;
                     }
@@ -320,6 +344,22 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         else filterFragment.setDoctorSpeciality(doctorSpeciality);
     }
 
+    @OnClick({R.id.backArrow, R.id.fab})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.backArrow:
+                finish();
+                break;
+            case R.id.fab:
+                if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
+                } else {
+                    drawer.openDrawer(GravityCompat.END);
+                }
+                break;
+        }
+    }
+
     // Filter End
 
     //---------------
@@ -357,19 +397,6 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         }
     }
 
-    //---------------
-
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id) {
-            case R.id.backArrow:
-                finish();
-                break;
-        }
-    }
-
-    //---------------
     private class YearSpinnerInteractionListener implements AdapterView.OnItemSelectedListener, View.OnTouchListener {
 
         boolean mYearSpinnerConfigChange = false;

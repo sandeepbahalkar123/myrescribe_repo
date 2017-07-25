@@ -1,4 +1,4 @@
-package com.rackspira.kristiawan.rackmonthpicker;
+package com.rackspira.ganeshshirole.rackmonthpicker;
 
 import org.junit.Test;
 

@@ -43,6 +43,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -63,10 +64,15 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     private CustomSpinnerAdapter mCustomSpinAdapter;
     @BindView(R.id.year)
     Spinner mYearSpinnerView;
+
+    // Filter Start
+
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
     FrameLayout nav_view;
+
+    // Filter End
 
     private ArrayList<String> mYearList;
     private ArrayList<TimePeriod> mTimePeriodList;
@@ -74,8 +80,8 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     private DoctorHelper mDoctorHelper;
     private ViewPagerAdapter mViewPagerAdapter;
     private HashSet<String> mGeneratedRequestForYearList = new HashSet<>();
-    private FragmentManager fragmentManager;
 
+    private FragmentManager fragmentManager;
     private ArrayList<DoctorDetail> doctorList;
     private ArrayList<CaseDetails> caseDetailsList = new ArrayList<>();
     private FilterFragment filterFragment;
@@ -99,6 +105,8 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
     private void initialize() {
 
+        // Filter Start
+
         // Dummy Case Details Data
 
         caseDetailsList.add(new CaseDetails(1, "Complaints", R.drawable.case_complaints));
@@ -115,12 +123,13 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         filterFragment = FilterFragment.newInstance(caseDetailsList);
         fragmentTransaction.add(R.id.nav_view, filterFragment, "Filter");
         fragmentTransaction.commit();
-
         // Dummy Doctors Data
         String doctorListJson = CommonMethods.readJsonFile(this, "filterdoctor.json");
         Gson gson = new Gson();
         FilterDoctorModel filterDoctorModel = gson.fromJson(doctorListJson, FilterDoctorModel.class);
         doctorList = filterDoctorModel.getDoctors();
+
+        // Filter End
 
         mYearList = CommonMethods.getYearForDoctorList();
         mBackArrow.setOnClickListener(this);
@@ -134,8 +143,8 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         mDoctorHelper = new DoctorHelper(this, this);
         //-------
         mCurrentSelectedTimePeriodTab = new TimePeriod();
-        mCurrentSelectedTimePeriodTab.setMonthName(new SimpleDateFormat("MMM").format(new Date()));
-        mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy").format(new Date()));
+        mCurrentSelectedTimePeriodTab.setMonthName(new SimpleDateFormat("MMM", Locale.US).format(new Date()));
+        mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy", Locale.US).format(new Date()));
         //-------
         //----
         Calendar cal = Calendar.getInstance();
@@ -164,7 +173,6 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
         //------------
         mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -217,9 +225,11 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
                     }
                 }
             }
-        }, 00);
+        }, 0);
         //---------
     }
+
+    // Filter Start
 
     @Override
     public void onDrawerClose() {
@@ -310,8 +320,10 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         else filterFragment.setDoctorSpeciality(doctorSpeciality);
     }
 
+    // Filter End
+
     //---------------
-    class ViewPagerAdapter extends FragmentStatePagerAdapter {
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<TimePeriod> mFragmentTitleList = new ArrayList<>();
 

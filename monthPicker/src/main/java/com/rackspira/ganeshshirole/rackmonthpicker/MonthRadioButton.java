@@ -1,13 +1,13 @@
-package com.rackspira.kristiawan.rackmonthpicker;
+package com.rackspira.ganeshshirole.rackmonthpicker;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.view.View;
 
-import com.rackspira.kristiawan.rackmonthpicker.listener.MonthButtonListener;
+import com.rackspira.ganeshshirole.rackmonthpicker.listener.MonthButtonListener;
 
 /**
- * Created by kristiawan on 31/12/16.
+ * Created by ganeshshirole on 31/12/16.
  */
 
 public class MonthRadioButton extends AppCompatRadioButton {

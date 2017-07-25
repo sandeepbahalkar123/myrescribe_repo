@@ -1,4 +1,4 @@
-package com.rackspira.kristiawan.rackmonthpicker;
+package com.rackspira.ganeshshirole.rackmonthpicker;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -11,16 +11,16 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.rackspira.kristiawan.rackmonthpicker.listener.DateMonthDialogListener;
-import com.rackspira.kristiawan.rackmonthpicker.listener.MonthButtonListener;
-import com.rackspira.kristiawan.rackmonthpicker.listener.OnCancelMonthDialogListener;
-import com.rackspira.kristiawan.rackmonthpicker.util.MonthOfYear;
+import com.rackspira.ganeshshirole.rackmonthpicker.listener.DateMonthDialogListener;
+import com.rackspira.ganeshshirole.rackmonthpicker.listener.MonthButtonListener;
+import com.rackspira.ganeshshirole.rackmonthpicker.listener.OnCancelMonthDialogListener;
+import com.rackspira.ganeshshirole.rackmonthpicker.util.MonthOfYear;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by kristiawan on 31/12/16.
+ * Created by ganeshshirole on 31/12/16.
  */
 
 public class RackMonthPicker {

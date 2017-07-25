@@ -21,10 +21,10 @@ import com.myrescribe.model.filter.CaseDetails;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
-import com.rackspira.kristiawan.rackmonthpicker.RackMonthPicker;
-import com.rackspira.kristiawan.rackmonthpicker.listener.DateMonthDialogListener;
-import com.rackspira.kristiawan.rackmonthpicker.listener.OnCancelMonthDialogListener;
-import com.rackspira.kristiawan.rackmonthpicker.util.MonthOfYear;
+import com.rackspira.ganeshshirole.rackmonthpicker.RackMonthPicker;
+import com.rackspira.ganeshshirole.rackmonthpicker.listener.DateMonthDialogListener;
+import com.rackspira.ganeshshirole.rackmonthpicker.listener.OnCancelMonthDialogListener;
+import com.rackspira.ganeshshirole.rackmonthpicker.util.MonthOfYear;
 
 import java.util.ArrayList;
 
@@ -121,8 +121,6 @@ public class FilterFragment extends Fragment {
                 .setNegativeButton(new OnCancelMonthDialogListener() {
                     @Override
                     public void onCancel(AlertDialog dialog) {
-                       /* monthSelected = getResources().getString(R.string.select_month_year);
-                        drCalenderTextView.setText(monthSelected);*/
                         dialog.dismiss();
                     }
                 });
@@ -193,7 +191,6 @@ public class FilterFragment extends Fragment {
         void onDrawerClose();
         void onSelectDoctors();
         void onSelectSpeciality();
-
         void onReset();
     }
 }

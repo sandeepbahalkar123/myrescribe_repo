@@ -1,9 +1,9 @@
-package com.rackspira.kristiawan.rackmonthpicker.util;
+package com.rackspira.ganeshshirole.rackmonthpicker.util;
 
-import com.rackspira.kristiawan.rackmonthpicker.R;
+import com.rackspira.ganeshshirole.rackmonthpicker.R;
 
 /**
- * Created by kristiawan on 31/12/16.
+ * Created by ganeshshirole on 31/12/16.
  */
 
 public class MonthOfYear {

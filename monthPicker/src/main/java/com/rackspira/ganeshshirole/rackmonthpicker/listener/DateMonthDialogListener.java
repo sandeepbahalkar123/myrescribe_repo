@@ -1,7 +1,7 @@
-package com.rackspira.kristiawan.rackmonthpicker.listener;
+package com.rackspira.ganeshshirole.rackmonthpicker.listener;
 
 /**
- * Created by kristiawan on 31/12/16.
+ * Created by ganeshshirole on 31/12/16.
  */
 
 public interface DateMonthDialogListener {

@@ -225,7 +225,7 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
         groupViewHolder.lblListHeader.setText(headerTitle);
         groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getVisitDetailsIcons(headerTitle, mContext));
         ArrayList<Diagnosi> historyCommonDetailses = getChildList(groupPosition);
-        groupViewHolder.mDetailFirstPoint.setText(test(historyCommonDetailses.get(0).getName())+".......");
+        groupViewHolder.mDetailFirstPoint.setText(setStringLength(historyCommonDetailses.get(0).getName())+".......");
         return convertView;
     }
 
@@ -258,18 +258,6 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
         }
     }
 
-    static class ChildViewHolderVitals {
-        //---------
-
-        @BindView(R.id.recycler_view)
-        RecyclerView mRecycler_view;
-
-
-        ChildViewHolderVitals(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
-
     static class GroupViewHolder {
         //---------
 
@@ -292,7 +280,7 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
 
     }
 
-    public String test(String t){
+    public String setStringLength(String t){
         String o = null;
         if(t.length() >= 30){
             o = t.substring(0,30);

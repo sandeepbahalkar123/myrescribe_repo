@@ -83,13 +83,23 @@ public class MyRescribeConstants {
 
     public static final String VITALS_LIST = MyRescribeConstants.BLANK + 6;
     public static final String TASK_DOCTOR_APPOINTMENT = MyRescribeConstants.BLANK + 7;
+
     public static final String TASK_NOTIFICATION = MyRescribeConstants.BLANK + 8;
     public static final String TASK_RESPOND_NOTIFICATION = MyRescribeConstants.BLANK + 9;
+
+    public static final String TASK_DOCTOR_LIST_FILTERING = MyRescribeConstants.BLANK + 8;
+
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
     public static final String INVESTIGATION_TEMP_DATA = "investigation_temp_data";
+
     public static final String TAKEN_DATE ="takenDate"  ;
+
+    public static final String TITLE = "title";
+    public static final String DOCTORS_LIST = "doctors_list";
+    public static final String CASE_DETAILS = "case_details";
+
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";
     public static String BUTTON_TEXT_COLOR = "#FFFFFF";
@@ -117,7 +127,7 @@ public class MyRescribeConstants {
         public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
         public static String DD_MM_YYYY_hh_mm = "dd/MM/yyyy hh:mm aa";
         public static String HH_MM = "hh:mm";
-        public static String EEE_MMM_DD_MMM = "EEEE dd MMM yyyy HH:mm";
+        public static String MMM_YYYY = "MMM, yyyy";
     }
 
     public static class TIME_STAMPS {

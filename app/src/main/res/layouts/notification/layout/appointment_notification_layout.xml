@@ -26,7 +26,6 @@
         android:padding="@dimen/dp8">
 
         <LinearLayout
-            android:id="@+id/textLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp0"
             android:layout_weight="1"
@@ -55,7 +54,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/timeButtonLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp0"
             android:layout_weight="1"

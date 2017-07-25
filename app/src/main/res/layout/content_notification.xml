@@ -102,7 +102,6 @@
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:id="@+id/trangleIconTop"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end|top"
@@ -110,7 +109,6 @@
                                 android:visibility="gone" />
 
                             <ImageView
-                                android:id="@+id/trangleIconBottom"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end|bottom"
@@ -139,7 +137,6 @@
                                     android:paddingStart="@dimen/horizontal_margin">
 
                                     <com.myrescribe.ui.customesViews.CustomTextView
-                                        android:id="@+id/questionTextView"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
@@ -184,7 +181,6 @@
                 </LinearLayout>
 
                 <View
-                    android:id="@+id/dividerLine"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp1"
                     android:layout_marginTop="@dimen/dp4"

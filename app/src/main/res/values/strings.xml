@@ -29,16 +29,12 @@
     <string name="loginfb">Login with fb</string>
     <string name="log_in">Log In</string>
     <string name="logingmail">Login with G+</string>
-    <string name="btn_logout_from_google">Logout from Google</string>
-    <string name="btn_revoke_access">Revoke Access</string>
-    <string name="loading">Loading...</string>
     <string name="enter_full_name">Enter Full Name</string>
     <string name="enter_email_id">Enter Email ID Name</string>
     <string name="enter_user_name">Enter User Name</string>
     <string name="cancel">Cancel</string>
     <string name="error_in_ip">Please enter valid IP address</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="internet">Please check your Internet Connection</string>
     <string name="timeout">Timeout error</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -46,9 +42,6 @@
     <string name="breakfast">Breakfast</string>
     <string name="break_fast">BREAKFAST</string>
     <string name="server_path">Enter the server path</string>
-    <string name="data_saved">Data updated successfully</string>
-    <string name="data__not_saved">Data not saved</string>
-    <string name="tablet">Tab</string>
     <string name="lunch">Lunch</string>
     <string name="snacks">Snacks</string>
     <string name="mlunch">LUNCH</string>
@@ -61,89 +54,19 @@
     <string name="mdinner">DINNER</string>
     <string name="instructions">Instruction:</string>
     <string name="for_example_server_path">e.g. 192.168.0.180:80</string>
-    <string name="message_text">This tablet is for acidity take before eating anything.</string>
-    <string name="edit">EDIT</string>
-    <string name="typehere" tools:ignore="TypographyEllipsis">Type here...</string>
-    <string name="type">TYPE</string>
-    <string name="delete">DELETE</string>
     <string name="search">Search</string>
     <string name="resend_otp">Resend OTP</string>
     <string name="ok">OK</string>
-    <string name="dose">DOSE</string>
     <string name="sign_up">Sign Up</string>
     <string name="logout">Logout</string>
-    <string name="medicine">MEDICINE</string>
-    <string name="duration">DURATION</string>
-    <string name="notificationtitle">Android Notification Tutorial</string>
-    <string name="notificationtext">Notification Text</string>
-    <string name="notificationticker">Notification Ticker</string>
-    <string name="customnotificationtitle">Android</string>
-    <string name="customnotificationtext">Custom Notification Text</string>
     <string name="customnotificationticker">Medicine Dose Notification</string>
-    <string name="lbltitle">"Title : "</string>
-    <string name="lbltext">"Text : "</string>
     <string name="notification">Notification</string>
-    <string name="customnotification">Custom Notification</string>
     <string name="facebook_app_id">297092640737799</string>
     <string name="fb_login_protocol_scheme">fb1879555372255897</string>
-
-    <!--<string name="gotham_black">gotham_black.ttf</string>
-    <string name="gotham_blackitalic">gotham_blackitalic.ttf</string>
-    <string name="gotham_bold">gotham_bold.ttf</string>
-    <string name="gotham_bolditalic">gotham_bolditalic.ttf</string>
-    <string name="gotham_light">gotham_light.ttf</string>
-    <string name="gotham_lightitalic">gotham_lightitalic.ttf</string>
-    <string name="gotham_medium">gotham_medium.ttf</string>
-    <string name="gotham_mediumitalic">gotham_mediumitalic.ttf</string>
-    <string name="gotham_thin">gotham_thin.ttf</string>
-    <string name="gotham_thinitalic">gotham_thinitalic.ttf</string>
-    <string name="gotham_ultra">gotham_ultra.ttf</string>
-
-    <string name="helvetica_47_light_condensed">helvetica_47_light_condensed.otf</string>
-    <string name="helvetica_76_bold_italic">helvetica_76_bold_italic.otf</string>
-    <string name="helvetica_77_bold_condensed">helvetica_77_bold_condensed.otf</string>
-    <string name="helvetica_96_black_italic">helvetica_96_black_italic.otf</string>
-    <string name="helvetica_97_black_condensed">helvetica_97_black_condensed.otf</string>
-    <string name="helvetica_bold_outline">helvetica_bold_outline.otf</string>
-    <string name="helvetica_demi_bold">helvetica_demi_bold.otf</string>
-    <string name="helvetica_light_normal">helvetica_light_normal.ttf</string>
-    <string name="helvetica_lt_condensed_black_obliq">helvetica_lt_condensed_black_obliq.ttf</string>
-    <string name="helvetica_medium_italic.otf">helvetica_medium_italic.otf</string>
-    <string name="helvetica_normal">helvetica_normal.ttf</string>-->
-
     <string name="roboto_bold">roboto_bold.ttf</string>
     <string name="roboto_medium">roboto_medium.ttf</string>
-
-    <string-array name="ids">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-
-    </string-array>
-    <string-array name="type">
-        <item>Tablet</item>
-        <item>Syrup</item>
-    </string-array>
-    <string-array name="dose">
-        <item>Before</item>
-        <item>After</item>
-    </string-array>
     <string name="title_activity_preferences">Preferences</string>
     <string name="save">Save</string>
-
     <string name="terms_conditions">By continuing, you accept the <u>Terms of Use</u> and <u>Privacy Policy</u></string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -151,7 +74,6 @@
     <string name="generate_otp">Generate OTP</string>
     <string name="enter_received_otp">Enter the OTP in case we fail to detect the SMS automatically</string>
     <string name="waiting_for_sms">Auto verification of OTP in progress %1$d secs</string>
-    <string name="title_activity_notification">Notification</string>
     <string name="dinner_medication">Dinner Medication</string>
     <string name="snacks_medication">Snacks Medication</string>
     <string name="lunch_medication">Lunch Medication</string>
@@ -161,7 +83,6 @@
     <string name="read_more"><u>more</u></string>
     <string name="read_less">&#160;<u>
         less</u></string>
-    <string name="no">No</string>
     <string name="title_activity_investigation">Investigation Result</string>
     <string name="title_activity_selected_docs">Seleted Docs</string>
     <string name="upload">Upload</string>
@@ -169,12 +90,10 @@
     <string name="title_activity_zoomview">Zoom View</string>
     <string name="investigation_msg">Have you done the investigations adviced by Dr. Shah?</string>
     <string name="appointment_msg">You have an appointment with Dr. ---- on --th June at --:-- am.</string>
-    <string name="title_activity_appoinment">Appoinment</string>
     <string name="appointment">Appointment</string>
     <string name="investigation">Investigation</string>
     <string name="appointments">Appointments</string>
     <string name="my_appointments">My Appointments</string>
-    <string name="select_documents">Select Documents</string>
     <string name="one_day_visit_date">VISIT_DATE</string>
     <string name="just_now">Just\nNow</string>
     <string name="investigation_title">We request you to upload &amp; share the results of the following investigation with Dr. shah:</string>
@@ -202,6 +121,19 @@
     <string name="upcoming">upcoming</string>
     <string name="cancelled">cancelled</string>
     <string name="completed">completed</string>
-
+    <string name="close">Close</string>
+    <string name="reset">Reset</string>
+    <string name="filter">Filter</string>
+    <string name="select_doctors">Select Doctors</string>
+    <string name="select_doctors_speciality">Select Doctors Speciality</string>
+    <string name="select_month_year"><![CDATA[Select Month & Year]]></string>
+    <string name="case_details">Case Details</string>
+    <string name="back">Back</string>
+    <string name="dr_shaha">Dr. Shaha</string>
+    <string name="latitude">latitude</string>
+    <string name="longitude">longitude</string>
+    <string name="details">&#160;Details</string>
+    <string name="doctors">Doctors</string>
+    <string name="doctors_speciality">Doctors Speciality</string>
 
 </resources>

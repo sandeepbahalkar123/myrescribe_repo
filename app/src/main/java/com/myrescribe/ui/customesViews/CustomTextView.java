@@ -16,7 +16,7 @@ import com.myrescribe.util.MyRescribeConstants;
  * Created by Sandeep Bahalkar
  */
 
-public class CustomTextView extends TextView {
+public class CustomTextView extends android.support.v7.widget.AppCompatTextView {
 
     private static final String TAG = "TextView";
 

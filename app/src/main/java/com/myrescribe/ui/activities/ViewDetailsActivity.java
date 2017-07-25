@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.View;
 
 import com.myrescribe.R;
@@ -80,8 +81,12 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
             mDoctorName.setText(intent.getStringExtra(getString(R.string.name)));
             mDoctorSpecialization.setText(intent.getStringExtra(getString(R.string.specialization)));
             mDoctor_address.setText(intent.getStringExtra(getString(R.string.address)));
-            mDateTextView.setText(intent.getStringExtra(getString(R.string.one_day_visit_date)));
-
+            String stringExtra = intent.getStringExtra(getString(R.string.one_day_visit_date));
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                mDateTextView.setText(Html.fromHtml(stringExtra, Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                mDateTextView.setText(Html.fromHtml(stringExtra));
+            }
         } else {
             mDoctorName.setText("Ritesh Deshmukh ");
             mDoctorSpecialization.setText("Cardiologist");

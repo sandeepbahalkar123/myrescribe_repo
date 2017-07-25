@@ -98,7 +98,7 @@ public class SelectDoctorsFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.closeButton:
-                mListener.onBack();
+                mListener.onFragmentBack();
                 break;
             case R.id.resetButton:
                 for (DoctorDetail doctorDetail : doctorList) {
@@ -128,7 +128,7 @@ public class SelectDoctorsFragment extends Fragment {
     }
 
     public interface OnSelectDoctorInteractionListener {
-        void onBack();
+        void onFragmentBack();
         void setDoctorName(String name);
     }
 }

@@ -270,7 +270,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     }
 
     @Override
-    public void onBack() {
+    public void onFragmentBack() {
         fragmentManager.popBackStack();
     }
 
@@ -327,7 +327,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<TimePeriod> mFragmentTitleList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 

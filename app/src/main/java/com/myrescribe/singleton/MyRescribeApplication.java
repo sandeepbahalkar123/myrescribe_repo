@@ -10,10 +10,6 @@ import com.myrescribe.helpers.database.AppDBHelper;
 
 import java.util.Hashtable;
 
-//import android.support.multidex.MultiDexApplication;
-/*import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;*/
-
 /**
  * Created by Sandeep Bahalkar
  */
@@ -41,6 +37,7 @@ public class MyRescribeApplication extends Application /*MultiDexApplication*/ {
     public void onCreate() {
         super.onCreate();
         //------------
+//        MultiDex.install(this);
         AppDBHelper.getInstance(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);

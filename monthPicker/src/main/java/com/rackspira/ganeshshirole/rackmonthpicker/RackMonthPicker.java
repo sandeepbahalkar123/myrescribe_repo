@@ -96,6 +96,7 @@ public class RackMonthPicker {
         private AlertDialog.Builder alertBuilder;
         private View contentView;
         private int year = 2017;
+        private static final int MIN_LIMIT = 1990;
 
         private Builder() {
             alertBuilder = new AlertDialog.Builder(context);
@@ -184,16 +185,28 @@ public class RackMonthPicker {
                     }
 
                     validateNextYearMonth();
+                    validatePreYearMonth();
 
                     previous.setAlpha(1f);
                 }
             };
         }
 
+        private void validatePreYearMonth() {
+            if (year <= MIN_LIMIT){
+                previous.setEnabled(false);
+                previous.setAlpha(.4f);
+            }else {
+                previous.setEnabled(true);
+                previous.setAlpha(1f);
+            }
+        }
+
         public View.OnClickListener previousButtonClick() {
             return new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     if (fromYear < year) {
                         year--;
                         mYear.setText(year + "");
@@ -221,6 +234,7 @@ public class RackMonthPicker {
                     }
 
                     validateNextYearMonth();
+                    validatePreYearMonth();
                 }
             };
         }

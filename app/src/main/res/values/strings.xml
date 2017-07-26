@@ -145,6 +145,7 @@
     <string name="forgot_password">Forgot your password?</string>
     <string name="message_for_mobile_otp">Please input the OTP received on your Mobile No.&#160; %1$s</string>
     <string name="message_forgot_password">Please provide your email id to access the reset password link.</string>
+    <string name="message_social_login_confirm_mobile_no_password">Please input your mobile no. and password.</string>
     <string name="submit">Submit</string>
     <string name="err_email_invalid">Enter valid email.</string>
     <string name="err_maximum_otp_retries">You have exceeded maximum retry of OTP generation, please try after sometime.</string>

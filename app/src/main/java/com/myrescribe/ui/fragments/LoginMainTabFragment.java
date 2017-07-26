@@ -2,16 +2,21 @@ package com.myrescribe.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.preference.MyRescribePreferencesManager;
@@ -26,7 +31,6 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link LoginMainTabFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link LoginMainTabFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -99,6 +103,13 @@ public class LoginMainTabFragment extends Fragment {
         } else {
             viewPager.setCurrentItem(0);
         }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                changeTabsFont();
+            }
+        }, 200);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -146,5 +157,29 @@ public class LoginMainTabFragment extends Fragment {
 
         item.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    //TODO: NOT WORKING AS PER REQUIRED, NEED TO CHECK IT FOR TAB_LAYOUT TAB FONT
+    private void changeTabsFont() {
+
+        ViewGroup vg = (ViewGroup) mTabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    Typeface tf = null;
+                    try {
+                        tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/roboto_bold.ttf");
+                        ((TextView) tabViewChild).setTypeface(tf);
+                        ((TextView) tabViewChild).setTextSize(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.dp26));
+                    } catch (Exception e) {
+                        Log.e("changeTabsFont", "Could not get typeface: " + e.getMessage());
+                    }
+                }
+            }
+        }
     }
 }

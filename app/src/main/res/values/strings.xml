@@ -12,6 +12,10 @@
     <string name="dinner_before">dinnerBefore</string>
     <string name="snacks_after">snacksAfter</string>
     <string name="after">After</string>
+    <string name="normal">Normal Level :</string>
+    <string name="moderate">Moderate Level :</string>
+    <string name="severe">Severe Level :</string>
+    <string name="location">Location</string>
     <string name="snacks_before">snacksBefore</string>
     <string name="compalints">Complaints</string>
     <string name="diagnosis">Diagnosis</string>

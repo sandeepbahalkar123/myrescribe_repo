@@ -15,15 +15,12 @@
     <color name="black">#000000</color>
     <color name="view_detail_color">#737373</color>
     <color name="lightskyBlue">#b2e6fa</color>
-
     <color name="cobalt_blue">#0020C2</color>
     <color name="MediumSpringGreen">#348017</color>
     <color name="BlueDress">#157DEC</color>
     <color name="Red">#FF0000</color>
-
     <color name="BlueAngel">#04abdf</color>
     <color name="tagColor">#04abdf</color>
-
     <color name="statusbar">#0077a7</color>
     <color name="white">#ffffff</color>
     <color name="colorPrimary">#3F51B5</color>
@@ -36,8 +33,10 @@
     <color name="dose_completed">#666666</color>
     <color name="background_grey">#EDEDED</color>
     <color name="accent">#FF4081</color>
-
+    <color name="vitals_dialog_grey">#cccccc</color>
+    <color name="range_label_color">#545353</color>
+    <color name="range_green">#178a00</color>
+    <color name="range_yellow">#ff9500</color>
     <color name="otp_background_layout">#EDF1F4</color>
-
     <color name="Gray">#736F6E</color>
 </resources>

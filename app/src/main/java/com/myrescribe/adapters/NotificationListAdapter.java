@@ -18,6 +18,7 @@ import com.myrescribe.listeners.SwipeDismissTouchListener;
 import com.myrescribe.model.Common;
 import com.myrescribe.model.notification.NotificationData;
 import com.myrescribe.model.notification.Medication;
+import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
@@ -248,7 +249,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 selectView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        medicationList.get(position).setLunchThere(false);
+                        mDataSet.get(position).setLunchThere(false);
                         parent.removeView(view);
                         if(!finalLunchMedicationList.isEmpty()) {
                             mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, mContext)), mContext.getString(R.string.smallcaselunch),medicineID, CommonMethods.formatDateTime(finalLunchMedicationList.get(position).getDate(),MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD,MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY,MyRescribeConstants.DATE), 1);
@@ -511,6 +512,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             tabCountTextView.setText(medicationList.get(i).getQuantity());
             tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(medicationList.get(i).getMedicineTypeName(), mContext));
             tabNameTextView.setText(medicationList.get(i).getMedicineName());
+            selectViewTab.setChecked(medicationList.get(i).isTabSelected());
 
 
             final int finalI = i;
@@ -519,7 +521,6 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 public void onClick(View v) {
                     if (selectViewTab.isChecked()) {
                         medicationList.get(finalI).setTabSelected(true);
-                        selectViewTab.setChecked(medicationList.get(finalI).isTabSelected());
                         mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, mContext)), medicationList.get(finalI).getMedicinSlot(), medicationList.get(finalI).getMedicineId(), CommonMethods.formatDateTime(medicationList.get(finalI).getDate(),MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD,MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY,MyRescribeConstants.DATE), 0);
                         if (getSelectedCount(medicationList) == medicationList.size()) {
                             if(view.getTag().equals(DINNER)) {
@@ -572,9 +573,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        Common common = (Common) customResponse;
-        String successMessage = common.getStatusMessage();
-        CommonMethods.showToast(mContext,successMessage);
+        ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel)customResponse;
+        Common common =responseLogNotificationModel.getCommon();
+        CommonMethods.showToast(mContext,common.getStatusMessage());
 
     }
 

@@ -1,7 +1,5 @@
 package com.myrescribe.ui.activities;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,9 +9,8 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.myrescribe.R;
-import com.myrescribe.model.login.SignUpModel;
-import com.myrescribe.ui.fragments.LoginMainTabFragment;
 import com.myrescribe.ui.fragments.OTPConfirmationForSignUp;
+import com.myrescribe.ui.fragments.SocialLoginInputMobileForConfirmation;
 
 import java.io.Serializable;
 
@@ -38,7 +35,7 @@ public class AppLoginConfirmationActivity extends AppCompatActivity {
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setTitle(getString(R.string.doctor_details) + getString(R.string.details));
-        loadFragment(getIntent().getStringExtra(getString(R.string.type)));
+        loadFragment(getIntent().getStringExtra(getString(R.string.type)), getIntent().getSerializableExtra(getString(R.string.details)));
     }
 
     @Override
@@ -47,16 +44,22 @@ public class AppLoginConfirmationActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadFragment(String type) {
+    public void loadFragment(String type, Serializable serializableExtra) {
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+        Bundle b = new Bundle();
+        if (serializableExtra != null) {
+            b.putSerializable(getString(R.string.details), serializableExtra);
+        }
 
         if (type.equalsIgnoreCase(getString(R.string.enter_otp))) {
             OTPConfirmationForSignUp otpConfirmationForSignUp = new OTPConfirmationForSignUp();
-            Bundle b = new Bundle();
-            b.putSerializable(getString(R.string.details), getIntent().getSerializableExtra(getString(R.string.details)));
             otpConfirmationForSignUp.setArguments(b);
             fragmentTransaction.replace(R.id.blankContainer, otpConfirmationForSignUp);
+        } else if (type.equalsIgnoreCase(getString(R.string.login_social_media))) {
+            SocialLoginInputMobileForConfirmation socialLoginInputMobileForConfirmation = new SocialLoginInputMobileForConfirmation();
+            socialLoginInputMobileForConfirmation.setArguments(b);
+            fragmentTransaction.replace(R.id.blankContainer, socialLoginInputMobileForConfirmation);
         }
         fragmentTransaction.commit();
     }

@@ -146,8 +146,6 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
                     mResendOtpBtnLayout.setVisibility(View.INVISIBLE);
                     mCountDownTimer.onFinish();
                     mSubmitBtn.setVisibility(View.VISIBLE);
-                } else {
-                    mSubmitBtn.setVisibility(View.GONE);
                 }
             }
         });
@@ -224,13 +222,17 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
 
     @OnClick(R.id.submitBtn)
     public void onSubmitBtnClicked() {
+        if (mOtpEditText.getText().toString().trim().length() == 4) {
+            SignUpVerifyOTPRequestModel model = new SignUpVerifyOTPRequestModel();
+            model.setMobileNumber("" + mSignUpRequestModel.getMobileNumber());
+            model.setOTP(mOtpEditText.getText().toString().trim());
 
-        SignUpVerifyOTPRequestModel model = new SignUpVerifyOTPRequestModel();
-        model.setMobileNumber("" + mSignUpRequestModel.getMobileNumber());
-        model.setOTP(mOtpEditText.getText().toString().trim());
+            LoginHelper loginHelper = new LoginHelper(getActivity(), this);
+            loginHelper.doVerifyGeneratedSignUpOTP(model);
+        } else {
 
-        LoginHelper loginHelper = new LoginHelper(getActivity(), this);
-        loginHelper.doVerifyGeneratedSignUpOTP(model);
+        }
+
     }
 
     @OnClick(R.id.resendOtpBtn)

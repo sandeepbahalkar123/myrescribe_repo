@@ -40,6 +40,7 @@
     <style name="AppLoginMainStyle">
         <item name="android:textCursorDrawable">@drawable/cursor_color</item>
         <item name="android:cursorVisible">true</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:backgroundTint">@color/transparent</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:gravity">bottom|left</item>

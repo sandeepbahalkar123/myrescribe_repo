@@ -15,11 +15,11 @@
             android:id="@+id/headerMessageForMobileOTP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:typeface="sans"
             android:text="@string/message_for_mobile_otp"
             android:textColor="@color/Gray"
-            android:textSize="@dimen/sp14" />
+            android:textSize="@dimen/sp14"
+            android:textStyle="bold"
+            android:typeface="sans" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,10 +41,10 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/enter_otp"
-                    android:textStyle="bold"
-                    android:typeface="sans"
                     android:textColor="@color/recentblue"
-                    android:textSize="@dimen/sp14" />
+                    android:textSize="@dimen/sp14"
+                    android:textStyle="bold"
+                    android:typeface="sans" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -58,7 +58,7 @@
                         android:id="@+id/otpEditText"
                         style="@style/AppLoginMainStyle"
                         android:gravity="center"
-                        android:inputType="textPassword" />
+                        android:inputType="phone" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -76,10 +76,10 @@
                         android:gravity="center"
                         android:text="@string/resend_otp"
                         android:textAllCaps="false"
-                        android:textStyle="bold"
-                        android:typeface="sans"
                         android:textColor="@color/recentblue"
-                        android:textSize="@dimen/sp14" />
+                        android:textSize="@dimen/sp14"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
 
                     <LinearLayout
                         android:layout_width="@dimen/dp40"
@@ -94,10 +94,10 @@
                             android:layout_width="match_parent"
                             android:gravity="center"
                             android:text="30"
-                            android:textStyle="bold"
-                            android:typeface="sans"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/sp14" />
+                            android:textSize="@dimen/sp14"
+                            android:textStyle="bold"
+                            android:typeface="sans" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -111,10 +111,9 @@
                     android:gravity="center"
                     android:text="@string/done"
                     android:textAllCaps="true"
-                    android:textStyle="bold"
-                    android:typeface="sans"
                     android:textColor="@android:color/white"
-                    android:visibility="gone" />
+                    android:textStyle="bold"
+                    android:typeface="sans" />
 
                 <Button
                     android:id="@+id/resendOtpBtn"
@@ -125,9 +124,9 @@
                     android:gravity="center"
                     android:text="@string/resend_otp"
                     android:textAllCaps="true"
+                    android:textColor="@android:color/white"
                     android:textStyle="bold"
                     android:typeface="sans"
-                    android:textColor="@android:color/white"
                     android:visibility="gone" />
 
             </LinearLayout>

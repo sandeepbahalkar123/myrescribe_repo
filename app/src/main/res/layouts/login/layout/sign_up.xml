@@ -46,7 +46,6 @@
             style="@style/AppLoginMainStyle"
             android:hint="@string/enter_password"
             android:inputType="textWebPassword"
-            android:maxLength="8"
             android:textStyle="bold"
             android:typeface="sans" />
 
@@ -110,11 +109,13 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/signUpFacebookLogin"
                 android:layout_width="@dimen/dp40"
                 android:layout_height="match_parent"
                 android:src="@drawable/facebook" />
 
             <ImageView
+                android:id="@+id/signUpGMailLogin"
                 android:layout_width="@dimen/dp40"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/dp20"

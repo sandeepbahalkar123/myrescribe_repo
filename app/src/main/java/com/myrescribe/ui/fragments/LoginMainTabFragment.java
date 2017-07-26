@@ -154,9 +154,7 @@ public class LoginMainTabFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         int currentItem = mViewpager.getCurrentItem();
         Fragment item = mViewPagerAdapter.getItem(currentItem);
-
         item.onActivityResult(requestCode, resultCode, data);
-
     }
 
     //TODO: NOT WORKING AS PER REQUIRED, NEED TO CHECK IT FOR TAB_LAYOUT TAB FONT

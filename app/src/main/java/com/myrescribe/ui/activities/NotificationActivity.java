@@ -31,6 +31,7 @@ import com.myrescribe.model.notification.Common;
 import com.myrescribe.model.notification.NotificationData;
 import com.myrescribe.model.notification.Medication;
 import com.myrescribe.model.notification.NotificationModel;
+import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
@@ -112,6 +113,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
     // Added Header
     private void addHeader(final List<NotificationData> data) {
+
         String slotMedicine = "";
 
         mHeaderLayout = (LinearLayout) findViewById(R.id.headerLayout);
@@ -266,6 +268,11 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         List<NotificationData> notificationListForAdapter = new ArrayList<>();
         List<NotificationData> notificationListForHeader = new ArrayList<>();
         String todayDate = null;
+        if(mOldDataTag.equals(MyRescribeConstants.TASK_RESPOND_NOTIFICATION)){
+            ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel)customResponse;
+            Common common =responseLogNotificationModel.getCommon();
+            CommonMethods.showToast(mContext,common.getStatusMessage());
+        }
         if (mOldDataTag.equals(MyRescribeConstants.TASK_NOTIFICATION)) {
             NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
             List<NotificationData> notificationData = prescriptionDataReceived.getData();
@@ -310,7 +317,8 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                         notificationDataList.get(i).setDate(CommonMethods.getCalculatedDate(todayDate, j));
                     }
 
-                    addHeader(notificationListForHeader);
+                        addHeader(notificationListForHeader);
+
                     notificationDummyData.addAll(notificationDataList);
                     mAdapter = new NotificationListAdapter(mContext, notificationListForAdapter, getTimeArray());
                     mRecyclerView.setAdapter(mAdapter);

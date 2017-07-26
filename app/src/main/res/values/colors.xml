@@ -30,6 +30,14 @@
     <color name="dose_completed">#666666</color>
     <color name="background_grey">#EDEDED</color>
     <color name="accent">#FF4081</color>
-    <color name="Red">#ff0000</color>
+    <color name="vitals_dialog_grey">#cccccc</color>
+    <color name="range_label_color">#545353</color>
+    <color name="Red">#FF0000</color>
+    <color name="range_green">#178a00</color>
+    <color name="range_yellow">#ff9500</color>
+
+
+
+
 
 </resources>

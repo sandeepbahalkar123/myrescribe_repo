@@ -39,6 +39,7 @@ import com.myrescribe.model.notification.NotificationModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 
 import com.myrescribe.model.login.LoginModel;
+import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
 import com.myrescribe.model.visit_details.VisitDetailsModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.activities.SplashScreenActivity;
@@ -388,8 +389,8 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, notificationModel, mOldDataTag);
                         break;
                     case MyRescribeConstants.TASK_RESPOND_NOTIFICATION: //This is for get archived list
-                        Common common = new Gson().fromJson(data, Common.class);
-                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, common, mOldDataTag);
+                        ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
                         break;
                     /*
                     default:

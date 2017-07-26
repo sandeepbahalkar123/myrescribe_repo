@@ -3,7 +3,9 @@ package com.myrescribe.model.login;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.model.requestmodel.login.Common;
+import com.myrescribe.model.Common;
+
+import java.util.ArrayList;
 
 public class LoginModel implements CustomResponse {
 
@@ -16,6 +18,9 @@ public class LoginModel implements CustomResponse {
     @SerializedName("patientId")
     @Expose
     private String patientId;
+    @SerializedName("years")
+    @Expose
+    private ArrayList<String> yearList;
 
     public String getPatientId() {
         return patientId;
@@ -41,4 +46,11 @@ public class LoginModel implements CustomResponse {
         this.authToken = authToken;
     }
 
+    public ArrayList<String> getYearList() {
+        return yearList;
+    }
+
+    public void setYearList(ArrayList<String> yearList) {
+        this.yearList = yearList;
+    }
 }

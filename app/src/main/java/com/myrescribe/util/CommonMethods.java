@@ -1021,8 +1021,6 @@ public class CommonMethods {
     //TODO : this is done for temp
     public static ArrayList<String> getYearForDoctorList() {
         ArrayList<String> a = new ArrayList<>();
-        a.add("2015");
-        a.add("2016");
         a.add("2017");
         return a;
     }

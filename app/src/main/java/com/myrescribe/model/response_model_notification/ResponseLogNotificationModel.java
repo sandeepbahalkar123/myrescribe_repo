@@ -3,7 +3,8 @@ package com.myrescribe.model.response_model_notification;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
-import com.myrescribe.model.notification.Common;
+import com.myrescribe.model.Common;
+
 
 public class ResponseLogNotificationModel implements CustomResponse{
 

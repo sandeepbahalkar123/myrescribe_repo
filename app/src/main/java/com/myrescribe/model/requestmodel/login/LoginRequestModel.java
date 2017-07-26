@@ -4,11 +4,14 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 
-public class LoginRequestModel implements CustomResponse{
+public class LoginRequestModel implements CustomResponse {
 
     @SerializedName("mobileNumber")
     @Expose
     private String mobileNumber;
+    @SerializedName("password")
+    @Expose
+    private String password;
 
     public String getMobileNumber() {
         return mobileNumber;
@@ -17,13 +20,6 @@ public class LoginRequestModel implements CustomResponse{
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
-
-    @SerializedName("password")
-
-    @Expose
-    private String password;
-
-
 
     public String getPassword() {
         return password;

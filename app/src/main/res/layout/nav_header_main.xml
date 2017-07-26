@@ -25,7 +25,7 @@
         android:paddingTop="@dimen/dp10"
         android:text="Username"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/tagColor" />
+        android:textColor="@color/recentblue" />
 
 
 </LinearLayout>

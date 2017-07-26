@@ -11,17 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@color/tagColor"
         android:orientation="vertical">
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabGravity="fill"
+            app:tabBackground="@color/white"
+            app:tabGravity="center"
             app:tabMaxWidth="@dimen/dp0"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="@android:color/white"
+            app:tabSelectedTextColor="@color/recentblue"
             app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget" />
 
         <android.support.v4.view.ViewPager

@@ -7,7 +7,10 @@ import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.login.LoginModel;
+import com.myrescribe.model.login.SignUpModel;
 import com.myrescribe.model.requestmodel.login.LoginRequestModel;
+import com.myrescribe.model.requestmodel.login.SignUpRequestModel;
+import com.myrescribe.model.requestmodel.login.SignUpVerifyOTPRequestModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
 import com.myrescribe.util.CommonMethods;
@@ -21,7 +24,7 @@ import java.util.Map;
  * Created by ganeshshirole on 10/7/17.
  */
 
-public class LoginHelper implements ConnectionListener{
+public class LoginHelper implements ConnectionListener {
     String TAG = "MyRescribe/LoginHelper";
     Context mContext;
     HelperResponse mHelperResponseManager;
@@ -41,6 +44,11 @@ public class LoginHelper implements ConnectionListener{
                 if (mOldDataTag.equals(MyRescribeConstants.TASK_LOGIN)) {
                     LoginModel loginModel = (LoginModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, loginModel);
+                } else if (mOldDataTag.equals(MyRescribeConstants.TASK_SIGN_UP)) {
+                    SignUpModel signUpModel = (SignUpModel) customResponse;
+                    mHelperResponseManager.onSuccess(mOldDataTag, signUpModel);
+                } else if (mOldDataTag.equals(MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP)) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
@@ -66,14 +74,51 @@ public class LoginHelper implements ConnectionListener{
 
     }
 
-    public void doLogin(String userName, String password) {
+    public void doLogin(String mobileNo, String password) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         LoginRequestModel loginRequestModel = new LoginRequestModel();
-        loginRequestModel.setMobileNumber(userName);
+
+        loginRequestModel.setMobileNumber(mobileNo);
+
         loginRequestModel.setPassword(password);
         mConnectionFactory.setPostParams(loginRequestModel);
         mConnectionFactory.setUrl(Config.LOGIN_URL);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_LOGIN);
+    }
+
+    public void doVerifyGeneratedSignUpOTP(SignUpVerifyOTPRequestModel requestModel) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP, Request.Method.POST, false);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setPostParams(requestModel);
+        mConnectionFactory.setUrl(Config.VERIFY_SIGN_UP_OTP);
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP);
+    }
+
+    public void doSignUp(SignUpRequestModel signUpRequestModel) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_SIGN_UP, Request.Method.POST, false);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setPostParams(signUpRequestModel);
+        mConnectionFactory.setUrl(Config.SIGN_UP_URL);
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_SIGN_UP);
+
+       /* // TODO : HARDCODED JSON STRING PARSING FROM assets folder, will get remove
+        try {
+            InputStream is = mContext.getAssets().open("sign_up.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+            Log.e(TAG, "doSignUp" + json);
+
+            SignUpModel model = new Gson().fromJson(json, SignUpModel.class);
+
+            CommonMethods.Log("doSignUp", "" + model.toString());
+            onResponse(ConnectionListener.RESPONSE_OK, model, MyRescribeConstants.TASK_SIGN_UP);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }*/
     }
 }

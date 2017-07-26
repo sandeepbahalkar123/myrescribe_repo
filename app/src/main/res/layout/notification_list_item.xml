@@ -20,7 +20,7 @@
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/notification_header_text"
+            android:textColor="@color/recentblue"
             android:textSize="20sp"
             app:customFont="@string/roboto_medium" />
 

@@ -10,6 +10,8 @@ public class Config {
     public static final String API = "/api/";
     public static final String TOKEN_TYPE = "Bearer";
     public static final String LOGIN_URL = "authApi/authenticate/login";
+    public static final String VERIFY_SIGN_UP_OTP = "authApi/authenticate/verifyOTP";
+    public static final String SIGN_UP_URL = "authApi/authenticate/signUp";
     private static final String TAG = "MyRescribe/Config";
     public static boolean DEV_BUILD = true;
     //Declared all URL used in app here

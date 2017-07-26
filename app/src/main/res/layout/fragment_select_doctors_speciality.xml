@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp56"
-        android:background="@color/tagColor">
+        android:background="@color/recentblue">
 
         <Button
             android:id="@+id/closeButton"
@@ -47,7 +47,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@color/transparent"
-            android:text="@string/done"
+            android:text="@string/reset"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/sp19" />

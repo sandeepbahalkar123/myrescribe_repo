@@ -87,14 +87,16 @@ public class MyRescribeConstants {
     public static final String TASK_NOTIFICATION = MyRescribeConstants.BLANK + 8;
     public static final String TASK_RESPOND_NOTIFICATION = MyRescribeConstants.BLANK + 9;
 
-    public static final String TASK_DOCTOR_LIST_FILTERING = MyRescribeConstants.BLANK + 8;
+    public static final String TASK_DOCTOR_LIST_FILTERING = MyRescribeConstants.BLANK + 10;
+    public static final String TASK_SIGN_UP = MyRescribeConstants.BLANK + 11;
+    public static final String TASK_VERIFY_SIGN_UP_OTP = MyRescribeConstants.BLANK + 12;
 
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
     public static final String INVESTIGATION_TEMP_DATA = "investigation_temp_data";
 
-    public static final String TAKEN_DATE ="takenDate"  ;
+    public static final String TAKEN_DATE = "takenDate";
 
     public static final String TITLE = "title";
     public static final String DOCTORS_LIST = "doctors_list";

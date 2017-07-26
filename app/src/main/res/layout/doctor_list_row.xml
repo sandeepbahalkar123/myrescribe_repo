@@ -35,8 +35,8 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/dp30"
             android:layout_marginRight="@dimen/dp30"
-            android:clickable="false"
-            android:button="@drawable/checkboxselecter" />
+            android:button="@drawable/checkboxselecter"
+            android:clickable="false" />
 
     </RelativeLayout>
 

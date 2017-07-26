@@ -1,10 +1,12 @@
 package com.myrescribe.model.filter;
 
+import java.io.Serializable;
+
 /**
  * Created by ganeshshirole on 22/7/17.
  */
 
-public class CaseDetails {
+public class CaseDetails implements Serializable{
     private int id;
     private String caseDetails;
     private int imageId;

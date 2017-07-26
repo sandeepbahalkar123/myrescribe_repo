@@ -16,7 +16,7 @@
             android:layout_marginLeft="@dimen/dp10"
             android:layout_marginRight="@dimen/dp10"
             android:layout_marginTop="@dimen/dp2"
-            android:background="@color/tagColor"
+            android:background="@color/recentblue"
             android:orientation="horizontal">
 
             <ImageView

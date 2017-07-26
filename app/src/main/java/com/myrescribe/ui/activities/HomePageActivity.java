@@ -245,6 +245,7 @@ public class HomePageActivity extends AppCompatActivity
         String baseUrl = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext);
         MyRescribePreferencesManager.clearSharedPref(mContext);
         MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, baseUrl, mContext);
+        MyRescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
         Intent intent = new Intent(mContext, LoginMainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

@@ -54,7 +54,8 @@
         <activity
             android:name=".ui.activities.LoginActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize|adjustPan"></activity>
         <activity
             android:name=".ui.activities.HomePageActivity"
             android:label="@string/app_name"
@@ -148,12 +149,20 @@
             android:name=".ui.activities.DoctorFilteredListActivity"
             android:label="@string/doctor_details" />
         <activity
+            android:name=".ui.activities.AppLoginConfirmationActivity"
+            android:label="@string/doctor_details" />
+        <activity
             android:name=".ui.activities.MapsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <receiver android:name=".broadcast_receivers.OtpReader">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

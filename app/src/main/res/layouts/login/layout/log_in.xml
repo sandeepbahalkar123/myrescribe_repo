@@ -2,55 +2,63 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/dp30"
-    android:background="@color/tagColor"
+    android:background="@color/white"
     android:fillViewport="true"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="@dimen/dp30"
-
         android:paddingRight="@dimen/dp30">
-        <!--  Mobile Label -->
-        <android.support.design.widget.TextInputLayout style="@style/AppLoginMainStyle">
 
-            <EditText
-                android:id="@+id/editTextMobileNo"
-                style="@style/AppLoginMainStyle"
-                android:hint="@string/enter_user_name"
-                android:text="7738477306" />
-        </android.support.design.widget.TextInputLayout>
-
-        <!--  Password Label -->
-        <android.support.design.widget.TextInputLayout style="@style/AppLoginMainStyle">
-
-            <EditText
-                android:id="@+id/editTextPassword"
-                style="@style/AppLoginMainStyle"
-                android:hint="@string/enter_password"
-                android:inputType="textPassword"
-                android:text="scorg@123" />
-        </android.support.design.widget.TextInputLayout>
-
-        <CheckBox
+        <EditText
+            android:id="@+id/editTextMobileNo"
             style="@style/AppLoginMainStyle"
-            android:layout_marginBottom="@dimen/dp5"
-            android:text="@string/terms_conditions" />
+            android:hint="@string/enter_mobile_no"
+            android:inputType="text"
+            android:maxLength="10" />
+        <!--  Email Label -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/recentblue" />
+
+        <EditText
+            android:id="@+id/editTextPassword"
+            style="@style/AppLoginMainStyle"
+            android:hint="@string/enter_password"
+            android:inputType="textPassword" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/recentblue" />
 
         <Button
             android:id="@+id/btn_login"
-            style="@style/AppLoginMainStyle"
-            android:layout_height="@dimen/dp30"
-            android:layout_marginTop="@dimen/dp8"
-            android:background="@drawable/button_curve_background"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp40"
+            android:layout_marginTop="@dimen/dp30"
+            android:background="@color/recentblue"
             android:gravity="center"
             android:text="@string/log_in"
-            android:textAllCaps="false"
-            android:textColor="@android:color/black" />
+            android:textAllCaps="true"
+            android:textColor="@android:color/white" />
 
+        <TextView
+            style="@style/AppLoginMainStyle"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp30"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@string/forgot_password"
+            android:textAllCaps="false"
+            android:textColor="@color/Gray"
+            android:textSize="@dimen/sp10" />
+
+        <!--*****************-->
         <Button
             android:id="@+id/buttonLoginFacebook"
             style="@style/AppLoginMainStyle"
@@ -60,7 +68,8 @@
             android:gravity="center"
             android:text="@string/loginfb"
             android:textAllCaps="false"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/buttonLoginGPlus"
@@ -72,7 +81,9 @@
             android:gravity="center"
             android:text="@string/logingmail"
             android:textAllCaps="false"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:visibility="gone" />
+        <!--*****************-->
     </LinearLayout>
 </ScrollView>
 

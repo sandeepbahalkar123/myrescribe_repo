@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.myrescribe.R;
+import com.myrescribe.preference.MyRescribePreferencesManager;
+import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +83,7 @@ public class LoginMainTabFragment extends Fragment {
         setUpViewPager(mViewpager);
         mTabLayout.setupWithViewPager(mViewpager);
 
-        mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getActivity(), R.color.white));
+        mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getActivity(), R.color.recentblue));
 
         return inflate;
     }
@@ -92,7 +94,11 @@ public class LoginMainTabFragment extends Fragment {
         mViewPagerAdapter.addFragment(new SignUp(), getString(R.string.sign_up));
         mViewPagerAdapter.addFragment(new LogInApp(), getString(R.string.log_in));
         viewPager.setAdapter(mViewPagerAdapter);
-        viewPager.setCurrentItem(1);
+        if (!MyRescribeConstants.BLANK.equalsIgnoreCase(MyRescribePreferencesManager.getString(getString(R.string.logout), mContext))) {
+            viewPager.setCurrentItem(1);
+        } else {
+            viewPager.setCurrentItem(0);
+        }
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

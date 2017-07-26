@@ -24,13 +24,18 @@
     <string name="visit_details">Single Visit Details</string>
     <string name="doctor_details">Doctor Visits</string>
     <string name="before">Before</string>
-    <string name="enter_mobile_no">Enter Mobile No</string>
-    <string name="enter_password">Enter Password</string>
+    <string name="enter_mobile_no">Mobile No.</string>
+    <string name="enter_password">Password</string>
     <string name="loginfb">Login with fb</string>
-    <string name="log_in">Log In</string>
+    <string name="log_in">Login</string>
     <string name="logingmail">Login with G+</string>
-    <string name="enter_full_name">Enter Full Name</string>
-    <string name="enter_email_id">Enter Email ID Name</string>
+
+    <string name="btn_logout_from_google">Logout from Google</string>
+    <string name="btn_revoke_access">Revoke Access</string>
+    <string name="loading">Loading...</string>
+    <string name="enter_full_name">Name</string>
+    <string name="enter_email_id">Email ID</string>
+
     <string name="enter_user_name">Enter User Name</string>
     <string name="cancel">Cancel</string>
     <string name="error_in_ip">Please enter valid IP address</string>
@@ -55,14 +60,16 @@
     <string name="instructions">Instruction:</string>
     <string name="for_example_server_path">e.g. 192.168.0.180:80</string>
     <string name="search">Search</string>
-    <string name="resend_otp">Resend OTP</string>
+    <string name="resend_otp">Resend in</string>
     <string name="ok">OK</string>
     <string name="sign_up">Sign Up</string>
+    <string name="sign_up_confirmation">Sign Up Confirmation</string>
     <string name="logout">Logout</string>
     <string name="customnotificationticker">Medicine Dose Notification</string>
     <string name="notification">Notification</string>
     <string name="facebook_app_id">297092640737799</string>
     <string name="fb_login_protocol_scheme">fb1879555372255897</string>
+
     <string name="roboto_bold">roboto_bold.ttf</string>
     <string name="roboto_medium">roboto_medium.ttf</string>
     <string name="title_activity_preferences">Preferences</string>
@@ -71,8 +78,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="generate_otp">Generate OTP</string>
-    <string name="enter_received_otp">Enter the OTP in case we fail to detect the SMS automatically</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="enter">Enter&#160;</string>
     <string name="waiting_for_sms">Auto verification of OTP in progress %1$d secs</string>
     <string name="dinner_medication">Dinner Medication</string>
     <string name="snacks_medication">Snacks Medication</string>
@@ -99,6 +106,7 @@
     <string name="investigation_title">We request you to upload &amp; share the results of the following investigation with Dr. shah:</string>
     <string name="dummy">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
     <string name="gmail">Share With Gmail</string>
+    <string name="type">type</string>
     <string name="already_upload">Already Uploaded</string>
     <string name="new_document">New Document</string>
     <string name="title_activity_uploaded_docs">Uploaded Documents</string>
@@ -133,9 +141,18 @@
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
     <string name="details">&#160;Details</string>
+
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="message_for_mobile_otp">Please input the OTP received on your Mobile No.&#160; %1$s</string>
+    <string name="message_forgot_password">Please provide your email id to access the reset password link.</string>
+    <string name="submit">Submit</string>
+    <string name="err_email_invalid">Enter valid email.</string>
+    <string name="err_maximum_otp_retries">You have exceeded maximum retry of OTP generation, please try after sometime.</string>
+
     <string name="doctors">Doctor\'s</string>
     <string name="doctors_speciality">Doctor\'s Speciality</string>
     <string name="apply">Apply</string>
     <string name="case_details_message"><![CDATA[If you have selected “Vitals”, you will not be able to select any other parameters & vice versa.]]></string>
+
 
 </resources>

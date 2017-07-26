@@ -17,7 +17,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.NotificationListAdapter;
@@ -27,7 +26,6 @@ import com.myrescribe.helpers.notification.RespondToNotificationHelper;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.notification.Common;
 import com.myrescribe.model.notification.NotificationData;
 import com.myrescribe.model.notification.Medication;
 import com.myrescribe.model.notification.NotificationModel;

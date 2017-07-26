@@ -6,19 +6,13 @@ import com.android.volley.Request;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.notification.Common;
-import com.myrescribe.model.notification.NotificationModel;
-import com.myrescribe.model.requestmodel.login.LoginRequestModel;
+import com.myrescribe.model.Common;
 import com.myrescribe.model.response_model_notification.ResponseNotificationModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
-import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by jeetal on 20/7/17.
@@ -29,6 +23,7 @@ public class RespondToNotificationHelper implements ConnectionListener {
     String TAG = "MyRescribe/RespondToNotificationHelper";
     Context mContext;
     HelperResponse mHelperResponseManager;
+
     public RespondToNotificationHelper(Context context, HelperResponse respondNotificationActivity) {
         this.mContext = context;
         this.mHelperResponseManager = respondNotificationActivity;
@@ -44,7 +39,6 @@ public class RespondToNotificationHelper implements ConnectionListener {
                 if (mOldDataTag == MyRescribeConstants.TASK_RESPOND_NOTIFICATION) {
 
                     Common common = (Common) customResponse;
-                    CommonMethods.Log(TAG,common.getStatusMessage());
                     mHelperResponseManager.onSuccess(mOldDataTag, common);
                 }
                 break;
@@ -71,7 +65,7 @@ public class RespondToNotificationHelper implements ConnectionListener {
 
     }
 
-    public void doRespondToNotification(Integer patientID,String slot,Integer medicineId,String takenDate,Integer isBundle) {
+    public void doRespondToNotification(Integer patientID, String slot, Integer medicineId, String takenDate, Integer isBundle) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_RESPOND_NOTIFICATION, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
         ResponseNotificationModel responseNotificationModel = new ResponseNotificationModel();

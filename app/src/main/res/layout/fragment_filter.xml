@@ -79,8 +79,8 @@
                 android:layout_toLeftOf="@+id/arrowIcon1"
                 android:layout_toRightOf="@+id/drIcon"
                 android:layout_toStartOf="@+id/arrowIcon1"
-                android:paddingStart="@dimen/dp8"
                 android:paddingEnd="@dimen/dp8"
+                android:paddingStart="@dimen/dp8"
                 android:text="@string/select_doctors"
                 android:textColor="@color/tagColor"
                 android:textSize="@dimen/sp19"
@@ -130,8 +130,8 @@
                 android:layout_toLeftOf="@+id/arrowIcon2"
                 android:layout_toRightOf="@+id/drSpecialityIcon"
                 android:layout_toStartOf="@+id/arrowIcon2"
-                android:paddingStart="@dimen/dp8"
                 android:paddingEnd="@dimen/dp8"
+                android:paddingStart="@dimen/dp8"
                 android:text="@string/select_doctors_speciality"
                 android:textColor="@color/tagColor"
                 android:textSize="@dimen/sp19"
@@ -181,8 +181,8 @@
                 android:layout_toLeftOf="@+id/arrowIcon3"
                 android:layout_toRightOf="@+id/calIcon"
                 android:layout_toStartOf="@+id/arrowIcon3"
-                android:paddingStart="@dimen/dp8"
                 android:paddingEnd="@dimen/dp8"
+                android:paddingStart="@dimen/dp8"
                 android:text="@string/select_month_year"
                 android:textColor="@color/tagColor"
                 android:textSize="@dimen/sp19"
@@ -220,6 +220,6 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/case_details_row"/>
+        tools:listitem="@layout/case_details_row" />
 
 </LinearLayout>

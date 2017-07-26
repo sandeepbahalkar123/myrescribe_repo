@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp8"
         android:layout_marginTop="@dimen/dp4"
-        android:background="@color/tagColor"
+        android:background="@color/recentblue"
         android:orientation="horizontal">
 
         <com.myrescribe.ui.customesViews.CircularImageView

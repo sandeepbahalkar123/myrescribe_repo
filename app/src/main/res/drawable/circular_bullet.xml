@@ -2,12 +2,12 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
 
-    <solid android:color="@color/tagColor" />
+    <solid android:color="@color/recentblue" />
 
     <size
         android:width="120dp"
         android:height="120dp" />
     <stroke
         android:width="1dp"
-        android:color="@color/tagColor" />
+        android:color="@color/recentblue" />
 </shape>

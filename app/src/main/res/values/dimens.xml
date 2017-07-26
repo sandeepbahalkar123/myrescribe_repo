@@ -21,12 +21,13 @@
     <dimen name="dp30">30dp</dimen>
     <dimen name="dp35">35dp</dimen>
     <dimen name="dp56">56dp</dimen>
-
+    <dimen name="sp10">10sp</dimen>
     <dimen name="dp40">40dp</dimen>
     <dimen name="dp50">50dp</dimen>
     <dimen name="dp72">72dp</dimen>
     <dimen name="sp11">11sp</dimen>
     <dimen name="sp12">12sp</dimen>
+    <dimen name="sp8">8sp</dimen>
     <dimen name="sp18">18sp</dimen>
     <dimen name="sp19">19sp</dimen>
     <dimen name="sp22">22sp</dimen>

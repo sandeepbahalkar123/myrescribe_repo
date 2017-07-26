@@ -2,75 +2,114 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/dp30"
-    android:background="@color/tagColor"
+    android:background="@color/white"
     android:fillViewport="true"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="@dimen/dp30"
         android:paddingRight="@dimen/dp30">
-
         <!--  FullName Label -->
-        <android.support.design.widget.TextInputLayout style="@style/AppLoginMainStyle">
 
-            <EditText
-                android:id="@+id/editTextFullName"
-                style="@style/AppLoginMainStyle"
-                android:hint="@string/enter_full_name"
-                android:inputType="text" />
-        </android.support.design.widget.TextInputLayout>
-
+        <EditText
+            android:id="@+id/editTextFullName"
+            style="@style/AppLoginMainStyle"
+            android:hint="@string/enter_full_name"
+            android:inputType="text" />
         <!--  Email Label -->
-        <android.support.design.widget.TextInputLayout style="@style/AppLoginMainStyle">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/recentblue" />
 
-            <EditText
-                android:id="@+id/editTextEmailId"
-                style="@style/AppLoginMainStyle"
-                android:hint="@string/enter_email_id"
-                android:inputType="textEmailAddress" />
-        </android.support.design.widget.TextInputLayout>
+        <EditText
+            android:id="@+id/editTextEmailId"
+            style="@style/AppLoginMainStyle"
+            android:hint="@string/enter_email_id"
+            android:inputType="textEmailAddress" />
 
-        <!--  Password Label -->
-        <android.support.design.widget.TextInputLayout style="@style/AppLoginMainStyle">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/recentblue" />
 
-            <EditText
-                android:id="@+id/editTextPassword"
-                style="@style/AppLoginMainStyle"
-                android:hint="@string/enter_password"
-                android:inputType="textPassword" />
-        </android.support.design.widget.TextInputLayout>
+        <EditText
+            android:id="@+id/editTextPassword"
+            style="@style/AppLoginMainStyle"
+            android:hint="@string/enter_password"
+            android:inputType="textPassword" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/recentblue" />
 
         <!--  Mobile Label -->
-        <android.support.design.widget.TextInputLayout style="@style/AppLoginMainStyle">
 
-            <EditText
-                android:id="@+id/editTextMobileNo"
-                style="@style/AppLoginMainStyle"
-                android:hint="@string/enter_mobile_no"
-                android:inputType="number" />
-        </android.support.design.widget.TextInputLayout>
-
-        <CheckBox
+        <EditText
+            android:id="@+id/editTextMobileNo"
             style="@style/AppLoginMainStyle"
-            android:layout_marginBottom="@dimen/dp5"
-            android:text="@string/terms_conditions" />
+            android:hint="@string/enter_mobile_no"
+            android:inputType="number"
+            android:maxLength="10" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/recentblue" />
+
+        <TextView
+            style="@style/AppLoginMainStyle"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp30"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@string/terms_conditions"
+            android:textAllCaps="false"
+            android:textColor="@color/Gray"
+            android:textSize="@dimen/sp10" />
 
         <Button
-            style="@style/AppLoginMainStyle"
-            android:layout_height="@dimen/dp30"
-            android:layout_marginBottom="@dimen/dp8"
-            android:layout_marginTop="@dimen/dp8"
-            android:background="@drawable/button_curve_background"
+            android:id="@+id/btn_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp40"
+            android:layout_marginTop="@dimen/dp4"
+            android:background="@color/recentblue"
             android:gravity="center"
             android:text="@string/sign_up"
-            android:textAllCaps="false"
-            android:textColor="@android:color/black" />
+            android:textAllCaps="true"
+            android:textColor="@android:color/white" />
 
+        <TextView
+            style="@style/AppLoginMainStyle"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:gravity="center"
+            android:text="OR"
+            android:textColor="@color/recentblue"
+            android:textSize="@dimen/sp10"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp40"
+            android:layout_marginTop="@dimen/dp10"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="@dimen/dp40"
+                android:layout_height="match_parent"
+                android:src="@drawable/facebook" />
+
+            <ImageView
+                android:layout_width="@dimen/dp40"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp20"
+                android:src="@drawable/gmail" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
 

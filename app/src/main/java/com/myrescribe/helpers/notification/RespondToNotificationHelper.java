@@ -6,7 +6,7 @@ import com.android.volley.Request;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.Common;
+import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
 import com.myrescribe.model.response_model_notification.ResponseNotificationModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
@@ -38,8 +38,9 @@ public class RespondToNotificationHelper implements ConnectionListener {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag == MyRescribeConstants.TASK_RESPOND_NOTIFICATION) {
 
-                    Common common = (Common) customResponse;
-                    mHelperResponseManager.onSuccess(mOldDataTag, common);
+                    ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+                    mHelperResponseManager.onSuccess(mOldDataTag, responseLogNotificationModel);
+
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
@@ -65,8 +66,9 @@ public class RespondToNotificationHelper implements ConnectionListener {
 
     }
 
-    public void doRespondToNotification(Integer patientID, String slot, Integer medicineId, String takenDate, Integer isBundle) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_RESPOND_NOTIFICATION, Request.Method.POST, true);
+
+    public void doRespondToNotification(Integer patientID,String slot,Integer medicineId,String takenDate,Integer isBundle) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, MyRescribeConstants.TASK_RESPOND_NOTIFICATION, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
         ResponseNotificationModel responseNotificationModel = new ResponseNotificationModel();
         responseNotificationModel.setPatientId(patientID);

@@ -11,6 +11,7 @@ import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
@@ -19,15 +20,18 @@ import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -702,24 +706,23 @@ public class CommonMethods {
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.vitals_dialog);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.vitals_dialog_layout);
+        dialog.setCancelable(true);
 
         ((TextView) dialog.findViewById(R.id.vitalNameDialog)).setText(unit);
         ((TextView) dialog.findViewById(R.id.noOfVitalsDialog)).setText(unitValue);
-        ((TextView) dialog.findViewById(R.id.normalRangeDialog)).setText(normalRange);
+        ((TextView) dialog.findViewById(R.id.normalRange)).setText(normalRange);
         ((TextView) dialog.findViewById(R.id.noOfVitalsDialog)).setTextColor(color);
         ((ImageView) dialog.findViewById(R.id.vitalImageDialog)).setImageResource(drawable);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
-
-        dialog.findViewById(R.id.imageView_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-
-            }
-        });
+        lp.gravity = Gravity.CENTER;
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+        dialog.setCanceledOnTouchOutside(true);
 
         dialog.show();
 
@@ -1018,8 +1021,6 @@ public class CommonMethods {
     //TODO : this is done for temp
     public static ArrayList<String> getYearForDoctorList() {
         ArrayList<String> a = new ArrayList<>();
-        a.add("2015");
-        a.add("2016");
         a.add("2017");
         return a;
     }

@@ -230,14 +230,14 @@ public class RackMonthPicker {
                 next.setEnabled(false);
                 next.setAlpha(0.4f);
 
-                for (int month = 0; month < monthRadioButtonList.size(); month++) {
-                    if (month > (Calendar.getInstance().get(Calendar.MONTH))) {
+                for (int month = (Calendar.getInstance().get(Calendar.MONTH)) + 1; month < monthRadioButtonList.size(); month++) {
+                    monthRadioButtonList.get(month).setButtonDrawable(MonthOfYear.getIcons(month));
                         monthRadioButtonList.get(month).setEnabled(false);
                         if (monthRadioButtonList.get(month).isChecked()) {
                             monthRadioButtonList.get(month).setChecked(false);
+                            monthRadioButtonList.get((Calendar.getInstance().get(Calendar.MONTH))).setButtonDrawable(MonthOfYear.getIcons((Calendar.getInstance().get(Calendar.MONTH))));
                             monthRadioButtonList.get((Calendar.getInstance().get(Calendar.MONTH))).setChecked(true);
                         }
-                    }
                 }
             } else if (year == (Calendar.getInstance().get(Calendar.YEAR)) - 1) {
                 next.setEnabled(true);

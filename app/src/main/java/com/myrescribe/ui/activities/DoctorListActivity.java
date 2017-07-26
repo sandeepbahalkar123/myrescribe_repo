@@ -77,7 +77,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
     // Filter End
 
-    private ArrayList<String> mYearList;
+    private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<TimePeriod> mTimePeriodList = new ArrayList<>();
     private TimePeriod mCurrentSelectedTimePeriodTab;
     private DoctorHelper mDoctorHelper;
@@ -150,21 +150,36 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         //-------
         //----
 
-        TimePeriod timePeriod1 = new TimePeriod();
-        timePeriod1.setMonthName("Jan");
-        timePeriod1.setYear("2015");
 
-        TimePeriod timePeriod2 = new TimePeriod();
+        /*TimePeriod timePeriod1 = new TimePeriod();
+        timePeriod1.setMonthName("Jan");
+        timePeriod1.setYear("2015");*/
+
+        /*TimePeriod timePeriod2 = new TimePeriod();
         timePeriod2.setMonthName("Jun");
-        timePeriod2.setYear("2016");
+        timePeriod2.setYear("2016");*/
 
         TimePeriod timePeriod3 = new TimePeriod();
         timePeriod3.setMonthName("Jun");
         timePeriod3.setYear("2017");
 
-        mTimePeriodList.add(timePeriod1);
-        mTimePeriodList.add(timePeriod2);
+//        mTimePeriodList.add(timePeriod1);
+//        mTimePeriodList.add(timePeriod2);
         mTimePeriodList.add(timePeriod3);
+//        mTimePeriodList.add(timePeriod3);
+//        mTimePeriodList.add(timePeriod3);
+//        mTimePeriodList.add(timePeriod3);
+//        mTimePeriodList.add(timePeriod3);
+//        mTimePeriodList.add(timePeriod3);
+
+
+        if (mTimePeriodList.size() < 6){
+            mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+            mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        }else {
+            mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        }
 
         /*Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());

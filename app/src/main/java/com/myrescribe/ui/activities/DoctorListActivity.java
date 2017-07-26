@@ -149,22 +149,22 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy", Locale.US).format(new Date()));
         //-------
         //----
+
+
         /*TimePeriod timePeriod1 = new TimePeriod();
         timePeriod1.setMonthName("Jan");
         timePeriod1.setYear("2015");*/
 
-        TimePeriod timePeriod2 = new TimePeriod();
+        /*TimePeriod timePeriod2 = new TimePeriod();
         timePeriod2.setMonthName("Jun");
-        timePeriod2.setYear("2016");
-
-//        mYearList.add("2017");
+        timePeriod2.setYear("2016");*/
 
         TimePeriod timePeriod3 = new TimePeriod();
         timePeriod3.setMonthName("Jun");
         timePeriod3.setYear("2017");
 
 //        mTimePeriodList.add(timePeriod1);
-        mTimePeriodList.add(timePeriod2);
+//        mTimePeriodList.add(timePeriod2);
         mTimePeriodList.add(timePeriod3);
 //        mTimePeriodList.add(timePeriod3);
 //        mTimePeriodList.add(timePeriod3);

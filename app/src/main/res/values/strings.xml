@@ -119,12 +119,12 @@
 
     <string-array name="colors_first">
         <item>#ff0000</item>
-        <item>#00ff00</item>
-        <item>#ffff33</item>
+        <item>#178a00</item>
+        <item>#ff9500</item>
     </string-array>
     <string-array name="colors_second">
         <item>#ff0000</item>
-        <item>#00ff00</item>
+        <item>#178a00</item>
     </string-array>
 
     <string name="name">NAME</string>

@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.myrescribe.R;
+import com.myrescribe.ui.fragments.ForgotPassword;
 import com.myrescribe.ui.fragments.OTPConfirmationForSignUp;
 import com.myrescribe.ui.fragments.SocialLoginInputMobileForConfirmation;
 
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 19/5/17.
  */
 
-public class AppLoginConfirmationActivity extends AppCompatActivity {
+public class AppGlobalContainerActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getName();
     @BindView(R.id.blankContainer)
     FrameLayout mBlankContainer;
@@ -64,6 +65,10 @@ public class AppLoginConfirmationActivity extends AppCompatActivity {
             SocialLoginInputMobileForConfirmation socialLoginInputMobileForConfirmation = new SocialLoginInputMobileForConfirmation();
             socialLoginInputMobileForConfirmation.setArguments(b);
             fragmentTransaction.replace(R.id.blankContainer, socialLoginInputMobileForConfirmation);
+        } else if (type.equalsIgnoreCase(getString(R.string.forgot_password))) {
+            ForgotPassword forgotPassword = new ForgotPassword();
+            forgotPassword.setArguments(b);
+            fragmentTransaction.replace(R.id.blankContainer, forgotPassword);
         }
         fragmentTransaction.commit();
     }

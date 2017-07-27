@@ -148,39 +148,17 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
         return inflate;
     }
 
-
-    private Handler messagehandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-
-                case RESPONSE_SUCCESS_MESSAGE:
-                    mOtpEditText.setText(msg.getData().getString("message"));
-                    mResendOtpBtn.setVisibility(View.GONE);
-                    mSubmitBtn.setVisibility(View.VISIBLE);
-                    //  verifyOtp(getContext(), msg.getData().getString("message"));
-                    break;
-
-                default:
-                    break;
-            }
-        }
-    };
-
     @Override
     public void otpReceived(String smsText) {
         //Do whatever you want to do with the text
-        Log.e("otpReceived", "otpReceived:" + smsText);
-        Message msg = Message.obtain();
+        CommonMethods.Log("otpReceived", "otpReceived:" + smsText);
         int value = Integer.parseInt(smsText.replaceAll("[^0-9]", ""));
-        Log.e("otpReceived", "otpReceived reformatted:" + value);
-
-        msg.what = RESPONSE_SUCCESS_MESSAGE;
-        Bundle b = new Bundle();
-        b.putString("message", "" + value);
-        msg.setData(b);
-        messagehandler.sendMessage(msg);
-
+        CommonMethods.Log("otpReceived", "otpReceived reformatted:" + value);
+        mCountDownTimer.onFinish();
+        mOtpEditText.setText(String.valueOf(value).substring(0, 4));
+        mResendOtpBtn.setVisibility(View.GONE);
+        mSubmitBtn.setVisibility(View.VISIBLE);
+        onSubmitBtnClicked();
     }
 
     public class MyCountDownTimer extends CountDownTimer {
@@ -225,9 +203,8 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
             LoginHelper loginHelper = new LoginHelper(getActivity(), this);
             loginHelper.doVerifyGeneratedSignUpOTP(model);
         } else {
-
+            CommonMethods.showToast(getActivity(), getString(R.string.err_otp_invalid));
         }
-
     }
 
     @OnClick(R.id.resendOtpBtn)
@@ -262,7 +239,10 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
             MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, getActivity());
 
             Intent intent = new Intent(getActivity(), HomePageActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
+            getActivity().finish();
             /*VerifyOTPSignUpResponseModel receivedModel = (VerifyOTPSignUpResponseModel) customResponse;
             if (receivedModel.getCommon().isSuccess()) {
 

@@ -2,14 +2,14 @@ package com.myrescribe.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -39,12 +39,11 @@ import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.login.SignUpModel;
 import com.myrescribe.model.requestmodel.login.SignUpRequestModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
-import com.myrescribe.ui.activities.AppLoginConfirmationActivity;
+import com.myrescribe.ui.activities.AppGlobalContainerActivity;
 import com.myrescribe.ui.activities.PhoneNoActivity;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
@@ -74,6 +73,8 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
     EditText mEmailId;
     @BindView(R.id.editTextPassword)
     EditText mPassword;
+    @BindView(R.id.passwordMinCharHintTextView)
+    TextView mPasswordMinCharHintTextView;
     @BindView(R.id.editTextMobileNo)
     EditText mMobileNo;
     @BindView(R.id.signUpFacebookLogin)
@@ -117,6 +118,28 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
         View inflate = inflater.inflate(R.layout.sign_up, container, false);
         ButterKnife.bind(this, inflate);
         this.mContext = getActivity();
+
+        mPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().trim().length() > 0) {
+                    mPasswordMinCharHintTextView.setVisibility(View.GONE);
+                } else {
+                    mPasswordMinCharHintTextView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         googleInitialize();
         facebookInitialize();
         return inflate;
@@ -191,7 +214,7 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
             SignUpModel loginModel = (SignUpModel) customResponse;
 
             if (loginModel.getCommon().isSuccess()) {
-                Intent intentObj = new Intent(mContext, AppLoginConfirmationActivity.class);
+                Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
                 intentObj.putExtra(getString(R.string.type), getString(R.string.enter_otp));
                 intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
                 intentObj.putExtra(getString(R.string.details), mSignUpRequestModel);
@@ -281,7 +304,7 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
                         signUpRequest.setEmailId(json.optString("email"));
                         signUpRequest.setPassword(null);
                         //-----------
-                        Intent intentObj = new Intent(mContext, AppLoginConfirmationActivity.class);
+                        Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
                         intentObj.putExtra(getString(R.string.type), getString(R.string.login_social_media));
                         intentObj.putExtra(getString(R.string.details), signUpRequest);
                         startActivity(intentObj);

@@ -146,11 +146,13 @@
     <string name="details">&#160;Details</string>
 
     <string name="forgot_password">Forgot your password?</string>
+    <string name="forgot_password_header">Forgot Password</string>
     <string name="message_for_mobile_otp">Please input the OTP received on your Mobile No.&#160; %1$s</string>
     <string name="message_forgot_password">Please provide your email id to access the reset password link.</string>
     <string name="message_social_login_confirm_mobile_no_password">Please input your mobile no. and password.</string>
     <string name="submit">Submit</string>
     <string name="err_email_invalid">Enter valid email.</string>
+    <string name="err_otp_invalid">Enter valid OTP</string>
     <string name="err_maximum_otp_retries">You have exceeded maximum retry of OTP generation, please try after sometime.</string>
 
     <string name="doctors">Doctor\'s</string>
@@ -158,6 +160,7 @@
     <string name="apply">Apply</string>
     <string name="err_invalid_mobile_no">Enter valid mobile no.</string>
     <string name="enter_password">Password</string>
+    <string name="enter_pass_min_length">At least 8 characters</string>
     <string name="error_too_small_password">Password should be 8 characters long. </string>
     <string name="title">Title</string>
 

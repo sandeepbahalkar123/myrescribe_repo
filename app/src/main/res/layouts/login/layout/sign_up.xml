@@ -42,13 +42,33 @@
             android:layout_height="@dimen/dp1"
             android:background="@color/recentblue" />
 
-        <EditText
-            android:id="@+id/editTextPassword"
-            style="@style/AppLoginMainStyle"
-            android:hint="@string/enter_password"
-            android:inputType="textWebPassword"
-            android:textStyle="bold"
-            android:typeface="sans" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editTextPassword"
+                style="@style/AppLoginMainStyle"
+                android:layout_weight="1"
+                android:hint="@string/enter_password"
+                android:inputType="textWebPassword"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+            <com.myrescribe.ui.customesViews.CustomTextView
+                android:id="@+id/passwordMinCharHintTextView"
+                style="@style/AppLoginMainStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom|right"
+                android:text="@string/enter_pass_min_length"
+                android:textColor="@color/Gray"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:textSize="@dimen/sp10"
+                android:typeface="sans" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -61,7 +81,7 @@
             android:id="@+id/editTextMobileNo"
             style="@style/AppLoginMainStyle"
             android:hint="@string/enter_mobile_no"
-            android:inputType="number"
+            android:inputType="phone"
             android:maxLength="10"
             android:textStyle="bold"
             android:typeface="sans" />
@@ -100,7 +120,7 @@
             android:gravity="center"
             android:text="OR"
             android:textColor="@color/recentblue"
-            android:textSize="@dimen/sp10"
+            android:textSize="@dimen/sp12"
             android:textStyle="bold" />
 
         <LinearLayout

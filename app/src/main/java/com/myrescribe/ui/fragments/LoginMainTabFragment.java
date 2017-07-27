@@ -108,7 +108,7 @@ public class LoginMainTabFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                changeTabsFont();
+             //   changeTabsFont();
             }
         }, 200);
     }

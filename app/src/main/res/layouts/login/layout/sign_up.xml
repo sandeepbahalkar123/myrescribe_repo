@@ -18,7 +18,10 @@
             android:id="@+id/editTextFullName"
             style="@style/AppLoginMainStyle"
             android:hint="@string/enter_full_name"
-            android:inputType="text" />
+            android:inputType="text"
+            android:maxLength="60"
+            android:textStyle="bold"
+            android:typeface="sans" />
         <!--  Email Label -->
         <View
             android:layout_width="match_parent"
@@ -29,7 +32,9 @@
             android:id="@+id/editTextEmailId"
             style="@style/AppLoginMainStyle"
             android:hint="@string/enter_email_id"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textStyle="bold"
+            android:typeface="sans" />
 
         <View
             android:layout_width="match_parent"
@@ -40,7 +45,9 @@
             android:id="@+id/editTextPassword"
             style="@style/AppLoginMainStyle"
             android:hint="@string/enter_password"
-            android:inputType="textPassword" />
+            android:inputType="textWebPassword"
+            android:textStyle="bold"
+            android:typeface="sans" />
 
         <View
             android:layout_width="match_parent"
@@ -54,14 +61,16 @@
             style="@style/AppLoginMainStyle"
             android:hint="@string/enter_mobile_no"
             android:inputType="number"
-            android:maxLength="10" />
+            android:maxLength="10"
+            android:textStyle="bold"
+            android:typeface="sans" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp1"
             android:background="@color/recentblue" />
 
-        <TextView
+        <com.myrescribe.ui.customesViews.CustomTextView
             style="@style/AppLoginMainStyle"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp30"
@@ -83,7 +92,7 @@
             android:textAllCaps="true"
             android:textColor="@android:color/white" />
 
-        <TextView
+        <com.myrescribe.ui.customesViews.CustomTextView
             style="@style/AppLoginMainStyle"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp10"
@@ -100,11 +109,13 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/signUpFacebookLogin"
                 android:layout_width="@dimen/dp40"
                 android:layout_height="match_parent"
                 android:src="@drawable/facebook" />
 
             <ImageView
+                android:id="@+id/signUpGMailLogin"
                 android:layout_width="@dimen/dp40"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/dp20"

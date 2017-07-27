@@ -17,8 +17,10 @@
             android:id="@+id/editTextMobileNo"
             style="@style/AppLoginMainStyle"
             android:hint="@string/enter_mobile_no"
-            android:inputType="text"
-            android:maxLength="10" />
+            android:inputType="number"
+            android:maxLength="10"
+            android:textStyle="bold"
+            android:typeface="sans" />
         <!--  Email Label -->
         <View
             android:layout_width="match_parent"
@@ -29,7 +31,9 @@
             android:id="@+id/editTextPassword"
             style="@style/AppLoginMainStyle"
             android:hint="@string/enter_password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textStyle="bold"
+            android:typeface="sans" />
 
         <View
             android:layout_width="match_parent"
@@ -47,7 +51,7 @@
             android:textAllCaps="true"
             android:textColor="@android:color/white" />
 
-        <TextView
+        <com.myrescribe.ui.customesViews.CustomTextView
             style="@style/AppLoginMainStyle"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp30"
@@ -56,34 +60,10 @@
             android:text="@string/forgot_password"
             android:textAllCaps="false"
             android:textColor="@color/Gray"
-            android:textSize="@dimen/sp10" />
+            android:textSize="@dimen/sp10"
+            android:textStyle="bold"
+            android:typeface="sans" />
 
-        <!--*****************-->
-        <Button
-            android:id="@+id/buttonLoginFacebook"
-            style="@style/AppLoginMainStyle"
-            android:layout_height="@dimen/dp30"
-            android:layout_marginTop="@dimen/dp8"
-            android:background="@drawable/button_curve_background"
-            android:gravity="center"
-            android:text="@string/loginfb"
-            android:textAllCaps="false"
-            android:textColor="@android:color/black"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/buttonLoginGPlus"
-            style="@style/AppLoginMainStyle"
-            android:layout_height="@dimen/dp30"
-            android:layout_marginBottom="@dimen/dp8"
-            android:layout_marginTop="@dimen/dp8"
-            android:background="@drawable/button_curve_background"
-            android:gravity="center"
-            android:text="@string/logingmail"
-            android:textAllCaps="false"
-            android:textColor="@android:color/black"
-            android:visibility="gone" />
-        <!--*****************-->
     </LinearLayout>
 </ScrollView>
 

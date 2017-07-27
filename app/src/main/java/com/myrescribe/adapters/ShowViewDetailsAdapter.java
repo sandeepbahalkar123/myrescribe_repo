@@ -52,10 +52,10 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
     Integer[] SecondRowImage = {
             R.drawable.blood_pressure,
             R.drawable.layer_10};
-    int[] colorSecond = {R.color.yellow,R.color.parrot,R.color.red_red};
+    int[] colorSecond = {R.color.range_green,R.color.range_yellow,R.color.Red};
     String[] unitFirstRow = {"65","35","77"};
     String[] unitSecondRow = {"80","90"};
-    int[] colorFirstRow = {R.color.yellow,R.color.parrot};
+    int[] colorFirstRow = {R.color.range_yellow,R.color.range_green};
     private static final String CHILD_TYPE_1 = "Vitals";
     private ArrayList<HistoryCommonDetails> mHistoryCommonDetailses;
     private ArrayList<String> mListDataHeader; // header titles

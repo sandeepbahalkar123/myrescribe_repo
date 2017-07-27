@@ -18,6 +18,7 @@
             android:id="@+id/headerLayoutParent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <LinearLayout
@@ -41,7 +42,6 @@
                         android:id="@+id/titleTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Recent"
                         android:textColor="@color/recentblue"
                         android:textSize="20sp"
                         app:customFont="@string/roboto_medium" />
@@ -53,7 +53,6 @@
                         android:paddingEnd="@dimen/dp10"
                         android:paddingStart="@dimen/dp10"
                         android:paddingTop="@dimen/dp2"
-                        android:text="05-06-2017"
                         android:textSize="12sp"
                         app:customFont="@string/roboto_medium" />
 
@@ -128,6 +127,7 @@
                                     android:layout_marginBottom="@dimen/dp10"
                                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                                     android:layout_marginStart="@dimen/activity_horizontal_margin"
+                                    android:visibility="invisible"
                                     android:background="@color/divider" />
 
                                 <RelativeLayout
@@ -142,7 +142,7 @@
                                         android:layout_centerVertical="true"
                                         android:layout_toLeftOf="@+id/selectView"
                                         android:layout_toStartOf="@+id/selectView"
-                                        android:text="@string/dosage_completed"
+                                        android:id="@+id/doseCompletedLabel"
                                         android:textColor="@color/dose_completed"
                                         android:textSize="@dimen/sp19"
                                         app:customFont="@string/roboto_medium" />
@@ -181,9 +181,11 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/dividerLineInList"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp1"
                     android:layout_marginTop="@dimen/dp4"
+                    android:visibility="invisible"
                     android:background="@color/divider" />
 
             </LinearLayout>

@@ -971,7 +971,7 @@ public class CommonMethods {
 
 
     public static Date convertStringToDate(String dateString, String dateFormat) {
-        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat,Locale.US);
         Date date = null;
 
         try {
@@ -986,11 +986,11 @@ public class CommonMethods {
     public static String getDateSelectedDoctorVisit(String visitdate, String dateFormat) {
         String yourDate = null;
 
-        DateFormat format = new SimpleDateFormat(dateFormat);
+        DateFormat format = new SimpleDateFormat(dateFormat,Locale.US);
 
         try {
             Date date = format.parse(visitdate);
-            format = new SimpleDateFormat("d'th' MMM, yyyy");
+            format = new SimpleDateFormat("d'th' MMM, yyyy",Locale.US);
             yourDate = format.format(date);
         } catch (ParseException e) {
             e.printStackTrace();

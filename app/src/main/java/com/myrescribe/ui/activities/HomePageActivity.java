@@ -212,11 +212,7 @@ public class HomePageActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.visit_details) {
-            Intent intent = new Intent(mContext, ViewDetailsActivity.class);
-            startActivity(intent);
-
-        } else if (id == R.id.doctor_details) {
+         if (id == R.id.doctor_details) {
             Intent intent = new Intent(mContext, DoctorListActivity.class);
             startActivity(intent);
         } else if (id == R.id.investigations) {

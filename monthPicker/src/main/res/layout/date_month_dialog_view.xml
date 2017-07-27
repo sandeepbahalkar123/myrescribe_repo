@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:minWidth="350dp"
     android:orientation="vertical"
@@ -93,16 +94,26 @@
                             android:layout_alignParentTop="true"
                             android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
-                        <TextView
-                            android:id="@+id/text_year"
-                            android:layout_width="wrap_content"
+                        <com.rackspira.ganeshshirole.rackmonthpicker.HorizontalPicker
+                            android:id="@+id/picker"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:fontFamily="sans-serif"
-                            android:text="2016"
-                            android:textColor="@color/black_de"
-                            android:textSize="18sp" />
+                            android:layout_toEndOf="@+id/btn_previous"
+                            android:layout_toLeftOf="@+id/btn_next"
+                            android:layout_toRightOf="@+id/btn_previous"
+                            android:layout_toStartOf="@+id/btn_next"
+                            android:ellipsize="marquee"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:marqueeRepeatLimit="2"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp"
+                            android:textColor="@color/default_color"
+                            android:textSize="20sp"
+                            app:sideItems="@integer/numSideItems" />
+
                     </RelativeLayout>
 
                     <LinearLayout
@@ -130,8 +141,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:gravity="center_vertical"
-            android:paddingBottom="10dp"
-            android:paddingTop="16dp">
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
 
             <Button
                 android:id="@+id/btn_n"

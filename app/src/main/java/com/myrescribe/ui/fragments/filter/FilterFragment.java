@@ -2,6 +2,7 @@ package com.myrescribe.ui.fragments.filter;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +19,7 @@ import android.widget.RelativeLayout;
 import com.myrescribe.R;
 import com.myrescribe.adapters.filter.FilterCaseDetailsAdapter;
 import com.myrescribe.model.filter.CaseDetails;
+import com.myrescribe.ui.activities.DoctorFilteredListActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -143,6 +145,8 @@ public class FilterFragment extends Fragment {
         switch (view.getId()) {
             case R.id.applyButton:
                 mListener.onDrawerClose();
+                Intent intent = new Intent(getActivity(), DoctorFilteredListActivity.class);
+                getActivity().startActivity(intent);
                 break;
             case R.id.resetButton:
                 setDoctorName(getResources().getString(R.string.select_doctors));
@@ -189,8 +193,11 @@ public class FilterFragment extends Fragment {
 
     public interface OnDrawerInteractionListener {
         void onDrawerClose();
+
         void onSelectDoctors();
+
         void onSelectSpeciality();
+
         void onReset();
     }
 }

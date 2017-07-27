@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 
 import com.myrescribe.R;
 import com.myrescribe.ui.fragments.LoginMainTabFragment;
+import com.myrescribe.util.CommonMethods;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +28,8 @@ public class LoginMainActivity extends AppCompatActivity {
     private Context mContext;
     @BindView(R.id.container)
     FrameLayout mContainer;
+    @BindView(R.id.mainParentScrollView)
+    ScrollView mMainParentScrollView;
     LoginMainTabFragment mLoginMainTabFragment;
 
     @Override

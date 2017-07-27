@@ -9,10 +9,12 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -64,6 +66,8 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
     private Context mContext;
 
     private final String TAG = this.getClass().getName();
+    @BindView(R.id.signUpChildScrollView)
+    ScrollView mSignUpChildScrollView;
     @BindView(R.id.editTextFullName)
     EditText mFullName;
     @BindView(R.id.editTextEmailId)
@@ -189,9 +193,9 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
             if (loginModel.getCommon().isSuccess()) {
                 Intent intentObj = new Intent(mContext, AppLoginConfirmationActivity.class);
                 intentObj.putExtra(getString(R.string.type), getString(R.string.enter_otp));
+                intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
                 intentObj.putExtra(getString(R.string.details), mSignUpRequestModel);
                 startActivity(intentObj);
-                getActivity().finish();
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
             }

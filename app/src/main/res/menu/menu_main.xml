@@ -30,7 +30,8 @@
         <item
             android:id="@+id/doctorFilteredList"
             android:icon="@mipmap/logoutblack"
-            android:title="Doctor Filtered List" />
+            android:title="Doctor Filtered List"
+            android:visible="false" />
 
 
         <item

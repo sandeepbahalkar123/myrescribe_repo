@@ -52,8 +52,13 @@ public class LoginHelper implements ConnectionListener {
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
+                //TODO : DONE FOR NOW , REMVOE THIS
+                if (mOldDataTag.equals(MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP)) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                } else {
+                    mHelperResponseManager.onParseError(mOldDataTag, "parse error");
+                }
                 CommonMethods.Log(TAG, "parse error");
-                mHelperResponseManager.onParseError(mOldDataTag, "parse error");
                 break;
             case ConnectionListener.SERVER_ERROR:
                 CommonMethods.Log(TAG, "server error");

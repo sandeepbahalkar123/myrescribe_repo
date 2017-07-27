@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -156,6 +157,7 @@ public class LoginMainTabFragment extends Fragment {
         Fragment item = mViewPagerAdapter.getItem(currentItem);
         item.onActivityResult(requestCode, resultCode, data);
     }
+
 
     //TODO: NOT WORKING AS PER REQUIRED, NEED TO CHECK IT FOR TAB_LAYOUT TAB FONT
     private void changeTabsFont() {

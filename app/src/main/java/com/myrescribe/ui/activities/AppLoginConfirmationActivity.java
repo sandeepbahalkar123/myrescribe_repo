@@ -34,8 +34,9 @@ public class AppLoginConfirmationActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setTitle(getString(R.string.doctor_details) + getString(R.string.details));
-        loadFragment(getIntent().getStringExtra(getString(R.string.type)), getIntent().getSerializableExtra(getString(R.string.details)));
+        String header = getIntent().getStringExtra(getString(R.string.title));
+        loadFragment(getIntent().getStringExtra(getString(R.string.type)), getIntent().getSerializableExtra(getString(R.string.details)), header);
+
     }
 
     @Override
@@ -44,7 +45,10 @@ public class AppLoginConfirmationActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void loadFragment(String type, Serializable serializableExtra) {
+    public void loadFragment(String type, Serializable serializableExtra, String header) {
+
+        mActionBar.setTitle(header);
+
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         Bundle b = new Bundle();

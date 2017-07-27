@@ -158,7 +158,7 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
             if (loginModel.getCommon().isSuccess()) {
 
                 AppLoginConfirmationActivity activity = (AppLoginConfirmationActivity) getActivity();
-                activity.loadFragment(getString(R.string.enter_otp), mSignUpRequestModel);
+                activity.loadFragment(getString(R.string.enter_otp), mSignUpRequestModel, getString(R.string.sign_up_confirmation));
 
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());

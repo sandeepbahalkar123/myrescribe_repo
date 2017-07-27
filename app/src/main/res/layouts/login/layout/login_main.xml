@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainParentScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:scrollbarAlwaysDrawVerticalTrack="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp0"
-        android:layout_weight="0.5"
-        android:background="@drawable/home_new"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp0"
-        android:layout_weight="1"
-        android:background="@color/white"
-        android:orientation="vertical"></FrameLayout>
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp0"
+            android:layout_weight="0.5"
+            android:background="@drawable/home_new"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp0"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:orientation="vertical"></FrameLayout>
+    </LinearLayout>
+</ScrollView>
 

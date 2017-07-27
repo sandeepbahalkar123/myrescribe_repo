@@ -62,7 +62,8 @@
     <string name="instructions">Instruction:</string>
     <string name="for_example_server_path">e.g. 192.168.0.180:80</string>
     <string name="search">Search</string>
-    <string name="resend_otp">Resend in</string>
+    <string name="resend_in_text">Resend in</string>
+    <string name="resend">Resend</string>
     <string name="ok">OK</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_up_confirmation">Sign Up Confirmation</string>
@@ -158,6 +159,7 @@
     <string name="err_invalid_mobile_no">Enter valid mobile no.</string>
     <string name="enter_password">Password</string>
     <string name="error_too_small_password">Password should be 8 characters long. </string>
+    <string name="title">Title</string>
 
     <string name="case_details_message"><![CDATA[If you have selected “Vitals”, you will not be able to select any other parameters & vice versa.]]></string>
 

@@ -111,7 +111,7 @@
                             android:paddingBottom="5dp"
                             android:paddingTop="5dp"
                             android:textColor="@color/default_color"
-                            android:textSize="20sp"
+                            android:textSize="19sp"
                             app:sideItems="@integer/numSideItems" />
 
                     </RelativeLayout>
@@ -141,7 +141,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:gravity="center_vertical"
-            android:paddingBottom="5dp"
+            android:paddingBottom="10dp"
             android:paddingTop="5dp">
 
             <Button

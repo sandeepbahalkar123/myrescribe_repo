@@ -10,10 +10,6 @@
             android:id="@+id/doctor_details"
             android:icon="@drawable/doctor_visit"
             android:title="@string/doctor_details" />
-        <item
-            android:id="@+id/visit_details"
-            android:icon="@drawable/visit_detail"
-            android:title="@string/visit_details" />
 
         <item
             android:id="@+id/investigations"
@@ -30,7 +26,8 @@
         <item
             android:id="@+id/doctorFilteredList"
             android:icon="@mipmap/logoutblack"
-            android:title="Doctor Filtered List" />
+            android:title="Doctor Filtered List"
+            android:visible="false" />
 
 
         <item

@@ -52,16 +52,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.LoginActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize|adjustPan"></activity>
-        <activity
             android:name=".ui.activities.HomePageActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name="com.myrescribe.ui.activities.LoginMainActivity"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
@@ -149,7 +145,7 @@
             android:name=".ui.activities.DoctorFilteredListActivity"
             android:label="@string/doctor_details" />
         <activity
-            android:name=".ui.activities.AppLoginConfirmationActivity"
+            android:name=".ui.activities.AppGlobalContainerActivity"
             android:label="@string/doctor_details" />
         <activity
             android:name=".ui.activities.MapsActivity"

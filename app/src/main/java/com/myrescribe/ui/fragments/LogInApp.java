@@ -10,9 +10,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ScrollView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -35,6 +37,7 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
+import com.myrescribe.ui.activities.AppGlobalContainerActivity;
 import com.myrescribe.ui.activities.HomePageActivity;
 import com.myrescribe.ui.activities.PhoneNoActivity;
 import com.myrescribe.ui.activities.SplashScreenActivity;
@@ -52,19 +55,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LogInApp extends Fragment implements
-        GoogleApiClient.OnConnectionFailedListener, HelperResponse {
+        HelperResponse {
     private final String TAG = this.getClass().getName();
 
     Context mContext;
-    private GoogleApiClient mGoogleApiClient;
 
+    @BindView(R.id.loginChildScrollView)
+    ScrollView mLoginChildScrollView;
     @BindView(R.id.editTextMobileNo)
     EditText mMobileNo;
     @BindView(R.id.editTextPassword)
     EditText mPassword;
-
-    private static final int RC_SIGN_IN = 007;
-    private CallbackManager mCallbackManager;
 
     public LogInApp() {
         // Required empty public constructor
@@ -87,89 +88,13 @@ public class LogInApp extends Fragment implements
         ButterKnife.bind(this, inflate);
         mContext = this.getContext();
 
-        googleInitialize();
-        facebookInitialize();
         return inflate;
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    private void googleInitialize() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity(), this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-    }
-
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == RC_SIGN_IN) {
-//            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-//            handleSignInResult(result);
-//        }
-//    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-        } else if (requestCode != RC_SIGN_IN) {
-            mCallbackManager.onActivityResult(requestCode, resultCode, data);
-        }
-
-    }
-
-    private void handleSignInResult(GoogleSignInResult result) {
-        Log.e(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-
-            Log.e(TAG, "display name: " + acct.getDisplayName());
-            String personName = acct.getDisplayName();
-
-            MyRescribePreferencesManager.putString(MyRescribeConstants.USERNAME, personName, mContext);
-            Intent intent = new Intent(getActivity(), PhoneNoActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-
-        } else {
-            // Signed out, show unauthenticated UI.
-
-        }
-    }
-
-
-    @OnClick({R.id.btn_login, R.id.buttonLoginFacebook, R.id.buttonLoginGPlus})
+    @OnClick({R.id.btn_login})
     public void onButtonClicked(View v) {
         int id = v.getId();
         switch (id) {
-            case R.id.buttonLoginFacebook:
-                LoginManager.getInstance().logInWithReadPermissions(getActivity(), Arrays.asList("user_friends", "email", "public_profile"));
-//                FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.container, new EnterPhoneNoToGenerateOTP());
-//                fragmentTransaction.commit();
-                break;
-            case R.id.buttonLoginGPlus:
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                getActivity().startActivityForResult(signInIntent, RC_SIGN_IN);
-                break;
             case R.id.btn_login:
                 String mobileNo = mMobileNo.getText().toString();
                 String password = mPassword.getText().toString();
@@ -181,87 +106,12 @@ public class LogInApp extends Fragment implements
         }
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-
-    private void facebookInitialize() {
-
-        FacebookSdk.sdkInitialize(this.getContext());
-        mCallbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(
-                mCallbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        requestUserInfo(loginResult.getAccessToken());
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        //Toast.makeText(LoginActivity.this, "Login Cancel", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onError(FacebookException error) {
-                        // TODO Auto-generated method stub
-                    }
-                });
-    }
-
-    private void requestUserInfo(AccessToken accessToken) {
-        String FIELDS = "fields";
-        String ID = "id";
-        String NAME = "name";
-        String PICTURE = "picture";
-        String EMAIL = "email";
-        String BIRTHDAY = "birthday";
-        String GENDER = "gender";
-        String KEY_USERNAME = "email_address";
-        String KEY_PASSWORD = "password";
-        String REQUEST_FIELDS = TextUtils.join(",", new String[]{ID, NAME, PICTURE, EMAIL, BIRTHDAY, GENDER});
-
-        GraphRequest request = GraphRequest.newMeRequest(accessToken,
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object,
-                                            GraphResponse response) {
-                        // TODO Auto-generated method stub
-                        JSONObject json = response.getJSONObject();
-                        try {
-                            Log.e("requestUserInfo", json.toString());
-
-                            String name = json.getString("name");
-                            Log.e("name", name);
-                            MyRescribePreferencesManager.putString(MyRescribeConstants.USERNAME, name, mContext);
-//                            Intent intent = new Intent(getActivity(), PhoneNoActivity.class);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                            startActivity(intent);
-
-                            FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
-                            FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-//                            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left,
-//                                    R.anim.slide_out_left);
-                            fragmentTransaction.replace(R.id.container, new EnterPhoneNoToGenerateOTP());
-                            fragmentTransaction.commit();
-
-                            //renderView(json);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
-
-                        }
-
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString(FIELDS, REQUEST_FIELDS);
-        request.setParameters(parameters);
-        request.executeAsync();
+    @OnClick({R.id.forgotPasswordView})
+    public void onForgotPassword() {
+        Intent intentObj = new Intent(getActivity(), AppGlobalContainerActivity.class);
+        intentObj.putExtra(getString(R.string.type), getString(R.string.forgot_password));
+        intentObj.putExtra(getString(R.string.title), getString(R.string.forgot_password_header));
+        startActivity(intentObj);
     }
 
     /**
@@ -271,13 +121,18 @@ public class LogInApp extends Fragment implements
      */
     private boolean validate(String mobileNo, String password) {
         String message = null;
+        String enter = getString(R.string.enter);
         if (mobileNo.isEmpty()) {
-            message = getString(R.string.enter_mobile_no).toLowerCase(Locale.US);
+            message = enter + getString(R.string.enter_mobile_no).toLowerCase(Locale.US);
         } else if (password.isEmpty()) {
-            message = getString(R.string.enter_password).toLowerCase(Locale.US);
+            message = enter + getString(R.string.enter_password).toLowerCase(Locale.US);
+        } else if (password.trim().length() < 8) {
+            message = getString(R.string.error_too_small_password);
+        } else if (mobileNo.trim().length() < 10) {
+            message = getString(R.string.err_invalid_mobile_no);
         }
         if (message != null) {
-            CommonMethods.showSnack(mMobileNo, getString(R.string.enter) + message);
+            CommonMethods.showSnack(mMobileNo, message);
             return true;
         } else {
             return false;
@@ -295,8 +150,10 @@ public class LogInApp extends Fragment implements
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, loginModel.getPatientId(), mContext);
 
-                Intent intentObj = new Intent(mContext, HomePageActivity.class);
-                startActivity(intentObj);
+                Intent intent = new Intent(mContext, HomePageActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 getActivity().finish();
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
@@ -309,18 +166,15 @@ public class LogInApp extends Fragment implements
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
         CommonMethods.showToast(getActivity(), errorMessage);
-
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
         CommonMethods.showToast(getActivity(), serverErrorMessage);
-
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
         CommonMethods.showToast(getActivity(), serverErrorMessage);
-
     }
 }

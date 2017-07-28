@@ -49,7 +49,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }, MyRescribeConstants.TIME_STAMPS.THREE_SECONDS);
     }
-
+/*
     private void doLogin() {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -142,10 +142,10 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         new Handler().postDelayed(new Runnable() {
 
-            /*
+            *//*
              * Showing splash screen with a timer. This will be useful when you
              * want to show case your app logo / company
-             */
+             *//*
 
             @Override
             public void run() {
@@ -158,6 +158,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         }, SPLASH_TIME_OUT);
 
 
-    }
+    }*/
 
 }

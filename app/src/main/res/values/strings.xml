@@ -29,10 +29,8 @@
     <string name="doctor_details">Doctor Visits</string>
     <string name="before">Before</string>
     <string name="enter_mobile_no">Mobile No.</string>
-    <string name="enter_password">Password</string>
-    <string name="loginfb">Login with fb</string>
+    <string name="login_social_media">Login with social media</string>
     <string name="log_in">Login</string>
-    <string name="logingmail">Login with G+</string>
 
     <string name="btn_logout_from_google">Logout from Google</string>
     <string name="btn_revoke_access">Revoke Access</string>
@@ -64,7 +62,8 @@
     <string name="instructions">Instruction:</string>
     <string name="for_example_server_path">e.g. 192.168.0.180:80</string>
     <string name="search">Search</string>
-    <string name="resend_otp">Resend in</string>
+    <string name="resend_in_text">Resend in</string>
+    <string name="resend">Resend</string>
     <string name="ok">OK</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_up_confirmation">Sign Up Confirmation</string>
@@ -119,12 +118,12 @@
 
     <string-array name="colors_first">
         <item>#ff0000</item>
-        <item>#00ff00</item>
-        <item>#ffff33</item>
+        <item>#178a00</item>
+        <item>#ff9500</item>
     </string-array>
     <string-array name="colors_second">
         <item>#ff0000</item>
-        <item>#00ff00</item>
+        <item>#178a00</item>
     </string-array>
 
     <string name="name">NAME</string>
@@ -147,15 +146,24 @@
     <string name="details">&#160;Details</string>
 
     <string name="forgot_password">Forgot your password?</string>
+    <string name="forgot_password_header">Forgot Password</string>
     <string name="message_for_mobile_otp">Please input the OTP received on your Mobile No.&#160; %1$s</string>
     <string name="message_forgot_password">Please provide your email id to access the reset password link.</string>
+    <string name="message_social_login_confirm_mobile_no_password">Please input your mobile no. and password.</string>
     <string name="submit">Submit</string>
     <string name="err_email_invalid">Enter valid email.</string>
+    <string name="err_otp_invalid">Enter valid OTP</string>
     <string name="err_maximum_otp_retries">You have exceeded maximum retry of OTP generation, please try after sometime.</string>
 
     <string name="doctors">Doctor\'s</string>
     <string name="doctors_speciality">Doctor\'s Speciality</string>
     <string name="apply">Apply</string>
+    <string name="err_invalid_mobile_no">Enter valid mobile no.</string>
+    <string name="enter_password">Password</string>
+    <string name="enter_pass_min_length">At least 8 characters</string>
+    <string name="error_too_small_password">Password should be 8 characters long. </string>
+    <string name="title">Title</string>
+
     <string name="case_details_message"><![CDATA[If you have selected “Vitals”, you will not be able to select any other parameters & vice versa.]]></string>
 
 

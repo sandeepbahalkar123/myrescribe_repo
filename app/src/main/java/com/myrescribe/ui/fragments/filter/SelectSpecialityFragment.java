@@ -3,6 +3,7 @@ package com.myrescribe.ui.fragments.filter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,9 @@ import android.widget.Button;
 import com.myrescribe.R;
 import com.myrescribe.adapters.filter.FilterDoctorSpecialitiesAdapter;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
+import com.myrescribe.model.filter.DoctorSpecialityData;
+import com.myrescribe.model.filter.FilterDoctorListModel;
+import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -38,17 +42,17 @@ public class SelectSpecialityFragment extends Fragment {
     RecyclerView recyclerView;
     Unbinder unbinder;
     private OnSelectSpecialityInteractionListener mListener;
-    private ArrayList<DoctorDetail> doctorList;
     private FilterDoctorSpecialitiesAdapter filterDoctorSpecialitiesAdapter;
+    private ArrayList<DoctorSpecialityData> doctorSpecialityList;
 
     public SelectSpecialityFragment() {
         // Required empty public constructor
     }
 
-    public static SelectSpecialityFragment newInstance(ArrayList<DoctorDetail> doctorList, String title) {
+    public static SelectSpecialityFragment newInstance(ArrayList<DoctorSpecialityData> doctorSpecialityDataArrayList, String title) {
         SelectSpecialityFragment fragment = new SelectSpecialityFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(MyRescribeConstants.DOCTORS_LIST, doctorList);
+        bundle.putParcelableArrayList(MyRescribeConstants.DOCTORS_LIST, doctorSpecialityDataArrayList);
         bundle.putString(MyRescribeConstants.TITLE, title);
         fragment.setArguments(bundle);
         return fragment;
@@ -68,7 +72,7 @@ public class SelectSpecialityFragment extends Fragment {
         if (getArguments() != null) {
             String title = getArguments().getString(MyRescribeConstants.TITLE);
             titleTextView.setText(title);
-            doctorList = (ArrayList<DoctorDetail>) getArguments().getSerializable(MyRescribeConstants.DOCTORS_LIST);
+            doctorSpecialityList = getArguments().getParcelableArrayList(MyRescribeConstants.DOCTORS_LIST);
         }
 
         // off recyclerView Animation
@@ -82,7 +86,7 @@ public class SelectSpecialityFragment extends Fragment {
                 linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
         recyclerView.setLayoutManager(linearLayoutManager);
-        filterDoctorSpecialitiesAdapter = new FilterDoctorSpecialitiesAdapter(getContext(), doctorList);
+        filterDoctorSpecialitiesAdapter = new FilterDoctorSpecialitiesAdapter(getContext(), doctorSpecialityList);
         recyclerView.setAdapter(filterDoctorSpecialitiesAdapter);
         return view;
     }
@@ -100,8 +104,8 @@ public class SelectSpecialityFragment extends Fragment {
                 mListener.onFragmentBack();
                 break;
             case R.id.resetButton:
-                for (DoctorDetail doctorDetail : doctorList) {
-                    doctorDetail.setDoctorSpecialitySelected(false);
+                for (DoctorSpecialityData doctorSpecialityData : doctorSpecialityList) {
+                    doctorSpecialityData.setSelected(false);
                 }
                 filterDoctorSpecialitiesAdapter.notifyDataSetChanged();
                 mListener.setDoctorSpeciality(getResources().getString(R.string.select_doctors_speciality));

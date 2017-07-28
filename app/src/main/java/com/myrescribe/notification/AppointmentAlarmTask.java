@@ -31,7 +31,7 @@ public class AppointmentAlarmTask implements Runnable {
     // Your context to retrieve the alarm manager from
     private final Context context;
 
-    public AppointmentAlarmTask(Context context, String time, String msg/*, ArrayList<Medicine> medicines*/) {
+    public AppointmentAlarmTask(Context context, String time, String msg) {
         this.context = context;
         this.am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         this.time = time;
@@ -43,14 +43,14 @@ public class AppointmentAlarmTask implements Runnable {
         time = CommonMethods.getFormatedDate(time, "hh:mm a", "HH:mm");
 
         String[] hour = time.split(":");
-        String[] minuite = hour[1].split(" ");
+        String[] minute = hour[1].split(" ");
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour[0]));
-        calendar.set(Calendar.MINUTE, Integer.parseInt(minuite[0]));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(minute[0]));
         calendar.set(Calendar.SECOND, 0);
 
-        CommonMethods.Log("AllTimes", Integer.parseInt(hour[0]) + ":" + Integer.parseInt(minuite[0]));
+        CommonMethods.Log("AllTimes", Integer.parseInt(hour[0]) + ":" + Integer.parseInt(minute[0]));
 
         return calendar;
     }

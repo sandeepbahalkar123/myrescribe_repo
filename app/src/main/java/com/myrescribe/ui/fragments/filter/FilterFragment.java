@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.filter.FilterCaseDetailsAdapter;
-import com.myrescribe.model.filter.CaseDetails;
+import com.myrescribe.model.filter.CaseDetailsData;
 import com.myrescribe.ui.activities.DoctorFilteredListActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
@@ -61,17 +61,17 @@ public class FilterFragment extends Fragment {
     private OnDrawerInteractionListener mListener;
     private String monthSelected;
     private RackMonthPicker rackMonthPicker;
-    private ArrayList<CaseDetails> caseDetailsList;
+    private ArrayList<CaseDetailsData> caseDetailsList;
     private FilterCaseDetailsAdapter filterCaseDetailsAdapter;
 
     public FilterFragment() {
         // Required empty public constructor
     }
 
-    public static FilterFragment newInstance(ArrayList<CaseDetails> caseDetailsList) {
+    public static FilterFragment newInstance(ArrayList<CaseDetailsData> caseDetailsList) {
         FilterFragment fragment = new FilterFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(MyRescribeConstants.CASE_DETAILS, caseDetailsList);
+        bundle.putParcelableArrayList(MyRescribeConstants.CASE_DETAILS, caseDetailsList);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -89,7 +89,7 @@ public class FilterFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         if (getArguments() != null) {
-            caseDetailsList = (ArrayList<CaseDetails>) getArguments().getSerializable(MyRescribeConstants.CASE_DETAILS);
+            caseDetailsList = getArguments().getParcelableArrayList(MyRescribeConstants.CASE_DETAILS);
         }
 
         // off recyclerView Animation

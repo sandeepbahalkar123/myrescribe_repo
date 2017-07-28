@@ -13,6 +13,11 @@ import android.widget.RemoteViews;
 import com.myrescribe.R;
 import com.myrescribe.broadcast_receivers.NoClickReceiver;
 import com.myrescribe.broadcast_receivers.YesClickReceiver;
+import com.myrescribe.helpers.notification.AppointmentHelper;
+import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.notification.AppointmentsNotificationModel;
+import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 
@@ -24,7 +29,7 @@ import com.myrescribe.util.MyRescribeConstants;
  *
  * @author paul.blundell
  */
-public class AppointmentNotificationService extends Service {
+public class AppointmentNotificationService extends Service implements HelperResponse {
 
 //    static int mNotificationNoTextField = 0;
 
@@ -32,6 +37,8 @@ public class AppointmentNotificationService extends Service {
     public static final String INTENT_NOTIFY = "com.myrescribe";
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
+    private AppointmentsNotificationModel appointmentsNotificationModel = new AppointmentsNotificationModel();
+    private int notification_id;
 
     @Override
     public void onCreate() {
@@ -42,19 +49,13 @@ public class AppointmentNotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         // If this service was started by out DosesAlarmTask intent then we want to show our notification
-        if (intent.getBooleanExtra(INTENT_NOTIFY, false))
-            customNotification(intent);
-
-        getAppointmentDrInfo();
-
+        if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
+            AppointmentHelper appointmentHelper = new AppointmentHelper(this);
+            appointmentHelper.getDoctorList();
+            notification_id = intent.getIntExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, 0);
+        }
         // We don't care if this service is stopped as we have already delivered our notification
         return START_NOT_STICKY;
-    }
-
-    private void getAppointmentDrInfo() {
-        // Call webservice
-
-
     }
 
     @Override
@@ -62,24 +63,28 @@ public class AppointmentNotificationService extends Service {
         return mBinder;
     }
 
-    public void customNotification(Intent intentData) {
+    public void customNotification() {
 
-        int notification_id = intentData.getIntExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, 0);
+        String drName = appointmentsNotificationModel.getData().get(0).getDoctorName();
+        String date = CommonMethods.getFormatedDate(appointmentsNotificationModel.getData().get(0).getAptDate(), MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DD_MM_YYYY);
+        String time = CommonMethods.getFormatedDate(appointmentsNotificationModel.getData().get(0).getAptTime(), MyRescribeConstants.DATE_PATTERN.HH_mm_ss, MyRescribeConstants.DATE_PATTERN.hh_mm_a);
+        String message = "You have an appointment with " + drName + " on " + date + " at " + time.toLowerCase() + ".";
+
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
                 R.layout.appointment_notification_layout);
 
         Intent mNotifyYesIntent = new Intent(this, YesClickReceiver.class);
         mNotifyYesIntent.putExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, notification_id);
-        mNotifyYesIntent.putExtra(MyRescribeConstants.APPOINTMENT_TIME, intentData.getStringExtra(MyRescribeConstants.APPOINTMENT_TIME));
-        mNotifyYesIntent.putExtra(MyRescribeConstants.APPOINTMENT_MESSAGE, intentData.getStringExtra(MyRescribeConstants.APPOINTMENT_MESSAGE));
+        mNotifyYesIntent.putExtra(MyRescribeConstants.APPOINTMENT_TIME, time);
+        mNotifyYesIntent.putExtra(MyRescribeConstants.APPOINTMENT_MESSAGE, message);
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
 
         Intent mNotifyNoIntent = new Intent(this, NoClickReceiver.class);
         mNotifyNoIntent.putExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, notification_id);
-        mNotifyNoIntent.putExtra(MyRescribeConstants.APPOINTMENT_TIME, intentData.getStringExtra(MyRescribeConstants.APPOINTMENT_TIME));
-        mNotifyNoIntent.putExtra(MyRescribeConstants.APPOINTMENT_MESSAGE, intentData.getStringExtra(MyRescribeConstants.APPOINTMENT_MESSAGE));
+        mNotifyNoIntent.putExtra(MyRescribeConstants.APPOINTMENT_TIME, time);
+        mNotifyNoIntent.putExtra(MyRescribeConstants.APPOINTMENT_MESSAGE, message);
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mNoPendingIntent);
 
@@ -94,11 +99,37 @@ public class AppointmentNotificationService extends Service {
                 .setContent(mRemoteViews);
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.appointment));
-        mRemoteViews.setTextViewText(R.id.questionText, intentData.getStringExtra(MyRescribeConstants.APPOINTMENT_MESSAGE));
-        mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.APPOINTMENT_TIME));
+        mRemoteViews.setTextViewText(R.id.questionText, message);
+        mRemoteViews.setTextViewText(R.id.timeText, time);
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationmanager.notify(notification_id, builder.build());
+    }
 
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+
+        if (customResponse instanceof AppointmentsNotificationModel) {
+            appointmentsNotificationModel = (AppointmentsNotificationModel) customResponse;
+            if (!appointmentsNotificationModel.getData().isEmpty()) {
+                customNotification();
+            }
+        }
+
+        stopSelf();
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+        stopSelf();
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+        stopSelf();
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
         stopSelf();
     }
 

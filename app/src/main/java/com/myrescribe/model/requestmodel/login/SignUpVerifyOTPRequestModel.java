@@ -14,6 +14,9 @@ public class SignUpVerifyOTPRequestModel implements CustomResponse, Serializable
     @SerializedName("otp")
     @Expose
     private String OTP;
+    @SerializedName("password")
+    @Expose
+    private String password;
 
     public String getOTP() {
         return OTP;
@@ -29,5 +32,13 @@ public class SignUpVerifyOTPRequestModel implements CustomResponse, Serializable
 
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

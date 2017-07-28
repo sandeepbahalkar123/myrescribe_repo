@@ -18,9 +18,9 @@ public class LoginModel implements CustomResponse {
     @SerializedName("patientId")
     @Expose
     private String patientId;
-    @SerializedName("years")
-    @Expose
-    private ArrayList<String> yearList;
+
+    //TODO: Need to parsed this, once done from server side.
+    private ArrayList<String> yearList = new ArrayList<>();
 
     public String getPatientId() {
         return patientId;

@@ -1,11 +1,7 @@
 package com.myrescribe.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +15,7 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.login.SignUpModel;
 import com.myrescribe.model.requestmodel.login.SignUpRequestModel;
-import com.myrescribe.ui.activities.AppLoginConfirmationActivity;
+import com.myrescribe.ui.activities.AppGlobalContainerActivity;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -157,8 +153,8 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
 
             if (loginModel.getCommon().isSuccess()) {
 
-                AppLoginConfirmationActivity activity = (AppLoginConfirmationActivity) getActivity();
-                activity.loadFragment(getString(R.string.enter_otp), mSignUpRequestModel);
+                AppGlobalContainerActivity activity = (AppGlobalContainerActivity) getActivity();
+                activity.loadFragment(getString(R.string.enter_otp), mSignUpRequestModel, getString(R.string.sign_up_confirmation));
 
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());

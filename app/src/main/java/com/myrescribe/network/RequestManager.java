@@ -394,7 +394,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, new Gson().fromJson(data, SignUpModel.class), mOldDataTag);
                         break;
                     case MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP: //This is for to verify sign-up otp
-                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, new Gson().fromJson(data, VerifyOTPSignUpResponseModel.class), mOldDataTag);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, new Gson().fromJson(data, LoginModel.class), mOldDataTag);
                         break;
                     case MyRescribeConstants.TASK_NOTIFICATION: //This is for get archived list
                         NotificationModel notificationModel = new Gson().fromJson(data, NotificationModel.class);

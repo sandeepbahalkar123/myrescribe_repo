@@ -10,9 +10,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ScrollView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -35,6 +37,7 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
+import com.myrescribe.ui.activities.AppGlobalContainerActivity;
 import com.myrescribe.ui.activities.HomePageActivity;
 import com.myrescribe.ui.activities.PhoneNoActivity;
 import com.myrescribe.ui.activities.SplashScreenActivity;
@@ -57,6 +60,8 @@ public class LogInApp extends Fragment implements
 
     Context mContext;
 
+    @BindView(R.id.loginChildScrollView)
+    ScrollView mLoginChildScrollView;
     @BindView(R.id.editTextMobileNo)
     EditText mMobileNo;
     @BindView(R.id.editTextPassword)
@@ -101,6 +106,14 @@ public class LogInApp extends Fragment implements
         }
     }
 
+    @OnClick({R.id.forgotPasswordView})
+    public void onForgotPassword() {
+        Intent intentObj = new Intent(getActivity(), AppGlobalContainerActivity.class);
+        intentObj.putExtra(getString(R.string.type), getString(R.string.forgot_password));
+        intentObj.putExtra(getString(R.string.title), getString(R.string.forgot_password_header));
+        startActivity(intentObj);
+    }
+
     /**
      * Return true if fields empty/validation failed, else false.
      *
@@ -137,8 +150,10 @@ public class LogInApp extends Fragment implements
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, loginModel.getPatientId(), mContext);
 
-                Intent intentObj = new Intent(mContext, HomePageActivity.class);
-                startActivity(intentObj);
+                Intent intent = new Intent(mContext, HomePageActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 getActivity().finish();
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());

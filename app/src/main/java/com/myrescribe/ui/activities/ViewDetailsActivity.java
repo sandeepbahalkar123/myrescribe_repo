@@ -1,7 +1,6 @@
 package com.myrescribe.ui.activities;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +15,7 @@ import java.util.List;
 
 import android.widget.ExpandableListView;
 
-import com.myrescribe.adapters.ShowViewDetailsAdapter;
-import com.myrescribe.helpers.history.HistoryHelper;
+import com.myrescribe.adapters.OneDayVisitAdapter;
 import com.myrescribe.helpers.one_day_visit.OneDayVisitHelper;
 import com.myrescribe.helpers.one_day_visit.VitalHelper;
 import com.myrescribe.interfaces.CustomResponse;
@@ -27,7 +25,6 @@ import com.myrescribe.model.visit_details.Diagnosi;
 import com.myrescribe.model.visit_details.PatientHistory;
 import com.myrescribe.model.visit_details.Vital;
 import com.myrescribe.ui.customesViews.CustomTextView;
-import com.myrescribe.util.CommonMethods;
 
 import java.util.HashMap;
 
@@ -138,8 +135,8 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
         mVitalList = mVitalHelper.doGetVitalsList();
         Data data = (Data) customResponse;
         formatResponseDataForAdapter(data.getPatientHistory());
-        ShowViewDetailsAdapter showHistoryListAdapter = new ShowViewDetailsAdapter(this, mHeaderList, mHistoryDataList, mVitalList);
-        mHistoryExpandableListView.setAdapter(showHistoryListAdapter);
+        OneDayVisitAdapter oneDayVisitAdapter = new OneDayVisitAdapter(this, mHeaderList, mHistoryDataList, mVitalList);
+        mHistoryExpandableListView.setAdapter(oneDayVisitAdapter);
 
 
     }

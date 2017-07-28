@@ -37,7 +37,7 @@ import com.myrescribe.R;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
 import com.myrescribe.model.util.TimePeriod;
-import com.myrescribe.ui.activities.ShowMedicineDoseListActivity;
+import com.myrescribe.ui.activities.PrescriptionActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -650,7 +650,7 @@ public class CommonMethods {
             public void onClick(View v) {
                 dialog.dismiss();
                 ((Activity) mContext).finish();
-                mContext.startActivity(new Intent(mContext, ShowMedicineDoseListActivity.class));
+                mContext.startActivity(new Intent(mContext, PrescriptionActivity.class));
 
             }
         });
@@ -897,7 +897,7 @@ public class CommonMethods {
         } else if (vitalDetailName.equalsIgnoreCase("Height")) {
             abbreviation = R.drawable.height;
         } else if (vitalDetailName.equalsIgnoreCase("BMI")) {
-            abbreviation = R.drawable.bmi;
+            abbreviation = R.drawable.bmi_1;
         } else if (vitalDetailName.equalsIgnoreCase("Total HDL")) {
             abbreviation = R.drawable.total_hdl;
         } else if (vitalDetailName.equalsIgnoreCase("Cholesterol")) {

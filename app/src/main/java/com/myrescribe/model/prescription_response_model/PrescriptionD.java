@@ -63,6 +63,30 @@ public class PrescriptionD {
     @Expose
     private String endDate;
 
+    public String getFreq() {
+        return freq;
+    }
+
+    public void setFreq(String freq) {
+        this.freq = freq;
+    }
+
+    public String getFreqSchedule() {
+        return freqSchedule;
+    }
+
+    public void setFreqSchedule(String freqSchedule) {
+        this.freqSchedule = freqSchedule;
+    }
+
+    @SerializedName("freq")
+    @Expose
+
+    private String freq;
+    @SerializedName("freqSchedule")
+    @Expose
+    private String freqSchedule;
+
     public Integer getPatientId() {
         return patientId;
     }

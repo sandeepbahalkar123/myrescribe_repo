@@ -14,8 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+
 import com.myrescribe.R;
-import com.myrescribe.adapters.ShowMedicineDoseListAdapter;
+import com.myrescribe.adapters.PrescriptionListAdapter;
 import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
@@ -24,17 +25,18 @@ import com.myrescribe.model.prescription_response_model.PrescriptionD;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
+
 import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ShowMedicineDoseListActivity extends AppCompatActivity
+public class PrescriptionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HelperResponse, View.OnClickListener {
 
-    private ShowMedicineDoseListAdapter mAdapter;
-    private final String TAG = "MyRescribe/ShowMedicineDoseListActivity";
+    private PrescriptionListAdapter prescriptionListAdapter;
+    private final String TAG = "MyRescribe/PrescriptionActivity";
     Context mContext;
     private String mGetMealTime;
 
@@ -47,8 +49,6 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     @BindView(R.id.recyclerViewShowMedicineDoseList)
     RecyclerView mRecyclerView;
-/*    @BindView(R.id.nav_view)
-    NavigationView navView;*/
 
     private PrescriptionHelper mPrescriptionHelper;
 
@@ -62,41 +62,30 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     }
 
     private void initialize() {
-
         initializeVariables();
         bindView();
         doGetPrescriptionList();
-
         Calendar c = Calendar.getInstance();
         int hour24 = c.get(Calendar.HOUR_OF_DAY);
         int Min = c.get(Calendar.MINUTE);
-
         mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
-
     }
 
     private void initializeVariables() {
-        mContext = ShowMedicineDoseListActivity.this;
+        mContext = PrescriptionActivity.this;
         mPrescriptionHelper = new PrescriptionHelper(this, this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.going_medication));
         mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
-    mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //What to do on back clicked
-              finish();
+                finish();
             }
         });
-
     }
 
     private void bindView() {
-       /* ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.addDrawerListener(toggle);
-        toggle.syncState();
-        mNavigationView.setNavigationItemSelectedListener(this);*/
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
@@ -112,41 +101,18 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-      //  getMenuInflater().inflate(R.menu.main, menu);
-
         return true;
 
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
- /*       int id = item.getItemId();
-    if (id == R.id.visit_details) {
-        Intent intent = new Intent(ShowMedicineDoseListActivity.this, ViewDetailsActivity.class);
-        startActivity(intent);
-            // Handle the camera action
-        }else  if (id == R.id.doctor_details) {
-        Intent intent = new Intent(ShowMedicineDoseListActivity.this, DoctorListActivity.class);
-        startActivity(intent);
-        // Handle the camera action
-    }else  if (id == R.id.investigations) {
-        Intent intent = new Intent(ShowMedicineDoseListActivity.this, InvestigationActivity.class);
-        startActivity(intent);
-        // Handle the camera action
-    }else  if (id == R.id.appointments) {
-        Intent intent = new Intent(ShowMedicineDoseListActivity.this, AppointmentActivity.class);
-        startActivity(intent);
-        // Handle the camera action
-    }*/
         return true;
     }
 
@@ -163,11 +129,10 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
 
             if (data != null) {
                 if (data.size() != 0) {
-                    mAdapter = new ShowMedicineDoseListAdapter(this, data, false, mGetMealTime);
-                    mRecyclerView.setAdapter(mAdapter);
+                    prescriptionListAdapter = new PrescriptionListAdapter(this, data, false, mGetMealTime);
+                    mRecyclerView.setAdapter(prescriptionListAdapter);
                 }
             }
-
         }
     }
 
@@ -189,9 +154,7 @@ public class ShowMedicineDoseListActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-          /*  case R.id.backArrow:
-                finish();
-                break;*/
+
         }
     }
 }

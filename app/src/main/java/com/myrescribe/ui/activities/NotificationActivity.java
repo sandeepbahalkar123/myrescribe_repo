@@ -155,7 +155,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                     medi.add(medicationList.get(i));
                 }
             } else if (mContext.getResources().getString(R.string.snacks_medication).equalsIgnoreCase(medicineSlot)) {
-                if (medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.snacks_after)) || !medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.snacks_before))) {
+                if (medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.snacks_after)) || medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.snacks_before))) {
                     medi.add(medicationList.get(i));
                 }
             }
@@ -183,10 +183,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 mDoseCompletedLabel.setText(getString(R.string.dosage_completed));
                 mDividerLineInList.setVisibility(View.VISIBLE);
                 mDividerLineInHeader.setVisibility(View.VISIBLE);
-
-
                 addHeaderTabletView(mTabletListLayout, medi);
-
                 mTabletListLayout.setVisibility(View.VISIBLE);
                 mSelectView.setVisibility(View.INVISIBLE);
                 final String finalSlotMedicine = slotMedicine;
@@ -231,7 +228,6 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 mHeaderLayout.setOnTouchListener(swipeDismissTouchListener);
             }
         }
-
     }
 
     private void addHeaderTabletView(final ViewGroup parent, final ArrayList<Medication> data) {
@@ -259,12 +255,9 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                         mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 0);
                     } else {
                         data.get(finalI).setTabSelected(false);
-
-
                     }
                 }
             });
-
 
             setDose(tabCountTextView, data.get(i).getQuantity(), data.get(i));
             tabNameTextView.setText(data.get(i).getMedicineName());

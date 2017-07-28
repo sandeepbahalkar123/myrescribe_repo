@@ -25,7 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
+public class OneDayVisitAdapter extends BaseExpandableListAdapter {
 
     private final List<Vital> mVitalList;
     private Context mContext;
@@ -62,8 +62,8 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, ArrayList<Diagnosi>> mListDataChild;
 
-    public ShowViewDetailsAdapter(Context context, ArrayList<String> listDataHeader,
-                                  HashMap<String, ArrayList<Diagnosi>> listChildData, List<Vital> vitalList) {
+    public OneDayVisitAdapter(Context context, ArrayList<String> listDataHeader,
+                              HashMap<String, ArrayList<Diagnosi>> listChildData, List<Vital> vitalList) {
         this.mContext = context;
         this.mListDataHeader = listDataHeader;
         this.mListDataChild = listChildData;

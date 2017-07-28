@@ -2,6 +2,7 @@ package com.myrescribe.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 10/5/17.
  */
 
-public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedicineDoseListAdapter.ListViewHolder> {
+public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionListAdapter.ListViewHolder> {
 
     private List<PrescriptionD> mPrescriptionData;
     private Context mContext;
@@ -33,7 +34,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
     private String mGetMealTime;
     private List<PrescriptionD> mSearchListByMedicineName;
 
-    public ShowMedicineDoseListAdapter(Context context, List<PrescriptionD> dataSet, Boolean isPatientLogin, String mMealTime) {
+    public PrescriptionListAdapter(Context context, List<PrescriptionD> dataSet, Boolean isPatientLogin, String mMealTime) {
         this.mPrescriptionData = dataSet;
         this.mContext = context;
         this.isPatientLogin = isPatientLogin;
@@ -43,16 +44,37 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
     }
 
     @Override
-    public ShowMedicineDoseListAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PrescriptionListAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.medicine_prescribtion_activity, parent, false);
-        return new ShowMedicineDoseListAdapter.ListViewHolder(view);
+        return new PrescriptionListAdapter.ListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ShowMedicineDoseListAdapter.ListViewHolder holder, final int position) {
-        final PrescriptionD prescriptionDataObject = mPrescriptionData.get(position);
+    public void onBindViewHolder(final PrescriptionListAdapter.ListViewHolder holder, final int position) {
+       // getfrequencyScheduleString(5);
 
+        final PrescriptionD prescriptionDataObject = mPrescriptionData.get(position);
+          if(prescriptionDataObject.getFreq().equals("")){
+              holder.mShowMedicineLayout.setVisibility(View.VISIBLE);
+              holder.mExpandedMedicineDoseLayout.setVisibility(View.VISIBLE);
+              holder.mFrequencyLayout.setVisibility(View.GONE);
+             holder.mDividerForInstruction.setVisibility(View.VISIBLE);
+          }else{
+              holder.mFrequencyLayout.setVisibility(View.VISIBLE);
+              holder.mShowMedicineLayout.setVisibility(View.GONE);
+              holder.mExpandedMedicineDoseLayout.setVisibility(View.GONE);
+              if(prescriptionDataObject.getFreqSchedule().equals("")){
+                  holder.mFrequencyString.setText(getfrequencyScheduleString(Integer.parseInt(prescriptionDataObject.getFreq())));
+              }else{
+                  holder.mFrequencyString.setText(prescriptionDataObject.getFreqSchedule());
+              }
+              if(prescriptionDataObject.getInstruction().equals("")){
+                  holder.mDividerForInstruction.setVisibility(View.GONE);
+              }else{
+                  holder.mDividerForInstruction.setVisibility(View.VISIBLE);
+              }
+          }
         if (prescriptionDataObject.isExpanded()) {
             holder.mExpandLayout.setVisibility(View.VISIBLE);
             holder.mHighlightedInstructionView.setVisibility(View.GONE);
@@ -240,7 +262,7 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         holder.mEveningDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));//PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
 
 
-        // AmAAmAAmlA****Dinner********************************************
+        //************************Dinner********************************************
 
         quantityOfDose = "";
         timeOfDosage = "";
@@ -353,12 +375,35 @@ public class ShowMedicineDoseListAdapter extends RecyclerView.Adapter<ShowMedici
         TextView mEveningDose;
         @BindView(R.id.medicineType)
         ImageView mMedicineType;
+        @BindView(R.id.showMedicineLayout)
+         LinearLayout mShowMedicineLayout;
+        @BindView(R.id.frequencyLayout)
+        LinearLayout mFrequencyLayout;
+        @BindView(R.id.frequencyString)
+        TextView mFrequencyString;
+        @BindView(R.id.expandedMedicineDoseLayout)
+        LinearLayout mExpandedMedicineDoseLayout;
+        @BindView(R.id.dividerForInstruction)
+        View mDividerForInstruction;
+
 
         ListViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             this.view = view;
         }
+    }
+
+    public String getfrequencyScheduleString(int noOfFrequency) {
+        String s = "1";
+        if(noOfFrequency==2){
+            s = "1-0-1";
+        }else{
+            for (int i = 0; i < noOfFrequency-1; i++) {
+                s  =   s.concat("-1");
+            }
+        }
+        return s;
     }
 
 

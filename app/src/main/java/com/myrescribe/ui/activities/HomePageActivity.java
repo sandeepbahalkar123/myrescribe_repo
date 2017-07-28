@@ -223,7 +223,7 @@ public class HomePageActivity extends AppCompatActivity
             Intent intent = new Intent(mContext, DoctorFilteredListActivity.class);
             startActivity(intent);
         } else if (id == R.id.onGoingMedication) {
-            Intent intent = new Intent(HomePageActivity.this, ShowMedicineDoseListActivity.class);
+            Intent intent = new Intent(HomePageActivity.this, PrescriptionActivity.class);
             startActivity(intent);
         } else if (id == R.id.appointments) {
             Intent intent = new Intent(mContext, AppointmentActivity.class);

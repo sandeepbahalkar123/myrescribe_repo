@@ -112,14 +112,14 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
         // Dummy Case Details Data
 
-        caseDetailsList.add(new CaseDetails(1, "Complaints", R.drawable.case_complaints));
-        caseDetailsList.add(new CaseDetails(2, "Vitals", R.drawable.case_vitals));
-        caseDetailsList.add(new CaseDetails(3, "Remarks", R.drawable.case_remarks));
-        caseDetailsList.add(new CaseDetails(4, "Diagnosis", R.drawable.case_diagnosis));
-        caseDetailsList.add(new CaseDetails(5, "Prescription", R.drawable.case_prescription));
-        caseDetailsList.add(new CaseDetails(6, "Investigations", R.drawable.case_investigations));
-        caseDetailsList.add(new CaseDetails(7, "Advice", R.drawable.case_advice));
-        caseDetailsList.add(new CaseDetails(8, "Pain Score", R.drawable.case_pain_score));
+        caseDetailsList.add(new CaseDetails(1, "Complaints", R.drawable.complaints));
+        caseDetailsList.add(new CaseDetails(2, "Vitals", R.drawable.vitals));
+        caseDetailsList.add(new CaseDetails(3, "Remarks", R.drawable.remarks));
+        caseDetailsList.add(new CaseDetails(4, "Diagnosis", R.drawable.diagnosis));
+        caseDetailsList.add(new CaseDetails(5, "Prescription", R.drawable.prescription));
+        caseDetailsList.add(new CaseDetails(6, "Investigations", R.drawable.investigations));
+        caseDetailsList.add(new CaseDetails(7, "Advice", R.drawable.advice));
+        caseDetailsList.add(new CaseDetails(8, "Pain Score", R.drawable.pain_score));
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

@@ -3,7 +3,6 @@ package com.myrescribe.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -223,7 +222,7 @@ public class ShowViewDetailsAdapter extends BaseExpandableListAdapter {
             groupViewHolder.mDivider.setVisibility(View.VISIBLE);
         }
         groupViewHolder.lblListHeader.setText(headerTitle);
-        groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getVisitDetailsIcons(headerTitle, mContext));
+        groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getCaseStudyIcons(headerTitle, mContext));
         ArrayList<Diagnosi> historyCommonDetailses = getChildList(groupPosition);
         groupViewHolder.mDetailFirstPoint.setText(setStringLength(historyCommonDetailses.get(0).getName())+".......");
         return convertView;

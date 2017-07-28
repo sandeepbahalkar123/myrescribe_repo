@@ -27,9 +27,16 @@ import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.Common;
+import com.myrescribe.model.notification.AdapterNotificationData;
+import com.myrescribe.model.notification.AdapterNotificationModel;
+import com.myrescribe.model.notification.Breakfast;
+import com.myrescribe.model.notification.Dinner;
+import com.myrescribe.model.notification.Lunch;
 import com.myrescribe.model.notification.NotificationData;
 import com.myrescribe.model.notification.Medication;
 import com.myrescribe.model.notification.NotificationModel;
+import com.myrescribe.model.notification.SlotModel;
+import com.myrescribe.model.notification.Snack;
 import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.customesViews.CustomProgressDialog;
@@ -293,35 +300,38 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             CommonMethods.showToast(mContext,common.getStatusMessage());
         }
         if (mOldDataTag.equals(MyRescribeConstants.TASK_NOTIFICATION)) {
-            NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
-            List<NotificationData> notificationData = prescriptionDataReceived.getData();
-            String date = CommonMethods.getCurrentDateTime();
-            CommonMethods.Log(TAG, date);
-            for (int k = 0; k < notificationData.size(); k++) {
-                if (notificationData.get(k).getPrescriptionDate().equals(CommonMethods.getCurrentDateTime())) {
-                    String prescriptionDate = notificationData.get(k).getPrescriptionDate();
-                    notificationDataList = notificationData.get(k).getMedication();
-                    notificationDataForHeader.setMedication(notificationDataList);
-                    notificationDataForHeader.setPrescriptionDate(prescriptionDate);
-                    notificationListForHeader.add(notificationDataForHeader);
-                } else {
-                    NotificationData notificationDataForAdapter = new NotificationData();
-                    String datePrescription = notificationData.get(k).getPrescriptionDate();
-                    notificationDataList = notificationData.get(k).getMedication();
-                    notificationDataForAdapter.setMedication(notificationDataList);
-                    notificationDataForAdapter.setPrescriptionDate(datePrescription);
-                    notificationListForAdapter.add(notificationDataForAdapter);
-                }
-            }
-            if(notificationListForHeader.size()!=0){
-                           if(!notificationListForHeader.isEmpty()) {
-                               addHeader(notificationListForHeader);
-                           }
-                       }
+            if (customResponse != null) {
+                NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
 
-            mAdapter = new NotificationListAdapter(mContext, notificationListForAdapter, getTimeArray());
-                    mRecyclerView.setAdapter(mAdapter);
-                    mProgressDialog.dismiss();
+                List<NotificationData> notificationData = prescriptionDataReceived.getData();
+                String date = CommonMethods.getCurrentDateTime();
+                CommonMethods.Log(TAG, date);
+                for (int k = 0; k < notificationData.size(); k++) {
+                    if (notificationData.get(k).getPrescriptionDate().equals(CommonMethods.getCurrentDateTime())) {
+                        String prescriptionDate = notificationData.get(k).getPrescriptionDate();
+                        notificationDataList = notificationData.get(k).getMedication();
+                        notificationDataForHeader.setMedication(notificationDataList);
+                        notificationDataForHeader.setPrescriptionDate(prescriptionDate);
+                        notificationListForHeader.add(notificationDataForHeader);
+                    } else {
+                        NotificationData notificationDataForAdapter = new NotificationData();
+                        String datePrescription = notificationData.get(k).getPrescriptionDate();
+                        notificationDataList = notificationData.get(k).getMedication();
+                        notificationDataForAdapter.setMedication(notificationDataList);
+                        notificationDataForAdapter.setPrescriptionDate(datePrescription);
+                        notificationListForAdapter.add(notificationDataForAdapter);
+                    }
+                }
+                if (notificationListForHeader.size() != 0) {
+                    if (!notificationListForHeader.isEmpty()) {
+                        addHeader(notificationListForHeader);
+                    }
+                }
+
+                mAdapter = new NotificationListAdapter(mContext, notificationListForAdapter, getTimeArray());
+                mRecyclerView.setAdapter(mAdapter);
+                mProgressDialog.dismiss();
+            }
         }
     }
 

@@ -18,6 +18,7 @@ public class DoctorData implements Parcelable {
             DoctorData instance = new DoctorData();
             instance.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.doctorName = ((String) in.readValue((String.class.getClassLoader())));
+            instance.isSelected = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             return instance;
         }
 
@@ -32,6 +33,9 @@ public class DoctorData implements Parcelable {
     @SerializedName("doctor_name")
     @Expose
     private String doctorName;
+    @SerializedName("is_selected")
+    @Expose
+    private Boolean isSelected = false;
 
     public Integer getId() {
         return id;
@@ -49,9 +53,18 @@ public class DoctorData implements Parcelable {
         this.doctorName = doctorName;
     }
 
+    public Boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(Boolean isSelected) {
+        this.isSelected = isSelected;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
         dest.writeValue(doctorName);
+        dest.writeValue(isSelected);
     }
 
     public int describeContents() {

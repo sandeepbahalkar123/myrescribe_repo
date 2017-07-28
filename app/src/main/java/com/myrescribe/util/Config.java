@@ -26,7 +26,11 @@ public class Config {
     public static final String NOTIFICATION_URL = "api/patient/getPrescriptionNotifications?patientId=";
     public static final String RESPOND_TO_NOTIFICATION_URL = "api/patient/logMedicinesTakenInfo";
 
+    public static final String FILTER_DOCTOR_LIST = "api/patient/getDoctorNameList";
+    public static final String FILTER_DOCTOR_SPECIALIST_LIST = "api/patient/getDoctorSpeciality";
+    public static final String CASE_DETAILS_LIST = "api/patient/getVitalCaseHeadings";
 
+    public static final String APPOINTMENTS = "api/patient/appointments?patientId=3939&status=Upcoming";
 }
 
 

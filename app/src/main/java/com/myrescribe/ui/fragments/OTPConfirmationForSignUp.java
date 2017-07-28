@@ -28,6 +28,7 @@ import com.myrescribe.helpers.login.LoginHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.interfaces.OTPListener;
+import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.SignUpModel;
 import com.myrescribe.model.login.VerifyOTPSignUpResponseModel;
 import com.myrescribe.model.requestmodel.login.SignUpRequestModel;
@@ -199,6 +200,7 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
             SignUpVerifyOTPRequestModel model = new SignUpVerifyOTPRequestModel();
             model.setMobileNumber("" + mSignUpRequestModel.getMobileNumber());
             model.setOTP(mOtpEditText.getText().toString().trim());
+            model.setPassword(mSignUpRequestModel.getPassword());
 
             LoginHelper loginHelper = new LoginHelper(getActivity(), this);
             loginHelper.doVerifyGeneratedSignUpOTP(model);
@@ -233,31 +235,20 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
             }
         } else if (mOldDataTag.equalsIgnoreCase(MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP)) {
-            String data = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVOdW1iZXIiOjc3Mzg0NzczMDYsInBhc3N3b3JkIjoic2NvcmdAMTIzIiwiaWF0IjoxNTAxMTQ0Njk5LCJleHAiOjE1MDExNTE4OTl9.-AwVZIyEt7yt5HThpO80iieZWLpUZJXm7smi3xqyQ2I";
-            MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, data, getActivity());
-            MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, "4092", getActivity());
-            MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, getActivity());
 
-            Intent intent = new Intent(getActivity(), HomePageActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            getActivity().finish();
-            /*VerifyOTPSignUpResponseModel receivedModel = (VerifyOTPSignUpResponseModel) customResponse;
+            LoginModel receivedModel = (LoginModel) customResponse;
             if (receivedModel.getCommon().isSuccess()) {
-
-                //-- TODO , NEED TO ADD QUESTIONNAIRE FRAGMENT: FOR NOW GOING TO DASHBOARD
-
-                String data = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVOdW1iZXIiOjc3Mzg0NzczMDYsInBhc3N3b3JkIjoic2NvcmdAMTIzIiwiaWF0IjoxNTAxMTQ0Njk5LCJleHAiOjE1MDExNTE4OTl9.-AwVZIyEt7yt5HThpO80iieZWLpUZJXm7smi3xqyQ2I";
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, data, getActivity());
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, "4092", getActivity());
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, receivedModel.getAuthToken(), getActivity());
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, receivedModel.getPatientId(), getActivity());
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, getActivity());
-
                 Intent intent = new Intent(getActivity(), HomePageActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+                getActivity().finish();
             } else {
                 CommonMethods.showToast(getActivity(), receivedModel.getCommon().getStatusMessage());
-            }*/
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.notification.NotificationModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
@@ -22,6 +23,7 @@ public class NotificationHelper implements ConnectionListener {
     String TAG = "MyRescribe/NotificationHelper";
     Context mContext;
     HelperResponse mHelperResponseManager;
+
     public NotificationHelper(Context context, HelperResponse notificationActivity) {
         this.mContext = context;
         this.mHelperResponseManager = notificationActivity;
@@ -65,7 +67,7 @@ public class NotificationHelper implements ConnectionListener {
     public void doGetNotificationList() {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, MyRescribeConstants.TASK_NOTIFICATION, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.NOTIFICATION_URL);
+        mConnectionFactory.setUrl(Config.NOTIFICATION_URL + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, mContext));
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_NOTIFICATION);
     }
 

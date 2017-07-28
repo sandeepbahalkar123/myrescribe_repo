@@ -19,11 +19,11 @@ public class Config {
     public Context mContext;
     //Declared all URL used in app here
 
-    public static final String PRESCRIPTION_URL = "api/patient/getPatientPrescriptions/4092";
+    public static final String PRESCRIPTION_URL = "api/patient/getPatientPrescriptions/";
 
     public static final String ONE_DAY_VISIT_URL = "api/patient/getPatientOneDayVisit/4092/10/08-06-2017";
     public static final String DOCTOR_LIST_URL = "api/patient/getDoctorList?patientId=4092&year=";
-    public static final String NOTIFICATION_URL = "api/patient/getPrescriptionNotifications?patientId=4092";
+    public static final String NOTIFICATION_URL = "api/patient/getPrescriptionNotifications?patientId=";
     public static final String RESPOND_TO_NOTIFICATION_URL = "api/patient/logMedicinesTakenInfo";
 
 

@@ -80,8 +80,8 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:backgroundTint="@color/Red"
         android:layout_gravity="bottom|end"
-        android:backgroundTint="@color/Red"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/filter" />
 

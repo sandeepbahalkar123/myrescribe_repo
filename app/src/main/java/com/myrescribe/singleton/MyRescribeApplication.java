@@ -1,6 +1,5 @@
 package com.myrescribe.singleton;
 
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.multidex.MultiDex;
@@ -11,10 +10,6 @@ import com.facebook.appevents.AppEventsLogger;
 import com.myrescribe.helpers.database.AppDBHelper;
 
 import java.util.Hashtable;
-
-//import android.support.multidex.MultiDexApplication;
-/*import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;*/
 
 /**
  * Created by Sandeep Bahalkar

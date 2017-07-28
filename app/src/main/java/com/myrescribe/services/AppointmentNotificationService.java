@@ -45,8 +45,16 @@ public class AppointmentNotificationService extends Service {
         if (intent.getBooleanExtra(INTENT_NOTIFY, false))
             customNotification(intent);
 
+        getAppointmentDrInfo();
+
         // We don't care if this service is stopped as we have already delivered our notification
         return START_NOT_STICKY;
+    }
+
+    private void getAppointmentDrInfo() {
+        // Call webservice
+
+
     }
 
     @Override

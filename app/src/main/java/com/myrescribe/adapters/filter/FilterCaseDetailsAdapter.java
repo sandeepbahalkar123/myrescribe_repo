@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.model.filter.CaseDetails;
+import com.myrescribe.model.filter.CaseDetailsData;
 import com.myrescribe.util.CommonMethods;
 
 import java.util.ArrayList;
@@ -20,16 +20,16 @@ import butterknife.ButterKnife;
 
 public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDetailsAdapter.FileViewHolder> {
 
-    private final ArrayList<CaseDetails> caseDetailsList;
+    private final ArrayList<CaseDetailsData> caseDetailsList;
     private final Context context;
     private int vitalsPos = -1;
 
-    public FilterCaseDetailsAdapter(Context context, ArrayList<CaseDetails> caseDetailsList) {
+    public FilterCaseDetailsAdapter(Context context, ArrayList<CaseDetailsData> caseDetailsList) {
         this.context = context;
         this.caseDetailsList = caseDetailsList;
 
         for (int inx = 0; inx < caseDetailsList.size(); inx++) {
-            if (caseDetailsList.get(inx).getCaseDetails().equals("Vitals")) {
+            if (caseDetailsList.get(inx).getName().equals("Vitals")) {
                 vitalsPos = inx;
                 break;
             }
@@ -46,8 +46,8 @@ public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDet
     @Override
     public void onBindViewHolder(final FilterCaseDetailsAdapter.FileViewHolder holder, final int position) {
 
-        holder.caseTextView.setText(caseDetailsList.get(position).getCaseDetails());
-        holder.caseIcon.setImageResource(caseDetailsList.get(position).getImageId());
+        holder.caseTextView.setText(caseDetailsList.get(position).getName());
+//        holder.caseIcon.setImageResource(caseDetailsList.get(position).getImageId());
 
         holder.selectCheckbox.setChecked(caseDetailsList.get(position).isSelected());
         holder.rowView.setOnClickListener(new View.OnClickListener() {

@@ -37,7 +37,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class SeletedDocsActivity extends AppCompatActivity {
+public class SelectedDocsActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -70,7 +70,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
             }
         });
 
-        mContext = SeletedDocsActivity.this;
+        mContext = SelectedDocsActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
         investigation = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
@@ -83,7 +83,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
         }
 
         if (media_id == -1) {
-            SeletedDocsActivityPermissionsDispatcher.onPickPhotoWithCheck(SeletedDocsActivity.this);
+            SelectedDocsActivityPermissionsDispatcher.onPickPhotoWithCheck(SelectedDocsActivity.this);
             photoPaths = new ArrayList<>();
         }else {
             photoPaths = investigation.get(media_id).getPhotos();
@@ -107,7 +107,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_docs:
-                SeletedDocsActivityPermissionsDispatcher.onPickPhotoWithCheck(this);
+                SelectedDocsActivityPermissionsDispatcher.onPickPhotoWithCheck(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -147,7 +147,7 @@ public class SeletedDocsActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        SeletedDocsActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        SelectedDocsActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     @Override

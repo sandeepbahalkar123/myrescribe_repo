@@ -75,7 +75,7 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
     }
 
     private void initialize() {
-        mDoctorHelper = new DoctorHelper(this, this);
+        mDoctorHelper = new DoctorHelper(this);
     }
 
     private void setupViewPager() {

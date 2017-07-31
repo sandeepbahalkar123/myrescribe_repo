@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.model.Common;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppointmentsNotificationModel implements CustomResponse {
@@ -14,7 +15,7 @@ public class AppointmentsNotificationModel implements CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private List<AppointmentsNotificationData> data = null;
+    private List<AppointmentsNotificationData> data = new ArrayList<>();
 
     public Common getCommon() {
         return common;

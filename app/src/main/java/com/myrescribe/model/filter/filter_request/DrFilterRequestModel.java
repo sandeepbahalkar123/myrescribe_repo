@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class DrFilterRequestModel implements Parcelable {
 
@@ -37,7 +37,7 @@ public class DrFilterRequestModel implements Parcelable {
     };
     @SerializedName("docId")
     @Expose
-    private List<Integer> docId = null;
+    private ArrayList<Integer> docId = new ArrayList<>();
     @SerializedName("startDate")
     @Expose
     private String startDate;
@@ -46,10 +46,10 @@ public class DrFilterRequestModel implements Parcelable {
     private String endDate;
     @SerializedName("docSpeciality")
     @Expose
-    private List<String> docSpeciality = null;
+    private ArrayList<String> docSpeciality = new ArrayList<>();
     @SerializedName("cases")
     @Expose
-    private List<String> cases = null;
+    private ArrayList<String> cases = new ArrayList<>();
 
     public int getPatientId() {
         return patientId;
@@ -59,19 +59,19 @@ public class DrFilterRequestModel implements Parcelable {
         this.patientId = patientId;
     }
 
-    public List<Integer> getDocId() {
+    public ArrayList<Integer> getDocId() {
         return docId;
     }
 
-    public void setDocId(List<Integer> docId) {
+    public void setDocId(ArrayList<Integer> docId) {
         this.docId = docId;
     }
 
-    public List<String> getDocSpeciality() {
+    public ArrayList<String> getDocSpeciality() {
         return docSpeciality;
     }
 
-    public void setDocSpeciality(List<String> docSpeciality) {
+    public void setDocSpeciality(ArrayList<String> docSpeciality) {
         this.docSpeciality = docSpeciality;
     }
 
@@ -91,11 +91,11 @@ public class DrFilterRequestModel implements Parcelable {
         this.endDate = endDate;
     }
 
-    public List<String> getCases() {
+    public ArrayList<String> getCases() {
         return cases;
     }
 
-    public void setCases(List<String> cases) {
+    public void setCases(ArrayList<String> cases) {
         this.cases = cases;
     }
 

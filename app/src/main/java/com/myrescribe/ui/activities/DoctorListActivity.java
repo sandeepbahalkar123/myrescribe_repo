@@ -1,6 +1,7 @@
 package com.myrescribe.ui.activities;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -26,6 +27,7 @@ import com.myrescribe.adapters.CustomSpinnerAdapter;
 import com.myrescribe.adapters.filter.FilterCaseDetailsAdapter;
 import com.myrescribe.adapters.filter.FilterDoctorSpecialitiesAdapter;
 import com.myrescribe.adapters.filter.FilterDoctorsAdapter;
+import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.doctor.DoctorHelper;
 import com.myrescribe.helpers.filter.FilterHelper;
 import com.myrescribe.interfaces.CustomResponse;
@@ -38,7 +40,9 @@ import com.myrescribe.model.filter.DoctorSpecialityData;
 import com.myrescribe.model.filter.FilterDoctorListModel;
 import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
 import com.myrescribe.model.filter.filter_request.DrFilterRequestModel;
-import com.myrescribe.model.util.TimePeriod;
+import com.myrescribe.model.login.LoginModel;
+import com.myrescribe.model.login.Year;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.fragments.DoctorListFragment;
 import com.myrescribe.ui.fragments.filter.FilterFragment;
 import com.myrescribe.ui.fragments.filter.SelectDoctorsFragment;
@@ -86,8 +90,8 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     // Filter End
 
     private ArrayList<String> mYearList = new ArrayList<>();
-    private ArrayList<TimePeriod> mTimePeriodList = new ArrayList<>();
-    private TimePeriod mCurrentSelectedTimePeriodTab;
+    private ArrayList<Year> mTimePeriodList = new ArrayList<>();
+    private Year mCurrentSelectedTimePeriodTab;
     private DoctorHelper mDoctorHelper;
     private ViewPagerAdapter mViewPagerAdapter;
     private HashSet<String> mGeneratedRequestForYearList = new HashSet<>();
@@ -140,33 +144,23 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         //-------
         mDoctorHelper = new DoctorHelper(this);
         //-------
-        mCurrentSelectedTimePeriodTab = new TimePeriod();
+        mCurrentSelectedTimePeriodTab = new Year();
         mCurrentSelectedTimePeriodTab.setMonthName(new SimpleDateFormat("MMM", Locale.US).format(new Date()));
         mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy", Locale.US).format(new Date()));
         //-------
         //----
 
-        /*TimePeriod timePeriod1 = new TimePeriod();
-        timePeriod1.setMonthName("Jan");
-        timePeriod1.setYear("2015");*/
+        AppDBHelper appDBHelper = new AppDBHelper(DoctorListActivity.this);
 
-        /*TimePeriod timePeriod2 = new TimePeriod();
-        timePeriod2.setMonthName("Jun");
-        timePeriod2.setYear("2016");*/
+        if (appDBHelper.dataTableNumberOfRows(MyRescribeConstants.TASK_LOGIN) > 0) {
+            Cursor cursor = appDBHelper.getData(MyRescribeConstants.TASK_LOGIN);
+            cursor.moveToFirst();
+            String loginData = cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
+            Gson gson = new Gson();
+            LoginModel loginModel = gson.fromJson(loginData, LoginModel.class);
+            mTimePeriodList = loginModel.getYearList();
 
-        TimePeriod timePeriod3 = new TimePeriod();
-        timePeriod3.setMonthName("Jun");
-        timePeriod3.setYear("2017");
-
-//        mTimePeriodList.add(timePeriod1);
-//        mTimePeriodList.add(timePeriod2);
-        mTimePeriodList.add(timePeriod3);
-//        mTimePeriodList.add(timePeriod3);
-//        mTimePeriodList.add(timePeriod3);
-//        mTimePeriodList.add(timePeriod3);
-//        mTimePeriodList.add(timePeriod3);
-//        mTimePeriodList.add(timePeriod3);
-
+        }
 
         if (mTimePeriodList.size() < 6){
             mTabLayout.setTabMode(TabLayout.MODE_FIXED);
@@ -176,15 +170,6 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
             mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         }
 
-        /*Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        int month = cal.get(Calendar.MONTH) + 1;
-        int year = cal.get(Calendar.YEAR);
-        if (year == Integer.parseInt(mYearList.get(mYearList.size() - 1))) {
-            mTimePeriodList = CommonMethods.getMonthsWithYear(mYearList.get(0) + "-01-01", year + "-" + month + "-01", MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
-        } else {
-            mTimePeriodList = CommonMethods.getMonthsWithYear(mYearList.get(0) + "-01-01", mYearList.get(mYearList.size() - 1) + "-12-01", MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
-        }*/
         //---------
         //----
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -194,7 +179,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     private void setupViewPager() {
         mViewPagerAdapter.mFragmentList.clear();
         mViewPagerAdapter.mFragmentTitleList.clear();
-        for (TimePeriod data :
+        for (Year data :
                 mTimePeriodList) {
             Fragment fragment = DoctorListFragment.createNewFragment(data); // pass data here
             mViewPagerAdapter.addFragment(fragment, data); // pass title here
@@ -248,7 +233,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
             @Override
             public void run() {
                 for (int i = 0; i < mTimePeriodList.size(); i++) {
-                    TimePeriod temp = mTimePeriodList.get(i);
+                    Year temp = mTimePeriodList.get(i);
                     if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear()) &&
                             temp.getMonthName().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getMonthName())) {
                         mViewpager.setCurrentItem(i);
@@ -269,7 +254,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     public void onApply() {
 
         DrFilterRequestModel drFilterRequestModel = new DrFilterRequestModel();
-        drFilterRequestModel.setPatientId(4092);
+        drFilterRequestModel.setPatientId(Integer.parseInt(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, DoctorListActivity.this)));
         drFilterRequestModel.setDocId(docIdList);
         drFilterRequestModel.setDocSpeciality(doctorSpecialityList);
         drFilterRequestModel.setStartDate(filterFragment.getFromDate());
@@ -422,7 +407,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     //---------------
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<TimePeriod> mFragmentTitleList = new ArrayList<>();
+        private final List<Year> mFragmentTitleList = new ArrayList<>();
 
         ViewPagerAdapter(FragmentManager manager) {
             super(manager);
@@ -438,7 +423,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, TimePeriod title) {
+        public void addFragment(Fragment fragment, Year title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }

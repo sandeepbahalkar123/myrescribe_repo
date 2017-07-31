@@ -4,10 +4,8 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.myrescribe.R;
-import com.myrescribe.helpers.notification.NotificationHelper;
 import com.myrescribe.helpers.notification.RespondToNotificationHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
@@ -46,7 +44,7 @@ public class YesClickReceiver extends BroadcastReceiver implements  HelperRespon
             }else if (slot.equals(context.getString(R.string.dinner_medication))){
                 medicineSlot = context.getString(R.string.smallcasedinner);
             }
-            respondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID,context)),medicineSlot,medicineID,CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(),MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD,MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY,MyRescribeConstants.DATE),1);
+            respondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID,context)),medicineSlot,medicineID,CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(),MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD,MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY,MyRescribeConstants.DATE),1);
             //Toast.makeText(context, slot + " " + notificationId + " " + "Dose Accepted", Toast.LENGTH_SHORT).show();
             manager.cancel(notificationId);
         } else if (investigation_notification_id == 4) {

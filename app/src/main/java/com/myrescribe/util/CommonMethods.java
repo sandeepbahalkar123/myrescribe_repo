@@ -36,7 +36,7 @@ import android.widget.Toast;
 import com.myrescribe.R;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
-import com.myrescribe.model.util.TimePeriod;
+import com.myrescribe.model.login.Year;
 import com.myrescribe.ui.activities.PrescriptionActivity;
 
 import java.io.BufferedReader;
@@ -314,7 +314,7 @@ public class CommonMethods {
         return mDiff;
     }
 
-    public static ArrayList<TimePeriod> getMonthsWithYear(String startDate, String endDate, String dateFormat) {
+    /*public static ArrayList<Year> getMonthsWithYear(String startDate, String endDate, String dateFormat) {
         ArrayList<String> monthsWithYear = new ArrayList<>();
         try {
             Calendar startCal = Calendar.getInstance();
@@ -329,17 +329,17 @@ public class CommonMethods {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        ArrayList<TimePeriod> timePeriods = new ArrayList<>();
+        ArrayList<Year> timePeriods = new ArrayList<>();
         for (String data :
                 monthsWithYear) {
             String[] splitValues = data.split("-");
-            TimePeriod timePeriod = new TimePeriod();
+            Year timePeriod = new Year();
             timePeriod.setMonthName(splitValues[0]);
             timePeriod.setYear(splitValues[1]);
             timePeriods.add(timePeriod);
         }
         return timePeriods;
-    }
+    }*/
 
     public static void dateDifference(Date startDate, Date endDate) {
         //milliseconds

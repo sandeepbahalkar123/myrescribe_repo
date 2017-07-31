@@ -19,8 +19,9 @@ public class LoginModel implements CustomResponse {
     @Expose
     private String patientId;
 
-    //TODO: Need to parsed this, once done from server side.
-    private ArrayList<String> yearList = new ArrayList<>();
+    @SerializedName("years")
+    @Expose
+    private ArrayList<Year> yearList = new ArrayList<>();
 
     public String getPatientId() {
         return patientId;
@@ -46,11 +47,11 @@ public class LoginModel implements CustomResponse {
         this.authToken = authToken;
     }
 
-    public ArrayList<String> getYearList() {
+    public ArrayList<Year> getYearList() {
         return yearList;
     }
 
-    public void setYearList(ArrayList<String> yearList) {
+    public void setYearList(ArrayList<Year> yearList) {
         this.yearList = yearList;
     }
 }

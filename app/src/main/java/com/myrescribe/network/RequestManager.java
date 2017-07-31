@@ -6,7 +6,6 @@ package com.myrescribe.network;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -40,18 +39,15 @@ import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
 import com.myrescribe.model.filter.FilterDoctorListModel;
 import com.myrescribe.model.login.SignUpModel;
 
-import com.myrescribe.model.notification.AppointmentsNotificationData;
 import com.myrescribe.model.notification.AppointmentsNotificationModel;
 import com.myrescribe.model.notification.NotificationModel;
 
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 
 import com.myrescribe.model.login.LoginModel;
-import com.myrescribe.model.requestmodel.login.LoginRequestModel;
 import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
 import com.myrescribe.model.visit_details.VisitDetailsModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
-import com.myrescribe.ui.activities.SplashScreenActivity;
 import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
@@ -363,7 +359,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 LoginModel loginModel = gson.fromJson(data, LoginModel.class);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, loginModel.getPatientId(), mContext);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, loginModel.getPatientId(), mContext);
 
                 mHeaderParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, loginModel.getAuthToken());
 

@@ -91,6 +91,12 @@ public class MyRescribeConstants {
     public static final String TASK_SIGN_UP = MyRescribeConstants.BLANK + 11;
     public static final String TASK_VERIFY_SIGN_UP_OTP = MyRescribeConstants.BLANK + 12;
 
+    public static final String FILTER_DOCTOR_LIST = MyRescribeConstants.BLANK + 13;
+    public static final String FILTER_DOCTOR_SPECIALITY_LIST = MyRescribeConstants.BLANK + 14;
+    public static final String CASE_DETAILS_LIST = MyRescribeConstants.BLANK + 15;
+
+    public static final String APPOINTMENT_NOTIFICATION = MyRescribeConstants.BLANK + 16;
+
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
@@ -126,7 +132,7 @@ public class MyRescribeConstants {
         public final static String hh_mm_a = "hh:mm a";
         public static final String TOTIMEZONE = "Asia/Kolkata";
         public final static String EEEE_dd_MMM_yyyy_hh_mm_a = "EEEE dd MMM yyyy | hh:mm a";
-        public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
+        public static String HH_mm_ss = "HH:mm:ss";
         public static String DD_MM_YYYY_hh_mm = "dd/MM/yyyy hh:mm aa";
         public static String HH_MM = "hh:mm";
         public static String MMM_YYYY = "MMM, yyyy";

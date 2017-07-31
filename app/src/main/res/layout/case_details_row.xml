@@ -31,8 +31,8 @@
             android:layout_toStartOf="@+id/selectCheckbox"
             android:padding="@dimen/dp8"
             android:textColor="@color/tagColor"
-            android:textSize="@dimen/sp19"
-            app:customFont="@string/roboto_bold"
+            android:textSize="@dimen/sp16"
+            app:customFont="@string/roboto_medium"
             tools:text="@string/select_doctors" />
 
         <CheckBox

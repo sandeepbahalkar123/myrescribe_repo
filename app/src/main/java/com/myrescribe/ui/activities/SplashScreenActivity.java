@@ -73,7 +73,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intentObj);
                 } else if (!MyRescribePreferencesManager.getString(MyRescribeConstants.USERNAME, mContext).equals("") && (!MyRescribePreferencesManager.getString(MyRescribeConstants.PHONE, mContext).equals(""))) {
-                    Intent intentObj = new Intent(SplashScreenActivity.this, ShowMedicineDoseListActivity.class);
+                    Intent intentObj = new Intent(SplashScreenActivity.this, PrescriptionActivity.class);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -123,7 +123,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 } else {
                     //------Check Remember ME first , then only move on next screen.
-                    intentObj = new Intent(mContext, ShowMedicineDoseListActivity.class);
+                    intentObj = new Intent(mContext, PrescriptionActivity.class);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
+import com.myrescribe.model.filter.DoctorSpecialityData;
 
 import java.util.ArrayList;
 
@@ -18,13 +19,13 @@ import butterknife.ButterKnife;
 
 public class FilterDoctorSpecialitiesAdapter extends RecyclerView.Adapter<FilterDoctorSpecialitiesAdapter.FileViewHolder> {
 
-    private final ArrayList<DoctorDetail> doctorDetailArrayList;
+    private final ArrayList<DoctorSpecialityData> doctorSpecialityDatas;
     private final Context context;
     private FilterDoctorSpecialitiesAdapter.ItemClickListener itemClickListener;
 
-    public FilterDoctorSpecialitiesAdapter(Context context, ArrayList<DoctorDetail> doctorDetailArrayList) {
+    public FilterDoctorSpecialitiesAdapter(Context context, ArrayList<DoctorSpecialityData> doctorSpecialityDatas) {
         this.context = context;
-        this.doctorDetailArrayList = doctorDetailArrayList;
+        this.doctorSpecialityDatas = doctorSpecialityDatas;
 
         try {
             this.itemClickListener = ((FilterDoctorSpecialitiesAdapter.ItemClickListener) context);
@@ -43,15 +44,15 @@ public class FilterDoctorSpecialitiesAdapter extends RecyclerView.Adapter<Filter
     @Override
     public void onBindViewHolder(final FilterDoctorSpecialitiesAdapter.FileViewHolder holder, final int position) {
 
-        holder.drName.setText(doctorDetailArrayList.get(position).getSpecialization());
+        holder.drName.setText(doctorSpecialityDatas.get(position).getSpeciality());
 
-        holder.selectCheckbox.setChecked(doctorDetailArrayList.get(position).isDoctorSpecialitySelected());
+        holder.selectCheckbox.setChecked(doctorSpecialityDatas.get(position).isSelected());
         holder.rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doctorDetailArrayList.get(position).isDoctorSpecialitySelected())
-                    doctorDetailArrayList.get(position).setDoctorSpecialitySelected(false);
-                else doctorDetailArrayList.get(position).setDoctorSpecialitySelected(true);
+                if (doctorSpecialityDatas.get(position).isSelected())
+                    doctorSpecialityDatas.get(position).setSelected(false);
+                else doctorSpecialityDatas.get(position).setSelected(true);
 
                 notifyItemChanged(position);
 
@@ -62,7 +63,7 @@ public class FilterDoctorSpecialitiesAdapter extends RecyclerView.Adapter<Filter
 
     @Override
     public int getItemCount() {
-        return doctorDetailArrayList.size();
+        return doctorSpecialityDatas.size();
     }
 
     static class FileViewHolder extends RecyclerView.ViewHolder {

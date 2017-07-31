@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
+import com.myrescribe.model.filter.DoctorData;
 
 import java.util.ArrayList;
 
@@ -18,11 +19,11 @@ import butterknife.ButterKnife;
 
 public class FilterDoctorsAdapter extends RecyclerView.Adapter<FilterDoctorsAdapter.FileViewHolder> {
 
-    private final ArrayList<DoctorDetail> doctorDetailArrayList;
+    private final ArrayList<DoctorData> doctorDetailArrayList;
     private final Context context;
     private ItemClickListener itemClickListener;
 
-    public FilterDoctorsAdapter(Context context, ArrayList<DoctorDetail> doctorDetailArrayList) {
+    public FilterDoctorsAdapter(Context context, ArrayList<DoctorData> doctorDetailArrayList) {
         this.context = context;
         this.doctorDetailArrayList = doctorDetailArrayList;
 
@@ -45,13 +46,13 @@ public class FilterDoctorsAdapter extends RecyclerView.Adapter<FilterDoctorsAdap
 
         holder.drName.setText(doctorDetailArrayList.get(position).getDoctorName());
 
-        holder.selectCheckbox.setChecked(doctorDetailArrayList.get(position).isDoctorSelected());
+        holder.selectCheckbox.setChecked(doctorDetailArrayList.get(position).isSelected());
         holder.rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doctorDetailArrayList.get(position).isDoctorSelected())
-                    doctorDetailArrayList.get(position).setDoctorSelected(false);
-                else doctorDetailArrayList.get(position).setDoctorSelected(true);
+                if (doctorDetailArrayList.get(position).isSelected())
+                    doctorDetailArrayList.get(position).setSelected(false);
+                else doctorDetailArrayList.get(position).setSelected(true);
 
                 notifyItemChanged(position);
 

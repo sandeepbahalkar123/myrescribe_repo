@@ -131,8 +131,8 @@ public class HomePageActivity extends AppCompatActivity
         String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
 
         new DosesAlarmTask(mContext, times, date).run();
-        new InvestigationAlarmTask(mContext, "9:00 am", getResources().getString(R.string.investigation_msg)).run();
-        new AppointmentAlarmTask(mContext, "9:00 am", getResources().getString(R.string.appointment_msg)).run();
+        new InvestigationAlarmTask(mContext, "9:00 AM", getResources().getString(R.string.investigation_msg)).run();
+        new AppointmentAlarmTask(mContext, "9:00 AM", getResources().getString(R.string.appointment_msg)).run();
     }
 
     @Override
@@ -223,7 +223,7 @@ public class HomePageActivity extends AppCompatActivity
             Intent intent = new Intent(mContext, DoctorFilteredListActivity.class);
             startActivity(intent);
         } else if (id == R.id.onGoingMedication) {
-            Intent intent = new Intent(HomePageActivity.this, ShowMedicineDoseListActivity.class);
+            Intent intent = new Intent(HomePageActivity.this, PrescriptionActivity.class);
             startActivity(intent);
         } else if (id == R.id.appointments) {
             Intent intent = new Intent(mContext, AppointmentActivity.class);

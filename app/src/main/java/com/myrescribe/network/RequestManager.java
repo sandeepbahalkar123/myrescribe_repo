@@ -33,12 +33,15 @@ import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
 
-import com.myrescribe.model.Common;
 import com.myrescribe.model.doctors.doctor_info.DoctorModel;
 
+import com.myrescribe.model.filter.CaseDetailsListModel;
+import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
+import com.myrescribe.model.filter.FilterDoctorListModel;
 import com.myrescribe.model.login.SignUpModel;
-import com.myrescribe.model.login.VerifyOTPSignUpResponseModel;
 
+import com.myrescribe.model.notification.AppointmentsNotificationData;
+import com.myrescribe.model.notification.AppointmentsNotificationModel;
 import com.myrescribe.model.notification.NotificationModel;
 
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
@@ -404,6 +407,26 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case MyRescribeConstants.TASK_RESPOND_NOTIFICATION: //This is for get archived list
                         ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
+                        break;
+
+                    case MyRescribeConstants.FILTER_DOCTOR_LIST: //This is for get archived list
+                        FilterDoctorListModel filterDoctorListModel = new Gson().fromJson(data, FilterDoctorListModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, filterDoctorListModel, mOldDataTag);
+                        break;
+
+                    case MyRescribeConstants.FILTER_DOCTOR_SPECIALITY_LIST: //This is for get archived list
+                        FilterDoctorSpecialityListModel filterDoctorSpecialityListModel = new Gson().fromJson(data, FilterDoctorSpecialityListModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, filterDoctorSpecialityListModel, mOldDataTag);
+                        break;
+
+                    case MyRescribeConstants.CASE_DETAILS_LIST: //This is for get archived list
+                        CaseDetailsListModel caseDetailsListModel = new Gson().fromJson(data, CaseDetailsListModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, caseDetailsListModel, mOldDataTag);
+                        break;
+
+                    case MyRescribeConstants.APPOINTMENT_NOTIFICATION: //This is for get archived list
+                        AppointmentsNotificationModel appointmentsNotificationModel = new Gson().fromJson(data, AppointmentsNotificationModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, appointmentsNotificationModel, mOldDataTag);
                         break;
                     /*
                     default:

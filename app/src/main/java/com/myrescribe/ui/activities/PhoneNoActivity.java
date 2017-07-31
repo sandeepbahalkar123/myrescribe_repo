@@ -58,7 +58,7 @@ public class PhoneNoActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.buttonOk:
                 String phoneNumber = mEditTextUserPhoneNumber.getText().toString();
                 MyRescribePreferencesManager.putString(MyRescribeConstants.PHONE, phoneNumber, mContext);
-                Intent intent = new Intent(PhoneNoActivity.this, ShowMedicineDoseListActivity.class);
+                Intent intent = new Intent(PhoneNoActivity.this, PrescriptionActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

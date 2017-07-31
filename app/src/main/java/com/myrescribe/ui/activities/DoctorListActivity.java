@@ -19,17 +19,21 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.CustomSpinnerAdapter;
 import com.myrescribe.adapters.filter.FilterDoctorSpecialitiesAdapter;
 import com.myrescribe.adapters.filter.FilterDoctorsAdapter;
 import com.myrescribe.helpers.doctor.DoctorHelper;
+import com.myrescribe.helpers.filter.FilterHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
-import com.myrescribe.model.filter.CaseDetails;
-import com.myrescribe.model.filter.FilterDoctorModel;
+import com.myrescribe.model.filter.CaseDetailsData;
+import com.myrescribe.model.filter.CaseDetailsListModel;
+import com.myrescribe.model.filter.DoctorData;
+import com.myrescribe.model.filter.DoctorSpecialityData;
+import com.myrescribe.model.filter.FilterDoctorListModel;
+import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
 import com.myrescribe.model.util.TimePeriod;
 import com.myrescribe.ui.fragments.DoctorListFragment;
 import com.myrescribe.ui.fragments.filter.FilterFragment;
@@ -85,9 +89,10 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     private HashSet<String> mGeneratedRequestForYearList = new HashSet<>();
 
     private FragmentManager fragmentManager;
-    private ArrayList<DoctorDetail> doctorList;
-    private ArrayList<CaseDetails> caseDetailsList = new ArrayList<>();
     private FilterFragment filterFragment;
+    private FilterDoctorListModel filterDoctorListModel = new FilterDoctorListModel();
+    private FilterDoctorSpecialityListModel filterDoctorSpecialityListModel = new FilterDoctorSpecialityListModel();
+    private CaseDetailsListModel caseDetailsListModel = new CaseDetailsListModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,27 +115,10 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
         // Filter Start
 
-        // Dummy Case Details Data
-
-        caseDetailsList.add(new CaseDetails(1, "Complaints", R.drawable.case_complaints));
-        caseDetailsList.add(new CaseDetails(2, "Vitals", R.drawable.case_vitals));
-        caseDetailsList.add(new CaseDetails(3, "Remarks", R.drawable.case_remarks));
-        caseDetailsList.add(new CaseDetails(4, "Diagnosis", R.drawable.case_diagnosis));
-        caseDetailsList.add(new CaseDetails(5, "Prescription", R.drawable.case_prescription));
-        caseDetailsList.add(new CaseDetails(6, "Investigations", R.drawable.case_investigations));
-        caseDetailsList.add(new CaseDetails(7, "Advice", R.drawable.case_advice));
-        caseDetailsList.add(new CaseDetails(8, "Pain Score", R.drawable.case_pain_score));
-
-        fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        filterFragment = FilterFragment.newInstance(caseDetailsList);
-        fragmentTransaction.add(R.id.nav_view, filterFragment, "Filter");
-        fragmentTransaction.commit();
-        // Dummy Doctors Data
-        String doctorListJson = CommonMethods.readJsonFile(this, "filterdoctor.json");
-        Gson gson = new Gson();
-        FilterDoctorModel filterDoctorModel = gson.fromJson(doctorListJson, FilterDoctorModel.class);
-        doctorList = filterDoctorModel.getDoctors();
+        FilterHelper filterHelper = new FilterHelper(this);
+        filterHelper.getDoctorList();
+        filterHelper.getDoctorSpecialityList();
+        filterHelper.getCaseDetailsList();
 
         // Filter End
 
@@ -278,7 +266,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     @Override
     public void onSelectDoctors() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        SelectDoctorsFragment selectDoctorsFragment = SelectDoctorsFragment.newInstance(doctorList, getResources().getString(R.string.doctors));
+        SelectDoctorsFragment selectDoctorsFragment = SelectDoctorsFragment.newInstance(filterDoctorListModel.getData(), getResources().getString(R.string.doctors));
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
         fragmentTransaction.add(R.id.nav_view, selectDoctorsFragment, getResources().getString(R.string.doctors));
         fragmentTransaction.addToBackStack(null);
@@ -288,7 +276,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     @Override
     public void onSelectSpeciality() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        SelectSpecialityFragment selectSpecialityFragment = SelectSpecialityFragment.newInstance(doctorList, getResources().getString(R.string.doctors_speciality));
+        SelectSpecialityFragment selectSpecialityFragment = SelectSpecialityFragment.newInstance(filterDoctorSpecialityListModel.getDoctorSpecialityData(), getResources().getString(R.string.doctors_speciality));
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
         fragmentTransaction.add(R.id.nav_view, selectSpecialityFragment, getResources().getString(R.string.doctors_speciality));
         fragmentTransaction.addToBackStack(null);
@@ -297,12 +285,15 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
     @Override
     public void onReset() {
-        for (DoctorDetail doctorDetail : doctorList) {
-            doctorDetail.setDoctorSelected(false);
-            doctorDetail.setDoctorSpecialitySelected(false);
+        for (DoctorData doctorDetail : filterDoctorListModel.getData()) {
+            doctorDetail.setSelected(false);
         }
 
-        for (CaseDetails caseDetails : caseDetailsList)
+        for (DoctorSpecialityData doctorSpecialityData : filterDoctorSpecialityListModel.getDoctorSpecialityData()) {
+            doctorSpecialityData.setSelected(false);
+        }
+
+        for (CaseDetailsData caseDetails : caseDetailsListModel.getCaseDetailsDatas())
             caseDetails.setSelected(false);
 
         filterFragment.notifyCaseDetails();
@@ -327,8 +318,8 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     public void onDoctorClick() {
         String doctorName = getResources().getString(R.string.select_doctors);
         int count = 0;
-        for (DoctorDetail doctorDetail : doctorList) {
-            if (doctorDetail.isDoctorSelected()) {
+        for (DoctorData doctorDetail : filterDoctorListModel.getData()) {
+            if (doctorDetail.isSelected()) {
                 count++;
                 if (count == 1)
                     doctorName = doctorDetail.getDoctorName();
@@ -345,11 +336,11 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     public void onDoctorSpecialityClick() {
         String doctorSpeciality = getResources().getString(R.string.select_doctors_speciality);
         int count = 0;
-        for (DoctorDetail doctorDetail : doctorList) {
-            if (doctorDetail.isDoctorSpecialitySelected()) {
+        for (DoctorSpecialityData doctorSpecialityData : filterDoctorSpecialityListModel.getDoctorSpecialityData()) {
+            if (doctorSpecialityData.isSelected()) {
                 count++;
                 if (count == 1)
-                    doctorSpeciality = doctorDetail.getSpecialization();
+                    doctorSpeciality = doctorSpecialityData.getSpeciality();
             }
 
         }
@@ -452,6 +443,21 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         //  mViewPagerAdapter.notifyDataSetChanged();
+        if (customResponse instanceof FilterDoctorListModel) {
+            filterDoctorListModel = (FilterDoctorListModel) customResponse;
+
+        } else if (customResponse instanceof FilterDoctorSpecialityListModel) {
+            filterDoctorSpecialityListModel = (FilterDoctorSpecialityListModel) customResponse;
+        } else if (customResponse instanceof CaseDetailsListModel) {
+            caseDetailsListModel = (CaseDetailsListModel) customResponse;
+
+            fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            filterFragment = FilterFragment.newInstance(caseDetailsListModel.getCaseDetailsDatas());
+            fragmentTransaction.add(R.id.nav_view, filterFragment, "Filter");
+            fragmentTransaction.commit();
+
+        } else
         setupViewPager();
     }
 

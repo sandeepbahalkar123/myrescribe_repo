@@ -55,6 +55,7 @@
                     android:orientation="vertical">
 
                     <EditText
+                        android:maxLength="4"
                         android:id="@+id/otpEditText"
                         style="@style/AppLoginMainStyle"
                         android:gravity="center"

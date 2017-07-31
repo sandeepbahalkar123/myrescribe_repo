@@ -119,7 +119,7 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
             }
         }
         if (message != null) {
-            CommonMethods.showSnack(mSocialLoginMobileNo, message);
+            CommonMethods.showToast(getActivity(), message);
             return true;
         } else {
             return false;

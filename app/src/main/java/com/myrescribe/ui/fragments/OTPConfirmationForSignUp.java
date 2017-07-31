@@ -125,27 +125,6 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
             mHeaderMessageForMobileOTP.setText("" + String.format(getString(R.string.message_for_mobile_otp), mSignUpRequestModel.getMobileNumber()));
         }
 
-        mOtpEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().trim().length() == 4) {
-                    mResendOtpBtnLayout.setVisibility(View.INVISIBLE);
-                    mCountDownTimer.onFinish();
-                    mSubmitBtn.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
         return inflate;
     }
 
@@ -157,7 +136,6 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
         CommonMethods.Log("otpReceived", "otpReceived reformatted:" + value);
         mCountDownTimer.onFinish();
         mOtpEditText.setText(String.valueOf(value).substring(0, 4));
-        mResendOtpBtn.setVisibility(View.GONE);
         mSubmitBtn.setVisibility(View.VISIBLE);
         onSubmitBtnClicked();
     }
@@ -170,16 +148,9 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
         @Override
         public void onFinish() {
             mResendOtpBtnLayout.setVisibility(View.INVISIBLE);
-            if (mOtpEditText.getText().toString().trim().length() == 0) {
-                mResendOtpBtn.setVisibility(View.VISIBLE);
-                mSubmitBtn.setVisibility(View.GONE);
-            } else {
-                mSubmitBtn.setVisibility(View.VISIBLE);
-                mResendOtpBtn.setVisibility(View.GONE);
-            }
+            mResendOtpBtn.setVisibility(View.VISIBLE);
+            mSubmitBtn.setVisibility(View.GONE);
             mOtpEditText.setVisibility(View.VISIBLE);
-            //  mProgressBar.setVisibility(View.GONE);
-            mProgressTime.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -229,8 +200,9 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
                 mCountDownTimer = new MyCountDownTimer(mStartTime, mInterval);
                 mCountDownTimer.start();
                 mResendOtpBtnLayout.setVisibility(View.VISIBLE);
-                mSubmitBtn.setVisibility(View.GONE);
+                mSubmitBtn.setVisibility(View.VISIBLE);
                 mResendOtpBtn.setVisibility(View.GONE);
+                mOtpEditText.setText("");
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
             }

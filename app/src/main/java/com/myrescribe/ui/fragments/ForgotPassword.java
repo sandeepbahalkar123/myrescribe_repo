@@ -86,7 +86,7 @@ public class ForgotPassword extends Fragment implements HelperResponse {
         }
 
         if (message != null) {
-            CommonMethods.showSnack(mForgotPasswordEmailEditText, message);
+            CommonMethods.showToast(getActivity(), message);
             return true;
         } else {
             return false;

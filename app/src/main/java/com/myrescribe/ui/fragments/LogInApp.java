@@ -124,15 +124,24 @@ public class LogInApp extends Fragment implements
         String enter = getString(R.string.enter);
         if (mobileNo.isEmpty()) {
             message = enter + getString(R.string.enter_mobile_no).toLowerCase(Locale.US);
-        } else if (password.isEmpty()) {
-            message = enter + getString(R.string.enter_password).toLowerCase(Locale.US);
-        } else if (password.trim().length() < 8) {
-            message = getString(R.string.error_too_small_password);
+            mMobileNo.setError(message);
+            mMobileNo.requestFocus();
         } else if (mobileNo.trim().length() < 10) {
             message = getString(R.string.err_invalid_mobile_no);
+            mMobileNo.setError(message);
+            mMobileNo.requestFocus();
+
+        } else if (password.isEmpty()) {
+            message = enter + getString(R.string.enter_password).toLowerCase(Locale.US);
+            mPassword.setError(message);
+            mPassword.requestFocus();
+        } else if (password.trim().length() < 8) {
+            message = getString(R.string.error_too_small_password);
+            mPassword.setError(message);
+            mPassword.requestFocus();
+
         }
         if (message != null) {
-            CommonMethods.showSnack(mMobileNo, message);
             return true;
         } else {
             return false;

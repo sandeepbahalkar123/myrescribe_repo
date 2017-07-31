@@ -180,17 +180,17 @@ public class FilterFragment extends Fragment {
         drNameTextView.setText(name);
     }
 
-    public String getDoctorName() {
+   /* public String getDoctorName() {
         return drNameTextView.getText().toString();
-    }
+    }*/
 
     public void setDoctorSpeciality(String speciality) {
         drSpecialityTextView.setText(speciality);
     }
 
-    public String getDoctorSpeciality() {
+   /* public String getDoctorSpeciality() {
         return drSpecialityTextView.getText().toString();
-    }
+    }*/
 
     public String getFromDate(){
         return fromDate;

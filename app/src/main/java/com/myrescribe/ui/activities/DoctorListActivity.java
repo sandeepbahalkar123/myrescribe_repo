@@ -19,8 +19,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.CustomSpinnerAdapter;
+import com.myrescribe.adapters.filter.FilterCaseDetailsAdapter;
 import com.myrescribe.adapters.filter.FilterDoctorSpecialitiesAdapter;
 import com.myrescribe.adapters.filter.FilterDoctorsAdapter;
 import com.myrescribe.helpers.doctor.DoctorHelper;
@@ -34,6 +36,7 @@ import com.myrescribe.model.filter.DoctorData;
 import com.myrescribe.model.filter.DoctorSpecialityData;
 import com.myrescribe.model.filter.FilterDoctorListModel;
 import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
+import com.myrescribe.model.filter.filter_request.DrFilterRequestModel;
 import com.myrescribe.model.util.TimePeriod;
 import com.myrescribe.ui.fragments.DoctorListFragment;
 import com.myrescribe.ui.fragments.filter.FilterFragment;
@@ -58,7 +61,7 @@ import butterknife.OnClick;
  * Created by jeetal on 14/6/17.
  */
 
-public class DoctorListActivity extends AppCompatActivity implements HelperResponse, FilterFragment.OnDrawerInteractionListener, SelectDoctorsFragment.OnSelectDoctorInteractionListener, SelectSpecialityFragment.OnSelectSpecialityInteractionListener, FilterDoctorsAdapter.ItemClickListener, FilterDoctorSpecialitiesAdapter.ItemClickListener {
+public class DoctorListActivity extends AppCompatActivity implements HelperResponse, FilterFragment.OnDrawerInteractionListener, SelectDoctorsFragment.OnSelectDoctorInteractionListener, SelectSpecialityFragment.OnSelectSpecialityInteractionListener, FilterDoctorsAdapter.ItemClickListener, FilterDoctorSpecialitiesAdapter.ItemClickListener, FilterCaseDetailsAdapter.ItemClickListener {
 
     @BindView(R.id.backArrow)
     ImageView mBackArrow;
@@ -93,6 +96,10 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     private FilterDoctorListModel filterDoctorListModel = new FilterDoctorListModel();
     private FilterDoctorSpecialityListModel filterDoctorSpecialityListModel = new FilterDoctorSpecialityListModel();
     private CaseDetailsListModel caseDetailsListModel = new CaseDetailsListModel();
+
+    private ArrayList<String> caseList = new ArrayList<>();
+    private ArrayList<String> doctorSpecialityList = new ArrayList<>();
+    private ArrayList<Integer> docIdList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +144,6 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy", Locale.US).format(new Date()));
         //-------
         //----
-
 
         /*TimePeriod timePeriod1 = new TimePeriod();
         timePeriod1.setMonthName("Jan");
@@ -259,8 +265,23 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     // Filter Start
 
     @Override
-    public void onDrawerClose() {
-        drawer.closeDrawer(GravityCompat.END);
+    public void onApply() {
+
+        DrFilterRequestModel drFilterRequestModel = new DrFilterRequestModel();
+        drFilterRequestModel.setPatientId(4092);
+        drFilterRequestModel.setDocId(docIdList);
+        drFilterRequestModel.setDocSpeciality(doctorSpecialityList);
+        drFilterRequestModel.setStartDate(filterFragment.getFromDate());
+        drFilterRequestModel.setEndDate(filterFragment.getToDate());
+        drFilterRequestModel.setCases(caseList);
+
+        Gson gson = new Gson();
+        CommonMethods.Log("FilterRequest", gson.toJson(drFilterRequestModel, DrFilterRequestModel.class));
+
+       /* drawer.closeDrawer(GravityCompat.END);
+        Intent intent = new Intent(DoctorListActivity.this, DoctorFilteredListActivity.class);
+        startActivity(intent);*/
+
     }
 
     @Override
@@ -285,6 +306,11 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
     @Override
     public void onReset() {
+
+        docIdList.clear();
+        doctorSpecialityList.clear();
+        caseList.clear();
+
         for (DoctorData doctorDetail : filterDoctorListModel.getData()) {
             doctorDetail.setSelected(false);
         }
@@ -316,10 +342,16 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
     @Override
     public void onDoctorClick() {
+
+        docIdList.clear();
+
         String doctorName = getResources().getString(R.string.select_doctors);
         int count = 0;
         for (DoctorData doctorDetail : filterDoctorListModel.getData()) {
             if (doctorDetail.isSelected()) {
+
+                docIdList.add(doctorDetail.getId());
+
                 count++;
                 if (count == 1)
                     doctorName = doctorDetail.getDoctorName();
@@ -334,10 +366,16 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
     @Override
     public void onDoctorSpecialityClick() {
+
+        doctorSpecialityList.clear();
+
         String doctorSpeciality = getResources().getString(R.string.select_doctors_speciality);
         int count = 0;
         for (DoctorSpecialityData doctorSpecialityData : filterDoctorSpecialityListModel.getDoctorSpecialityData()) {
             if (doctorSpecialityData.isSelected()) {
+
+                doctorSpecialityList.add(doctorSpecialityData.getSpeciality());
+
                 count++;
                 if (count == 1)
                     doctorSpeciality = doctorSpecialityData.getSpeciality();
@@ -348,6 +386,17 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
             filterFragment.setDoctorSpeciality(doctorSpeciality + " + " + (count - 1));
         else if (count == 1) filterFragment.setDoctorSpeciality(doctorSpeciality);
         else filterFragment.setDoctorSpeciality(doctorSpeciality);
+    }
+
+    @Override
+    public void onCaseClick() {
+
+        caseList.clear();
+
+        for (CaseDetailsData caseDetailsData : caseDetailsListModel.getCaseDetailsDatas()) {
+            if (caseDetailsData.isSelected())
+                caseList.add(caseDetailsData.getName());
+        }
     }
 
     @OnClick({R.id.backArrow, R.id.fab})

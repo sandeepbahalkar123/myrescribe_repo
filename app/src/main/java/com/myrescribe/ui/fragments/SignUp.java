@@ -307,6 +307,7 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
                         Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
                         intentObj.putExtra(getString(R.string.type), getString(R.string.login_social_media));
                         intentObj.putExtra(getString(R.string.details), signUpRequest);
+                        intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
                         startActivity(intentObj);
                         getActivity().finish();
 
@@ -353,6 +354,7 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
             Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
             intentObj.putExtra(getString(R.string.type), getString(R.string.login_social_media));
             intentObj.putExtra(getString(R.string.details), signUpRequest);
+            intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
             startActivity(intentObj);
             getActivity().finish();
 

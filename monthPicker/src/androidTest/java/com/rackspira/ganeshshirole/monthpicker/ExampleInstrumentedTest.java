@@ -1,4 +1,4 @@
-package com.rackspira.ganeshshirole.rackmonthpicker;
+package com.rackspira.ganeshshirole.monthpicker;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

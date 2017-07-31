@@ -1,6 +1,6 @@
-package com.rackspira.ganeshshirole.rackmonthpicker.listener;
+package com.rackspira.ganeshshirole.monthpicker.listener;
 
-import com.rackspira.ganeshshirole.rackmonthpicker.MonthRadioButton;
+import com.rackspira.ganeshshirole.monthpicker.MonthRadioButton;
 
 /**
  * Created by ganeshshirole on 31/12/16.

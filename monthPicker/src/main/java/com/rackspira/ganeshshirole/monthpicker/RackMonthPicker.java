@@ -1,4 +1,4 @@
-package com.rackspira.ganeshshirole.rackmonthpicker;
+package com.rackspira.ganeshshirole.monthpicker;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -11,10 +11,10 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.rackspira.ganeshshirole.rackmonthpicker.listener.DateMonthDialogListener;
-import com.rackspira.ganeshshirole.rackmonthpicker.listener.MonthButtonListener;
-import com.rackspira.ganeshshirole.rackmonthpicker.listener.OnCancelMonthDialogListener;
-import com.rackspira.ganeshshirole.rackmonthpicker.util.MonthOfYear;
+import com.rackspira.ganeshshirole.monthpicker.listener.DateMonthDialogListener;
+import com.rackspira.ganeshshirole.monthpicker.listener.MonthButtonListener;
+import com.rackspira.ganeshshirole.monthpicker.listener.OnCancelMonthDialogListener;
+import com.rackspira.ganeshshirole.monthpicker.util.MonthOfYear;
 
 import java.util.ArrayList;
 import java.util.Calendar;

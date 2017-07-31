@@ -2,7 +2,6 @@ package com.myrescribe.ui.fragments.filter;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -19,14 +18,13 @@ import android.widget.RelativeLayout;
 import com.myrescribe.R;
 import com.myrescribe.adapters.filter.FilterCaseDetailsAdapter;
 import com.myrescribe.model.filter.CaseDetailsData;
-import com.myrescribe.ui.activities.DoctorFilteredListActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
-import com.rackspira.ganeshshirole.rackmonthpicker.RackMonthPicker;
-import com.rackspira.ganeshshirole.rackmonthpicker.listener.DateMonthDialogListener;
-import com.rackspira.ganeshshirole.rackmonthpicker.listener.OnCancelMonthDialogListener;
-import com.rackspira.ganeshshirole.rackmonthpicker.util.MonthOfYear;
+import com.rackspira.ganeshshirole.monthpicker.RackMonthPicker;
+import com.rackspira.ganeshshirole.monthpicker.listener.DateMonthDialogListener;
+import com.rackspira.ganeshshirole.monthpicker.listener.OnCancelMonthDialogListener;
+import com.rackspira.ganeshshirole.monthpicker.util.MonthOfYear;
 
 import java.util.ArrayList;
 
@@ -63,6 +61,10 @@ public class FilterFragment extends Fragment {
     private RackMonthPicker rackMonthPicker;
     private ArrayList<CaseDetailsData> caseDetailsList;
     private FilterCaseDetailsAdapter filterCaseDetailsAdapter;
+
+    private String fromDate = "";
+    private String toDate = "";
+
 
     public FilterFragment() {
         // Required empty public constructor
@@ -112,11 +114,19 @@ public class FilterFragment extends Fragment {
                     public void onDateMonth(int month, int startDate, int endDate, int year, String monthLabel, boolean isFrom) {
                         CommonMethods.Log("MONTH YEAR", month + " " + startDate + " " + endDate + " " + year + " " + monthLabel + " " + isFrom);
 
-                        if (isFrom)
+                        if (isFrom) {
                             monthSelected = MonthOfYear.getMonth(month - 1) + " " + year;
-                        else {
+                            fromDate = startDate + "-" + month + "-" + year;
+                        } else {
                             monthSelected += " To " + MonthOfYear.getMonth(month - 1) + " " + year;
+                            if (month == 2) {
+                                toDate = (year % 400 == 0 || year % 100 != 0 && year % 4 == 0 ? endDate + 1 : endDate) + "-" + month + "-" + year;
+                            } else toDate = endDate + "-" + month + "-" + year;
+
                             drCalenderTextView.setText(monthSelected);
+                            CommonMethods.Log("Date", fromDate + " " + toDate);
+                            fromDate = "";
+                            toDate  = "";
                         }
                     }
                 })
@@ -124,6 +134,8 @@ public class FilterFragment extends Fragment {
                     @Override
                     public void onCancel(AlertDialog dialog) {
                         dialog.dismiss();
+                        fromDate = "";
+                        toDate = "";
                     }
                 });
 
@@ -144,9 +156,7 @@ public class FilterFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.applyButton:
-                mListener.onDrawerClose();
-                Intent intent = new Intent(getActivity(), DoctorFilteredListActivity.class);
-                getActivity().startActivity(intent);
+                mListener.onApply();
                 break;
             case R.id.resetButton:
                 setDoctorName(getResources().getString(R.string.select_doctors));
@@ -170,8 +180,24 @@ public class FilterFragment extends Fragment {
         drNameTextView.setText(name);
     }
 
+    public String getDoctorName() {
+        return drNameTextView.getText().toString();
+    }
+
     public void setDoctorSpeciality(String speciality) {
         drSpecialityTextView.setText(speciality);
+    }
+
+    public String getDoctorSpeciality() {
+        return drSpecialityTextView.getText().toString();
+    }
+
+    public String getFromDate(){
+        return fromDate;
+    }
+
+    public String getToDate(){
+        return toDate;
     }
 
     @Override
@@ -192,12 +218,9 @@ public class FilterFragment extends Fragment {
     }
 
     public interface OnDrawerInteractionListener {
-        void onDrawerClose();
-
+        void onApply();
         void onSelectDoctors();
-
         void onSelectSpeciality();
-
         void onReset();
     }
 }

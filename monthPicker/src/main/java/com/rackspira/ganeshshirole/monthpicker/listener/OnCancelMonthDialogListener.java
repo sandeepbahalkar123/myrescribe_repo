@@ -1,4 +1,4 @@
-package com.rackspira.ganeshshirole.rackmonthpicker.listener;
+package com.rackspira.ganeshshirole.monthpicker.listener;
 
 import android.support.v7.app.AlertDialog;
 

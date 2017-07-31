@@ -28,6 +28,7 @@ import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
 import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilteredInfo;
+import com.myrescribe.model.filter.filter_request.DrFilterRequestModel;
 import com.myrescribe.model.util.TimePeriod;
 import com.myrescribe.ui.fragments.DoctorListFragment;
 import com.myrescribe.util.CommonMethods;
@@ -69,7 +70,8 @@ public class DoctorFilteredListActivity extends AppCompatActivity implements Hel
     }
 
     private void initialize() {
-        mDoctorHelper = new DoctorHelper(this, this);
+        DrFilterRequestModel drFilterRequestModel = getIntent().getParcelableExtra(MyRescribeConstants.FILTER_REQUEST);
+        mDoctorHelper = new DoctorHelper(this);
     }
 
 

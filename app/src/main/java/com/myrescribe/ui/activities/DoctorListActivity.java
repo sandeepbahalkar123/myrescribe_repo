@@ -1,5 +1,6 @@
 package com.myrescribe.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -137,7 +138,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         mYearSpinnerView.setOnTouchListener(listener);
         mYearSpinnerView.setOnItemSelectedListener(listener);
         //-------
-        mDoctorHelper = new DoctorHelper(this, this);
+        mDoctorHelper = new DoctorHelper(this);
         //-------
         mCurrentSelectedTimePeriodTab = new TimePeriod();
         mCurrentSelectedTimePeriodTab.setMonthName(new SimpleDateFormat("MMM", Locale.US).format(new Date()));
@@ -278,9 +279,10 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         Gson gson = new Gson();
         CommonMethods.Log("FilterRequest", gson.toJson(drFilterRequestModel, DrFilterRequestModel.class));
 
-       /* drawer.closeDrawer(GravityCompat.END);
+        drawer.closeDrawer(GravityCompat.END);
         Intent intent = new Intent(DoctorListActivity.this, DoctorFilteredListActivity.class);
-        startActivity(intent);*/
+        intent.putExtra(MyRescribeConstants.FILTER_REQUEST, drFilterRequestModel);
+        startActivity(intent);
 
     }
 

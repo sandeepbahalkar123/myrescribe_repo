@@ -107,6 +107,7 @@ public class MyRescribeConstants {
     public static final String TITLE = "title";
     public static final String DOCTORS_LIST = "doctors_list";
     public static final String CASE_DETAILS = "case_details";
+    public static final String FILTER_REQUEST = "filter_request";
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";

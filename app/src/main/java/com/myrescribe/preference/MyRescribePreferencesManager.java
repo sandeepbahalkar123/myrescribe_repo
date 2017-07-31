@@ -211,7 +211,6 @@ public class MyRescribePreferencesManager {
 
 
     public interface MYRESCRIBE_PREFERENCES_KEY {
-
         String SERVER_PATH = "server_path";
         String USER_GENDER = "user_gender";
         String SERVER_CONNECTION_SUCCESS = "success";
@@ -219,5 +218,7 @@ public class MyRescribePreferencesManager {
         String AUTHTOKEN = "authToken";
         String PATEINTID = "patientId";
         String LOGIN_STATUS = "login_status";
+        String MOBILE_NUMBER = "mobileNumber";
+        String PASSWORD = "password";
     }
 }

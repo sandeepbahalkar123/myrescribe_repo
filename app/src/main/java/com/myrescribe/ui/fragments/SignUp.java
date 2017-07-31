@@ -307,6 +307,7 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
                         Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
                         intentObj.putExtra(getString(R.string.type), getString(R.string.login_social_media));
                         intentObj.putExtra(getString(R.string.details), signUpRequest);
+                        intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
                         startActivity(intentObj);
                         getActivity().finish();
 
@@ -342,14 +343,20 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
             GoogleSignInAccount acct = result.getSignInAccount();
 
             Log.e(TAG, "display name: " + acct.getDisplayName());
-            String personName = acct.getDisplayName();
 
-            MyRescribePreferencesManager.putString(MyRescribeConstants.USERNAME, personName, mContext);
-            Intent intent = new Intent(getActivity(), PhoneNoActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            //-----------
+            SignUpRequestModel signUpRequest = new SignUpRequestModel();
+            signUpRequest.setMobileNumber(null);
+            signUpRequest.setName(acct.getDisplayName());
+            signUpRequest.setEmailId(acct.getEmail());
+            signUpRequest.setPassword(null);
+            //-----------
+            Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
+            intentObj.putExtra(getString(R.string.type), getString(R.string.login_social_media));
+            intentObj.putExtra(getString(R.string.details), signUpRequest);
+            intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
+            startActivity(intentObj);
+            getActivity().finish();
 
         } else {
             // Signed out, show unauthenticated UI.

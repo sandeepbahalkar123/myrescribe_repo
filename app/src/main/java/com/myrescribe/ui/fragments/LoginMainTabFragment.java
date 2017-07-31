@@ -159,27 +159,4 @@ public class LoginMainTabFragment extends Fragment {
     }
 
 
-    //TODO: NOT WORKING AS PER REQUIRED, NEED TO CHECK IT FOR TAB_LAYOUT TAB FONT
-    private void changeTabsFont() {
-
-        ViewGroup vg = (ViewGroup) mTabLayout.getChildAt(0);
-        int tabsCount = vg.getChildCount();
-        for (int j = 0; j < tabsCount; j++) {
-            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
-            int tabChildsCount = vgTab.getChildCount();
-            for (int i = 0; i < tabChildsCount; i++) {
-                View tabViewChild = vgTab.getChildAt(i);
-                if (tabViewChild instanceof TextView) {
-                    Typeface tf = null;
-                    try {
-                        tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/roboto_bold.ttf");
-                        ((TextView) tabViewChild).setTypeface(tf);
-                        ((TextView) tabViewChild).setTextSize(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.dp26));
-                    } catch (Exception e) {
-                        Log.e("changeTabsFont", "Could not get typeface: " + e.getMessage());
-                    }
-                }
-            }
-        }
-    }
 }

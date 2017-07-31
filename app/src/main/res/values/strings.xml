@@ -93,10 +93,10 @@
     <string name="read_more"><u>more</u></string>
     <string name="read_less">&#160;<u>
         less</u></string>
-    <string name="title_activity_investigation">Investigation Result</string>
-    <string name="title_activity_selected_docs">Seleted Docs</string>
+    <string name="title_activity_investigation">Investigation</string>
+    <string name="title_activity_selected_docs">Selected Documents</string>
     <string name="upload">Upload</string>
-    <string name="adddocs">Add Docs</string>
+    <string name="adddocs">Add Documents</string>
     <string name="title_activity_zoomview">Zoom View</string>
     <string name="investigation_msg">Have you done the investigations adviced by Dr. Shah?</string>
     <string name="appointment_msg">You have an appointment with Dr. ---- on --th June at --:-- am.</string>
@@ -106,7 +106,7 @@
     <string name="my_appointments">My Appointments</string>
     <string name="one_day_visit_date">VISIT_DATE</string>
     <string name="just_now">Just\nNow</string>
-    <string name="investigation_title">We request you to upload &amp; share the results of the following investigation with Dr. shah:</string>
+    <string name="investigation_title">We request you to upload &amp; share the results of the following investigation with Dr. Shah:</string>
     <string name="dummy">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
     <string name="gmail">Share With Gmail</string>
     <string name="type">type</string>

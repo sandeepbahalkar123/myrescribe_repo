@@ -33,6 +33,7 @@
         android:button="@drawable/checkboxselecter"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingEnd="@dimen/horizontal_margin"
+        android:clickable="false"
         android:paddingRight="@dimen/horizontal_margin"
         android:paddingTop="@dimen/activity_horizontal_margin" />
 

@@ -94,7 +94,7 @@
                             android:layout_alignParentTop="true"
                             android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
-                        <com.rackspira.ganeshshirole.monthpicker.HorizontalPicker
+                        <com.ngapps.ganeshshirole.monthpicker.HorizontalPicker
                             android:id="@+id/picker"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.rackspira.ganeshshirole.monthpicker;
+package com.ngapps.ganeshshirole.monthpicker;
 
 import android.animation.ArgbEvaluator;
 import android.annotation.TargetApi;

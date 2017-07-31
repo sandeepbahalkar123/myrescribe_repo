@@ -1,6 +1,5 @@
 package com.myrescribe.ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -145,7 +144,6 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy", Locale.US).format(new Date()));
         //-------
         //----
-
 
         /*TimePeriod timePeriod1 = new TimePeriod();
         timePeriod1.setMonthName("Jan");

@@ -1,4 +1,4 @@
-package com.rackspira.ganeshshirole.monthpicker;
+package com.ngapps.ganeshshirole.monthpicker;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.rackspira.ganeshshirole.datemonthdialog.test", appContext.getPackageName());
+        assertEquals("com.ngapps.ganeshshirole.datemonthdialog.test", appContext.getPackageName());
     }
 }

@@ -1,6 +1,6 @@
-package com.rackspira.ganeshshirole.monthpicker.util;
+package com.ngapps.ganeshshirole.monthpicker.util;
 
-import com.rackspira.ganeshshirole.monthpicker.R;
+import com.ngapps.ganeshshirole.monthpicker.R;
 
 /**
  * Created by ganeshshirole on 31/12/16.

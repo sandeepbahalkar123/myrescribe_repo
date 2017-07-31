@@ -21,10 +21,10 @@ import com.myrescribe.model.filter.CaseDetailsData;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
-import com.rackspira.ganeshshirole.monthpicker.RackMonthPicker;
-import com.rackspira.ganeshshirole.monthpicker.listener.DateMonthDialogListener;
-import com.rackspira.ganeshshirole.monthpicker.listener.OnCancelMonthDialogListener;
-import com.rackspira.ganeshshirole.monthpicker.util.MonthOfYear;
+import com.ngapps.ganeshshirole.monthpicker.RackMonthPicker;
+import com.ngapps.ganeshshirole.monthpicker.listener.DateMonthDialogListener;
+import com.ngapps.ganeshshirole.monthpicker.listener.OnCancelMonthDialogListener;
+import com.ngapps.ganeshshirole.monthpicker.util.MonthOfYear;
 
 import java.util.ArrayList;
 
@@ -62,8 +62,9 @@ public class FilterFragment extends Fragment {
     private ArrayList<CaseDetailsData> caseDetailsList;
     private FilterCaseDetailsAdapter filterCaseDetailsAdapter;
 
-    private String fromDate = "";
+    private String fromDateTemp = "";
     private String toDate = "";
+    private String fromDate = "";
 
 
     public FilterFragment() {
@@ -116,17 +117,13 @@ public class FilterFragment extends Fragment {
 
                         if (isFrom) {
                             monthSelected = MonthOfYear.getMonth(month - 1) + " " + year;
-                            fromDate = startDate + "-" + month + "-" + year;
+                            fromDateTemp = startDate + "-" + month + "-" + year;
                         } else {
+                            fromDate = fromDateTemp;
                             monthSelected += " To " + MonthOfYear.getMonth(month - 1) + " " + year;
-                            if (month == 2) {
-                                toDate = (year % 400 == 0 || year % 100 != 0 && year % 4 == 0 ? endDate + 1 : endDate) + "-" + month + "-" + year;
-                            } else toDate = endDate + "-" + month + "-" + year;
-
+                            toDate = endDate + "-" + month + "-" + year;
                             drCalenderTextView.setText(monthSelected);
                             CommonMethods.Log("Date", fromDate + " " + toDate);
-                            fromDate = "";
-                            toDate  = "";
                         }
                     }
                 })
@@ -134,8 +131,6 @@ public class FilterFragment extends Fragment {
                     @Override
                     public void onCancel(AlertDialog dialog) {
                         dialog.dismiss();
-                        fromDate = "";
-                        toDate = "";
                     }
                 });
 
@@ -159,6 +154,8 @@ public class FilterFragment extends Fragment {
                 mListener.onApply();
                 break;
             case R.id.resetButton:
+                fromDate = "";
+                toDate = "";
                 setDoctorName(getResources().getString(R.string.select_doctors));
                 setDoctorSpeciality(getResources().getString(R.string.select_doctors_speciality));
                 drCalenderTextView.setText(getResources().getString(R.string.select_month_year));

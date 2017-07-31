@@ -117,11 +117,11 @@ public class FilterFragment extends Fragment {
 
                         if (isFrom) {
                             monthSelected = MonthOfYear.getMonth(month - 1) + " " + year;
-                            fromDateTemp = startDate + "-" + month + "-" + year;
+                            fromDateTemp = year + "-" + month + "-" + startDate;
                         } else {
                             fromDate = fromDateTemp;
                             monthSelected += " To " + MonthOfYear.getMonth(month - 1) + " " + year;
-                            toDate = endDate + "-" + month + "-" + year;
+                            toDate = year + "-" + month + "-" + endDate;
                             drCalenderTextView.setText(monthSelected);
                             CommonMethods.Log("Date", fromDate + " " + toDate);
                         }

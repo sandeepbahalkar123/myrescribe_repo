@@ -1,4 +1,4 @@
-package com.myrescribe.ui.fragments;
+package com.myrescribe.ui.fragments.doctor;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

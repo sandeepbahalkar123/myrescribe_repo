@@ -5,7 +5,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.model.Common;
-import com.myrescribe.model.doctors.doctor_info.DoctorInfoMonthContainer;
 
 import java.util.ArrayList;
 
@@ -16,7 +15,7 @@ public class DoctorFilterModel implements CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private ArrayList<DoctorFilteredInfo> doctorFilteredInfoList;
+    private ArrayList<DoctorFilteredInfoAndCaseDetails> doctorsInfoAndCaseDetailsList;
 
     public Common getCommon() {
         return common;
@@ -26,19 +25,21 @@ public class DoctorFilterModel implements CustomResponse {
         this.common = common;
     }
 
-    public ArrayList<DoctorFilteredInfo> getDoctorFilteredInfoList() {
-        return doctorFilteredInfoList;
+    public ArrayList<DoctorFilteredInfoAndCaseDetails> getDoctorsInfoAndCaseDetailsList() {
+        return doctorsInfoAndCaseDetailsList;
     }
 
-    public void setDoctorFilteredInfoList(ArrayList<DoctorFilteredInfo> doctorFilteredInfoList) {
-        this.doctorFilteredInfoList = doctorFilteredInfoList;
+    public void setDoctorsInfoAndCaseDetailsList(ArrayList<DoctorFilteredInfoAndCaseDetails> doctorsInfoAndCaseDetailsList) {
+        this.doctorsInfoAndCaseDetailsList = doctorsInfoAndCaseDetailsList;
     }
 
     @Override
     public String toString() {
         return "DoctorFilterModel{" +
                 "common=" + common +
-                ", doctorFilteredInfoList=" + doctorFilteredInfoList +
+                ", doctorsInfoAndCaseDetailsList=" + doctorsInfoAndCaseDetailsList +
                 '}';
     }
+
+
 }

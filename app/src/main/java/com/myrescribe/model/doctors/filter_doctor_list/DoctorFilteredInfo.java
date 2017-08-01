@@ -14,31 +14,31 @@ import java.util.HashMap;
  */
 
 public class DoctorFilteredInfo implements CustomResponse {
-    @SerializedName("id")
+    @SerializedName("doc_id")
     @Expose
     private String id;
-    @SerializedName("doctorName")
+    @SerializedName("doctor_name")
     @Expose
-
     private String doctorName;
 
-    @SerializedName("address")
+    @SerializedName("doctor_address")
     @Expose
     private String address;
 
-    @SerializedName("visitDate")
+    @SerializedName("OPDDate")
     @Expose
     private String date;
-    @SerializedName("specialization")
+    @SerializedName("doctor_spaciality")
     @Expose
     private String specialization;
-    @SerializedName("docImg")
+    @SerializedName("doctor_image_path")
     @Expose
     private String docImgURL;
-
-    @SerializedName("caseDetails")
+    @SerializedName("Opdid")
     @Expose
-    private HashMap<String, ArrayList<DoctorFilteredCaseDetailInfo>> caseDetailList;
+    private String OPDId;
+
+
     private int color;
 
     public int getColor() {
@@ -138,12 +138,12 @@ public class DoctorFilteredInfo implements CustomResponse {
         this.docImgURL = docImgURL;
     }
 
-    public HashMap<String, ArrayList<DoctorFilteredCaseDetailInfo>> getCaseDetailList() {
-        return caseDetailList;
+    public String getOPDId() {
+        return OPDId;
     }
 
-    public void setCaseDetailList(HashMap<String, ArrayList<DoctorFilteredCaseDetailInfo>> caseDetailList) {
-        this.caseDetailList = caseDetailList;
+    public void setOPDId(String OPDId) {
+        this.OPDId = OPDId;
     }
 
     @Override
@@ -155,7 +155,6 @@ public class DoctorFilteredInfo implements CustomResponse {
                 ", date='" + date + '\'' +
                 ", specialization='" + specialization + '\'' +
                 ", docImgURL='" + docImgURL + '\'' +
-                ", caseDetailList=" + caseDetailList +
                 ", color=" + color +
                 ", isStartElement=" + isStartElement +
                 ", rowColor=" + rowColor +

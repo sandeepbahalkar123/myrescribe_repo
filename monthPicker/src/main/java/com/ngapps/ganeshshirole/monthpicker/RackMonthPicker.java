@@ -1,4 +1,4 @@
-package com.rackspira.ganeshshirole.rackmonthpicker;
+package com.ngapps.ganeshshirole.monthpicker;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -11,10 +11,10 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.rackspira.ganeshshirole.rackmonthpicker.listener.DateMonthDialogListener;
-import com.rackspira.ganeshshirole.rackmonthpicker.listener.MonthButtonListener;
-import com.rackspira.ganeshshirole.rackmonthpicker.listener.OnCancelMonthDialogListener;
-import com.rackspira.ganeshshirole.rackmonthpicker.util.MonthOfYear;
+import com.ngapps.ganeshshirole.monthpicker.listener.DateMonthDialogListener;
+import com.ngapps.ganeshshirole.monthpicker.listener.MonthButtonListener;
+import com.ngapps.ganeshshirole.monthpicker.listener.OnCancelMonthDialogListener;
+import com.ngapps.ganeshshirole.monthpicker.util.MonthOfYear;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -207,6 +207,12 @@ public class RackMonthPicker {
                             monthRadioButton.setButtonDrawable(MonthOfYear.getIcons((Calendar.getInstance().get(Calendar.MONTH))));
                             monthRadioButton.setChecked(true);
                         }
+                    } else if (monthRadioButton.getIdMonth() > month + 1) {
+                        if (!isFrom) {
+                            monthRadioButtonList.get(month).setEnabled(true);
+                            monthRadioButtonList.get(month).setButtonDrawable(MonthOfYear.getActiveIcons(month));
+                            monthRadioButtonList.get(month + 1).setEnabled(true);
+                        }
                     }
                 } else if (year < (Calendar.getInstance().get(Calendar.YEAR)) && year != min_limit_year) {
                     monthRadioButtonList.get(month).setButtonDrawable(MonthOfYear.getIcons(month));
@@ -323,11 +329,16 @@ public class RackMonthPicker {
             return new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    int endDate = monthRadioButton.getEndDate();
+                    if (monthRadioButton.getIdMonth() == 2 && year % 400 == 0 || year % 100 != 0 && year % 4 == 0)
+                        endDate = monthRadioButton.getEndDate() + 1;
+
                     if (isFrom) {
                         dateMonthDialogListener.onDateMonth(
                                 monthRadioButton.getIdMonth(),
                                 monthRadioButton.getStartDate(),
-                                monthRadioButton.getEndDate(),
+                                endDate,
                                 year, mTitle.getText().toString(), isFrom);
                         mLabel.setText(TO);
                         fromMonth = monthRadioButton.getIdMonth();
@@ -345,7 +356,7 @@ public class RackMonthPicker {
                         dateMonthDialogListener.onDateMonth(
                                 monthRadioButton.getIdMonth(),
                                 monthRadioButton.getStartDate(),
-                                monthRadioButton.getEndDate(),
+                                endDate,
                                 year, mTitle.getText().toString(), isFrom);
                         mLabel.setText(FROM);
                         isFrom = true;

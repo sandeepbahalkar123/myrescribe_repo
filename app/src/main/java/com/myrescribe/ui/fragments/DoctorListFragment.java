@@ -13,7 +13,7 @@ import com.myrescribe.R;
 import com.myrescribe.adapters.DoctorListAdapter;
 import com.myrescribe.helpers.doctor.DoctorHelper;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
-import com.myrescribe.model.util.TimePeriod;
+import com.myrescribe.model.login.Year;
 import com.myrescribe.ui.activities.DoctorListActivity;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -55,7 +55,7 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
         return mRootView;
     }
 
-    public static DoctorListFragment createNewFragment(TimePeriod dataString) {
+    public static DoctorListFragment createNewFragment(Year dataString) {
         DoctorListFragment fragment = new DoctorListFragment();
         Bundle args = new Bundle();
         args.putString(MyRescribeConstants.MONTH, dataString.getMonthName());

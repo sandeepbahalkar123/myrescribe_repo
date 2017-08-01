@@ -86,7 +86,7 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
             Bundle arguments = getArguments();
             mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(getString(R.string.details));
             mEmailLayout.setVisibility(View.GONE);
-            if (mSignUpRequestModel.getEmailId() == null) {
+            if (mSignUpRequestModel.getEmailId() == null || MyRescribeConstants.BLANK.equalsIgnoreCase(mSignUpRequestModel.getEmailId())) {
                 mEmailLayout.setVisibility(View.VISIBLE);
             } else {
                 mSocialLoginEmail.setText("" + mSignUpRequestModel.getEmailId());
@@ -119,7 +119,7 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
             }
         }
         if (message != null) {
-            CommonMethods.showSnack(mSocialLoginMobileNo, message);
+            CommonMethods.showToast(getActivity(), message);
             return true;
         } else {
             return false;

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.myrescribe.ui.activities.SeletedDocsActivity"
+    tools:context="com.myrescribe.ui.activities.SelectedDocsActivity"
     tools:showIn="@layout/activity_seleted_docs">
 
     <android.support.v7.widget.RecyclerView

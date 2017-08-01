@@ -1,45 +1,24 @@
 package com.myrescribe.ui.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.adapters.CustomSpinnerAdapter;
 import com.myrescribe.adapters.DoctorFilteredExpandableList;
 import com.myrescribe.helpers.doctor.DoctorHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
 import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilteredInfo;
-import com.myrescribe.model.util.TimePeriod;
-import com.myrescribe.ui.fragments.DoctorListFragment;
-import com.myrescribe.util.CommonMethods;
+import com.myrescribe.model.filter.filter_request.DrFilterRequestModel;
 import com.myrescribe.util.MyRescribeConstants;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,7 +48,8 @@ public class DoctorFilteredListActivity extends AppCompatActivity implements Hel
     }
 
     private void initialize() {
-        mDoctorHelper = new DoctorHelper(this, this);
+        DrFilterRequestModel drFilterRequestModel = getIntent().getParcelableExtra(MyRescribeConstants.FILTER_REQUEST);
+        mDoctorHelper = new DoctorHelper(this);
     }
 
 

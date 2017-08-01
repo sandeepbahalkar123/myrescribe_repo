@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -80,7 +81,13 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         });
 
         mContext = InvestigationActivity.this;
-        mRecyclerView.setHasFixedSize(true);
+
+        // off recyclerView Animation
+
+        RecyclerView.ItemAnimator animator = mRecyclerView.getItemAnimator();
+        if (animator instanceof SimpleItemAnimator)
+            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         getDataSet();
@@ -249,7 +256,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                         selected = true;
                 }
                 if (selected) {
-                    Intent intent = new Intent(mContext, SeletedDocsActivity.class);
+                    Intent intent = new Intent(mContext, SelectedDocsActivity.class);
                     intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigationTemp);
                     startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
                 } else

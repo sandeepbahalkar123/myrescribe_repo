@@ -211,13 +211,14 @@ public class MyRescribePreferencesManager {
 
 
     public interface MYRESCRIBE_PREFERENCES_KEY {
-
         String SERVER_PATH = "server_path";
         String USER_GENDER = "user_gender";
         String SERVER_CONNECTION_SUCCESS = "success";
         String IS_VALID_IP_CONFIG = "isvalidipconfig";
         String AUTHTOKEN = "authToken";
-        String PATEINTID = "patientId";
+        String PATEINT_ID = "patientId";
         String LOGIN_STATUS = "login_status";
+        String MOBILE_NUMBER = "mobileNumber";
+        String PASSWORD = "password";
     }
 }

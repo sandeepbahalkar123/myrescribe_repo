@@ -1,18 +1,9 @@
 package com.myrescribe.ui.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.telephony.SmsMessage;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.myrescribe.R;
 import com.myrescribe.broadcast_receivers.OtpReader;
@@ -30,7 +20,6 @@ import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.interfaces.OTPListener;
 import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.SignUpModel;
-import com.myrescribe.model.login.VerifyOTPSignUpResponseModel;
 import com.myrescribe.model.requestmodel.login.SignUpRequestModel;
 import com.myrescribe.model.requestmodel.login.SignUpVerifyOTPRequestModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
@@ -125,27 +114,6 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
             mHeaderMessageForMobileOTP.setText("" + String.format(getString(R.string.message_for_mobile_otp), mSignUpRequestModel.getMobileNumber()));
         }
 
-        mOtpEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().trim().length() == 4) {
-                    mResendOtpBtnLayout.setVisibility(View.INVISIBLE);
-                    mCountDownTimer.onFinish();
-                    mSubmitBtn.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
         return inflate;
     }
 
@@ -157,7 +125,6 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
         CommonMethods.Log("otpReceived", "otpReceived reformatted:" + value);
         mCountDownTimer.onFinish();
         mOtpEditText.setText(String.valueOf(value).substring(0, 4));
-        mResendOtpBtn.setVisibility(View.GONE);
         mSubmitBtn.setVisibility(View.VISIBLE);
         onSubmitBtnClicked();
     }
@@ -170,16 +137,9 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
         @Override
         public void onFinish() {
             mResendOtpBtnLayout.setVisibility(View.INVISIBLE);
-            if (mOtpEditText.getText().toString().trim().length() == 0) {
-                mResendOtpBtn.setVisibility(View.VISIBLE);
-                mSubmitBtn.setVisibility(View.GONE);
-            } else {
-                mSubmitBtn.setVisibility(View.VISIBLE);
-                mResendOtpBtn.setVisibility(View.GONE);
-            }
+            mResendOtpBtn.setVisibility(View.VISIBLE);
+            mSubmitBtn.setVisibility(View.GONE);
             mOtpEditText.setVisibility(View.VISIBLE);
-            //  mProgressBar.setVisibility(View.GONE);
-            mProgressTime.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -229,8 +189,9 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
                 mCountDownTimer = new MyCountDownTimer(mStartTime, mInterval);
                 mCountDownTimer.start();
                 mResendOtpBtnLayout.setVisibility(View.VISIBLE);
-                mSubmitBtn.setVisibility(View.GONE);
+                mSubmitBtn.setVisibility(View.VISIBLE);
                 mResendOtpBtn.setVisibility(View.GONE);
+                mOtpEditText.setText("");
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
             }
@@ -239,8 +200,11 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
             LoginModel receivedModel = (LoginModel) customResponse;
             if (receivedModel.getCommon().isSuccess()) {
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, receivedModel.getAuthToken(), getActivity());
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, receivedModel.getPatientId(), getActivity());
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, receivedModel.getPatientId(), getActivity());
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, getActivity());
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mSignUpRequestModel.getMobileNumber().toString(), getActivity());
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mSignUpRequestModel.getPassword().toString(), getActivity());
+
                 Intent intent = new Intent(getActivity(), HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

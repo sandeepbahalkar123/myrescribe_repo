@@ -28,7 +28,7 @@ public class FilterDoctorSpecialitiesAdapter extends RecyclerView.Adapter<Filter
         this.doctorSpecialityDatas = doctorSpecialityDatas;
 
         try {
-            this.itemClickListener = ((FilterDoctorSpecialitiesAdapter.ItemClickListener) context);
+            this.itemClickListener = ((ItemClickListener) context);
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement ItemClickListener.");
         }

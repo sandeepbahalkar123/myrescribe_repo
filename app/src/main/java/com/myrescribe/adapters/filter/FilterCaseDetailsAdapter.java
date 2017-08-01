@@ -23,11 +23,18 @@ public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDet
     private final ArrayList<CaseDetailsData> caseDetailsList;
     private final Context context;
     private int vitalsPos = -1;
+    private ItemClickListener itemClickListener;
 
     public FilterCaseDetailsAdapter(Context context, ArrayList<CaseDetailsData> caseDetailsList) {
         this.context = context;
         this.caseDetailsList = caseDetailsList;
 
+        try {
+            this.itemClickListener = ((ItemClickListener) context);
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement ItemClickListener.");
+        }
+        
         for (int inx = 0; inx < caseDetailsList.size(); inx++) {
             if (caseDetailsList.get(inx).getName().equals("Vitals")) {
                 vitalsPos = inx;
@@ -47,7 +54,7 @@ public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDet
     public void onBindViewHolder(final FilterCaseDetailsAdapter.FileViewHolder holder, final int position) {
 
         holder.caseTextView.setText(caseDetailsList.get(position).getName());
-//        holder.caseIcon.setImageResource(caseDetailsList.get(position).getImageId());
+        holder.caseIcon.setImageResource(CommonMethods.getCaseStudyIcons(caseDetailsList.get(position).getName()));
 
         holder.selectCheckbox.setChecked(caseDetailsList.get(position).isSelected());
         holder.rowView.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +82,8 @@ public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDet
                 } else
                     toggle(position);
 
+                itemClickListener.onCaseClick();
+                
                 notifyItemChanged(position);
             }
         });
@@ -109,5 +118,9 @@ public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDet
             ButterKnife.bind(this, itemView);
             rowView = itemView;
         }
+    }
+
+    public interface ItemClickListener {
+        void onCaseClick();
     }
 }

@@ -1,4 +1,4 @@
-package com.rackspira.ganeshshirole.rackmonthpicker;
+package com.ngapps.ganeshshirole.monthpicker;
 
 import org.junit.Test;
 

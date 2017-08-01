@@ -6,7 +6,6 @@ package com.myrescribe.network;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -40,7 +39,6 @@ import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
 import com.myrescribe.model.filter.FilterDoctorListModel;
 import com.myrescribe.model.login.SignUpModel;
 
-import com.myrescribe.model.notification.AppointmentsNotificationData;
 import com.myrescribe.model.notification.AppointmentsNotificationModel;
 import com.myrescribe.model.notification.NotificationModel;
 
@@ -50,9 +48,9 @@ import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
 import com.myrescribe.model.visit_details.VisitDetailsModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
-import com.myrescribe.ui.activities.SplashScreenActivity;
 import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.util.NetworkUtil;
 
@@ -61,6 +59,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class RequestManager extends ConnectRequest implements Connector, RequestTimer.RequestTimerListener {
@@ -288,13 +287,14 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 //                    mContext.startActivity(intent);
 //                    ((AppCompatActivity) mContext).finishAffinity();
 
-                    MyRescribePreferencesManager.clearSharedPref(mContext);
-                    Intent intent = new Intent(mContext, SplashScreenActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
+//                    MyRescribePreferencesManager.clearSharedPref(mContext);
+//                    Intent intent = new Intent(mContext, SplashScreenActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    mContext.startActivity(intent);
 
+                    loginRequest();
                 } else
                     mConnectionListener.onResponse(ConnectionListener.SERVER_ERROR, null, mOldDataTag);
             } else if (error instanceof NetworkError) {
@@ -356,18 +356,15 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
                 // Need to Add
 
-                /*LoginResponseModel loginResponseModel = gson.fromJson(data, LoginResponseModel.class);
-                MyRescribePreferencesManager.putString(MyRescribeConstants.ACCESS_TOKEN, loginResponseModel.getAccessToken(), mContext);
-                MyRescribePreferencesManager.putString(MyRescribeConstants.TOKEN_TYPE, loginResponseModel.getTokenType(), mContext);
-                MyRescribePreferencesManager.putString(MyRescribeConstants.REFRESH_TOKEN, loginResponseModel.getRefreshToken(), mContext);
+                LoginModel loginModel = gson.fromJson(data, LoginModel.class);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, loginModel.getPatientId(), mContext);
 
-                String authorizationString = loginResponseModel.getTokenType()
-                        + " " + loginResponseModel.getAccessToken();
-
-                mHeaderParams.put(MyRescribeConstants.AUTHORIZATION, authorizationString);
+                mHeaderParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, loginModel.getAuthToken());
 
                 connect();
-                */
+
             } else {
                 // This success response is for respective api's
 
@@ -521,5 +518,17 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         postParams.put(MyRescribeConstants.CLIENT_ID_KEY, MyRescribeConstants.CLIENT_ID_VALUE);
 
         stringRequest(url, Request.Method.POST, headerParams, postParams, true);*/
+    }
+
+    private void loginRequest() {
+        CommonMethods.Log(TAG, "Refresh token while sending refresh token api: ");
+
+        Map<String, String> headerParams = new HashMap<>();
+        headerParams.putAll(mHeaderParams);
+        Map<String, String> postParams = new HashMap<String, String>();
+        postParams.put(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+        postParams.put(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mContext));
+        String url = Config.LOGIN_URL + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext);
+        stringRequest(url, Request.Method.POST, headerParams, postParams, true);
     }
 }

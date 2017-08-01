@@ -3,34 +3,13 @@ package com.myrescribe.ui.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ScrollView;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.myrescribe.R;
 import com.myrescribe.helpers.login.LoginHelper;
 import com.myrescribe.interfaces.CustomResponse;
@@ -39,15 +18,9 @@ import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.activities.AppGlobalContainerActivity;
 import com.myrescribe.ui.activities.HomePageActivity;
-import com.myrescribe.ui.activities.PhoneNoActivity;
-import com.myrescribe.ui.activities.SplashScreenActivity;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Arrays;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -124,15 +97,24 @@ public class LogInApp extends Fragment implements
         String enter = getString(R.string.enter);
         if (mobileNo.isEmpty()) {
             message = enter + getString(R.string.enter_mobile_no).toLowerCase(Locale.US);
-        } else if (password.isEmpty()) {
-            message = enter + getString(R.string.enter_password).toLowerCase(Locale.US);
-        } else if (password.trim().length() < 8) {
-            message = getString(R.string.error_too_small_password);
+            mMobileNo.setError(message);
+            mMobileNo.requestFocus();
         } else if (mobileNo.trim().length() < 10) {
             message = getString(R.string.err_invalid_mobile_no);
+            mMobileNo.setError(message);
+            mMobileNo.requestFocus();
+
+        } else if (password.isEmpty()) {
+            message = enter + getString(R.string.enter_password).toLowerCase(Locale.US);
+            mPassword.setError(message);
+            mPassword.requestFocus();
+        } else if (password.trim().length() < 8) {
+            message = getString(R.string.error_too_small_password);
+            mPassword.setError(message);
+            mPassword.requestFocus();
+
         }
         if (message != null) {
-            CommonMethods.showSnack(mMobileNo, message);
             return true;
         } else {
             return false;
@@ -148,7 +130,10 @@ public class LogInApp extends Fragment implements
             if (loginModel.getCommon().isSuccess()) {
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, loginModel.getPatientId(), mContext);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, loginModel.getPatientId(), mContext);
+
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mMobileNo.getText().toString(), mContext);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mPassword.getText().toString(), mContext);
 
                 Intent intent = new Intent(mContext, HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

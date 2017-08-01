@@ -155,21 +155,40 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
         String enter = getString(R.string.enter);
         if (name.isEmpty()) {
             message = enter + getString(R.string.enter_full_name).toLowerCase(Locale.US);
+            mFullName.setError(message);
+            mFullName.requestFocus();
         } else if (email.isEmpty()) {
             message = enter + getString(R.string.enter_email_id).toLowerCase(Locale.US);
+            mEmailId.setError(message);
+            mEmailId.requestFocus();
+
         } else if (!CommonMethods.isValidEmail(email)) {
             message = getString(R.string.err_email_invalid);
+            mEmailId.setError(message);
+            mEmailId.requestFocus();
+
         } else if (password.isEmpty()) {
             message = enter + getString(R.string.enter_password).toLowerCase(Locale.US);
+            mPassword.setError(message);
+            mPassword.requestFocus();
+
         } else if (password.trim().length() < 8) {
             message = getString(R.string.error_too_small_password);
+            mPassword.setError(message);
+            mPassword.requestFocus();
+
         } else if (mobileNo.isEmpty()) {
             message = enter + getString(R.string.enter_mobile_no).toLowerCase(Locale.US);
+            mMobileNo.setError(message);
+            mMobileNo.requestFocus();
+
         } else if (mobileNo.trim().length() < 10) {
             message = getString(R.string.err_invalid_mobile_no);
+            mMobileNo.setError(message);
+            mMobileNo.requestFocus();
+
         }
         if (message != null) {
-            CommonMethods.showSnack(mMobileNo, message);
             return true;
         } else {
             return false;
@@ -307,6 +326,7 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
                         Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
                         intentObj.putExtra(getString(R.string.type), getString(R.string.login_social_media));
                         intentObj.putExtra(getString(R.string.details), signUpRequest);
+                        intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
                         startActivity(intentObj);
                         getActivity().finish();
 
@@ -342,14 +362,20 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
             GoogleSignInAccount acct = result.getSignInAccount();
 
             Log.e(TAG, "display name: " + acct.getDisplayName());
-            String personName = acct.getDisplayName();
 
-            MyRescribePreferencesManager.putString(MyRescribeConstants.USERNAME, personName, mContext);
-            Intent intent = new Intent(getActivity(), PhoneNoActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            //-----------
+            SignUpRequestModel signUpRequest = new SignUpRequestModel();
+            signUpRequest.setMobileNumber(null);
+            signUpRequest.setName(acct.getDisplayName());
+            signUpRequest.setEmailId(acct.getEmail());
+            signUpRequest.setPassword(null);
+            //-----------
+            Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
+            intentObj.putExtra(getString(R.string.type), getString(R.string.login_social_media));
+            intentObj.putExtra(getString(R.string.details), signUpRequest);
+            intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
+            startActivity(intentObj);
+            getActivity().finish();
 
         } else {
             // Signed out, show unauthenticated UI.

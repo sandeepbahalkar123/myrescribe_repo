@@ -67,7 +67,7 @@ public class NotificationHelper implements ConnectionListener {
     public void doGetNotificationList() {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, MyRescribeConstants.TASK_NOTIFICATION, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.NOTIFICATION_URL + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, mContext));
+        mConnectionFactory.setUrl(Config.NOTIFICATION_URL + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext));
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_NOTIFICATION);
     }
 

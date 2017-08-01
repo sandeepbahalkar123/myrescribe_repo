@@ -36,7 +36,7 @@ import android.widget.Toast;
 import com.myrescribe.R;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
-import com.myrescribe.model.util.TimePeriod;
+import com.myrescribe.model.login.Year;
 import com.myrescribe.ui.activities.PrescriptionActivity;
 
 import java.io.BufferedReader;
@@ -314,7 +314,7 @@ public class CommonMethods {
         return mDiff;
     }
 
-    public static ArrayList<TimePeriod> getMonthsWithYear(String startDate, String endDate, String dateFormat) {
+    /*public static ArrayList<Year> getMonthsWithYear(String startDate, String endDate, String dateFormat) {
         ArrayList<String> monthsWithYear = new ArrayList<>();
         try {
             Calendar startCal = Calendar.getInstance();
@@ -329,17 +329,17 @@ public class CommonMethods {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        ArrayList<TimePeriod> timePeriods = new ArrayList<>();
+        ArrayList<Year> timePeriods = new ArrayList<>();
         for (String data :
                 monthsWithYear) {
             String[] splitValues = data.split("-");
-            TimePeriod timePeriod = new TimePeriod();
+            Year timePeriod = new Year();
             timePeriod.setMonthName(splitValues[0]);
             timePeriod.setYear(splitValues[1]);
             timePeriods.add(timePeriod);
         }
         return timePeriods;
-    }
+    }*/
 
     public static void dateDifference(Date startDate, Date endDate) {
         //milliseconds
@@ -730,15 +730,15 @@ public class CommonMethods {
     public static String getMealTime(int hour, int mint, Context context) {
         //BB : 7-11,lunch : 11-3,dinner :7-11
         String time = "";
-        if (hour > 7 && hour < 11) {
+        if (hour > 7 && hour < 11) 
             time = context.getString(R.string.break_fast);
-        } else if (hour >= 11 && hour < 15) {
+         else if (hour >= 11 && hour < 15) 
             time = context.getString(R.string.mlunch);
-        } else if (hour >= 15 && hour <= 17) {
+         else if (hour >= 15 && hour <= 17) 
             time = context.getString(R.string.msnacks);
-        } else if (hour >= 17 && hour <= 24) {
+         else if (hour >= 17 && hour <= 24) 
             time = context.getString(R.string.mdinner);
-        }
+        
         CommonMethods.Log(TAG, "hour" + hour);
         CommonMethods.Log(TAG, "getMealTime" + time);
         return time;
@@ -747,49 +747,49 @@ public class CommonMethods {
     public static Drawable getMedicalTypeIcon(String medicineTypeName, Context context) {
 
         Drawable abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);
-        if (medicineTypeName.equalsIgnoreCase("syrup")) {
+        if (medicineTypeName.equalsIgnoreCase("syrup")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.syrup_01);
-        } else if (medicineTypeName.equalsIgnoreCase("Tablet")) {
+         else if (medicineTypeName.equalsIgnoreCase("Tablet")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.tablet_02);
-        } else if (medicineTypeName.equalsIgnoreCase("Capsule")) {
+         else if (medicineTypeName.equalsIgnoreCase("Capsule")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.capsule_01);
-        } else if (medicineTypeName.equalsIgnoreCase("injection")) {
+         else if (medicineTypeName.equalsIgnoreCase("injection")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.injection_01);
-        } else if (medicineTypeName.equalsIgnoreCase("insulin")) {
+         else if (medicineTypeName.equalsIgnoreCase("insulin")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.insulin_01);
-        } else if (medicineTypeName.equalsIgnoreCase("Inhaler")) {
+         else if (medicineTypeName.equalsIgnoreCase("Inhaler")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.inhaler_01);
-        } else if (medicineTypeName.equalsIgnoreCase("liquid")) {
+         else if (medicineTypeName.equalsIgnoreCase("liquid")) 
             abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight); // not found
-        } else if (medicineTypeName.equalsIgnoreCase("tan")) {
+         else if (medicineTypeName.equalsIgnoreCase("tan")) 
             abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);// not found
-        } else if (medicineTypeName.equalsIgnoreCase("cream")) {
+         else if (medicineTypeName.equalsIgnoreCase("cream")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.cream_01);
-        } else if (medicineTypeName.equalsIgnoreCase("jelly")) {
+         else if (medicineTypeName.equalsIgnoreCase("jelly")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.jelly_02);
-        } else if (medicineTypeName.equalsIgnoreCase("local application")) {
+         else if (medicineTypeName.equalsIgnoreCase("local application")) 
             abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);// not found
-        } else if (medicineTypeName.equalsIgnoreCase("ointment")) {
+         else if (medicineTypeName.equalsIgnoreCase("ointment")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.ointment_01);
-        } else if (medicineTypeName.equalsIgnoreCase("lotion")) {
+         else if (medicineTypeName.equalsIgnoreCase("lotion")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.lotion_01);
-        } else if (medicineTypeName.equalsIgnoreCase("drops")) {
+         else if (medicineTypeName.equalsIgnoreCase("drops")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.drop_01);
-        } else if (medicineTypeName.equalsIgnoreCase("eye drops")) {
+         else if (medicineTypeName.equalsIgnoreCase("eye drops")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.eye_drops_02);
-        } else if (medicineTypeName.equalsIgnoreCase("nasal drops")) {
+         else if (medicineTypeName.equalsIgnoreCase("nasal drops")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.nasal_drop_01_01);
-        } else if (medicineTypeName.equalsIgnoreCase("nasal spray")) {
+         else if (medicineTypeName.equalsIgnoreCase("nasal spray")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.nasal_spray_01);
-        } else if (medicineTypeName.equalsIgnoreCase("ointment/powder")) {
+         else if (medicineTypeName.equalsIgnoreCase("ointment/powder")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.ointment_powder_01);
-        } else if (medicineTypeName.equalsIgnoreCase("respules")) {
+         else if (medicineTypeName.equalsIgnoreCase("respules")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.respules_01);
-        } else if (medicineTypeName.equalsIgnoreCase("rotacaps")) {
+         else if (medicineTypeName.equalsIgnoreCase("rotacaps")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.rotacaps_01);
-        } else if (medicineTypeName.equalsIgnoreCase("sachet")) {
+         else if (medicineTypeName.equalsIgnoreCase("sachet")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.sachet_01);
-        }
+        
         return abbreviation;
     }
 
@@ -798,91 +798,91 @@ public class CommonMethods {
     public static Drawable getMedicineTypeImage(String medicineTypeName, Context context) {
 
         Drawable abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);
-        if (medicineTypeName.equalsIgnoreCase("syrup")) {
+        if (medicineTypeName.equalsIgnoreCase("syrup")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.syrup);
-        } else if (medicineTypeName.equalsIgnoreCase("Tablet")) {
+         else if (medicineTypeName.equalsIgnoreCase("Tablet")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.tablet);
-        } else if (medicineTypeName.equalsIgnoreCase("Capsule")) {
+         else if (medicineTypeName.equalsIgnoreCase("Capsule")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.capsule);
-        } else if (medicineTypeName.equalsIgnoreCase("injection")) {
+         else if (medicineTypeName.equalsIgnoreCase("injection")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.injection);
-        } else if (medicineTypeName.equalsIgnoreCase("insulin")) {
+         else if (medicineTypeName.equalsIgnoreCase("insulin")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.insulin);
-        } else if (medicineTypeName.equalsIgnoreCase("Inhaler")) {
+         else if (medicineTypeName.equalsIgnoreCase("Inhaler")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.inhaler);
-        } else if (medicineTypeName.equalsIgnoreCase("liquid")) {
+         else if (medicineTypeName.equalsIgnoreCase("liquid")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.liquid); // not found
-        } else if (medicineTypeName.equalsIgnoreCase("tan")) {
+         else if (medicineTypeName.equalsIgnoreCase("tan")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.tan);// not found
-        } else if (medicineTypeName.equalsIgnoreCase("cream")) {
+         else if (medicineTypeName.equalsIgnoreCase("cream")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.cream);
-        } else if (medicineTypeName.equalsIgnoreCase("jelly")) {
+         else if (medicineTypeName.equalsIgnoreCase("jelly")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.jelly);
-        } else if (medicineTypeName.equalsIgnoreCase("local application")) {
+         else if (medicineTypeName.equalsIgnoreCase("local application")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.tablet);// not found
-        } else if (medicineTypeName.equalsIgnoreCase("ointment")) {
+         else if (medicineTypeName.equalsIgnoreCase("ointment")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.ointment);
-        } else if (medicineTypeName.equalsIgnoreCase("lotion")) {
+         else if (medicineTypeName.equalsIgnoreCase("lotion")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.lotion);
-        } else if (medicineTypeName.equalsIgnoreCase("drops")) {
+         else if (medicineTypeName.equalsIgnoreCase("drops")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.drop);
-        } else if (medicineTypeName.equalsIgnoreCase("eye drops")) {
+         else if (medicineTypeName.equalsIgnoreCase("eye drops")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.eye_drops);
-        } else if (medicineTypeName.equalsIgnoreCase("nasal drops")) {
+         else if (medicineTypeName.equalsIgnoreCase("nasal drops")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.nasal_drop);
-        } else if (medicineTypeName.equalsIgnoreCase("nasal spray")) {
+         else if (medicineTypeName.equalsIgnoreCase("nasal spray")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.nasal_spray);
-        } else if (medicineTypeName.equalsIgnoreCase("ointment/powder")) {
+         else if (medicineTypeName.equalsIgnoreCase("ointment/powder")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.ointment_powder);
-        } else if (medicineTypeName.equalsIgnoreCase("respules")) {
+         else if (medicineTypeName.equalsIgnoreCase("respules")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.respules);
-        } else if (medicineTypeName.equalsIgnoreCase("rotacaps")) {
+         else if (medicineTypeName.equalsIgnoreCase("rotacaps")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.rotocaps);
-        } else if (medicineTypeName.equalsIgnoreCase("sachet")) {
+         else if (medicineTypeName.equalsIgnoreCase("sachet")) 
             abbreviation = ContextCompat.getDrawable(context, R.drawable.sachet);
-        }
+        
         return abbreviation;
     }
 
-    public static int getCaseStudyIcons(String caseStudyName, Context context) {
+    public static int getCaseStudyIcons(String caseStudyName) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.common_icon;
-        if (caseStudyName.equalsIgnoreCase("complaints")) {
+        if (caseStudyName.equalsIgnoreCase("complaints")) 
             abbreviation = R.drawable.complaints;
-        } else if (caseStudyName.equalsIgnoreCase("vitals")) {
+        else if (caseStudyName.equalsIgnoreCase("vitals"))
             abbreviation = R.drawable.vitals;
-        } else if (caseStudyName.equalsIgnoreCase("remarks")) {
+        else if (caseStudyName.equalsIgnoreCase("remarks"))
             abbreviation = R.drawable.remarks;
-        } else if (caseStudyName.equalsIgnoreCase("diagnosis")) {
+        else if (caseStudyName.equalsIgnoreCase("diagnosis"))
             abbreviation = R.drawable.diagnosis;
-        } else if (caseStudyName.equalsIgnoreCase("prescription")) {
+        else if (caseStudyName.equalsIgnoreCase("prescription"))
             abbreviation = R.drawable.prescription;
-        } else if (caseStudyName.equalsIgnoreCase("investigations")) {
+        else if (caseStudyName.equalsIgnoreCase("investigations"))
             abbreviation = R.drawable.investigations;
-        } else if (caseStudyName.equalsIgnoreCase("advice")) {
+        else if (caseStudyName.equalsIgnoreCase("advice"))
             abbreviation = R.drawable.advice; // not found
-        }else if (caseStudyName.equalsIgnoreCase("treatmentplan")) {
+        else if (caseStudyName.equalsIgnoreCase("treatmentplan")) 
             abbreviation = R.drawable.treatment_plan; // not found
-        }else if (caseStudyName.equalsIgnoreCase("surgery")) {
+        else if (caseStudyName.equalsIgnoreCase("surgery")) 
             abbreviation = R.drawable.surgery; // not found
-        }else if (caseStudyName.equalsIgnoreCase("vaccination")) {
+        else if (caseStudyName.equalsIgnoreCase("vaccination")) 
             abbreviation = R.drawable.vaccination; // not found
-        }else if (caseStudyName.equalsIgnoreCase("generalprecautions")) {
+        else if (caseStudyName.equalsIgnoreCase("generalprecautions")) 
             abbreviation = R.drawable.general_precautions; // not found
-        }else if (caseStudyName.equalsIgnoreCase("preoperativeprecautions")) {
+        else if (caseStudyName.equalsIgnoreCase("preoperativeprecautions")) 
             abbreviation = R.drawable.pre_operative_precautions; // not found
-        }else if (caseStudyName.equalsIgnoreCase("postoperativecare")) {
+        else if (caseStudyName.equalsIgnoreCase("postoperativecare")) 
             abbreviation = R.drawable.post_operative_care; // not found
-        }else if (caseStudyName.equalsIgnoreCase("painscore")) {
+        else if (caseStudyName.equalsIgnoreCase("painscore")) 
             abbreviation = R.drawable.pain_score; // not found
-        }else if (caseStudyName.equalsIgnoreCase("exercise")) {
+        else if (caseStudyName.equalsIgnoreCase("exercise")) 
             abbreviation = R.drawable.exercise; // not found
-        }else if (caseStudyName.equalsIgnoreCase("finding")) {
+        else if (caseStudyName.equalsIgnoreCase("finding")) 
             abbreviation = R.drawable.finding; // not found
-        }else if (caseStudyName.equalsIgnoreCase("allergy")) {
+        else if (caseStudyName.equalsIgnoreCase("allergy")) 
             abbreviation = R.drawable.allergy; // not found
-        }
+
         return abbreviation;
     }
 
@@ -890,51 +890,51 @@ public class CommonMethods {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.ellipse_2;
-        if (vitalDetailName.equalsIgnoreCase("BP")) {
+        if (vitalDetailName.equalsIgnoreCase("BP")) 
             abbreviation = R.drawable.bp;
-        } else if (vitalDetailName.equalsIgnoreCase("Weight")) {
+         else if (vitalDetailName.equalsIgnoreCase("Weight")) 
             abbreviation = R.drawable.weight;
-        } else if (vitalDetailName.equalsIgnoreCase("Height")) {
+         else if (vitalDetailName.equalsIgnoreCase("Height")) 
             abbreviation = R.drawable.height;
-        } else if (vitalDetailName.equalsIgnoreCase("BMI")) {
+         else if (vitalDetailName.equalsIgnoreCase("BMI")) 
             abbreviation = R.drawable.bmi_1;
-        } else if (vitalDetailName.equalsIgnoreCase("Total HDL")) {
+         else if (vitalDetailName.equalsIgnoreCase("Total HDL")) 
             abbreviation = R.drawable.total_hdl;
-        } else if (vitalDetailName.equalsIgnoreCase("Cholesterol")) {
+         else if (vitalDetailName.equalsIgnoreCase("Cholesterol")) 
             abbreviation = R.drawable.complaints;
-        } else if (vitalDetailName.equalsIgnoreCase("HDL")) {
+         else if (vitalDetailName.equalsIgnoreCase("HDL")) 
             abbreviation = R.drawable.hdl;
-        } else if (vitalDetailName.equalsIgnoreCase("LDL")) {
+         else if (vitalDetailName.equalsIgnoreCase("LDL")) 
             abbreviation = R.drawable.ldl;
-        } else if (vitalDetailName.equalsIgnoreCase("Triglycerides")) {
+         else if (vitalDetailName.equalsIgnoreCase("Triglycerides")) 
             abbreviation = R.drawable.triglycerides;
-        } else if (vitalDetailName.equalsIgnoreCase("HDL Cholesterol")) {
+         else if (vitalDetailName.equalsIgnoreCase("HDL Cholesterol")) 
             abbreviation = R.drawable.cholesterol;
-        } else if (vitalDetailName.equalsIgnoreCase("GFR")) {
+         else if (vitalDetailName.equalsIgnoreCase("GFR")) 
             abbreviation = R.drawable.gfr;
-        } else if (vitalDetailName.equalsIgnoreCase("BUN")) {
+         else if (vitalDetailName.equalsIgnoreCase("BUN")) 
             abbreviation = R.drawable.bun;
-        } else if (vitalDetailName.equalsIgnoreCase("Sr. Creatinine")) {
+         else if (vitalDetailName.equalsIgnoreCase("Sr. Creatinine")) 
             abbreviation = R.drawable.creatinine;
-        } else if (vitalDetailName.equalsIgnoreCase("Respiratory Rate")) {
+         else if (vitalDetailName.equalsIgnoreCase("Respiratory Rate")) 
             abbreviation = R.drawable.respiratory_rate;
-        } else if (vitalDetailName.equalsIgnoreCase("Heart Rate")) {
+         else if (vitalDetailName.equalsIgnoreCase("Heart Rate")) 
             abbreviation = R.drawable.heart_rate;
-        } else if (vitalDetailName.equalsIgnoreCase("Temperature")) {
+         else if (vitalDetailName.equalsIgnoreCase("Temperature")) 
             abbreviation = R.drawable.temperature;
-        } else if (vitalDetailName.equalsIgnoreCase("Fasting Blood Sugar")) {
+         else if (vitalDetailName.equalsIgnoreCase("Fasting Blood Sugar")) 
             abbreviation = R.drawable.fbs;
-        } else if (vitalDetailName.equalsIgnoreCase("PP Blood Sugar")) {
+         else if (vitalDetailName.equalsIgnoreCase("PP Blood Sugar")) 
             abbreviation = R.drawable.ppbs;
-        } else if (vitalDetailName.equalsIgnoreCase("Oxygen Saturation")) {
+         else if (vitalDetailName.equalsIgnoreCase("Oxygen Saturation")) 
             abbreviation = R.drawable.sp_o_2;
-        } else if (vitalDetailName.equalsIgnoreCase("Platelet Count")) {
+         else if (vitalDetailName.equalsIgnoreCase("Platelet Count")) 
             abbreviation = R.drawable.platelet;
-        } else if (vitalDetailName.equalsIgnoreCase("ESR")) {
+         else if (vitalDetailName.equalsIgnoreCase("ESR")) 
             abbreviation = R.drawable.esr;
-        } else if (vitalDetailName.equalsIgnoreCase("Hb")) {
+         else if (vitalDetailName.equalsIgnoreCase("Hb")) 
             abbreviation = R.drawable.hb;
-        }
+        
         return abbreviation;
     }
 

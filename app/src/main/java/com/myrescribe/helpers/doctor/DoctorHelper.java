@@ -43,9 +43,9 @@ public class DoctorHelper implements ConnectionListener {
     HelperResponse mHelperResponseManager;
     private Map<String, Map<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
-    public DoctorHelper(Context context, HelperResponse activity) {
+    public DoctorHelper(Context context) {
         this.mContext = context;
-        this.mHelperResponseManager = activity;
+        this.mHelperResponseManager = (HelperResponse) context;
     }
 
 

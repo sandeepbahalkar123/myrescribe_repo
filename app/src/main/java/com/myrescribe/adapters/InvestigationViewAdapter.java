@@ -46,9 +46,10 @@ public class InvestigationViewAdapter extends RecyclerView
         holder.title.setText(mDataset.get(position).getTitle());
         holder.uploaded.setChecked(mDataset.get(position).isSelected());
 
-        holder.uploaded.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (mDataset.get(position).isUploaded()) {
                     mDataset.get(position).setSelected(true);
                     mDataset.get(position).setUploaded(true);
@@ -78,11 +79,13 @@ public class InvestigationViewAdapter extends RecyclerView
     static class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView title;
         CheckBox uploaded;
+        View itemView;
 
         DataObjectHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
             uploaded = (CheckBox) itemView.findViewById(R.id.selected);
+            this.itemView = itemView;
             Log.i(TAG, "Adding Listener");
         }
     }

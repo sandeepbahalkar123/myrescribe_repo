@@ -19,7 +19,7 @@ import butterknife.OnClick;
  * Created by jeetal on 31/7/17.
  */
 
-public class RecordsActivity extends AppCompatActivity {
+public class MyRecordsActivity extends AppCompatActivity {
     @BindView(R.id.recordsToolbar)
     Toolbar mToolbar;
     @BindView(R.id.addRecord)
@@ -36,7 +36,7 @@ public class RecordsActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        mContext = RecordsActivity.this;
+        mContext = MyRecordsActivity.this;
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.records));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -50,7 +50,7 @@ public class RecordsActivity extends AppCompatActivity {
 
     @OnClick(R.id.addRecord)
     public void onViewClicked() {
-        Intent intent = new Intent(RecordsActivity.this,AddRecordsActivity.class);
+        Intent intent = new Intent(MyRecordsActivity.this, AddRecordsActivity.class);
         startActivity(intent);
     }
 }

@@ -151,16 +151,18 @@
             android:name=".ui.activities.MapsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.RecordsActivity"
+            android:name=".ui.activities.MyRecordsActivity"
+            android:label="@string/my_records"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.AddRecordsActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/add_record"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <receiver android:name=".broadcast_receivers.OtpReader">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />

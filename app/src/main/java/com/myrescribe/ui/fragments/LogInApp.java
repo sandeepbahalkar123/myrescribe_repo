@@ -143,8 +143,6 @@ public class LogInApp extends Fragment implements
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
             }
-
-
         }
     }
 

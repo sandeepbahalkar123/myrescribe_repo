@@ -7,29 +7,35 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.adapters.PeopleAdapter;
-import com.myrescribe.model.doctors.People;
+import com.myrescribe.adapters.DoctorSpinnerAdapter;
+import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by jeetal on 31/7/17.
  */
 
-public class AddRecordsActivity extends AppCompatActivity implements View.OnClickListener{
+public class AddRecordsActivity extends AppCompatActivity {
     @BindView(R.id.addRecordsToolbar)
     Toolbar mToolbar;
     @BindView(R.id.selectDoctorName)
     AutoCompleteTextView mSelectDoctorName;
+    @BindView(R.id.clearButton)
+    ImageView clearButton;
+    @BindView(R.id.selectDate)
+    TextView selectDate;
     private Context mContext;
-    List<People> mList;
-    PeopleAdapter adapter;
+    ArrayList<DoctorDetail> mList;
+    DoctorSpinnerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,35 +59,30 @@ public class AddRecordsActivity extends AppCompatActivity implements View.OnClic
         });
         mList = retrievePeople();
         mSelectDoctorName.setThreshold(1);
-        adapter = new PeopleAdapter(this, R.layout.activity_main, R.id.doctorName, mList);
+        adapter = new DoctorSpinnerAdapter(this, R.layout.activity_add_records, R.id.doctorName, mList);
         mSelectDoctorName.setAdapter(adapter);
-
-
-
     }
-    private List<People> retrievePeople() {
-        List<People> list = new ArrayList<People>();
-        list.add(new People("James", "Bond", 1));
-        list.add(new People("Jason", "Bourne", 2));
-        list.add(new People("Ethan", "Hunt", 3));
-        list.add(new People("Sherlock", "Holmes", 4));
-        list.add(new People("David", "Beckham", 5));
-        list.add(new People("Bryan", "Adams", 6));
-        list.add(new People("Arjen", "Robben", 7));
-        list.add(new People("Van", "Persie", 8));
-        list.add(new People("Zinedine", "Zidane", 9));
-        list.add(new People("Luis", "Figo", 10));
-        list.add(new People("John", "Watson", 11));
+
+    private ArrayList<DoctorDetail> retrievePeople() {
+        ArrayList<DoctorDetail> list = new ArrayList<DoctorDetail>();
+        for (int i = 0; i < 10; i++) {
+            DoctorDetail doctorDetail = new DoctorDetail();
+            doctorDetail.setDoctorName(Character.toString((char) (i + 65)) + " Sitaramanjaneyulu Rajasekhara Srinivasulu Laxminarayana Siva ");
+            doctorDetail.setSpecialization(Character.toString((char) (i + 65)) + " Speciality");
+            doctorDetail.setAddress(Character.toString((char) (i + 65)) + " Pune");
+            list.add(doctorDetail);
+        }
         return list;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-           /* case R.id.addRecord:
-
-                break;*/
+    @OnClick({R.id.clearButton, R.id.selectDate})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.clearButton:
+                mSelectDoctorName.setText("");
+                break;
+            case R.id.selectDate:
+                break;
         }
-
     }
 }

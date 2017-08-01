@@ -97,53 +97,29 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
                 convertView = inflater.inflate(R.layout.vitals_main_activity, null);
                 convertView.setTag(headerName);
                 TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.table);
-                View divider = (View) convertView.findViewById(R.id.adapter_divider);
+                View divider = convertView.findViewById(R.id.adapter_divider);
                 tableLayout.removeAllViews();
-                    /*if(mVitalList.size()==8) {
-                        for (int i = 0; i < 4; i++) {
-                        }
-                    }*/
 
                 List<com.myrescribe.model.case_details.Vital> vital = new ArrayList<>();
                 int size = mListDataHeader.get(groupPosition).getVitals().size();
                 int count = 1;
+                int tempSize = size - (size % 3);
                 for (int i = 0; i < size; i++) {
 
                     vital.add(mListDataHeader.get(groupPosition).getVitals().get(i));
-                    int sizeTemp = (i % 3) == 0 ? 3 : (size % 3);
-                    if (count == (sizeTemp < 3 ? (sizeTemp - 1) : 2)){
+
+                    if (tempSize > i) {
+                        if (count == 3) {
+                            tableLayout.addView(addTableRow(vital));
+                            vital.clear();
+                            count = 1;
+                        } else
+                            count++;
+                    } else if (count == size % 3) {
                         tableLayout.addView(addTableRow(vital));
                         vital.clear();
                         count = 1;
-                    }
-
-                    count++;
-
-                    /*if (i < 3) {
-                        vital.add(mListDataHeader.get(groupPosition).getVitals().get(i));
-                        if (i == (size < 3 ? (size - 1) : 2)) {
-                            addTableRow(vital);
-                            vital.clear();
-                        }
-                    } else if (i < 6) {
-                        vital.add(mListDataHeader.get(groupPosition).getVitals().get(i));
-                        if (i == (size < 6 ? (size - 1) : 5)) {
-                            addTableRow(vital);
-                            vital.clear();
-                        }
-                    } else if (i < 9) {
-                        vital.add(mListDataHeader.get(groupPosition).getVitals().get(i));
-                        if (i == (size < 9 ? (size - 1) : 8)) {
-                            addTableRow(vital);
-                            vital.clear();
-                        }
-                    } else {
-                        vital.add(mListDataHeader.get(groupPosition).getVitals().get(i));
-                        if (i == (size - 1)) {
-                            addTableRow(vital);
-                            vital.clear();
-                        }
-                    }*/
+                    } else count++;
                 }
 
                 if (isLastChild) {
@@ -157,7 +133,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
                 convertView = inflater.inflate(R.layout.history_child_item_layout, null);
                 convertView.setTag(headerName);
                 TextView txtListChild = (TextView) convertView.findViewById(R.id.textView_name);
-                View dividerLine = (View) convertView.findViewById(R.id.adapter_divider_bottom);
+                View dividerLine = convertView.findViewById(R.id.adapter_divider_bottom);
                 txtListChild.setText(childObject.get(childPosition).getName());
 
                 if (isLastChild) {

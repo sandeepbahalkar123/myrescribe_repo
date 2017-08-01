@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.SelectedImageAdapter;
@@ -24,10 +25,13 @@ import com.myrescribe.model.investigation.DataObject;
 import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.investigation.Images;
 import com.myrescribe.model.investigation.SelectedDocModel;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
+
 import java.util.ArrayList;
 import java.util.UUID;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -53,6 +57,7 @@ public class SelectedDocsActivity extends AppCompatActivity {
     private SelectedImageAdapter selectedImageAdapter;
     private ArrayList<DataObject> investigation;
     private AppDBHelper appDBHelper;
+    private String patient_id = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,8 @@ public class SelectedDocsActivity extends AppCompatActivity {
 
         mContext = SelectedDocsActivity.this;
         appDBHelper = new AppDBHelper(mContext);
+
+        patient_id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext);
 
         investigation = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
 
@@ -162,8 +169,8 @@ public class SelectedDocsActivity extends AppCompatActivity {
 //            int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
                 if (resultCode == Activity.RESULT_OK) {
                     photoPaths.clear();
-                    for (String imagePath :data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA))
-                        photoPaths.add(new Image(UUID.randomUUID().toString(), imagePath, false));
+                    for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA))
+                        photoPaths.add(new Image(patient_id + "_" + UUID.randomUUID().toString(), imagePath, false));
                     selectedImageAdapter.notifyDataSetChanged();
                 }
             }

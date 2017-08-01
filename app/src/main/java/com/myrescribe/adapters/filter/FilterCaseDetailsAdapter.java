@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.model.filter.CaseDetailsData;
+import com.myrescribe.ui.activities.DoctorListActivity;
 import com.myrescribe.util.CommonMethods;
 
 import java.util.ArrayList;
@@ -73,12 +74,12 @@ public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDet
                     }
                     if (isOtherSelected) {
                         caseDetailsList.get(position).setSelected(false);
-                        CommonMethods.showToast(context, context.getResources().getString(R.string.case_details_message));
+                        CommonMethods.showInfoDialog(context.getResources().getString(R.string.case_details_message), context);
                     } else
                         toggle(position);
                 } else if (caseDetailsList.get(vitalsPos).isSelected()) {
                     caseDetailsList.get(position).setSelected(false);
-                    CommonMethods.showToast(context, context.getResources().getString(R.string.case_details_message));
+                    CommonMethods.showInfoDialog(context.getResources().getString(R.string.case_details_message), context);
                 } else
                     toggle(position);
 

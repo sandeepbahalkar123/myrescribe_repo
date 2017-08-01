@@ -165,6 +165,7 @@
     <string name="title">Title</string>
 
     <string name="case_details_message"><![CDATA[If you have selected “Vitals”, you will not be able to select any other parameters & vice versa.]]></string>
+    <string name="info">Info</string>
 
 
 </resources>

@@ -22,6 +22,11 @@ public class NotificationData implements CustomResponse{
     private boolean isBreakThere = true;
     private boolean isSnacksThere = true;
     private boolean isLunchExpanded = false;
+    private boolean isDinnerExpanded = false;
+    private boolean isBreakFastExpanded = false;
+    private boolean isSnacksExpanded = false;
+    private String date;
+    private boolean isTabSelected = false;
 
     public boolean isExpanded() {
         return isExpanded;
@@ -111,11 +116,7 @@ public class NotificationData implements CustomResponse{
         isTabSelected = tabSelected;
     }
 
-    private boolean isDinnerExpanded = false;
-    private boolean isBreakFastExpanded = false;
-    private boolean isSnacksExpanded = false;
-    private String date;
-    private boolean isTabSelected = false;
+
     public String getPrescriptionDate() {
         if (prescriptionDate.contains("T")) {
             prescriptionDate = CommonMethods.formatDateTime(prescriptionDate, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);

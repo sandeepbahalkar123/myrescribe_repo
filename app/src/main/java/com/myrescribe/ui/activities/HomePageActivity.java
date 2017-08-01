@@ -219,16 +219,16 @@ public class HomePageActivity extends AppCompatActivity
             Intent intent = new Intent(mContext, InvestigationActivity.class);
 
             startActivity(intent);
-        } else if (id == R.id.doctorFilteredList) {
-            Intent intent = new Intent(mContext, DoctorFilteredListActivity.class);
-            startActivity(intent);
         } else if (id == R.id.onGoingMedication) {
             Intent intent = new Intent(HomePageActivity.this, PrescriptionActivity.class);
             startActivity(intent);
         } else if (id == R.id.appointments) {
             Intent intent = new Intent(mContext, AppointmentActivity.class);
             startActivity(intent);
-        } else if (id == R.id.logout) {
+        }else if (id == R.id.records) {
+             Intent intent = new Intent(mContext, RecordsActivity.class);
+             startActivity(intent);
+         } else if (id == R.id.logout) {
             logout();
         }
 

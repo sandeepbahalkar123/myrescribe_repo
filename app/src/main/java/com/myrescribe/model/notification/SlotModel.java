@@ -13,46 +13,46 @@ import java.util.List;
 public class SlotModel implements CustomResponse {
     @SerializedName("breakfast")
     @Expose
-    private List<Breakfast> breakfast = null;
+    private List<Medication> breakfast = null;
     @SerializedName("dinner")
     @Expose
-    private List<Dinner> dinner = null;
+    private List<Medication> dinner = null;
     @SerializedName("snacks")
     @Expose
-    private List<Snack> snacks = null;
+    private List<Medication> snacks = null;
     @SerializedName("lunch")
     @Expose
-    private List<Lunch> lunch = null;
+    private List<Medication> lunch = null;
 
-    public List<Breakfast> getBreakfast() {
+    public List<Medication> getBreakfast() {
         return breakfast;
     }
 
-    public void setBreakfast(List<Breakfast> breakfast) {
+    public void setBreakfast(List<Medication> breakfast) {
         this.breakfast = breakfast;
     }
 
-    public List<Dinner> getDinner() {
+    public List<Medication> getDinner() {
         return dinner;
     }
 
-    public void setDinner(List<Dinner> dinner) {
+    public void setDinner(List<Medication> dinner) {
         this.dinner = dinner;
     }
 
-    public List<Snack> getSnacks() {
+    public List<Medication> getSnacks() {
         return snacks;
     }
 
-    public void setSnacks(List<Snack> snacks) {
+    public void setSnacks(List<Medication> snacks) {
         this.snacks = snacks;
     }
 
-    public List<Lunch> getLunch() {
+    public List<Medication> getLunch() {
         return lunch;
     }
 
-    public void setLunch(List<Lunch> lunch) {
+    public void setLunch(List<Medication> lunch) {
         this.lunch = lunch;
     }
 

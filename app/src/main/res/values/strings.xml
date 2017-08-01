@@ -103,6 +103,9 @@
     <string name="appointment">Appointment</string>
     <string name="investigation">Investigation</string>
     <string name="appointments">Appointments</string>
+    <string name="records">My Records</string>
+    <string name="addrecords">Add Records</string>
+    <string name="doctor_filter_list">Doctor Filtered List</string>
     <string name="my_appointments">My Appointments</string>
     <string name="one_day_visit_date">VISIT_DATE</string>
     <string name="just_now">Just\nNow</string>
@@ -165,6 +168,9 @@
     <string name="title">Title</string>
 
     <string name="case_details_message"><![CDATA[If you have selected “Vitals”, you will not be able to select any other parameters & vice versa.]]></string>
+    <string name="add_record">Add Records</string>
+    <string name="select_doctor_name">Doctor Name</string>
+    <string name="select_date">Date</string>
 
 
 </resources>

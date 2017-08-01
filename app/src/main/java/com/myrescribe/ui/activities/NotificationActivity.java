@@ -17,9 +17,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.myrescribe.R;
-import com.myrescribe.adapters.NotificationListAdapter;
+import com.myrescribe.adapters.NotificationAdapterNew;
 import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.notification.NotificationHelper;
 import com.myrescribe.helpers.notification.RespondToNotificationHelper;
@@ -29,14 +28,10 @@ import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.Common;
 import com.myrescribe.model.notification.AdapterNotificationData;
 import com.myrescribe.model.notification.AdapterNotificationModel;
-import com.myrescribe.model.notification.Breakfast;
-import com.myrescribe.model.notification.Dinner;
-import com.myrescribe.model.notification.Lunch;
 import com.myrescribe.model.notification.NotificationData;
 import com.myrescribe.model.notification.Medication;
 import com.myrescribe.model.notification.NotificationModel;
 import com.myrescribe.model.notification.SlotModel;
-import com.myrescribe.model.notification.Snack;
 import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.customesViews.CustomProgressDialog;
@@ -47,10 +42,10 @@ import com.myrescribe.listeners.SwipeDismissTouchListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationListAdapter.OnHeaderClickListener {
+public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationAdapterNew.OnHeaderClickListener {
 
     private RecyclerView mRecyclerView;
-    private NotificationListAdapter mAdapter;
+    private NotificationAdapterNew mAdapter;
     private String medicineSlot;
     private String mNotificationDate;
     private Integer mMedicineId = null;
@@ -244,15 +239,22 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
             selectViewTab.setChecked(data.get(i).isTabSelected());
 
+            selectViewTab.setEnabled(data.get(i).isTabWebService());
+
+
             final int finalI = i;
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (selectViewTab.isChecked()) {
                         data.get(finalI).setTabSelected(true);
+                       data.get(finalI).setTabWebService(false);
+                        selectViewTab.setEnabled(false);
                         if (mAdapter.getSelectedCount(data) == data.size())
                             mHeaderLayoutParent.removeView(mHeaderLayout);
                         mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINTID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 0);
+                           // data.get(finalI).setTabWebService(false);
+
                     } else {
                         data.get(finalI).setTabSelected(false);
                     }
@@ -321,9 +323,83 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                     }
                 }
 
-                mAdapter = new NotificationListAdapter(mContext, notificationListForAdapter, getTimeArray());
+              /* mAdapter = new NotificationListAdapter(mContext, notificationListForAdapter, getTimeArray());
+                mRecyclerView.setAdapter(mAdapter);
+                mProgressDialog.dismiss();*/
+
+
+                //start filtering list;
+                List<SlotModel> slotModelList = new ArrayList<>();
+                AdapterNotificationData adapterNotificationData = new AdapterNotificationData();
+                List<AdapterNotificationData> adapterNotificationParentData =  new ArrayList<>();
+                List<AdapterNotificationModel> adapterNotificationModelListForDinner = new ArrayList<>();
+                String notifyDate = "";
+                for(int i= 0;i<notificationListForAdapter.size();i++){
+                    List<Medication> medications = new ArrayList<>();
+                    SlotModel slotModel = new SlotModel();
+
+                    AdapterNotificationModel adapterNotificationModel = new AdapterNotificationModel();
+
+                    medications = notificationListForAdapter.get(i).getMedication();
+                    notifyDate = notificationListForAdapter.get(i).getPrescriptionDate();
+                    List<Medication> dinnerList = new ArrayList<>();
+                    List<Medication> lunchList = new ArrayList<>();
+                    List<Medication> breakfastList = new ArrayList<>();
+                    List<Medication> snackList = new ArrayList<>();
+
+                    for(int j= 0;j<medications.size();j++){
+                        if (medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.dinner_after)) || medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.dinner_before))) {
+                            Medication medicationDinner = new Medication();
+                            medicationDinner.setMedicineName(medications.get(j).getMedicineName());
+                            medicationDinner.setQuantity(medications.get(j).getQuantity());
+                            medicationDinner.setMedicineId(medications.get(j).getMedicineId());
+                            medicationDinner.setMedicinSlot(medications.get(j).getMedicinSlot());
+                            medicationDinner.setMedicineTypeName(medications.get(j).getMedicineTypeName());
+                            medicationDinner.setDate(notifyDate);
+                            dinnerList.add(medicationDinner);
+                        }
+                      else if (medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.lunch_after)) || medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.lunch_before))){
+                            Medication medicationLunch = new Medication();
+                            medicationLunch.setMedicineName(medications.get(j).getMedicineName());
+                            medicationLunch.setQuantity(medications.get(j).getQuantity());
+                            medicationLunch.setMedicineId(medications.get(j).getMedicineId());
+                            medicationLunch.setMedicinSlot(medications.get(j).getMedicinSlot());
+                            medicationLunch.setMedicineTypeName(medications.get(j).getMedicineTypeName());
+                            medicationLunch.setDate(notifyDate);
+                            lunchList.add(medicationLunch);
+                        }else if (medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.breakfast_after)) || medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.breakfast_before))){
+                            Medication medicationBreakfast = new Medication();
+                            medicationBreakfast.setMedicineName(medications.get(j).getMedicineName());
+                            medicationBreakfast.setQuantity(medications.get(j).getQuantity());
+                            medicationBreakfast.setMedicineId(medications.get(j).getMedicineId());
+                            medicationBreakfast.setMedicinSlot(medications.get(j).getMedicinSlot());
+                            medicationBreakfast.setMedicineTypeName(medications.get(j).getMedicineTypeName());
+                            medicationBreakfast.setDate(notifyDate);
+                            breakfastList.add(medicationBreakfast);
+                        }else if (medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.snacks_after)) || medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.snacks_before))){
+                            Medication medicationSnack = new Medication();
+                            medicationSnack.setMedicineName(medications.get(j).getMedicineName());
+                            medicationSnack.setQuantity(medications.get(j).getQuantity());
+                            medicationSnack.setMedicineId(medications.get(j).getMedicineId());
+                            medicationSnack.setMedicinSlot(medications.get(j).getMedicinSlot());
+                            medicationSnack.setMedicineTypeName(medications.get(j).getMedicineTypeName());
+                            medicationSnack.setDate(notifyDate);
+                            snackList.add(medicationSnack);
+                        }
+                    }
+                    slotModel.setSnacks(snackList);
+                    slotModel.setDinner(dinnerList);
+                    slotModel.setBreakfast(breakfastList);
+                    slotModel.setLunch(lunchList);
+                    adapterNotificationModel.setMedication(slotModel);
+                    adapterNotificationModel.setPrescriptionDate(notifyDate);
+                    adapterNotificationModelListForDinner.add(adapterNotificationModel);
+                }
+
+                mAdapter = new NotificationAdapterNew(mContext, adapterNotificationModelListForDinner, getTimeArray());
                 mRecyclerView.setAdapter(mAdapter);
                 mProgressDialog.dismiss();
+                CommonMethods.Log("",""+adapterNotificationParentData);
             }
         }
     }

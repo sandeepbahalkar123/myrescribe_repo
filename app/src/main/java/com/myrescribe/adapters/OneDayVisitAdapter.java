@@ -18,6 +18,7 @@ import com.myrescribe.model.history.HistoryCommonDetails;
 import com.myrescribe.model.visit_details.Diagnosi;
 import com.myrescribe.model.visit_details.Vital;
 import com.myrescribe.util.CommonMethods;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,32 +30,28 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
 
     private final List<Vital> mVitalList;
     private Context mContext;
+
     String[] firstRow = {
             "Weight",
             "BMI",
-            "Heart Rate"} ;
+            "Heart Rate", "Blood Pressure",
+            "Blood Glucose"};
+
     String[] normalRangeFirstRow = {
             "60 to 90",
             "70 to 110",
-            "80 to 120"} ;
-    String[] normalRangeSecondRow = {
-            "50 to 80",
+            "80 to 120", "50 to 80",
             "70 to 95"} ;
 
-    String[] secondRow = {
-            "Blood Pressure",
-            "Blood Glucose"};
     Integer[] firstRowImage = {
             R.drawable.weight,
             R.drawable.bmi_1,
-            R.drawable.heart_rate,};
-    Integer[] SecondRowImage = {
-            R.drawable.blood_pressure,
+            R.drawable.heart_rate, R.drawable.blood_pressure,
             R.drawable.layer_10};
-    int[] colorSecond = {R.color.range_green,R.color.range_yellow,R.color.Red};
-    String[] unitFirstRow = {"65","35","77"};
-    String[] unitSecondRow = {"80","90"};
-    int[] colorFirstRow = {R.color.range_yellow,R.color.range_green};
+
+    int[] colorFirstRow = {R.color.range_green, R.color.range_yellow, R.color.Red, R.color.range_yellow, R.color.range_green};
+    String[] unitFirstRow = {"65", "35", "77", "80", "90"};
+
     private static final String CHILD_TYPE_1 = "Vitals";
     private ArrayList<HistoryCommonDetails> mHistoryCommonDetailses;
     private ArrayList<String> mListDataHeader; // header titles
@@ -100,14 +97,16 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
                 convertView = inflater.inflate(R.layout.vitals_main_activity, null);
                 convertView.setTag(headerName);
                 TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.table);
-                View divider = (View)convertView.findViewById(R.id.adapter_divider);
+                View divider = convertView.findViewById(R.id.adapter_divider);
                 tableLayout.removeAllViews();
                     /*if(mVitalList.size()==8) {
                         for (int i = 0; i < 4; i++) {
                         }
                     }*/
-                tableLayout.addView(addTableRow(3, firstRow, firstRowImage,unitFirstRow,R.array.colors_first,normalRangeFirstRow));
-                tableLayout.addView(addTableRow(2, secondRow, SecondRowImage,unitSecondRow,R.array.colors_second,normalRangeSecondRow));
+
+                for (int i = 0; i < firstRow.length; i++) {
+                    tableLayout.addView(addTableRow(3, firstRow, firstRowImage, unitFirstRow, R.array.colors_first, normalRangeFirstRow));
+                }
 
                 if(isLastChild){
                     divider.setVisibility(View.VISIBLE);

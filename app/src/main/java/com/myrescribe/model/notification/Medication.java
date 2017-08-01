@@ -19,8 +19,18 @@ public class Medication implements CustomResponse{
     @SerializedName("medicineTypeName")
     @Expose
     private String medicineTypeName;
+
+    public boolean isTabWebService() {
+        return isTabWebService;
+    }
+
+    public void setTabWebService(boolean tabWebService) {
+        isTabWebService = tabWebService;
+    }
+
     @SerializedName("medicineTypeId")
     @Expose
+
     private String medicineTypeId;
     @SerializedName("medicinSlot")
     @Expose
@@ -120,7 +130,7 @@ public class Medication implements CustomResponse{
     public void setTabSelected(boolean tabSelected) {
         isTabSelected = tabSelected;
     }
-
+    private boolean isTabWebService = true;
     private boolean isBreakFastExpanded = false;
     private boolean isSnacksExpanded = false;
     private String date;

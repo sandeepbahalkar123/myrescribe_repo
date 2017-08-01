@@ -150,6 +150,13 @@
         <activity
             android:name=".ui.activities.MapsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.RecordsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.AddRecordsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

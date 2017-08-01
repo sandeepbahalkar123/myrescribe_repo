@@ -886,7 +886,7 @@ public class CommonMethods {
         return abbreviation;
     }
 
-    public static int getVitalIcons(String vitalDetailName, Context context) {
+    public static int getVitalIcons(String vitalDetailName) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.ellipse_2;

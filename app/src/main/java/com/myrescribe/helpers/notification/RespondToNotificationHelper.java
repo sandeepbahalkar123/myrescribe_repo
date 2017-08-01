@@ -68,7 +68,7 @@ public class RespondToNotificationHelper implements ConnectionListener {
 
 
     public void doRespondToNotification(Integer patientID,String slot,Integer medicineId,String takenDate,Integer isBundle) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, MyRescribeConstants.TASK_RESPOND_NOTIFICATION, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, MyRescribeConstants.TASK_RESPOND_NOTIFICATION, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         ResponseNotificationModel responseNotificationModel = new ResponseNotificationModel();
         responseNotificationModel.setPatientId(patientID);

@@ -1,11 +1,13 @@
-package com.myrescribe.model.visit_details;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package com.myrescribe.model.case_details;
 
 import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.myrescribe.interfaces.CustomResponse;
 
-public class Vital {
+public class Vital implements CustomResponse{
+
     @SerializedName("unitName")
     @Expose
     private String unitName;
@@ -14,7 +16,7 @@ public class Vital {
     private String unitValue;
     @SerializedName("ranges")
     @Expose
-    private List<RangeOfVitals> ranges = null;
+    private List<Range> ranges = null;
     @SerializedName("displayName")
     @Expose
     private String displayName;
@@ -35,11 +37,11 @@ public class Vital {
         this.unitValue = unitValue;
     }
 
-    public List<RangeOfVitals> getRanges() {
+    public List<Range> getRanges() {
         return ranges;
     }
 
-    public void setRanges(List<RangeOfVitals> ranges) {
+    public void setRanges(List<Range> ranges) {
         this.ranges = ranges;
     }
 

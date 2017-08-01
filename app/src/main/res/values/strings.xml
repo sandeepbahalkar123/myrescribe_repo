@@ -85,7 +85,7 @@
     <string name="enter">Enter&#160;</string>
     <string name="waiting_for_sms">Auto verification of OTP in progress %1$d secs</string>
     <string name="dinner_medication">Dinner Medication</string>
-    <string name="snacks_medication">Snacks Medication</string>
+    <string name="snacks_medication">Evening Medication</string>
     <string name="lunch_medication">Lunch Medication</string>
     <string name="breakfast_medication">Breakfast Medication</string>
     <string name="taken_medicine">Have you taken your medicine?</string>

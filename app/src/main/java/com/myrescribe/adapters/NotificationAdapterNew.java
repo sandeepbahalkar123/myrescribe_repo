@@ -541,8 +541,9 @@ public class NotificationAdapterNew extends RecyclerView.Adapter<NotificationAda
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel)customResponse;
-        Common common =responseLogNotificationModel.getCommon();
-        CommonMethods.showToast(mContext,common.getStatusMessage());
+        if(responseLogNotificationModel.getCommon().isSuccess()) {
+            CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
+        }
 
     }
 

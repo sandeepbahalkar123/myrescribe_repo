@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp18"
-                    android:layout_weight="0.6"
+                    android:layout_weight="0.4"
                     app:customFont="@string/roboto_bold" />
 
                 <com.myrescribe.ui.customesViews.CustomTextView
@@ -56,7 +56,7 @@
                     android:layout_marginLeft="@dimen/dp4"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp14"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.7"
                     app:customFont="@string/roboto_bold" />
             </LinearLayout>
 

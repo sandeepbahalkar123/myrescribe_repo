@@ -288,6 +288,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+
         List<Medication> notificationDataList = null;
         NotificationData notificationDataForHeader = new NotificationData();
         List<NotificationData> notificationListForAdapter = new ArrayList<>();

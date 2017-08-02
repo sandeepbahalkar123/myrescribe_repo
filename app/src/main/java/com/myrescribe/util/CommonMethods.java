@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.myrescribe.R;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
+import com.myrescribe.model.case_details.Range;
 import com.myrescribe.model.login.Year;
 import com.myrescribe.ui.activities.PrescriptionActivity;
 
@@ -59,6 +60,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -698,19 +700,45 @@ public class CommonMethods {
         return dialog;
     }
 
-    public static Dialog showVitalDialog(Context context, String unit, String unitValue, int color, String normalRange, Integer drawable) {
+    public static Dialog showVitalDialog(Context context, String unit, String unitValue, List<Range> rangeList, Integer drawable) {
+
         final Context mContext = context;
         final Dialog dialog = new Dialog(context);
 
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.vitals_dialog_layout);
         dialog.setCancelable(true);
+        TextView normalRange = (TextView)dialog.findViewById(R.id.normalRange);
+        TextView moderateRange = (TextView)dialog.findViewById(R.id.moderateRange);
+        TextView severeRange = (TextView)dialog.findViewById(R.id.severeRange);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        for(int i = 0;i<rangeList.size();i++){
+            if(rangeList.get(i).getCategory().equalsIgnoreCase("normal")&&rangeList.get(i).getOperator().equalsIgnoreCase("less")){
+                normalRange.setText("<"+rangeList.get(i).getValue());
+                }else if(rangeList.get(i).getCategory().equalsIgnoreCase("normal")&&rangeList.get(i).getOperator().equalsIgnoreCase("equal")){
+                   normalRange.setText(rangeList.get(i).getMin()+":"+rangeList.get(i).getMax());
+                }else if(rangeList.get(i).getCategory().equalsIgnoreCase("normal")&&rangeList.get(i).getOperator().equalsIgnoreCase("greater")){
+                    normalRange.setText(">"+rangeList.get(i).getValue());
+                } else  if(rangeList.get(i).getCategory().equalsIgnoreCase("Moderate")&&rangeList.get(i).getOperator().equalsIgnoreCase("less")){
+                moderateRange.setText("<"+rangeList.get(i).getValue());
+                }else if(rangeList.get(i).getCategory().equalsIgnoreCase("Moderate")&&rangeList.get(i).getOperator().equalsIgnoreCase("equal")){
+                    moderateRange.setText(rangeList.get(i).getMin()+":"+rangeList.get(i).getMax());
+                }else if(rangeList.get(i).getCategory().equalsIgnoreCase("Moderate")&&rangeList.get(i).getOperator().equalsIgnoreCase("greater")){
+                    moderateRange.setText(">"+rangeList.get(i).getValue());
+                } else if(rangeList.get(i).getCategory().equalsIgnoreCase("Severe")&&rangeList.get(i).getOperator().equalsIgnoreCase("less")){
+                severeRange.setText("<"+rangeList.get(i).getValue());
+                }else if(rangeList.get(i).getCategory().equalsIgnoreCase("Severe")&&rangeList.get(i).getOperator().equalsIgnoreCase("equal")){
+                    severeRange.setText(rangeList.get(i).getMin()+":"+rangeList.get(i).getMax());
+                }else if(rangeList.get(i).getCategory().equalsIgnoreCase("Severe")&&rangeList.get(i).getOperator().equalsIgnoreCase("greater")){
+                    severeRange.setText(">"+rangeList.get(i).getValue());
+                }
+
+        }
 
         ((TextView) dialog.findViewById(R.id.vitalNameDialog)).setText(unit);
         ((TextView) dialog.findViewById(R.id.noOfVitalsDialog)).setText(unitValue);
-        ((TextView) dialog.findViewById(R.id.normalRange)).setText(normalRange);
-        ((TextView) dialog.findViewById(R.id.noOfVitalsDialog)).setTextColor(color);
+      //  ((TextView) dialog.findViewById(R.id.normalRange)).setText(normalRange);
+       // ((TextView) dialog.findViewById(R.id.noOfVitalsDialog)).setTextColor(color);
         ((ImageView) dialog.findViewById(R.id.vitalImageDialog)).setImageResource(drawable);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());

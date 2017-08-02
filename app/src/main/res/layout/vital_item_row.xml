@@ -31,23 +31,22 @@
             android:padding="5dp">
 
             <com.myrescribe.ui.customesViews.CustomTextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Weight"
-                android:layout_weight="1"
+                android:layout_weight="0.7"
                 android:id="@+id/vital_name"
                 android:textColor="@color/vitals_name"
                 android:textSize="@dimen/sp12"
                 app:customFont="@string/roboto_bold"/>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="right"
+                android:layout_weight="0.3"
                 android:orientation="horizontal">
                 <com.myrescribe.ui.customesViews.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="90"
                     android:id="@+id/noOfVitals"
                     android:textSize="@dimen/sp14"
                     android:textColor="@color/black"
@@ -58,7 +57,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:text="kg"
                     android:textSize="@dimen/sp12"
                     android:textColor="@color/measure_of_vitals_color"
                     android:paddingLeft="@dimen/dp4"

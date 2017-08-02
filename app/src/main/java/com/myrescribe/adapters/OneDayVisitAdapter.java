@@ -12,24 +12,23 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import com.myrescribe.R;
 import com.myrescribe.model.case_details.CommonData;
 import com.myrescribe.model.case_details.PatientHistory;
+import com.myrescribe.model.case_details.Vital;
 import com.myrescribe.model.history.HistoryCommonDetails;
 import com.myrescribe.model.visit_details.Diagnosi;
 import com.myrescribe.util.CommonMethods;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class OneDayVisitAdapter extends BaseExpandableListAdapter {
 
 
+    private int pos=0;
     private Context mContext;
     /*String[] firstRow = {
             "Weight",
@@ -58,6 +57,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
     String[] unitSecondRow = {"80", "90"};
     int[] colorFirstRow = {R.color.range_yellow, R.color.range_green};*/
     private static final String CHILD_TYPE_1 = "vitals";
+    List<Vital> vitals = new ArrayList<>();
     private ArrayList<HistoryCommonDetails> mHistoryCommonDetailses;
     private List<PatientHistory> mListDataHeader; // header titles
     List<CommonData> historyCommonDetailses = new ArrayList<>();
@@ -100,6 +100,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
                 View divider = convertView.findViewById(R.id.adapter_divider);
                 tableLayout.removeAllViews();
 
+                pos = 0;
                 List<com.myrescribe.model.case_details.Vital> vital = new ArrayList<>();
                 int size = mListDataHeader.get(groupPosition).getVitals().size();
                 int count = 1;
@@ -110,13 +111,13 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
 
                     if (tempSize > i) {
                         if (count == 3) {
-                            tableLayout.addView(addTableRow(vital));
+                            tableLayout.addView(addTableRow(vital,groupPosition));
                             vital.clear();
                             count = 1;
                         } else
                             count++;
                     } else if (count == size % 3) {
-                        tableLayout.addView(addTableRow(vital));
+                        tableLayout.addView(addTableRow(vital,groupPosition));
                         vital.clear();
                         count = 1;
                     } else count++;
@@ -152,7 +153,9 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    private View addTableRow(List<com.myrescribe.model.case_details.Vital> vital) {
+    private View addTableRow(final List<com.myrescribe.model.case_details.Vital> vital, final int groupPosition) {
+
+     //   vitals.addAll(vital);
         int i;
         TableRow tableRow = new TableRow(mContext);
 //        final String[] allColors = mContext.getResources().getStringArray(colorSecond);
@@ -163,23 +166,24 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
             ImageView vitalImage = (ImageView) item.findViewById(R.id.vitalImage);
             TextView vital_name = (TextView) item.findViewById(R.id.vital_name);
             TextView noOfVitals = (TextView) item.findViewById(R.id.noOfVitals);
-            //noOfVitals.setText(unitSecondRow[i]);
-            final int finalI1 = i;
+            final int finali = pos;
             vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    CommonMethods.showVitalDialog(mContext, rowText[finalI1], unitSecondRow[finalI1], Color.parseColor(allColors[finalI1]), normalRangeList[finalI1], rowImage[finalI1]);
+                  CommonMethods.showVitalDialog(mContext,mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName(), mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(), mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(), CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName()));
                 }
             });
-//            noOfVitals.setTextColor(Color.parseColor(allColors[i]));
-            vitalImage.setImageResource(CommonMethods.getVitalIcons(vital.get(i).getDisplayName()));
-            vital_name.setText(vital.get(i).getDisplayName());
+
+            vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(pos).getDisplayName()));
+            vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(pos).getDisplayName());
+            noOfVitals.setText(mListDataHeader.get(groupPosition).getVitals().get(pos).getUnitValue());
             tableRow.addView(item);
+            pos++;
         }
         return tableRow;
     }
 
-    private View addTableRow(int columnCount, final String[] rowText, final Integer[] rowImage, final String[] unitSecondRow, int colorSecond, final String[] normalRangeList) {
+ /*   private View addTableRow(int columnCount, final String[] rowText, final Integer[] rowImage, final String[] unitSecondRow, int colorSecond, final String[] normalRangeList) {
         int i;
         TableRow tableRow = new TableRow(mContext);
         final String[] allColors = mContext.getResources().getStringArray(colorSecond);
@@ -206,7 +210,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
         }
         return tableRow;
     }
-
+*/
     /*public String getGroupName(int groupPosition) {
         String headerTitle = (String) getGroup(groupPosition);
         return headerTitle;

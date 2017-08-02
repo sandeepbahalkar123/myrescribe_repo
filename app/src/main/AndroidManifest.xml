@@ -158,6 +158,10 @@
             android:name=".ui.activities.AddRecordsActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/add_record"/>
+        <activity
+            android:name=".ui.activities.SelectedRecordsActivity"
+            android:label="@string/title_activity_selected_docs"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

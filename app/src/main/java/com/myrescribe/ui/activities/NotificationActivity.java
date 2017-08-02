@@ -90,7 +90,6 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         mNotificationDate = intent.getStringExtra(MyRescribeConstants.NOTIFICATION_DATE);
         mNotificationTime = intent.getStringExtra(MyRescribeConstants.NOTIFICATION_TIME);
         mHeaderLayoutParent = (LinearLayout) findViewById(R.id.headerLayoutParent);
-//        medicines = (ArrayList<Medicine>) intent.getBundleExtra(MyRescribeConstants.MEDICINE_NAME).getSerializable(MyRescribeConstants.MEDICINE_NAME);
         mDoseCompletedLabel = (TextView) findViewById(R.id.doseCompletedLabel);
         mDividerLineInHeader = (View) findViewById(R.id.dividerLineInHeader);
         mDividerLineInList = (View) findViewById(R.id.dividerLineInList);

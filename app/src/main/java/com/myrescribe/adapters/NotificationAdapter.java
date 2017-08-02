@@ -157,8 +157,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                     } else {
                                         notifyItemChanged(position);
                                     }
-                                }else{
-                                    CommonMethods.showToast(mContext,mContext.getString(R.string.internet));
+                                } else {
+                                    CommonMethods.showToast(mContext, mContext.getString(R.string.internet));
                                 }
                             }
                         });
@@ -230,7 +230,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         selectView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if(NetworkUtil.isInternetAvailable(mContext)) {
+                                if (NetworkUtil.isInternetAvailable(mContext)) {
                                     mDataSet.get(position).setLunchThere(false);
                                     parent.removeView(view);
                                     mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), mContext.getString(R.string.smallcaselunch), medicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1);
@@ -241,8 +241,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                     } else {
                                         notifyItemChanged(position);
                                     }
-                                }else{
-                                    CommonMethods.showToast(mContext,mContext.getString(R.string.internet));
+                                } else {
+                                    CommonMethods.showToast(mContext, mContext.getString(R.string.internet));
                                 }
                             }
                         });
@@ -320,8 +320,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                     } else {
                                         notifyItemChanged(position);
                                     }
-                                }else{
-                                    CommonMethods.showToast(mContext,mContext.getString(R.string.internet));
+                                } else {
+                                    CommonMethods.showToast(mContext, mContext.getString(R.string.internet));
                                 }
                             }
                         });
@@ -392,7 +392,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         selectView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if(NetworkUtil.isInternetAvailable(mContext)) {
+                                if (NetworkUtil.isInternetAvailable(mContext)) {
                                     mDataSet.get(position).setSnacksThere(false);
                                     parent.removeView(view);
 
@@ -404,8 +404,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                     } else {
                                         notifyItemChanged(position);
                                     }
-                                }else{
-                                    CommonMethods.showToast(mContext,mContext.getString(R.string.internet));
+                                } else {
+                                    CommonMethods.showToast(mContext, mContext.getString(R.string.internet));
                                 }
                             }
                         });
@@ -491,12 +491,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(NetworkUtil.isInternetAvailable(mContext)) {
+                    if (NetworkUtil.isInternetAvailable(mContext)) {
                         if (selectViewTab.isChecked()) {
                             medicationList.get(finalI).setTabSelected(true);
                             medicationList.get(finalI).setTabWebService(false);
                             selectViewTab.setEnabled(false);
-                            mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), medicationList.get(finalI).getMedicinSlot(), medicationList.get(finalI).getMedicineId(), CommonMethods.formatDateTime(medicationList.get(finalI).getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 0);
+                            mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)),
+                                    medicationList.get(finalI).getMedicinSlot(), medicationList.get(finalI).getMedicineId(),
+                                    CommonMethods.formatDateTime(medicationList.get(finalI).getDate(),
+                                            MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY,
+                                            MyRescribeConstants.DATE), 0);
                             if (getSelectedCount(medicationList) == medicationList.size()) {
                                 if (view.getTag().equals(DINNER)) {
                                     mDataSet.get(position).setDinnerThere(false);
@@ -529,8 +533,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
 
                         }
-                    }else{
-                        CommonMethods.showToast(mContext,mContext.getString(R.string.internet));
+                    } else {
+                        CommonMethods.showToast(mContext, mContext.getString(R.string.internet));
                     }
                 }
             });

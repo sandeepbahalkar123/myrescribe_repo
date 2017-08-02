@@ -170,12 +170,12 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
             vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  CommonMethods.showVitalDialog(mContext,mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName(), mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(), mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(), CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName()));
+                  CommonMethods.showVitalDialog(mContext,mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName(), mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(), mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(), CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName()));
                 }
             });
 
             vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(pos).getDisplayName()));
-            vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(pos).getDisplayName());
+            vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(pos).getUnitName());
             noOfVitals.setText(mListDataHeader.get(groupPosition).getVitals().get(pos).getUnitValue());
             tableRow.addView(item);
             pos++;

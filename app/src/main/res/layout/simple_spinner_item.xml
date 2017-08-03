@@ -1,0 +1,9 @@
+<com.myrescribe.ui.customesViews.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_horizontal_margin"
+    app:customFont="@string/roboto_bold"
+    android:text="@string/select_date_text"
+    android:textSize="@dimen/sp16" />

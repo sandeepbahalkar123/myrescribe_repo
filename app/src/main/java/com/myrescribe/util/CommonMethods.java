@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -634,14 +633,13 @@ public class CommonMethods {
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    public static void showDialog(String msg, final Context mContext) {
-
+    public static void showInfoDialog(String msg, final Context mContext) {
 
         final Dialog dialog = new Dialog(mContext);
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_ok_cancel);
+        dialog.setContentView(R.layout.dialog_ok);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
 
@@ -651,9 +649,6 @@ public class CommonMethods {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                ((Activity) mContext).finish();
-                mContext.startActivity(new Intent(mContext, PrescriptionActivity.class));
-
             }
         });
 

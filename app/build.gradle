@@ -75,8 +75,9 @@ dependencies {
     compile "com.android.support:support-v4:${project.ANDROID_SUPPORT_LIBRARY_VERSION}"
     compile "com.android.support:design:${project.ANDROID_SUPPORT_LIBRARY_VERSION}"
 
-    compile 'com.google.android.gms:play-services-auth:10.2.4'
-    compile 'com.google.android.gms:play-services:10.2.4'
+    compile 'com.google.android.gms:play-services-auth:11.0.4'
+//    compile 'com.google.android.gms:play-services:10.2.4'
+    compile 'com.google.android.gms:play-services-places:11.0.4'
 
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.mcxiaoke.volley:library:1.0.19'

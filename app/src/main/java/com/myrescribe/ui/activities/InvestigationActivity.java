@@ -38,8 +38,8 @@ import droidninja.filepicker.FilePickerConst;
 public class InvestigationActivity extends AppCompatActivity implements InvestigationViewAdapter.CheckedClickListener {
 
     private boolean isCompareDialogCollapsed = true;
-    private static final long ANIMATION_DURATION = 500; // in milliseconds
-    private static final int ANIMATION_LAYOUT_MAX_HEIGHT = 180; // in milliseconds
+    private static final long ANIMATION_DURATION = 400; // in milliseconds
+    private static final int ANIMATION_LAYOUT_MAX_HEIGHT = 152; // in milliseconds
     private static final int ANIMATION_LAYOUT_MIN_HEIGHT = 0; // in milliseconds
 
     private static final int UPLOADED_DOCS = 121;

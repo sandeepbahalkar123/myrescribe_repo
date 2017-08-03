@@ -126,8 +126,8 @@ public class LogInApp extends Fragment implements
         if (mOldDataTag.equalsIgnoreCase(MyRescribeConstants.TASK_LOGIN)) {
 
             LoginModel loginModel = (LoginModel) customResponse;
-            CommonMethods.Log(TAG + " Token", loginModel.getAuthToken());
             if (loginModel.getCommon().isSuccess()) {
+                CommonMethods.Log(TAG + " Token", loginModel.getAuthToken());
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, loginModel.getPatientId(), mContext);
@@ -143,8 +143,6 @@ public class LogInApp extends Fragment implements
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
             }
-
-
         }
     }
 

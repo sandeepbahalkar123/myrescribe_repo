@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -148,21 +149,31 @@
             android:name=".ui.activities.MapsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.RecordsActivity"
+            android:name=".ui.activities.MyRecordsActivity"
+            android:label="@string/my_records"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.AddRecordsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/add_record"/>
+        <activity
+            android:name=".ui.activities.SelectedRecordsActivity"
+            android:label="@string/title_activity_selected_docs"
             android:theme="@style/AppTheme.NoActionBar" />
-
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <receiver android:name=".broadcast_receivers.OtpReader">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
+       <!-- <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0"/>-->
     </application>
 
 </manifest>

@@ -100,7 +100,7 @@ public class PreferencesActivity extends AppCompatActivity {
                 now.get(Calendar.HOUR_OF_DAY),
                 now.get(Calendar.MINUTE),
                 DateFormat.is24HourFormat(PreferencesActivity.this));
-        dialog.setThemeDark(false);
+        dialog.setAccentColor(getResources().getColor(R.color.tagColor));
         dialog.show(getSupportFragmentManager(), TAG);
     }
 }

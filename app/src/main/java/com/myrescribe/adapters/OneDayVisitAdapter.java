@@ -155,7 +155,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
 
     private View addTableRow(final List<com.myrescribe.model.case_details.Vital> vital, final int groupPosition) {
 
-     //   vitals.addAll(vital);
+        //   vitals.addAll(vital);
         int i;
         TableRow tableRow = new TableRow(mContext);
 //        final String[] allColors = mContext.getResources().getStringArray(colorSecond);
@@ -170,7 +170,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
             vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  CommonMethods.showVitalDialog(mContext,mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName(), mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(), mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(), CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName()));
+                    CommonMethods.showVitalDialog(mContext,mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName(), mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(), mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(), CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName()));
                 }
             });
 

@@ -85,7 +85,7 @@ public class MyRescribeConstants {
     public static final String TASK_DOCTOR_APPOINTMENT = MyRescribeConstants.BLANK + 7;
 
     public static final String TASK_NOTIFICATION = MyRescribeConstants.BLANK + 8;
-    public static final String TASK_RESPOND_NOTIFICATION = MyRescribeConstants.BLANK + 9;
+    public static final String TASK_RESPOND_NOTIFICATION = MyRescribeConstants.BLANK + "notification";
 
     public static final String TASK_DOCTOR_LIST_FILTERING = MyRescribeConstants.BLANK + 10;
     public static final String TASK_SIGN_UP = MyRescribeConstants.BLANK + 11;
@@ -96,6 +96,7 @@ public class MyRescribeConstants {
     public static final String CASE_DETAILS_LIST = MyRescribeConstants.BLANK + 15;
 
     public static final String APPOINTMENT_NOTIFICATION = MyRescribeConstants.BLANK + 16;
+    public static final String TASK_RESPOND_NOTIFICATION_FOR_HEADER =MyRescribeConstants.BLANK+ "notify" ;
 
 
     public static final String DATA = "DATA";
@@ -108,6 +109,7 @@ public class MyRescribeConstants {
     public static final String DOCTORS_LIST = "doctors_list";
     public static final String CASE_DETAILS = "case_details";
     public static final String FILTER_REQUEST = "filter_request";
+
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";

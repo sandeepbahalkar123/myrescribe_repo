@@ -34,9 +34,7 @@ public class YesClickReceiver extends BroadcastReceiver implements  HelperRespon
         int notificationId = intent.getIntExtra(MyRescribeConstants.NOTIFICATION_ID, 10);
         int investigation_notification_id = intent.getIntExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, 10);
         int appointment_notification_id = intent.getIntExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, 10);
-
         NotificationManager manager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-
         if (notificationId == 0 || notificationId == 1 || notificationId == 2 || notificationId == 3) {
             String slot = (String) intent.getExtras().get(MyRescribeConstants.MEDICINE_SLOT);
             if(slot.equals(mContext.getString(R.string.breakfast_medication))){
@@ -49,7 +47,7 @@ public class YesClickReceiver extends BroadcastReceiver implements  HelperRespon
                 medicineSlot = mContext.getString(R.string.smallcasedinner);
             }
             if(NetworkUtil.isInternetAvailable(mContext)) {
-                respondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), medicineSlot, medicineID, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1);
+                respondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), medicineSlot, medicineID, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1,MyRescribeConstants.TASK_RESPOND_NOTIFICATION);
                 //Toast.makeText(mContext, slot + " " + notificationId + " " + "Dose Accepted", Toast.LENGTH_SHORT).show();
                 manager.cancel(notificationId);
             }else{

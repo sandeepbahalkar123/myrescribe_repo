@@ -67,6 +67,9 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     private TextView slotTextView;
     private TextView timeTextView;
     private TextView dateTextView;
+    private View mView;
+
+    private ArrayList<Medication> todayDataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +114,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 layoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         doGetNotification();
-        // doGetPrescriptionList();
+
     }
 
     private void doGetNotification() {
@@ -183,13 +186,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 mSelectView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(NetworkUtil.isInternetAvailable(mContext)) {
-                            if (mSelectView.isChecked())
-                                mHeaderLayoutParent.removeView(mHeaderLayout);
-                            mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), finalSlotMedicine, mMedicineId, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1);
-                        } else{
-                            CommonMethods.showToast(mContext,mContext.getString(R.string.internet));
-                        }
+                        mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), finalSlotMedicine, mMedicineId, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1,MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER+"_"+0);
                     }
                 });
 
@@ -228,8 +225,9 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     }
 
     private void addHeaderTabletView(final ViewGroup parent, final ArrayList<Medication> data) {
-
-        for (int i = 0; i < data.size(); i++) {
+        todayDataList = new ArrayList<>();
+        todayDataList.addAll(data);
+        for (int i = 0; i < todayDataList.size(); i++) {
 
             final View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.tablet_list, parent, false);
@@ -238,36 +236,25 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             ImageView tabTypeView = (ImageView) view.findViewById(R.id.tabTypeView);
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
-            selectViewTab.setChecked(data.get(i).isTabSelected());
-
-            selectViewTab.setEnabled(data.get(i).isTabWebService());
-
-
+            selectViewTab.setChecked(todayDataList.get(i).isTabSelected());
+            selectViewTab.setEnabled(todayDataList.get(i).isTabWebService());
             final int finalI = i;
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(NetworkUtil.isInternetAvailable(mContext)) {
-                        if (selectViewTab.isChecked()) {
-                            data.get(finalI).setTabSelected(true);
-                            data.get(finalI).setTabWebService(false);
-                            selectViewTab.setEnabled(false);
-                            if (mAdapter.getSelectedCount(data) == data.size())
-                                mHeaderLayoutParent.removeView(mHeaderLayout);
-                            mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 0);
-
-                        } else {
-                            data.get(finalI).setTabSelected(false);
+                    if (selectViewTab.isChecked()) {
+                            mView = view;
+                            mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 0,MyRescribeConstants.TASK_RESPOND_NOTIFICATION+"_"+finalI);
+                    } else {
+                            todayDataList.get(finalI).setTabSelected(false);
                         }
-                    }else{
-                        CommonMethods.showToast(NotificationActivity.this,mContext.getString(R.string.internet));
-                    }
+
                 }
             });
 
-            setDose(tabCountTextView, data.get(i).getQuantity(), data.get(i));
-            tabNameTextView.setText(data.get(i).getMedicineName());
-            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(data.get(i).getMedicineTypeName(), mContext));
+            setDose(tabCountTextView, todayDataList.get(i).getQuantity(), todayDataList.get(i));
+            tabNameTextView.setText(todayDataList.get(i).getMedicineName());
+            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(todayDataList.get(i).getMedicineTypeName(), mContext));
             parent.addView(view);
 
 
@@ -293,13 +280,22 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         List<NotificationData> notificationListForAdapter = new ArrayList<>();
         List<NotificationData> notificationListForHeader = new ArrayList<>();
         String todayDate = null;
-        if (mOldDataTag.equals(MyRescribeConstants.TASK_RESPOND_NOTIFICATION)) {
+
+        if (mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION)) {
             ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+            String position = mOldDataTag;
+            String[] count = position.split("_");
+            String counter = count[1];
             if (responseLogNotificationModel.getCommon().isSuccess()) {
                 CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
+                todayDataList.get(Integer.parseInt(counter)).setTabSelected(true);
+                todayDataList.get(Integer.parseInt(counter)).setTabWebService(false);
+                mView.findViewById(R.id.selectViewTab).setEnabled(false);
+                if (mAdapter.getSelectedCount(todayDataList) == todayDataList.size())
+                    mHeaderLayoutParent.removeView(mHeaderLayout);
             }
         }
-        if (mOldDataTag.equals(MyRescribeConstants.TASK_NOTIFICATION)) {
+       else if (mOldDataTag.equals(MyRescribeConstants.TASK_NOTIFICATION)) {
             if (customResponse != null) {
                 NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
 
@@ -396,6 +392,12 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 mRecyclerView.setAdapter(mAdapter);
                 mProgressDialog.dismiss();
                 CommonMethods.Log("", "" + adapterNotificationParentData);
+            }
+        }else if(mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)){
+            ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+            if (responseLogNotificationModel.getCommon().isSuccess()) {
+                CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
+                mHeaderLayoutParent.removeView(mHeaderLayout);
             }
         }
     }

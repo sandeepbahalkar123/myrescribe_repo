@@ -36,11 +36,13 @@ public class RespondToNotificationHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == MyRescribeConstants.TASK_RESPOND_NOTIFICATION) {
-
+                if (mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION)) {
                     ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, responseLogNotificationModel);
 
+                }else if(mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)){
+                    ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+                    mHelperResponseManager.onSuccess(mOldDataTag, responseLogNotificationModel);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
@@ -50,6 +52,10 @@ public class RespondToNotificationHelper implements ConnectionListener {
             case ConnectionListener.SERVER_ERROR:
                 CommonMethods.Log(TAG, "server error");
                 mHelperResponseManager.onServerError(mOldDataTag, "server error");
+                break;
+            case ConnectionListener.NO_INTERNET:
+                CommonMethods.Log(TAG, "no connection error");
+                mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
                 CommonMethods.Log(TAG, "no connection error");
@@ -67,8 +73,8 @@ public class RespondToNotificationHelper implements ConnectionListener {
     }
 
 
-    public void doRespondToNotification(Integer patientID,String slot,Integer medicineId,String takenDate,Integer isBundle) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, MyRescribeConstants.TASK_RESPOND_NOTIFICATION, Request.Method.POST, false);
+    public void doRespondToNotification(Integer patientID,String slot,Integer medicineId,String takenDate,Integer isBundle,String pos) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, pos, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         ResponseNotificationModel responseNotificationModel = new ResponseNotificationModel();
         responseNotificationModel.setPatientId(patientID);
@@ -78,7 +84,21 @@ public class RespondToNotificationHelper implements ConnectionListener {
         responseNotificationModel.setIsBundle(isBundle);
         mConnectionFactory.setPostParams(responseNotificationModel);
         mConnectionFactory.setUrl(Config.RESPOND_TO_NOTIFICATION_URL);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_RESPOND_NOTIFICATION);
+        mConnectionFactory.createConnection(pos);
+    }
+
+    public void doRespondToNotificationForHeader(Integer patientID,String slot,Integer medicineId,String takenDate,Integer isBundle,String pos) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, pos, Request.Method.POST, false);
+        mConnectionFactory.setHeaderParams();
+        ResponseNotificationModel responseNotificationModel = new ResponseNotificationModel();
+        responseNotificationModel.setPatientId(patientID);
+        responseNotificationModel.setSlot(slot);
+        responseNotificationModel.setMedicineId(medicineId);
+        responseNotificationModel.setTakenDate(takenDate);
+        responseNotificationModel.setIsBundle(isBundle);
+        mConnectionFactory.setPostParams(responseNotificationModel);
+        mConnectionFactory.setUrl(Config.RESPOND_TO_NOTIFICATION_URL);
+        mConnectionFactory.createConnection(pos);
     }
 
 

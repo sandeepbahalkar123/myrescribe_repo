@@ -401,10 +401,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         NotificationModel notificationModel = new Gson().fromJson(data, NotificationModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, notificationModel, mOldDataTag);
                         break;
-                    case MyRescribeConstants.TASK_RESPOND_NOTIFICATION: //This is for get archived list
+                   /* case MyRescribeConstants.TASK_RESPOND_NOTIFICATION: //This is for get archived list
                         ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
-                        break;
+                        break;*/
 
                     case MyRescribeConstants.FILTER_DOCTOR_LIST: //This is for get archived list
                         FilterDoctorListModel filterDoctorListModel = new Gson().fromJson(data, FilterDoctorListModel.class);
@@ -425,13 +425,16 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         AppointmentsNotificationModel appointmentsNotificationModel = new Gson().fromJson(data, AppointmentsNotificationModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, appointmentsNotificationModel, mOldDataTag);
                         break;
-                    /*
+
                     default:
                         //This is for get PDF Data
-                        if (mOldDataTag.startsWith(MyRescribeConstants.TASK_GET_PDF_DATA)) {
-                            GetPdfDataResponseModel getPdfDataResponseModel = gson.fromJson(data, GetPdfDataResponseModel.class);
-                            this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, getPdfDataResponseModel, mOldDataTag);
-                        }*/
+                        if (mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION)) {
+                            ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
+                            this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
+                        }else if(mDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)){
+                            ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
+                            this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
+                        }
 
                 }
             }

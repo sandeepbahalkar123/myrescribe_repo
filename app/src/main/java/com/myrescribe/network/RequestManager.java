@@ -34,6 +34,7 @@ import com.myrescribe.interfaces.CustomResponse;
 
 import com.myrescribe.model.doctors.doctor_info.DoctorModel;
 
+import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
 import com.myrescribe.model.filter.CaseDetailsListModel;
 import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
 import com.myrescribe.model.filter.FilterDoctorListModel;
@@ -258,6 +259,12 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
             if (error instanceof TimeoutError) {
 
+                if (error.getMessage().equalsIgnoreCase("java.io.IOException: No authentication challenges found") || error.getMessage().equalsIgnoreCase("invalid_grant")) {
+                    if (!isTokenExpired) {
+                        tokenRefreshRequest();
+                    }
+                }
+
 //                if (error.getMessage().equalsIgnoreCase("java.io.IOException: No authentication challenges found") || error.getMessage().equalsIgnoreCase("invalid_grant")) {
 //                    if (mViewById != null)
 //                        CommonMethods.showSnack(mViewById, mContext.getString(R.string.authentication));
@@ -273,6 +280,13 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     CommonMethods.showToast(mContext, mContext.getString(R.string.timeout));
 
             } else if (error instanceof NoConnectionError) {
+
+                if (error.getMessage().equalsIgnoreCase("java.io.IOException: No authentication challenges found") || error.getMessage().equalsIgnoreCase("invalid_grant")) {
+                    if (!isTokenExpired) {
+                        loginRequest();
+                        //tokenRefreshRequest();
+                    }
+                }
 
                 if (mViewById != null)
                     CommonMethods.showSnack(mViewById, mContext.getString(R.string.internet));
@@ -388,6 +402,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case MyRescribeConstants.TASK_DOCTOR_LIST: //This is for get archived list
                         DoctorModel doctorsModel = new Gson().fromJson(data, DoctorModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorsModel, mOldDataTag);
+                        break;
+                    case MyRescribeConstants.TASK_DOCTOR_LIST_FILTERING: //This is for get archived list
+                        DoctorFilterModel doctorFilterModel = new Gson().fromJson(data, DoctorFilterModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorFilterModel, mOldDataTag);
                         break;
 
                     case MyRescribeConstants.TASK_SIGN_UP: //This is for get sign-up

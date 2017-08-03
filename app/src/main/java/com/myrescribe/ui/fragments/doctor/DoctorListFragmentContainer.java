@@ -1,52 +1,85 @@
 package com.myrescribe.ui.fragments.doctor;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.myrescribe.R;
+import com.myrescribe.adapters.CustomSpinnerAdapter;
 import com.myrescribe.adapters.DoctorListAdapter;
+import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.doctor.DoctorHelper;
+import com.myrescribe.helpers.filter.FilterHelper;
 import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 import com.myrescribe.model.filter.CaseDetailsListModel;
 import com.myrescribe.model.filter.FilterDoctorListModel;
 import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
+import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.Year;
 import com.myrescribe.ui.activities.DoctorListActivity;
 import com.myrescribe.ui.fragments.filter.FilterFragment;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class DoctorListFragmentContainer extends Fragment implements View.OnClickListener {
 
-    private static final String COUNT = "column-count";
-    private static final String MONT = "VALUE";
-    private static final String VALUE = "VALUE";
-    RecyclerView mDoctorListView;
-    DoctorListAdapter showDoctorListAdapter;
-    private View mRootView;
+public class DoctorListFragmentContainer extends Fragment implements HelperResponse {
+
+
+    @BindView(R.id.backArrow)
+    ImageView mBackArrow;
+    @BindView(R.id.tabFragment)
+    TabLayout mTabLayout;
+    @BindView(R.id.viewpager)
+    ViewPager mViewpager;
+    private CustomSpinnerAdapter mCustomSpinAdapter;
+    @BindView(R.id.year)
+    Spinner mYearSpinnerView;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+
+    private ArrayList<String> mYearList = new ArrayList<>();
+    private ArrayList<Year> mTimePeriodList = new ArrayList<>();
+    private Year mCurrentSelectedTimePeriodTab;
+    private DoctorHelper mDoctorHelper;
+    private ViewPagerAdapter mViewPagerAdapter;
+    private HashSet<String> mGeneratedRequestForYearList = new HashSet<>();
     private DoctorListActivity mParentActivity;
-    private String mMonthName;
-    private String mYear;
-    private TextView mEmptyListView;
-
+    private DrawerLayout mDrawer;
+    private Context mContext;
 
     public DoctorListFragmentContainer() {
         // Required empty public constructor
@@ -56,32 +89,155 @@ public class DoctorListFragmentContainer extends Fragment implements View.OnClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.global_recycle_view_list, container, false);
-        init();
-        mParentActivity = (DoctorListActivity) getActivity();
+        View mRootView = inflater.inflate(R.layout.doctor_list_fragment_container, container, false);
+        ButterKnife.bind(this, mRootView);
 
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            mMonthName = arguments.getString(MyRescribeConstants.MONTH);
-            mYear = arguments.getString(MyRescribeConstants.YEAR);
-        }
+        mParentActivity = (DoctorListActivity) getActivity();
+        mContext = inflater.getContext();
+
+        mDrawer = mParentActivity.getActivityDrawer();
+        initialize();
         return mRootView;
     }
 
-    public static DoctorListFragmentContainer createNewFragment(Year dataString) {
+    public static DoctorListFragmentContainer newInstance() {
         DoctorListFragmentContainer fragment = new DoctorListFragmentContainer();
         Bundle args = new Bundle();
-        args.putString(MyRescribeConstants.MONTH, dataString.getMonthName());
-        args.putString(MyRescribeConstants.YEAR, dataString.getYear());
         fragment.setArguments(args);
         return fragment;
     }
 
-    private void init() {
-        mDoctorListView = (RecyclerView) mRootView.findViewById(R.id.listView);
-        mEmptyListView = (TextView) mRootView.findViewById(R.id.emptyListView);
+    private void initialize() {
+        mYearList = CommonMethods.getYearForDoctorList();
+
+        mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList);
+        mYearSpinnerView.setAdapter(mCustomSpinAdapter);
+        YearSpinnerInteractionListener listener = new YearSpinnerInteractionListener();
+        mYearSpinnerView.setOnTouchListener(listener);
+        mYearSpinnerView.setOnItemSelectedListener(listener);
+        //-------
+        mDoctorHelper = new DoctorHelper(mContext, this);
+        //-------
+        mCurrentSelectedTimePeriodTab = new Year();
+        mCurrentSelectedTimePeriodTab.setMonthName(new SimpleDateFormat("MMM", Locale.US).format(new Date()));
+        mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy", Locale.US).format(new Date()));
+        //-------
+        //----
+
+        AppDBHelper appDBHelper = new AppDBHelper(mParentActivity);
+
+        if (appDBHelper.dataTableNumberOfRows(MyRescribeConstants.TASK_LOGIN) > 0) {
+            Cursor cursor = appDBHelper.getData(MyRescribeConstants.TASK_LOGIN);
+            cursor.moveToFirst();
+            String loginData = cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
+            Gson gson = new Gson();
+            LoginModel loginModel = gson.fromJson(loginData, LoginModel.class);
+            mTimePeriodList = loginModel.getYearList();
+
+        }
+
+        if (mTimePeriodList.size() < 6) {
+            mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+            mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        } else {
+            mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        }
+
+        //---------
+        //----
+        mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
+        mTabLayout.setupWithViewPager(mViewpager);
     }
 
+    @OnClick({R.id.backArrow, R.id.fab})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.backArrow:
+                mParentActivity.finish();
+                break;
+            case R.id.fab:
+                if (mDrawer.isDrawerOpen(GravityCompat.END)) {
+                    mDrawer.closeDrawer(GravityCompat.END);
+                } else {
+                    mDrawer.openDrawer(GravityCompat.END);
+                }
+                break;
+        }
+    }
+
+
+    private void setupViewPager() {
+        mViewPagerAdapter.mFragmentList.clear();
+        mViewPagerAdapter.mFragmentTitleList.clear();
+        for (Year data :
+                mTimePeriodList) {
+            Fragment fragment = DoctorListFragment.createNewFragment(data); // pass data here
+            mViewPagerAdapter.addFragment(fragment, data); // pass title here
+        }
+        mViewpager.setOffscreenPageLimit(0);
+        mViewpager.setAdapter(mViewPagerAdapter);
+
+        //------------
+        mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                DoctorListFragment item = (DoctorListFragment) mViewPagerAdapter.getItem(position);
+                Bundle arguments = item.getArguments();
+                String month = arguments.getString(MyRescribeConstants.MONTH);
+                String year = arguments.getString(MyRescribeConstants.YEAR);
+                CommonMethods.Log("onPageSelected", month + " " + year);
+                mCurrentSelectedTimePeriodTab.setMonthName(month);
+                mCurrentSelectedTimePeriodTab.setYear(year);
+
+                for (int i = 0; i < mYearList.size(); i++) {
+                    if (mYearList.get(i).equalsIgnoreCase(year)) {
+                        mYearSpinnerView.setSelection(i);
+                        break;
+                    }
+                }
+
+                //-----THis condition calls API only once for that specific year.----
+                if (!mGeneratedRequestForYearList.contains(year)) {
+                    Map<String, Map<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = mDoctorHelper.getYearWiseSortedDoctorList();
+                    if (yearWiseSortedDoctorList.get(year) == null) {
+                        mGeneratedRequestForYearList.add(year);
+                        mDoctorHelper.doGetDoctorList(year);
+                    }
+                }
+                //---------
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        //------------
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < mTimePeriodList.size(); i++) {
+                    Year temp = mTimePeriodList.get(i);
+                    if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear()) &&
+                            temp.getMonthName().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getMonthName())) {
+                        mViewpager.setCurrentItem(i);
+                        break;
+                    } else if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear())) {
+                        mViewpager.setCurrentItem(i);
+                        break;
+                    }
+                }
+            }
+        }, 0);
+        //---------
+    }
 
     //---------------
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -157,21 +313,8 @@ public class DoctorListFragmentContainer extends Fragment implements View.OnClic
     //---------------
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        //  mViewPagerAdapter.notifyDataSetChanged();
-        if (customResponse instanceof FilterDoctorListModel) {
-            filterDoctorListModel = (FilterDoctorListModel) customResponse;
-        } else if (customResponse instanceof FilterDoctorSpecialityListModel) {
-            filterDoctorSpecialityListModel = (FilterDoctorSpecialityListModel) customResponse;
-        } else if (customResponse instanceof CaseDetailsListModel) {
-            caseDetailsListModel = (CaseDetailsListModel) customResponse;
-            fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            filterFragment = FilterFragment.newInstance(caseDetailsListModel.getCaseDetailsDatas());
-            fragmentTransaction.add(R.id.nav_view, filterFragment, "Filter");
-            fragmentTransaction.commit();
 
-        } else
-            setupViewPager();
+        setupViewPager();
     }
 
     @Override
@@ -192,7 +335,7 @@ public class DoctorListFragmentContainer extends Fragment implements View.OnClic
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (!mGeneratedRequestForYearList.contains(mCurrentSelectedTimePeriodTab.getYear())) {
             Map<String, Map<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = mDoctorHelper.getYearWiseSortedDoctorList();
@@ -205,79 +348,6 @@ public class DoctorListFragmentContainer extends Fragment implements View.OnClic
 
     public DoctorHelper getParentDoctorHelper() {
         return mDoctorHelper;
-    }
-
-
-    private void setupViewPager() {
-        mViewPagerAdapter.mFragmentList.clear();
-        mViewPagerAdapter.mFragmentTitleList.clear();
-        for (Year data :
-                mTimePeriodList) {
-            Fragment fragment = DoctorListFragment.createNewFragment(data); // pass data here
-            mViewPagerAdapter.addFragment(fragment, data); // pass title here
-        }
-        mViewpager.setOffscreenPageLimit(0);
-        mViewpager.setAdapter(mViewPagerAdapter);
-
-        //------------
-        mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-                DoctorListFragment item = (DoctorListFragment) mViewPagerAdapter.getItem(position);
-                Bundle arguments = item.getArguments();
-                String month = arguments.getString(MyRescribeConstants.MONTH);
-                String year = arguments.getString(MyRescribeConstants.YEAR);
-                CommonMethods.Log("onPageSelected", month + " " + year);
-                mCurrentSelectedTimePeriodTab.setMonthName(month);
-                mCurrentSelectedTimePeriodTab.setYear(year);
-
-                for (int i = 0; i < mYearList.size(); i++) {
-                    if (mYearList.get(i).equalsIgnoreCase(year)) {
-                        mYearSpinnerView.setSelection(i);
-                        break;
-                    }
-                }
-
-                //-----THis condition calls API only once for that specific year.----
-                if (!mGeneratedRequestForYearList.contains(year)) {
-                    Map<String, Map<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = mDoctorHelper.getYearWiseSortedDoctorList();
-                    if (yearWiseSortedDoctorList.get(year) == null) {
-                        mGeneratedRequestForYearList.add(year);
-                        mDoctorHelper.doGetDoctorList(year);
-                    }
-                }
-                //---------
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        //------------
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < mTimePeriodList.size(); i++) {
-                    Year temp = mTimePeriodList.get(i);
-                    if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear()) &&
-                            temp.getMonthName().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getMonthName())) {
-                        mViewpager.setCurrentItem(i);
-                        break;
-                    } else if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear())) {
-                        mViewpager.setCurrentItem(i);
-                        break;
-                    }
-                }
-            }
-        }, 0);
-        //---------
     }
 
 }

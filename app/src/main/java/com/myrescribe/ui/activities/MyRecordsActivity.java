@@ -8,18 +8,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.myrescribe.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by jeetal on 31/7/17.
  */
 
-public class RecordsActivity extends AppCompatActivity implements View.OnClickListener{
+public class MyRecordsActivity extends AppCompatActivity {
     @BindView(R.id.recordsToolbar)
     Toolbar mToolbar;
     @BindView(R.id.addRecord)
@@ -36,7 +36,7 @@ public class RecordsActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initialize() {
-        mContext = RecordsActivity.this;
+        mContext = MyRecordsActivity.this;
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.records));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -46,18 +46,11 @@ public class RecordsActivity extends AppCompatActivity implements View.OnClickLi
                 onBackPressed();
             }
         });
-        mAddRecord.setOnClickListener(this);
-
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.addRecord:
-                Intent intent = new Intent(RecordsActivity.this,AddRecordsActivity.class);
-                startActivity(intent);
-                break;
-        }
-
+    @OnClick(R.id.addRecord)
+    public void onViewClicked() {
+        Intent intent = new Intent(MyRecordsActivity.this, AddRecordsActivity.class);
+        startActivity(intent);
     }
 }

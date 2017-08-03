@@ -226,7 +226,7 @@ public class HomePageActivity extends AppCompatActivity
             Intent intent = new Intent(mContext, AppointmentActivity.class);
             startActivity(intent);
         }else if (id == R.id.records) {
-             Intent intent = new Intent(mContext, RecordsActivity.class);
+             Intent intent = new Intent(mContext, MyRecordsActivity.class);
              startActivity(intent);
          } else if (id == R.id.logout) {
             logout();

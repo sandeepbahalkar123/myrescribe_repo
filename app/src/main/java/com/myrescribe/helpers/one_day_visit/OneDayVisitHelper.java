@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.case_details.CaseDetailsModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.model.visit_details.Data;
 import com.myrescribe.model.visit_details.VisitDetailsModel;
@@ -42,9 +43,8 @@ public class OneDayVisitHelper implements ConnectionListener {
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag == MyRescribeConstants.TASK_ONE_DAY_VISIT) {
-                    VisitDetailsModel model = (VisitDetailsModel) customResponse;
-                    Data mData = model.getData();
-                    mHelperResponseManager.onSuccess(mOldDataTag, mData);
+                    CaseDetailsModel model = (CaseDetailsModel) customResponse;
+                    mHelperResponseManager.onSuccess(mOldDataTag, model.getData());
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:

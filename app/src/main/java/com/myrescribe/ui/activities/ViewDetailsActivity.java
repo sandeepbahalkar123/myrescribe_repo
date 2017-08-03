@@ -7,27 +7,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
-
 import com.myrescribe.R;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import android.widget.ExpandableListView;
-
 import com.myrescribe.adapters.OneDayVisitAdapter;
 import com.myrescribe.helpers.one_day_visit.OneDayVisitHelper;
 import com.myrescribe.helpers.one_day_visit.VitalHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.visit_details.Data;
+import com.myrescribe.model.case_details.Data;
+import com.myrescribe.model.case_details.PatientHistory;
 import com.myrescribe.model.visit_details.Diagnosi;
-import com.myrescribe.model.visit_details.PatientHistory;
 import com.myrescribe.model.visit_details.Vital;
 import com.myrescribe.ui.customesViews.CustomTextView;
-
 import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -84,11 +78,6 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
             } else {
                 mDateTextView.setText(Html.fromHtml(stringExtra));
             }
-        } else {
-            mDoctorName.setText("Ritesh Deshmukh ");
-            mDoctorSpecialization.setText("Cardiologist");
-            mDoctor_address.setText("Aundh, Pune");
-            mDateTextView.setText("17th Jul 2017");
         }
 
 
@@ -131,11 +120,11 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        mVitalHelper = new VitalHelper(this, this);
-        mVitalList = mVitalHelper.doGetVitalsList();
+
+     /*   mVitalHelper = new VitalHelper(this, this);
+        mVitalList = mVitalHelper.doGetVitalsList();*/
         Data data = (Data) customResponse;
-        formatResponseDataForAdapter(data.getPatientHistory());
-        OneDayVisitAdapter oneDayVisitAdapter = new OneDayVisitAdapter(this, mHeaderList, mHistoryDataList, mVitalList);
+        OneDayVisitAdapter oneDayVisitAdapter = new OneDayVisitAdapter(this, data.getPatientHistory());
         mHistoryExpandableListView.setAdapter(oneDayVisitAdapter);
 
 
@@ -157,6 +146,7 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
     }
 
     //TODO : Here main lengthy parsing begins to format list properly.
+/*
     private void formatResponseDataForAdapter(List<PatientHistory> dataList) {
         mHeaderList = new ArrayList<>();
         mHistoryDataList = new HashMap<>();
@@ -164,49 +154,53 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
 
         for (PatientHistory listObject :
                 dataList) {
-            if (listObject.getComplaints() != null) {
-               /* if (listObject.getComplaints().size() != 0) {*/
-                mHeaderList.add(getString(R.string.compalints));
-                ArrayList<Diagnosi> diagnosis = new ArrayList<>();
-                Diagnosi mDiagnosiList = new Diagnosi();
-                mDiagnosiList.setName("Medicine not available");
-                diagnosis.add(mDiagnosiList);
-                mHistoryDataList.put(getString(R.string.compalints), diagnosis);
-
+            if (listObject.get() != null) {
+               if (listObject.getComplaints().size() != 0) {
+                   mHeaderList.add(getString(R.string.compalints));
+                   ArrayList<Diagnosi> diagnosis = new ArrayList<>();
+                   Diagnosi mDiagnosiList = new Diagnosi();
+                   mDiagnosiList.setName("Medicine not available");
+                   diagnosis.add(mDiagnosiList);
+                   mHistoryDataList.put(getString(R.string.compalints), diagnosis);
+               }
             } else if (listObject.getDiagnosis() != null) {
-
-                mHeaderList.add(getString(R.string.diagnosis));
-                mHistoryDataList.put(getString(R.string.diagnosis), listObject.getDiagnosis());
+                if (listObject.getDiagnosis().size() != 0) {
+                    mHeaderList.add(getString(R.string.diagnosis));
+                    mHistoryDataList.put(getString(R.string.diagnosis), listObject.getDiagnosis());
+                }
 
             } else if (listObject.getPrescriptions() != null) {
-
-                mHeaderList.add(getString(R.string.prescription));
-                mHistoryDataList.put(getString(R.string.prescription), listObject.getPrescriptions());
-
+                if (listObject.getPrescriptions().size() != 0) {
+                    mHeaderList.add(getString(R.string.prescription));
+                    mHistoryDataList.put(getString(R.string.prescription), listObject.getPrescriptions());
+                }
             } else if (listObject.getInvestigations() != null) {
-
-                mHeaderList.add(getString(R.string.investigations));
-                ArrayList<Diagnosi> diagnosis = new ArrayList<>();
-                Diagnosi mDiagnosiList = new Diagnosi();
-                mDiagnosiList.setName("Need to investigate");
-                diagnosis.add(mDiagnosiList);
-                mHistoryDataList.put(getString(R.string.investigations), diagnosis);
-
+                if (listObject.getInvestigations().size() != 0) {
+                    mHeaderList.add(getString(R.string.investigations));
+                    ArrayList<Diagnosi> diagnosis = new ArrayList<>();
+                    Diagnosi mDiagnosiList = new Diagnosi();
+                    mDiagnosiList.setName("Need to investigate");
+                    diagnosis.add(mDiagnosiList);
+                    mHistoryDataList.put(getString(R.string.investigations), diagnosis);
+                }
             } else if (listObject.getVitals() != null) {
-                mHeaderList.add(getString(R.string.vitals));
-                ArrayList<Diagnosi> diagnosis = new ArrayList<>();
-                Diagnosi mDiagnosiList = new Diagnosi();
-                mDiagnosiList.setName("BP-130/86 mm of hg");
-                diagnosis.add(mDiagnosiList);
-                mHistoryDataList.put(getString(R.string.vitals), diagnosis);
-
+                if (listObject.getVitals().size() != 0) {
+                    mHeaderList.add(getString(R.string.vitals));
+                    ArrayList<Diagnosi> diagnosis = new ArrayList<>();
+                    Diagnosi mDiagnosiList = new Diagnosi();
+                    mDiagnosiList.setName("BP-130/86 mm of hg");
+                    diagnosis.add(mDiagnosiList);
+                    mHistoryDataList.put(getString(R.string.vitals), diagnosis);
+                }
             } else if (listObject.getRemarks() != null) {
-                mHeaderList.add(getString(R.string.remarks));
-                ArrayList<Diagnosi> diagnosis = new ArrayList<>();
-                Diagnosi mDiagnosiList = new Diagnosi();
-                mDiagnosiList.setName("Please drink water");
-                diagnosis.add(mDiagnosiList);
-                mHistoryDataList.put(getString(R.string.remarks), diagnosis);
+                if (listObject.getRemarks().size() != 0) {
+                    mHeaderList.add(getString(R.string.remarks));
+                    ArrayList<Diagnosi> diagnosis = new ArrayList<>();
+                    Diagnosi mDiagnosiList = new Diagnosi();
+                    mDiagnosiList.setName("Please drink water");
+                    diagnosis.add(mDiagnosiList);
+                    mHistoryDataList.put(getString(R.string.remarks), diagnosis);
+                }
             } else if (listObject.getAdvice() != null) {
                 if (!listObject.getAdvice().equals(null)) {
                     mHeaderList.add(getString(R.string.advice));
@@ -216,6 +210,7 @@ public class ViewDetailsActivity extends AppCompatActivity implements HelperResp
 
         }
     }
+*/
 
 }
 

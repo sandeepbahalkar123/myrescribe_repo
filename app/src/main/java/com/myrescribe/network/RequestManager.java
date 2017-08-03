@@ -32,6 +32,7 @@ import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
 
+import com.myrescribe.model.case_details.CaseDetailsModel;
 import com.myrescribe.model.doctors.doctor_info.DoctorModel;
 
 import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
@@ -396,8 +397,8 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginModel, mOldDataTag);
                         break;
                     case MyRescribeConstants.TASK_ONE_DAY_VISIT: //This is for get archived list
-                        VisitDetailsModel visitDetailsModel = gson.fromJson(data, VisitDetailsModel.class);
-                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, visitDetailsModel, mOldDataTag);
+                        CaseDetailsModel caseDetailsModel = gson.fromJson(data, CaseDetailsModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, caseDetailsModel, mOldDataTag);
                         break;
                     case MyRescribeConstants.TASK_DOCTOR_LIST: //This is for get archived list
                         DoctorModel doctorsModel = new Gson().fromJson(data, DoctorModel.class);

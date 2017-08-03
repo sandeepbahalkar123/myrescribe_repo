@@ -109,7 +109,6 @@
                 android:paddingLeft="@dimen/dp8"
                 android:textColor="@color/range_yellow"
                 android:textSize="14sp"
-                android:text="140/90 mm Hg"
                 app:customFont="@string/roboto_medium" />
         </LinearLayout>
 
@@ -138,7 +137,6 @@
                 android:paddingLeft="@dimen/dp8"
                 android:textColor="@color/Red"
                 android:textSize="14sp"
-                android:text="160/100 mm Hg"
                 app:customFont="@string/roboto_medium" />
         </LinearLayout>
 

@@ -58,9 +58,7 @@ public class NotificationService extends Service {
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
                 R.layout.notification_layout);
-
         int notification_id = intentData.getIntExtra(MyRescribeConstants.NOTIFICATION_ID, 0);
-
         Intent mNotifyYesIntent = new Intent(this.getApplicationContext(), YesClickReceiver.class);
         mNotifyYesIntent.putExtra(MyRescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
         mNotifyYesIntent.putExtra(MyRescribeConstants.NOTIFICATION_ID, notification_id);

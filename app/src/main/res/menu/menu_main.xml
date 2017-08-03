@@ -8,27 +8,27 @@
             android:title="@string/going_medication" />
         <item
             android:id="@+id/doctor_details"
-            android:icon="@drawable/doctor_visit"
+            android:icon="@drawable/menu_doctor_visit"
             android:title="@string/doctor_details" />
 
         <item
             android:id="@+id/investigations"
-            android:icon="@drawable/investigation"
+            android:icon="@drawable/menu_investigations"
             android:title="@string/investigation" />
         <item
             android:id="@+id/appointments"
-            android:icon="@drawable/investigation"
+            android:icon="@drawable/menu_appointments"
             android:title="@string/appointments" />
 
         <item
             android:id="@+id/records"
-            android:icon="@mipmap/logoutblack"
+            android:icon="@drawable/menu_my_records"
             android:title="@string/records"
            />
 
         <item
             android:id="@+id/logout"
-            android:icon="@drawable/logout"
+            android:icon="@drawable/menu_logout"
             android:title="@string/logout" />
     </group>
 

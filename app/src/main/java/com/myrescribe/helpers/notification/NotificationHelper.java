@@ -24,9 +24,9 @@ public class NotificationHelper implements ConnectionListener {
     Context mContext;
     HelperResponse mHelperResponseManager;
 
-    public NotificationHelper(Context context, HelperResponse notificationActivity) {
+    public NotificationHelper(Context context) {
         this.mContext = context;
-        this.mHelperResponseManager = notificationActivity;
+        this.mHelperResponseManager = (HelperResponse) context;
     }
 
 

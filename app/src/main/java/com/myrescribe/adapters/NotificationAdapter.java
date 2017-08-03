@@ -150,11 +150,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             @Override
                             public void onClick(View v) {
 
-                                    mViewForHeader = view;
-                                    mHeaderPosition = position;
-                                    mSlotTypeForHeader = slotType;
-                                    mparentHeader = parent;
-                                    mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), mContext.getString(R.string.smallcasedinner), medicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1, MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
+                                mViewForHeader = view;
+                                mHeaderPosition = position;
+                                mSlotTypeForHeader = slotType;
+                                mparentHeader = parent;
+                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), mContext.getString(R.string.smallcasedinner), medicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1, MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
 
                             }
                         });
@@ -226,11 +226,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         selectView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                    mViewForHeader = view;
-                                    mHeaderPosition = position;
-                                    mSlotTypeForHeader = slotType;
-                                    mparentHeader = parent;
-                                    mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), mContext.getString(R.string.smallcaselunch), medicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1, MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
+                                mViewForHeader = view;
+                                mHeaderPosition = position;
+                                mSlotTypeForHeader = slotType;
+                                mparentHeader = parent;
+                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), mContext.getString(R.string.smallcaselunch), medicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1, MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
 
                             }
                         });
@@ -297,11 +297,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         selectView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                    mViewForHeader = view;
-                                    mHeaderPosition = position;
-                                    mSlotTypeForHeader = slotType;
-                                    mparentHeader = parent;
-                                    mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), mContext.getString(R.string.smallcasebreakfast), medicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1, MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
+                                mViewForHeader = view;
+                                mHeaderPosition = position;
+                                mSlotTypeForHeader = slotType;
+                                mparentHeader = parent;
+                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), mContext.getString(R.string.smallcasebreakfast), medicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1, MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
 
                             }
                         });
@@ -372,11 +372,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         selectView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                    mViewForHeader = view;
-                                    mHeaderPosition = position;
-                                    mSlotTypeForHeader = slotType;
-                                    mparentHeader = parent;
-                                    mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), mContext.getString(R.string.smallcasesnacks), medicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1, MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
+                                mViewForHeader = view;
+                                mHeaderPosition = position;
+                                mSlotTypeForHeader = slotType;
+                                mparentHeader = parent;
+                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), mContext.getString(R.string.smallcasesnacks), medicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1, MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
 
 
                             }

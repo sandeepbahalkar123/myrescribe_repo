@@ -1,10 +1,8 @@
 package com.myrescribe.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilteredCaseDetailInfo;
+import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilteredInfoAndCaseDetails;
 import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilteredInfo;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
@@ -23,10 +21,10 @@ import com.myrescribe.util.MyRescribeConstants;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -42,40 +40,37 @@ import butterknife.ButterKnife;
 public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
 
     private Context context;
-    private ArrayList<DoctorFilteredInfo> mOriginalList;
-    private List<DoctorFilteredInfo> mListDataHeader;// header titles
+    private ArrayList<DoctorFilteredInfoAndCaseDetails> mOriginalList;
+    private List<DoctorFilteredInfoAndCaseDetails> mListDataHeader;// header titles
     // child data in format of header title, child title
-    private HashMap<DoctorFilteredInfo, ArrayList<DoctorFilteredCaseDetailInfo>> mListDataChild;
+    private HashMap<DoctorFilteredInfoAndCaseDetails, ArrayList<String>> mListDataChild;
 
-    public DoctorFilteredExpandableList(Context context, ArrayList<DoctorFilteredInfo> mOriginalList) {
+    public DoctorFilteredExpandableList(Context context, ArrayList<DoctorFilteredInfoAndCaseDetails> mOriginalList) {
         this.context = context;
         this.mOriginalList = mOriginalList;
 
         this.mListDataHeader = new ArrayList<>();
         this.mListDataChild = new HashMap<>();
 
-        for (DoctorFilteredInfo dataObject :
+        for (DoctorFilteredInfoAndCaseDetails dataObject :
                 mOriginalList) {
             mListDataHeader.add(dataObject);
 
-            HashMap<String, ArrayList<DoctorFilteredCaseDetailInfo>> caseDetailList = dataObject.getCaseDetailList();
-            ArrayList<DoctorFilteredCaseDetailInfo> listToInsert = new ArrayList();
-            for (Map.Entry<String, ArrayList<DoctorFilteredCaseDetailInfo>> pair : caseDetailList.entrySet()) {
+            HashMap<String, String[]> caseDetailList = dataObject.getCaseDetailList();
+            ArrayList<String> listToInsert = new ArrayList();
+            for (Map.Entry<String, String[]> pair : caseDetailList.entrySet()) {
                 //--- Add case name as header in list
-                DoctorFilteredCaseDetailInfo temp = new DoctorFilteredCaseDetailInfo();
-                temp.setId(-1); // this is set for header only
-                temp.setName(pair.getKey()); // this is set for header name
-                temp.setCaseDetailHeader(true);
-                listToInsert.add(temp);
+                String data = "-1|" + pair.getKey() + "|" + MyRescribeConstants.TRUE;// this is set for header only, id|NAME|TRUE
+                listToInsert.add(data);
                 //---
-                listToInsert.addAll(pair.getValue());
+                listToInsert.addAll(new ArrayList<String>(Arrays.asList(pair.getValue())));
             }
             mListDataChild.put(dataObject, listToInsert);
         }
     }
 
     @Override
-    public DoctorFilteredCaseDetailInfo getChild(int groupPosition, int childPosition) {
+    public String getChild(int groupPosition, int childPosition) {
         return this.mListDataChild.get(this.mListDataHeader.get(groupPosition))
                 .get(childPosition);
     }
@@ -101,16 +96,17 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
             childViewHolder = (ChildViewHolder) convertView.getTag();
         }
 
-        DoctorFilteredCaseDetailInfo detailInfo = getChild(groupPosition, childPosition);
+        String child = getChild(groupPosition, childPosition);
 
-        if (detailInfo.isCaseDetailHeader()) {
-            childViewHolder.headerName.setText(detailInfo.getName());
+        if (child.contains("|") && child.endsWith(MyRescribeConstants.TRUE)) {
+            String[] split = child.split("\\|");
+            childViewHolder.headerName.setText(split[1]);
             childViewHolder.headerName.setVisibility(View.VISIBLE);
             childViewHolder.childContent.setVisibility(View.GONE);
             childViewHolder.cardDetailsBullet.setVisibility(View.INVISIBLE);
         } else {
             childViewHolder.cardDetailsBullet.setVisibility(View.VISIBLE);
-            childViewHolder.childContent.setText(detailInfo.getName());
+            childViewHolder.childContent.setText(child);
             childViewHolder.headerName.setVisibility(View.GONE);
             childViewHolder.childContent.setVisibility(View.VISIBLE);
         }
@@ -133,7 +129,7 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
     }
 
     @Override
-    public DoctorFilteredInfo getGroup(int groupPosition) {
+    public DoctorFilteredInfoAndCaseDetails getGroup(int groupPosition) {
         return mListDataHeader.get(groupPosition);
     }
 
@@ -163,7 +159,9 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
             groupViewHolder = (GroupViewHolder) convertView.getTag();
         }
 
-        DoctorFilteredInfo dataObject = getGroup(groupPosition);
+        DoctorFilteredInfoAndCaseDetails doctorFilteredInfoAndCaseDetails = getGroup(groupPosition);
+
+        DoctorFilteredInfo dataObject = doctorFilteredInfoAndCaseDetails.getDoctorFilteredInfo();
 
         groupViewHolder.doctorName.setText(dataObject.getDoctorName());
         groupViewHolder.doctorAddress.setText(dataObject.getAddress());

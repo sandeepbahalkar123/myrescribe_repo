@@ -35,7 +35,7 @@ public class Medication implements CustomResponse{
     @SerializedName("medicinSlot")
     @Expose
     private String medicinSlot;
-    @SerializedName("quantity")
+    @SerializedName("dosage")
     @Expose
     private String quantity;
 

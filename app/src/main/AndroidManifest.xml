@@ -142,9 +142,6 @@
             android:label="@string/title_activity_zoomview"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.DoctorFilteredListActivity"
-            android:label="@string/doctor_details" />
-        <activity
             android:name=".ui.activities.AppGlobalContainerActivity"
             android:label="@string/doctor_details" />
         <activity

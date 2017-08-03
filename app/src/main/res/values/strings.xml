@@ -63,7 +63,7 @@
     <string name="for_example_server_path">e.g. 192.168.0.180:80</string>
     <string name="search">Search</string>
     <string name="resend_in_text">Resend in</string>
-    <string name="resend">Resend</string>
+    <string name="resend"><u>Resend OTP</u></string>
     <string name="ok">OK</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_up_confirmation">Sign Up Confirmation</string>

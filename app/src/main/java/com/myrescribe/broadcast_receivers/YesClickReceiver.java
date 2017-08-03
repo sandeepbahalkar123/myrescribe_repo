@@ -30,7 +30,7 @@ public class YesClickReceiver extends BroadcastReceiver implements  HelperRespon
         Integer medicineID = null;
         String medicineSlot = "";
         this.mContext = mContext;
-         respondToNotificationHelper = new RespondToNotificationHelper(mContext,this);
+        respondToNotificationHelper = new RespondToNotificationHelper(mContext,this);
         int notificationId = intent.getIntExtra(MyRescribeConstants.NOTIFICATION_ID, 10);
         int investigation_notification_id = intent.getIntExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, 10);
         int appointment_notification_id = intent.getIntExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, 10);

@@ -1,4 +1,4 @@
-package com.myrescribe.ui.fragments;
+package com.myrescribe.ui.fragments.doctor;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -81,7 +81,8 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
     }
 
     private void setDoctorListAdapter() {
-        DoctorHelper parentDoctorHelper = mParentActivity.getParentDoctorHelper();
+        DoctorListFragmentContainer parentFragment = (DoctorListFragmentContainer) this.getParentFragment();
+        DoctorHelper parentDoctorHelper = parentFragment.getParentDoctorHelper();
         if (parentDoctorHelper != null) {
             Map<String, Map<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = parentDoctorHelper.getYearWiseSortedDoctorList();
             if (yearWiseSortedDoctorList.size() != 0) {

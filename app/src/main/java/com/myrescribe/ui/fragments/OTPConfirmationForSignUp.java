@@ -51,8 +51,6 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
     private final long mStartTime = 30 * 1000;
     private final long mInterval = 1 * 1000;
 
-    private static final int RESPONSE_SUCCESS_MESSAGE = 100;
-
     @BindView(R.id.otpEditText)
     EditText mOtpEditText;
 
@@ -136,9 +134,8 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
 
         @Override
         public void onFinish() {
-            mResendOtpBtnLayout.setVisibility(View.INVISIBLE);
+            mResendOtpBtnLayout.setVisibility(View.GONE);
             mResendOtpBtn.setVisibility(View.VISIBLE);
-            mSubmitBtn.setVisibility(View.GONE);
             mOtpEditText.setVisibility(View.VISIBLE);
         }
 

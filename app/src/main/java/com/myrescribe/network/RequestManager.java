@@ -35,6 +35,7 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.model.case_details.CaseDetailsModel;
 import com.myrescribe.model.doctors.doctor_info.DoctorModel;
 
+import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
 import com.myrescribe.model.filter.CaseDetailsListModel;
 import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
 import com.myrescribe.model.filter.FilterDoctorListModel;
@@ -259,6 +260,12 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
             if (error instanceof TimeoutError) {
 
+                if (error.getMessage().equalsIgnoreCase("java.io.IOException: No authentication challenges found") || error.getMessage().equalsIgnoreCase("invalid_grant")) {
+                    if (!isTokenExpired) {
+                        tokenRefreshRequest();
+                    }
+                }
+
 //                if (error.getMessage().equalsIgnoreCase("java.io.IOException: No authentication challenges found") || error.getMessage().equalsIgnoreCase("invalid_grant")) {
 //                    if (mViewById != null)
 //                        CommonMethods.showSnack(mViewById, mContext.getString(R.string.authentication));
@@ -274,6 +281,12 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     CommonMethods.showToast(mContext, mContext.getString(R.string.timeout));
 
             } else if (error instanceof NoConnectionError) {
+
+                if (error.getMessage().equalsIgnoreCase("java.io.IOException: No authentication challenges found") || error.getMessage().equalsIgnoreCase("invalid_grant")) {
+                    if (!isTokenExpired) {
+                        tokenRefreshRequest();
+                    }
+                }
 
                 if (mViewById != null)
                     CommonMethods.showSnack(mViewById, mContext.getString(R.string.internet));
@@ -295,7 +308,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                    mContext.startActivity(intent);
 
-                    loginRequest();
+                    //  loginRequest();
                 } else
                     mConnectionListener.onResponse(ConnectionListener.SERVER_ERROR, null, mOldDataTag);
             } else if (error instanceof NetworkError) {
@@ -389,6 +402,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case MyRescribeConstants.TASK_DOCTOR_LIST: //This is for get archived list
                         DoctorModel doctorsModel = new Gson().fromJson(data, DoctorModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorsModel, mOldDataTag);
+                        break;
+                    case MyRescribeConstants.TASK_DOCTOR_LIST_FILTERING: //This is for get archived list
+                        DoctorFilterModel doctorFilterModel = new Gson().fromJson(data, DoctorFilterModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorFilterModel, mOldDataTag);
                         break;
 
                     case MyRescribeConstants.TASK_SIGN_UP: //This is for get sign-up
@@ -508,6 +525,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     }
 
     private void tokenRefreshRequest() {
+        loginRequest();
         // Commented as login API is not implemented yet.
        /* String url = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
         CommonMethods.Log(TAG, "Refersh token while sending refresh token api: " + MyRescribePreferencesManager.getString(MyRescribeConstants.REFRESH_TOKEN, mContext));

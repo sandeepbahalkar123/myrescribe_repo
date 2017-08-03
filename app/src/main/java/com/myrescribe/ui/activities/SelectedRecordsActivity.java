@@ -19,8 +19,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.myrescribe.R;
-import com.myrescribe.adapters.SelectedImageAdapter;
-import com.myrescribe.helpers.database.AppDBHelper;
+import com.myrescribe.adapters.SelectedRecordsAdapter;
 import com.myrescribe.model.investigation.DataObject;
 import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.investigation.Images;
@@ -54,15 +53,15 @@ public class SelectedRecordsActivity extends AppCompatActivity {
     private Context mContext;
     private ArrayList<Image> photoPaths = new ArrayList<>();
     private int media_id = -1;
-    private SelectedImageAdapter selectedImageAdapter;
-    private ArrayList<DataObject> investigation;
-    private AppDBHelper appDBHelper;
+    private SelectedRecordsAdapter selectedRecordsAdapter;
+    private ArrayList<DataObject> investigation = new ArrayList<>();
+    //    private AppDBHelper appDBHelper;
     private String patient_id = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_seleted_docs);
+        setContentView(R.layout.activity_seleted_records);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
@@ -76,11 +75,9 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         });
 
         mContext = SelectedRecordsActivity.this;
-        appDBHelper = new AppDBHelper(mContext);
+//        appDBHelper = new AppDBHelper(mContext);
 
         patient_id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext);
-
-        investigation = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
 
         for (int i = 0; i < investigation.size(); i++) {
             if (investigation.get(i).isSelected() && !investigation.get(i).isUploaded() && investigation.get(i).getPhotos().size() > 0) {
@@ -92,13 +89,13 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         if (media_id == -1) {
             SelectedRecordsActivityPermissionsDispatcher.onPickPhotoWithCheck(SelectedRecordsActivity.this);
             photoPaths = new ArrayList<>();
-        }else {
+        } else {
             photoPaths = investigation.get(media_id).getPhotos();
         }
 
-        selectedImageAdapter = new SelectedImageAdapter(mContext, photoPaths);
-        recyclerView.setAdapter(selectedImageAdapter);
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
+        selectedRecordsAdapter = new SelectedRecordsAdapter(mContext, photoPaths);
+        recyclerView.setAdapter(selectedRecordsAdapter);
+        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 2);
         recyclerView.setLayoutManager(layoutManager);
 
     }
@@ -164,14 +161,15 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA) == null)
             finish();
         else if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA).size() == 0)
-            finish(); else {
+            finish();
+        else {
             if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
 //            int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
                 if (resultCode == Activity.RESULT_OK) {
                     photoPaths.clear();
                     for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA))
                         photoPaths.add(new Image(patient_id + "_" + UUID.randomUUID().toString(), imagePath, false));
-                    selectedImageAdapter.notifyDataSetChanged();
+                    selectedRecordsAdapter.notifyDataSetChanged();
                 }
             }
         }
@@ -192,7 +190,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
                     Images images = new Images();
                     images.setImageArray(photoPaths);
                     dataObject.setPhotos(photoPaths);
-                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), new Gson().toJson(images));
+//                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), new Gson().toJson(images));
                 }
                 if (dataObject.isSelected())
                     selectedCount += 1;
@@ -204,16 +202,11 @@ public class SelectedRecordsActivity extends AppCompatActivity {
 
             Log.d("JSON", new Gson().toJson(selectedDocModel));
 
-            if (selectedCount == investigation.size()) {
-                Intent intent = new Intent(this, HomePageActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent();
-                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
-//                intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
-                setResult(RESULT_OK, intent);
-            }
+            Intent intent = new Intent();
+            intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
+//            intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
+            setResult(RESULT_OK, intent);
+
             finish();
 
         } else {

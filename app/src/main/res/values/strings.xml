@@ -171,9 +171,10 @@
     <string name="select_doctor_name">Doctor Name</string>
     <string name="select_date">Date</string>
     <string name="my_records">My Records</string>
-    <string name="select_date_text">Select date</string>
+    <string name="select_date_text">Select Date</string>
     <string name="enter_date">Enter Date</string>
     <string name="enter_address">Enter Address</string>
+    <string name="add_caption">Add Caption</string>
 
 
 </resources>

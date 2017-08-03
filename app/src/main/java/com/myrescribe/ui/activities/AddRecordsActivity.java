@@ -3,6 +3,7 @@ package com.myrescribe.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,16 +17,25 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.DoctorSpinnerAdapter;
 import com.myrescribe.model.records.SpinnerDoctorListModel;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
+import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +46,7 @@ import droidninja.filepicker.FilePickerConst;
  * Created by jeetal on 31/7/17.
  */
 
-public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinnerAdapter.TextEnterListener {
+public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinnerAdapter.TextEnterListener, DatePickerDialog.OnDateSetListener, GoogleApiClient.OnConnectionFailedListener {
     @BindView(R.id.addRecordsToolbar)
     Toolbar mToolbar;
     @BindView(R.id.selectDoctorName)
@@ -73,10 +83,14 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     RelativeLayout selectAddressLayout;
 
     @BindView(R.id.selectAddressText)
-    AutoCompleteTextView selectAddressText;
+    TextView selectAddressText;
+
+    private GoogleApiClient mGoogleApiClient;
+    private int PLACE_PICKER_REQUEST = 1;
 
     private Context mContext;
     DoctorSpinnerAdapter doctorSpinnerAdapter;
+    private DatePickerDialog datePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +140,25 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 selectDateSpinner.setAdapter(arrayAdapter);
             }
         });
+
+        Calendar now = Calendar.getInstance();
+// As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
+        datePickerDialog = DatePickerDialog.newInstance(
+                this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.setAccentColor(getResources().getColor(R.color.tagColor));
+
+        // Places
+
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .build();
+
     }
 
     SpinnerDoctorListModel getFilteredDoctorList() {
@@ -145,7 +178,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
         return null;
     }
 
-    @OnClick({R.id.clearButton, R.id.selectDateTextView, R.id.uploadButton, R.id.searchButton, R.id.selectDateLayout})
+    @OnClick({R.id.clearButton, R.id.selectDateTextView, R.id.dateIcon, R.id.uploadButton, R.id.searchButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.clearButton:
@@ -158,7 +191,10 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 selectAddressLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.selectDateTextView:
-
+                datePickerDialog.show(getSupportFragmentManager(), getResources().getString(R.string.select_date_text));
+                break;
+            case R.id.dateIcon:
+                datePickerDialog.show(getSupportFragmentManager(), getResources().getString(R.string.select_date_text));
                 break;
             case R.id.uploadButton:
                 Intent intent = new Intent(mContext, SelectedRecordsActivity.class);
@@ -167,14 +203,42 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
             case R.id.searchButton:
                 mSelectDoctorName.setText("");
                 break;
-            case R.id.selectDateLayout:
+            case R.id.selectAddressLayout:
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    Intent intentPlace = builder.build(AddRecordsActivity.this);
+                    startActivityForResult(intentPlace, PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(this, data);
+                StringBuilder stBuilder = new StringBuilder();
+                String placename = String.format("%s", place.getName());
+                String latitude = String.valueOf(place.getLatLng().latitude);
+                String longitude = String.valueOf(place.getLatLng().longitude);
+                String address = String.format("%s", place.getAddress());
+                stBuilder.append("Name: ");
+                stBuilder.append(placename);
+                stBuilder.append("\n");
+                stBuilder.append("Latitude: ");
+                stBuilder.append(latitude);
+                stBuilder.append("\n");
+                stBuilder.append("Logitude: ");
+                stBuilder.append(longitude);
+                stBuilder.append("\n");
+                stBuilder.append("Address: ");
+                stBuilder.append(address);
+                selectAddressText.setText(address);
+            }
+        }
     }
 
     @Override
@@ -182,5 +246,15 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
         if (isEntered)
             searchButton.setImageResource(R.drawable.del);
         else searchButton.setImageResource(R.drawable.magnifying_glass);
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+        selectDate.setText(dayOfMonth + "-" + monthOfYear + "-" + year);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

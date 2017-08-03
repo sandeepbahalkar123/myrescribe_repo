@@ -3,11 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/dp50"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.myrescribe.ui.activities.AddRecordsActivity"
+    tools:showIn="@layout/activity_add_records">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp50"
         android:orientation="vertical">
 
         <LinearLayout
@@ -15,8 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/dp50"
-            android:background="@drawable/curve_edges_spinner"
+            android:background="@drawable/curve_edges_common"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -123,7 +127,7 @@
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:background="@drawable/curve_edges_spinner"
+            android:background="@drawable/curve_edges_common"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -182,15 +186,16 @@
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:background="@drawable/curve_edges_spinner">
+            android:background="@drawable/curve_edges_common">
 
-            <AutoCompleteTextView
+            <TextView
                 android:id="@+id/selectAddressText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="@string/enter_address"
+                android:textSize="@dimen/sp18"
                 android:padding="@dimen/dp16"
                 android:paddingEnd="40dp"
                 android:paddingRight="40dp"
@@ -218,10 +223,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/dp50"
         android:background="@drawable/curve_edges_button"
-        android:paddingEnd="@dimen/dp30"
-        android:paddingStart="@dimen/dp30"
+        android:paddingEnd="@dimen/dp40"
+        android:paddingStart="@dimen/dp40"
         android:text="@string/upload"
         android:textColor="@color/white" />
 

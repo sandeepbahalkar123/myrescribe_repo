@@ -27,10 +27,8 @@ public class Medication implements CustomResponse{
     public void setTabWebService(boolean tabWebService) {
         isTabWebService = tabWebService;
     }
-
     @SerializedName("medicineTypeId")
     @Expose
-
     private String medicineTypeId;
     @SerializedName("medicinSlot")
     @Expose

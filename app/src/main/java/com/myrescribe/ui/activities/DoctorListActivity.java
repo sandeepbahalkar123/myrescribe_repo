@@ -54,6 +54,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     @BindView(R.id.nav_view)
     FrameLayout nav_view;
 
+    boolean isOnApplyFilterCalledBefore = false; // this is added for maintaining stack of filter result
 
     // Filter End
 
@@ -114,9 +115,22 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
         Gson gson = new Gson();
         CommonMethods.Log("FilterRequest", gson.toJson(drFilterRequestModel, DrFilterRequestModel.class));
-
         mDrawer.closeDrawer(GravityCompat.END);
-        loadFragment(DoctorFilteredListFragment.newInstance(drFilterRequestModel), true);
+
+        if (!isOnApplyFilterCalledBefore) {
+            isOnApplyFilterCalledBefore = true;
+            DoctorFilteredListFragment doctorFilteredListFragment = DoctorFilteredListFragment.newInstance(drFilterRequestModel);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.doctorViewContainer, doctorFilteredListFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        } else {
+            Fragment currentFragment = fragmentManager.findFragmentById(R.id.doctorViewContainer);
+            if (currentFragment instanceof DoctorFilteredListFragment) {
+                DoctorFilteredListFragment currentFragmentObject = (DoctorFilteredListFragment) currentFragment;
+                currentFragmentObject.initialize(drFilterRequestModel);
+            }
+        }
     }
 
     @Override
@@ -278,4 +292,5 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         }
         fragmentTransaction.commit();
     }
+
 }

@@ -284,8 +284,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
                 if (error.getMessage().equalsIgnoreCase("java.io.IOException: No authentication challenges found") || error.getMessage().equalsIgnoreCase("invalid_grant")) {
                     if (!isTokenExpired) {
-                        loginRequest();
-                        //tokenRefreshRequest();
+                        tokenRefreshRequest();
                     }
                 }
 
@@ -309,7 +308,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                    mContext.startActivity(intent);
 
-                    loginRequest();
+                    //  loginRequest();
                 } else
                     mConnectionListener.onResponse(ConnectionListener.SERVER_ERROR, null, mOldDataTag);
             } else if (error instanceof NetworkError) {
@@ -523,6 +522,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     }
 
     private void tokenRefreshRequest() {
+        loginRequest();
         // Commented as login API is not implemented yet.
        /* String url = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
         CommonMethods.Log(TAG, "Refersh token while sending refresh token api: " + MyRescribePreferencesManager.getString(MyRescribeConstants.REFRESH_TOKEN, mContext));

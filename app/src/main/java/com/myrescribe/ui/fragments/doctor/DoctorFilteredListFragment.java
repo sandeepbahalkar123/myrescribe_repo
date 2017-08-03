@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +37,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class DoctorFilteredListFragment extends Fragment implements HelperResponse {
@@ -48,6 +51,7 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
     Toolbar mDocFilterToolbar;
     private Context mContext;
     private DrFilterRequestModel mRequestedFilterRequestModel;
+    private DoctorListActivity mParentActivity;
 
     public DoctorFilteredListFragment() {
         // Required empty public constructor
@@ -64,18 +68,26 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
         ((AppCompatActivity) getActivity()).setSupportActionBar(mDocFilterToolbar);
         ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setTitle(getString(R.string.doctor_details) + getString(R.string.details));
         setHasOptionsMenu(true);
-        initialize();
+
+        mParentActivity = (DoctorListActivity) getActivity();
+
+        Bundle arguments = getArguments();
+        DrFilterRequestModel tempReceivedObject = new DrFilterRequestModel();
+        if (arguments != null) {
+            tempReceivedObject = arguments.getParcelable(MyRescribeConstants.FILTER_REQUEST);
+        }
+        initialize(tempReceivedObject);
         return mRootView;
     }
 
 
-    private void initialize() {
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            mRequestedFilterRequestModel = arguments.getParcelable(MyRescribeConstants.FILTER_REQUEST);
-        }
+    public void initialize(DrFilterRequestModel tempReceivedObject) {
+        this.mRequestedFilterRequestModel = tempReceivedObject;
         mDoctorHelper = new DoctorHelper(mContext, this);
+        mDoctorHelper.doFilterDoctorList(mRequestedFilterRequestModel);
+
     }
 
     public static DoctorFilteredListFragment newInstance(DrFilterRequestModel drFilterRequestModel) {
@@ -113,13 +125,6 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
     }
     //---------------
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mDoctorHelper.doFilterDoctorList(mRequestedFilterRequestModel);
-    }
-
     private void setListAdapter(ArrayList<DoctorFilteredInfoAndCaseDetails> doctorFilteredInfoList) {
         if (doctorFilteredInfoList.size() == 0) {
             mExpandFilterDocListView.setVisibility(View.GONE);
@@ -136,5 +141,22 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
     public boolean onOptionsItemSelected(MenuItem item) {
         getActivity().getSupportFragmentManager().popBackStack();
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick({R.id.fab})
+    public void onViewClicked(View view) {
+
+        DrawerLayout activityDrawer = mParentActivity.getActivityDrawer();
+
+        switch (view.getId()) {
+
+            case R.id.fab:
+                if (activityDrawer.isDrawerOpen(GravityCompat.END)) {
+                    activityDrawer.closeDrawer(GravityCompat.END);
+                } else {
+                    activityDrawer.openDrawer(GravityCompat.END);
+                }
+                break;
+        }
     }
 }

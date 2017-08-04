@@ -13,11 +13,14 @@ import android.widget.Button;
 import com.myrescribe.R;
 import com.myrescribe.adapters.UploadedImageAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
+import com.myrescribe.helpers.investigation.InvestigationHelper;
+import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.investigation.InvestigationData;
+import com.myrescribe.model.investigation.uploaded.InvestigationUploadFromUploadedModel;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
-import com.myrescribe.util.NetworkUtil;
 
 import java.util.ArrayList;
 
@@ -25,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UploadedDocsActivity extends AppCompatActivity {
+public class UploadedDocsActivity extends AppCompatActivity implements HelperResponse {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -37,10 +40,11 @@ public class UploadedDocsActivity extends AppCompatActivity {
     private Context mContext;
     private UploadedImageAdapter uploadedImageAdapter;
     private ArrayList<InvestigationData> investigation;
-//    private Set<Image> photoSet = new HashSet<>();
+    //    private Set<Image> photoSet = new HashSet<>();
     private ArrayList<Image> photoPaths = new ArrayList<>();
     private AppDBHelper appDBHelper;
     private ArrayList<InvestigationData> investigationTemp;
+    private InvestigationHelper investigationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,7 @@ public class UploadedDocsActivity extends AppCompatActivity {
 
         mContext = UploadedDocsActivity.this;
         appDBHelper = new AppDBHelper(mContext);
+        investigationHelper = new InvestigationHelper(mContext);
 
         investigation = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_DATA);
         investigationTemp = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA);
@@ -77,47 +82,77 @@ public class UploadedDocsActivity extends AppCompatActivity {
     @OnClick(R.id.uploadButton)
     public void onViewClicked() {
 
-        if (NetworkUtil.isInternetAvailable(mContext)) {
+        int selectedImageCount = 0;
+//        ArrayList<Image> photos = new ArrayList<>();
+        String imageIds = "";
+        String invIds = "";
+
+        for (Image image : photoPaths) {
+            if (image.isSelected()) {
+//                photos.add(image);
+                selectedImageCount++;
+                imageIds = imageIds + "," + imageIds;
+            }
+        }
+
+        // Update server status with image id
+
+        if (selectedImageCount > 0) {
+
+            for (InvestigationData dataObject : investigationTemp) {
+                if (dataObject.isSelected() && !dataObject.isUploaded())
+                    invIds = invIds + "," + dataObject.getId();
+            }
+
+            investigationHelper.uploadFromAlreadyUploaded(imageIds, invIds);
+
+        } else {
+            CommonMethods.showToast(mContext, "Please select at least one document");
+        }
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if (customResponse instanceof InvestigationUploadFromUploadedModel) {
+
             int selectedCount = 0;
-            int selectedImageCount = 0;
-            ArrayList<Image> photos = new ArrayList<>();
 
-            for (Image image : photoPaths) {
-                if (image.isSelected()) {
-                    photos.add(image);
-                    selectedImageCount++;
+            CommonMethods.showToast(mContext, "Uploaded Successfully");
+            for (InvestigationData dataObject : investigationTemp) {
+                if (dataObject.isSelected() && !dataObject.isUploaded()) {
+                    dataObject.setUploaded(dataObject.isSelected());
+                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), "");
                 }
+
+                if (dataObject.isSelected())
+                    selectedCount += 1;
             }
 
-            // Update server status with image id
-
-            if (selectedImageCount > 0) {
-                CommonMethods.showToast(mContext, "Uploaded Successfully");
-                for (InvestigationData dataObject : investigationTemp) {
-                    if (dataObject.isSelected() && !dataObject.isUploaded()) {
-                        dataObject.setUploaded(dataObject.isSelected());
-                        appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), "");
-                    }
-
-                    if (dataObject.isSelected())
-                        selectedCount += 1;
-                }
-
-                if (selectedCount == investigationTemp.size()) {
-                    Intent intent = new Intent(this, HomePageActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent();
-                    intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigationTemp);
-                    setResult(RESULT_OK, intent);
-                }
-                finish();
-
+            if (selectedCount == investigationTemp.size()) {
+                Intent intent = new Intent(this, HomePageActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             } else {
-                CommonMethods.showToast(mContext, "Please select at least one document");
+                Intent intent = new Intent();
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigationTemp);
+                setResult(RESULT_OK, intent);
             }
-        } else
-            CommonMethods.showToast(mContext, getResources().getString(R.string.internet));
+            finish();
+        }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
     }
 }

@@ -278,41 +278,44 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
             investigation = investigationListModel.getData();
 
-            for (InvestigationData dataObject : investigation) {
-                Images images = new Images();
-                images.setImageArray(dataObject.getPhotos());
-                appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.getInvestigationKey(), dataObject.isUploaded(), new Gson().toJson(images));
-            }
+            if (investigation.size() > 0) {
 
-            int isAlreadyUploadedButtonVisible = View.GONE;
-
-            for (int i = 0; i < investigation.size(); i++) {
-                InvestigationData data = appDBHelper.getInvestigationData(investigation.get(i).getId());
-                boolean status = data.isUploaded();
-                ArrayList<Image> imageArray = data.getPhotos();
-                if (!status) {
-                    InvestigationData dataObject = new InvestigationData();
-                    dataObject.setId(investigation.get(i).getId());
-                    dataObject.setTitle(investigation.get(i).getTitle());
-                    dataObject.setInvestigationKey(investigation.get(i).getInvestigationKey());
-                    dataObject.setDoctorName(investigation.get(i).getDoctorName());
-                    dataObject.setOpdId(investigation.get(i).getOpdId());
-                    dataObject.setSelected(investigation.get(i).isSelected());
-                    dataObject.setUploaded(investigation.get(i).isUploaded());
-                    dataObject.setPhotos(imageArray);
-                    investigationTemp.add(dataObject);
-                } else {
-                    isAlreadyUploadedButtonVisible = View.VISIBLE;
-                    investigation.get(i).setSelected(true);
-                    investigation.get(i).setUploaded(true);
-                    investigation.get(i).setPhotos(data.getPhotos());
+                for (InvestigationData dataObject : investigation) {
+                    Images images = new Images();
+                    images.setImageArray(dataObject.getPhotos());
+                    appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.getInvestigationKey(), dataObject.isUploaded(), new Gson().toJson(images));
                 }
-            }
 
-            buttonManage(isAlreadyUploadedButtonVisible);
+                int isAlreadyUploadedButtonVisible = View.GONE;
 
-            mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
-            mRecyclerView.setAdapter(mAdapter);
+                for (int i = 0; i < investigation.size(); i++) {
+                    InvestigationData data = appDBHelper.getInvestigationData(investigation.get(i).getId());
+                    boolean status = data.isUploaded();
+                    ArrayList<Image> imageArray = data.getPhotos();
+                    if (!status) {
+                        InvestigationData dataObject = new InvestigationData();
+                        dataObject.setId(investigation.get(i).getId());
+                        dataObject.setTitle(investigation.get(i).getTitle());
+                        dataObject.setInvestigationKey(investigation.get(i).getInvestigationKey());
+                        dataObject.setDoctorName(investigation.get(i).getDoctorName());
+                        dataObject.setOpdId(investigation.get(i).getOpdId());
+                        dataObject.setSelected(investigation.get(i).isSelected());
+                        dataObject.setUploaded(investigation.get(i).isUploaded());
+                        dataObject.setPhotos(imageArray);
+                        investigationTemp.add(dataObject);
+                    } else {
+                        isAlreadyUploadedButtonVisible = View.VISIBLE;
+                        investigation.get(i).setSelected(true);
+                        investigation.get(i).setUploaded(true);
+                        investigation.get(i).setPhotos(data.getPhotos());
+                    }
+                }
+
+                buttonManage(isAlreadyUploadedButtonVisible);
+
+                mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
+                mRecyclerView.setAdapter(mAdapter);
+            } else CommonMethods.showInfoDialog("Investigation not available", mContext, true);
         } else if (customResponse instanceof InvestigationUploadByGmailModel) {
             InvestigationUploadByGmailModel investigationUploadByGmailModel = (InvestigationUploadByGmailModel) customResponse;
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);

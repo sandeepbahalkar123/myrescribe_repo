@@ -228,7 +228,6 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
 //                            .setNotificationConfig(uploadNotificationConfig)
                                 .setMaxRetries(MyRescribeConstants.MAX_RETRIES)
 
-                                .addHeader(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON)
                                 .addHeader(MyRescribeConstants.AUTHORIZATION_TOKEN, authorizationString)
                                 .addHeader(MyRescribeConstants.DEVICEID, device.getDeviceId())
                                 .addHeader(MyRescribeConstants.OS, device.getOS())

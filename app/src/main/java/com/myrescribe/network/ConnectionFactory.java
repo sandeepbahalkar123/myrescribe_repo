@@ -37,15 +37,14 @@ public class ConnectionFactory extends ConnectRequest {
         device = Device.getInstance(mContext);
     }
 
-   /* public void setHeaderParams(Map<String, String> headerParams) {
+    public void setHeaderParams(Map<String, String> headerParams) {
         this.mHeaderParams = headerParams;
-    }*/
+    }
 
     public void setHeaderParams() {
 
         Map<String, String> headerParams = new HashMap<>();
-        String authorizationString = "";
-        authorizationString = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
+        String authorizationString = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
         headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
         headerParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, authorizationString);
         headerParams.put(MyRescribeConstants.DEVICEID, device.getDeviceId());

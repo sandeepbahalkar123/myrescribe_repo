@@ -37,6 +37,7 @@ import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
 import com.myrescribe.model.filter.CaseDetailsListModel;
 import com.myrescribe.model.filter.FilterDoctorListModel;
 import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
+import com.myrescribe.model.investigation.InvestigationListModel;
 import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.SignUpModel;
 import com.myrescribe.model.notification.AppointmentsNotificationModel;
@@ -438,6 +439,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case MyRescribeConstants.APPOINTMENT_NOTIFICATION: //This is for get archived list
                         AppointmentsNotificationModel appointmentsNotificationModel = new Gson().fromJson(data, AppointmentsNotificationModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, appointmentsNotificationModel, mOldDataTag);
+                        break;
+
+                    case MyRescribeConstants.INVESTIGATION_LIST: //This is for get archived list
+                        InvestigationListModel investigationListModel = new Gson().fromJson(data, InvestigationListModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationListModel, mOldDataTag);
                         break;
 
                     default:

@@ -98,6 +98,8 @@ public class MyRescribeConstants {
     public static final String APPOINTMENT_NOTIFICATION = MyRescribeConstants.BLANK + 16;
     public static final String TASK_RESPOND_NOTIFICATION_FOR_HEADER =MyRescribeConstants.BLANK+ "notify" ;
 
+    public static final String INVESTIGATION_LIST = MyRescribeConstants.BLANK + 17;
+
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;

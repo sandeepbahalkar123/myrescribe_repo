@@ -10,19 +10,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.UploadedImageAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
-import com.myrescribe.model.investigation.DataObject;
 import com.myrescribe.model.investigation.Image;
-import com.myrescribe.model.investigation.Images;
+import com.myrescribe.model.investigation.InvestigationData;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,11 +35,11 @@ public class UploadedDocsActivity extends AppCompatActivity {
 
     private Context mContext;
     private UploadedImageAdapter uploadedImageAdapter;
-    private ArrayList<DataObject> investigation;
+    private ArrayList<InvestigationData> investigation;
 //    private Set<Image> photoSet = new HashSet<>();
     private ArrayList<Image> photoPaths = new ArrayList<>();
     private AppDBHelper appDBHelper;
-    private ArrayList<DataObject> investigationTemp;
+    private ArrayList<InvestigationData> investigationTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +60,10 @@ public class UploadedDocsActivity extends AppCompatActivity {
         mContext = UploadedDocsActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
-        investigation = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
-        investigationTemp = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA);
+        investigation = getIntent().getParcelableExtra(MyRescribeConstants.INVESTIGATION_DATA);
+        investigationTemp = getIntent().getParcelableExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA);
 
-        for (DataObject dataObject : investigation)
+        for (InvestigationData dataObject : investigation)
             photoPaths.addAll(dataObject.getPhotos());
 
         uploadedImageAdapter = new UploadedImageAdapter(mContext, photoPaths);
@@ -94,7 +90,7 @@ public class UploadedDocsActivity extends AppCompatActivity {
         // Update server status with image id
 
         if (selectedImageCount > 0) {
-            for (DataObject dataObject : investigationTemp) {
+            for (InvestigationData dataObject : investigationTemp) {
                 if (dataObject.isSelected() && !dataObject.isUploaded()) {
                     dataObject.setUploaded(dataObject.isSelected());
                     appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), "");

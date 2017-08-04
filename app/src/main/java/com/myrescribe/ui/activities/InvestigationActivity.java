@@ -22,9 +22,13 @@ import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.InvestigationViewAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
-import com.myrescribe.model.investigation.DataObject;
+import com.myrescribe.helpers.investigation.InvestigationHelper;
+import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.investigation.InvestigationData;
 import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.investigation.Images;
+import com.myrescribe.model.investigation.InvestigationListModel;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -35,7 +39,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import droidninja.filepicker.FilePickerConst;
 
-public class InvestigationActivity extends AppCompatActivity implements InvestigationViewAdapter.CheckedClickListener {
+public class InvestigationActivity extends AppCompatActivity implements InvestigationViewAdapter.CheckedClickListener, HelperResponse {
 
     private boolean isCompareDialogCollapsed = true;
     private static final long ANIMATION_DURATION = 400; // in milliseconds
@@ -60,8 +64,8 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     private LinearLayoutManager mLayoutManager;
     private InvestigationViewAdapter mAdapter;
     private Context mContext;
-    private ArrayList<DataObject> investigation = new ArrayList<DataObject>();
-    private ArrayList<DataObject> investigationTemp = new ArrayList<DataObject>();
+    private ArrayList<InvestigationData> investigation = new ArrayList<InvestigationData>();
+    private ArrayList<InvestigationData> investigationTemp = new ArrayList<InvestigationData>();
     private AppDBHelper appDBHelper;
 
     @Override
@@ -81,6 +85,9 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         });
 
         mContext = InvestigationActivity.this;
+        appDBHelper = new AppDBHelper(mContext);
+        InvestigationHelper investigationHelper = new InvestigationHelper(mContext);
+        investigationHelper.getInvestigationList();
 
         // off recyclerView Animation
 
@@ -90,36 +97,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        getDataSet();
 
-        appDBHelper = new AppDBHelper(mContext);
-        for (DataObject dataObject : investigation) {
-            Images images = new Images();
-            images.setImageArray(dataObject.getPhotos());
-            appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.isUploaded(), new Gson().toJson(images));
-        }
-
-        int isAlreadyUploadedButtonVisible = View.GONE;
-
-        for (int i = 0; i < investigation.size(); i++) {
-            DataObject data = appDBHelper.getInvestigationData(investigation.get(i).getId());
-            boolean status = data.isUploaded();
-            ArrayList<Image> imageArray = data.getPhotos();
-            if (!status) {
-                DataObject dataObject = new DataObject(investigation.get(i).getId(), investigation.get(i).getTitle(), investigation.get(i).isSelected(), investigation.get(i).isUploaded(), imageArray);
-                investigationTemp.add(dataObject);
-            } else {
-                isAlreadyUploadedButtonVisible = View.VISIBLE;
-                investigation.get(i).setSelected(true);
-                investigation.get(i).setUploaded(true);
-                investigation.get(i).setPhotos(data.getPhotos());
-            }
-        }
-
-        buttonManage(isAlreadyUploadedButtonVisible);
-
-        mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     public void collapseCompareDialog() {
@@ -180,21 +158,21 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         super.onBackPressed();
     }
 
-    private void getDataSet() {
-        investigation.add(new DataObject(1, "CT Scan", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(2, "Lipid", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(3, "Liver Profile", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(4, "X Ray", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(5, "HB", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(6, "PCV", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(7, "EHR", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(8, "B.T.C.T", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(9, "G6", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(10, "PV", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(11, "ER", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(12, "C.T", false, false, new ArrayList<Image>()));
-    }
-
+    /*  private void getDataSet() {
+          investigation.add(new InvestigationData(1, "CT Scan", false, false, new ArrayList<Image>()));
+          investigation.add(new InvestigationData(2, "Lipid", false, false, new ArrayList<Image>()));
+          investigation.add(new InvestigationData(3, "Liver Profile", false, false, new ArrayList<Image>()));
+          investigation.add(new InvestigationData(4, "X Ray", false, false, new ArrayList<Image>()));
+          investigation.add(new InvestigationData(5, "HB", false, false, new ArrayList<Image>()));
+          investigation.add(new InvestigationData(6, "PCV", false, false, new ArrayList<Image>()));
+          investigation.add(new InvestigationData(7, "EHR", false, false, new ArrayList<Image>()));
+          investigation.add(new InvestigationData(8, "B.T.C.T", false, false, new ArrayList<Image>()));
+          investigation.add(new InvestigationData(9, "G6", false, false, new ArrayList<Image>()));
+          investigation.add(new InvestigationData(10, "PV", false, false, new ArrayList<Image>()));
+          investigation.add(new InvestigationData(11, "ER", false, false, new ArrayList<Image>()));
+          investigation.add(new InvestigationData(12, "C.T", false, false, new ArrayList<Image>()));
+      }
+  */
     @Override
     public void onCheckedClick(int position) {
         buttonEnable();
@@ -202,7 +180,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
     private void buttonEnable() {
         boolean uploadButton = false;
-        for (DataObject dataObject : investigationTemp) {
+        for (InvestigationData dataObject : investigationTemp) {
             if (dataObject.isSelected() && !dataObject.isUploaded()) {
                 uploadButton = true;
                 break;
@@ -226,7 +204,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO || requestCode == UPLOADED_DOCS) {
             if (resultCode == RESULT_OK) {
                 investigationTemp.clear();
-                ArrayList<DataObject> invest = (ArrayList<DataObject>) data.getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
+                ArrayList<InvestigationData> invest = data.getParcelableExtra(MyRescribeConstants.INVESTIGATION_DATA);
                 changeOriginalData(invest);
                 investigationTemp.addAll(invest);
                 mAdapter.notifyDataSetChanged();
@@ -236,9 +214,9 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         }
     }
 
-    private void changeOriginalData(ArrayList<DataObject> invest) {
+    private void changeOriginalData(ArrayList<InvestigationData> invest) {
         for (int i = 0; i < investigation.size(); i++) {
-            for (DataObject objectTemp : invest) {
+            for (InvestigationData objectTemp : invest) {
                 if (investigation.get(i).getId() == objectTemp.getId()) {
                     investigation.set(i, objectTemp);
                 }
@@ -274,7 +252,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 clipboard.setPrimaryClip(clip);
 
                 if (openApp("com.google.android.gm")) {
-                    for (DataObject dataObject : investigationTemp) {
+                    for (InvestigationData dataObject : investigationTemp) {
                         if (dataObject.isSelected() && !dataObject.isUploaded()) {
                             dataObject.setUploaded(dataObject.isSelected());
                             appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), "");
@@ -300,5 +278,65 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         i.addCategory(Intent.CATEGORY_LAUNCHER);
         startActivity(i);
         return true;
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+
+        if (customResponse instanceof InvestigationListModel) {
+
+            InvestigationListModel investigationListModel = (InvestigationListModel) customResponse;
+
+            investigation = investigationListModel.getData();
+
+            for (InvestigationData dataObject : investigation) {
+                Images images = new Images();
+                images.setImageArray(dataObject.getPhotos());
+                appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.getInvestigationKey(), dataObject.isUploaded(), new Gson().toJson(images));
+            }
+
+            int isAlreadyUploadedButtonVisible = View.GONE;
+
+            for (int i = 0; i < investigation.size(); i++) {
+                InvestigationData data = appDBHelper.getInvestigationData(investigation.get(i).getId());
+                boolean status = data.isUploaded();
+                ArrayList<Image> imageArray = data.getPhotos();
+                if (!status) {
+                    InvestigationData dataObject = new InvestigationData();
+                    dataObject.setId(investigation.get(i).getId());
+                    dataObject.setTitle(investigation.get(i).getTitle());
+                    dataObject.setInvestigationKey(investigation.get(i).getInvestigationKey());
+                    dataObject.setSelected(investigation.get(i).isSelected());
+                    dataObject.setUploaded(investigation.get(i).isUploaded());
+                    dataObject.setPhotos(imageArray);
+                    investigationTemp.add(dataObject);
+                } else {
+                    isAlreadyUploadedButtonVisible = View.VISIBLE;
+                    investigation.get(i).setSelected(true);
+                    investigation.get(i).setUploaded(true);
+                    investigation.get(i).setPhotos(data.getPhotos());
+                }
+            }
+
+            buttonManage(isAlreadyUploadedButtonVisible);
+
+            mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
+            mRecyclerView.setAdapter(mAdapter);
+        }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
     }
 }

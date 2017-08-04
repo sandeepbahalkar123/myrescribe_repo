@@ -10,7 +10,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.model.investigation.DataObject;
+import com.myrescribe.model.investigation.InvestigationData;
 import com.myrescribe.util.CommonMethods;
 
 import java.util.ArrayList;
@@ -19,10 +19,10 @@ public class InvestigationViewAdapter extends RecyclerView
         .Adapter<InvestigationViewAdapter
         .DataObjectHolder> {
     private static String TAG = "InvestigationViewAdapter";
-    private ArrayList<DataObject> mDataset;
+    private ArrayList<InvestigationData> mDataset;
     private CheckedClickListener checkedClickListener;
 
-    public InvestigationViewAdapter(Context mContext, ArrayList<DataObject> myDataset) {
+    public InvestigationViewAdapter(Context mContext, ArrayList<InvestigationData> myDataset) {
         mDataset = myDataset;
 
         try {

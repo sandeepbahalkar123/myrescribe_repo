@@ -20,9 +20,9 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.SelectedRecordsAdapter;
-import com.myrescribe.model.investigation.DataObject;
 import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.investigation.Images;
+import com.myrescribe.model.investigation.InvestigationData;
 import com.myrescribe.model.investigation.SelectedDocModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
@@ -54,7 +54,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
     private ArrayList<Image> photoPaths = new ArrayList<>();
     private int media_id = -1;
     private SelectedRecordsAdapter selectedRecordsAdapter;
-    private ArrayList<DataObject> investigation = new ArrayList<>();
+    private ArrayList<InvestigationData> investigation = new ArrayList<>();
     //    private AppDBHelper appDBHelper;
     private String patient_id = "";
 
@@ -167,8 +167,13 @@ public class SelectedRecordsActivity extends AppCompatActivity {
 //            int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
                 if (resultCode == Activity.RESULT_OK) {
                     photoPaths.clear();
-                    for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA))
-                        photoPaths.add(new Image(patient_id + "_" + UUID.randomUUID().toString(), imagePath, false));
+                    for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)) {
+                        Image image = new Image();
+                        image.setImageId(patient_id + "_" + UUID.randomUUID().toString());
+                        image.setImagePath(imagePath);
+                        image.setSelected(false);
+                        photoPaths.add(image);
+                    }
                     selectedRecordsAdapter.notifyDataSetChanged();
                 }
             }
@@ -183,7 +188,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
             int selectedCount = 0;
             ArrayList<Integer> selectedInvestigationIds = new ArrayList<>();
 
-            for (DataObject dataObject : investigation) {
+            for (InvestigationData dataObject : investigation) {
                 if (dataObject.isSelected() && !dataObject.isUploaded()) {
                     selectedInvestigationIds.add(dataObject.getId());
                     dataObject.setUploaded(dataObject.isSelected());

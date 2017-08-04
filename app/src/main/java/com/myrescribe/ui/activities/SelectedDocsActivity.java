@@ -21,9 +21,9 @@ import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.SelectedImageAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
-import com.myrescribe.model.investigation.DataObject;
 import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.investigation.Images;
+import com.myrescribe.model.investigation.InvestigationData;
 import com.myrescribe.model.investigation.SelectedDocModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
@@ -55,7 +55,7 @@ public class SelectedDocsActivity extends AppCompatActivity {
     private ArrayList<Image> photoPaths = new ArrayList<>();
     private int media_id = -1;
     private SelectedImageAdapter selectedImageAdapter;
-    private ArrayList<DataObject> investigation;
+    private ArrayList<InvestigationData> investigation;
     private AppDBHelper appDBHelper;
     private String patient_id = "";
 
@@ -80,7 +80,7 @@ public class SelectedDocsActivity extends AppCompatActivity {
 
         patient_id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext);
 
-        investigation = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
+        investigation = getIntent().getParcelableExtra(MyRescribeConstants.INVESTIGATION_DATA);
 
         for (int i = 0; i < investigation.size(); i++) {
             if (investigation.get(i).isSelected() && !investigation.get(i).isUploaded() && investigation.get(i).getPhotos().size() > 0) {
@@ -169,8 +169,13 @@ public class SelectedDocsActivity extends AppCompatActivity {
 //            int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
                 if (resultCode == Activity.RESULT_OK) {
                     photoPaths.clear();
-                    for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA))
-                        photoPaths.add(new Image(patient_id + "_" + UUID.randomUUID().toString(), imagePath, false));
+                    for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)) {
+                        Image image = new Image();
+                        image.setImageId(patient_id + "_" + UUID.randomUUID().toString());
+                        image.setImagePath(imagePath);
+                        image.setSelected(false);
+                        photoPaths.add(image);
+                    }
                     selectedImageAdapter.notifyDataSetChanged();
                 }
             }
@@ -185,7 +190,7 @@ public class SelectedDocsActivity extends AppCompatActivity {
             int selectedCount = 0;
             ArrayList<Integer> selectedInvestigationIds = new ArrayList<>();
 
-            for (DataObject dataObject : investigation) {
+            for (InvestigationData dataObject : investigation) {
                 if (dataObject.isSelected() && !dataObject.isUploaded()) {
                     selectedInvestigationIds.add(dataObject.getId());
                     dataObject.setUploaded(dataObject.isSelected());

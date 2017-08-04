@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.myrescribe.R;
 import com.myrescribe.model.investigation.Image;
 import com.myrescribe.ui.activities.ZoomImageViewActivity;
@@ -53,12 +54,15 @@ public class UploadedImageAdapter extends RecyclerView.Adapter<UploadedImageAdap
     @Override
     public void onBindViewHolder(final UploadedImageAdapter.FileViewHolder holder, final int position) {
         final Image path = paths.get(position);
-        Glide.with(context).load(new File(path.getImagePath()))
-                .centerCrop()
-                .dontAnimate()
-                .thumbnail(0.5f)
-                .override(imageSize, imageSize)
-                .placeholder(droidninja.filepicker.R.drawable.image_placeholder)
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.centerCrop();
+        requestOptions.dontAnimate();
+        requestOptions.override(imageSize, imageSize);
+        requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+
+        Glide.with(context)
+                .load(new File(path.getImagePath()))
+                .apply(requestOptions).thumbnail(0.5f)
                 .into(holder.imageView);
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {

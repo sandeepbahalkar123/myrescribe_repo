@@ -31,24 +31,18 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
-
 import com.myrescribe.model.case_details.CaseDetailsModel;
 import com.myrescribe.model.doctors.doctor_info.DoctorModel;
-
 import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
 import com.myrescribe.model.filter.CaseDetailsListModel;
-import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
 import com.myrescribe.model.filter.FilterDoctorListModel;
+import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
+import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.SignUpModel;
-
 import com.myrescribe.model.notification.AppointmentsNotificationModel;
 import com.myrescribe.model.notification.NotificationModel;
-
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
-
-import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
-import com.myrescribe.model.visit_details.VisitDetailsModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
@@ -120,7 +114,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         } else {
 
             if (isOffline) {
+                if (getOfflineData() != null)
                 succesResponse(getOfflineData(), false);
+                else
+                    mConnectionListener.onResponse(ConnectionListener.NO_INTERNET, null, mOldDataTag);
             } else {
                 mConnectionListener.onResponse(ConnectionListener.NO_INTERNET, null, mOldDataTag);
             }
@@ -342,7 +339,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
             cursor.moveToFirst();
             return cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
         } else {
-            return "";
+            return null;
         }
     }
 

@@ -182,6 +182,7 @@
     <string name="less">less</string>
     <string name="equal">equal</string>
     <string name="greater">greater</string>
+    <string name="server_error">Server Error</string>
 
 
 </resources>

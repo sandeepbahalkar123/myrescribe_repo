@@ -21,13 +21,21 @@ import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.SelectedImageAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
-import com.myrescribe.model.investigation.DataObject;
 import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.investigation.Images;
-import com.myrescribe.model.investigation.SelectedDocModel;
+import com.myrescribe.model.investigation.InvestigationData;
 import com.myrescribe.preference.MyRescribePreferencesManager;
+import com.myrescribe.singleton.Device;
+import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
+import com.myrescribe.util.NetworkUtil;
+
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.ServerResponse;
+import net.gotev.uploadservice.UploadInfo;
+import net.gotev.uploadservice.UploadStatusDelegate;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -41,7 +49,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class SelectedDocsActivity extends AppCompatActivity {
+public class SelectedDocsActivity extends AppCompatActivity implements UploadStatusDelegate {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -50,12 +58,16 @@ public class SelectedDocsActivity extends AppCompatActivity {
     @BindView(R.id.uploadButton)
     Button uploadButton;
 
+    private int imageUploadedCount = 0;
+    private int imageUploadFailedCount = 0;
+    private CustomProgressDialog customProgressDialog;
+
     private static final int MAX_ATTACHMENT_COUNT = 10;
     private Context mContext;
     private ArrayList<Image> photoPaths = new ArrayList<>();
     private int media_id = -1;
     private SelectedImageAdapter selectedImageAdapter;
-    private ArrayList<DataObject> investigation;
+    private ArrayList<InvestigationData> investigation;
     private AppDBHelper appDBHelper;
     private String patient_id = "";
 
@@ -77,10 +89,12 @@ public class SelectedDocsActivity extends AppCompatActivity {
 
         mContext = SelectedDocsActivity.this;
         appDBHelper = new AppDBHelper(mContext);
+        customProgressDialog = new CustomProgressDialog(mContext);
+        customProgressDialog.setCancelable(false);
 
         patient_id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext);
 
-        investigation = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
+        investigation = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_DATA);
 
         for (int i = 0; i < investigation.size(); i++) {
             if (investigation.get(i).isSelected() && !investigation.get(i).isUploaded() && investigation.get(i).getPhotos().size() > 0) {
@@ -92,7 +106,7 @@ public class SelectedDocsActivity extends AppCompatActivity {
         if (media_id == -1) {
             SelectedDocsActivityPermissionsDispatcher.onPickPhotoWithCheck(SelectedDocsActivity.this);
             photoPaths = new ArrayList<>();
-        }else {
+        } else {
             photoPaths = investigation.get(media_id).getPhotos();
         }
 
@@ -164,13 +178,19 @@ public class SelectedDocsActivity extends AppCompatActivity {
         if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA) == null)
             finish();
         else if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA).size() == 0)
-            finish(); else {
+            finish();
+        else {
             if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
 //            int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
                 if (resultCode == Activity.RESULT_OK) {
                     photoPaths.clear();
-                    for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA))
-                        photoPaths.add(new Image(patient_id + "_" + UUID.randomUUID().toString(), imagePath, false));
+                    for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)) {
+                        Image image = new Image();
+                        image.setImageId(patient_id + "_" + UUID.randomUUID().toString());
+                        image.setImagePath(imagePath);
+                        image.setSelected(false);
+                        photoPaths.add(image);
+                    }
                     selectedImageAdapter.notifyDataSetChanged();
                 }
             }
@@ -179,15 +199,95 @@ public class SelectedDocsActivity extends AppCompatActivity {
 
     @OnClick(R.id.uploadButton)
     public void onViewClicked() {
-        if (photoPaths.size() > 0 && photoPaths != null) {
-            CommonMethods.showToast(mContext, "Upload Successfully");
 
-            int selectedCount = 0;
-            ArrayList<Integer> selectedInvestigationIds = new ArrayList<>();
+        if (NetworkUtil.isInternetAvailable(mContext)) {
+            if (photoPaths.size() > 0 && photoPaths != null) {
+                customProgressDialog.show();
+                String investigationIds = "";
 
-            for (DataObject dataObject : investigation) {
-                if (dataObject.isSelected() && !dataObject.isUploaded()) {
-                    selectedInvestigationIds.add(dataObject.getId());
+                imageUploadedCount = 0;
+                imageUploadFailedCount = 0;
+
+                for (InvestigationData dataObject : investigation) {
+                    if (dataObject.isSelected() && !dataObject.isUploaded()) {
+                        investigationIds = investigationIds + "," + dataObject.getId();
+                    }
+                }
+
+                for (Image image : photoPaths) {
+                    try {
+                    /*UploadNotificationConfig uploadNotificationConfig = new UploadNotificationConfig();
+                    uploadNotificationConfig.setTitleForAllStatuses("Document Upload");
+                    uploadNotificationConfig.setIconColorForAllStatuses(Color.parseColor("#04abdf"));*/
+
+                        Device device = Device.getInstance(mContext);
+                        String baseUrl = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext);
+                        String authorizationString = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
+
+                        String uploadId = new MultipartUploadRequest(SelectedDocsActivity.this, baseUrl + Config.INVESTIGATION_UPLOAD)
+//                            .setNotificationConfig(uploadNotificationConfig)
+                                .setMaxRetries(MyRescribeConstants.MAX_RETRIES)
+
+                                .addHeader(MyRescribeConstants.AUTHORIZATION_TOKEN, authorizationString)
+                                .addHeader(MyRescribeConstants.DEVICEID, device.getDeviceId())
+                                .addHeader(MyRescribeConstants.OS, device.getOS())
+                                .addHeader(MyRescribeConstants.OSVERSION, device.getOSVersion())
+                                .addHeader(MyRescribeConstants.DEVICE_TYPE, device.getDeviceType())
+
+                                .addHeader("imgId", image.getImageId())
+                                .addHeader("invId", investigationIds)
+                                .addFileToUpload(image.getImagePath(), "investigationDoc")
+                                .setDelegate(SelectedDocsActivity.this)
+                                .startUpload();
+
+                        Log.d("ImagedUploadId", uploadId);
+                    } catch (Exception exc) {
+                        Log.e("AndroidUploadService", exc.getMessage(), exc);
+                    }
+                }
+            } else
+                CommonMethods.showToast(mContext, "Please select at least one document");
+        } else
+            CommonMethods.showToast(mContext, getResources().getString(R.string.internet));
+
+    }
+
+    @Override
+    public void onProgress(Context context, UploadInfo uploadInfo) {
+        Log.d("Status", uploadInfo.getProgressPercent() + " " + uploadInfo.getUploadId());
+    }
+
+    @Override
+    public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
+        imageUploadFailedCount++;
+        Log.d("Status", imageUploadFailedCount + " Error " + uploadInfo.getUploadId());
+        if (imageUploadFailedCount == photoPaths.size()) {
+            CommonMethods.showToast(mContext, "Uploading Failed");
+        } else if ((imageUploadedCount + imageUploadFailedCount) == photoPaths.size())
+            allUploaded();
+    }
+
+    @Override
+    public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
+        imageUploadedCount++;
+
+        Log.d("Status", imageUploadedCount + " Completed " + uploadInfo.getUploadId());
+
+        if ((imageUploadedCount + imageUploadFailedCount) == photoPaths.size())
+            allUploaded();
+    }
+
+    @Override
+    public void onCancelled(Context context, UploadInfo uploadInfo) {
+        Log.d("Status", "Cancelled");
+    }
+
+    void allUploaded() {
+        customProgressDialog.dismiss();
+        imageUploadedCount = 0;
+        int selectedCount = 0;
+        for (InvestigationData dataObject : investigation) {
+            if (dataObject.isSelected() && !dataObject.isUploaded()) {
                     dataObject.setUploaded(dataObject.isSelected());
                     Images images = new Images();
                     images.setImageArray(photoPaths);
@@ -197,12 +297,6 @@ public class SelectedDocsActivity extends AppCompatActivity {
                 if (dataObject.isSelected())
                     selectedCount += 1;
             }
-
-            SelectedDocModel selectedDocModel = new SelectedDocModel();
-            selectedDocModel.setSelectedDocPaths(photoPaths);
-            selectedDocModel.setSelectedInvestigation(selectedInvestigationIds);
-
-            Log.d("JSON", new Gson().toJson(selectedDocModel));
 
             if (selectedCount == investigation.size()) {
                 Intent intent = new Intent(this, HomePageActivity.class);
@@ -214,10 +308,7 @@ public class SelectedDocsActivity extends AppCompatActivity {
 //                intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
                 setResult(RESULT_OK, intent);
             }
-            finish();
 
-        } else {
-            CommonMethods.showToast(mContext, "Please select at least one document");
+        finish();
         }
-    }
 }

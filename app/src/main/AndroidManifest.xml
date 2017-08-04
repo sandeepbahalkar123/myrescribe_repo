@@ -176,9 +176,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <meta-data
+        <!--<meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/google_maps_key" />-->
 
         <receiver android:name=".broadcast_receivers.OtpReader">
             <intent-filter>
@@ -186,9 +186,9 @@
             </intent-filter>
         </receiver>
 
-        <!--<meta-data
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0"/>-->
+            android:value="AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0"/>
     </application>
 
 </manifest>

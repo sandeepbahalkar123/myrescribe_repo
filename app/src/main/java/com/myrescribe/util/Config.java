@@ -36,6 +36,10 @@ public class Config {
 
     public static final String APPOINTMENTS = "api/patient/appointments?patientId=3939&status=Upcoming";
     public static final String APPOINTMENTS_DETAILS_URL = "api/patient/appointments?patientId=";
+
+    public static final String INVESTIGATION_LIST = "api/patient/getInvestigationNotifications";
+    public static final String INVESTIGATION_UPLOAD_BY_GMAIL = "api/patient/updateGmailInvestigationUploadStatus";
+    public static final String INVESTIGATION_UPLOAD = "api/upload/InvestigationDocs";
 }
 
 

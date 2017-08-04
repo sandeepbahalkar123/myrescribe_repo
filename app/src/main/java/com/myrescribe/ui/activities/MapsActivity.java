@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,8 +18,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.myrescribe.R;
-
-import org.osmdroid.util.GeoPoint;
+import com.myrescribe.util.CommonMethods;
 
 import java.util.List;
 
@@ -80,9 +78,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Add a marker in Sydney and move the camera
         p1 = getLocationFromAddress(address);
-        LatLng currentLocation = new LatLng(p1.getLatitude(),p1.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(currentLocation).title(address).icon(getMarkerIcon("#04abdf")));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()),14.0f));
+        if (p1 != null) {
+            LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(currentLocation).title(address).icon(getMarkerIcon("#04abdf")));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), 14.0f));
+        } else
+            CommonMethods.showToast(MapsActivity.this, "Address not found");
 
     }
     public Address getLocationFromAddress(String strAddress) {

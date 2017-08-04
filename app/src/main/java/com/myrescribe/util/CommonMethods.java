@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -36,8 +37,6 @@ import com.myrescribe.R;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
 import com.myrescribe.model.case_details.Range;
-import com.myrescribe.model.login.Year;
-import com.myrescribe.ui.activities.PrescriptionActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -633,7 +632,7 @@ public class CommonMethods {
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    public static void showInfoDialog(String msg, final Context mContext) {
+    public static void showInfoDialog(String msg, final Context mContext, final boolean closeActivity) {
 
         final Dialog dialog = new Dialog(mContext);
 
@@ -649,6 +648,8 @@ public class CommonMethods {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                if (closeActivity)
+                    ((AppCompatActivity) mContext).finish();
             }
         });
 

@@ -69,7 +69,7 @@ public class DoctorHelper implements ConnectionListener {
                     }
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
                 } else if (mOldDataTag == MyRescribeConstants.TASK_DOCTOR_APPOINTMENT) {
-                    DoctorAppointmentModel doctorAppointmentModel = (DoctorAppointmentModel)customResponse;
+                    DoctorAppointmentModel doctorAppointmentModel = (DoctorAppointmentModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, doctorAppointmentModel);
                 } else if (mOldDataTag == MyRescribeConstants.TASK_DOCTOR_LIST_FILTERING) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
@@ -185,49 +185,28 @@ public class DoctorHelper implements ConnectionListener {
     public void doGetDoctorList(String year) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + year);
+        String id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext);
+
+        mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + id + "&year=" + year);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_LIST);
 
     }
 
     public void doGetDoctorAppointment() {
-    ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_APPOINTMENT, Request.Method.GET, false);
-        Map<String, String> testParams = new HashMap<String, String>();
-        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext));
-        testParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_APPOINTMENT, Request.Method.GET, true);
+
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.APPOINTMENTS_DETAILS_URL+ MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID,mContext));
+        mConnectionFactory.setUrl(Config.APPOINTMENTS_DETAILS_URL + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext));
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_APPOINTMENT);
 
-
-        // TODO : HARDCODED JSON STRING PARSING FROM assets folder, will get remove
-       /* try {
-            InputStream is = mContext.getAssets().open("appointments.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "doGetDoctorAppointment" + json);
-
-            DoctorAppointmentModel model = new Gson().fromJson(json, DoctorAppointmentModel.class);
-
-            CommonMethods.Log("doGetDoctorAppointment", "" + model.toString());
-            onResponse(ConnectionListener.RESPONSE_OK, model, MyRescribeConstants.TASK_DOCTOR_APPOINTMENT);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
     }
 
     public void doFilterDoctorList(DrFilterRequestModel mRequestedFilterRequestModel) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_LIST_FILTERING, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setPostParams(mRequestedFilterRequestModel);
 
-        // mConnectionFactory.setPostParams(testParams);
+        mConnectionFactory.setPostParams(mRequestedFilterRequestModel);
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_FILTER_URL);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_LIST_FILTERING);
-
     }
 }

@@ -90,6 +90,7 @@
                     android:padding="3dip">
 
                     <com.myrescribe.ui.customesViews.CircularImageView
+                        android:id="@+id/docProfileImage"
                         android:layout_width="@dimen/dp50"
                         android:layout_height="@dimen/dp50"
                         android:layout_gravity="center"

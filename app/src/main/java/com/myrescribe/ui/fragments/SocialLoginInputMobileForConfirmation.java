@@ -105,7 +105,7 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
         String enter = getString(R.string.enter);
         if (mobileNo.isEmpty()) {
             message = enter + getString(R.string.enter_mobile_no).toLowerCase(Locale.US);
-        } else if (mobileNo.trim().length() < 10) {
+        } else if ((mobileNo.trim().length() < 10) || !(mobileNo.trim().startsWith("7") || mobileNo.trim().startsWith("8") || mobileNo.trim().startsWith("9"))) {
             message = getString(R.string.err_invalid_mobile_no);
         } else if (password.isEmpty()) {
             message = enter + getString(R.string.enter_password).toLowerCase(Locale.US);

@@ -112,7 +112,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     }
 
-    // Added Slots
 
     private void addSlotCards(final ViewGroup parent, final String slotType, final int position) {
         final View view = LayoutInflater.from(mContext)

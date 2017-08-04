@@ -68,6 +68,8 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     private TextView timeTextView;
     private TextView dateTextView;
     private View mView;
+    private LinearLayout  mNotificationLayout;
+    private TextView mNoDataAvailable;
 
     private ArrayList<Medication> todayDataList;
 
@@ -104,6 +106,8 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         slotTextView = (TextView) findViewById(R.id.slotTextView);
         timeTextView = (TextView) findViewById(R.id.timeTextView);
         dateTextView = (TextView) findViewById(R.id.dateTextView);
+        mNotificationLayout = (LinearLayout) findViewById(R.id.notificationLayout);
+        mNoDataAvailable = (TextView) findViewById(R.id.noDataAvailable);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(null);
@@ -298,7 +302,15 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
        else if (mOldDataTag.equals(MyRescribeConstants.TASK_NOTIFICATION)) {
             if (customResponse != null) {
                 NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
-
+            /* List<NotificationData> notificationModel=  prescriptionDataReceived.getData();
+                NotificationData notificationGetMedication = (NotificationData) notificationModel;
+                 if(notificationGetMedication.getMedication().size()>0){
+                     mNotificationLayout.setVisibility(View.VISIBLE);
+                     mNoDataAvailable.setVisibility(View.GONE);
+                 }else{
+                     mNotificationLayout.setVisibility(View.GONE);
+                     mNoDataAvailable.setVisibility(View.VISIBLE);
+                 }*/
                 List<NotificationData> notificationData = prescriptionDataReceived.getData();
                 String date = CommonMethods.getCurrentDateTime();
                 CommonMethods.Log(TAG, date);

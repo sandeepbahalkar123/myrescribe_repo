@@ -7,18 +7,13 @@ import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.case_details.CaseDetailsModel;
-import com.myrescribe.model.prescription_response_model.PrescriptionModel;
-import com.myrescribe.model.visit_details.Data;
-import com.myrescribe.model.visit_details.VisitDetailsModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
-import com.myrescribe.preference.MyRescribePreferencesManager;
+
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by jeetal on 11/7/17.
@@ -39,7 +34,6 @@ public class OneDayVisitHelper implements ConnectionListener {
     @Override
     public void onResponse(int responseResult, CustomResponse customResponse, String mOldDataTag) {
 
-        //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag == MyRescribeConstants.TASK_ONE_DAY_VISIT) {
@@ -54,6 +48,10 @@ public class OneDayVisitHelper implements ConnectionListener {
             case ConnectionListener.SERVER_ERROR:
                 CommonMethods.Log(TAG, "server error");
                 mHelperResponseManager.onServerError(mOldDataTag, "server error");
+                break;
+            case ConnectionListener.NO_INTERNET:
+                CommonMethods.Log(TAG, "no connection error");
+                mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
                 CommonMethods.Log(TAG, "no connection error");
@@ -70,10 +68,10 @@ public class OneDayVisitHelper implements ConnectionListener {
 
     }
 
-    public void doGetOneDayVisit() {
+    public void doGetOneDayVisit(String opdId) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_ONE_DAY_VISIT, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.ONE_DAY_VISIT_URL);
+        mConnectionFactory.setUrl(Config.ONE_DAY_VISIT_URL+opdId);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_ONE_DAY_VISIT);
     }
 }

@@ -84,7 +84,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
         //--- For address
         if (!mAppointmentType.equalsIgnoreCase(mContext.getString(R.string.completed))) {
-            Date timeStamp = CommonMethods.convertStringToDate(appointment.getTimeStamp(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            Date timeStamp = CommonMethods.convertStringToDate(appointment.getAptDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
             Calendar cal = Calendar.getInstance();
             cal.setTime(timeStamp);
             String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup>" + new SimpleDateFormat("MMM").format(cal.getTime());
@@ -100,18 +100,18 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         //--- For address
 
         //---For Date
-        String timeToShow = CommonMethods.formatDateTime(appointment.getTimeStamp(), MyRescribeConstants.DATE_PATTERN.hh_mm_a,
+        String timeToShow = CommonMethods.formatDateTime(appointment.getAptDate(), MyRescribeConstants.DATE_PATTERN.hh_mm_a,
                 MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, MyRescribeConstants.DATE).toLowerCase();
         if (mAppointmentType.equalsIgnoreCase(mContext.getString(R.string.completed))) {
-            String timeStamp = CommonMethods.formatDateTime(appointment.getTimeStamp(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD,
+            String timeStamp = CommonMethods.formatDateTime(appointment.getAptDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD,
                     MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, MyRescribeConstants.DATE);
             String dayFromDate = CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, timeStamp);
             if (mCurrentDate.equalsIgnoreCase(timeStamp)) {// for Current date
                 holder.appointmentsTimeStamp.setText(timeToShow);
             } else if (dayFromDate.equalsIgnoreCase("Yesterday")) { // for Yesterday date
-                holder.appointmentsTimeStamp.setText("" + android.text.format.DateFormat.format("EEE", CommonMethods.convertStringToDate(appointment.getTimeStamp(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a)));
+                holder.appointmentsTimeStamp.setText("" + android.text.format.DateFormat.format("EEE", CommonMethods.convertStringToDate(appointment.getAptDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a)));
             } else { // for date before yesterday
-                holder.appointmentsTimeStamp.setText("" + CommonMethods.formatDateTime(appointment.getTimeStamp(), MyRescribeConstants.DATE_PATTERN.DD_MM,
+                holder.appointmentsTimeStamp.setText("" + CommonMethods.formatDateTime(appointment.getAptDate(), MyRescribeConstants.DATE_PATTERN.DD_MM,
                         MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, MyRescribeConstants.DATE));
             }
         } else {

@@ -130,6 +130,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
                 intent.putExtra(mContext.getString(R.string.specialization), dataObject.getSpecialization());
                 intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());
                 intent.putExtra(mContext.getString(R.string.one_day_visit_date), toDisplay);
+                intent.putExtra(mContext.getString(R.string.opd_id),dataObject.getOpdId());
                 mContext.startActivity(intent);
             }
         });

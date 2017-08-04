@@ -13,7 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
+    <LinearLayout
+        android:id="@+id/notificationLayout"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <LinearLayout
             android:id="@+id/headerLayoutParent"
             android:layout_width="match_parent"
@@ -195,6 +200,18 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        </LinearLayout>
+        
+        <TextView
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp20"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/no_data_available"
+            android:textColor="@color/background_grey"
+            android:id="@+id/noDataAvailable"/>
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

@@ -175,6 +175,7 @@
     <string name="enter_date">Enter Date</string>
     <string name="enter_address">Enter Address</string>
     <string name="add_caption">Add Caption</string>
+    <string name="opd_id">OPDID</string>
 
 
 </resources>

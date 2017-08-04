@@ -21,7 +21,7 @@ public class Config {
 
     public static final String PRESCRIPTION_URL = "api/patient/getPatientPrescriptions/";
 
-    public static final String ONE_DAY_VISIT_URL = "api/patient/getPatientOneDayVisit/4092/10/08-06-2017";
+    public static final String ONE_DAY_VISIT_URL = "api/patient/getPatientOneDayVisit?opdId=";
     public static final String DOCTOR_LIST_URL = "api/patient/getDoctorList?patientId=4092&year=";
     public static final String DOCTOR_LIST_FILTER_URL = "api/patient/searchDoctors";
     public static final String NOTIFICATION_URL = "api/patient/getPrescriptionNotifications?patientId=";
@@ -32,6 +32,7 @@ public class Config {
     public static final String CASE_DETAILS_LIST = "api/patient/getVitalCaseHeadings";
 
     public static final String APPOINTMENTS = "api/patient/appointments?patientId=3939&status=Upcoming";
+    public static final String APPOINTMENTS_DETAILS_URL = "api/patient/appointments?patientId=";
 }
 
 

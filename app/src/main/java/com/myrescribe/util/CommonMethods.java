@@ -703,6 +703,7 @@ public class CommonMethods {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.vitals_dialog_layout);
         dialog.setCancelable(true);
+
         TextView normalRange = (TextView) dialog.findViewById(R.id.normalRange);
         TextView moderateRange = (TextView) dialog.findViewById(R.id.moderateRange);
         TextView severeRange = (TextView) dialog.findViewById(R.id.severeRange);

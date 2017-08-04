@@ -68,7 +68,7 @@ public class HomePageActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
-        new BitmapLoaderTask().execute("home_page2.jpeg");
+       // new BitmapLoaderTask().execute("home_page2.jpeg");
 
 
     }

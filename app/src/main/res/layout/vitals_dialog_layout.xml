@@ -57,10 +57,16 @@
         android:background="@drawable/vitals_curve_white_bg"
         android:gravity="center"
         android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/dp16">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/normalRangeLayout"
             android:orientation="horizontal">
 
             <com.myrescribe.ui.customesViews.CustomTextView
@@ -89,6 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:id="@+id/moderateRangeLayout"
             android:paddingTop="@dimen/dp16">
 
             <com.myrescribe.ui.customesViews.CustomTextView
@@ -116,7 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/dp16"
+            android:id="@+id/severeRangeLayout"
             android:paddingTop="@dimen/dp16">
 
             <com.myrescribe.ui.customesViews.CustomTextView
@@ -139,7 +146,7 @@
                 android:textSize="14sp"
                 app:customFont="@string/roboto_medium" />
         </LinearLayout>
-
+        </LinearLayout>
 
     </LinearLayout>
 

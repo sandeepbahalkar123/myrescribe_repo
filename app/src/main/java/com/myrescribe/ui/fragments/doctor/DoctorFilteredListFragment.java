@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
@@ -46,7 +47,7 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
     @BindView(R.id.expandFilterDocListView)
     ExpandableListView mExpandFilterDocListView;
     @BindView(R.id.emptyListView)
-    TextView mEmptyListView;
+    RelativeLayout mEmptyListView;
     @BindView(R.id.docFilterToolbar)
     Toolbar mDocFilterToolbar;
     private Context mContext;

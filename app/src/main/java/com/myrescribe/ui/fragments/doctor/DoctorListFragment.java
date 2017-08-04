@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
@@ -33,7 +34,7 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
     private DoctorListActivity mParentActivity;
     private String mMonthName;
     private String mYear;
-    private ImageView mEmptyListView;
+    private RelativeLayout mEmptyListView;
 
 
     public DoctorListFragment() {
@@ -67,7 +68,7 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
 
     private void init() {
         mDoctorListView = (RecyclerView) mRootView.findViewById(R.id.listView);
-        mEmptyListView = (ImageView) mRootView.findViewById(R.id.emptyListView);
+        mEmptyListView = (RelativeLayout) mRootView.findViewById(R.id.emptyListView);
     }
 
     @Override

@@ -445,6 +445,8 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             mView.findViewById(R.id.selectViewTab).setEnabled(true);
             CheckBox checkBox = (CheckBox)mView.findViewById(R.id.selectViewTab);
             checkBox.setChecked(false);
+        }else if(mOldDataTag.equals(MyRescribeConstants.TASK_NOTIFICATION)){
+            mNoDataAvailable.setVisibility(View.VISIBLE);
         }
 
 

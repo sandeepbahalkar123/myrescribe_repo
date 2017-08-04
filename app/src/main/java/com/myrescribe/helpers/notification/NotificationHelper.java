@@ -49,6 +49,10 @@ public class NotificationHelper implements ConnectionListener {
                 CommonMethods.Log(TAG, "server error");
                 mHelperResponseManager.onServerError(mOldDataTag, "server error");
                 break;
+            case ConnectionListener.NO_INTERNET:
+                CommonMethods.Log(TAG, "no connection error");
+                mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");
+                break;
             case ConnectionListener.NO_CONNECTION_ERROR:
                 CommonMethods.Log(TAG, "no connection error");
                 mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");

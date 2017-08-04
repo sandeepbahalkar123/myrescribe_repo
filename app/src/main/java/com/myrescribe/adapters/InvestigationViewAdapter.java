@@ -8,11 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
 import com.myrescribe.R;
 import com.myrescribe.model.investigation.DataObject;
 import com.myrescribe.util.CommonMethods;
-
 import java.util.ArrayList;
 
 public class InvestigationViewAdapter extends RecyclerView

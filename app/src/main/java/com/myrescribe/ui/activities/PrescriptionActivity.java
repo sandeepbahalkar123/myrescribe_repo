@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.PrescriptionListAdapter;
@@ -49,6 +51,11 @@ public class PrescriptionActivity extends AppCompatActivity
 
     @BindView(R.id.recyclerViewShowMedicineDoseList)
     RecyclerView mRecyclerView;
+
+    @BindView(R.id.noDataView)
+    ImageView mNoDataView;
+
+
 
     private PrescriptionHelper mPrescriptionHelper;
 
@@ -124,6 +131,14 @@ public class PrescriptionActivity extends AppCompatActivity
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equals(MyRescribeConstants.TASK_PRESCRIPTION_LIST)) {
             PrescriptionModel prescriptionDataReceived = (PrescriptionModel) customResponse;
+            if(prescriptionDataReceived.getData().size()>0){
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mNoDataView.setVisibility(View.GONE);
+
+            }else{
+                mRecyclerView.setVisibility(View.GONE);
+                mNoDataView.setVisibility(View.VISIBLE);
+            }
 
             List<PrescriptionD> data = prescriptionDataReceived.getData();
 

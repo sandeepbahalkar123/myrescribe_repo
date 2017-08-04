@@ -10,6 +10,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -69,12 +71,14 @@ public class PhotoGridAdapter extends SelectableAdapter<PhotoGridAdapter.PhotoVi
       final Media media = getItems().get(showCamera?position-1:position);
 
       if(AndroidLifecycleUtils.canLoadImage(holder.imageView.getContext())) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.centerCrop();
+        requestOptions.dontAnimate();
+        requestOptions.override(imageSize, imageSize);
+        requestOptions.placeholder(R.drawable.image_placeholder);
+
         glide.load(new File(media.getPath()))
-                .centerCrop()
-                .dontAnimate()
-                .thumbnail(0.5f)
-                .override(imageSize, imageSize)
-                .placeholder(R.drawable.image_placeholder)
+                .apply(requestOptions).thumbnail(0.5f)
                 .into(holder.imageView);
       }
 

@@ -34,7 +34,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private Context mContext;
     private ArrayList<DoctorAppointment> appointmentsList;
 
-
     static class ListViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.doctorName)

@@ -2,7 +2,6 @@ package com.myrescribe.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.myrescribe.R;
 import com.myrescribe.model.prescription_response_model.PrescriptionD;
 import com.myrescribe.util.CommonMethods;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -164,7 +160,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             }
         }
         holder.mShowMorningFullFormOfDose.setText(durationOfBreakFast);
-        holder.mMorningDoseQuanity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));// + PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
+        holder.mMorningDoseQuanity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));
 
         //***************************************Lunch*****************************************************
 
@@ -211,7 +207,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             }
         }
         holder.mShowAfterNoonFullFormOfDose.setText(durationOfLunch);
-        holder.mLunchDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));//PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
+        holder.mLunchDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));
         //************************************Evening************************************************
         quantityOfDose = "";
         timeOfDosage = "";
@@ -223,7 +219,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         doseQuantity = "";
 
         if (!prescriptionData.getSnacksBefore().isEmpty()) {
-            quantityOfDose = "10mg";/*prescriptionData.getDosage();*/
+            quantityOfDose = prescriptionData.getDosage();
             durationOfEvening = mContext.getString(R.string.before) + " " + mContext.getString(R.string.snacks);
             timeOfDosage = mContext.getString(R.string.before);
             doseQuantity = prescriptionData.getSnacksBefore();
@@ -259,7 +255,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             }
         }
         holder.mEveningDose.setText(durationOfEvening);
-        holder.mEveningDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));//PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
+        holder.mEveningDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));
 
 
         //************************Dinner********************************************
@@ -305,7 +301,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
                 holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp28));
             }
         }
-        holder.mDinnerDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace)); //PrescriptionData.getMedicineTypeAbbreviation(prescriptionData.getMedicineTypeName()) + mContext.getString(R.string.closing_brace));
+        holder.mDinnerDoseQuantity.setText(mContext.getString(R.string.opening_brace) + doseQuantity + mContext.getString(R.string.closing_brace));
         holder.mShowNightFullFormOfDose.setText(durationOfDinner);
     }
 

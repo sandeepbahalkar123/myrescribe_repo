@@ -171,7 +171,7 @@
             </intent-filter>
         </receiver>
 
-       <!-- <meta-data
+        <!--<meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0"/>-->
     </application>

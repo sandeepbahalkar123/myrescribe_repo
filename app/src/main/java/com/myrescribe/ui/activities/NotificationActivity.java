@@ -17,13 +17,11 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.myrescribe.R;
 import com.myrescribe.adapters.NotificationAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.notification.NotificationHelper;
 import com.myrescribe.helpers.notification.RespondToNotificationHelper;
-import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.notification.AdapterNotificationData;
@@ -38,8 +36,6 @@ import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.listeners.SwipeDismissTouchListener;
-import com.myrescribe.util.NetworkUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +65,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     private TextView dateTextView;
     private View mView;
     private LinearLayout  mNotificationLayout;
-    private TextView mNoDataAvailable;
+    private ImageView mNoDataAvailable;
 
     private ArrayList<Medication> todayDataList;
 
@@ -107,7 +103,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         timeTextView = (TextView) findViewById(R.id.timeTextView);
         dateTextView = (TextView) findViewById(R.id.dateTextView);
         mNotificationLayout = (LinearLayout) findViewById(R.id.notificationLayout);
-        mNoDataAvailable = (TextView) findViewById(R.id.noDataAvailable);
+        mNoDataAvailable = (ImageView) findViewById(R.id.noDataAvailable);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(null);
@@ -269,13 +265,6 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         tabCountTextView.setText(count);
     }
 
-    private void doGetPrescriptionList() {
-        PrescriptionHelper mPrescriptionHelper = new PrescriptionHelper(this, this);
-        mProgressDialog.show();
-        mPrescriptionHelper.doGetPrescriptionList();
-    }
-
-
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
 
@@ -302,15 +291,13 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
        else if (mOldDataTag.equals(MyRescribeConstants.TASK_NOTIFICATION)) {
             if (customResponse != null) {
                 NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
-            /* List<NotificationData> notificationModel=  prescriptionDataReceived.getData();
-                NotificationData notificationGetMedication = (NotificationData) notificationModel;
-                 if(notificationGetMedication.getMedication().size()>0){
+                if(prescriptionDataReceived.getData().size()>0){
                      mNotificationLayout.setVisibility(View.VISIBLE);
                      mNoDataAvailable.setVisibility(View.GONE);
                  }else{
                      mNotificationLayout.setVisibility(View.GONE);
                      mNoDataAvailable.setVisibility(View.VISIBLE);
-                 }*/
+                 }
                 List<NotificationData> notificationData = prescriptionDataReceived.getData();
                 String date = CommonMethods.getCurrentDateTime();
                 CommonMethods.Log(TAG, date);
@@ -448,6 +435,18 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+        if(mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
+            mSelectView.setEnabled(true);
+            mSelectView.setChecked(false);
+        }else if(mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION)){
+            String position = mOldDataTag;
+            String[] count = position.split("_");
+            String counter = count[1];
+            mView.findViewById(R.id.selectViewTab).setEnabled(true);
+            CheckBox checkBox = (CheckBox)mView.findViewById(R.id.selectViewTab);
+            checkBox.setChecked(false);
+        }
+
 
     }
 

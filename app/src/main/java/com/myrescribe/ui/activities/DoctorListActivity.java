@@ -8,7 +8,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.myrescribe.R;
@@ -32,38 +31,29 @@ import com.myrescribe.ui.fragments.filter.FilterFragment;
 import com.myrescribe.ui.fragments.filter.SelectDoctorsFragment;
 import com.myrescribe.ui.fragments.filter.SelectSpecialityFragment;
 import com.myrescribe.util.CommonMethods;
-import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by jeetal on 14/6/17.
  */
 
 public class DoctorListActivity extends AppCompatActivity implements HelperResponse, FilterFragment.OnDrawerInteractionListener, SelectDoctorsFragment.OnSelectDoctorInteractionListener, SelectSpecialityFragment.OnSelectSpecialityInteractionListener, FilterDoctorsAdapter.ItemClickListener, FilterDoctorSpecialitiesAdapter.ItemClickListener, FilterCaseDetailsAdapter.ItemClickListener {
-
-
     // Filter Start
-
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
     @BindView(R.id.nav_view)
     FrameLayout nav_view;
-
     boolean isOnApplyFilterCalledBefore = false; // this is added for maintaining stack of filter result
-
     // Filter End
-
-    private FragmentManager fragmentManager;
+    private FragmentManager mFragmentManager;
     private FilterFragment filterFragment;
     private FilterDoctorListModel filterDoctorListModel = new FilterDoctorListModel();
     private FilterDoctorSpecialityListModel filterDoctorSpecialityListModel = new FilterDoctorSpecialityListModel();
     private CaseDetailsListModel caseDetailsListModel = new CaseDetailsListModel();
-
     private ArrayList<String> caseList = new ArrayList<>();
     private ArrayList<String> doctorSpecialityList = new ArrayList<>();
     private ArrayList<Integer> docIdList = new ArrayList<>();
@@ -73,9 +63,8 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.doctor_activity);
         ButterKnife.bind(this);
-        fragmentManager = getSupportFragmentManager();
+        mFragmentManager = getSupportFragmentManager();
         loadFragment(DoctorListFragmentContainer.newInstance(), false);
-
         //--- Filter Start
         FilterHelper filterHelper = new FilterHelper(this);
         filterHelper.getDoctorList();
@@ -120,12 +109,12 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         if (!isOnApplyFilterCalledBefore) {
             isOnApplyFilterCalledBefore = true;
             DoctorFilteredListFragment doctorFilteredListFragment = DoctorFilteredListFragment.newInstance(drFilterRequestModel);
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.doctorViewContainer, doctorFilteredListFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         } else {
-            Fragment currentFragment = fragmentManager.findFragmentById(R.id.doctorViewContainer);
+            Fragment currentFragment = mFragmentManager.findFragmentById(R.id.doctorViewContainer);
             if (currentFragment instanceof DoctorFilteredListFragment) {
                 DoctorFilteredListFragment currentFragmentObject = (DoctorFilteredListFragment) currentFragment;
                 currentFragmentObject.initialize(drFilterRequestModel);
@@ -135,7 +124,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
     @Override
     public void onSelectDoctors() {
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         SelectDoctorsFragment selectDoctorsFragment = SelectDoctorsFragment.newInstance(filterDoctorListModel.getData(), getResources().getString(R.string.doctors));
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
         fragmentTransaction.add(R.id.nav_view, selectDoctorsFragment, getResources().getString(R.string.doctors));
@@ -145,7 +134,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
     @Override
     public void onSelectSpeciality() {
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         SelectSpecialityFragment selectSpecialityFragment = SelectSpecialityFragment.newInstance(filterDoctorSpecialityListModel.getDoctorSpecialityData(), getResources().getString(R.string.doctors_speciality));
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
         fragmentTransaction.add(R.id.nav_view, selectSpecialityFragment, getResources().getString(R.string.doctors_speciality));
@@ -176,7 +165,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
     @Override
     public void onFragmentBack() {
-        fragmentManager.popBackStack();
+        mFragmentManager.popBackStack();
     }
 
     @Override
@@ -250,7 +239,6 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        //  mViewPagerAdapter.notifyDataSetChanged();
         if (customResponse instanceof FilterDoctorListModel) {
             filterDoctorListModel = (FilterDoctorListModel) customResponse;
 
@@ -259,7 +247,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         } else if (customResponse instanceof CaseDetailsListModel) {
             caseDetailsListModel = (CaseDetailsListModel) customResponse;
 
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
             filterFragment = FilterFragment.newInstance(caseDetailsListModel.getCaseDetailsDatas());
             fragmentTransaction.add(R.id.nav_view, filterFragment, "Filter");
             fragmentTransaction.commit();
@@ -285,7 +273,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     // Filter End
 
     private void loadFragment(Fragment fragment, boolean requiredBackStack) {
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.doctorViewContainer, fragment);
         if (requiredBackStack) {
             fragmentTransaction.addToBackStack(null);

@@ -2,6 +2,7 @@ package com.myrescribe.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +23,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class OneDayVisitAdapter extends BaseExpandableListAdapter {
-
-
-    private int pos = 0;
+    private int mPosition = 0;
     private Context mContext;
     private static final String CHILD_TYPE_1 = "vitals";
-    List<Vital> vitals = new ArrayList<>();
-    List<PatientHistory> mSortedHeaderList;
     private List<PatientHistory> mListDataHeader = new ArrayList<>(); // header titles
-    List<CommonData> historyCommonDetailses = new ArrayList<>();
-    List<CommonData> commonDataList = new ArrayList<>();
-
+    List<CommonData> mVisitDetailList = new ArrayList<>();
+    List<CommonData> mCommonDataVisitList = new ArrayList<>();
 
     public OneDayVisitAdapter(Context context, List<PatientHistory> listDataHeader) {
         this.mContext = context;
@@ -48,16 +44,12 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
                     CommonData commonVitals = new CommonData();
                     commonVitals.setId(0);
                     commonVitals.setName(listDataHeader.get(i).getVitals().get(0).getUnitName());
-                    commonDataList.add(commonVitals);
-                    listDataHeader.get(i).setCommonData(commonDataList);
+                    mCommonDataVisitList.add(commonVitals);
+                    listDataHeader.get(i).setCommonData(mCommonDataVisitList);
                     mListDataHeader.add(listDataHeader.get(i));
-
                 }
             }
-
         }
-        // this.mListDataChild = listChildData;
-
     }
 
     @Override
@@ -75,7 +67,6 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final List<CommonData> childObject = mListDataHeader.get(groupPosition).getCommonData();
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
-
         String headerName = mListDataHeader.get(groupPosition).getCaseDetailName();
         switch (headerName) {
             case CHILD_TYPE_1:
@@ -84,8 +75,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
                 TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.table);
                 View divider = convertView.findViewById(R.id.adapter_divider);
                 tableLayout.removeAllViews();
-
-                pos = 0;
+                mPosition = 0;
                 List<com.myrescribe.model.case_details.Vital> vital = new ArrayList<>();
                 int size = mListDataHeader.get(groupPosition).getVitals().size();
                 int count = 1;
@@ -144,26 +134,25 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
             ImageView vitalImage = (ImageView) item.findViewById(R.id.vitalImage);
             TextView vital_name = (TextView) item.findViewById(R.id.vital_name);
             TextView noOfVitals = (TextView) item.findViewById(R.id.noOfVitals);
-            final int finali = pos;
+            final int finali = mPosition;
             vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CommonMethods.showVitalDialog(mContext, mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName(), mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(), mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(), CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName()),mListDataHeader.get(groupPosition).getVitals().get(pos).getCategory());
+                    CommonMethods.showVitalDialog(mContext, mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName(), mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(), mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(), CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName()),mListDataHeader.get(groupPosition).getVitals().get(finali).getCategory());
                 }
             });
-
-            vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(pos).getDisplayName()));
-            vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(pos).getUnitName());
-            noOfVitals.setText(mListDataHeader.get(groupPosition).getVitals().get(pos).getUnitValue());
-            if(mListDataHeader.get(groupPosition).getVitals().get(pos).getCategory().equals("Severe")){
-                noOfVitals.setTextColor(mContext.getColor(R.color.Red));
-            }else if(mListDataHeader.get(groupPosition).getVitals().get(pos).getCategory().equals("Normal")){
-                noOfVitals.setTextColor(mContext.getColor(R.color.range_green));
-            }else if(mListDataHeader.get(groupPosition).getVitals().get(pos).getCategory().equals("Moderate")){
-                noOfVitals.setTextColor(mContext.getColor(R.color.range_yellow));
+            vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getDisplayName()));
+            vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
+            noOfVitals.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue());
+            if(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.severeRange))){
+                noOfVitals.setTextColor(ContextCompat.getColor(mContext,R.color.Red));
+            }else if(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.normalRange))){
+                noOfVitals.setTextColor(ContextCompat.getColor(mContext,R.color.range_green));
+            }else if(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.moderateRange))){
+                noOfVitals.setTextColor(ContextCompat.getColor(mContext,R.color.range_yellow));
             }
             tableRow.addView(item);
-            pos++;
+            mPosition++;
         }
         return tableRow;
     }
@@ -193,14 +182,6 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
 
-        Integer id = 1;
-        String name = "complaints";
-       /* CommonData commonData = new CommonData();
-        commonData.setId(id);
-        commonData.setName(name);
-        commonDataList.add(commonData);
-        mListDataHeader.get(groupPosition).setCommonData(commonDataList);*/
-        int i = 0;
         final GroupViewHolder groupViewHolder;
         if (convertView == null) {
 
@@ -227,8 +208,8 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
         groupViewHolder.lblListHeader.setText(s1.substring(0, 1).toUpperCase() + s1.substring(1));
         groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getCaseStudyIcons(mListDataHeader.get(groupPosition).getCaseDetailName()));
         if (!mListDataHeader.get(groupPosition).getCommonData().equals(null)) {
-            historyCommonDetailses = mListDataHeader.get(groupPosition).getCommonData();
-            groupViewHolder.mDetailFirstPoint.setText(setStringLength(historyCommonDetailses.get(0).getName()) + ".......");
+            mVisitDetailList = mListDataHeader.get(groupPosition).getCommonData();
+            groupViewHolder.mDetailFirstPoint.setText(setStringLength(mVisitDetailList.get(0).getName()) + ".......");
         }
         return convertView;
     }
@@ -249,14 +230,10 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
 
         @BindView(R.id.textView_name)
         TextView txtListChild;
-
         @BindView(R.id.adapter_divider_bottom)
         View mDividerLine;
-
         @BindView(R.id.expandVisitDetailsLayout)
         LinearLayout mExpandVisitDetailsLayout;
-
-
         ChildViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
@@ -273,11 +250,8 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
         View mHeadergroupDivider;
         @BindView(R.id.adapter_divider_top)
         View mDivider;
-
-
         @BindView(R.id.detailFirstPoint)
         TextView mDetailFirstPoint;
-
         GroupViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
@@ -294,8 +268,5 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
             System.out.println(t);
             return t;
         }
-
-
     }
-
 }

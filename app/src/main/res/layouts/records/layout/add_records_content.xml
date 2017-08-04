@@ -103,8 +103,8 @@
                     android:gravity="center_vertical"
                     android:hint="@string/select_doctor_name"
                     android:padding="@dimen/dp16"
-                    android:paddingEnd="40dp"
-                    android:paddingRight="40dp"
+                    android:paddingEnd="45dp"
+                    android:paddingRight="45dp"
                     android:textCursorDrawable="@drawable/cursor" />
 
                 <ImageView
@@ -184,6 +184,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:clickable="true"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:background="@drawable/curve_edges_common">
@@ -197,8 +198,8 @@
                 android:hint="@string/enter_address"
                 android:textSize="@dimen/sp18"
                 android:padding="@dimen/dp16"
-                android:paddingEnd="40dp"
-                android:paddingRight="40dp"
+                android:paddingEnd="45dp"
+                android:paddingRight="45dp"
                 android:textCursorDrawable="@drawable/cursor" />
 
             <ImageView

@@ -8,10 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
-
 import com.myrescribe.R;
 import com.myrescribe.model.records.SpinnerDoctor;
-
 import java.util.ArrayList;
 
 public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {

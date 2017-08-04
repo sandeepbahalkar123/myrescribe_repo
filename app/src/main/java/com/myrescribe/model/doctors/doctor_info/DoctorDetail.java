@@ -16,19 +16,42 @@ public class DoctorDetail implements CustomResponse {
     private String id;
     @SerializedName("doctorName")
     @Expose
-
     private String doctorName;
-
     @SerializedName("address")
     @Expose
     private String address;
 
+    public String getOpdId() {
+        return opdId;
+    }
+
+    public void setOpdId(String opdId) {
+        this.opdId = opdId;
+    }
+
+    public String getDocImg() {
+        return docImg;
+    }
+
+    public void setDocImg(String docImg) {
+        this.docImg = docImg;
+    }
+
     @SerializedName("visitDate")
     @Expose
+
     private String date;
     @SerializedName("specialization")
     @Expose
     private String specialization;
+
+    @SerializedName("opdId")
+    @Expose
+    private String opdId;
+
+    @SerializedName("docImg")
+    @Expose
+    private String docImg;
     private int color;
 
     private boolean isDoctorSelected = false;

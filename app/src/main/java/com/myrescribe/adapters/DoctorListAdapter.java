@@ -11,11 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.myrescribe.R;
-
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
-
 import com.myrescribe.ui.activities.ViewDetailsActivity;
+import com.myrescribe.ui.customesViews.CircularImageView;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -96,6 +96,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
         }
 
+        // Glide.with(mContext).load(dataObject.getDocImg()).into(holder.docProfileImage);
         holder.doctorName.setText(dataObject.getDoctorName());
         holder.doctorAddress.setText(dataObject.getAddress());
         holder.doctorType.setText(dataObject.getSpecialization());
@@ -130,9 +131,11 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
                 intent.putExtra(mContext.getString(R.string.specialization), dataObject.getSpecialization());
                 intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());
                 intent.putExtra(mContext.getString(R.string.one_day_visit_date), toDisplay);
+                intent.putExtra(mContext.getString(R.string.opd_id), dataObject.getOpdId());
                 mContext.startActivity(intent);
             }
         });
+
 
     }
 
@@ -151,6 +154,8 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
         @BindView(R.id.circularBulletChildElement)
         ImageView circularBulletChildElement;
+        @BindView(R.id.docProfileImage)
+        CircularImageView docProfileImage;
         @BindView(R.id.circularBulletMainElement)
         ImageView circularBulletMainElement;
 

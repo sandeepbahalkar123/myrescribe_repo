@@ -10,7 +10,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -66,14 +68,18 @@ public class FolderGridAdapter extends SelectableAdapter<FolderGridAdapter.Photo
       final PhotoDirectory photoDirectory = getItems().get(showCamera?position-1:position);
 
       if(AndroidLifecycleUtils.canLoadImage(holder.imageView.getContext())) {
-        if (photoDirectory.getCoverPath() != null)
-        glide.load(new File(photoDirectory.getCoverPath()))
-                .centerCrop()
-                .dontAnimate()
-                .thumbnail(0.5f)
-                .override(imageSize, imageSize)
-                .placeholder(R.drawable.image_placeholder)
-                .into(holder.imageView);
+        if (photoDirectory.getCoverPath() != null) {
+
+          RequestOptions requestOptions = new RequestOptions();
+          requestOptions.centerCrop();
+          requestOptions.dontAnimate();
+          requestOptions.override(imageSize, imageSize);
+          requestOptions.placeholder(R.drawable.image_placeholder);
+
+          glide.load(new File(photoDirectory.getCoverPath()))
+                  .apply(requestOptions).thumbnail(0.5f)
+                  .into(holder.imageView);
+        }
       }
 
       holder.folderTitle.setText(photoDirectory.getName());

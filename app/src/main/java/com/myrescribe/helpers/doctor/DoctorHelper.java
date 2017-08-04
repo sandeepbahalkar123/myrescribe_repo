@@ -69,7 +69,8 @@ public class DoctorHelper implements ConnectionListener {
                     }
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
                 } else if (mOldDataTag == MyRescribeConstants.TASK_DOCTOR_APPOINTMENT) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                    DoctorAppointmentModel doctorAppointmentModel = (DoctorAppointmentModel) customResponse;
+                    mHelperResponseManager.onSuccess(mOldDataTag, doctorAppointmentModel);
                 } else if (mOldDataTag == MyRescribeConstants.TASK_DOCTOR_LIST_FILTERING) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
@@ -81,6 +82,11 @@ public class DoctorHelper implements ConnectionListener {
             case ConnectionListener.SERVER_ERROR:
                 CommonMethods.Log(TAG, "server error");
                 mHelperResponseManager.onServerError(mOldDataTag, "server error");
+
+                break;
+            case ConnectionListener.NO_INTERNET:
+                CommonMethods.Log(TAG, "no connection error");
+                mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");
 
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
@@ -187,36 +193,12 @@ public class DoctorHelper implements ConnectionListener {
     }
 
     public void doGetDoctorAppointment() {
-      /*  ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
-        Map<String, String> testParams = new HashMap<String, String>();
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_APPOINTMENT, Request.Method.GET, true);
 
-        testParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext));
-        testParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setUrl(Config.APPOINTMENTS_DETAILS_URL + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext));
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_APPOINTMENT);
 
-        mConnectionFactory.setHeaderParams(testParams);
-        // mConnectionFactory.setPostParams(testParams);
-        mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + year);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_LIST);
-*/
-
-        // TODO : HARDCODED JSON STRING PARSING FROM assets folder, will get remove
-        try {
-            InputStream is = mContext.getAssets().open("appointments.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "doGetDoctorAppointment" + json);
-
-            DoctorAppointmentModel model = new Gson().fromJson(json, DoctorAppointmentModel.class);
-
-            CommonMethods.Log("doGetDoctorAppointment", "" + model.toString());
-            onResponse(ConnectionListener.RESPONSE_OK, model, MyRescribeConstants.TASK_DOCTOR_APPOINTMENT);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
 
     public void doFilterDoctorList(DrFilterRequestModel mRequestedFilterRequestModel) {

@@ -17,7 +17,6 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.doctors.appointments.DoctorAppointment;
 import com.myrescribe.model.doctors.appointments.DoctorAppointmentModel;
-import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 import com.myrescribe.ui.fragments.AppointmentFragment;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -27,7 +26,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,14 +60,14 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
                 onBackPressed();
             }
         });
-
+        mFragmentTitleList[0] = getString(R.string.upcoming);
+        mFragmentTitleList[1] = getString(R.string.completed);
+        mFragmentTitleList[2] = getString(R.string.cancelled);
         setupViewPager();
 
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
-        mFragmentTitleList[0] = getString(R.string.upcoming);
-        mFragmentTitleList[1] = getString(R.string.completed);
-        mFragmentTitleList[2] = getString(R.string.cancelled);
+
 
         initialize();
     }
@@ -172,8 +170,8 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
         Collections.sort(tempList, new Comparator<DoctorAppointment>() {
             @Override
             public int compare(DoctorAppointment o1, DoctorAppointment o2) {
-                Date m1Date = CommonMethods.convertStringToDate(o1.getTimeStamp(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
-                Date m2Date = CommonMethods.convertStringToDate(o2.getTimeStamp(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
+                Date m1Date = CommonMethods.convertStringToDate(o1.getAptDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
+                Date m2Date = CommonMethods.convertStringToDate(o2.getAptDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
 
                 return m2Date.compareTo(m1Date);
             }

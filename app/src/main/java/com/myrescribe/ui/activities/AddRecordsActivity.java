@@ -178,7 +178,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
         return null;
     }
 
-    @OnClick({R.id.clearButton, R.id.selectDateTextView, R.id.dateIcon, R.id.uploadButton, R.id.searchButton})
+    @OnClick({R.id.clearButton, R.id.selectDateTextView, R.id.dateIcon, R.id.uploadButton, R.id.searchButton, R.id.selectAddressLayout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.clearButton:
@@ -204,14 +204,18 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 mSelectDoctorName.setText("");
                 break;
             case R.id.selectAddressLayout:
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                try {
-                    Intent intentPlace = builder.build(AddRecordsActivity.this);
-                    startActivityForResult(intentPlace, PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                }
+                callPickPlace();
                 break;
+        }
+    }
+
+    private void callPickPlace() {
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            Intent intentPlace = builder.build(AddRecordsActivity.this);
+            startActivityForResult(intentPlace, PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
         }
     }
 

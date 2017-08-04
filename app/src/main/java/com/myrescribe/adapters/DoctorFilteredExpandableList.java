@@ -11,15 +11,12 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.myrescribe.R;
 import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilteredInfoAndCaseDetails;
 import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilteredInfo;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -28,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

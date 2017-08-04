@@ -2,6 +2,7 @@ package com.myrescribe.model.doctors.appointments;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -9,8 +10,8 @@ import com.myrescribe.util.MyRescribeConstants;
  * Created by riteshpandhurkar on 19/7/17.
  */
 
-public class DoctorAppointment {
-    @SerializedName("id")
+public class DoctorAppointment implements CustomResponse{
+    @SerializedName("aptId")
     @Expose
     private String id;
     @SerializedName("doctorName")
@@ -24,22 +25,27 @@ public class DoctorAppointment {
     @SerializedName("address")
     @Expose
     private String address;
-    @SerializedName("latitude")
-    @Expose
-    private String latitude;
-    @SerializedName("longitude")
-    @Expose
-    private String longitude;
+
     @SerializedName("imageUrl")
     @Expose
     private String imageUrl;
-    @SerializedName("timeStamp")
+    @SerializedName("aptDate")
     @Expose
-    private String timeStamp;
-
-    @SerializedName("appointmentType")
+    private String aptDate;
+    @SerializedName("aptStatus")
     @Expose
     private String appointmentType;
+    @SerializedName("aptTime")
+    @Expose
+    private String aptTime;
+
+    public String getAptTime() {
+        return aptTime;
+    }
+
+    public void setAptTime(String aptTime) {
+        this.aptTime = aptTime;
+    }
 
     public String getId() {
         return id;
@@ -73,22 +79,6 @@ public class DoctorAppointment {
         this.address = address;
     }
 
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
@@ -96,16 +86,18 @@ public class DoctorAppointment {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-
-    public String getTimeStamp() {
-        if (timeStamp.contains("T")) {
-            timeStamp = CommonMethods.formatDateTime(timeStamp, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
+     //the time which is coming in aptTime is time of appointment
+    public String getAptDate() {
+        if (aptDate.contains("T")) {
+            String date[] = aptDate.split("T");
+            String dateBeforeTime = date[0];
+            aptDate = CommonMethods.formatDateTime(dateBeforeTime+"T"+aptTime+".000Z", MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
         }
-        return timeStamp;
+        return aptDate;
     }
 
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setAptDate(String aptDate) {
+        this.aptDate = aptDate;
     }
 
     public String getAppointmentType() {

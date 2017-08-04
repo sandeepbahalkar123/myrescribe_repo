@@ -2,7 +2,7 @@ package com.myrescribe.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,59 +16,40 @@ import com.myrescribe.R;
 import com.myrescribe.model.case_details.CommonData;
 import com.myrescribe.model.case_details.PatientHistory;
 import com.myrescribe.model.case_details.Vital;
-import com.myrescribe.model.history.HistoryCommonDetails;
-import com.myrescribe.model.visit_details.Diagnosi;
 import com.myrescribe.util.CommonMethods;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class OneDayVisitAdapter extends BaseExpandableListAdapter {
-
-
-    private int pos=0;
+    private int mPosition = 0;
     private Context mContext;
-    /*String[] firstRow = {
-            "Weight",
-            "BMI",
-            "Heart Rate"};
-    String[] normalRangeFirstRow = {
-            "60 to 90",
-            "70 to 110",
-            "80 to 120"};
-    String[] normalRangeSecondRow = {
-            "50 to 80",
-            "70 to 95"};
-
-    String[] secondRow = {
-            "Blood Pressure",
-            "Blood Glucose"};
-    Integer[] firstRowImage = {
-            R.drawable.weight,
-            R.drawable.bmi_1,
-            R.drawable.heart_rate,};
-    Integer[] SecondRowImage = {
-            R.drawable.blood_pressure,
-            R.drawable.layer_10};
-    int[] colorSecond = {R.color.range_green, R.color.range_yellow, R.color.Red};
-    String[] unitFirstRow = {"65", "35", "77"};
-    String[] unitSecondRow = {"80", "90"};
-    int[] colorFirstRow = {R.color.range_yellow, R.color.range_green};*/
     private static final String CHILD_TYPE_1 = "vitals";
-    List<Vital> vitals = new ArrayList<>();
-    private ArrayList<HistoryCommonDetails> mHistoryCommonDetailses;
-    private List<PatientHistory> mListDataHeader; // header titles
-    List<CommonData> historyCommonDetailses = new ArrayList<>();
-    // child data in format of header title, child title
-    private HashMap<String, ArrayList<Diagnosi>> mListDataChild;
+    private List<PatientHistory> mListDataHeader = new ArrayList<>(); // header titles
+    List<CommonData> mVisitDetailList = new ArrayList<>();
+    List<CommonData> mCommonDataVisitList = new ArrayList<>();
 
     public OneDayVisitAdapter(Context context, List<PatientHistory> listDataHeader) {
         this.mContext = context;
-        this.mListDataHeader = listDataHeader;
-        // this.mListDataChild = listChildData;
-
+        for (int i = 0; i < listDataHeader.size(); i++) {
+            List<CommonData> commonData = listDataHeader.get(i).getCommonData();
+            List<Vital> commonDatasVitals = listDataHeader.get(i).getVitals();
+            if (!(commonData == null)) {
+                if (commonData.size() > 0) {
+                    mListDataHeader.add(listDataHeader.get(i));
+                }
+            } else if (!(commonDatasVitals == null)) {
+                if (commonDatasVitals.size() > 0) {
+                    CommonData commonVitals = new CommonData();
+                    commonVitals.setId(0);
+                    commonVitals.setName(listDataHeader.get(i).getVitals().get(0).getUnitName());
+                    mCommonDataVisitList.add(commonVitals);
+                    listDataHeader.get(i).setCommonData(mCommonDataVisitList);
+                    mListDataHeader.add(listDataHeader.get(i));
+                }
+            }
+        }
     }
 
     @Override
@@ -84,14 +65,9 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
     }
 
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        //final String incoming_text = (String) getChild(groupPosition, childPosition);
         final List<CommonData> childObject = mListDataHeader.get(groupPosition).getCommonData();
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
-
-        Integer childType = getChildType(groupPosition, childPosition);
         String headerName = mListDataHeader.get(groupPosition).getCaseDetailName();
-        // We need to create a new "cell container"
-//        if (convertView == null) {
         switch (headerName) {
             case CHILD_TYPE_1:
                 convertView = inflater.inflate(R.layout.vitals_main_activity, null);
@@ -99,8 +75,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
                 TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.table);
                 View divider = convertView.findViewById(R.id.adapter_divider);
                 tableLayout.removeAllViews();
-
-                pos = 0;
+                mPosition = 0;
                 List<com.myrescribe.model.case_details.Vital> vital = new ArrayList<>();
                 int size = mListDataHeader.get(groupPosition).getVitals().size();
                 int count = 1;
@@ -111,13 +86,13 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
 
                     if (tempSize > i) {
                         if (count == 3) {
-                            tableLayout.addView(addTableRow(vital,groupPosition));
+                            tableLayout.addView(addTableRow(vital, groupPosition));
                             vital.clear();
                             count = 1;
                         } else
                             count++;
                     } else if (count == size % 3) {
-                        tableLayout.addView(addTableRow(vital,groupPosition));
+                        tableLayout.addView(addTableRow(vital, groupPosition));
                         vital.clear();
                         count = 1;
                     } else count++;
@@ -144,21 +119,14 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
                 }
                 break;
         }
-//        }
-       /* // We'll reuse the existing one
-        else {
-            // There is nothing to do here really we just need to set the content of view which we do in both cases
-        }*/
 
         return convertView;
     }
 
     private View addTableRow(final List<com.myrescribe.model.case_details.Vital> vital, final int groupPosition) {
 
-        //   vitals.addAll(vital);
         int i;
         TableRow tableRow = new TableRow(mContext);
-//        final String[] allColors = mContext.getResources().getStringArray(colorSecond);
         for (i = 0; i < vital.size(); i++) {
             View item = LayoutInflater.from(mContext)
                     .inflate(R.layout.vital_item_row, tableRow, false);
@@ -166,55 +134,28 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
             ImageView vitalImage = (ImageView) item.findViewById(R.id.vitalImage);
             TextView vital_name = (TextView) item.findViewById(R.id.vital_name);
             TextView noOfVitals = (TextView) item.findViewById(R.id.noOfVitals);
-            final int finali = pos;
+            final int finali = mPosition;
             vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CommonMethods.showVitalDialog(mContext,mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName(), mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(), mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(), CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName()));
+                    CommonMethods.showVitalDialog(mContext, mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName(), mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(), mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(), CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName()),mListDataHeader.get(groupPosition).getVitals().get(finali).getCategory());
                 }
             });
-
-            vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(pos).getDisplayName()));
-            vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(pos).getUnitName());
-            noOfVitals.setText(mListDataHeader.get(groupPosition).getVitals().get(pos).getUnitValue());
+            vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getDisplayName()));
+            vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
+            noOfVitals.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue());
+            if(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.severeRange))){
+                noOfVitals.setTextColor(ContextCompat.getColor(mContext,R.color.Red));
+            }else if(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.normalRange))){
+                noOfVitals.setTextColor(ContextCompat.getColor(mContext,R.color.range_green));
+            }else if(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.moderateRange))){
+                noOfVitals.setTextColor(ContextCompat.getColor(mContext,R.color.range_yellow));
+            }
             tableRow.addView(item);
-            pos++;
+            mPosition++;
         }
         return tableRow;
     }
-
- /*   private View addTableRow(int columnCount, final String[] rowText, final Integer[] rowImage, final String[] unitSecondRow, int colorSecond, final String[] normalRangeList) {
-        int i;
-        TableRow tableRow = new TableRow(mContext);
-        final String[] allColors = mContext.getResources().getStringArray(colorSecond);
-        for (i = 0; i < columnCount; i++) {
-            View item = LayoutInflater.from(mContext)
-                    .inflate(R.layout.vital_item_row, tableRow, false);
-            LinearLayout vitalLinearlayout = (LinearLayout) item.findViewById(R.id.vitalCellLinearLayout);
-            ImageView vitalImage = (ImageView) item.findViewById(R.id.vitalImage);
-            TextView vital_name = (TextView) item.findViewById(R.id.vital_name);
-            TextView noOfVitals = (TextView) item.findViewById(R.id.noOfVitals);
-            noOfVitals.setText(unitSecondRow[i]);
-            final int finalI = i;
-            final int finalI1 = i;
-            vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CommonMethods.showVitalDialog(mContext, rowText[finalI1], unitSecondRow[finalI1], Color.parseColor(allColors[finalI1]), normalRangeList[finalI1], rowImage[finalI1]);
-                }
-            });
-            noOfVitals.setTextColor(Color.parseColor(allColors[i]));
-            vitalImage.setImageResource(rowImage[i]);
-            vital_name.setText(rowText[i]);
-            tableRow.addView(item);
-        }
-        return tableRow;
-    }
-*/
-    /*public String getGroupName(int groupPosition) {
-        String headerTitle = (String) getGroup(groupPosition);
-        return headerTitle;
-    }*/
 
     @Override
     public int getChildrenCount(int groupPosition) {
@@ -240,15 +181,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        List<CommonData> commonDataList = new ArrayList<>();
-        Integer id = 1;
-        String name = "complaints";
-        CommonData commonData = new CommonData();
-        commonData.setId(id);
-        commonData.setName(name);
-        commonDataList.add(commonData);
-        mListDataHeader.get(groupPosition).setCommonData(commonDataList);
-        int i = 0;
+
         final GroupViewHolder groupViewHolder;
         if (convertView == null) {
 
@@ -275,8 +208,8 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
         groupViewHolder.lblListHeader.setText(s1.substring(0, 1).toUpperCase() + s1.substring(1));
         groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getCaseStudyIcons(mListDataHeader.get(groupPosition).getCaseDetailName()));
         if (!mListDataHeader.get(groupPosition).getCommonData().equals(null)) {
-            historyCommonDetailses = mListDataHeader.get(groupPosition).getCommonData();
-            groupViewHolder.mDetailFirstPoint.setText(setStringLength(historyCommonDetailses.get(0).getName()) + ".......");
+            mVisitDetailList = mListDataHeader.get(groupPosition).getCommonData();
+            groupViewHolder.mDetailFirstPoint.setText(setStringLength(mVisitDetailList.get(0).getName()) + ".......");
         }
         return convertView;
     }
@@ -297,14 +230,10 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
 
         @BindView(R.id.textView_name)
         TextView txtListChild;
-
         @BindView(R.id.adapter_divider_bottom)
         View mDividerLine;
-
         @BindView(R.id.expandVisitDetailsLayout)
         LinearLayout mExpandVisitDetailsLayout;
-
-
         ChildViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
@@ -321,11 +250,8 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
         View mHeadergroupDivider;
         @BindView(R.id.adapter_divider_top)
         View mDivider;
-
-
         @BindView(R.id.detailFirstPoint)
         TextView mDetailFirstPoint;
-
         GroupViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
@@ -333,7 +259,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
     }
 
     public String setStringLength(String t) {
-        String o = null;
+        String o = "";
         if (t.length() >= 30) {
             o = t.substring(0, 30);
             System.out.println(o);
@@ -342,7 +268,5 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
             System.out.println(t);
             return t;
         }
-
     }
-
 }

@@ -21,6 +21,19 @@ public class Vital implements CustomResponse{
     @Expose
     private String displayName;
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    @SerializedName("category")
+    @Expose
+
+    private String category;
+
     public String getUnitName() {
         return unitName;
     }

@@ -220,9 +220,8 @@ public class DoctorHelper implements ConnectionListener {
     public void doFilterDoctorList(DrFilterRequestModel mRequestedFilterRequestModel) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_LIST_FILTERING, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setPostParams(mRequestedFilterRequestModel);
 
-        // mConnectionFactory.setPostParams(testParams);
+        mConnectionFactory.setPostParams(mRequestedFilterRequestModel);
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_FILTER_URL);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_LIST_FILTERING);
 

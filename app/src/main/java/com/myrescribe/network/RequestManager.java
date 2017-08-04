@@ -448,7 +448,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         if (mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION)) {
                             ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
-                        }else if(mDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)){
+                        } else if (mDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
                             ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
                         }
@@ -546,11 +546,17 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         CommonMethods.Log(TAG, "Refresh token while sending refresh token api: ");
 
         Map<String, String> headerParams = new HashMap<>();
-        headerParams.putAll(mHeaderParams);
+        headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
+        headerParams.put(MyRescribeConstants.DEVICEID, "phone");
+        headerParams.put(MyRescribeConstants.OS, "android");
+        headerParams.put(MyRescribeConstants.OSVERSION, "6.0");
+        headerParams.put(MyRescribeConstants.DEVICE_TYPE, "phone");
+        CommonMethods.Log(TAG, "setHeaderParams:" + headerParams.toString());
+
         Map<String, String> postParams = new HashMap<String, String>();
         postParams.put(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
         postParams.put(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mContext));
-        String url = Config.LOGIN_URL + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext);
+        String url = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.LOGIN_URL;
         stringRequest(url, Request.Method.POST, headerParams, postParams, true);
     }
 }

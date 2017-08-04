@@ -161,6 +161,13 @@ public class AppDBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void deleteDatabase() {
+        File dbFile = mContext.getDatabasePath(DATABASE_NAME);
+        dbFile.delete();
+
+        CommonMethods.Log("DeletedOfflineDatabase", "APP_DATA , PREFERENCES TABLE, INVESTIGATION");
+    }
+
     public boolean insertPreferences(String userId, String breakfastTime, String lunchTime,String snacksTime, String dinnerTime) {
         if (preferencesTableNumberOfRows(userId) == 0) {
             SQLiteDatabase db = this.getWritableDatabase();

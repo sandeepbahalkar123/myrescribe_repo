@@ -17,6 +17,7 @@ import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.investigation.InvestigationData;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
+import com.myrescribe.util.NetworkUtil;
 
 import java.util.ArrayList;
 
@@ -60,8 +61,8 @@ public class UploadedDocsActivity extends AppCompatActivity {
         mContext = UploadedDocsActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
-        investigation = getIntent().getParcelableExtra(MyRescribeConstants.INVESTIGATION_DATA);
-        investigationTemp = getIntent().getParcelableExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA);
+        investigation = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_DATA);
+        investigationTemp = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA);
 
         for (InvestigationData dataObject : investigation)
             photoPaths.addAll(dataObject.getPhotos());
@@ -76,43 +77,47 @@ public class UploadedDocsActivity extends AppCompatActivity {
     @OnClick(R.id.uploadButton)
     public void onViewClicked() {
 
-        int selectedCount = 0;
-        int selectedImageCount = 0;
-        ArrayList<Image> photos = new ArrayList<>();
+        if (NetworkUtil.isInternetAvailable(mContext)) {
+            int selectedCount = 0;
+            int selectedImageCount = 0;
+            ArrayList<Image> photos = new ArrayList<>();
 
-        for (Image image : photoPaths) {
-            if (image.isSelected()) {
-                photos.add(image);
-                selectedImageCount++;
+            for (Image image : photoPaths) {
+                if (image.isSelected()) {
+                    photos.add(image);
+                    selectedImageCount++;
+                }
             }
-        }
 
-        // Update server status with image id
+            // Update server status with image id
 
-        if (selectedImageCount > 0) {
-            for (InvestigationData dataObject : investigationTemp) {
-                if (dataObject.isSelected() && !dataObject.isUploaded()) {
-                    dataObject.setUploaded(dataObject.isSelected());
-                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), "");
+            if (selectedImageCount > 0) {
+                CommonMethods.showToast(mContext, "Uploaded Successfully");
+                for (InvestigationData dataObject : investigationTemp) {
+                    if (dataObject.isSelected() && !dataObject.isUploaded()) {
+                        dataObject.setUploaded(dataObject.isSelected());
+                        appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), "");
+                    }
+
+                    if (dataObject.isSelected())
+                        selectedCount += 1;
                 }
 
-                if (dataObject.isSelected())
-                    selectedCount += 1;
-            }
+                if (selectedCount == investigationTemp.size()) {
+                    Intent intent = new Intent(this, HomePageActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent();
+                    intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigationTemp);
+                    setResult(RESULT_OK, intent);
+                }
+                finish();
 
-            if (selectedCount == investigationTemp.size()) {
-                Intent intent = new Intent(this, HomePageActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
             } else {
-                Intent intent = new Intent();
-                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigationTemp);
-                setResult(RESULT_OK, intent);
+                CommonMethods.showToast(mContext, "Please select at least one document");
             }
-            finish();
-
-        } else {
-            CommonMethods.showToast(mContext, "Please select at least one document");
-        }
+        } else
+            CommonMethods.showToast(mContext, getResources().getString(R.string.internet));
     }
 }

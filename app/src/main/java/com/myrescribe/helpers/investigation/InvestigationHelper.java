@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.investigation.request.InvestigationUploadByGmailRequest;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
 import com.myrescribe.util.CommonMethods;
@@ -59,10 +60,26 @@ public class InvestigationHelper implements ConnectionListener {
     }
 
     public void getInvestigationList() {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.INVESTIGATION_LIST, Request.Method.GET, false);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.INVESTIGATION_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
 //        mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=" + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext));
         mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=4092");
         mConnectionFactory.createConnection(MyRescribeConstants.INVESTIGATION_LIST);
     }
+
+    public void uploadByGmail(InvestigationUploadByGmailRequest investigationUploadByGmailRequest) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL, Request.Method.POST, false);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setPostParams(investigationUploadByGmailRequest);
+        mConnectionFactory.setUrl(Config.INVESTIGATION_UPLOAD_BY_GMAIL);
+        mConnectionFactory.createConnection(MyRescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL);
+    }
+
+    /*public void uploadFromAlreadyUploaded() {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED, Request.Method.POST, false);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setPostParams(investigationUploadFromUploadedRequest);
+        mConnectionFactory.setUrl(Config.INVESTIGATION_UPLOAD_FROM_UPLOADED);
+        mConnectionFactory.createConnection(MyRescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED);
+    }*/
 }

@@ -99,6 +99,7 @@ public class MyRescribeConstants {
     public static final String TASK_RESPOND_NOTIFICATION_FOR_HEADER =MyRescribeConstants.BLANK+ "notify" ;
 
     public static final String INVESTIGATION_LIST = MyRescribeConstants.BLANK + 17;
+    public static final String INVESTIGATION_UPLOAD_BY_GMAIL = MyRescribeConstants.BLANK + 18;
 
 
     public static final String DATA = "DATA";
@@ -111,6 +112,7 @@ public class MyRescribeConstants {
     public static final String DOCTORS_LIST = "doctors_list";
     public static final String CASE_DETAILS = "case_details";
     public static final String FILTER_REQUEST = "filter_request";
+    public static final int MAX_RETRIES = 3;
 
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.

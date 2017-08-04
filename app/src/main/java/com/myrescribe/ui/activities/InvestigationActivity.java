@@ -25,10 +25,13 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.helpers.investigation.InvestigationHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.investigation.InvestigationData;
 import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.investigation.Images;
+import com.myrescribe.model.investigation.InvestigationData;
 import com.myrescribe.model.investigation.InvestigationListModel;
+import com.myrescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
+import com.myrescribe.model.investigation.request.InvestigationUploadByGmailRequest;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -67,6 +70,9 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     private ArrayList<InvestigationData> investigation = new ArrayList<InvestigationData>();
     private ArrayList<InvestigationData> investigationTemp = new ArrayList<InvestigationData>();
     private AppDBHelper appDBHelper;
+    private InvestigationHelper investigationHelper;
+    private int patientId;
+    private Intent gmailIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +92,10 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
         mContext = InvestigationActivity.this;
         appDBHelper = new AppDBHelper(mContext);
-        InvestigationHelper investigationHelper = new InvestigationHelper(mContext);
+
+        patientId = Integer.parseInt(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext));
+
+        investigationHelper = new InvestigationHelper(mContext);
         investigationHelper.getInvestigationList();
 
         // off recyclerView Animation
@@ -158,21 +167,6 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         super.onBackPressed();
     }
 
-    /*  private void getDataSet() {
-          investigation.add(new InvestigationData(1, "CT Scan", false, false, new ArrayList<Image>()));
-          investigation.add(new InvestigationData(2, "Lipid", false, false, new ArrayList<Image>()));
-          investigation.add(new InvestigationData(3, "Liver Profile", false, false, new ArrayList<Image>()));
-          investigation.add(new InvestigationData(4, "X Ray", false, false, new ArrayList<Image>()));
-          investigation.add(new InvestigationData(5, "HB", false, false, new ArrayList<Image>()));
-          investigation.add(new InvestigationData(6, "PCV", false, false, new ArrayList<Image>()));
-          investigation.add(new InvestigationData(7, "EHR", false, false, new ArrayList<Image>()));
-          investigation.add(new InvestigationData(8, "B.T.C.T", false, false, new ArrayList<Image>()));
-          investigation.add(new InvestigationData(9, "G6", false, false, new ArrayList<Image>()));
-          investigation.add(new InvestigationData(10, "PV", false, false, new ArrayList<Image>()));
-          investigation.add(new InvestigationData(11, "ER", false, false, new ArrayList<Image>()));
-          investigation.add(new InvestigationData(12, "C.T", false, false, new ArrayList<Image>()));
-      }
-  */
     @Override
     public void onCheckedClick(int position) {
         buttonEnable();
@@ -204,7 +198,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO || requestCode == UPLOADED_DOCS) {
             if (resultCode == RESULT_OK) {
                 investigationTemp.clear();
-                ArrayList<InvestigationData> invest = data.getParcelableExtra(MyRescribeConstants.INVESTIGATION_DATA);
+                ArrayList<InvestigationData> invest = data.getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_DATA);
                 changeOriginalData(invest);
                 investigationTemp.addAll(invest);
                 mAdapter.notifyDataSetChanged();
@@ -247,21 +241,17 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 startActivityForResult(intent, UPLOADED_DOCS);
                 break;
             case R.id.gmailButton:
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("email", "dr.shah@gmail.com");
-                clipboard.setPrimaryClip(clip);
-
-                if (openApp("com.google.android.gm")) {
+                if (isAppAvailable("com.google.android.gm")) {
+                    ArrayList<Integer> investigationId = new ArrayList<>();
                     for (InvestigationData dataObject : investigationTemp) {
-                        if (dataObject.isSelected() && !dataObject.isUploaded()) {
-                            dataObject.setUploaded(dataObject.isSelected());
-                            appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), "");
-                        }
+                        if (dataObject.isSelected() && !dataObject.isUploaded())
+                            investigationId.add(dataObject.getId());
                     }
-                    changeOriginalData(investigationTemp);
-                    buttonEnable();
-                    buttonManage(View.VISIBLE);
-                    CommonMethods.showToast(mContext, "dr.shah@gmail.com email Id copied.");
+
+                    InvestigationUploadByGmailRequest investigationUploadByGmailRequest = new InvestigationUploadByGmailRequest();
+                    investigationUploadByGmailRequest.setPatientId(patientId);
+                    investigationUploadByGmailRequest.setInvestigationId(investigationId);
+                    investigationHelper.uploadByGmail(investigationUploadByGmailRequest);
                 } else {
                     CommonMethods.showToast(mContext, "Gmail application not found");
                 }
@@ -269,14 +259,13 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         }
     }
 
-    public boolean openApp(String packageName) {
+    public boolean isAppAvailable(String packageName) {
         PackageManager manager = getPackageManager();
-        Intent i = manager.getLaunchIntentForPackage(packageName);
-        if (i == null) {
+        gmailIntent = manager.getLaunchIntentForPackage(packageName);
+        if (gmailIntent == null) {
             return false;
         }
-        i.addCategory(Intent.CATEGORY_LAUNCHER);
-        startActivity(i);
+        gmailIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         return true;
     }
 
@@ -306,6 +295,8 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                     dataObject.setId(investigation.get(i).getId());
                     dataObject.setTitle(investigation.get(i).getTitle());
                     dataObject.setInvestigationKey(investigation.get(i).getInvestigationKey());
+                    dataObject.setDoctorName(investigation.get(i).getDoctorName());
+                    dataObject.setOpdId(investigation.get(i).getOpdId());
                     dataObject.setSelected(investigation.get(i).isSelected());
                     dataObject.setUploaded(investigation.get(i).isUploaded());
                     dataObject.setPhotos(imageArray);
@@ -322,6 +313,23 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
             mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
             mRecyclerView.setAdapter(mAdapter);
+        } else if (customResponse instanceof InvestigationUploadByGmailModel) {
+            InvestigationUploadByGmailModel investigationUploadByGmailModel = (InvestigationUploadByGmailModel) customResponse;
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("email", investigationUploadByGmailModel.getData().getEmailId());
+            clipboard.setPrimaryClip(clip);
+
+            for (InvestigationData dataObject : investigationTemp) {
+                if (dataObject.isSelected() && !dataObject.isUploaded()) {
+                    dataObject.setUploaded(dataObject.isSelected());
+                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), "");
+                }
+            }
+            changeOriginalData(investigationTemp);
+            buttonEnable();
+            buttonManage(View.VISIBLE);
+            startActivity(gmailIntent);
+            CommonMethods.showToast(mContext, investigationUploadByGmailModel.getData().getEmailId());
         }
     }
 

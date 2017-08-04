@@ -31,25 +31,21 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
-
 import com.myrescribe.model.case_details.CaseDetailsModel;
 import com.myrescribe.model.doctors.doctor_info.DoctorModel;
-
 import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
 import com.myrescribe.model.filter.CaseDetailsListModel;
-import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
 import com.myrescribe.model.filter.FilterDoctorListModel;
+import com.myrescribe.model.filter.FilterDoctorSpecialityListModel;
+import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.SignUpModel;
-
 import com.myrescribe.model.notification.AppointmentsNotificationModel;
 import com.myrescribe.model.notification.NotificationModel;
-
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
-
-import com.myrescribe.model.login.LoginModel;
+import com.myrescribe.model.requestmodel.login.LoginRequestModel;
 import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
-import com.myrescribe.model.visit_details.VisitDetailsModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
+import com.myrescribe.singleton.Device;
 import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
@@ -113,7 +109,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
             if (mPostParams != null) {
                 stringRequest(mURL, connectionType, mHeaderParams, mPostParams, false);
             } else if (customResponse != null) {
-                jsonRequest();
+                jsonRequest(mURL, connectionType, mHeaderParams, customResponse, false);
             } else {
                 jsonRequest();
             }
@@ -131,6 +127,55 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 CommonMethods.showToast(mContext, mContext.getString(R.string.internet));
         }
     }
+
+    private void jsonRequest(String url, int connectionType, final Map<String, String> headerParams, CustomResponse customResponse, final boolean isTokenExpired) {
+
+        Gson gson = new Gson();
+        JSONObject jsonObject = null;
+        try {
+            CommonMethods.Log(TAG, "customResponse:--" + customResponse.toString());
+            String jsonString = gson.toJson(customResponse);
+
+            CommonMethods.Log(TAG, "jsonRequest:--" + jsonString);
+
+            if (!jsonString.equals("null"))
+                jsonObject = new JSONObject(jsonString);
+        } catch (JSONException | JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+
+        jsonRequest = new JsonObjectRequest(connectionType, url, jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        succesResponse(response.toString(), isTokenExpired);
+                        if (isOffline)
+                            dbHelper.insertData(mDataTag, response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                errorResponse(error, isTokenExpired);
+            }
+        })
+
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                if (headerParams == null) {
+                    return Collections.emptyMap();
+                } else {
+                    return headerParams;
+                }
+
+            }
+        };
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(CONNECTION_TIME_OUT, N0OF_RETRY, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonRequest.setTag(requestTag);
+        requestTimer.start();
+        RequestPool.getInstance(this.mContext).addToRequestQueue(jsonRequest);
+    }
+
 
     private void jsonRequest() {
 
@@ -175,19 +220,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
             }
         };
-        jsonRequest.setRetryPolicy(new
-
-                DefaultRetryPolicy(CONNECTION_TIME_OUT, N0OF_RETRY,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
-
-        );
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(CONNECTION_TIME_OUT, N0OF_RETRY, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         jsonRequest.setTag(requestTag);
         requestTimer.start();
-        RequestPool.getInstance(this.mContext).
-
-                addToRequestQueue(jsonRequest);
-
-
+        RequestPool.getInstance(this.mContext).addToRequestQueue(jsonRequest);
     }
 
     private void stringRequest(String url, int connectionType, final Map<String, String> headerParams, final Map<String, String> postParams, final boolean isTokenExpired) {
@@ -213,23 +249,16 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         ) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-
                 return headerParams;
             }
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-
                 return postParams;
             }
         };
 
-        stringRequest.setRetryPolicy(new
-
-                DefaultRetryPolicy(CONNECTION_TIME_OUT, N0OF_RETRY,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
-
-        );
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(CONNECTION_TIME_OUT, N0OF_RETRY, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         stringRequest.setTag(requestTag);
         requestTimer.start();
         RequestPool.getInstance(this.mContext).addToRequestQueue(stringRequest);
@@ -546,6 +575,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         CommonMethods.Log(TAG, "Refresh token while sending refresh token api: ");
 
         Map<String, String> headerParams = new HashMap<>();
+        headerParams.putAll(mHeaderParams);
         headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
         headerParams.put(MyRescribeConstants.DEVICEID, "phone");
         headerParams.put(MyRescribeConstants.OS, "android");
@@ -553,10 +583,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         headerParams.put(MyRescribeConstants.DEVICE_TYPE, "phone");
         CommonMethods.Log(TAG, "setHeaderParams:" + headerParams.toString());
 
-        Map<String, String> postParams = new HashMap<String, String>();
-        postParams.put(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
-        postParams.put(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mContext));
         String url = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.LOGIN_URL;
-        stringRequest(url, Request.Method.POST, headerParams, postParams, true);
+
+        LoginRequestModel loginRequestModel = new LoginRequestModel();
+        loginRequestModel.setMobileNumber(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+        loginRequestModel.setPassword(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mContext));
+        jsonRequest(url, Request.Method.POST, headerParams, loginRequestModel, true);
     }
 }

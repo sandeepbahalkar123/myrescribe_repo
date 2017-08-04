@@ -81,7 +81,7 @@
             android:id="@+id/editTextMobileNo"
             style="@style/AppLoginMainStyle"
             android:hint="@string/enter_mobile_no"
-            android:inputType="phone"
+            android:inputType="number"
             android:maxLength="10"
             android:textStyle="bold"
             android:typeface="sans" />

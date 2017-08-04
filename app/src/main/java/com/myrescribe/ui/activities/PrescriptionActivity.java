@@ -163,7 +163,7 @@ public class PrescriptionActivity extends AppCompatActivity
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-
+        mNoDataView.setVisibility(View.VISIBLE);
     }
 
     @Override

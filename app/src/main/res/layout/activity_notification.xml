@@ -22,6 +22,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_notification" />
+    <include
+
+        layout="@layout/content_notification" />
 
 </android.support.design.widget.CoordinatorLayout>

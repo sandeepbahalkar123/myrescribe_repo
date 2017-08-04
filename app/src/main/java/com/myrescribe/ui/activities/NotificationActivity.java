@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.myrescribe.R;
@@ -67,7 +68,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     private TextView dateTextView;
     private View mView;
     private LinearLayout mNotificationLayout;
-    private ImageView mNoDataAvailable;
+    private RelativeLayout mNoDataAvailable;
 
     private ArrayList<Medication> todayDataList;
 
@@ -105,7 +106,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         timeTextView = (TextView) findViewById(R.id.timeTextView);
         dateTextView = (TextView) findViewById(R.id.dateTextView);
         mNotificationLayout = (LinearLayout) findViewById(R.id.notificationLayout);
-        mNoDataAvailable = (ImageView) findViewById(R.id.noDataAvailable);
+        mNoDataAvailable = (RelativeLayout) findViewById(R.id.noDataAvailable);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(null);
@@ -446,7 +447,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             mView.findViewById(R.id.selectViewTab).setEnabled(true);
             CheckBox checkBox = (CheckBox) mView.findViewById(R.id.selectViewTab);
             checkBox.setChecked(false);
-        }else if(mOldDataTag.equals(MyRescribeConstants.TASK_NOTIFICATION)){
+        } else if (mOldDataTag.equals(MyRescribeConstants.TASK_NOTIFICATION)) {
             mNoDataAvailable.setVisibility(View.VISIBLE);
         }
 

@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.myrescribe.ui.activities.NotificationActivity"
     tools:showIn="@layout/activity_notification">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -17,7 +18,7 @@
         <LinearLayout
             android:id="@+id/notificationLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -204,15 +205,24 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
 
-        <ImageView
+        <RelativeLayout
             android:id="@+id/noDataAvailable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:src="@drawable/no_records_found"
-            android:textSize="@dimen/sp20"
-            android:visibility="gone" />
-    </LinearLayout>
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/no_records_found"
+                android:gravity="center"
+                android:orientation="vertical" />
+        </RelativeLayout>
+
+    </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -113,7 +113,6 @@ public class HomePageActivity extends AppCompatActivity
 
     private void notificationForMedicine() {
 
-
         AppDBHelper appDBHelper = new AppDBHelper(mContext);
         Cursor cursor = appDBHelper.getPreferences("1");
         if (cursor.moveToFirst()) {
@@ -245,6 +244,10 @@ public class HomePageActivity extends AppCompatActivity
 
         AppDBHelper appDBHelper = new AppDBHelper(mContext);
         appDBHelper.deleteDatabase();
+
+        new DosesAlarmTask(mContext, null, null).run();
+        new AppointmentAlarmTask(mContext, null, null).run();
+        new InvestigationAlarmTask(mContext, null, null).run();
 
         Intent intent = new Intent(mContext, LoginMainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

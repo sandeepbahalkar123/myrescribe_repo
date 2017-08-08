@@ -8,6 +8,7 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
@@ -18,11 +19,13 @@ import com.myrescribe.util.MyRescribeConstants;
 
 public class AppointmentHelper implements ConnectionListener {
 
-    String TAG = this.getClass().getName();
-    Context mContext;
+    private final String patient_id;
+    private String TAG = this.getClass().getName();
+    private Context mContext;
 
     public AppointmentHelper(Context context) {
         this.mContext = context;
+        patient_id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
     }
 
 
@@ -41,7 +44,6 @@ public class AppointmentHelper implements ConnectionListener {
             case ConnectionListener.SERVER_ERROR:
                 CommonMethods.Log(TAG, "server error");
                 ((HelperResponse) mContext).onServerError(mOldDataTag, "server error");
-
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
                 CommonMethods.Log(TAG, "no connection error");
@@ -59,10 +61,12 @@ public class AppointmentHelper implements ConnectionListener {
     }
 
     public void getDoctorList() {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, MyRescribeConstants.APPOINTMENT_NOTIFICATION, Request.Method.GET, true);
-        mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.APPOINTMENTS);
-        mConnectionFactory.createConnection(MyRescribeConstants.APPOINTMENT_NOTIFICATION);
+        if (!patient_id.equals("")) {
+            ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, MyRescribeConstants.APPOINTMENT_NOTIFICATION, Request.Method.GET, true);
+            mConnectionFactory.setHeaderParams();
+            mConnectionFactory.setUrl(Config.APPOINTMENTS + "?patientId=" + patient_id + "&status=Upcoming");
+            mConnectionFactory.createConnection(MyRescribeConstants.APPOINTMENT_NOTIFICATION);
+        }
     }
 
 }

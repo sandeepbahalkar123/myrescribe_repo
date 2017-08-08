@@ -93,7 +93,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         mContext = InvestigationActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
-        patientId = Integer.parseInt(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext));
+        patientId = Integer.parseInt(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
 
         investigationHelper = new InvestigationHelper(mContext);
         investigationHelper.getInvestigationList();
@@ -283,7 +283,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 for (InvestigationData dataObject : investigation) {
                     Images images = new Images();
                     images.setImageArray(dataObject.getPhotos());
-                    appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.getInvestigationKey(), dataObject.isUploaded(), new Gson().toJson(images));
+                    appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.getInvestigationKey(), dataObject.getDoctorName(), dataObject.getOpdId(), dataObject.isUploaded(), new Gson().toJson(images));
                 }
 
                 int isAlreadyUploadedButtonVisible = View.GONE;

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.myrescribe.R;
+import com.myrescribe.services.AppointmentNotificationService;
 import com.myrescribe.services.NotificationService;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -24,6 +25,12 @@ import java.util.Calendar;
  * @author paul.blundell
  */
 public class DosesAlarmTask implements Runnable {
+
+    public static final int BREAKFAST_NOTIFICATION_ID = 0;
+    public static final int LUNCH_NOTIFICATION_ID = 1;
+    public static final int DINNER_NOTIFICATION_ID = 2;
+    public static final int EVENING_NOTIFICATION_ID = 3;
+
     // The time selected for the alarm
     private final String time[];
     private final String date;
@@ -45,24 +52,38 @@ public class DosesAlarmTask implements Runnable {
         time = CommonMethods.getFormatedDate(time, "hh:mm a", "HH:mm");
 
         String[] hour = time.split(":");
-        String[] minuite = hour[1].split(" ");
+        String[] minute = hour[1].split(" ");
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour[0]));
-        calendar.set(Calendar.MINUTE, Integer.parseInt(minuite[0]));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(minute[0]));
         calendar.set(Calendar.SECOND, 0);
 
-        CommonMethods.Log("AllTimes", Integer.parseInt(hour[0]) + ":" + Integer.parseInt(minuite[0]));
+        CommonMethods.Log("AllTimes", Integer.parseInt(hour[0]) + ":" + Integer.parseInt(minute[0]));
 
         return calendar;
     }
 
     @Override
     public void run() {
-        setAlarm(time[0], context.getResources().getString(R.string.breakfast_medication), 0);
-        setAlarm(time[1], context.getResources().getString(R.string.lunch_medication), 1);
-        setAlarm(time[2], context.getResources().getString(R.string.dinner_medication), 2);
-        setAlarm(time[3], context.getResources().getString(R.string.snacks_medication), 3);
+        if (time == null || date == null) {
+            cancelAlarm(BREAKFAST_NOTIFICATION_ID);
+            cancelAlarm(LUNCH_NOTIFICATION_ID);
+            cancelAlarm(DINNER_NOTIFICATION_ID);
+            cancelAlarm(EVENING_NOTIFICATION_ID);
+        } else {
+            setAlarm(time[0], context.getResources().getString(R.string.breakfast_medication), BREAKFAST_NOTIFICATION_ID);
+            setAlarm(time[1], context.getResources().getString(R.string.lunch_medication), LUNCH_NOTIFICATION_ID);
+            setAlarm(time[2], context.getResources().getString(R.string.dinner_medication), DINNER_NOTIFICATION_ID);
+            setAlarm(time[3], context.getResources().getString(R.string.snacks_medication), EVENING_NOTIFICATION_ID);
+        }
+    }
+
+    private void cancelAlarm(int requestCode) {
+        Intent intent = new Intent(context, NotificationService.class);
+        intent.putExtra(NotificationService.INTENT_NOTIFY, false);
+        intent.putExtra(MyRescribeConstants.NOTIFICATION_ID, requestCode);
+        context.startService(intent);
     }
 
     private void setAlarm(String time, String medicineSlot, int requestCode) {

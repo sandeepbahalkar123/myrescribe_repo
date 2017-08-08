@@ -34,7 +34,7 @@ public class Config {
     public static final String FILTER_DOCTOR_SPECIALIST_LIST = "api/patient/getDoctorSpeciality";
     public static final String CASE_DETAILS_LIST = "api/patient/getVitalCaseHeadings";
 
-    public static final String APPOINTMENTS = "api/patient/appointments?patientId=3939&status=Upcoming";
+    public static final String APPOINTMENTS = "api/patient/appointments";
     public static final String APPOINTMENTS_DETAILS_URL = "api/patient/appointments?patientId=";
 
     public static final String INVESTIGATION_LIST = "api/patient/getInvestigationNotifications";

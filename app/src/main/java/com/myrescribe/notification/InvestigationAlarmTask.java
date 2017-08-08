@@ -22,6 +22,7 @@ import java.util.Calendar;
  * @author paul.blundell
  */
 public class InvestigationAlarmTask implements Runnable {
+    public static final int INVESTIGATION_NOTIFICATION_ID = 4;
     // The time selected for the alarm
     private final String time;
     private final String msg;
@@ -43,21 +44,24 @@ public class InvestigationAlarmTask implements Runnable {
         time = CommonMethods.getFormatedDate(time, "hh:mm a", "HH:mm");
 
         String[] hour = time.split(":");
-        String[] minuite = hour[1].split(" ");
+        String[] minute = hour[1].split(" ");
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour[0]));
-        calendar.set(Calendar.MINUTE, Integer.parseInt(minuite[0]));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(minute[0]));
         calendar.set(Calendar.SECOND, 0);
 
-        CommonMethods.Log("AllTimes", Integer.parseInt(hour[0]) + ":" + Integer.parseInt(minuite[0]));
+        CommonMethods.Log("AllTimes", Integer.parseInt(hour[0]) + ":" + Integer.parseInt(minute[0]));
 
         return calendar;
     }
 
     @Override
     public void run() {
-        setAlarm(time, msg, 4);
+        if (time == null || msg == null)
+            cancelAlarm(INVESTIGATION_NOTIFICATION_ID);
+        else
+            setAlarm(time, msg, INVESTIGATION_NOTIFICATION_ID);
     }
 
     private void setAlarm(String time, String msg, int requestCode) {
@@ -74,4 +78,12 @@ public class InvestigationAlarmTask implements Runnable {
 
         am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
+
+    private void cancelAlarm(int requestCode) {
+        Intent intent = new Intent(context, InvestigationNotificationService.class);
+        intent.putExtra(InvestigationNotificationService.INTENT_NOTIFY, false);
+        intent.putExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, requestCode);
+        context.startService(intent);
+    }
+
 }

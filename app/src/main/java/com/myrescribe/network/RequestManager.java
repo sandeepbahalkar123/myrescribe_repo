@@ -50,7 +50,6 @@ import com.myrescribe.model.requestmodel.login.LoginRequestModel;
 
 import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
-import com.myrescribe.singleton.Device;
 import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
@@ -410,7 +409,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 LoginModel loginModel = gson.fromJson(data, LoginModel.class);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, loginModel.getPatientId(), mContext);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, loginModel.getPatientId(), mContext);
 
                 mHeaderParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, loginModel.getAuthToken());
 

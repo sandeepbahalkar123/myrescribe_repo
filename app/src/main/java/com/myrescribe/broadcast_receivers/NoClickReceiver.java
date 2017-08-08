@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.myrescribe.notification.AppointmentAlarmTask;
+import com.myrescribe.notification.DosesAlarmTask;
+import com.myrescribe.notification.InvestigationAlarmTask;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.activities.NotificationActivity;
 import com.myrescribe.ui.activities.SplashScreenActivity;
@@ -28,7 +31,7 @@ public class NoClickReceiver extends BroadcastReceiver {
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (!MyRescribeConstants.BLANK.equalsIgnoreCase(loginStatus)) {
-            if (notificationId == 0 || notificationId == 1 || notificationId == 2 || notificationId == 3) {
+            if (notificationId == DosesAlarmTask.BREAKFAST_NOTIFICATION_ID || notificationId == DosesAlarmTask.LUNCH_NOTIFICATION_ID || notificationId == DosesAlarmTask.DINNER_NOTIFICATION_ID || notificationId == DosesAlarmTask.EVENING_NOTIFICATION_ID) {
                 Intent intentNotification = new Intent(context, NotificationActivity.class);
                 intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
                 intentNotification.putExtra(MyRescribeConstants.NOTIFICATION_DATE, intent.getStringExtra(MyRescribeConstants.NOTIFICATION_DATE));
@@ -38,9 +41,9 @@ public class NoClickReceiver extends BroadcastReceiver {
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intentNotification);
                 manager.cancel(notificationId);
-            } else if (investigation_notification_id == 4) {
+            } else if (investigation_notification_id == InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID) {
                 manager.cancel(investigation_notification_id);
-            } else if (appointment_notification_id == 5) {
+            } else if (appointment_notification_id == AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID) {
                 String action = (String) intent.getExtras().get(MyRescribeConstants.APPOINTMENT_MESSAGE);
                 Toast.makeText(context, action + " " + "Not Accepted", Toast.LENGTH_SHORT).show();
                 manager.cancel(appointment_notification_id);

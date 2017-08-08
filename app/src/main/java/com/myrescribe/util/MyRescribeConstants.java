@@ -117,6 +117,8 @@ public class MyRescribeConstants {
     public static final String FILTER_REQUEST = "filter_request";
     public static final int MAX_RETRIES = 3;
 
+//    public static final String CANCEL_ALARM = "cancel_alarm";
+
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
     public static String HEADER_COLOR = "#E4422C";

@@ -731,14 +731,30 @@ public class CommonMethods {
                 severeRange.setText(">" + rangeList.get(i).getValue());
             }
         }
+        
         if (category.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
-            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext,R.color.Red));
+            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
         } else if (category.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
-            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext,R.color.range_green));
+            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
         } else if (category.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
-            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext,R.color.range_yellow));
+            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
         }
 
+        //----Manage visibility----
+        if (normalRange.getText().toString().trim().length() == 0) {
+            LinearLayout normalRangeLayout = (LinearLayout) dialog.findViewById(R.id.normalRangeLayout);
+            normalRangeLayout.setVisibility(View.GONE);
+        }
+        if (moderateRange.getText().toString().trim().length() == 0) {
+            LinearLayout moderateRangeLayout = (LinearLayout) dialog.findViewById(R.id.moderateRangeLayout);
+            moderateRangeLayout.setVisibility(View.GONE);
+        }
+        if (severeRange.getText().toString().trim().length() == 0) {
+            LinearLayout severeRangeLayout = (LinearLayout) dialog.findViewById(R.id.severeRangeLayout);
+            severeRangeLayout.setVisibility(View.GONE);
+        }
+
+        //--------
         ((TextView) dialog.findViewById(R.id.vitalNameDialog)).setText(unit);
         noOfVitalsDialog.setText(unitValue);
         ((ImageView) dialog.findViewById(R.id.vitalImageDialog)).setImageResource(drawable);

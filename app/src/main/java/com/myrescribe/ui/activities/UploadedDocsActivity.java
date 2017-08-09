@@ -10,25 +10,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.UploadedImageAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
-import com.myrescribe.model.investigation.DataObject;
+import com.myrescribe.helpers.investigation.InvestigationHelper;
+import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.investigation.Image;
-import com.myrescribe.model.investigation.Images;
+import com.myrescribe.model.investigation.InvestigationData;
+import com.myrescribe.model.investigation.uploaded.InvestigationUploadFromUploadedModel;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UploadedDocsActivity extends AppCompatActivity {
+public class UploadedDocsActivity extends AppCompatActivity implements HelperResponse {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -39,11 +39,12 @@ public class UploadedDocsActivity extends AppCompatActivity {
 
     private Context mContext;
     private UploadedImageAdapter uploadedImageAdapter;
-    private ArrayList<DataObject> investigation;
-//    private Set<Image> photoSet = new HashSet<>();
+    private ArrayList<InvestigationData> investigation;
+    //    private Set<Image> photoSet = new HashSet<>();
     private ArrayList<Image> photoPaths = new ArrayList<>();
     private AppDBHelper appDBHelper;
-    private ArrayList<DataObject> investigationTemp;
+    private ArrayList<InvestigationData> investigationTemp;
+    private InvestigationHelper investigationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +64,12 @@ public class UploadedDocsActivity extends AppCompatActivity {
 
         mContext = UploadedDocsActivity.this;
         appDBHelper = new AppDBHelper(mContext);
+        investigationHelper = new InvestigationHelper(mContext);
 
-        investigation = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
-        investigationTemp = (ArrayList<DataObject>) getIntent().getSerializableExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA);
+        investigation = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_DATA);
+        investigationTemp = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA);
 
-        for (DataObject dataObject : investigation)
+        for (InvestigationData dataObject : investigation)
             photoPaths.addAll(dataObject.getPhotos());
 
         uploadedImageAdapter = new UploadedImageAdapter(mContext, photoPaths);
@@ -80,21 +82,43 @@ public class UploadedDocsActivity extends AppCompatActivity {
     @OnClick(R.id.uploadButton)
     public void onViewClicked() {
 
-        int selectedCount = 0;
         int selectedImageCount = 0;
-        ArrayList<Image> photos = new ArrayList<>();
+//        ArrayList<Image> photos = new ArrayList<>();
+        String imageIds = "";
+        String invIds = "";
 
         for (Image image : photoPaths) {
             if (image.isSelected()) {
-                photos.add(image);
+//                photos.add(image);
                 selectedImageCount++;
+                imageIds = imageIds + "," + imageIds;
             }
         }
 
         // Update server status with image id
 
         if (selectedImageCount > 0) {
-            for (DataObject dataObject : investigationTemp) {
+
+            for (InvestigationData dataObject : investigationTemp) {
+                if (dataObject.isSelected() && !dataObject.isUploaded())
+                    invIds = invIds + "," + dataObject.getId();
+            }
+
+            investigationHelper.uploadFromAlreadyUploaded(imageIds, invIds);
+
+        } else {
+            CommonMethods.showToast(mContext, "Please select at least one document");
+        }
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if (customResponse instanceof InvestigationUploadFromUploadedModel) {
+
+            int selectedCount = 0;
+
+            CommonMethods.showToast(mContext, "Uploaded Successfully");
+            for (InvestigationData dataObject : investigationTemp) {
                 if (dataObject.isSelected() && !dataObject.isUploaded()) {
                     dataObject.setUploaded(dataObject.isSelected());
                     appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), "");
@@ -114,9 +138,21 @@ public class UploadedDocsActivity extends AppCompatActivity {
                 setResult(RESULT_OK, intent);
             }
             finish();
-
-        } else {
-            CommonMethods.showToast(mContext, "Please select at least one document");
         }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
     }
 }

@@ -12,13 +12,16 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import com.myrescribe.R;
 import com.myrescribe.model.case_details.CommonData;
 import com.myrescribe.model.case_details.PatientHistory;
 import com.myrescribe.model.case_details.Vital;
 import com.myrescribe.util.CommonMethods;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -138,18 +141,22 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
             vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CommonMethods.showVitalDialog(mContext, mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName(), mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(), mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(), CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName()),mListDataHeader.get(groupPosition).getVitals().get(finali).getCategory());
+                    CommonMethods.showVitalDialog(mContext, mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName(),
+                            mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(),
+                            mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(),
+                            CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName()),
+                            mListDataHeader.get(groupPosition).getVitals().get(finali).getCategory());
                 }
             });
             vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getDisplayName()));
             vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
             noOfVitals.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue());
-            if(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.severeRange))){
-                noOfVitals.setTextColor(ContextCompat.getColor(mContext,R.color.Red));
-            }else if(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.normalRange))){
-                noOfVitals.setTextColor(ContextCompat.getColor(mContext,R.color.range_green));
-            }else if(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.moderateRange))){
-                noOfVitals.setTextColor(ContextCompat.getColor(mContext,R.color.range_yellow));
+            if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.severeRange))) {
+                noOfVitals.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
+            } else if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.normalRange))) {
+                noOfVitals.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
+            } else if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.moderateRange))) {
+                noOfVitals.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
             }
             tableRow.addView(item);
             mPosition++;
@@ -234,6 +241,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
         View mDividerLine;
         @BindView(R.id.expandVisitDetailsLayout)
         LinearLayout mExpandVisitDetailsLayout;
+
         ChildViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
@@ -252,6 +260,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
         View mDivider;
         @BindView(R.id.detailFirstPoint)
         TextView mDetailFirstPoint;
+
         GroupViewHolder(View view) {
             ButterKnife.bind(this, view);
         }

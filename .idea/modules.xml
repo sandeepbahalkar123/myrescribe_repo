@@ -9,6 +9,8 @@
       <module fileurl="file://$PROJECT_DIR$/myrescribe_repo.iml" filepath="$PROJECT_DIR$/myrescribe_repo.iml" />
       <module fileurl="file://$PROJECT_DIR$/rackmonthPicker/rackmonthPicker.iml" filepath="$PROJECT_DIR$/rackmonthPicker/rackmonthPicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/rescribe_repo.iml" filepath="$PROJECT_DIR$/rescribe_repo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uploadservice/uploadservice.iml" filepath="$PROJECT_DIR$/uploadservice/uploadservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uploadservice/uploadservice.iml" filepath="$PROJECT_DIR$/uploadservice/uploadservice.iml" />
     </modules>
   </component>
 </project>

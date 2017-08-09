@@ -22,9 +22,16 @@ import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.InvestigationViewAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
-import com.myrescribe.model.investigation.DataObject;
+import com.myrescribe.helpers.investigation.InvestigationHelper;
+import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.investigation.Images;
+import com.myrescribe.model.investigation.InvestigationData;
+import com.myrescribe.model.investigation.InvestigationListModel;
+import com.myrescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
+import com.myrescribe.model.investigation.request.InvestigationUploadByGmailRequest;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -35,7 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import droidninja.filepicker.FilePickerConst;
 
-public class InvestigationActivity extends AppCompatActivity implements InvestigationViewAdapter.CheckedClickListener {
+public class InvestigationActivity extends AppCompatActivity implements InvestigationViewAdapter.CheckedClickListener, HelperResponse {
 
     private boolean isCompareDialogCollapsed = true;
     private static final long ANIMATION_DURATION = 400; // in milliseconds
@@ -60,9 +67,12 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     private LinearLayoutManager mLayoutManager;
     private InvestigationViewAdapter mAdapter;
     private Context mContext;
-    private ArrayList<DataObject> investigation = new ArrayList<DataObject>();
-    private ArrayList<DataObject> investigationTemp = new ArrayList<DataObject>();
+    private ArrayList<InvestigationData> investigation = new ArrayList<InvestigationData>();
+    private ArrayList<InvestigationData> investigationTemp = new ArrayList<InvestigationData>();
     private AppDBHelper appDBHelper;
+    private InvestigationHelper investigationHelper;
+    private int patientId;
+    private Intent gmailIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +91,12 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         });
 
         mContext = InvestigationActivity.this;
+        appDBHelper = new AppDBHelper(mContext);
+
+        patientId = Integer.parseInt(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext));
+
+        investigationHelper = new InvestigationHelper(mContext);
+        investigationHelper.getInvestigationList();
 
         // off recyclerView Animation
 
@@ -90,36 +106,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        getDataSet();
 
-        appDBHelper = new AppDBHelper(mContext);
-        for (DataObject dataObject : investigation) {
-            Images images = new Images();
-            images.setImageArray(dataObject.getPhotos());
-            appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.isUploaded(), new Gson().toJson(images));
-        }
-
-        int isAlreadyUploadedButtonVisible = View.GONE;
-
-        for (int i = 0; i < investigation.size(); i++) {
-            DataObject data = appDBHelper.getInvestigationData(investigation.get(i).getId());
-            boolean status = data.isUploaded();
-            ArrayList<Image> imageArray = data.getPhotos();
-            if (!status) {
-                DataObject dataObject = new DataObject(investigation.get(i).getId(), investigation.get(i).getTitle(), investigation.get(i).isSelected(), investigation.get(i).isUploaded(), imageArray);
-                investigationTemp.add(dataObject);
-            } else {
-                isAlreadyUploadedButtonVisible = View.VISIBLE;
-                investigation.get(i).setSelected(true);
-                investigation.get(i).setUploaded(true);
-                investigation.get(i).setPhotos(data.getPhotos());
-            }
-        }
-
-        buttonManage(isAlreadyUploadedButtonVisible);
-
-        mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     public void collapseCompareDialog() {
@@ -180,21 +167,6 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         super.onBackPressed();
     }
 
-    private void getDataSet() {
-        investigation.add(new DataObject(1, "CT Scan", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(2, "Lipid", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(3, "Liver Profile", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(4, "X Ray", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(5, "HB", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(6, "PCV", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(7, "EHR", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(8, "B.T.C.T", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(9, "G6", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(10, "PV", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(11, "ER", false, false, new ArrayList<Image>()));
-        investigation.add(new DataObject(12, "C.T", false, false, new ArrayList<Image>()));
-    }
-
     @Override
     public void onCheckedClick(int position) {
         buttonEnable();
@@ -202,7 +174,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
     private void buttonEnable() {
         boolean uploadButton = false;
-        for (DataObject dataObject : investigationTemp) {
+        for (InvestigationData dataObject : investigationTemp) {
             if (dataObject.isSelected() && !dataObject.isUploaded()) {
                 uploadButton = true;
                 break;
@@ -226,7 +198,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO || requestCode == UPLOADED_DOCS) {
             if (resultCode == RESULT_OK) {
                 investigationTemp.clear();
-                ArrayList<DataObject> invest = (ArrayList<DataObject>) data.getSerializableExtra(MyRescribeConstants.INVESTIGATION_DATA);
+                ArrayList<InvestigationData> invest = data.getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_DATA);
                 changeOriginalData(invest);
                 investigationTemp.addAll(invest);
                 mAdapter.notifyDataSetChanged();
@@ -236,9 +208,9 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         }
     }
 
-    private void changeOriginalData(ArrayList<DataObject> invest) {
+    private void changeOriginalData(ArrayList<InvestigationData> invest) {
         for (int i = 0; i < investigation.size(); i++) {
-            for (DataObject objectTemp : invest) {
+            for (InvestigationData objectTemp : invest) {
                 if (investigation.get(i).getId() == objectTemp.getId()) {
                     investigation.set(i, objectTemp);
                 }
@@ -269,21 +241,17 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 startActivityForResult(intent, UPLOADED_DOCS);
                 break;
             case R.id.gmailButton:
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("email", "dr.shah@gmail.com");
-                clipboard.setPrimaryClip(clip);
-
-                if (openApp("com.google.android.gm")) {
-                    for (DataObject dataObject : investigationTemp) {
-                        if (dataObject.isSelected() && !dataObject.isUploaded()) {
-                            dataObject.setUploaded(dataObject.isSelected());
-                            appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), "");
-                        }
+                if (isAppAvailable("com.google.android.gm")) {
+                    ArrayList<Integer> investigationId = new ArrayList<>();
+                    for (InvestigationData dataObject : investigationTemp) {
+                        if (dataObject.isSelected() && !dataObject.isUploaded())
+                            investigationId.add(dataObject.getId());
                     }
-                    changeOriginalData(investigationTemp);
-                    buttonEnable();
-                    buttonManage(View.VISIBLE);
-                    CommonMethods.showToast(mContext, "dr.shah@gmail.com email Id copied.");
+
+                    InvestigationUploadByGmailRequest investigationUploadByGmailRequest = new InvestigationUploadByGmailRequest();
+                    investigationUploadByGmailRequest.setPatientId(patientId);
+                    investigationUploadByGmailRequest.setInvestigationId(investigationId);
+                    investigationHelper.uploadByGmail(investigationUploadByGmailRequest);
                 } else {
                     CommonMethods.showToast(mContext, "Gmail application not found");
                 }
@@ -291,14 +259,95 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         }
     }
 
-    public boolean openApp(String packageName) {
+    public boolean isAppAvailable(String packageName) {
         PackageManager manager = getPackageManager();
-        Intent i = manager.getLaunchIntentForPackage(packageName);
-        if (i == null) {
+        gmailIntent = manager.getLaunchIntentForPackage(packageName);
+        if (gmailIntent == null) {
             return false;
         }
-        i.addCategory(Intent.CATEGORY_LAUNCHER);
-        startActivity(i);
+        gmailIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         return true;
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+
+        if (customResponse instanceof InvestigationListModel) {
+
+            InvestigationListModel investigationListModel = (InvestigationListModel) customResponse;
+
+            investigation = investigationListModel.getData();
+
+            if (investigation.size() > 0) {
+
+                for (InvestigationData dataObject : investigation) {
+                    Images images = new Images();
+                    images.setImageArray(dataObject.getPhotos());
+                    appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.getInvestigationKey(), dataObject.isUploaded(), new Gson().toJson(images));
+                }
+
+                int isAlreadyUploadedButtonVisible = View.GONE;
+
+                for (int i = 0; i < investigation.size(); i++) {
+                    InvestigationData data = appDBHelper.getInvestigationData(investigation.get(i).getId());
+                    boolean status = data.isUploaded();
+                    ArrayList<Image> imageArray = data.getPhotos();
+                    if (!status) {
+                        InvestigationData dataObject = new InvestigationData();
+                        dataObject.setId(investigation.get(i).getId());
+                        dataObject.setTitle(investigation.get(i).getTitle());
+                        dataObject.setInvestigationKey(investigation.get(i).getInvestigationKey());
+                        dataObject.setDoctorName(investigation.get(i).getDoctorName());
+                        dataObject.setOpdId(investigation.get(i).getOpdId());
+                        dataObject.setSelected(investigation.get(i).isSelected());
+                        dataObject.setUploaded(investigation.get(i).isUploaded());
+                        dataObject.setPhotos(imageArray);
+                        investigationTemp.add(dataObject);
+                    } else {
+                        isAlreadyUploadedButtonVisible = View.VISIBLE;
+                        investigation.get(i).setSelected(true);
+                        investigation.get(i).setUploaded(true);
+                        investigation.get(i).setPhotos(data.getPhotos());
+                    }
+                }
+
+                buttonManage(isAlreadyUploadedButtonVisible);
+
+                mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
+                mRecyclerView.setAdapter(mAdapter);
+            } else CommonMethods.showInfoDialog("Investigation not available", mContext, true);
+        } else if (customResponse instanceof InvestigationUploadByGmailModel) {
+            InvestigationUploadByGmailModel investigationUploadByGmailModel = (InvestigationUploadByGmailModel) customResponse;
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("email", investigationUploadByGmailModel.getData().getEmailId());
+            clipboard.setPrimaryClip(clip);
+
+            for (InvestigationData dataObject : investigationTemp) {
+                if (dataObject.isSelected() && !dataObject.isUploaded()) {
+                    dataObject.setUploaded(dataObject.isSelected());
+                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), "");
+                }
+            }
+            changeOriginalData(investigationTemp);
+            buttonEnable();
+            buttonManage(View.VISIBLE);
+            startActivity(gmailIntent);
+            CommonMethods.showToast(mContext, investigationUploadByGmailModel.getData().getEmailId());
+        }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
     }
 }

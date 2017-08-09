@@ -1,21 +1,41 @@
 package com.myrescribe.model.investigation;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-/**
- * Created by ganeshshirole on 11/7/17.
- */
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-public class Image implements Serializable{
+public class Image implements Parcelable {
+
+    public final static Parcelable.Creator<Image> CREATOR = new Creator<Image>() {
+
+
+        @SuppressWarnings({
+                "unchecked"
+        })
+        public Image createFromParcel(Parcel in) {
+            Image instance = new Image();
+            instance.imageId = ((String) in.readValue((String.class.getClassLoader())));
+            instance.imagePath = ((String) in.readValue((String.class.getClassLoader())));
+            instance.selected = ((boolean) in.readValue((boolean.class.getClassLoader())));
+            return instance;
+        }
+
+        public Image[] newArray(int size) {
+            return (new Image[size]);
+        }
+
+    };
+    @SerializedName("image_id")
+    @Expose
     private String imageId;
+    @SerializedName("image_path")
+    @Expose
     private String imagePath;
-    private boolean isSelected = false;
-
-    public Image(String imageId, String imagePath, boolean isSelected) {
-        this.imageId = imageId;
-        this.imagePath = imagePath;
-        this.isSelected = isSelected;
-    }
+    @SerializedName("selected")
+    @Expose
+    private boolean selected = false;
 
     public String getImageId() {
         return imageId;
@@ -27,17 +47,28 @@ public class Image implements Serializable{
 
     public String getImagePath() {
         return imagePath;
-    }
+}
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 
     public boolean isSelected() {
-        return isSelected;
+        return selected;
     }
 
     public void setSelected(boolean selected) {
-        isSelected = selected;
+        this.selected = selected;
     }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(imageId);
+        dest.writeValue(imagePath);
+        dest.writeValue(selected);
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
 }

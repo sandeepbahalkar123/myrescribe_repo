@@ -182,6 +182,8 @@
     <string name="less">less</string>
     <string name="equal">equal</string>
     <string name="greater">greater</string>
+    <string name="less_than_sign"><![CDATA[<]]></string>
+    <string name="greater_than_sign"><![CDATA[>]]></string>
 
 
 </resources>

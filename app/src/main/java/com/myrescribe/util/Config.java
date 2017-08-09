@@ -15,8 +15,8 @@ public class Config {
     private static final String TAG = "MyRescribe/Config";
     public static boolean DEV_BUILD = true;
     //Declared all URL used in app here
-//    public static String BASE_URL = "http://192.168.0.182:3003/";  // Local
-    public static String BASE_URL = "http://drrescribe.com:3003/";  // Live
+    public static String BASE_URL = "http://192.168.0.182:3003/";  // Local
+//    public static String BASE_URL = "http://drrescribe.com:3003/";  // Live
     public Context mContext;
     //Declared all URL used in app here
 

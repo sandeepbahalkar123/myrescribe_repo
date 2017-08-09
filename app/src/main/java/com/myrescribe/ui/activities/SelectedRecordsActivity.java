@@ -208,7 +208,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
             Log.d("JSON", new Gson().toJson(selectedDocModel));
 
             Intent intent = new Intent();
-            intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
+            intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigation);
 //            intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
             setResult(RESULT_OK, intent);
 

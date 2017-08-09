@@ -67,9 +67,9 @@ public class InvestigationAlarmTask implements Runnable {
     private void setAlarm(String time, String msg, int requestCode) {
         Intent intent = new Intent(context, InvestigationNotificationService.class);
         intent.putExtra(InvestigationNotificationService.INTENT_NOTIFY, true);
-        intent.putExtra(MyRescribeConstants.INVESTIGATION_TIME, time);
-        intent.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, msg);
-        intent.putExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, requestCode);
+        intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, time);
+        intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE, msg);
+        intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, requestCode);
 
         PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent, 0);
 
@@ -82,7 +82,7 @@ public class InvestigationAlarmTask implements Runnable {
     private void cancelAlarm(int requestCode) {
         Intent intent = new Intent(context, InvestigationNotificationService.class);
         intent.putExtra(InvestigationNotificationService.INTENT_NOTIFY, false);
-        intent.putExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, requestCode);
+        intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, requestCode);
         context.startService(intent);
     }
 

@@ -93,10 +93,12 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         mContext = InvestigationActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
-        patientId = Integer.parseInt(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        String patientIdString = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+
+        patientId = Integer.parseInt(patientIdString.equals("") ? "0" : patientIdString);
 
         investigationHelper = new InvestigationHelper(mContext);
-        investigationHelper.getInvestigationList();
+        investigationHelper.getInvestigationList(true);
 
         // off recyclerView Animation
 
@@ -198,7 +200,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO || requestCode == UPLOADED_DOCS) {
             if (resultCode == RESULT_OK) {
                 investigationTemp.clear();
-                ArrayList<InvestigationData> invest = data.getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_DATA);
+                ArrayList<InvestigationData> invest = data.getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
                 changeOriginalData(invest);
                 investigationTemp.addAll(invest);
                 mAdapter.notifyDataSetChanged();
@@ -229,15 +231,15 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 }
                 if (selected) {
                     Intent intent = new Intent(mContext, SelectedDocsActivity.class);
-                    intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigationTemp);
+                    intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigationTemp);
                     startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
                 } else
                     CommonMethods.showToast(mContext, "Please select at least one Document.");
                 break;
             case R.id.selectUploadedButton:
                 Intent intent = new Intent(mContext, UploadedDocsActivity.class);
-                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
-                intent.putExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA, investigationTemp);
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigation);
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TEMP_DATA, investigationTemp);
                 startActivityForResult(intent, UPLOADED_DOCS);
                 break;
             case R.id.gmailButton:

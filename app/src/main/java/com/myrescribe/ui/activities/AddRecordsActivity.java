@@ -1,5 +1,6 @@
 package com.myrescribe.ui.activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -41,11 +43,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import droidninja.filepicker.FilePickerConst;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
 /**
  * Created by jeetal on 31/7/17.
  */
 
+@RuntimePermissions
 public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinnerAdapter.TextEnterListener, DatePickerDialog.OnDateSetListener, GoogleApiClient.OnConnectionFailedListener {
     @BindView(R.id.addRecordsToolbar)
     Toolbar mToolbar;
@@ -83,7 +88,9 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     RelativeLayout selectAddressLayout;
 
     @BindView(R.id.selectAddressText)
-    TextView selectAddressText;
+    EditText selectAddressText;
+    @BindView(R.id.addressIcon)
+    ImageView addressIcon;
 
     private GoogleApiClient mGoogleApiClient;
     private int PLACE_PICKER_REQUEST = 1;
@@ -178,7 +185,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
         return null;
     }
 
-    @OnClick({R.id.clearButton, R.id.selectDateTextView, R.id.dateIcon, R.id.uploadButton, R.id.searchButton, R.id.selectAddressLayout})
+    @OnClick({R.id.clearButton, R.id.selectDateTextView, R.id.dateIcon, R.id.uploadButton, R.id.searchButton, R.id.add, R.id.addressIcon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.clearButton:
@@ -203,13 +210,21 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
             case R.id.searchButton:
                 mSelectDoctorName.setText("");
                 break;
-            case R.id.selectAddressLayout:
-                callPickPlace();
+            case R.id.addressIcon:
+//                callPickPlace();
+                AddRecordsActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
                 break;
         }
     }
 
-    private void callPickPlace() {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        AddRecordsActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION})
+    public void callPickPlace() {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
             Intent intentPlace = builder.build(AddRecordsActivity.this);

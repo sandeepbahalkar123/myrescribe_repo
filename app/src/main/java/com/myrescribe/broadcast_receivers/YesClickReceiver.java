@@ -35,7 +35,7 @@ public class YesClickReceiver extends BroadcastReceiver implements  HelperRespon
         this.mContext = mContext;
         respondToNotificationHelper = new RespondToNotificationHelper(mContext,this);
         int notificationId = intent.getIntExtra(MyRescribeConstants.NOTIFICATION_ID, 10);
-        int investigation_notification_id = intent.getIntExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, 10);
+        int investigation_notification_id = intent.getIntExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, 10);
         int appointment_notification_id = intent.getIntExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, 10);
         NotificationManager manager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationId == DosesAlarmTask.BREAKFAST_NOTIFICATION_ID || notificationId == DosesAlarmTask.LUNCH_NOTIFICATION_ID || notificationId == DosesAlarmTask.DINNER_NOTIFICATION_ID || notificationId == DosesAlarmTask.EVENING_NOTIFICATION_ID) {
@@ -58,8 +58,8 @@ public class YesClickReceiver extends BroadcastReceiver implements  HelperRespon
             }
         } else if (investigation_notification_id == InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID) {
             Intent intentNotification = new Intent(mContext, InvestigationActivity.class);
-            intentNotification.putExtra(MyRescribeConstants.INVESTIGATION_TIME, intent.getStringExtra(MyRescribeConstants.INVESTIGATION_TIME));
-            intentNotification.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, intent.getBundleExtra(MyRescribeConstants.INVESTIGATION_MESSAGE));
+            intentNotification.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, intent.getStringExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
+//            intentNotification.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE, intent.getBundleExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE));
             intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                     Intent.FLAG_ACTIVITY_CLEAR_TOP);
             mContext.startActivity(intentNotification);

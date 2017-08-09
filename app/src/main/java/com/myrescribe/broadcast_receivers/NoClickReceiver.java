@@ -24,7 +24,7 @@ public class NoClickReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         int notificationId = intent.getIntExtra(MyRescribeConstants.NOTIFICATION_ID, 10);
-        int investigation_notification_id = intent.getIntExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, 10);
+        int investigation_notification_id = intent.getIntExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, 10);
         int appointment_notification_id = intent.getIntExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, 10);
         String loginStatus = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, context);
 

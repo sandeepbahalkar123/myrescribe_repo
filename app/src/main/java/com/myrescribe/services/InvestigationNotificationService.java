@@ -13,12 +13,22 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.broadcast_receivers.NoClickReceiver;
 import com.myrescribe.broadcast_receivers.YesClickReceiver;
 import com.myrescribe.helpers.database.AppDBHelper;
+import com.myrescribe.helpers.investigation.InvestigationHelper;
+import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.investigation.Images;
+import com.myrescribe.model.investigation.InvestigationData;
+import com.myrescribe.model.investigation.InvestigationListModel;
 import com.myrescribe.notification.InvestigationAlarmTask;
+import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
+
+import java.util.ArrayList;
 
 
 /**
@@ -29,7 +39,7 @@ import com.myrescribe.util.MyRescribeConstants;
  *
  * @author paul.blundell
  */
-public class InvestigationNotificationService extends Service {
+public class InvestigationNotificationService extends Service implements HelperResponse {
 
 //    static int mNotificationNoTextField = 0;
 
@@ -38,6 +48,8 @@ public class InvestigationNotificationService extends Service {
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
     private int notification_id;
+    private AppDBHelper appDBHelper;
+    private Intent intent;
 
     @Override
     public void onCreate() {
@@ -47,12 +59,16 @@ public class InvestigationNotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        notification_id = intent.getIntExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, 0);
+        this.intent = intent;
 
+        notification_id = intent.getIntExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, 0);
         // If this service was started by out DosesAlarmTask intent then we want to show our notification
-        if (intent.getBooleanExtra(INTENT_NOTIFY, false))
-            checkAllUploaded(intent);
-        else {
+        InvestigationHelper investigationHelper;
+        if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
+            appDBHelper = new AppDBHelper(this);
+            investigationHelper = new InvestigationHelper(this);
+            investigationHelper.getInvestigationList(false);
+        } else {
             PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, notification_id, intent, flags);
             AlarmManager aManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             aManager.cancel(mAlarmPendingIntent);
@@ -62,9 +78,8 @@ public class InvestigationNotificationService extends Service {
         return START_NOT_STICKY;
     }
 
-    private void checkAllUploaded(Intent intentData) {
+    private void checkAllUploaded() {
         String drName = "";
-        AppDBHelper appDBHelper = new AppDBHelper(this);
         Cursor cursor = appDBHelper.getAllInvestigationData();
         String docs = "";
         int notUploaded = 0;
@@ -95,14 +110,17 @@ public class InvestigationNotificationService extends Service {
                 pendingIntent.cancel();
             }
         } else {
-            if (cursor.getCount() == notUploaded) {
-                message = intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_MESSAGE);
-            } else {
-                message = "Have you done the" + docs + " investigation advised by " + drName + "?";
+            if (cursor.getCount() != notUploaded && cursor.getCount() > 0) {
+                message = "Have you done the " + docs + " investigation advised by " + drName + "?";
+            } else if (cursor.getCount() > 0) {
+                message = "Have you done the investigations advised by " + drName + "?";
+//                message = intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_MESSAGE);
             }
 
-            intentData.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, message);
-            customNotification(intentData);
+            if (!drName.equals("")) {
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE, message);
+                customNotification();
+            }
         }
         cursor.close();
     }
@@ -112,23 +130,23 @@ public class InvestigationNotificationService extends Service {
         return mBinder;
     }
 
-    public void customNotification(Intent intentData) {
+    public void customNotification() {
 
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
                 R.layout.investigation_notification_layout);
 
         Intent mNotifyYesIntent = new Intent(this, YesClickReceiver.class);
-        mNotifyYesIntent.putExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, notification_id);
-        mNotifyYesIntent.putExtra(MyRescribeConstants.INVESTIGATION_TIME, intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_TIME));
-        mNotifyYesIntent.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_MESSAGE));
+        mNotifyYesIntent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, notification_id);
+        mNotifyYesIntent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, intent.getStringExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
+//        mNotifyYesIntent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE, intent.getStringExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE));
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mYesPendingIntent);
 
         Intent mNotifyNoIntent = new Intent(this, NoClickReceiver.class);
       /*  mNotifyNoIntent.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_MESSAGE));
         mNotifyNoIntent.putExtra(MyRescribeConstants.TIME, intentData.getStringExtra(MyRescribeConstants.TIME));*/
-        mNotifyNoIntent.putExtra(MyRescribeConstants.INVESTIGATION_NOTIFICATION_ID, notification_id);
+        mNotifyNoIntent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, notification_id);
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
 
@@ -143,12 +161,49 @@ public class InvestigationNotificationService extends Service {
                 .setContent(mRemoteViews);
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.investigation));
-        mRemoteViews.setTextViewText(R.id.questionText, intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_MESSAGE));
-        mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_TIME));
+        mRemoteViews.setTextViewText(R.id.questionText, intent.getStringExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE));
+        mRemoteViews.setTextViewText(R.id.timeText, intent.getStringExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationmanager.notify(notification_id, builder.build());
 
         stopSelf();
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if (customResponse instanceof InvestigationListModel) {
+
+            InvestigationListModel investigationListModel = (InvestigationListModel) customResponse;
+
+            ArrayList<InvestigationData> investigation = investigationListModel.getData();
+
+            if (investigation.size() > 0) {
+
+                for (InvestigationData dataObject : investigation) {
+                    Images images = new Images();
+                    images.setImageArray(dataObject.getPhotos());
+                    appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.getInvestigationKey(), dataObject.getDoctorName(), dataObject.getOpdId(), dataObject.isUploaded(), new Gson().toJson(images));
+                }
+
+                checkAllUploaded();
+
+            }
+        }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
     }
 
     /**

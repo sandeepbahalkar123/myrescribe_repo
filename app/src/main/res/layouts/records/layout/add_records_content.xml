@@ -184,12 +184,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:clickable="true"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:background="@drawable/curve_edges_common">
 
-            <TextView
+            <EditText
                 android:id="@+id/selectAddressText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

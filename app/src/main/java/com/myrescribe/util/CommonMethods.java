@@ -712,23 +712,23 @@ public class CommonMethods {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         for (int i = 0; i < rangeList.size(); i++) {
             if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.less))) {
-                normalRange.setText("<" + rangeList.get(i).getValue());
+                normalRange.setText(mContext.getString(R.string.less_than_sign) + rangeList.get(i).getValue());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
                 normalRange.setText(rangeList.get(i).getMin() + ":" + rangeList.get(i).getMax());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
-                normalRange.setText(">" + rangeList.get(i).getValue());
+                normalRange.setText(mContext.getString(R.string.greater_than_sign) + rangeList.get(i).getValue());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.less))) {
-                moderateRange.setText("<" + rangeList.get(i).getValue());
+                moderateRange.setText(mContext.getString(R.string.less_than_sign) + rangeList.get(i).getValue());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
                 moderateRange.setText(rangeList.get(i).getMin() + ":" + rangeList.get(i).getMax());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
-                moderateRange.setText(">" + rangeList.get(i).getValue());
+                moderateRange.setText(mContext.getString(R.string.greater_than_sign)  + rangeList.get(i).getValue());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.less))) {
-                severeRange.setText("<" + rangeList.get(i).getValue());
+                severeRange.setText(mContext.getString(R.string.less_than_sign) + rangeList.get(i).getValue());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
                 severeRange.setText(rangeList.get(i).getMin() + ":" + rangeList.get(i).getMax());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
-                severeRange.setText(">" + rangeList.get(i).getValue());
+                severeRange.setText(mContext.getString(R.string.greater_than_sign)  + rangeList.get(i).getValue());
             }
         }
         

@@ -179,5 +179,11 @@
     <string name="less_than_sign"><![CDATA[<]]></string>
     <string name="greater_than_sign"><![CDATA[>]]></string>
     <string name="server_error">Server Error</string>
+    <string name="bp_max">BpMax</string>
+    <string name="bp">BP</string>
+    <string name="colon_sign">:</string>
+    <string name="bp_min">BpMin</string>
+    <string name="dash">-</string>
+    <string name="and_sign"><![CDATA[&]]></string>
 
 </resources>

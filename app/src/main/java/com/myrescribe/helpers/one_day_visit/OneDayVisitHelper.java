@@ -3,6 +3,7 @@ package com.myrescribe.helpers.one_day_visit;
 import android.content.Context;
 
 import com.android.volley.Request;
+import com.myrescribe.R;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
@@ -10,6 +11,7 @@ import com.myrescribe.model.case_details.CaseDetailsModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
 
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
@@ -71,7 +73,7 @@ public class OneDayVisitHelper implements ConnectionListener {
     public void doGetOneDayVisit(String opdId) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_ONE_DAY_VISIT, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.ONE_DAY_VISIT_URL+opdId);
+        mConnectionFactory.setUrl(Config.ONE_DAY_VISIT_URL+opdId+mContext.getString(R.string.and_sign)+MyRescribeConstants.PATIENT_ID+ MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID,mContext));
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_ONE_DAY_VISIT);
     }
 }

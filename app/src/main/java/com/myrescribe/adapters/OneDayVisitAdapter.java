@@ -1,11 +1,17 @@
 package com.myrescribe.adapters;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,6 +22,7 @@ import android.widget.TextView;
 import com.myrescribe.R;
 import com.myrescribe.model.case_details.CommonData;
 import com.myrescribe.model.case_details.PatientHistory;
+import com.myrescribe.model.case_details.Range;
 import com.myrescribe.model.case_details.Vital;
 import com.myrescribe.util.CommonMethods;
 
@@ -141,7 +148,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
             vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CommonMethods.showVitalDialog(mContext, mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName(),
+                   showVitalDialog(mContext, mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName(),
                             mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(),
                             mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(),
                             CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getDisplayName()),
@@ -277,5 +284,83 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
             System.out.println(t);
             return t;
         }
+    }
+
+    public Dialog showVitalDialog(Context context, String unit, String unitValue, List<Range> rangeList, Integer drawable, String category) {
+
+        final Context mContext = context;
+        final Dialog dialog = new Dialog(context);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.vitals_dialog_layout);
+        dialog.setCancelable(true);
+        LinearLayout showVitalNameLayout = (LinearLayout)dialog.findViewById(R.id.showVitalNameLayout) ;
+        LinearLayout showVitalRangeLayout = (LinearLayout)dialog.findViewById(R.id.showVitalRangeLayout);
+        TextView normalRange = (TextView) dialog.findViewById(R.id.normalSubTypeRange);
+        TextView moderateRange = (TextView) dialog.findViewById(R.id.moderateSubTypeRange);
+        TextView severeRange = (TextView) dialog.findViewById(R.id.severeSubTypeRange);
+        TextView noOfVitalsDialog = (TextView) dialog.findViewById(R.id.noOfVitalsDialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        for (int i = 0; i < rangeList.size(); i++) {
+            if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.less))) {
+                normalRange.setText(mContext.getString(R.string.less_than_sign) + rangeList.get(i).getValue());
+            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
+                normalRange.setText(rangeList.get(i).getMin() + mContext.getString(R.string.dash) + rangeList.get(i).getMax());
+            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
+                normalRange.setText(mContext.getString(R.string.greater_than_sign) + rangeList.get(i).getValue());
+            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.less))) {
+                moderateRange.setText(mContext.getString(R.string.less_than_sign) + rangeList.get(i).getValue());
+            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
+                moderateRange.setText(rangeList.get(i).getMin() + mContext.getString(R.string.dash) + rangeList.get(i).getMax());
+            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
+                moderateRange.setText(mContext.getString(R.string.greater_than_sign)  + rangeList.get(i).getValue());
+            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.less))) {
+                severeRange.setText(mContext.getString(R.string.less_than_sign) + rangeList.get(i).getValue());
+            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
+                severeRange.setText(rangeList.get(i).getMin() + mContext.getString(R.string.dash) + rangeList.get(i).getMax());
+            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
+                severeRange.setText(mContext.getString(R.string.greater_than_sign)  + rangeList.get(i).getValue());
+            }
+        }
+
+        if (category.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
+            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
+        } else if (category.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
+            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
+        } else if (category.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
+            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
+        }
+
+        //----Manage visibility----
+        if (normalRange.getText().toString().trim().length() == 0) {
+            LinearLayout normalRangeLayout = (LinearLayout) dialog.findViewById(R.id.normalSubTypeRangeLayout);
+            normalRangeLayout.setVisibility(View.GONE);
+        }
+        if (moderateRange.getText().toString().trim().length() == 0) {
+            LinearLayout moderateRangeLayout = (LinearLayout) dialog.findViewById(R.id.moderateSubTypeRange);
+            moderateRangeLayout.setVisibility(View.GONE);
+        }
+        if (severeRange.getText().toString().trim().length() == 0) {
+            LinearLayout severeRangeLayout = (LinearLayout) dialog.findViewById(R.id.severeSubTypeRange);
+            severeRangeLayout.setVisibility(View.GONE);
+        }
+
+        //--------
+        ((TextView) dialog.findViewById(R.id.vitalNameDialog)).setText(unit);
+        noOfVitalsDialog.setText(unitValue);
+        ((ImageView) dialog.findViewById(R.id.vitalImageDialog)).setImageResource(drawable);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        lp.gravity = Gravity.CENTER;
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+        dialog.setCanceledOnTouchOutside(true);
+
+        dialog.show();
+
+        return dialog;
     }
 }

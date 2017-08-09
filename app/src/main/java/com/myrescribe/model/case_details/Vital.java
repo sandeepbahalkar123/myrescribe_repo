@@ -34,6 +34,16 @@ public class Vital implements CustomResponse{
 
     private String category;
 
+    private String flagName;
+
+    public String getFlagName() {
+        return flagName;
+    }
+
+    public void setFlagName(String flagName) {
+        this.flagName = flagName;
+    }
+
     public String getUnitName() {
         return unitName;
     }

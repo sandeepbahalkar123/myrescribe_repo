@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp05"
         android:layout_marginTop="@dimen/dp6"
-        android:visibility="gone"
-        android:background="@color/divider" />
+        android:background="@color/divider"
+        android:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/expandedMedicineDoseLayout"
@@ -20,7 +20,7 @@
         android:layout_marginBottom="@dimen/dp4"
         android:layout_marginTop="@dimen/dp8"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/showMorningDosage"
@@ -39,12 +39,11 @@
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/morningDose"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp6"
-                android:layout_weight="1.2"
                 android:paddingLeft="@dimen/dp10"
-                android:text=""
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp14"
                 android:visibility="visible"
@@ -53,6 +52,7 @@
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/morningDoseQuantity"
                 android:layout_width="0dp"
+                android:paddingLeft="@dimen/dp10"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp6"
                 android:layout_marginEnd="@dimen/dp12"
@@ -71,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:layout_width="0dp"
@@ -83,10 +83,10 @@
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/afternoonDose"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp6"
-                android:layout_weight="1.2"
+
                 android:paddingLeft="@dimen/dp10"
                 android:text=""
                 android:textColor="@color/black"
@@ -97,6 +97,8 @@
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/afternoonDoseQuantity"
                 android:layout_width="0dp"
+                android:paddingLeft="@dimen/dp10"
+
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp6"
                 android:layout_marginEnd="@dimen/dp12"
@@ -116,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:layout_width="0dp"
@@ -128,10 +130,10 @@
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/eveningDose"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp6"
-                android:layout_weight="1.2"
+
                 android:paddingLeft="@dimen/dp10"
                 android:text=""
                 android:textColor="@color/black"
@@ -142,6 +144,8 @@
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/eveningDoseQuantity"
                 android:layout_width="0dp"
+                android:paddingLeft="@dimen/dp10"
+
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp6"
                 android:layout_marginEnd="@dimen/dp12"
@@ -161,7 +165,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:layout_width="0dp"
@@ -173,9 +177,9 @@
 
             <com.myrescribe.ui.customesViews.CustomTextView
                 android:id="@+id/nightDose"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.2"
+
                 android:paddingLeft="@dimen/dp10"
                 android:text=""
                 android:textColor="@color/black"
@@ -191,6 +195,8 @@
                 android:layout_marginRight="@dimen/dp12"
                 android:layout_weight="1.5"
                 android:text=""
+                android:paddingLeft="@dimen/dp10"
+
                 android:textColor="@color/dose_completed"
                 android:textSize="@dimen/sp11"
                 android:textStyle="bold"

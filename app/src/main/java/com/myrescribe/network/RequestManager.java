@@ -400,16 +400,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     @Override
     public void parseJson(String data, boolean isTokenExpired) {
         try {
-
             Log.e(TAG, data);
-
             Gson gson = new Gson();
-
             if (isTokenExpired) {
                 // This success response is for refresh token
-
                 // Need to Add
-
                 LoginModel loginModel = gson.fromJson(data, LoginModel.class);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);

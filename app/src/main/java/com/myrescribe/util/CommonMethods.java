@@ -722,16 +722,16 @@ public class CommonMethods {
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
                 moderateRange.setText(rangeList.get(i).getMin() + ":" + rangeList.get(i).getMax());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
-                moderateRange.setText(mContext.getString(R.string.greater_than_sign)  + rangeList.get(i).getValue());
+                moderateRange.setText(mContext.getString(R.string.greater_than_sign) + rangeList.get(i).getValue());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.less))) {
                 severeRange.setText(mContext.getString(R.string.less_than_sign) + rangeList.get(i).getValue());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
                 severeRange.setText(rangeList.get(i).getMin() + ":" + rangeList.get(i).getMax());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
-                severeRange.setText(mContext.getString(R.string.greater_than_sign)  + rangeList.get(i).getValue());
+                severeRange.setText(mContext.getString(R.string.greater_than_sign) + rangeList.get(i).getValue());
             }
         }
-        
+
         if (category.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
             noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
         } else if (category.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
@@ -1101,6 +1101,15 @@ public class CommonMethods {
             ex.printStackTrace();
         }
         return "{}";
+    }
+
+    public static String[] splitTextInChunk(String s, int chunkSize) {
+        int chunkCount = (s.length() / chunkSize) + (s.length() % chunkSize == 0 ? 0 : 1);
+        String[] returnVal = new String[chunkCount];
+        for (int i = 0; i < chunkCount; i++) {
+            returnVal[i] = s.substring(i * chunkSize, Math.min((i + 1) * chunkSize - 1, s.length()));
+        }
+        return returnVal;
     }
 }
 

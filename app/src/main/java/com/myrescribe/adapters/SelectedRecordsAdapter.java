@@ -1,7 +1,6 @@
 package com.myrescribe.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -9,14 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.myrescribe.R;
 import com.myrescribe.model.investigation.Image;
-import com.myrescribe.ui.activities.ZoomImageViewActivity;
 import com.myrescribe.util.CommonMethods;
-import com.myrescribe.util.MyRescribeConstants;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class SelectedRecordsAdapter extends RecyclerView.Adapter<SelectedRecords
 
     @Override
     public void onBindViewHolder(final SelectedRecordsAdapter.FileViewHolder holder, final int position) {
-        final Image path = paths.get(position);
+        final Image image = paths.get(position);
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.centerCrop();
@@ -62,16 +61,27 @@ public class SelectedRecordsAdapter extends RecyclerView.Adapter<SelectedRecords
         requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
 
         Glide.with(context)
-                .load(new File(path.getImagePath()))
+                .load(new File(image.getImagePath()))
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(holder.imageView);
 
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
+        if (image.isSelected()) {
+            holder.itemLayout.setAlpha(0.5f);
+        } else {
+            holder.itemLayout.setAlpha(1f);
+        }
+
+        holder.addCaptionText.setText(image.getCaption());
+
+        holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ZoomImageViewActivity.class);
-                intent.putExtra(MyRescribeConstants.DOCUMENTS, path.getImagePath());
-                context.startActivity(intent);
+                if (image.isSelected())
+                    image.setSelected(false);
+                else
+                    image.setSelected(true);
+
+                notifyItemChanged(position);
             }
         });
 
@@ -91,8 +101,14 @@ public class SelectedRecordsAdapter extends RecyclerView.Adapter<SelectedRecords
 
     static class FileViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.item_layout)
+        RelativeLayout itemLayout;
+
         @BindView(R.id.iv_photo)
         ImageView imageView;
+
+        @BindView(R.id.addCaptionText)
+        TextView addCaptionText;
 
         @BindView(R.id.removeCheckbox)
         ImageView removeCheckbox;

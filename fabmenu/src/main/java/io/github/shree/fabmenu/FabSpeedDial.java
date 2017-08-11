@@ -421,7 +421,7 @@ public class FabSpeedDial extends FrameLayout {
             return;
         }
         fabMain.setSelected(true);
-        fabMain.animate().rotation(90.0f)
+        fabMain.animate().rotation(45.0f)
                 .setDuration(MAIN_FAB_ROTATE_DURATION)
                 .start();
 

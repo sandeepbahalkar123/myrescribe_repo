@@ -6,15 +6,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -36,6 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
+import io.github.shree.fabmenu.FabSpeedDial;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -48,6 +53,8 @@ public class SelectedRecordsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     @BindView(R.id.uploadButton)
     Button uploadButton;
+    @BindView(R.id.fab)
+    FabSpeedDial fab;
 
     private static final int MAX_ATTACHMENT_COUNT = 10;
     private Context mContext;
@@ -93,11 +100,31 @@ public class SelectedRecordsActivity extends AppCompatActivity {
             photoPaths = investigation.get(media_id).getPhotos();
         }
 
+        // off recyclerView Animation
+
+        RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
+        if (animator instanceof SimpleItemAnimator)
+            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+
         selectedRecordsAdapter = new SelectedRecordsAdapter(mContext, photoPaths);
         recyclerView.setAdapter(selectedRecordsAdapter);
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 2);
         recyclerView.setLayoutManager(layoutManager);
 
+        fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
+            @Override
+            public void onMenuItemClick(FloatingActionButton miniFab, @Nullable TextView label, int itemId) {
+                for (Image image : photoPaths) {
+                    if (image.isSelected()) {
+                        if (label != null) {
+                            image.setCaption(label.getText().toString());
+                            image.setSelected(false);
+                        }
+                    }
+                }
+                selectedRecordsAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -166,13 +193,22 @@ public class SelectedRecordsActivity extends AppCompatActivity {
             if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
 //            int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
                 if (resultCode == Activity.RESULT_OK) {
-                    photoPaths.clear();
+//                    photoPaths.clear();
+
                     for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)) {
-                        Image image = new Image();
-                        image.setImageId(patient_id + "_" + UUID.randomUUID().toString());
-                        image.setImagePath(imagePath);
-                        image.setSelected(false);
-                        photoPaths.add(image);
+                        boolean isExist = false;
+                        for (Image imagePre : photoPaths) {
+                            if (imagePre.getImagePath().equals(imagePath))
+                                isExist = true;
+                        }
+
+                        if (!isExist) {
+                            Image image = new Image();
+                            image.setImageId(patient_id + "_" + UUID.randomUUID().toString());
+                            image.setImagePath(imagePath);
+                            image.setSelected(false);
+                            photoPaths.add(image);
+                        }
                     }
                     selectedRecordsAdapter.notifyDataSetChanged();
                 }

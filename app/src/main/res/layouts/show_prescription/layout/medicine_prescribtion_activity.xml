@@ -42,21 +42,22 @@
 
                 <com.myrescribe.ui.customesViews.CustomTextView
                     android:id="@+id/medicineName"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="5"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp18"
-                    android:layout_weight="0.4"
                     app:customFont="@string/roboto_bold" />
 
                 <com.myrescribe.ui.customesViews.CustomTextView
                     android:id="@+id/days"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp4"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp14"
-                    android:layout_weight="0.7"
                     app:customFont="@string/roboto_bold" />
             </LinearLayout>
 
@@ -66,7 +67,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,7 +82,7 @@
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="@dimen/dp8"
                         android:src="@drawable/breakfast_normal"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <ImageView
                         android:id="@+id/imageViewAfternoonDose"
@@ -114,10 +115,10 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingRight="@dimen/dp6">
 
                     <View
                         android:layout_width="@dimen/dp2"
@@ -127,62 +128,73 @@
                         android:layout_marginTop="@dimen/dp4"
                         android:background="@color/divider" />
 
-                    <com.myrescribe.ui.customesViews.CustomTextView
-                        android:id="@+id/doseQuantityNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/dp2"
-                        android:layout_weight="1"
-                        android:gravity="right|center_vertical"
-                        android:paddingRight="@dimen/dp4"
-                        android:textColor="@color/recentblue"
-                        android:textSize="@dimen/sp38"
-                        android:textStyle="bold"
-                        app:customFont="@string/roboto_bold" />
-
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/rightDoseLayout"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
                         <com.myrescribe.ui.customesViews.CustomTextView
-                            android:id="@+id/dosePeriod"
+                            android:id="@+id/doseQuantityNumber"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp4"
-                            android:textColor="@color/instruction_color"
-                            android:textSize="@dimen/sp14"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/dp2"
+                            android:gravity="right|center_vertical"
+                            android:paddingRight="@dimen/dp4"
+                            android:text="1"
+                            android:textColor="@color/recentblue"
+                            android:textSize="@dimen/sp38"
+                            android:textStyle="bold"
                             app:customFont="@string/roboto_bold" />
 
-                        <com.myrescribe.ui.customesViews.CustomTextView
-                            android:id="@+id/doseSlot"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/dp4"
-                            android:textColor="@color/instruction_color"
-                            android:textSize="@dimen/sp14"
-                            app:customFont="@string/roboto_bold" />
+                            android:layout_weight="0.7"
+                            android:orientation="vertical">
+
+                            <com.myrescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/dosePeriod"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="@dimen/dp4"
+                                android:text="After Breakfast"
+                                android:textColor="@color/instruction_color"
+                                android:textSize="@dimen/sp14"
+                                app:customFont="@string/roboto_bold" />
+
+                            <com.myrescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/doseSlot"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginBottom="@dimen/dp4"
+                                android:text="After Breakfast"
+                                android:textColor="@color/instruction_color"
+                                android:textSize="@dimen/sp14"
+                                app:customFont="@string/roboto_bold" />
+                        </LinearLayout>
                     </LinearLayout>
-
 
                 </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/frequencyLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
                 <com.myrescribe.ui.customesViews.CustomTextView
                     android:id="@+id/frequencyString"
                     android:layout_width="wrap_content"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/sp18"
                     android:layout_height="match_parent"
-                    android:text="1-1-1--1-1-1-1"/>
+                    android:text="1-1-1--1-1-1-1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp18"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout

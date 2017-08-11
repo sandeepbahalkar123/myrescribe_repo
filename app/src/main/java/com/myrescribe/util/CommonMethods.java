@@ -692,7 +692,6 @@ public class CommonMethods {
         return dialog;
     }
 
-
     public static String getMealTime(int hour, int mint, Context context) {
         //BB : 7-11,lunch : 11-3,dinner :7-11
         String time = "";
@@ -1021,6 +1020,15 @@ public class CommonMethods {
             ex.printStackTrace();
         }
         return "{}";
+    }
+
+    public static String[] splitTextInChunk(String s, int chunkSize) {
+        int chunkCount = (s.length() / chunkSize) + (s.length() % chunkSize == 0 ? 0 : 1);
+        String[] returnVal = new String[chunkCount];
+        for (int i = 0; i < chunkCount; i++) {
+            returnVal[i] = s.substring(i * chunkSize, Math.min((i + 1) * chunkSize - 1, s.length()));
+        }
+        return returnVal;
     }
 }
 

@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -56,8 +57,10 @@ import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.util.NetworkUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -120,7 +123,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
             if (isOffline) {
                 if (getOfflineData() != null)
-                succesResponse(getOfflineData(), false);
+                    succesResponse(getOfflineData(), false);
                 else
                     mConnectionListener.onResponse(ConnectionListener.NO_INTERNET, null, mOldDataTag);
             } else {
@@ -397,16 +400,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     @Override
     public void parseJson(String data, boolean isTokenExpired) {
         try {
-
             Log.e(TAG, data);
-
             Gson gson = new Gson();
-
             if (isTokenExpired) {
                 // This success response is for refresh token
-
                 // Need to Add
-
                 LoginModel loginModel = gson.fromJson(data, LoginModel.class);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
@@ -600,21 +598,26 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
     private void loginRequest() {
         CommonMethods.Log(TAG, "Refresh token while sending refresh token api: ");
-
-        Map<String, String> headerParams = new HashMap<>();
-        headerParams.putAll(mHeaderParams);
-        headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
-        headerParams.put(MyRescribeConstants.DEVICEID, "phone");
-        headerParams.put(MyRescribeConstants.OS, "android");
-        headerParams.put(MyRescribeConstants.OSVERSION, "6.0");
-        headerParams.put(MyRescribeConstants.DEVICE_TYPE, "phone");
-        CommonMethods.Log(TAG, "setHeaderParams:" + headerParams.toString());
-
         String url = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.LOGIN_URL;
 
         LoginRequestModel loginRequestModel = new LoginRequestModel();
         loginRequestModel.setMobileNumber(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
         loginRequestModel.setPassword(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mContext));
-        jsonRequest(url, Request.Method.POST, headerParams, loginRequestModel, true);
+        if (!(MyRescribeConstants.BLANK.equalsIgnoreCase(loginRequestModel.getMobileNumber()) &&
+                MyRescribeConstants.BLANK.equalsIgnoreCase(loginRequestModel.getPassword()))) {
+            Map<String, String> headerParams = new HashMap<>();
+            headerParams.putAll(mHeaderParams);
+            Device device = Device.getInstance(mContext);
+
+            headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
+            headerParams.put(MyRescribeConstants.DEVICEID, device.getDeviceId());
+            headerParams.put(MyRescribeConstants.OS, device.getOS());
+            headerParams.put(MyRescribeConstants.OSVERSION, device.getOSVersion());
+            headerParams.put(MyRescribeConstants.DEVICE_TYPE, device.getDeviceType());
+            CommonMethods.Log(TAG, "setHeaderParams:" + headerParams.toString());
+            jsonRequest(url, Request.Method.POST, headerParams, loginRequestModel, true);
+        } else {
+            mConnectionListener.onResponse(ConnectionListener.PARSE_ERR0R, null, mOldDataTag);
+        }
     }
 }

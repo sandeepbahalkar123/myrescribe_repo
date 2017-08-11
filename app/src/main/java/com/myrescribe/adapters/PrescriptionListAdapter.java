@@ -140,6 +140,11 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
     }
 
     private void setPrescriptionDosageData(ListViewHolder holder, int position) {
+
+        //---------
+        holder.mRightDoseLayout.setVisibility(View.INVISIBLE);
+        //--------
+
         final PrescriptionD prescriptionData = mPrescriptionData.get(position);
         String quantityOfDose = "";
         String timeOfDosage = "";
@@ -175,9 +180,18 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         //if current timeOfDosage is within breakfast timeOfDosage ie. 7 am to 11 am then breakfast image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.break_fast))) {
 
-            holder.mDosePeriod.setText(timeOfDosage);
-            holder.mDoseQuantityNumber.setText(doseQuantity);
-            holder.mDoseSlot.setText(showSlotLabel);
+            if (!MyRescribeConstants.BLANK.equalsIgnoreCase(timeOfDosage)) {
+                holder.mDosePeriod.setText(timeOfDosage);
+                holder.mRightDoseLayout.setVisibility(View.VISIBLE);
+            }
+            if (!MyRescribeConstants.BLANK.equalsIgnoreCase(doseQuantity)) {
+                holder.mDoseQuantityNumber.setText(doseQuantity);
+                holder.mRightDoseLayout.setVisibility(View.VISIBLE);
+            }
+            if (!MyRescribeConstants.BLANK.equalsIgnoreCase(showSlotLabel)) {
+                holder.mDoseSlot.setText(showSlotLabel);
+                holder.mRightDoseLayout.setVisibility(View.VISIBLE);
+            }
             //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
             if (doseQuantity.contains("/")) {
                 holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp18));
@@ -222,9 +236,22 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         }
         //if current timeOfDosage is within durationOfLunch timeOfDosage ie. 11 am to 3 pm then durationOfLunch image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.mlunch))) {
-            holder.mDosePeriod.setText(timeOfDosage);
-            holder.mDoseQuantityNumber.setText(doseQuantity);
-            holder.mDoseSlot.setText(showSlotLabel);
+            //---
+            if (!MyRescribeConstants.BLANK.equalsIgnoreCase(timeOfDosage)) {
+                holder.mDosePeriod.setText(timeOfDosage);
+                holder.mRightDoseLayout.setVisibility(View.VISIBLE);
+            }
+            if (!MyRescribeConstants.BLANK.equalsIgnoreCase(doseQuantity)) {
+                holder.mDoseQuantityNumber.setText(doseQuantity);
+                holder.mRightDoseLayout.setVisibility(View.VISIBLE);
+            }
+            if (!MyRescribeConstants.BLANK.equalsIgnoreCase(showSlotLabel)) {
+                holder.mDoseSlot.setText(showSlotLabel);
+                holder.mRightDoseLayout.setVisibility(View.VISIBLE);
+            }
+            //---
+
+
             //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
             if (doseQuantity.contains("/")) {
                 holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp18));
@@ -270,9 +297,20 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         //if current timeOfDosage is within durationOfLunch timeOfDosage ie. 11 am to 3 pm then durationOfLunch image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.msnacks))) {
 
-            holder.mDosePeriod.setText(timeOfDosage);
-            holder.mDoseQuantityNumber.setText(doseQuantity);
-            holder.mDoseSlot.setText(showSlotLabel);
+            //---
+            if (!MyRescribeConstants.BLANK.equalsIgnoreCase(timeOfDosage)) {
+                holder.mDosePeriod.setText(timeOfDosage);
+                holder.mRightDoseLayout.setVisibility(View.VISIBLE);
+            }
+            if (!MyRescribeConstants.BLANK.equalsIgnoreCase(doseQuantity)) {
+                holder.mDoseQuantityNumber.setText(doseQuantity);
+                holder.mRightDoseLayout.setVisibility(View.VISIBLE);
+            }
+            if (!MyRescribeConstants.BLANK.equalsIgnoreCase(showSlotLabel)) {
+                holder.mDoseSlot.setText(showSlotLabel);
+                holder.mRightDoseLayout.setVisibility(View.VISIBLE);
+            }
+            //---
             //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
             if (doseQuantity.contains("/")) {
                 holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp18));
@@ -317,9 +355,20 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         }
         //if current timeOfDosage is within durationOfDinner timeOfDosage ie. 7 pm to 11 pm then durationOfDinner image highlighted with circular background
         if (mGetMealTime.equals(mContext.getString(R.string.mdinner))) {
-            holder.mDosePeriod.setText(timeOfDosage);
-            holder.mDoseQuantityNumber.setText(doseQuantity);
-            holder.mDoseSlot.setText(showSlotLabel);
+            //---
+            if (!MyRescribeConstants.BLANK.equalsIgnoreCase(timeOfDosage)) {
+                holder.mDosePeriod.setText(timeOfDosage);
+                holder.mRightDoseLayout.setVisibility(View.VISIBLE);
+            }
+            if (!MyRescribeConstants.BLANK.equalsIgnoreCase(doseQuantity)) {
+                holder.mDoseQuantityNumber.setText(doseQuantity);
+                holder.mRightDoseLayout.setVisibility(View.VISIBLE);
+            }
+            if (!MyRescribeConstants.BLANK.equalsIgnoreCase(showSlotLabel)) {
+                holder.mDoseSlot.setText(showSlotLabel);
+                holder.mRightDoseLayout.setVisibility(View.VISIBLE);
+            }
+            //---
             //if dose quantity is 1/2 or 1/4 etc then change textSize of respective textview.
             if (doseQuantity.contains("/")) {
                 holder.mDoseQuantityNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.sp18));
@@ -414,6 +463,8 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         TextView mFrequencyString;
         @BindView(R.id.expandedMedicineDoseLayout)
         LinearLayout mExpandedMedicineDoseLayout;
+        @BindView(R.id.rightDoseLayout)
+        LinearLayout mRightDoseLayout;
         @BindView(R.id.dividerForInstruction)
         View mDividerForInstruction;
 

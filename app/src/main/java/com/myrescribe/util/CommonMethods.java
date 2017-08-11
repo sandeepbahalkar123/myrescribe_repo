@@ -867,7 +867,7 @@ public class CommonMethods {
         else if (vitalDetailName.equalsIgnoreCase("Total HDL"))
             abbreviation = R.drawable.total_hdl;
         else if (vitalDetailName.equalsIgnoreCase("Cholesterol"))
-            abbreviation = R.drawable.complaints;
+            abbreviation = R.drawable.cholesterol;
         else if (vitalDetailName.equalsIgnoreCase("HDL"))
             abbreviation = R.drawable.hdl;
         else if (vitalDetailName.equalsIgnoreCase("LDL"))

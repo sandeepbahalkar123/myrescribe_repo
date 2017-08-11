@@ -500,7 +500,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         break;
 
                     default:
-                        //This is for get PDF Data
+                        //This is for get PDF VisitData
                         if (mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION)) {
                             ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);

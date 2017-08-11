@@ -47,7 +47,6 @@ import butterknife.ButterKnife;
 
 public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationAdapter.OnHeaderClickListener {
 
-
     private NotificationAdapter mAdapter;
     private String mMedicineSlot;
     private String mNotificationDate;
@@ -58,7 +57,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     private boolean isHeaderExpand = true;
     private RespondToNotificationHelper mRespondToNotificationHelper;
     private String mNotificationTime;
-    private ArrayList<Medication> todayDataList;
+    private ArrayList<Medication> mTodayDataList;
 
     @BindView(R.id.recycler)
     RecyclerView mRecyclerView;
@@ -86,7 +85,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     @BindView(R.id.tabletListLayout)
     LinearLayout mTabletListLayout;
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    Toolbar mToolbar;
     @BindView(R.id.headerLayoutParent)
     LinearLayout mHeaderLayoutParent;
 
@@ -99,12 +98,12 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     }
 
     private void initialize() {
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.notification));
         mContext = NotificationActivity.this;
         mProgressDialog = new CustomProgressDialog(mContext);
-        toolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -234,9 +233,9 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     }
 
     private void addHeaderTabletView(final ViewGroup parent, final ArrayList<Medication> data) {
-        todayDataList = new ArrayList<>();
-        todayDataList.addAll(data);
-        for (int i = 0; i < todayDataList.size(); i++) {
+        mTodayDataList = new ArrayList<>();
+        mTodayDataList.addAll(data);
+        for (int i = 0; i < mTodayDataList.size(); i++) {
 
             final View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.tablet_list, parent, false);
@@ -245,8 +244,8 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             ImageView tabTypeView = (ImageView) view.findViewById(R.id.tabTypeView);
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
-            selectViewTab.setChecked(todayDataList.get(i).isTabSelected());
-            selectViewTab.setEnabled(todayDataList.get(i).isTabWebService());
+            selectViewTab.setChecked(mTodayDataList.get(i).isTabSelected());
+            selectViewTab.setEnabled(mTodayDataList.get(i).isTabWebService());
             final int finalI = i;
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -255,15 +254,15 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                         mView = view;
                         mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 0, MyRescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI);
                     } else {
-                        todayDataList.get(finalI).setTabSelected(false);
+                        mTodayDataList.get(finalI).setTabSelected(false);
                     }
 
                 }
             });
 
-            setDose(tabCountTextView, todayDataList.get(i).getQuantity(), todayDataList.get(i));
-            tabNameTextView.setText(todayDataList.get(i).getMedicineName());
-            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(todayDataList.get(i).getMedicineTypeName(), mContext));
+            setDose(tabCountTextView, mTodayDataList.get(i).getQuantity(), mTodayDataList.get(i));
+            tabNameTextView.setText(mTodayDataList.get(i).getMedicineName());
+            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(mTodayDataList.get(i).getMedicineTypeName(), mContext));
             parent.addView(view);
 
 
@@ -291,10 +290,10 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             String counter = count[1];
             if (responseLogNotificationModel.getCommon().isSuccess()) {
                 CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
-                todayDataList.get(Integer.parseInt(counter)).setTabSelected(true);
-                todayDataList.get(Integer.parseInt(counter)).setTabWebService(false);
+                mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(true);
+                mTodayDataList.get(Integer.parseInt(counter)).setTabWebService(false);
                 mView.findViewById(R.id.selectViewTab).setEnabled(false);
-                if (mAdapter.getSelectedCount(todayDataList) == todayDataList.size())
+                if (mAdapter.getSelectedCount(mTodayDataList) == mTodayDataList.size())
                     mHeaderLayoutParent.removeView(mHeaderLayout);
             }
         } else if (mOldDataTag.equals(MyRescribeConstants.TASK_NOTIFICATION)) {

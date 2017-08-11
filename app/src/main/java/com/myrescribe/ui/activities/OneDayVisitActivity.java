@@ -6,7 +6,6 @@ import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 
 import com.myrescribe.R;
@@ -17,12 +16,11 @@ import com.myrescribe.adapters.OneDayVisitAdapter;
 import com.myrescribe.helpers.one_day_visit.OneDayVisitHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.case_details.Data;
+import com.myrescribe.model.case_details.VisitData;
 import com.myrescribe.model.case_details.PatientHistory;
 import com.myrescribe.model.case_details.Range;
 import com.myrescribe.model.case_details.Vital;
 import com.myrescribe.ui.customesViews.CustomTextView;
-import com.myrescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +47,8 @@ public class OneDayVisitActivity extends AppCompatActivity implements HelperResp
     CustomTextView mDoctor_address;
     @BindView(R.id.dateTextView)
     CustomTextView mDateTextView;
-    private int lastExpandedPosition = -1;
-    Intent intent;
+    private int mLastExpandedPosition = -1;
+    Intent mIntent;
     private String TAG = getClass().getName();
     private OneDayVisitHelper mOneDayVisitHelper;
 
@@ -63,12 +61,12 @@ public class OneDayVisitActivity extends AppCompatActivity implements HelperResp
     }
 
     private void initialize() {
-        intent = getIntent();
+        mIntent = getIntent();
         if (getIntent().getExtras() != null) {
-            mDoctorName.setText(intent.getStringExtra(getString(R.string.name)));
-            mDoctorSpecialization.setText(intent.getStringExtra(getString(R.string.specialization)));
-            mDoctor_address.setText(intent.getStringExtra(getString(R.string.address)));
-            String stringExtra = intent.getStringExtra(getString(R.string.one_day_visit_date));
+            mDoctorName.setText(mIntent.getStringExtra(getString(R.string.name)));
+            mDoctorSpecialization.setText(mIntent.getStringExtra(getString(R.string.specialization)));
+            mDoctor_address.setText(mIntent.getStringExtra(getString(R.string.address)));
+            String stringExtra = mIntent.getStringExtra(getString(R.string.one_day_visit_date));
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                 mDateTextView.setText(Html.fromHtml(stringExtra, Html.FROM_HTML_MODE_LEGACY));
@@ -79,7 +77,7 @@ public class OneDayVisitActivity extends AppCompatActivity implements HelperResp
 
 
         mOneDayVisitHelper = new OneDayVisitHelper(this, this);
-        mOneDayVisitHelper.doGetOneDayVisit(intent.getStringExtra(getString(R.string.opd_id)));
+        mOneDayVisitHelper.doGetOneDayVisit(mIntent.getStringExtra(getString(R.string.opd_id)));
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.visit_details));
@@ -95,11 +93,11 @@ public class OneDayVisitActivity extends AppCompatActivity implements HelperResp
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                if (lastExpandedPosition != -1
-                        && groupPosition != lastExpandedPosition) {
-                    mHistoryExpandableListView.collapseGroup(lastExpandedPosition);
+                if (mLastExpandedPosition != -1
+                        && groupPosition != mLastExpandedPosition) {
+                    mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
                 }
-                lastExpandedPosition = groupPosition;
+                mLastExpandedPosition = groupPosition;
             }
         });
         mHistoryExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -117,8 +115,8 @@ public class OneDayVisitActivity extends AppCompatActivity implements HelperResp
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         String bpMin = "";
-        Data data = (Data) customResponse;
-        List<PatientHistory> patientHistoryList = data.getPatientHistory();
+        VisitData visitData = (VisitData) customResponse;
+        List<PatientHistory> patientHistoryList = visitData.getPatientHistory();
         List<Vital> vitalSortedList = new ArrayList<>();
 
         for (int i = 0; i < patientHistoryList.size(); i++) {
@@ -167,7 +165,8 @@ public class OneDayVisitActivity extends AppCompatActivity implements HelperResp
                 patientHistoryList.get(i).setVitals(vitalSortedList);
             }
         }
-        CommonMethods.Log(TAG, patientHistoryList.toString());
+
+
         OneDayVisitAdapter oneDayVisitAdapter = new OneDayVisitAdapter(this,patientHistoryList);
         mHistoryExpandableListView.setAdapter(oneDayVisitAdapter);
 

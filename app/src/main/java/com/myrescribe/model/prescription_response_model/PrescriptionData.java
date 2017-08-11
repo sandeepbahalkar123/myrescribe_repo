@@ -3,7 +3,7 @@ package com.myrescribe.model.prescription_response_model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PrescriptionD {
+public class PrescriptionData {
 
     @SerializedName("patientId")
     @Expose

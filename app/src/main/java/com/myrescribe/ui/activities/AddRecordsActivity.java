@@ -92,11 +92,10 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     @BindView(R.id.addressIcon)
     ImageView addressIcon;
 
-    private GoogleApiClient mGoogleApiClient;
     private int PLACE_PICKER_REQUEST = 1;
 
     private Context mContext;
-    DoctorSpinnerAdapter doctorSpinnerAdapter;
+    private DoctorSpinnerAdapter doctorSpinnerAdapter;
     private DatePickerDialog datePickerDialog;
 
     @Override
@@ -159,7 +158,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
         // Places
 
-        mGoogleApiClient = new GoogleApiClient
+        new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
@@ -185,14 +184,13 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
         return null;
     }
 
-    @OnClick({R.id.clearButton, R.id.selectDateTextView, R.id.dateIcon, R.id.uploadButton, R.id.searchButton, R.id.add, R.id.addressIcon})
+    @OnClick({R.id.clearButton, R.id.selectDateTextView, R.id.dateIcon, R.id.uploadButton, R.id.searchButton, R.id.addressIcon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.clearButton:
                 mSelectDoctorName.setText("");
                 dropdownLayout.setVisibility(View.GONE);
                 autocompleteLayout.setVisibility(View.VISIBLE);
-
                 dateSpinnerLayout.setVisibility(View.GONE);
                 selectDateLayout.setVisibility(View.VISIBLE);
                 selectAddressLayout.setVisibility(View.VISIBLE);
@@ -211,7 +209,6 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 mSelectDoctorName.setText("");
                 break;
             case R.id.addressIcon:
-//                callPickPlace();
                 AddRecordsActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
                 break;
         }
@@ -255,6 +252,9 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 stBuilder.append("\n");
                 stBuilder.append("Address: ");
                 stBuilder.append(address);
+
+                CommonMethods.Log("Address: ", stBuilder.toString());
+
                 selectAddressText.setText(address);
             }
         }

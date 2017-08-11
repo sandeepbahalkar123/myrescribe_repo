@@ -712,33 +712,49 @@ public class CommonMethods {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         for (int i = 0; i < rangeList.size(); i++) {
             if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.less))) {
-                normalRange.setText("<" + rangeList.get(i).getValue());
+                normalRange.setText(mContext.getString(R.string.less_than_sign) + rangeList.get(i).getValue());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
                 normalRange.setText(rangeList.get(i).getMin() + ":" + rangeList.get(i).getMax());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
-                normalRange.setText(">" + rangeList.get(i).getValue());
+                normalRange.setText(mContext.getString(R.string.greater_than_sign) + rangeList.get(i).getValue());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.less))) {
-                moderateRange.setText("<" + rangeList.get(i).getValue());
+                moderateRange.setText(mContext.getString(R.string.less_than_sign) + rangeList.get(i).getValue());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
                 moderateRange.setText(rangeList.get(i).getMin() + ":" + rangeList.get(i).getMax());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
-                moderateRange.setText(">" + rangeList.get(i).getValue());
+                moderateRange.setText(mContext.getString(R.string.greater_than_sign)  + rangeList.get(i).getValue());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.less))) {
-                severeRange.setText("<" + rangeList.get(i).getValue());
+                severeRange.setText(mContext.getString(R.string.less_than_sign) + rangeList.get(i).getValue());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
                 severeRange.setText(rangeList.get(i).getMin() + ":" + rangeList.get(i).getMax());
             } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
-                severeRange.setText(">" + rangeList.get(i).getValue());
+                severeRange.setText(mContext.getString(R.string.greater_than_sign)  + rangeList.get(i).getValue());
             }
         }
+        
         if (category.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
-            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext,R.color.Red));
+            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
         } else if (category.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
-            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext,R.color.range_green));
+            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
         } else if (category.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
-            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext,R.color.range_yellow));
+            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
         }
 
+        //----Manage visibility----
+        if (normalRange.getText().toString().trim().length() == 0) {
+            LinearLayout normalRangeLayout = (LinearLayout) dialog.findViewById(R.id.normalRangeLayout);
+            normalRangeLayout.setVisibility(View.GONE);
+        }
+        if (moderateRange.getText().toString().trim().length() == 0) {
+            LinearLayout moderateRangeLayout = (LinearLayout) dialog.findViewById(R.id.moderateRangeLayout);
+            moderateRangeLayout.setVisibility(View.GONE);
+        }
+        if (severeRange.getText().toString().trim().length() == 0) {
+            LinearLayout severeRangeLayout = (LinearLayout) dialog.findViewById(R.id.severeRangeLayout);
+            severeRangeLayout.setVisibility(View.GONE);
+        }
+
+        //--------
         ((TextView) dialog.findViewById(R.id.vitalNameDialog)).setText(unit);
         noOfVitalsDialog.setText(unitValue);
         ((ImageView) dialog.findViewById(R.id.vitalImageDialog)).setImageResource(drawable);

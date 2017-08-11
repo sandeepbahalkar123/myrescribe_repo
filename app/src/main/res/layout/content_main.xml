@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,26 +21,22 @@
             android:layout_gravity="center" />
 
     </FrameLayout>-->
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbarAlwaysDrawVerticalTrack="true"
     android:layout_marginTop="?android:actionBarSize"
-    >
+    android:scrollbars="none"
+    android:scrollbarAlwaysDrawVerticalTrack="true">
 
-    <LinearLayout
-
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/home_page2"
+        android:adjustViewBounds="true">
 
-        android:background="@mipmap/home_page2"
-        android:orientation="vertical">
-
-    </LinearLayout>
+    </ImageView>
 </ScrollView>
 
 
-
-<!--
-</android.support.constraint.ConstraintLayout>-->
+    <!--
+    </android.support.constraint.ConstraintLayout>-->

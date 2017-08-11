@@ -19,6 +19,7 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.notification.AppointmentsNotificationData;
 import com.myrescribe.model.notification.AppointmentsNotificationModel;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -52,17 +53,22 @@ public class AppointmentNotificationService extends Service implements HelperRes
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         // If this service was started by out DosesAlarmTask intent then we want to show our notification
-        int notification_id = intent.getIntExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, 0);
-        notifyTime = intent.getStringExtra(MyRescribeConstants.APPOINTMENT_TIME);
 
-        if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
-            AppointmentHelper appointmentHelper = new AppointmentHelper(this);
-            appointmentHelper.getDoctorList();
-        } else {
-            PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, notification_id, intent, flags);
-            AlarmManager aManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            aManager.cancel(mAlarmPendingIntent);
-        }
+        if (MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this).equals(MyRescribeConstants.YES)) {
+
+            int notification_id = intent.getIntExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, 0);
+            notifyTime = intent.getStringExtra(MyRescribeConstants.APPOINTMENT_TIME);
+
+            if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
+                AppointmentHelper appointmentHelper = new AppointmentHelper(this);
+                appointmentHelper.getDoctorList();
+            } else {
+                PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, notification_id, intent, flags);
+                AlarmManager aManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                aManager.cancel(mAlarmPendingIntent);
+            }
+
+        } else stopSelf();
         // We don't care if this service is stopped as we have already delivered our notification
         return START_NOT_STICKY;
     }
@@ -98,7 +104,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, subNotificationId, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mNoPendingIntent);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+        android.support.v4.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(this)
                 // Set Icon
                 .setSmallIcon(R.drawable.logosmall)
                 // Set Ticker Message
@@ -106,7 +112,8 @@ public class AppointmentNotificationService extends Service implements HelperRes
                 // Dismiss Notification
                 .setAutoCancel(true)
                 // Set RemoteViews into Notification
-                .setContent(mRemoteViews);
+                .setContent(mRemoteViews)
+                .setStyle(new android.support.v7.app.NotificationCompat.DecoratedCustomViewStyle());
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.appointment));
         mRemoteViews.setTextViewText(R.id.questionText, message);

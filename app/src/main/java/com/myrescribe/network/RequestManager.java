@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -30,6 +31,8 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.model.Common;
+import com.myrescribe.model.MessageModel;
 import com.myrescribe.model.case_details.CaseDetailsModel;
 import com.myrescribe.model.doctors.appointments.DoctorAppointmentModel;
 import com.myrescribe.model.doctors.doctor_info.DoctorModel;
@@ -45,9 +48,7 @@ import com.myrescribe.model.login.SignUpModel;
 import com.myrescribe.model.notification.AppointmentsNotificationModel;
 import com.myrescribe.model.notification.NotificationModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
-
 import com.myrescribe.model.requestmodel.login.LoginRequestModel;
-
 import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.customesViews.CustomProgressDialog;
@@ -55,8 +56,10 @@ import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.util.NetworkUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -398,8 +401,22 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         try {
 
             Log.e(TAG, data);
-
             Gson gson = new Gson();
+
+            JSONObject jsonObject;
+            try {
+                jsonObject = new JSONObject(data);
+                Common common = gson.fromJson(jsonObject.optString("common"), Common.class);
+                if (!common.getStatusCode().equals(MyRescribeConstants.SUCCESS)) {
+                    CommonMethods.showToast(mContext, common.getStatusMessage());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            /*MessageModel messageModel = gson.fromJson(data, MessageModel.class);
+            if (!messageModel.getCommon().getStatusCode().equals(MyRescribeConstants.SUCCESS))
+                CommonMethods.showToast(mContext, messageModel.getCommon().getStatusMessage());*/
 
             if (isTokenExpired) {
                 // This success response is for refresh token

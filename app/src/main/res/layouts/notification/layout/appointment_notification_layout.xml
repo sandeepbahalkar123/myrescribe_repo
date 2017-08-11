@@ -4,7 +4,7 @@
     android:id="@+id/notificationLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:background="@color/transparent">
 
     <ImageView
         android:id="@+id/bigIcon"
@@ -20,10 +20,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp8"
         android:layout_toEndOf="@id/bigIcon"
         android:layout_toRightOf="@+id/bigIcon"
         android:orientation="vertical"
-        android:padding="@dimen/dp8">
+        android:paddingEnd="@dimen/dp8"
+        android:paddingStart="@dimen/dp8">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,22 +54,14 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/questionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:textColor="@color/instruction_color"
+            android:textSize="@dimen/sp12"
+            tools:text="@string/dummy" />
 
-            <TextView
-                android:id="@+id/questionText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/instruction_color"
-                android:textSize="@dimen/sp12"
-                tools:text="@string/dummy" />
-
-        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

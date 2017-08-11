@@ -31,13 +31,11 @@
     <string name="enter_mobile_no">Mobile No.</string>
     <string name="login_social_media">Login with social media</string>
     <string name="log_in">Login</string>
-
     <string name="btn_logout_from_google">Logout from Google</string>
     <string name="btn_revoke_access">Revoke Access</string>
     <string name="loading">Loading...</string>
     <string name="enter_full_name">Name</string>
     <string name="enter_email_id">Email ID</string>
-
     <string name="enter_user_name">Enter User Name</string>
     <string name="cancel">Cancel</string>
     <string name="error_in_ip">Please enter valid IP address</string>
@@ -72,13 +70,11 @@
     <string name="notification">Notification</string>
     <string name="facebook_app_id">297092640737799</string>
     <string name="fb_login_protocol_scheme">fb1879555372255897</string>
-
     <string name="roboto_bold">roboto_bold.ttf</string>
     <string name="roboto_medium">roboto_medium.ttf</string>
     <string name="title_activity_preferences">Preferences</string>
     <string name="save">Save</string>
     <string name="terms_conditions">By continuing, you accept the <u>Terms of Use</u> and <u>Privacy Policy</u></string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enter_otp">Enter OTP</string>
@@ -117,7 +113,6 @@
     <string name="new_document">New Document</string>
     <string name="title_activity_uploaded_docs">Uploaded Documents</string>
     <string name="no_data_available">No data available</string>
-    <string name="google_maps_key">AIzaSyCnnUyKo4ktLqWLTKXtO2jp1AtIt0u9TEA</string>
 
     <string-array name="colors_first">
         <item>#ff0000</item>
@@ -147,7 +142,6 @@
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
     <string name="details">&#160;Details</string>
-
     <string name="forgot_password">Forgot your password?</string>
     <string name="forgot_password_header">Forgot Password</string>
     <string name="message_for_mobile_otp">Please input the OTP received on your Mobile No.&#160; %1$s</string>
@@ -157,7 +151,6 @@
     <string name="err_email_invalid">Enter valid email.</string>
     <string name="err_otp_invalid">Enter valid OTP</string>
     <string name="err_maximum_otp_retries">You have exceeded maximum retry of OTP generation, please try after sometime.</string>
-
     <string name="doctors">Doctor\'s</string>
     <string name="doctors_speciality">Doctor\'s Speciality</string>
     <string name="apply">Apply</string>
@@ -182,7 +175,15 @@
     <string name="less">less</string>
     <string name="equal">equal</string>
     <string name="greater">greater</string>
+    <string name="less_than_sign"><![CDATA[<]]></string>
+    <string name="greater_than_sign"><![CDATA[>]]></string>
     <string name="server_error">Server Error</string>
 
+
+    <!--//*** Google Map key-->
+    <!--<string name="google_maps_key">AIzaSyCnnUyKo4ktLqWLTKXtO2jp1AtIt0u9TEA</string>-->
+    <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>
+    <string name="no_investigation">Investigation not available</string>
+    <!-- //*** Google Map key-->
 
 </resources>

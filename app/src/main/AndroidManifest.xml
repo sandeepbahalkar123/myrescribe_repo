@@ -60,10 +60,10 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name="com.myrescribe.ui.activities.LoginMainActivity"
-            android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"></activity>
 
 
         <activity
@@ -167,18 +167,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.AddRecordsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/add_record"
             android:screenOrientation="portrait"
-            android:label="@string/add_record"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.SelectedRecordsActivity"
             android:label="@string/title_activity_selected_docs"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--<meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />-->
 
         <receiver android:name=".broadcast_receivers.OtpReader">
             <intent-filter>
@@ -188,7 +185,8 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0"/>
+            android:value="@string/google_maps_key" />
+
     </application>
 
 </manifest>

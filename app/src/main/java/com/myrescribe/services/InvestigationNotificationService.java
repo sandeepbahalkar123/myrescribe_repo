@@ -25,7 +25,7 @@ import com.myrescribe.model.investigation.Images;
 import com.myrescribe.model.investigation.InvestigationData;
 import com.myrescribe.model.investigation.InvestigationListModel;
 import com.myrescribe.notification.InvestigationAlarmTask;
-import com.myrescribe.util.CommonMethods;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
@@ -61,18 +61,20 @@ public class InvestigationNotificationService extends Service implements HelperR
 
         this.intent = intent;
 
-        notification_id = intent.getIntExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, 0);
-        // If this service was started by out DosesAlarmTask intent then we want to show our notification
-        InvestigationHelper investigationHelper;
-        if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
-            appDBHelper = new AppDBHelper(this);
-            investigationHelper = new InvestigationHelper(this);
-            investigationHelper.getInvestigationList(false);
-        } else {
-            PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, notification_id, intent, flags);
-            AlarmManager aManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            aManager.cancel(mAlarmPendingIntent);
-        }
+        if (MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this).equals(MyRescribeConstants.YES)) {
+            notification_id = intent.getIntExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, 0);
+            // If this service was started by out DosesAlarmTask intent then we want to show our notification
+            InvestigationHelper investigationHelper;
+            if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
+                appDBHelper = new AppDBHelper(this);
+                investigationHelper = new InvestigationHelper(this);
+                investigationHelper.getInvestigationList(false);
+            } else {
+                PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, notification_id, intent, flags);
+                AlarmManager aManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                aManager.cancel(mAlarmPendingIntent);
+            }
+        } else stopSelf();
 
         // We don't care if this service is stopped as we have already delivered our notification
         return START_NOT_STICKY;
@@ -139,18 +141,15 @@ public class InvestigationNotificationService extends Service implements HelperR
         Intent mNotifyYesIntent = new Intent(this, YesClickReceiver.class);
         mNotifyYesIntent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, notification_id);
         mNotifyYesIntent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, intent.getStringExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
-//        mNotifyYesIntent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE, intent.getStringExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE));
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyYesIntent, 0);
-        mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mYesPendingIntent);
+        mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
 
-        Intent mNotifyNoIntent = new Intent(this, NoClickReceiver.class);
-      /*  mNotifyNoIntent.putExtra(MyRescribeConstants.INVESTIGATION_MESSAGE, intentData.getStringExtra(MyRescribeConstants.INVESTIGATION_MESSAGE));
-        mNotifyNoIntent.putExtra(MyRescribeConstants.TIME, intentData.getStringExtra(MyRescribeConstants.TIME));*/
+        /*Intent mNotifyNoIntent = new Intent(this, NoClickReceiver.class);
         mNotifyNoIntent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, notification_id);
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyNoIntent, 0);
-        mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
+        mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);*/
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+        android.support.v4.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(this)
                 // Set Icon
                 .setSmallIcon(R.drawable.logosmall)
                 // Set Ticker Message
@@ -158,7 +157,8 @@ public class InvestigationNotificationService extends Service implements HelperR
                 // Dismiss Notification
                 .setAutoCancel(true)
                 // Set RemoteViews into Notification
-                .setContent(mRemoteViews);
+                .setContent(mRemoteViews)
+                .setStyle(new android.support.v7.app.NotificationCompat.DecoratedCustomViewStyle());
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.investigation));
         mRemoteViews.setTextViewText(R.id.questionText, intent.getStringExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE));

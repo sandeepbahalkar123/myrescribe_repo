@@ -64,7 +64,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             holder.mShowMedicineLayout.setVisibility(View.GONE);
             holder.mExpandedMedicineDoseLayout.setVisibility(View.GONE);
             if (prescriptionDataObject.getFreqSchedule().equals("")) {
-                holder.mFrequencyString.setText(getfrequencyScheduleString(Integer.parseInt(prescriptionDataObject.getFreq())));
+                holder.mFrequencyString.setText(prescriptionDataObject.getFreq()+mContext.getString(R.string.times));
             } else {
                 holder.mFrequencyString.setText(prescriptionDataObject.getFreqSchedule());
             }
@@ -475,7 +475,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         }
     }
 
-    public String getfrequencyScheduleString(int noOfFrequency) {
+   /* public String getfrequencyScheduleString(int noOfFrequency) {
         String s = "1";
         if (noOfFrequency == 2) {
             s = "1-0-1";
@@ -485,5 +485,5 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             }
         }
         return s;
-    }
+    }*/
 }

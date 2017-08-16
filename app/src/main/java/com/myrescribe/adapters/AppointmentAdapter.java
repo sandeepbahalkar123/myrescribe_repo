@@ -16,6 +16,7 @@ import com.myrescribe.ui.activities.MapsActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
+import com.myrescribe.util.NetworkUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -121,11 +122,15 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         holder.mGmapLocationView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DoctorAppointment appointment1 = appointmentsList.get(Integer.parseInt("" + v.getTag()));
-                Intent intent = new Intent(mContext, MapsActivity.class);
-                intent.putExtra(mContext.getString(R.string.address), appointment1.getAddress());
-                //intent.putExtra(mContext.getString(R.string.longitude), appointment1.getLongitude());
-                mContext.startActivity(intent);
+                if(NetworkUtil.isInternetAvailable(mContext)) {
+                    DoctorAppointment appointment1 = appointmentsList.get(Integer.parseInt("" + v.getTag()));
+                    Intent intent = new Intent(mContext, MapsActivity.class);
+                    intent.putExtra(mContext.getString(R.string.address), appointment1.getAddress());
+                    //intent.putExtra(mContext.getString(R.string.longitude), appointment1.getLongitude());
+                    mContext.startActivity(intent);
+                }else{
+                    CommonMethods.showToast(mContext,mContext.getString(R.string.internet));
+                }
             }
         });
 

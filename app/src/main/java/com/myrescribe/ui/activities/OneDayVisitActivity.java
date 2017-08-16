@@ -11,6 +11,7 @@ import android.view.View;
 import com.myrescribe.R;
 
 import android.widget.ExpandableListView;
+import android.widget.RelativeLayout;
 
 import com.myrescribe.adapters.OneDayVisitAdapter;
 import com.myrescribe.helpers.one_day_visit.OneDayVisitHelper;
@@ -47,6 +48,8 @@ public class OneDayVisitActivity extends AppCompatActivity implements HelperResp
     CustomTextView mDoctor_address;
     @BindView(R.id.dateTextView)
     CustomTextView mDateTextView;
+    @BindView(R.id.noRecordAvailable)
+    RelativeLayout mNoRecordAvailable;
     private int mLastExpandedPosition = -1;
     Intent mIntent;
     private String TAG = getClass().getName();
@@ -116,6 +119,13 @@ public class OneDayVisitActivity extends AppCompatActivity implements HelperResp
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         String bpMin = "";
         VisitData visitData = (VisitData) customResponse;
+        if(visitData!=null){
+            mHistoryExpandableListView.setVisibility(View.VISIBLE);
+            mNoRecordAvailable.setVisibility(View.GONE);
+        }else{
+            mHistoryExpandableListView.setVisibility(View.GONE);
+            mNoRecordAvailable.setVisibility(View.VISIBLE);
+        }
         List<PatientHistory> patientHistoryList = visitData.getPatientHistory();
         List<Vital> vitalSortedList = new ArrayList<>();
 
@@ -185,7 +195,8 @@ public class OneDayVisitActivity extends AppCompatActivity implements HelperResp
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-
+        mHistoryExpandableListView.setVisibility(View.GONE);
+        mNoRecordAvailable.setVisibility(View.VISIBLE);
     }
 }
 

@@ -133,7 +133,6 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
     }
 
     private View addTableRow(final List<com.myrescribe.model.case_details.Vital> vital, final int groupPosition) {
-
         int i;
         TableRow tableRow = new TableRow(mContext);
         for (i = 0; i < vital.size(); i++) {

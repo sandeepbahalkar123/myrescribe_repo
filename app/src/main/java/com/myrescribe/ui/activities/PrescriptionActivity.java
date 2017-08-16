@@ -37,7 +37,7 @@ public class PrescriptionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HelperResponse, View.OnClickListener {
 
     private PrescriptionListAdapter prescriptionListAdapter;
-    private final String TAG = "MyRescribe/PrescriptionActivity";
+    private final String TAG = "Rescribe/PrescriptionActivity";
     Context mContext;
     private String mGetMealTime;
     @BindView(R.id.toolbar)

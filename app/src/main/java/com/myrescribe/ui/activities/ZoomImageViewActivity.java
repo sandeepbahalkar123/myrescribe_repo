@@ -29,7 +29,7 @@ public class ZoomImageViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            getWindow().setStatusBarColor(getColor(R.color.black));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.black));
         setContentView(R.layout.activity_zoom_image_view);
         ButterKnife.bind(this);
 

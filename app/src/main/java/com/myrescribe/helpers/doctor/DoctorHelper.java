@@ -2,10 +2,8 @@ package com.myrescribe.helpers.doctor;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import com.android.volley.Request;
-import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
@@ -14,7 +12,6 @@ import com.myrescribe.model.doctors.appointments.DoctorAppointmentModel;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 import com.myrescribe.model.doctors.doctor_info.DoctorInfoMonthContainer;
 import com.myrescribe.model.doctors.doctor_info.DoctorModel;
-import com.myrescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
 import com.myrescribe.model.filter.filter_request.DrFilterRequestModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
@@ -23,12 +20,9 @@ import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -185,7 +179,7 @@ public class DoctorHelper implements ConnectionListener {
     public void doGetDoctorList(String year) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        String id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext);
+        String id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
 
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + id + "&year=" + year);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_LIST);
@@ -196,7 +190,7 @@ public class DoctorHelper implements ConnectionListener {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_APPOINTMENT, Request.Method.GET, true);
 
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.APPOINTMENTS_DETAILS_URL + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext));
+        mConnectionFactory.setUrl(Config.APPOINTMENTS_DETAILS_URL + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_APPOINTMENT);
 
     }

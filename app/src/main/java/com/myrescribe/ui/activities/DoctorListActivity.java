@@ -95,7 +95,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     public void onApply() {
 
         DrFilterRequestModel drFilterRequestModel = new DrFilterRequestModel();
-        drFilterRequestModel.setPatientId(Integer.parseInt(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, DoctorListActivity.this)));
+        drFilterRequestModel.setPatientId(Integer.parseInt(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, DoctorListActivity.this)));
         drFilterRequestModel.setDocIds(docIdList);
         drFilterRequestModel.setDocSpecialities(doctorSpecialityList);
         drFilterRequestModel.setStartDate(filterFragment.getFromDate());

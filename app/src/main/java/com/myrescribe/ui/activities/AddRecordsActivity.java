@@ -1,5 +1,6 @@
 package com.myrescribe.ui.activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -24,16 +26,17 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.DoctorSpinnerAdapter;
-import com.myrescribe.model.records.SpinnerDoctorListModel;
+import com.myrescribe.helpers.myrecords.MyRecordsHelper;
+import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.myrecords.MyRecordsDoctorListModel;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -41,12 +44,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import droidninja.filepicker.FilePickerConst;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
 /**
  * Created by jeetal on 31/7/17.
  */
 
-public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinnerAdapter.TextEnterListener, DatePickerDialog.OnDateSetListener, GoogleApiClient.OnConnectionFailedListener {
+@RuntimePermissions
+public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinnerAdapter.TextEnterListener, DatePickerDialog.OnDateSetListener, GoogleApiClient.OnConnectionFailedListener, HelperResponse {
     @BindView(R.id.addRecordsToolbar)
     Toolbar mToolbar;
     @BindView(R.id.selectDoctorName)
@@ -83,14 +89,23 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     RelativeLayout selectAddressLayout;
 
     @BindView(R.id.selectAddressText)
-    TextView selectAddressText;
+    EditText selectAddressText;
+    @BindView(R.id.addressIcon)
+    ImageView addressIcon;
 
-    private GoogleApiClient mGoogleApiClient;
     private int PLACE_PICKER_REQUEST = 1;
 
+    private boolean isManual = true;
+
     private Context mContext;
-    DoctorSpinnerAdapter doctorSpinnerAdapter;
+    private DoctorSpinnerAdapter doctorSpinnerAdapter;
     private DatePickerDialog datePickerDialog;
+    private String mSelectDoctorString = "";
+    private String mSelectDateString = "Select Date";
+    private boolean isDatesThere = false;
+    private String visitDate;
+    private int doctorId;
+    private int mSelectedId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,33 +128,9 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
             }
         });
 
-        mSelectDoctorName.setThreshold(1);
-        doctorSpinnerAdapter = new DoctorSpinnerAdapter(AddRecordsActivity.this, R.layout.activity_add_records, R.id.doctorName, getFilteredDoctorList().getDoctors());
-        mSelectDoctorName.setAdapter(doctorSpinnerAdapter);
-
-        mSelectDoctorName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                dropdownLayout.setVisibility(View.VISIBLE);
-                autocompleteLayout.setVisibility(View.GONE);
-                doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
-                doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
-                doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
-
-                dateSpinnerLayout.setVisibility(View.VISIBLE);
-                selectDateLayout.setVisibility(View.GONE);
-
-                selectAddressLayout.setVisibility(View.GONE);
-
-                ArrayList<String> spinnerList = new ArrayList<String>();
-                spinnerList.add("Select Date");
-                for (String date : doctorSpinnerAdapter.getDoctor(position).getDates())
-                    spinnerList.add(CommonMethods.getFormatedDate(date, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DD_MM_YYYY));
-
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddRecordsActivity.this, R.layout.simple_spinner_item, spinnerList);
-                selectDateSpinner.setAdapter(arrayAdapter);
-            }
-        });
+        MyRecordsHelper myRecordsHelper = new MyRecordsHelper(mContext, this);
+        myRecordsHelper.getDoctorList(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+//        myRecordsHelper.getDoctorList("4092");
 
         Calendar now = Calendar.getInstance();
 // As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
@@ -152,7 +143,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
         // Places
 
-        mGoogleApiClient = new GoogleApiClient
+        new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
@@ -161,7 +152,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
     }
 
-    SpinnerDoctorListModel getFilteredDoctorList() {
+    /*MyRecordsDoctorListModel getFilteredDoctorList() {
         try {
             InputStream is = mContext.getAssets().open("spinner_doctor.json");
             int size = is.available();
@@ -170,25 +161,31 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
             is.close();
             String json = new String(buffer, "UTF-8");
 
-            return new Gson().fromJson(json, SpinnerDoctorListModel.class);
+            return new Gson().fromJson(json, MyRecordsDoctorListModel.class);
 
         } catch (IOException ex) {
             ex.printStackTrace();
         }
         return null;
-    }
+    }*/
 
-    @OnClick({R.id.clearButton, R.id.selectDateTextView, R.id.dateIcon, R.id.uploadButton, R.id.searchButton, R.id.selectAddressLayout})
+    @OnClick({R.id.clearButton, R.id.selectDateTextView, R.id.dateIcon, R.id.uploadButton, R.id.searchButton, R.id.addressIcon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.clearButton:
                 mSelectDoctorName.setText("");
+                selectDate.setText("");
+
                 dropdownLayout.setVisibility(View.GONE);
                 autocompleteLayout.setVisibility(View.VISIBLE);
-
                 dateSpinnerLayout.setVisibility(View.GONE);
                 selectDateLayout.setVisibility(View.VISIBLE);
                 selectAddressLayout.setVisibility(View.VISIBLE);
+
+                isManual = true;
+                mSelectedId = -1;
+                mSelectDoctorString = "";
+                mSelectDateString = "Select Date ";
                 break;
             case R.id.selectDateTextView:
                 datePickerDialog.show(getSupportFragmentManager(), getResources().getString(R.string.select_date_text));
@@ -197,19 +194,67 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 datePickerDialog.show(getSupportFragmentManager(), getResources().getString(R.string.select_date_text));
                 break;
             case R.id.uploadButton:
+                if (isManual) {
+                    if (mSelectDoctorName.getText().length() == 0) {
+                        CommonMethods.showToast(mContext, "Please enter Doctor Name");
+                        return;
+                    }
+                    if (selectDate.getText().length() == 0) {
+                        CommonMethods.showToast(mContext, "Please enter Date");
+                        return;
+                    }
+                    if (selectAddressText.getText().length() == 0) {
+                        CommonMethods.showToast(mContext, "Please enter Doctor Address");
+                        return;
+                    }
+                    visitDate = selectDate.getText().toString();
+                    doctorId = -1; // needs to generate
+                } else {
+                    doctorId = mSelectedId;
+                    if (isDatesThere) {
+                        if (mSelectDoctorString.length() == 0) {
+                            CommonMethods.showToast(mContext, "Please enter Doctor Name");
+                            return;
+                        }
+                        if (mSelectDateString.equals("Select Date")) {
+                            CommonMethods.showToast(mContext, "Please enter Date");
+                            return;
+                        }
+                        visitDate = mSelectDateString;
+                    } else {
+                        if (mSelectDoctorString.length() == 0) {
+                            CommonMethods.showToast(mContext, "Please enter Doctor Name");
+                            return;
+                        }
+                        if (selectDate.getText().length() == 0) {
+                            CommonMethods.showToast(mContext, "Please enter Date");
+                            return;
+                        }
+                        visitDate = selectDate.getText().toString();
+                    }
+                }
                 Intent intent = new Intent(mContext, SelectedRecordsActivity.class);
+                intent.putExtra(MyRescribeConstants.DOCTORS_ID, doctorId);
+                intent.putExtra(MyRescribeConstants.VISIT_DATE, visitDate);
                 startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
                 break;
             case R.id.searchButton:
                 mSelectDoctorName.setText("");
                 break;
-            case R.id.selectAddressLayout:
-                callPickPlace();
+            case R.id.addressIcon:
+                AddRecordsActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
                 break;
         }
     }
 
-    private void callPickPlace() {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        AddRecordsActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION})
+    public void callPickPlace() {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
             Intent intentPlace = builder.build(AddRecordsActivity.this);
@@ -240,6 +285,9 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 stBuilder.append("\n");
                 stBuilder.append("Address: ");
                 stBuilder.append(address);
+
+                CommonMethods.Log("Address: ", stBuilder.toString());
+
                 selectAddressText.setText(address);
             }
         }
@@ -259,6 +307,93 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+
+        MyRecordsDoctorListModel myRecordsDoctorListModel = (MyRecordsDoctorListModel) customResponse;
+
+        if (myRecordsDoctorListModel.getCommon().getStatusCode().equals(MyRescribeConstants.SUCCESS)) {
+            mSelectDoctorName.setThreshold(1);
+            doctorSpinnerAdapter = new DoctorSpinnerAdapter(AddRecordsActivity.this, R.layout.activity_add_records, R.id.doctorName, myRecordsDoctorListModel.getDoctors());
+            mSelectDoctorName.setAdapter(doctorSpinnerAdapter);
+
+            mSelectDoctorName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    final ArrayList<String> spinnerList = new ArrayList<String>();
+                    mSelectDateString = "Select Date";
+                    mSelectDoctorString = doctorSpinnerAdapter.getDoctor(position).getDoctorName();
+
+                    mSelectedId = doctorSpinnerAdapter.getDoctor(position).getId();
+                    if (!doctorSpinnerAdapter.getDoctor(position).getDates().isEmpty()) {
+                        isDatesThere = true;
+
+                        dropdownLayout.setVisibility(View.VISIBLE);
+                        autocompleteLayout.setVisibility(View.GONE);
+                        doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
+                        doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
+                        doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
+
+                        dateSpinnerLayout.setVisibility(View.VISIBLE);
+                        selectDateLayout.setVisibility(View.GONE);
+
+                        selectAddressLayout.setVisibility(View.GONE);
+                    } else {
+                        isDatesThere = false;
+
+                        mSelectDoctorName.setText("");
+                        dropdownLayout.setVisibility(View.VISIBLE);
+                        autocompleteLayout.setVisibility(View.GONE);
+                        doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
+                        doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
+                        doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
+
+                        dateSpinnerLayout.setVisibility(View.GONE);
+                        selectDateLayout.setVisibility(View.VISIBLE);
+
+                        selectAddressLayout.setVisibility(View.GONE);
+                    }
+
+                    isManual = false;
+
+                    spinnerList.add("Select Date");
+                    for (String date : doctorSpinnerAdapter.getDoctor(position).getDates())
+                        spinnerList.add(CommonMethods.getFormatedDate(date, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DD_MM_YYYY));
+
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddRecordsActivity.this, R.layout.simple_spinner_item, spinnerList);
+                    selectDateSpinner.setAdapter(arrayAdapter);
+                    selectDateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            mSelectDateString = spinnerList.get(position);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
     }
 }

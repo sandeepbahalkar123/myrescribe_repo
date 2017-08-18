@@ -24,23 +24,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--<activity-->
-        <!--android:name="com.myrescribe.ui.activities.SplashScreenActivity"-->
-        <!--android:label="@string/app_name"-->
-        <!--android:theme="@style/AppTheme.NoActionBar">-->
+        <!-- <activity -->
+        <!-- android:name="com.myrescribe.ui.activities.SplashScreenActivity" -->
+        <!-- android:label="@string/app_name" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar"> -->
 
-        <!--</activity>-->
+
+        <!-- </activity> -->
 
         <activity
-            android:name=".ui.activities.OneDayVisitActivity"
+            android:name="com.myrescribe.ui.activities.OneDayVisitActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.PrescriptionActivity"
+            android:name="com.myrescribe.ui.activities.PrescriptionActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name="com.myrescribe.ui.activities.SplashScreenActivity"
@@ -53,10 +54,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".ui.activities.HomePageActivity"
+            android:name="com.myrescribe.ui.activities.HomePageActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".ui.activities.HomePageActivity_New"
             android:label="@string/app_name"
@@ -68,43 +71,57 @@
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"></activity>
-
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".ui.activities.PhoneNoActivity"
+            android:name="com.myrescribe.ui.activities.PhoneNoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
 
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.PreferencesActivity"
+            android:name="com.myrescribe.ui.activities.PreferencesActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_preferences"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.AppointmentActivity"
+            android:name="com.myrescribe.ui.activities.AppointmentActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_preferences"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".ui.activities.DoctorListActivity"
+            android:name="com.myrescribe.ui.activities.DoctorListActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_preferences"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
 
-        <service android:name=".services.InvestigationNotificationService" />
-        <service android:name=".services.AppointmentNotificationService" />
-        <service android:name=".services.NotificationService" />
+        <service android:name="com.myrescribe.services.InvestigationNotificationService" />
+        <service android:name="com.myrescribe.services.AppointmentNotificationService" />
+        <service android:name="com.myrescribe.services.NotificationService" />
+
+        <!-- Common Broadcast Receiver -->
+        <receiver android:name="com.myrescribe.broadcast_receivers.YesClickReceiver" />
+        <receiver android:name="com.myrescribe.broadcast_receivers.NoClickReceiver" />
+        <!-- End -->
+
+        <receiver android:name="com.myrescribe.broadcast_receivers.StartUpBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.myrescribe.services.InvestigationNotificationService" />
+        <service android:name="com.myrescribe.services.AppointmentNotificationService" />
+        <service android:name="com.myrescribe.services.NotificationService" />
 
         <!--Common Broadcast Receiver-->
-        <receiver android:name=".broadcast_receivers.YesClickReceiver" />
-        <receiver android:name=".broadcast_receivers.NoClickReceiver" />
+        <receiver android:name="com.myrescribe.broadcast_receivers.YesClickReceiver" />
+        <receiver android:name="com.myrescribe.broadcast_receivers.NoClickReceiver" />
         <!--End-->
 
-        <receiver android:name=".broadcast_receivers.StartUpBootReceiver">
+        <receiver android:name="com.myrescribe.broadcast_receivers.StartUpBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -112,7 +129,7 @@
 
 
         <activity
-            android:name=".ui.activities.NotificationActivity"
+            android:name="com.myrescribe.ui.activities.NotificationActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -140,49 +157,57 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.InvestigationActivity"
+            android:name="com.myrescribe.ui.activities.InvestigationActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_investigation"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.SelectedDocsActivity"
+            android:name="com.myrescribe.ui.activities.SelectedDocsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_selected_docs"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.UploadedDocsActivity"
+            android:name="com.myrescribe.ui.activities.UploadedDocsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_uploaded_docs"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.ZoomImageViewActivity"
+            android:name="com.myrescribe.ui.activities.ZoomImageViewActivity"
             android:label="@string/title_activity_zoomview"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.AppGlobalContainerActivity"
+            android:name="com.myrescribe.ui.activities.AppGlobalContainerActivity"
             android:label="@string/doctor_details" />
         <activity
-            android:name=".ui.activities.MapsActivity"
+            android:name="com.myrescribe.ui.activities.MapsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.MyRecordsActivity"
+            android:name="com.myrescribe.ui.activities.MyRecordsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/my_records"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.AddRecordsActivity"
+            android:name="com.myrescribe.ui.activities.AddRecordsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/add_record"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.SelectedRecordsActivity"
+            android:name="com.myrescribe.ui.activities.SelectedRecordsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_selected_docs"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.myrescribe.ui.activities.SelectedRecordsGroupActivity"
+            android:label="@string/title_activity_report_selection"
+            android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name="com.myrescribe.ui.activities.ShowRecordsActivity"
+            android:label="@string/title_activity_reports"
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <receiver android:name=".broadcast_receivers.OtpReader">
+        <receiver android:name="com.myrescribe.broadcast_receivers.OtpReader">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>

@@ -1,22 +1,21 @@
 package com.myrescribe.ui.fragments.my_record;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -24,18 +23,14 @@ import com.google.gson.Gson;
 import com.myrescribe.R;
 import com.myrescribe.adapters.CustomSpinnerAdapter;
 import com.myrescribe.helpers.database.AppDBHelper;
-import com.myrescribe.helpers.doctor.DoctorHelper;
-import com.myrescribe.helpers.my_record.MyRecordHelper;
+import com.myrescribe.helpers.myrecords.MyRecordsHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.YearsMonthsDataList;
-import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
-import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.Year;
 import com.myrescribe.model.my_records.MyRecordBaseModel;
 import com.myrescribe.model.my_records.MyRecordDataModel;
 import com.myrescribe.model.my_records.MyRecordInfoAndReports;
-import com.myrescribe.ui.activities.DoctorListActivity;
+import com.myrescribe.ui.activities.AddRecordsActivity;
 import com.myrescribe.ui.activities.MyRecordsActivity;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -64,11 +59,14 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
     private CustomSpinnerAdapter mCustomSpinAdapter;
     @BindView(R.id.year)
     Spinner mYearSpinnerView;
+    @BindView(R.id.addRecordButton)
+    Button addRecordButton;
+
 
     private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<Year> mTimePeriodList = new ArrayList<>();
     private Year mCurrentSelectedTimePeriodTab;
-    private MyRecordHelper mMyRecordHelper;
+    private MyRecordsHelper mMyRecordHelper;
     private ViewPagerAdapter mViewPagerAdapter = null;
     private HashSet<String> mGeneratedRequestForYearList = new HashSet<>();
     private MyRecordsActivity mParentActivity;
@@ -107,7 +105,7 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
         mYearSpinnerView.setOnTouchListener(listener);
         mYearSpinnerView.setOnItemSelectedListener(listener);
         //-------
-        mMyRecordHelper = new MyRecordHelper(mContext, this);
+        mMyRecordHelper = new MyRecordsHelper(mContext, this);
         //-------
         mCurrentSelectedTimePeriodTab = new Year();
         mCurrentSelectedTimePeriodTab.setMonthName(new SimpleDateFormat("MMM", Locale.US).format(new Date()));
@@ -142,11 +140,15 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
 
     }
 
-    @OnClick({R.id.backArrow})
+    @OnClick({R.id.backArrow, R.id.addRecordButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backArrow:
                 mParentActivity.finish();
+                break;
+            case R.id.addRecordButton:
+                Intent intent = new Intent(mContext, AddRecordsActivity.class);
+                mContext.startActivity(intent);
                 break;
         }
     }
@@ -342,7 +344,7 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
         }
     }
 
-    public MyRecordHelper getParentMyRecordHelper() {
+    public MyRecordsHelper getParentMyRecordHelper() {
         return mMyRecordHelper;
     }
 

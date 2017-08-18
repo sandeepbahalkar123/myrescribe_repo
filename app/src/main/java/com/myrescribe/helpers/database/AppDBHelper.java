@@ -25,6 +25,8 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public static final String INV_ID = "inv_id";
     public static final String INV_NAME = "inv_name";
     public static final String INV_NAME_KEY = "inv_key";
+    public static final String INV_OPD_ID = "inv_opd_id";
+    public static final String INV_DR_NAME = "inv_dr_name";
     public static final String INV_UPLOAD_STATUS = "upload_status";
     public static final String INV_UPLOADED_IMAGES = "uploaded_images";
     public static final String INVESTIGATION_TABLE = "investigation_table";
@@ -33,7 +35,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     private static final String PREFERENCES_TABLE = "preferences_table";
     private static final String DATABASE_NAME = "MyRescribe.sqlite";
     private static final String DB_PATH_SUFFIX = "/data/data/com.myrescribe/databases/";
-    private static final int DBVERSION = 1;
+    private static final int DB_VERSION = 1;
     public static final String APP_DATA_TABLE = "PrescriptionData";
     public static final String COLUMN_ID = "dataId";
     public static final String COLUMN_DATA = "data";
@@ -48,7 +50,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     private Context mContext;
 
     public AppDBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DBVERSION);
+        super(context, DATABASE_NAME, null, DB_VERSION);
         this.mContext = context;
         checkDatabase();
     }
@@ -63,9 +65,11 @@ public class AppDBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO Auto-generated method stub
-        db.execSQL("DROP TABLE IF EXISTS " + APP_DATA_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + PREFERENCES_TABLE);
-        onCreate(db);
+//        db.execSQL("DROP TABLE IF EXISTS " + APP_DATA_TABLE);
+//        db.execSQL("DROP TABLE IF EXISTS " + PREFERENCES_TABLE);
+        deleteDatabase();
+        copyDataBase();
+//        onCreate(db);
     }
 
     public static synchronized AppDBHelper getInstance(Context context) {
@@ -100,7 +104,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return (int) DatabaseUtils.queryNumEntries(db, APP_DATA_TABLE, "dataId = ? ", new String[]{dataId});
     }
 
-    public boolean updateData(String dataId, String data) {
+    private boolean updateData(String dataId, String data) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("data", data);
@@ -187,7 +191,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public int preferencesTableNumberOfRows(String userId) {
+    private int preferencesTableNumberOfRows(String userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return (int) DatabaseUtils.queryNumEntries(db, PREFERENCES_TABLE, USER_ID + " = ? ", new String[]{userId});
     }
@@ -218,7 +222,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     // investigation
 
-    public boolean insertInvestigationData(int id, String name, String key, boolean isUploaded, String imageJson) {
+    public boolean insertInvestigationData(int id, String name, String key, String dr_name, int opd_id, boolean isUploaded, String imageJson) {
         if (investigationDataTableNumberOfRows(id) == 0) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
@@ -226,6 +230,10 @@ public class AppDBHelper extends SQLiteOpenHelper {
             contentValues.put(INV_ID, id);
             contentValues.put(INV_NAME, name);
             contentValues.put(INV_NAME_KEY, key);
+
+            contentValues.put(INV_DR_NAME, dr_name);
+            contentValues.put(INV_OPD_ID, opd_id);
+
             contentValues.put(INV_UPLOAD_STATUS, isUploaded ? 1 : 0);
             contentValues.put(INV_UPLOADED_IMAGES, imageJson);
 
@@ -234,7 +242,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public int investigationDataTableNumberOfRows(int id) {
+    private int investigationDataTableNumberOfRows(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         return (int) DatabaseUtils.queryNumEntries(db, INVESTIGATION_TABLE, INV_ID + " = ? ", new String[]{String.valueOf(id)});
     }
@@ -264,6 +272,10 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
                 dataObject.setId(cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_ID)));
                 dataObject.setTitle(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME)));
+
+                dataObject.setDoctorName(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_DR_NAME)));
+                dataObject.setOpdId(cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_OPD_ID)));
+
                 dataObject.setInvestigationKey(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME_KEY)));
                 dataObject.setSelected(cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1);
                 dataObject.setUploaded(cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1);

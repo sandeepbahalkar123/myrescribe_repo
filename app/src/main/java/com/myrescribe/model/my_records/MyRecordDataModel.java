@@ -15,7 +15,7 @@ public class MyRecordDataModel implements CustomResponse {
 
     @SerializedName("yearsMonthsData")
     @Expose
-    private ArrayList<YearsMonthsDataList> receivedYearMap;
+    private ArrayList<YearsMonthsDataList> receivedYearMap = new ArrayList<>();
     @SerializedName("originalData")
     @Expose
     private MyRecordInfoMonthContainer myRecordInfoMonthContainer;

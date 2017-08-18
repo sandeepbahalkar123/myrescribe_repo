@@ -31,6 +31,8 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.model.Common;
+import com.myrescribe.model.MessageModel;
 import com.myrescribe.model.case_details.CaseDetailsModel;
 import com.myrescribe.model.doctors.appointments.DoctorAppointmentModel;
 import com.myrescribe.model.doctors.doctor_info.DoctorModel;
@@ -43,13 +45,12 @@ import com.myrescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
 import com.myrescribe.model.investigation.uploaded.InvestigationUploadFromUploadedModel;
 import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.SignUpModel;
+import com.myrescribe.model.myrecords.MyRecordsDoctorListModel;
 import com.myrescribe.model.my_records.MyRecordBaseModel;
 import com.myrescribe.model.notification.AppointmentsNotificationModel;
 import com.myrescribe.model.notification.NotificationModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
-
 import com.myrescribe.model.requestmodel.login.LoginRequestModel;
-
 import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.singleton.Device;
@@ -403,13 +404,29 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         try {
             Log.e(TAG, data);
             Gson gson = new Gson();
+
+            JSONObject jsonObject;
+            try {
+                jsonObject = new JSONObject(data);
+                Common common = gson.fromJson(jsonObject.optString("common"), Common.class);
+                if (!common.getStatusCode().equals(MyRescribeConstants.SUCCESS)) {
+                    CommonMethods.showToast(mContext, common.getStatusMessage());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            /*MessageModel messageModel = gson.fromJson(data, MessageModel.class);
+            if (!messageModel.getCommon().getStatusCode().equals(MyRescribeConstants.SUCCESS))
+                CommonMethods.showToast(mContext, messageModel.getCommon().getStatusMessage());*/
+
             if (isTokenExpired) {
                 // This success response is for refresh token
                 // Need to Add
                 LoginModel loginModel = gson.fromJson(data, LoginModel.class);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, loginModel.getPatientId(), mContext);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, loginModel.getPatientId(), mContext);
 
                 mHeaderParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, loginModel.getAuthToken());
 
@@ -500,6 +517,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case MyRescribeConstants.TASK_GET_ALL_MY_RECORDS: //This is for TASK_GET_ALL_MY_RECORDS
                         MyRecordBaseModel model = new Gson().fromJson(data, MyRecordBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, model, mOldDataTag);
+                        break;
+
+                    case MyRescribeConstants.MY_RECORDS_DOCTOR_LIST: //This is for get archived list
+                        MyRecordsDoctorListModel myRecordsDoctorListModel = new Gson().fromJson(data, MyRecordsDoctorListModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, myRecordsDoctorListModel, mOldDataTag);
                         break;
 
                     default:

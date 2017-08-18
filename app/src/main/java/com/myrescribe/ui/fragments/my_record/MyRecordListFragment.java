@@ -1,23 +1,19 @@
 package com.myrescribe.ui.fragments.my_record;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 
 import com.myrescribe.R;
-import com.myrescribe.adapters.my_records.ThreeLevelListAdapter;
-import com.myrescribe.helpers.my_record.MyRecordHelper;
+import com.myrescribe.adapters.myrecords.ThreeLevelListAdapter;
+import com.myrescribe.helpers.myrecords.MyRecordsHelper;
 import com.myrescribe.model.login.Year;
 import com.myrescribe.model.my_records.MyRecordInfoAndReports;
-import com.myrescribe.model.my_records.MyRecordReports;
-import com.myrescribe.ui.activities.AddRecordsActivity;
 import com.myrescribe.ui.activities.MyRecordsActivity;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -30,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class MyRecordListFragment extends Fragment {
 
-    private MyRecordHelper mMyRecordHelper;
+    private MyRecordsHelper mMyRecordHelper;
     @BindView(R.id.expandMyRecordListView)
     ExpandableListView mExpandMyRecordListView;
     @BindView(R.id.emptyListView)
@@ -75,7 +71,7 @@ public class MyRecordListFragment extends Fragment {
 
     private void setListAdapter() {
         MyRecordListFragmentContainer parentFragment = (MyRecordListFragmentContainer) this.getParentFragment();
-        MyRecordHelper parentMyRecordHelper = parentFragment.getParentMyRecordHelper();
+        MyRecordsHelper parentMyRecordHelper = parentFragment.getParentMyRecordHelper();
         if (parentMyRecordHelper != null) {
 
             Map<String, Map<String, ArrayList<MyRecordInfoAndReports>>> yearWiseSortedMyRecordInfoAndReports = parentMyRecordHelper.getYearWiseSortedMyRecordInfoAndReports();

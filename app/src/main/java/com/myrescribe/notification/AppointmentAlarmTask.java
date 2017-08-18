@@ -22,6 +22,8 @@ import java.util.Calendar;
  * @author paul.blundell
  */
 public class AppointmentAlarmTask implements Runnable {
+    public static final int APPOINTMENT_NOTIFICATION_ID = 5;
+
     // The time selected for the alarm
     private final String time;
     private final String msg;
@@ -57,7 +59,10 @@ public class AppointmentAlarmTask implements Runnable {
 
     @Override
     public void run() {
-        setAlarm(time, msg, 5);
+        if (time == null || msg == null)
+            cancelAlarm(APPOINTMENT_NOTIFICATION_ID);
+        else 
+        setAlarm(time, msg, APPOINTMENT_NOTIFICATION_ID);
     }
 
     private void setAlarm(String time, String msg, int requestCode) {
@@ -73,5 +78,12 @@ public class AppointmentAlarmTask implements Runnable {
 //        am.set(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), pendingIntent);
 
         am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
+
+    private void cancelAlarm(int requestCode) {
+        Intent intent = new Intent(context, AppointmentNotificationService.class);
+        intent.putExtra(AppointmentNotificationService.INTENT_NOTIFY, false);
+        intent.putExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, requestCode);
+        context.startService(intent);
     }
 }

@@ -241,6 +241,10 @@ public class HomePageActivity extends DrawerActivity {
         AppDBHelper appDBHelper = new AppDBHelper(mContext);
         appDBHelper.deleteDatabase();
 
+        new DosesAlarmTask(mContext, null, null).run();
+        new AppointmentAlarmTask(mContext, null, null).run();
+        new InvestigationAlarmTask(mContext, null, null).run();
+
         Intent intent = new Intent(mContext, LoginMainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

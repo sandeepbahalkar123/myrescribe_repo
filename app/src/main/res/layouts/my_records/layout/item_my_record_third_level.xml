@@ -80,11 +80,21 @@
                             android:id="@+id/childContent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:paddingBottom="@dimen/dp2"
                             android:text="Excessive Sweating"
                             android:textColor="@color/dose_completed"
                             android:textSize="@dimen/sp14"
                             android:typeface="sans" />
+
+                        <ImageView
+                            android:id="@+id/thirdLevelAttachmentIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:paddingBottom="@dimen/dp2"
+                            android:paddingRight="@dimen/dp30"
+                            android:src="@drawable/attachment" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

@@ -43,6 +43,7 @@ import com.myrescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
 import com.myrescribe.model.investigation.uploaded.InvestigationUploadFromUploadedModel;
 import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.SignUpModel;
+import com.myrescribe.model.my_records.MyRecordBaseModel;
 import com.myrescribe.model.notification.AppointmentsNotificationModel;
 import com.myrescribe.model.notification.NotificationModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
@@ -477,24 +478,28 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         AppointmentsNotificationModel appointmentsNotificationModel = new Gson().fromJson(data, AppointmentsNotificationModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, appointmentsNotificationModel, mOldDataTag);
                         break;
-                    case MyRescribeConstants.TASK_DOCTOR_APPOINTMENT: //This is for get archived list
+                    case MyRescribeConstants.TASK_DOCTOR_APPOINTMENT: //This is for TASK_DOCTOR_APPOINTMENT
                         DoctorAppointmentModel doctorAppointmentModel = new Gson().fromJson(data, DoctorAppointmentModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorAppointmentModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.INVESTIGATION_LIST: //This is for get archived list
+                    case MyRescribeConstants.INVESTIGATION_LIST: //This is for INVESTIGATION_LIST
                         InvestigationListModel investigationListModel = new Gson().fromJson(data, InvestigationListModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationListModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL: //This is for get archived list
+                    case MyRescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL: //This is for INVESTIGATION_UPLOAD_BY_GMAIL
                         InvestigationUploadByGmailModel investigationUploadByGmailModel = new Gson().fromJson(data, InvestigationUploadByGmailModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationUploadByGmailModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED: //This is for get archived list
+                    case MyRescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED: //This is for INVESTIGATION_UPLOAD_FROM_UPLOADED
                         InvestigationUploadFromUploadedModel investigationUploadFromUploadedModel = new Gson().fromJson(data, InvestigationUploadFromUploadedModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationUploadFromUploadedModel, mOldDataTag);
+                        break;
+                    case MyRescribeConstants.TASK_GET_ALL_MY_RECORDS: //This is for TASK_GET_ALL_MY_RECORDS
+                        MyRecordBaseModel model = new Gson().fromJson(data, MyRecordBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, model, mOldDataTag);
                         break;
 
                     default:

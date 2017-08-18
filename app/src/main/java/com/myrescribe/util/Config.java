@@ -41,6 +41,7 @@ public class Config {
     public static final String INVESTIGATION_LIST = "api/patient/getInvestigationNotifications";
     public static final String INVESTIGATION_UPLOAD_BY_GMAIL = "api/patient/updateGmailInvestigationUploadStatus";
     public static final String INVESTIGATION_UPLOAD = "api/upload/InvestigationDocs";
+    public static final String LIST_ALL_MY_RECORD = "api/records/getRecordList?patientId=";
 }
 
 

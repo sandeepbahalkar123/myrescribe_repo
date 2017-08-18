@@ -1,6 +1,7 @@
 package com.myrescribe.ui.fragments.my_record;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import com.myrescribe.adapters.my_records.ThreeLevelListAdapter;
 import com.myrescribe.helpers.my_record.MyRecordHelper;
 import com.myrescribe.model.login.Year;
 import com.myrescribe.model.my_records.MyRecordInfoAndReports;
+import com.myrescribe.model.my_records.MyRecordReports;
+import com.myrescribe.ui.activities.AddRecordsActivity;
 import com.myrescribe.ui.activities.MyRecordsActivity;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -37,6 +40,8 @@ public class MyRecordListFragment extends Fragment {
     private MyRecordsActivity mParentActivity;
     private String mMonthName;
     private String mYear;
+    private ThreeLevelListAdapter mAdapter;
+    private String mInvestigationText;
 
     public MyRecordListFragment() {
         // Required empty public constructor
@@ -54,6 +59,7 @@ public class MyRecordListFragment extends Fragment {
             mMonthName = arguments.getString(MyRescribeConstants.MONTH);
             mYear = arguments.getString(MyRescribeConstants.YEAR);
         }
+        mInvestigationText = getString(R.string.investigation);
 
         return mRootView;
     }
@@ -76,7 +82,6 @@ public class MyRecordListFragment extends Fragment {
             if (yearWiseSortedMyRecordInfoAndReports.size() != 0) {
                 Map<String, ArrayList<MyRecordInfoAndReports>> monthArrayListHashMap = yearWiseSortedMyRecordInfoAndReports.get(mYear);
                 if (monthArrayListHashMap != null) {
-                    // ArrayList<MyRecordInfoAndReports> formattedDoctorList = parentMyRecordHelper.getFormattedMyRecords(mMonthName, monthArrayListHashMap);
                     ArrayList<MyRecordInfoAndReports> formattedDoctorList = monthArrayListHashMap.get(mMonthName);
                     if (formattedDoctorList != null) {
                         if (formattedDoctorList.size() == 0) {
@@ -85,15 +90,20 @@ public class MyRecordListFragment extends Fragment {
                         } else {
                             mEmptyListView.setVisibility(View.GONE);
                             mExpandMyRecordListView.setVisibility(View.VISIBLE);
-                            ThreeLevelListAdapter adapter = new ThreeLevelListAdapter(mContext, formattedDoctorList);
-                            mExpandMyRecordListView.setAdapter(adapter);
+                            mAdapter = new ThreeLevelListAdapter(mContext, formattedDoctorList);
+                            mExpandMyRecordListView.setAdapter(mAdapter);
                         }
                     } else {
                         mExpandMyRecordListView.setVisibility(View.GONE);
                         mEmptyListView.setVisibility(View.VISIBLE);
                     }
-
+                } else {
+                    mExpandMyRecordListView.setVisibility(View.GONE);
+                    mEmptyListView.setVisibility(View.VISIBLE);
                 }
+            } else {
+                mExpandMyRecordListView.setVisibility(View.GONE);
+                mEmptyListView.setVisibility(View.VISIBLE);
             }
         }
     }

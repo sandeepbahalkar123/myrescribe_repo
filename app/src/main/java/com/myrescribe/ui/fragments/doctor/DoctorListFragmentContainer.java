@@ -133,7 +133,6 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
             Gson gson = new Gson();
             LoginModel loginModel = gson.fromJson(loginData, LoginModel.class);
             mTimePeriodList = loginModel.getYearList();
-
         }
 
         if (mTimePeriodList.size() < 6) {

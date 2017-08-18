@@ -28,9 +28,12 @@ import com.myrescribe.helpers.doctor.DoctorHelper;
 import com.myrescribe.helpers.my_record.MyRecordHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
+import com.myrescribe.model.YearsMonthsDataList;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.Year;
+import com.myrescribe.model.my_records.MyRecordBaseModel;
+import com.myrescribe.model.my_records.MyRecordDataModel;
 import com.myrescribe.model.my_records.MyRecordInfoAndReports;
 import com.myrescribe.ui.activities.DoctorListActivity;
 import com.myrescribe.ui.activities.MyRecordsActivity;
@@ -66,7 +69,7 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
     private ArrayList<Year> mTimePeriodList = new ArrayList<>();
     private Year mCurrentSelectedTimePeriodTab;
     private MyRecordHelper mMyRecordHelper;
-    private ViewPagerAdapter mViewPagerAdapter;
+    private ViewPagerAdapter mViewPagerAdapter = null;
     private HashSet<String> mGeneratedRequestForYearList = new HashSet<>();
     private MyRecordsActivity mParentActivity;
     private Context mContext;
@@ -98,10 +101,8 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
     }
 
     private void initialize() {
-        mYearList = CommonMethods.getYearForDoctorList();
 
-        mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList);
-        mYearSpinnerView.setAdapter(mCustomSpinAdapter);
+
         YearSpinnerInteractionListener listener = new YearSpinnerInteractionListener();
         mYearSpinnerView.setOnTouchListener(listener);
         mYearSpinnerView.setOnItemSelectedListener(listener);
@@ -116,14 +117,18 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
 
         AppDBHelper appDBHelper = new AppDBHelper(mParentActivity);
 
-        if (appDBHelper.dataTableNumberOfRows(MyRescribeConstants.TASK_LOGIN) > 0) {
-            Cursor cursor = appDBHelper.getData(MyRescribeConstants.TASK_LOGIN);
+        if (appDBHelper.dataTableNumberOfRows(MyRescribeConstants.TASK_GET_ALL_MY_RECORDS) > 0) {
+            Cursor cursor = appDBHelper.getData(MyRescribeConstants.TASK_GET_ALL_MY_RECORDS);
             cursor.moveToFirst();
             String loginData = cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
             Gson gson = new Gson();
-            LoginModel loginModel = gson.fromJson(loginData, LoginModel.class);
-            mTimePeriodList = loginModel.getYearList();
 
+            MyRecordBaseModel model = gson.fromJson(loginData, MyRecordBaseModel.class);
+            MyRecordDataModel recordMainDataModel = model.getRecordMainDataModel();
+            mYearList = recordMainDataModel.getUniqueYears();
+            mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList);
+            mYearSpinnerView.setAdapter(mCustomSpinAdapter);
+            mTimePeriodList = recordMainDataModel.getFormattedYearList();
         }
 
         if (mTimePeriodList.size() < 6) {
@@ -133,11 +138,8 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
             mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         }
-
         //---------
-        //----
-        mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        mTabLayout.setupWithViewPager(mViewpager);
+
     }
 
     @OnClick({R.id.backArrow})
@@ -296,7 +298,16 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
     //---------------
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-
+        MyRecordBaseModel model = (MyRecordBaseModel) customResponse;
+        MyRecordDataModel recordMainDataModel = model.getRecordMainDataModel();
+        mTimePeriodList = recordMainDataModel.getFormattedYearList();
+        if (mViewPagerAdapter == null) {
+            mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
+            mTabLayout.setupWithViewPager(mViewpager);
+            mYearList = recordMainDataModel.getUniqueYears();
+            mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList);
+            mYearSpinnerView.setAdapter(mCustomSpinAdapter);
+        }
         setupViewPager();
     }
 
@@ -312,6 +323,7 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
         setupViewPager();
 
     }

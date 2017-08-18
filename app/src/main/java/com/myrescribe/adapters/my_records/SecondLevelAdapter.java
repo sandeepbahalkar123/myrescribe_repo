@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import butterknife.ButterKnife;
 public class SecondLevelAdapter extends BaseExpandableListAdapter {
 
     private final int mColor;
+    private final String mInvestigationText;
     private ArrayList<MyRecordReports> mChildOriginalList;
     private ArrayList<MyRecordReports> mChildListDataHeader;
     private HashMap<MyRecordReports, ArrayList<MyRecordReports.MyRecordReportList>> mChildListDataChild;
@@ -37,6 +39,8 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
 
         this.mChildListDataHeader = new ArrayList<>();
         this.mChildListDataChild = new HashMap<>();
+
+        mInvestigationText = context.getString(R.string.investigation);
 
         for (MyRecordReports dataObject :
                 mOriginalList) {
@@ -88,14 +92,21 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
         MyRecordReports group = getGroup(groupPosition);
 
         childGroupViewHolder.headerName.setText(group.getParentCaptionName());
-        if (isExpanded) {
-            childGroupViewHolder.headerName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.up_arrow, 0, 0, 0);
+        if (mInvestigationText.equalsIgnoreCase(group.getParentCaptionName())) {
+            childGroupViewHolder.secondLevelAttachmentIcon.setVisibility(View.GONE);
+            childGroupViewHolder.secondLevelUpDownArrow.setVisibility(View.VISIBLE);
+          /*  if (isExpanded) {
+                childGroupViewHolder.headerName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.up_arrow, 0, 0, 0);
+            } else {
+                childGroupViewHolder.headerName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.down_arrow, 0, 0, 0);
+            }
+            childGroupViewHolder.headerName.setCompoundDrawablePadding(Math.round(context.getResources().getDimension(R.dimen.dp4)));
+        */
         } else {
-            childGroupViewHolder.headerName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.down_arrow, 0, 0, 0);
+            childGroupViewHolder.secondLevelUpDownArrow.setVisibility(View.INVISIBLE);
+            childGroupViewHolder.secondLevelAttachmentIcon.setVisibility(View.VISIBLE);
         }
-        childGroupViewHolder.headerName.setCompoundDrawablePadding(Math.round(context.getResources().getDimension(R.dimen.dp4)));
         childGroupViewHolder.childSideBarView.setBackgroundColor(mColor);
-
         return convertView;
     }
 
@@ -150,6 +161,10 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
 
         @BindView(R.id.headerName)
         CustomTextView headerName;
+        @BindView(R.id.secondLevelAttachmentIcon)
+        ImageView secondLevelAttachmentIcon;
+        @BindView(R.id.secondLevelUpDownArrow)
+        ImageView secondLevelUpDownArrow;
 
         @BindView(R.id.childSideBarView)
         TextView childSideBarView;

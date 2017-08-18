@@ -1,6 +1,7 @@
 package com.myrescribe.adapters.my_records;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -10,12 +11,14 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.model.my_records.MyRecordDoctorInfo;
 import com.myrescribe.model.my_records.MyRecordInfoAndReports;
 import com.myrescribe.model.my_records.MyRecordReports;
+import com.myrescribe.ui.activities.AddRecordsActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -35,6 +38,7 @@ import butterknife.ButterKnife;
 
 public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
+    private String mInvestigationText;
     private List<MyRecordInfoAndReports> mListDataHeader;// header titles
     // child data in format of header title, child title
     private HashMap<MyRecordInfoAndReports, ArrayList<MyRecordReports>> mListDataChild;
@@ -45,6 +49,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
     public ThreeLevelListAdapter(Context context, ArrayList<MyRecordInfoAndReports> mOriginalList) {
         this.context = context;
         this.mOriginalList = mOriginalList;
+        mInvestigationText = context.getString(R.string.investigation);
 
         this.mListDataHeader = new ArrayList<>();
         this.mListDataChild = new HashMap<>();
@@ -148,11 +153,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         else {
             groupViewHolder.upperLine.setVisibility(View.VISIBLE);
         }
-        //----------
 
-        //ExpandableListView mExpandableListView = (ExpandableListView) parent;
-        //mExpandableListView.expandGroup(groupPosition);
-        //----------
         if (groupPosition % 2 == 1) {
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
             groupViewHolder.sideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.darkblue));
@@ -175,7 +176,6 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         final SecondLevelExpandableListView secondLevelELV = new SecondLevelExpandableListView(context);
 
         MyRecordInfoAndReports group = getGroup(groupPosition);
-
 
         //----------
         int color;
@@ -200,9 +200,25 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onGroupExpand(int groupPosition) {
+                /* TO open single child group at a time.
                 if (groupPosition != previousGroup)
                     secondLevelELV.collapseGroup(previousGroup);
-                previousGroup = groupPosition;
+                previousGroup = groupPosition;*/
+                SecondLevelAdapter adapter = (SecondLevelAdapter) secondLevelELV.getExpandableListAdapter();
+                MyRecordReports childGroup = adapter.getGroup(groupPosition);
+                if (!childGroup.getParentCaptionName().equalsIgnoreCase(mInvestigationText)) {
+                    secondLevelELV.collapseGroup(groupPosition);
+                    Intent i = new Intent(context, AddRecordsActivity.class);
+                    context.startActivity(i);
+                }
+            }
+        });
+        secondLevelELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Intent i = new Intent(context, AddRecordsActivity.class);
+                context.startActivity(i);
+                return false;
             }
         });
         return secondLevelELV;

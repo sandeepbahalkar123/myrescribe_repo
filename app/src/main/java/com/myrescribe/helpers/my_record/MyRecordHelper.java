@@ -176,15 +176,15 @@ public class MyRecordHelper implements ConnectionListener {
 
 
     public void doGetAllMyRecords(String year) {
-        /*ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_GET_ALL_MY_RECORDS, Request.Method.GET, true);
+         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_GET_ALL_MY_RECORDS, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         String id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext);
-        mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + id + "&year=" + year);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_GET_ALL_MY_RECORDS);*/
+        mConnectionFactory.setUrl(Config.LIST_ALL_MY_RECORD + id);
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_GET_ALL_MY_RECORDS);
 
-        // TODO : HARDCODED JSON STRING PARSING FROM assets foler
+       /* // TODO : HARDCODED JSON STRING PARSING FROM assets foler
         try {
-            InputStream is = mContext.getAssets().open("my_record_home_screen.json");
+            InputStream is = mContext.getAssets().open("my_record_home_screen_new.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -197,6 +197,6 @@ public class MyRecordHelper implements ConnectionListener {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        }*/
     }
 }

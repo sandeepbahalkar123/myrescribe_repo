@@ -59,12 +59,24 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp5"
                     android:layout_weight="5"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
                     <!-- Artist Name -->
+                    <ImageView
+                        android:id="@+id/secondLevelUpDownArrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingBottom="@dimen/dp2"
+                        android:paddingRight="@dimen/dp4"
+                        android:paddingTop="@dimen/dp2"
+                        android:src="@drawable/down_arrow"
+                        android:visibility="gone" />
+
                     <com.myrescribe.ui.customesViews.CustomTextView
                         android:id="@+id/headerName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:paddingBottom="@dimen/dp2"
                         android:paddingTop="@dimen/dp2"
                         android:text="Rihanna Love the way lie"
@@ -73,6 +85,16 @@
                         android:textStyle="bold"
                         android:typeface="sans" />
 
+                    <ImageView
+                        android:id="@+id/secondLevelAttachmentIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingBottom="@dimen/dp2"
+                        android:paddingRight="@dimen/dp30"
+                        android:paddingTop="@dimen/dp2"
+                        android:src="@drawable/attachment"
+                        android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

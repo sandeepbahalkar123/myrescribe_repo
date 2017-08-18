@@ -318,7 +318,7 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-
+        setupViewPager();
     }
 
     @Override

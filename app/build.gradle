@@ -41,8 +41,8 @@ android {
                             'src/main/res/layouts/history',
                             'src/main/res/layouts/doctor',
                             'src/main/res/layouts/appointment',
-                            'src/main/res/layouts/records'
-
+                            'src/main/res/layouts/records',
+                            'src/main/res/layouts/my_records'
                     ]
         }
     }

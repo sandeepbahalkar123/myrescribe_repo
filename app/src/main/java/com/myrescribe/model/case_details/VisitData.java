@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 
-public class Data implements CustomResponse {
+public class VisitData implements CustomResponse {
 
     @SerializedName("patientHistory")
     @Expose

@@ -46,12 +46,14 @@ import com.myrescribe.model.investigation.uploaded.InvestigationUploadFromUpload
 import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.SignUpModel;
 import com.myrescribe.model.myrecords.MyRecordsDoctorListModel;
+import com.myrescribe.model.my_records.MyRecordBaseModel;
 import com.myrescribe.model.notification.AppointmentsNotificationModel;
 import com.myrescribe.model.notification.NotificationModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.model.requestmodel.login.LoginRequestModel;
 import com.myrescribe.model.response_model_notification.ResponseLogNotificationModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
+import com.myrescribe.singleton.Device;
 import com.myrescribe.ui.customesViews.CustomProgressDialog;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
@@ -123,7 +125,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
             if (isOffline) {
                 if (getOfflineData() != null)
-                succesResponse(getOfflineData(), false);
+                    succesResponse(getOfflineData(), false);
                 else
                     mConnectionListener.onResponse(ConnectionListener.NO_INTERNET, null, mOldDataTag);
             } else {
@@ -400,7 +402,6 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     @Override
     public void parseJson(String data, boolean isTokenExpired) {
         try {
-
             Log.e(TAG, data);
             Gson gson = new Gson();
 
@@ -421,9 +422,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
             if (isTokenExpired) {
                 // This success response is for refresh token
-
                 // Need to Add
-
                 LoginModel loginModel = gson.fromJson(data, LoginModel.class);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
@@ -496,24 +495,28 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         AppointmentsNotificationModel appointmentsNotificationModel = new Gson().fromJson(data, AppointmentsNotificationModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, appointmentsNotificationModel, mOldDataTag);
                         break;
-                    case MyRescribeConstants.TASK_DOCTOR_APPOINTMENT: //This is for get archived list
+                    case MyRescribeConstants.TASK_DOCTOR_APPOINTMENT: //This is for TASK_DOCTOR_APPOINTMENT
                         DoctorAppointmentModel doctorAppointmentModel = new Gson().fromJson(data, DoctorAppointmentModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorAppointmentModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.INVESTIGATION_LIST: //This is for get archived list
+                    case MyRescribeConstants.INVESTIGATION_LIST: //This is for INVESTIGATION_LIST
                         InvestigationListModel investigationListModel = new Gson().fromJson(data, InvestigationListModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationListModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL: //This is for get archived list
+                    case MyRescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL: //This is for INVESTIGATION_UPLOAD_BY_GMAIL
                         InvestigationUploadByGmailModel investigationUploadByGmailModel = new Gson().fromJson(data, InvestigationUploadByGmailModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationUploadByGmailModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED: //This is for get archived list
+                    case MyRescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED: //This is for INVESTIGATION_UPLOAD_FROM_UPLOADED
                         InvestigationUploadFromUploadedModel investigationUploadFromUploadedModel = new Gson().fromJson(data, InvestigationUploadFromUploadedModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationUploadFromUploadedModel, mOldDataTag);
+                        break;
+                    case MyRescribeConstants.TASK_GET_ALL_MY_RECORDS: //This is for TASK_GET_ALL_MY_RECORDS
+                        MyRecordBaseModel model = new Gson().fromJson(data, MyRecordBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, model, mOldDataTag);
                         break;
 
                     case MyRescribeConstants.MY_RECORDS_DOCTOR_LIST: //This is for get archived list
@@ -522,7 +525,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         break;
 
                     default:
-                        //This is for get PDF Data
+                        //This is for get PDF VisitData
                         if (mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION)) {
                             ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
@@ -622,21 +625,26 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
     private void loginRequest() {
         CommonMethods.Log(TAG, "Refresh token while sending refresh token api: ");
-
-        Map<String, String> headerParams = new HashMap<>();
-        headerParams.putAll(mHeaderParams);
-        headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
-        headerParams.put(MyRescribeConstants.DEVICEID, "phone");
-        headerParams.put(MyRescribeConstants.OS, "android");
-        headerParams.put(MyRescribeConstants.OSVERSION, "6.0");
-        headerParams.put(MyRescribeConstants.DEVICE_TYPE, "phone");
-        CommonMethods.Log(TAG, "setHeaderParams:" + headerParams.toString());
-
         String url = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.LOGIN_URL;
 
         LoginRequestModel loginRequestModel = new LoginRequestModel();
         loginRequestModel.setMobileNumber(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
         loginRequestModel.setPassword(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mContext));
-        jsonRequest(url, Request.Method.POST, headerParams, loginRequestModel, true);
+        if (!(MyRescribeConstants.BLANK.equalsIgnoreCase(loginRequestModel.getMobileNumber()) &&
+                MyRescribeConstants.BLANK.equalsIgnoreCase(loginRequestModel.getPassword()))) {
+            Map<String, String> headerParams = new HashMap<>();
+            headerParams.putAll(mHeaderParams);
+            Device device = Device.getInstance(mContext);
+
+            headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
+            headerParams.put(MyRescribeConstants.DEVICEID, device.getDeviceId());
+            headerParams.put(MyRescribeConstants.OS, device.getOS());
+            headerParams.put(MyRescribeConstants.OSVERSION, device.getOSVersion());
+            headerParams.put(MyRescribeConstants.DEVICE_TYPE, device.getDeviceType());
+            CommonMethods.Log(TAG, "setHeaderParams:" + headerParams.toString());
+            jsonRequest(url, Request.Method.POST, headerParams, loginRequestModel, true);
+        } else {
+            mConnectionListener.onResponse(ConnectionListener.PARSE_ERR0R, null, mOldDataTag);
+        }
     }
 }

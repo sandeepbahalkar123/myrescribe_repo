@@ -345,10 +345,6 @@ public class CommonMethods {
         //milliseconds
         long different = endDate.getTime() - startDate.getTime();
 
-        System.out.println("startDate : " + startDate);
-        System.out.println("endDate : " + endDate);
-        System.out.println("difference : " + different);
-
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;
         long hoursInMilli = minutesInMilli * 60;
@@ -696,83 +692,6 @@ public class CommonMethods {
         return dialog;
     }
 
-    public static Dialog showVitalDialog(Context context, String unit, String unitValue, List<Range> rangeList, Integer drawable, String category) {
-
-        final Context mContext = context;
-        final Dialog dialog = new Dialog(context);
-
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.vitals_dialog_layout);
-        dialog.setCancelable(true);
-
-        TextView normalRange = (TextView) dialog.findViewById(R.id.normalRange);
-        TextView moderateRange = (TextView) dialog.findViewById(R.id.moderateRange);
-        TextView severeRange = (TextView) dialog.findViewById(R.id.severeRange);
-        TextView noOfVitalsDialog = (TextView) dialog.findViewById(R.id.noOfVitalsDialog);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        for (int i = 0; i < rangeList.size(); i++) {
-            if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.less))) {
-                normalRange.setText(mContext.getString(R.string.less_than_sign) + rangeList.get(i).getValue());
-            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
-                normalRange.setText(rangeList.get(i).getMin() + ":" + rangeList.get(i).getMax());
-            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
-                normalRange.setText(mContext.getString(R.string.greater_than_sign) + rangeList.get(i).getValue());
-            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.less))) {
-                moderateRange.setText(mContext.getString(R.string.less_than_sign) + rangeList.get(i).getValue());
-            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
-                moderateRange.setText(rangeList.get(i).getMin() + ":" + rangeList.get(i).getMax());
-            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
-                moderateRange.setText(mContext.getString(R.string.greater_than_sign)  + rangeList.get(i).getValue());
-            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.less))) {
-                severeRange.setText(mContext.getString(R.string.less_than_sign) + rangeList.get(i).getValue());
-            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.equal))) {
-                severeRange.setText(rangeList.get(i).getMin() + ":" + rangeList.get(i).getMax());
-            } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange)) && rangeList.get(i).getOperator().equalsIgnoreCase(mContext.getString(R.string.greater))) {
-                severeRange.setText(mContext.getString(R.string.greater_than_sign)  + rangeList.get(i).getValue());
-            }
-        }
-        
-        if (category.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
-            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
-        } else if (category.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
-            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
-        } else if (category.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
-            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
-        }
-
-        //----Manage visibility----
-        if (normalRange.getText().toString().trim().length() == 0) {
-            LinearLayout normalRangeLayout = (LinearLayout) dialog.findViewById(R.id.normalRangeLayout);
-            normalRangeLayout.setVisibility(View.GONE);
-        }
-        if (moderateRange.getText().toString().trim().length() == 0) {
-            LinearLayout moderateRangeLayout = (LinearLayout) dialog.findViewById(R.id.moderateRangeLayout);
-            moderateRangeLayout.setVisibility(View.GONE);
-        }
-        if (severeRange.getText().toString().trim().length() == 0) {
-            LinearLayout severeRangeLayout = (LinearLayout) dialog.findViewById(R.id.severeRangeLayout);
-            severeRangeLayout.setVisibility(View.GONE);
-        }
-
-        //--------
-        ((TextView) dialog.findViewById(R.id.vitalNameDialog)).setText(unit);
-        noOfVitalsDialog.setText(unitValue);
-        ((ImageView) dialog.findViewById(R.id.vitalImageDialog)).setImageResource(drawable);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
-        lp.gravity = Gravity.CENTER;
-        dialog.show();
-        dialog.getWindow().setAttributes(lp);
-        dialog.setCanceledOnTouchOutside(true);
-
-        dialog.show();
-
-        return dialog;
-    }
-
     public static String getMealTime(int hour, int mint, Context context) {
         //BB : 7-11,lunch : 11-3,dinner :7-11
         String time = "";
@@ -947,7 +866,7 @@ public class CommonMethods {
         else if (vitalDetailName.equalsIgnoreCase("Total HDL"))
             abbreviation = R.drawable.total_hdl;
         else if (vitalDetailName.equalsIgnoreCase("Cholesterol"))
-            abbreviation = R.drawable.complaints;
+            abbreviation = R.drawable.cholesterol;
         else if (vitalDetailName.equalsIgnoreCase("HDL"))
             abbreviation = R.drawable.hdl;
         else if (vitalDetailName.equalsIgnoreCase("LDL"))
@@ -1101,6 +1020,15 @@ public class CommonMethods {
             ex.printStackTrace();
         }
         return "{}";
+    }
+
+    public static String[] splitTextInChunk(String s, int chunkSize) {
+        int chunkCount = (s.length() / chunkSize) + (s.length() % chunkSize == 0 ? 0 : 1);
+        String[] returnVal = new String[chunkCount];
+        for (int i = 0; i < chunkCount; i++) {
+            returnVal[i] = s.substring(i * chunkSize, Math.min((i + 1) * chunkSize - 1, s.length()));
+        }
+        return returnVal;
     }
 }
 

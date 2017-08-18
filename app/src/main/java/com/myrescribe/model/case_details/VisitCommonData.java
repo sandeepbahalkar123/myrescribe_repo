@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 
-public class CommonData implements CustomResponse{
+public class VisitCommonData implements CustomResponse{
 
     @SerializedName("id")
     @Expose

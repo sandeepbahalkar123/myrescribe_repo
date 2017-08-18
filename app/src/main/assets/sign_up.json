@@ -1,8 +1,0 @@
-{
-  "common": {
-    "success": true,
-    "statusCode": 200,
-    "statusMessage": "USER AUTHENTICATED"
-  },
-  "data": "OTP has been sent."
-}

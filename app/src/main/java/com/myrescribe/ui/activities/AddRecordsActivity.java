@@ -124,7 +124,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
             }
         });
 
-        MyRecordsHelper myRecordsHelper = new MyRecordsHelper(mContext);
+        MyRecordsHelper myRecordsHelper = new MyRecordsHelper(mContext, this);
 //        myRecordsHelper.getDoctorList(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
 
         Calendar now = Calendar.getInstance();

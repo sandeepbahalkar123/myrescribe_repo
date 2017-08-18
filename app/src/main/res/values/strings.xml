@@ -99,7 +99,6 @@
     <string name="appointment">Appointment</string>
     <string name="investigation">Investigation</string>
     <string name="appointments">Appointments</string>
-    <string name="records">My Records</string>
     <string name="addrecords">Add Records</string>
     <string name="doctor_filter_list">Doctor Filtered List</string>
     <string name="my_appointments">My Appointments</string>
@@ -170,7 +169,7 @@
     <string name="add_caption">Add Caption</string>
     <string name="opd_id">OPDID</string>
     <string name="normalRange">normal</string>
-    <string name="moderateRange">Moderate</string>
+    <string name="moderateRange">Modarate</string>
     <string name="severeRange">Severe</string>
     <string name="less">less</string>
     <string name="equal">equal</string>
@@ -178,11 +177,15 @@
     <string name="less_than_sign"><![CDATA[<]]></string>
     <string name="greater_than_sign"><![CDATA[>]]></string>
     <string name="server_error">Server Error</string>
+    <string name="bp_max">BpMax</string>
+    <string name="bp">BP</string>
+    <string name="colon_sign">:</string>
+    <string name="bp_min">BpMin</string>
+    <string name="dash">-</string>
+    <string name="and_sign"><![CDATA[&]]></string>
+    <string name="systolic_pressure">Systolic BP</string>
+    <string name="diastolic_pressure">Diastolic BP</string>
 
-
-    <!--//*** Google Map key-->
-    <!--<string name="google_maps_key">AIzaSyCnnUyKo4ktLqWLTKXtO2jp1AtIt0u9TEA</string>-->
-    <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>
     <string name="no_investigation">Investigation not available</string>
     <string name="bill_invoices">Bill Invoices</string>
     <string name="case_encounter">Case Encounter</string>
@@ -192,6 +195,9 @@
     <string name="prescriptions">Prescriptions</string>
     <string name="select_report">Please select Reports</string>
     <string name="without_date_doctor">Please select another Doctor</string>
+
     <!-- //*** Google Map key-->
+    <string name="google_maps_key">AIzaSyCnnUyKo4ktLqWLTKXtO2jp1AtIt0u9TEA</string>
+   <!-- <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>-->
 
 </resources>

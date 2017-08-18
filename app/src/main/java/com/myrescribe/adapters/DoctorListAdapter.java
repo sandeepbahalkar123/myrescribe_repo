@@ -11,10 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.myrescribe.R;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
-import com.myrescribe.ui.activities.ViewDetailsActivity;
+import com.myrescribe.ui.activities.OneDayVisitActivity;
 import com.myrescribe.ui.customesViews.CircularImageView;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
@@ -126,7 +125,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
                 cal.setTime(date);
                 timeToShow = timeToShow.substring(0, 1).toUpperCase() + timeToShow.substring(1);
                 String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup> " + timeToShow;
-                Intent intent = new Intent(mContext, ViewDetailsActivity.class);
+                Intent intent = new Intent(mContext, OneDayVisitActivity.class);
                 intent.putExtra(mContext.getString(R.string.name), dataObject.getDoctorName());
                 intent.putExtra(mContext.getString(R.string.specialization), dataObject.getSpecialization());
                 intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());

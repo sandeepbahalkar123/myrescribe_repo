@@ -95,14 +95,16 @@ public class MyRescribeConstants {
     public static final String CASE_DETAILS_LIST = MyRescribeConstants.BLANK + 15;
 
     public static final String APPOINTMENT_NOTIFICATION = MyRescribeConstants.BLANK + 16;
-    public static final String TASK_RESPOND_NOTIFICATION_FOR_HEADER =MyRescribeConstants.BLANK+ "notify" ;
+    public static final String TASK_RESPOND_NOTIFICATION_FOR_HEADER = MyRescribeConstants.BLANK + "notify";
 
     public static final String INVESTIGATION_LIST = MyRescribeConstants.BLANK + 17;
     public static final String INVESTIGATION_UPLOAD_BY_GMAIL = MyRescribeConstants.BLANK + 18;
 
     public static final String INVESTIGATION_UPLOAD_FROM_UPLOADED = MyRescribeConstants.BLANK + 19;
-
-    public static final String MY_RECORDS_DOCTOR_LIST = MyRescribeConstants.BLANK + 20;
+    //--------
+    public static final String TASK_GET_ALL_MY_RECORDS = MyRescribeConstants.BLANK + 20;
+    //--------
+    public static final String MY_RECORDS_DOCTOR_LIST = MyRescribeConstants.BLANK + 21;
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
@@ -114,6 +116,7 @@ public class MyRescribeConstants {
     public static final String CASE_DETAILS = "case_details";
     public static final String FILTER_REQUEST = "filter_request";
     public static final int MAX_RETRIES = 3;
+    public static final String PATIENT_ID = "patientId=";
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 

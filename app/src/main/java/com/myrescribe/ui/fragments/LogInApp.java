@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.helpers.login.LoginHelper;
@@ -60,6 +63,16 @@ public class LogInApp extends Fragment implements
         View inflate = inflater.inflate(R.layout.log_in, container, false);
         ButterKnife.bind(this, inflate);
         mContext = this.getContext();
+
+        mPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId== EditorInfo.IME_ACTION_DONE){
+                    //do something
+                }
+                return false;
+            }
+        });
 
         return inflate;
     }

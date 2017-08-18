@@ -42,47 +42,68 @@ import com.myrescribe.listeners.SwipeDismissTouchListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationAdapter.OnHeaderClickListener {
 
-    private RecyclerView mRecyclerView;
     private NotificationAdapter mAdapter;
-    private String medicineSlot;
+    private String mMedicineSlot;
     private String mNotificationDate;
     private Integer mMedicineId = null;
     public String TAG = getClass().getName();
     private Context mContext;
     CustomProgressDialog mProgressDialog;
     private boolean isHeaderExpand = true;
-    private LinearLayout mTabletListLayout;
-    private CheckBox mSelectView;
-    private LinearLayout mHeaderLayout;
-    private View mDividerLine;
     private RespondToNotificationHelper mRespondToNotificationHelper;
-    private LinearLayout mHeaderLayoutParent;
     private String mNotificationTime;
-    private TextView mDoseCompletedLabel;
-    private View mDividerLineInHeader;
-    private View mDividerLineInList;
-    private TextView slotTextView;
-    private TextView timeTextView;
-    private TextView dateTextView;
-    private View mView;
-    private LinearLayout mNotificationLayout;
-    private RelativeLayout mNoDataAvailable;
+    private ArrayList<Medication> mTodayDataList;
 
-    private ArrayList<Medication> todayDataList;
+    @BindView(R.id.recycler)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.selectView)
+    CheckBox mSelectView;
+    @BindView(R.id.headerLayout)
+    LinearLayout mHeaderLayout;
+    @BindView(R.id.dividerLineInHeader)
+    View mDividerLine;
+    @BindView(R.id.doseCompletedLabel)
+    TextView mDoseCompletedLabel;
+    @BindView(R.id.dividerLineInList)
+    View mDividerLineInList;
+    @BindView(R.id.slotTextView)
+    TextView mSlotTextView;
+    @BindView(R.id.timeTextView)
+    TextView mTimeTextView;
+    @BindView(R.id.dateTextView)
+    TextView mDateTextView;
+    View mView;
+    @BindView(R.id.notificationLayout)
+    LinearLayout mNotificationLayout;
+    @BindView(R.id.noDataAvailable)
+    RelativeLayout mNoDataAvailable;
+    @BindView(R.id.tabletListLayout)
+    LinearLayout mTabletListLayout;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.headerLayoutParent)
+    LinearLayout mHeaderLayoutParent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
+        initialize();
+    }
+
+    private void initialize() {
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.notification));
         mContext = NotificationActivity.this;
         mProgressDialog = new CustomProgressDialog(mContext);
-        toolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -90,23 +111,9 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         });
         mRespondToNotificationHelper = new RespondToNotificationHelper(this, this);
         Intent intent = getIntent();
-        medicineSlot = intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT);
+        mMedicineSlot = intent.getStringExtra(MyRescribeConstants.MEDICINE_SLOT);
         mNotificationDate = intent.getStringExtra(MyRescribeConstants.NOTIFICATION_DATE);
         mNotificationTime = intent.getStringExtra(MyRescribeConstants.NOTIFICATION_TIME);
-        mHeaderLayoutParent = (LinearLayout) findViewById(R.id.headerLayoutParent);
-        mDoseCompletedLabel = (TextView) findViewById(R.id.doseCompletedLabel);
-        mDividerLineInHeader = (View) findViewById(R.id.dividerLineInHeader);
-        mDividerLineInList = (View) findViewById(R.id.dividerLineInList);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
-        mHeaderLayout = (LinearLayout) findViewById(R.id.headerLayout);
-        mTabletListLayout = (LinearLayout) findViewById(R.id.tabletListLayout);
-        mSelectView = (CheckBox) findViewById(R.id.selectView);
-        mDividerLine = (View) findViewById(R.id.dividerLineInHeader);
-        slotTextView = (TextView) findViewById(R.id.slotTextView);
-        timeTextView = (TextView) findViewById(R.id.timeTextView);
-        dateTextView = (TextView) findViewById(R.id.dateTextView);
-        mNotificationLayout = (LinearLayout) findViewById(R.id.notificationLayout);
-        mNoDataAvailable = (RelativeLayout) findViewById(R.id.noDataAvailable);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(null);
@@ -116,7 +123,6 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 layoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         doGetNotification();
-
     }
 
     private void doGetNotification() {
@@ -142,19 +148,19 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         final ArrayList<Medication> medi = new ArrayList<>();
 
         for (int i = 0; i < medicationList.size(); i++) {
-            if (mContext.getResources().getString(R.string.breakfast_medication).equalsIgnoreCase(medicineSlot)) {
+            if (mContext.getResources().getString(R.string.breakfast_medication).equalsIgnoreCase(mMedicineSlot)) {
                 if (medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.breakfast_after)) || medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.breakfast_before))) {
                     medi.add(medicationList.get(i));
                 }
-            } else if (mContext.getResources().getString(R.string.lunch_medication).equalsIgnoreCase(medicineSlot)) {
+            } else if (mContext.getResources().getString(R.string.lunch_medication).equalsIgnoreCase(mMedicineSlot)) {
                 if (medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.lunch_after)) || medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.lunch_before))) {
                     medi.add(medicationList.get(i));
                 }
-            } else if (mContext.getResources().getString(R.string.dinner_medication).equalsIgnoreCase(medicineSlot)) {
+            } else if (mContext.getResources().getString(R.string.dinner_medication).equalsIgnoreCase(mMedicineSlot)) {
                 if (medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.dinner_after)) || medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.dinner_before))) {
                     medi.add(medicationList.get(i));
                 }
-            } else if (mContext.getResources().getString(R.string.snacks_medication).equalsIgnoreCase(medicineSlot)) {
+            } else if (mContext.getResources().getString(R.string.snacks_medication).equalsIgnoreCase(mMedicineSlot)) {
                 if (medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.snacks_after)) || medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.snacks_before))) {
                     medi.add(medicationList.get(i));
                 }
@@ -166,21 +172,21 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 mHeaderLayoutParent.setVisibility(View.VISIBLE);
                 String slotMedicine = "";
 
-                if (mContext.getResources().getString(R.string.breakfast_medication).equalsIgnoreCase(medicineSlot)) {
+                if (mContext.getResources().getString(R.string.breakfast_medication).equalsIgnoreCase(mMedicineSlot)) {
                     slotMedicine = getString(R.string.smallcasebreakfast);
-                } else if (mContext.getResources().getString(R.string.lunch_medication).equalsIgnoreCase(medicineSlot)) {
+                } else if (mContext.getResources().getString(R.string.lunch_medication).equalsIgnoreCase(mMedicineSlot)) {
                     slotMedicine = getString(R.string.smallcaselunch);
-                } else if (mContext.getResources().getString(R.string.dinner_medication).equalsIgnoreCase(medicineSlot)) {
+                } else if (mContext.getResources().getString(R.string.dinner_medication).equalsIgnoreCase(mMedicineSlot)) {
                     slotMedicine = getString(R.string.smallcasedinner);
-                } else if (mContext.getResources().getString(R.string.snacks_medication).equalsIgnoreCase(medicineSlot)) {
+                } else if (mContext.getResources().getString(R.string.snacks_medication).equalsIgnoreCase(mMedicineSlot)) {
                     slotMedicine = getString(R.string.smallcasesnacks);
                 }
-                slotTextView.setText(medicineSlot);
-                timeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, CommonMethods.getCurrentDateTime()));
-                dateTextView.setText(mNotificationDate);
+                mSlotTextView.setText(mMedicineSlot);
+                mTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, CommonMethods.getCurrentDateTime()));
+                mDateTextView.setText(mNotificationDate);
                 mDoseCompletedLabel.setText(getString(R.string.dosage_completed));
                 mDividerLineInList.setVisibility(View.VISIBLE);
-                mDividerLineInHeader.setVisibility(View.VISIBLE);
+                mDividerLine.setVisibility(View.VISIBLE);
                 addHeaderTabletView(mTabletListLayout, medi);
                 mTabletListLayout.setVisibility(View.VISIBLE);
                 mSelectView.setVisibility(View.INVISIBLE);
@@ -227,9 +233,9 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     }
 
     private void addHeaderTabletView(final ViewGroup parent, final ArrayList<Medication> data) {
-        todayDataList = new ArrayList<>();
-        todayDataList.addAll(data);
-        for (int i = 0; i < todayDataList.size(); i++) {
+        mTodayDataList = new ArrayList<>();
+        mTodayDataList.addAll(data);
+        for (int i = 0; i < mTodayDataList.size(); i++) {
 
             final View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.tablet_list, parent, false);
@@ -238,8 +244,8 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             ImageView tabTypeView = (ImageView) view.findViewById(R.id.tabTypeView);
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
-            selectViewTab.setChecked(todayDataList.get(i).isTabSelected());
-            selectViewTab.setEnabled(todayDataList.get(i).isTabWebService());
+            selectViewTab.setChecked(mTodayDataList.get(i).isTabSelected());
+            selectViewTab.setEnabled(mTodayDataList.get(i).isTabWebService());
             final int finalI = i;
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -248,15 +254,15 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                         mView = view;
                         mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 0, MyRescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI);
                     } else {
-                        todayDataList.get(finalI).setTabSelected(false);
+                        mTodayDataList.get(finalI).setTabSelected(false);
                     }
 
                 }
             });
 
-            setDose(tabCountTextView, todayDataList.get(i).getQuantity(), todayDataList.get(i));
-            tabNameTextView.setText(todayDataList.get(i).getMedicineName());
-            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(todayDataList.get(i).getMedicineTypeName(), mContext));
+            setDose(tabCountTextView, mTodayDataList.get(i).getQuantity(), mTodayDataList.get(i));
+            tabNameTextView.setText(mTodayDataList.get(i).getMedicineName());
+            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(mTodayDataList.get(i).getMedicineTypeName(), mContext));
             parent.addView(view);
 
 
@@ -284,10 +290,10 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             String counter = count[1];
             if (responseLogNotificationModel.getCommon().isSuccess()) {
                 CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
-                todayDataList.get(Integer.parseInt(counter)).setTabSelected(true);
-                todayDataList.get(Integer.parseInt(counter)).setTabWebService(false);
+                mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(true);
+                mTodayDataList.get(Integer.parseInt(counter)).setTabWebService(false);
                 mView.findViewById(R.id.selectViewTab).setEnabled(false);
-                if (mAdapter.getSelectedCount(todayDataList) == todayDataList.size())
+                if (mAdapter.getSelectedCount(mTodayDataList) == mTodayDataList.size())
                     mHeaderLayoutParent.removeView(mHeaderLayout);
             }
         } else if (mOldDataTag.equals(MyRescribeConstants.TASK_NOTIFICATION)) {

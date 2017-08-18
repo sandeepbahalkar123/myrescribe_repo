@@ -3,6 +3,7 @@ package com.myrescribe.model.prescription_response_model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
+import com.myrescribe.model.Common;
 
 
 import java.util.List;
@@ -11,24 +12,24 @@ public class PrescriptionModel  implements CustomResponse {
 
 @SerializedName("common")
 @Expose
-private PrescribeCommon common;
+private Common common;
 @SerializedName("data")
 @Expose
-private List<PrescriptionD> data = null;
+private List<PrescriptionData> data = null;
 
-public PrescribeCommon getCommon() {
+public Common getCommon() {
 return common;
 }
 
-public void setCommon(PrescribeCommon common) {
+public void setCommon(Common common) {
 this.common = common;
 }
 
-public List<PrescriptionD> getData() {
+public List<PrescriptionData> getData() {
 return data;
 }
 
-public void setData(List<PrescriptionD> data) {
+public void setData(List<PrescriptionData> data) {
 this.data = data;
 }
 

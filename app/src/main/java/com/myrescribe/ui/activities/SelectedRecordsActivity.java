@@ -245,7 +245,6 @@ public class SelectedRecordsActivity extends AppCompatActivity {
                 break;
             case R.id.uploadButton:
                 if (photoPaths.size() > 0 && photoPaths != null) {
-
                     Intent intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
                     intent.putExtra(MyRescribeConstants.DOCUMENTS, photoPaths);
                     startActivity(intent);

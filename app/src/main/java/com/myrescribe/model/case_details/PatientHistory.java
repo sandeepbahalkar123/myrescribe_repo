@@ -16,7 +16,7 @@ public class PatientHistory implements CustomResponse{
     private String caseDetailName;
     @SerializedName("caseDetailData")
     @Expose
-    private List<CommonData>  caseDetailData = null;
+    private List<VisitCommonData>  caseDetailData = null;
     @SerializedName("vitals")
     @Expose
     private List<Vital> vitals = null;
@@ -37,11 +37,11 @@ public class PatientHistory implements CustomResponse{
         this.caseDetailName = caseDetailName;
     }
 
-    public List<CommonData> getCommonData() {
+    public List<VisitCommonData> getCommonData() {
         return  caseDetailData;
     }
 
-    public void setCommonData(List<CommonData>  caseDetailData) {
+    public void setCommonData(List<VisitCommonData>  caseDetailData) {
         this. caseDetailData =  caseDetailData;
     }
 

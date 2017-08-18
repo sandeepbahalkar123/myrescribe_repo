@@ -13,7 +13,7 @@ public class CaseDetailsModel implements CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private Data data;
+    private VisitData data;
 
     public Common getCommon() {
         return common;
@@ -23,11 +23,11 @@ public class CaseDetailsModel implements CustomResponse {
         this.common = common;
     }
 
-    public Data getData() {
+    public VisitData getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(VisitData data) {
         this.data = data;
     }
 

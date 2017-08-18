@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.adapters.PrescriptionListAdapter;
@@ -23,7 +22,7 @@ import com.myrescribe.helpers.prescription.PrescriptionHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 
-import com.myrescribe.model.prescription_response_model.PrescriptionD;
+import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -41,22 +40,16 @@ public class PrescriptionActivity extends AppCompatActivity
     private final String TAG = "MyRescribe/PrescriptionActivity";
     Context mContext;
     private String mGetMealTime;
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
-
     @BindView(R.id.recyclerViewShowMedicineDoseList)
     RecyclerView mRecyclerView;
-
     @BindView(R.id.noDataView)
     ImageView mNoDataView;
-
-
-
     private PrescriptionHelper mPrescriptionHelper;
 
     @Override
@@ -140,7 +133,7 @@ public class PrescriptionActivity extends AppCompatActivity
                 mNoDataView.setVisibility(View.VISIBLE);
             }
 
-            List<PrescriptionD> data = prescriptionDataReceived.getData();
+            List<PrescriptionData> data = prescriptionDataReceived.getData();
 
             if (data != null) {
                 if (data.size() != 0) {

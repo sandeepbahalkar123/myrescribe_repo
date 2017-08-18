@@ -9,9 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.myrescribe.R;
-import com.myrescribe.model.prescription_response_model.PrescriptionD;
+import com.myrescribe.model.prescription_response_model.PrescriptionData;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -28,13 +27,13 @@ import butterknife.ButterKnife;
 
 public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionListAdapter.ListViewHolder> {
 
-    private List<PrescriptionD> mPrescriptionData;
+    private List<PrescriptionData> mPrescriptionData;
     private Context mContext;
     private Boolean isPatientLogin;
     private String mGetMealTime;
-    private List<PrescriptionD> mSearchListByMedicineName;
+    private List<PrescriptionData> mSearchListByMedicineName;
 
-    public PrescriptionListAdapter(Context context, List<PrescriptionD> dataSet, Boolean isPatientLogin, String mMealTime) {
+    public PrescriptionListAdapter(Context context, List<PrescriptionData> dataSet, Boolean isPatientLogin, String mMealTime) {
         this.mPrescriptionData = dataSet;
         this.mContext = context;
         this.isPatientLogin = isPatientLogin;
@@ -54,7 +53,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
     public void onBindViewHolder(final PrescriptionListAdapter.ListViewHolder holder, final int position) {
         // getfrequencyScheduleString(5);
 
-        final PrescriptionD prescriptionDataObject = mPrescriptionData.get(position);
+        final PrescriptionData prescriptionDataObject = mPrescriptionData.get(position);
         if (prescriptionDataObject.getFreq().equals("")) {
             holder.mShowMedicineLayout.setVisibility(View.VISIBLE);
             holder.mExpandedMedicineDoseLayout.setVisibility(View.VISIBLE);
@@ -91,7 +90,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
                 //----------
                 if (holder.mShowMedicineLayout.getVisibility() == View.VISIBLE) {
 
-                    for (PrescriptionD object : mPrescriptionData) {
+                    for (PrescriptionData object : mPrescriptionData) {
                         object.setExpanded(false);
                     }
                     if (holder.mExpandLayout.getVisibility() == View.GONE) {
@@ -145,7 +144,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         holder.mRightDoseLayout.setVisibility(View.INVISIBLE);
         //--------
 
-        final PrescriptionD prescriptionData = mPrescriptionData.get(position);
+        final PrescriptionData prescriptionData = mPrescriptionData.get(position);
         String quantityOfDose = "";
         String timeOfDosage = "";
         String durationOfBreakFast = "";

@@ -26,6 +26,16 @@ public class Range implements CustomResponse{
     @Expose
     private String color;
 
+    public String getNameOfVital() {
+        return nameOfVital;
+    }
+
+    public void setNameOfVital(String nameOfVital) {
+        this.nameOfVital = nameOfVital;
+    }
+
+    private String nameOfVital;
+
     public String getMin() {
         return min;
     }

@@ -305,7 +305,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
             } else {
                 Intent intent = new Intent();
                 intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
-//                intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
+//                mIntent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
                 setResult(RESULT_OK, intent);
             }
 

@@ -119,6 +119,7 @@ public class MyRescribeConstants {
     public static final String CASE_DETAILS = "case_details";
     public static final String FILTER_REQUEST = "filter_request";
     public static final int MAX_RETRIES = 3;
+    public static final String PATIENT_ID = "patientId=";
 
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.

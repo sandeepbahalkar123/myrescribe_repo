@@ -118,7 +118,10 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
         View inflate = inflater.inflate(R.layout.sign_up, container, false);
         ButterKnife.bind(this, inflate);
         this.mContext = getActivity();
-
+        mFullName.setHint(getString(R.string.enter_full_name).toUpperCase());
+        mEmailId.setHint(getString(R.string.enter_email_id).toUpperCase());
+        mPassword.setHint(getString(R.string.enter_password).toUpperCase());
+        mMobileNo.setHint(getString(R.string.enter_mobile_no).toUpperCase());
         mPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -219,9 +222,7 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
                     mSignUpRequestModel.setName(name);
                     mSignUpRequestModel.setEmailId(email);
                     mSignUpRequestModel.setPassword(password);
-
                     loginHelper.doSignUp(mSignUpRequestModel);
-
                 }
                 break;
         }

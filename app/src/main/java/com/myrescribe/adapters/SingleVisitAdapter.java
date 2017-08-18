@@ -33,7 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OneDayVisitAdapter extends BaseExpandableListAdapter {
+public class SingleVisitAdapter extends BaseExpandableListAdapter {
     private int mPosition = 0;
     private Context mContext;
     private static final String CHILD_TYPE_1 = "vitals";
@@ -41,7 +41,7 @@ public class OneDayVisitAdapter extends BaseExpandableListAdapter {
     List<VisitCommonData> mVisitDetailList = new ArrayList<>();
     List<VisitCommonData> mCommonDataVisitList = new ArrayList<>();
 
-    public OneDayVisitAdapter(Context context, List<PatientHistory> listDataHeader) {
+    public SingleVisitAdapter(Context context, List<PatientHistory> listDataHeader) {
         this.mContext = context;
         for (int i = 0; i < listDataHeader.size(); i++) {
             List<VisitCommonData> commonData = listDataHeader.get(i).getCommonData();

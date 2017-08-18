@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loginChildScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp30"
+        android:paddingRight="@dimen/dp30">
+
+        <EditText
+            android:id="@+id/editTextMobileNo"
+            style="@style/AppLoginMainStyle"
+            android:hint="@string/enter_mobile_no"
+            android:inputType="number"
+            android:maxLength="10"
+            android:textStyle="bold"
+            android:typeface="sans" />
+        <!--  Email Label -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/recentblue" />
+
+        <EditText
+            android:id="@+id/editTextPassword"
+            style="@style/AppLoginMainStyle"
+            android:hint="@string/enter_password"
+            android:inputType="textPassword"
+            android:textStyle="bold"
+            android:typeface="sans"
+            android:visibility="gone"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/recentblue"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp40"
+            android:layout_marginTop="@dimen/dp30"
+            android:background="@color/recentblue"
+            android:gravity="center"
+            android:text="@string/log_in"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white" />
+
+        <com.myrescribe.ui.customesViews.CustomTextView
+            style="@style/AppLoginMainStyle"
+            android:id="@+id/forgotPasswordView"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp30"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@string/forgot_password"
+            android:textAllCaps="false"
+            android:textColor="@color/Gray"
+            android:textSize="@dimen/sp10"
+            android:textStyle="bold"
+            android:typeface="sans" />
+
+    </LinearLayout>
+</ScrollView>
+
+
+

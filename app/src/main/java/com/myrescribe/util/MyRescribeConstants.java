@@ -104,7 +104,8 @@ public class MyRescribeConstants {
     public static final String INVESTIGATION_UPLOAD_BY_GMAIL = MyRescribeConstants.BLANK + 18;
 
     public static final String INVESTIGATION_UPLOAD_FROM_UPLOADED = MyRescribeConstants.BLANK + 19;
-
+    public static final String TASK_LOGIN_WITH_PASSWORD = MyRescribeConstants.BLANK + 20;
+    public static final String TASK_LOGIN_WITH_OTP = MyRescribeConstants.BLANK + 21;
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
     public static final String INVESTIGATION_TEMP_DATA = "investigation_temp_data";

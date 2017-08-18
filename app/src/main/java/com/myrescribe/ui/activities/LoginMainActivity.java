@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.myrescribe.R;
 import com.myrescribe.ui.fragments.LoginMainTabFragment;
 import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.MyRescribeConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +38,7 @@ public class LoginMainActivity extends AppCompatActivity {
     FrameLayout mContainer;
     @BindView(R.id.mainParentScrollView)
     ScrollView mMainParentScrollView;
+    Intent intent;
     LoginMainTabFragment mLoginMainTabFragment;
 
     @Override
@@ -45,9 +47,13 @@ public class LoginMainActivity extends AppCompatActivity {
         setContentView(R.layout.login_main);
         ButterKnife.bind(this);
         mContext = this;
+        intent = getIntent();
         mLoginMainTabFragment = new LoginMainTabFragment();
+        Bundle args = new Bundle();
+        args.putString(getString(R.string.type),intent.getStringExtra(getString(R.string.type)));
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+        mLoginMainTabFragment.setArguments(args);
         fragmentTransaction.replace(R.id.container, mLoginMainTabFragment);
         fragmentTransaction.commit();
         LoginMainActivityPermissionsDispatcher.askToReadMessageWithCheck(LoginMainActivity.this);

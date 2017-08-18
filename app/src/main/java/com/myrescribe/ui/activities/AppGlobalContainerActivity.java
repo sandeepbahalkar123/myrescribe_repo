@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import com.myrescribe.R;
 import com.myrescribe.ui.fragments.ForgotPassword;
 import com.myrescribe.ui.fragments.OTPConfirmationForSignUp;
+import com.myrescribe.ui.fragments.OtpConfirmationForLogin;
 import com.myrescribe.ui.fragments.SocialLoginInputMobileForConfirmation;
 
 import java.io.Serializable;
@@ -69,6 +70,11 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
             ForgotPassword forgotPassword = new ForgotPassword();
             forgotPassword.setArguments(b);
             fragmentTransaction.replace(R.id.blankContainer, forgotPassword);
+        }else if(type.equalsIgnoreCase(getString(R.string.enter_otp_for_login))){
+            OtpConfirmationForLogin otpConfirmationForLogin = new OtpConfirmationForLogin();
+           // otpConfirmationForSignUp.setArguments(b);
+            fragmentTransaction.replace(R.id.blankContainer, otpConfirmationForLogin);
+
         }
         fragmentTransaction.commit();
     }

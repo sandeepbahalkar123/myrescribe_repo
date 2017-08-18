@@ -18,6 +18,7 @@ import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.activities.AppGlobalContainerActivity;
 import com.myrescribe.ui.activities.HomePageActivity;
+import com.myrescribe.ui.activities.LoginMainActivity;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -27,7 +28,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LogInApp extends Fragment implements
+/**
+ * Created by jeetal on 17/8/17.
+ */
+
+public class LogInAppNew extends Fragment implements
         HelperResponse {
     private final String TAG = this.getClass().getName();
 
@@ -37,15 +42,15 @@ public class LogInApp extends Fragment implements
     ScrollView mLoginChildScrollView;
     @BindView(R.id.editTextMobileNo)
     EditText mMobileNo;
-    @BindView(R.id.editTextPassword)
-    EditText mPassword;
+    /*@BindView(R.id.editTextPassword)
+    EditText mPassword;*/
 
-    public LogInApp() {
+    public LogInAppNew() {
         // Required empty public constructor
     }
 
-    public static LogInApp newInstance(String param1, String param2) {
-        LogInApp fragment = new LogInApp();
+    public static LogInAppNew newInstance(String param1, String param2) {
+        LogInAppNew fragment = new LogInAppNew();
         return fragment;
     }
 
@@ -57,7 +62,7 @@ public class LogInApp extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View inflate = inflater.inflate(R.layout.log_in, container, false);
+        View inflate = inflater.inflate(R.layout.log_in_new, container, false);
         ButterKnife.bind(this, inflate);
         mContext = this.getContext();
         init();
@@ -65,7 +70,7 @@ public class LogInApp extends Fragment implements
     }
 
     private void init() {
-        mPassword.setHint(getString(R.string.enter_password).toUpperCase());
+       // mPassword.setHint(getString(R.string.enter_password).toUpperCase());
         mMobileNo.setHint(getString(R.string.enter_mobile_no).toUpperCase());
     }
 
@@ -75,11 +80,19 @@ public class LogInApp extends Fragment implements
         switch (id) {
             case R.id.btn_login:
                 String mobileNo = mMobileNo.getText().toString();
-                String password = mPassword.getText().toString();
-                if (!validate(mobileNo, password)) {
+              //  String password = mPassword.getText().toString();
+               /* if (!validate(mobileNo)) {
                     LoginHelper loginHelper = new LoginHelper(getActivity(), this);
-                    loginHelper.doLogin(mobileNo, password);
-                }
+                    loginHelper.doLogin(mobileNo);
+                }*/
+                Intent intent = new Intent(mContext, AppGlobalContainerActivity.class);
+                intent.putExtra(getString(R.string.type), getString(R.string.enter_otp_for_login));
+                intent.putExtra(getString(R.string.title), getString(R.string.log_in));
+                // intentObj.putExtra(getString(R.string.details), mSignUpRequestModel);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                getActivity().finish();
                 break;
         }
     }
@@ -97,7 +110,7 @@ public class LogInApp extends Fragment implements
      *
      * @return
      */
-    private boolean validate(String mobileNo, String password) {
+    private boolean validate(String mobileNo) {
         String message = null;
         String enter = getString(R.string.enter);
         if (mobileNo.isEmpty()) {
@@ -108,15 +121,6 @@ public class LogInApp extends Fragment implements
             message = getString(R.string.err_invalid_mobile_no);
             mMobileNo.setError(message);
             mMobileNo.requestFocus();
-        } else if (password.isEmpty()) {
-            message = enter + getString(R.string.enter_password).toLowerCase(Locale.US);
-            mPassword.setError(message);
-            mPassword.requestFocus();
-        } else if (password.trim().length() < 8) {
-            message = getString(R.string.error_too_small_password);
-            mPassword.setError(message);
-            mPassword.requestFocus();
-
         }
         if (message != null) {
             return true;
@@ -132,20 +136,31 @@ public class LogInApp extends Fragment implements
             LoginModel loginModel = (LoginModel) customResponse;
             if (loginModel.getCommon().isSuccess()) {
                 CommonMethods.Log(TAG + " Token", loginModel.getAuthToken());
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, loginModel.getPatientId(), mContext);
-
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mMobileNo.getText().toString(), mContext);
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mPassword.getText().toString(), mContext);
-
-                Intent intent = new Intent(mContext, HomePageActivity.class);
+                Intent intent = new Intent(mContext, AppGlobalContainerActivity.class);
+                intent.putExtra(getString(R.string.type), getString(R.string.enter_otp_for_login));
+                intent.putExtra(getString(R.string.title), getString(R.string.log_in));
+               // intentObj.putExtra(getString(R.string.details), mSignUpRequestModel);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 getActivity().finish();
+               /* MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, loginModel.getPatientId(), mContext);
+
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mMobileNo.getText().toString(), mContext);
+                Intent intent = new Intent(mContext, HomePageActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                getActivity().finish();*/
             } else {
-                CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
+                Intent intent = new Intent(getActivity(), LoginMainActivity.class);
+                intent.putExtra(getString(R.string.type),MyRescribeConstants.TASK_LOGIN);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                getActivity().finish();
             }
         }
     }

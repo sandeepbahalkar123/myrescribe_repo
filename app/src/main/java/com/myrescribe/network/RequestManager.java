@@ -496,6 +496,14 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         InvestigationUploadFromUploadedModel investigationUploadFromUploadedModel = new Gson().fromJson(data, InvestigationUploadFromUploadedModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationUploadFromUploadedModel, mOldDataTag);
                         break;
+                    case MyRescribeConstants.TASK_LOGIN_WITH_PASSWORD: //This is for get archived list
+                        LoginModel loginWithPasswordModel = new Gson().fromJson(data, LoginModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginWithPasswordModel, mOldDataTag);
+                        break;
+                    case MyRescribeConstants.TASK_LOGIN_WITH_OTP: //This is for get archived list
+                        LoginModel loginWithOtpModel = new Gson().fromJson(data, LoginModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginWithOtpModel, mOldDataTag);
+                        break;
 
                     default:
                         //This is for get PDF VisitData

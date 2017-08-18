@@ -50,6 +50,7 @@ public class LoginMainTabFragment extends Fragment {
     ViewPager mViewpager;
     private ViewPagerAdapter mViewPagerAdapter;
     private Context mContext;
+    Bundle arguments;
 
     public LoginMainTabFragment() {
         // Required empty public constructor
@@ -85,6 +86,10 @@ public class LoginMainTabFragment extends Fragment {
         View inflate = inflater.inflate(R.layout.login_main_tab_fragment, container, false);
         ButterKnife.bind(this, inflate);
         mContext = this.getContext();
+        if (getArguments() != null) {
+         arguments = getArguments();
+
+        }
         setUpViewPager(mViewpager);
         mTabLayout.setupWithViewPager(mViewpager);
 
@@ -97,13 +102,16 @@ public class LoginMainTabFragment extends Fragment {
     private void setUpViewPager(ViewPager viewPager) {
         mViewPagerAdapter = new ViewPagerAdapter(getFragmentManager());
         mViewPagerAdapter.addFragment(new SignUp(), getString(R.string.sign_up));
+     /*   mViewPagerAdapter.addFragment(new LogInAppNew(), getString(R.string.log_in));*/
         mViewPagerAdapter.addFragment(new LogInApp(), getString(R.string.log_in));
         viewPager.setAdapter(mViewPagerAdapter);
-        if (!MyRescribeConstants.BLANK.equalsIgnoreCase(MyRescribePreferencesManager.getString(getString(R.string.logout), mContext))) {
+        viewPager.setCurrentItem(1);
+
+       /* if (!MyRescribeConstants.BLANK.equalsIgnoreCase(MyRescribePreferencesManager.getString(getString(R.string.logout), mContext))) {
             viewPager.setCurrentItem(1);
         } else {
             viewPager.setCurrentItem(0);
-        }
+        }*/
 
         new Handler().postDelayed(new Runnable() {
             @Override

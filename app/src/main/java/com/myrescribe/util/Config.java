@@ -16,12 +16,13 @@ public class Config {
     public static boolean DEV_BUILD = true;
     //Declared all URL used in app here
 
-    public static String BASE_URL = "http://drrescribe.com:3003/";
+    public static String BASE_URL = "http://192.168.0.182:3003/";
 
     public Context mContext;
     //Declared all URL used in app here
-
-    public static final String PRESCRIPTION_URL = "api/patient/getPatientPrescriptions/";
+    public static final String LOGIN_WITH_PASSWORD_URL = "";
+    public static final String LOGIN_WITH_OTP_URL = "";
+    public static final String PRESCRIPTION_URL = "api/patient/getPatientPrescriptions?patientId=";
     public static final String DOCTOR_LIST_URL = "api/patient/getDoctorList?patientId=";
     public static final String ONE_DAY_VISIT_URL = "api/patient/getPatientOneDayVisit?opdId=";
     public static final String DOCTOR_LIST_FILTER_URL = "api/patient/searchDoctors";

@@ -13,7 +13,7 @@ import com.myrescribe.R;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 
-import com.myrescribe.adapters.OneDayVisitAdapter;
+import com.myrescribe.adapters.SingleVisitAdapter;
 import com.myrescribe.helpers.one_day_visit.OneDayVisitHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
@@ -177,8 +177,8 @@ public class OneDayVisitActivity extends AppCompatActivity implements HelperResp
         }
 
 
-        OneDayVisitAdapter oneDayVisitAdapter = new OneDayVisitAdapter(this,patientHistoryList);
-        mHistoryExpandableListView.setAdapter(oneDayVisitAdapter);
+        SingleVisitAdapter singleVisitAdapter = new SingleVisitAdapter(this,patientHistoryList);
+        mHistoryExpandableListView.setAdapter(singleVisitAdapter);
 
 
     }

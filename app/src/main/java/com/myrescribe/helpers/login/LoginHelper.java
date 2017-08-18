@@ -49,6 +49,10 @@ public class LoginHelper implements ConnectionListener {
                     mHelperResponseManager.onSuccess(mOldDataTag, signUpModel);
                 } else if (mOldDataTag.equals(MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP)) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                } else if (mOldDataTag.equals(MyRescribeConstants.TASK_LOGIN_WITH_PASSWORD)) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                }else if (mOldDataTag.equals(MyRescribeConstants.TASK_LOGIN_WITH_OTP)) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
@@ -73,7 +77,7 @@ public class LoginHelper implements ConnectionListener {
 
     }
 
-    public void doLogin(String mobileNo, String password) {
+    public void doLogin(String mobileNo,String password) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
         LoginRequestModel loginRequestModel = new LoginRequestModel();
@@ -82,6 +86,24 @@ public class LoginHelper implements ConnectionListener {
         mConnectionFactory.setPostParams(loginRequestModel);
         mConnectionFactory.setUrl(Config.LOGIN_URL);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_LOGIN);
+    }
+    public void doLoginByPassword(String password) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN_WITH_PASSWORD, Request.Method.POST, true);
+        mConnectionFactory.setHeaderParams();
+        LoginRequestModel loginRequestModel = new LoginRequestModel();
+        loginRequestModel.setMobileNumber(password);
+        mConnectionFactory.setPostParams(loginRequestModel);
+        mConnectionFactory.setUrl(Config.LOGIN_WITH_PASSWORD_URL);
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_LOGIN_WITH_PASSWORD);
+    }
+    public void doLoginByOTP(String otp) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN_WITH_OTP, Request.Method.POST, true);
+        mConnectionFactory.setHeaderParams();
+        LoginRequestModel loginRequestModel = new LoginRequestModel();
+        loginRequestModel.setMobileNumber(otp);
+        mConnectionFactory.setPostParams(loginRequestModel);
+        mConnectionFactory.setUrl(Config.LOGIN_WITH_OTP_URL);
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_LOGIN_WITH_OTP);
     }
 
     public void doVerifyGeneratedSignUpOTP(SignUpVerifyOTPRequestModel requestModel) {

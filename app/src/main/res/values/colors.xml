@@ -6,7 +6,7 @@
     <color name="grey">#55000000</color>
     <color name="grey_500">#9E9E9E</color>
     <color name="grey_300">#dcdcdc</color>
-    <color name="instruction_color">#5e5e5e</color>
+    <color name="instruction_color">#666666</color>
     <color name="transparent">#00000000</color>
     <color name="placeHolder">#55000000</color>
     <item name="errorColor" type="color">#BD362F</item>

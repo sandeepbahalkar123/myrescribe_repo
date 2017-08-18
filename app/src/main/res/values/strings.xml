@@ -194,10 +194,10 @@
     <string name="title_activity_report_selection">Report Selection</string>
     <string name="prescriptions">Prescriptions</string>
     <string name="select_report">Please select Reports</string>
-    <string name="without_date_doctor">Please select another Doctor</string>
+    <string name="title_activity_reports">Reports</string>
 
     <!-- //*** Google Map key-->
     <string name="google_maps_key">AIzaSyCnnUyKo4ktLqWLTKXtO2jp1AtIt0u9TEA</string>
-   <!-- <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>-->
+    <!-- <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>-->
 
 </resources>

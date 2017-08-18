@@ -102,6 +102,10 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     private DatePickerDialog datePickerDialog;
     private String mSelectDoctorString = "";
     private String mSelectDateString = "Select Date";
+    private boolean isDatesThere = false;
+    private String visitDate;
+    private int doctorId;
+    private int mSelectedId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +129,8 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
         });
 
         MyRecordsHelper myRecordsHelper = new MyRecordsHelper(mContext, this);
-//        myRecordsHelper.getDoctorList(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        myRecordsHelper.getDoctorList(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+//        myRecordsHelper.getDoctorList("4092");
 
         Calendar now = Calendar.getInstance();
 // As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
@@ -169,6 +174,8 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
         switch (view.getId()) {
             case R.id.clearButton:
                 mSelectDoctorName.setText("");
+                selectDate.setText("");
+
                 dropdownLayout.setVisibility(View.GONE);
                 autocompleteLayout.setVisibility(View.VISIBLE);
                 dateSpinnerLayout.setVisibility(View.GONE);
@@ -176,7 +183,9 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 selectAddressLayout.setVisibility(View.VISIBLE);
 
                 isManual = true;
+                mSelectedId = -1;
                 mSelectDoctorString = "";
+                mSelectDateString = "Select Date ";
                 break;
             case R.id.selectDateTextView:
                 datePickerDialog.show(getSupportFragmentManager(), getResources().getString(R.string.select_date_text));
@@ -198,17 +207,35 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                         CommonMethods.showToast(mContext, "Please enter Doctor Address");
                         return;
                     }
+                    visitDate = selectDate.getText().toString();
+                    doctorId = -1; // needs to generate
                 } else {
-                    if (mSelectDoctorString.length() == 0) {
-                        CommonMethods.showToast(mContext, "Please enter Doctor Name");
-                        return;
-                    }
-                    if (mSelectDateString.equals("Select Date")) {
-                        CommonMethods.showToast(mContext, "Please enter Date");
-                        return;
+                    doctorId = mSelectedId;
+                    if (isDatesThere) {
+                        if (mSelectDoctorString.length() == 0) {
+                            CommonMethods.showToast(mContext, "Please enter Doctor Name");
+                            return;
+                        }
+                        if (mSelectDateString.equals("Select Date")) {
+                            CommonMethods.showToast(mContext, "Please enter Date");
+                            return;
+                        }
+                        visitDate = mSelectDateString;
+                    } else {
+                        if (mSelectDoctorString.length() == 0) {
+                            CommonMethods.showToast(mContext, "Please enter Doctor Name");
+                            return;
+                        }
+                        if (selectDate.getText().length() == 0) {
+                            CommonMethods.showToast(mContext, "Please enter Date");
+                            return;
+                        }
+                        visitDate = selectDate.getText().toString();
                     }
                 }
                 Intent intent = new Intent(mContext, SelectedRecordsActivity.class);
+                intent.putExtra(MyRescribeConstants.DOCTORS_ID, doctorId);
+                intent.putExtra(MyRescribeConstants.VISIT_DATE, visitDate);
                 startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
                 break;
             case R.id.searchButton:
@@ -296,25 +323,42 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
             mSelectDoctorName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    dropdownLayout.setVisibility(View.VISIBLE);
-                    autocompleteLayout.setVisibility(View.GONE);
-                    doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
-                    doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
-                    doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
-
-                    dateSpinnerLayout.setVisibility(View.VISIBLE);
-                    selectDateLayout.setVisibility(View.GONE);
-
-                    selectAddressLayout.setVisibility(View.GONE);
-
-                    isManual = false;
 
                     final ArrayList<String> spinnerList = new ArrayList<String>();
                     mSelectDateString = "Select Date";
                     mSelectDoctorString = doctorSpinnerAdapter.getDoctor(position).getDoctorName();
 
-                    if (doctorSpinnerAdapter.getDoctor(position).getDates().isEmpty())
-                        CommonMethods.showToast(mContext, getResources().getString(R.string.without_date_doctor));
+                    mSelectedId = doctorSpinnerAdapter.getDoctor(position).getId();
+                    if (!doctorSpinnerAdapter.getDoctor(position).getDates().isEmpty()) {
+                        isDatesThere = true;
+
+                        dropdownLayout.setVisibility(View.VISIBLE);
+                        autocompleteLayout.setVisibility(View.GONE);
+                        doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
+                        doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
+                        doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
+
+                        dateSpinnerLayout.setVisibility(View.VISIBLE);
+                        selectDateLayout.setVisibility(View.GONE);
+
+                        selectAddressLayout.setVisibility(View.GONE);
+                    } else {
+                        isDatesThere = false;
+
+                        mSelectDoctorName.setText("");
+                        dropdownLayout.setVisibility(View.VISIBLE);
+                        autocompleteLayout.setVisibility(View.GONE);
+                        doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
+                        doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
+                        doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
+
+                        dateSpinnerLayout.setVisibility(View.GONE);
+                        selectDateLayout.setVisibility(View.VISIBLE);
+
+                        selectAddressLayout.setVisibility(View.GONE);
+                    }
+
+                    isManual = false;
 
                     spinnerList.add("Select Date");
                     for (String date : doctorSpinnerAdapter.getDoctor(position).getDates())

@@ -55,7 +55,6 @@ public class SelectedRecordsActivity extends AppCompatActivity {
     @BindView(R.id.coachmark)
     ImageView coachmark;
 
-
     private static final int MAX_ATTACHMENT_COUNT = 10;
     private Context mContext;
     private ArrayList<Image> photoPaths = new ArrayList<>();
@@ -85,8 +84,8 @@ public class SelectedRecordsActivity extends AppCompatActivity {
 
         mContext = SelectedRecordsActivity.this;
         String coachMarkStatus = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.COACHMARK, mContext);
-//        if (coachMarkStatus.equals(MyRescribeConstants.YES))
-//            coachmark.setVisibility(View.GONE);
+        if (coachMarkStatus.equals(MyRescribeConstants.YES))
+            coachmark.setVisibility(View.GONE);
 //        appDBHelper = new AppDBHelper(mContext);
 
         patient_id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
@@ -246,6 +245,8 @@ public class SelectedRecordsActivity extends AppCompatActivity {
             case R.id.uploadButton:
                 if (photoPaths.size() > 0 && photoPaths != null) {
                     Intent intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
+                    intent.putExtra(MyRescribeConstants.DOCTORS_ID, getIntent().getIntExtra(MyRescribeConstants.DOCTORS_ID, 0));
+                    intent.putExtra(MyRescribeConstants.VISIT_DATE, getIntent().getStringExtra(MyRescribeConstants.VISIT_DATE));
                     intent.putExtra(MyRescribeConstants.DOCUMENTS, photoPaths);
                     startActivity(intent);
 

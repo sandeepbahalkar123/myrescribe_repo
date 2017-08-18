@@ -198,6 +198,11 @@
             android:label="@string/title_activity_report_selection"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name="com.myrescribe.ui.activities.ShowRecordsActivity"
+            android:label="@string/title_activity_reports"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <receiver android:name="com.myrescribe.broadcast_receivers.OtpReader">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />

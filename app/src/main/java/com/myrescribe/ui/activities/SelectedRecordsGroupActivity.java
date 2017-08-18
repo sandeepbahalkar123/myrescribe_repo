@@ -22,7 +22,10 @@ import com.myrescribe.adapters.myrecords.RecordsGroupAdapter;
 import com.myrescribe.adapters.myrecords.RecordsGroupImageAdapter;
 import com.myrescribe.model.investigation.Image;
 import com.myrescribe.model.myrecords.Group;
+import com.myrescribe.preference.MyRescribePreferencesManager;
+import com.myrescribe.singleton.Device;
 import com.myrescribe.util.CommonMethods;
+import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
 import com.myrescribe.util.NetworkUtil;
 
@@ -63,6 +66,8 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
     private ListView captionListView;
     final String childCaptions[] = {"Blood Sugar", "CT Scan", "Haemogram", "Lipid Profile", "Liver Profile", "Serum Bilirubin", "Serum Creatinine", "Sonography", "Sputum",
             "Thyroid", "Urine Culture", "Urine Routine", "X-Ray", "Others"};
+    private String visitDate;
+    private int docId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,8 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         imageArrayList = getIntent().getParcelableArrayListExtra(MyRescribeConstants.DOCUMENTS);
+        visitDate = getIntent().getStringExtra(MyRescribeConstants.VISIT_DATE);
+        docId = getIntent().getIntExtra(MyRescribeConstants.DOCTORS_ID, 0);
         createGroup();
 
         if (getSupportActionBar() != null) {
@@ -183,8 +190,10 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             CommonMethods.showToast(SelectedRecordsGroupActivity.this, getResources().getString(R.string.select_report));
         } else {
             if (NetworkUtil.isInternetAvailable(SelectedRecordsGroupActivity.this)) {
-
                 try {
+                    Device device = Device.getInstance(SelectedRecordsGroupActivity.this);
+                    String baseUrl = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, SelectedRecordsGroupActivity.this);
+                    String authorizationString = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, SelectedRecordsGroupActivity.this);
 
                     UploadNotificationConfig uploadNotificationConfig = new UploadNotificationConfig();
                     uploadNotificationConfig.setTitleForAllStatuses("Document Uploading");
@@ -200,10 +209,24 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
 
                         for (int j = 0; j < images.size(); j++) {
 
+//                            new MultipartUploadRequest(SelectedRecordsGroupActivity.this, i + "_" + j, baseUrl + Config.MY_RECORDS_UPLOAD)
                             new MultipartUploadRequest(SelectedRecordsGroupActivity.this, i + "_" + j, Url)
                                     .setNotificationConfig(uploadNotificationConfig)
                                     .setMaxRetries(0)
-                                    .addFileToUpload(images.get(j).getImagePath(), "imageUploader")
+
+                                    .addHeader(MyRescribeConstants.AUTHORIZATION_TOKEN, authorizationString)
+                                    .addHeader(MyRescribeConstants.DEVICEID, device.getDeviceId())
+                                    .addHeader(MyRescribeConstants.OS, device.getOS())
+                                    .addHeader(MyRescribeConstants.OSVERSION, device.getOSVersion())
+                                    .addHeader(MyRescribeConstants.DEVICE_TYPE, device.getDeviceType())
+
+                                    .addHeader("docId", String.valueOf(docId))
+                                    .addHeader("visitDate", visitDate)
+                                    .addHeader("imageId", images.get(j).getImageId())
+                                    .addHeader("parentCaptionName", groups.get(i).getGroupname())
+                                    .addHeader("childCaptionName", images.get(j).getChildCaption())
+
+                                    .addFileToUpload(images.get(j).getImagePath(), "myRecord")
 //                                    .setDelegate(MainActivity.this)
                                     .startUpload();
                         }

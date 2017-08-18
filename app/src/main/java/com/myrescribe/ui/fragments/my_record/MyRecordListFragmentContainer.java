@@ -1,6 +1,7 @@
 package com.myrescribe.ui.fragments.my_record;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -28,6 +30,7 @@ import com.myrescribe.model.login.Year;
 import com.myrescribe.model.my_records.MyRecordBaseModel;
 import com.myrescribe.model.my_records.MyRecordDataModel;
 import com.myrescribe.model.my_records.MyRecordInfoAndReports;
+import com.myrescribe.ui.activities.AddRecordsActivity;
 import com.myrescribe.ui.activities.MyRecordsActivity;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -56,6 +59,9 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
     private CustomSpinnerAdapter mCustomSpinAdapter;
     @BindView(R.id.year)
     Spinner mYearSpinnerView;
+    @BindView(R.id.addRecordButton)
+    Button addRecordButton;
+
 
     private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<Year> mTimePeriodList = new ArrayList<>();
@@ -134,11 +140,15 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
 
     }
 
-    @OnClick({R.id.backArrow})
+    @OnClick({R.id.backArrow, R.id.addRecordButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backArrow:
                 mParentActivity.finish();
+                break;
+            case R.id.addRecordButton:
+                Intent intent = new Intent(mContext, AddRecordsActivity.class);
+                mContext.startActivity(intent);
                 break;
         }
     }

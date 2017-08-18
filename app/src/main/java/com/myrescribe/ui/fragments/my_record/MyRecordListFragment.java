@@ -10,7 +10,7 @@ import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 
 import com.myrescribe.R;
-import com.myrescribe.adapters.my_records.ThreeLevelListAdapter;
+import com.myrescribe.adapters.myrecords.ThreeLevelListAdapter;
 import com.myrescribe.helpers.myrecords.MyRecordsHelper;
 import com.myrescribe.model.login.Year;
 import com.myrescribe.model.my_records.MyRecordInfoAndReports;

@@ -1,4 +1,4 @@
-package com.myrescribe.adapters.my_records;
+package com.myrescribe.adapters.myrecords;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.myrescribe.R;
@@ -19,19 +18,16 @@ import com.myrescribe.model.my_records.MyRecordDoctorInfo;
 import com.myrescribe.model.my_records.MyRecordInfoAndReports;
 import com.myrescribe.model.my_records.MyRecordReports;
 import com.myrescribe.ui.activities.AddRecordsActivity;
+import com.myrescribe.ui.activities.ShowRecordsActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -208,7 +204,11 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                 MyRecordReports childGroup = adapter.getGroup(groupPosition);
                 if (!childGroup.getParentCaptionName().equalsIgnoreCase(mInvestigationText)) {
                     secondLevelELV.collapseGroup(groupPosition);
-                    Intent i = new Intent(context, AddRecordsActivity.class);
+                    Intent i = new Intent(context, ShowRecordsActivity.class);
+                    ArrayList<MyRecordReports.MyRecordReportList> reportList = childGroup.getReportList();
+                    MyRecordReports.MyRecordReportList myRecordReportList = reportList.get(0);
+                    String[] imageList = myRecordReportList.getImageList();
+                    i.putExtra(MyRescribeConstants.DOCUMENTS, imageList);
                     context.startActivity(i);
                 }
             }
@@ -216,7 +216,11 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         secondLevelELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Intent i = new Intent(context, AddRecordsActivity.class);
+                SecondLevelAdapter adapter = (SecondLevelAdapter) secondLevelELV.getExpandableListAdapter();
+                MyRecordReports.MyRecordReportList child = adapter.getChild(groupPosition, childPosition);
+                String[] imageList = child.getImageList();
+                Intent i = new Intent(context, ShowRecordsActivity.class);
+                i.putExtra(MyRescribeConstants.DOCUMENTS, imageList);
                 context.startActivity(i);
                 return false;
             }

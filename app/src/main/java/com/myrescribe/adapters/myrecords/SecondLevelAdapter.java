@@ -1,4 +1,4 @@
-package com.myrescribe.adapters.my_records;
+package com.myrescribe.adapters.myrecords;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;

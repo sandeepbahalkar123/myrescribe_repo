@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
-        android:id="@+id/prescription"
-        android:icon="@drawable/menu_prescription"
+        android:id="@+id/case_encounter"
+        android:icon="@drawable/fab_diagnostic_reports_1"
         android:orderInCategory="1"
-        android:title="@string/prescription" />
+        android:title="@string/case_encounter" />
+
     <item
         android:id="@+id/investigation"
         android:icon="@drawable/menu_investigations"
         android:orderInCategory="2"
-        android:title="@string/investigation" />
-    <item
-        android:id="@+id/bill_invoice"
-        android:icon="@drawable/menu_my_records"
-        android:orderInCategory="3"
-        android:title="@string/bill_invoice" />
+        android:title="@string/investigations" />
 
     <item
-        android:id="@+id/case_encounter"
-        android:icon="@drawable/menu_my_records"
+        android:id="@+id/prescription"
+        android:icon="@drawable/fab_prescription"
+        android:orderInCategory="3"
+        android:title="@string/prescriptions" />
+
+    <item
+        android:id="@+id/bill_invoice"
+        android:icon="@drawable/fab_bill_invoices"
         android:orderInCategory="4"
-        android:title="@string/case_encounter" />
+        android:title="@string/bill_invoices" />
 
     <item
         android:id="@+id/others"
-        android:icon="@drawable/menu_my_records"
+        android:icon="@drawable/fab_others"
         android:orderInCategory="5"
         android:title="@string/others" />
 

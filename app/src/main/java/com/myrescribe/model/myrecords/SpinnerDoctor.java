@@ -1,9 +1,8 @@
-package com.myrescribe.model.records;
+package com.myrescribe.model.myrecords;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.ArrayList;
 
 public class SpinnerDoctor {
@@ -20,13 +19,10 @@ public class SpinnerDoctor {
     @SerializedName("address")
     @Expose
     private String address;
-    @SerializedName("visitDate")
-    @Expose
-    private String visitDate;
     @SerializedName("docImg")
     @Expose
     private String docImg;
-    @SerializedName("dates")
+    @SerializedName("visitDates")
     @Expose
     private ArrayList<String> dates = new ArrayList<String>();
 
@@ -60,14 +56,6 @@ public class SpinnerDoctor {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getVisitDate() {
-        return visitDate;
-    }
-
-    public void setVisitDate(String visitDate) {
-        this.visitDate = visitDate;
     }
 
     public String getDocImg() {

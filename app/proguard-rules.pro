@@ -35,3 +35,4 @@
 # for DexGuard only
 -keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 # End For Glide
+

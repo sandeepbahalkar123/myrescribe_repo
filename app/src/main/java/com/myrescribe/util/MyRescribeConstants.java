@@ -102,6 +102,8 @@ public class MyRescribeConstants {
 
     public static final String INVESTIGATION_UPLOAD_FROM_UPLOADED = MyRescribeConstants.BLANK + 19;
 
+    public static final String MY_RECORDS_DOCTOR_LIST = MyRescribeConstants.BLANK + 20;
+
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
 

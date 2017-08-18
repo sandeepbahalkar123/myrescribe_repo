@@ -8,26 +8,23 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.myrescribe.R;
-import com.myrescribe.adapters.SelectedRecordsAdapter;
+import com.myrescribe.adapters.myrecords.SelectedRecordsAdapter;
 import com.myrescribe.model.investigation.Image;
-import com.myrescribe.model.investigation.Images;
-import com.myrescribe.model.investigation.InvestigationData;
-import com.myrescribe.model.investigation.SelectedDocModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -55,13 +52,16 @@ public class SelectedRecordsActivity extends AppCompatActivity {
     Button uploadButton;
     @BindView(R.id.fab)
     FabSpeedDial fab;
+    @BindView(R.id.coachmark)
+    ImageView coachmark;
+
 
     private static final int MAX_ATTACHMENT_COUNT = 10;
     private Context mContext;
     private ArrayList<Image> photoPaths = new ArrayList<>();
-    private int media_id = -1;
+    //    private int media_id = -1;
     private SelectedRecordsAdapter selectedRecordsAdapter;
-    private ArrayList<InvestigationData> investigation = new ArrayList<>();
+    //    private ArrayList<InvestigationData> investigation = new ArrayList<>();
     //    private AppDBHelper appDBHelper;
     private String patient_id = "";
 
@@ -71,8 +71,10 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_seleted_records);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null)
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.title_activity_report_selection));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,11 +84,14 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         });
 
         mContext = SelectedRecordsActivity.this;
+        String coachMarkStatus = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.COACHMARK, mContext);
+//        if (coachMarkStatus.equals(MyRescribeConstants.YES))
+//            coachmark.setVisibility(View.GONE);
 //        appDBHelper = new AppDBHelper(mContext);
 
         patient_id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
 
-        for (int i = 0; i < investigation.size(); i++) {
+        /*for (int i = 0; i < investigation.size(); i++) {
             if (investigation.get(i).isSelected() && !investigation.get(i).isUploaded() && investigation.get(i).getPhotos().size() > 0) {
                 media_id = i;
                 break;
@@ -98,8 +103,9 @@ public class SelectedRecordsActivity extends AppCompatActivity {
             photoPaths = new ArrayList<>();
         } else {
             photoPaths = investigation.get(media_id).getPhotos();
-        }
+        }*/
 
+        SelectedRecordsActivityPermissionsDispatcher.onPickPhotoWithCheck(SelectedRecordsActivity.this);
         // off recyclerView Animation
 
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
@@ -111,13 +117,27 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 2);
         recyclerView.setLayoutManager(layoutManager);
 
+        fab.addOnStateChangeListener(new FabSpeedDial.OnStateChangeListener() {
+            @Override
+            public void onStateChange(boolean open) {
+                if (open) {
+                    fab.getMainFab().setImageResource(R.drawable.x);
+                    fab.getMainFab().setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.statusbar));
+                }
+                else {
+                    fab.getMainFab().setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.tagColor));
+                    fab.getMainFab().setImageResource(R.drawable.fab_icon_records);
+                }
+            }
+        });
+
         fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
             @Override
             public void onMenuItemClick(FloatingActionButton miniFab, @Nullable TextView label, int itemId) {
                 for (Image image : photoPaths) {
                     if (image.isSelected()) {
                         if (label != null) {
-                            image.setCaption(label.getText().toString());
+                            image.setParentCaption(label.getText().toString());
                             image.setSelected(false);
                         }
                     }
@@ -216,42 +236,24 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.uploadButton)
-    public void onViewClicked() {
-        if (photoPaths.size() > 0 && photoPaths != null) {
-            CommonMethods.showToast(mContext, "Upload Successfully");
+    @OnClick({R.id.coachmark, R.id.uploadButton})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.coachmark:
+                coachmark.setVisibility(View.GONE);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.COACHMARK, MyRescribeConstants.YES, mContext);
+                break;
+            case R.id.uploadButton:
+                if (photoPaths.size() > 0 && photoPaths != null) {
 
-            int selectedCount = 0;
-            ArrayList<Integer> selectedInvestigationIds = new ArrayList<>();
+                    Intent intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
+                    intent.putExtra(MyRescribeConstants.DOCUMENTS, photoPaths);
+                    startActivity(intent);
 
-            for (InvestigationData dataObject : investigation) {
-                if (dataObject.isSelected() && !dataObject.isUploaded()) {
-                    selectedInvestigationIds.add(dataObject.getId());
-                    dataObject.setUploaded(dataObject.isSelected());
-                    Images images = new Images();
-                    images.setImageArray(photoPaths);
-                    dataObject.setPhotos(photoPaths);
-//                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), new Gson().toJson(images));
+                } else {
+                    CommonMethods.showToast(mContext, "Please select at least one document");
                 }
-                if (dataObject.isSelected())
-                    selectedCount += 1;
-            }
-
-            SelectedDocModel selectedDocModel = new SelectedDocModel();
-            selectedDocModel.setSelectedDocPaths(photoPaths);
-            selectedDocModel.setSelectedInvestigation(selectedInvestigationIds);
-
-            Log.d("JSON", new Gson().toJson(selectedDocModel));
-
-            Intent intent = new Intent();
-            intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigation);
-//            intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
-            setResult(RESULT_OK, intent);
-
-            finish();
-
-        } else {
-            CommonMethods.showToast(mContext, "Please select at least one document");
+                break;
         }
     }
 }

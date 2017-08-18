@@ -220,5 +220,6 @@ public class MyRescribePreferencesManager {
         String LOGIN_STATUS = "login_status";
         String MOBILE_NUMBER = "mobileNumber";
         String PASSWORD = "password";
+        String COACHMARK = "coachmark";
     }
 }

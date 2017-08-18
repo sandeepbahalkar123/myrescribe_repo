@@ -7,7 +7,7 @@
             <corners
                 android:radius="4dp"/>
             <solid
-                android:color="@color/tagColor"/>
+                android:color="@color/statusbar"/>
         </shape>
     </item>
     <item
@@ -17,7 +17,7 @@
             <corners
                 android:radius="4dp"/>
             <solid
-                android:color="@color/statusbar"/>
+                android:color="@color/tagColor"/>
         </shape>
     </item>
 </selector>

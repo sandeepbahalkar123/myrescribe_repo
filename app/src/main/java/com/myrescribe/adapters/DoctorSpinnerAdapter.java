@@ -9,16 +9,19 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 import com.myrescribe.R;
-import com.myrescribe.model.records.SpinnerDoctor;
+import com.myrescribe.model.myrecords.SpinnerDoctor;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
 
     Context context;
-    private ArrayList<SpinnerDoctor> items, tempItems, suggestions;
+    private List<SpinnerDoctor> items;
+    private ArrayList<SpinnerDoctor> tempItems;
+    private ArrayList<SpinnerDoctor> suggestions;
     private TextEnterListener textEnterListener;
 
-    public DoctorSpinnerAdapter(Context context, int resource, int textViewResourceId, ArrayList<SpinnerDoctor> items) {
+    public DoctorSpinnerAdapter(Context context, int resource, int textViewResourceId, List<SpinnerDoctor> items) {
         super(context, resource, textViewResourceId, items);
         this.context = context;
         this.items = items;

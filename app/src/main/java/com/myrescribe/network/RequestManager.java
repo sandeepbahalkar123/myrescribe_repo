@@ -45,6 +45,7 @@ import com.myrescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
 import com.myrescribe.model.investigation.uploaded.InvestigationUploadFromUploadedModel;
 import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.SignUpModel;
+import com.myrescribe.model.myrecords.MyRecordsDoctorListModel;
 import com.myrescribe.model.notification.AppointmentsNotificationModel;
 import com.myrescribe.model.notification.NotificationModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
@@ -513,6 +514,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case MyRescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED: //This is for get archived list
                         InvestigationUploadFromUploadedModel investigationUploadFromUploadedModel = new Gson().fromJson(data, InvestigationUploadFromUploadedModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationUploadFromUploadedModel, mOldDataTag);
+                        break;
+
+                    case MyRescribeConstants.MY_RECORDS_DOCTOR_LIST: //This is for get archived list
+                        MyRecordsDoctorListModel myRecordsDoctorListModel = new Gson().fromJson(data, MyRecordsDoctorListModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, myRecordsDoctorListModel, mOldDataTag);
                         break;
 
                     default:

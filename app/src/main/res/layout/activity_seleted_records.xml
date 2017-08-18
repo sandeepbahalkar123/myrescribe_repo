@@ -4,7 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.myrescribe.ui.activities.SelectedDocsActivity">
+    tools:context="com.myrescribe.ui.activities.SelectedRecordsActivity">
+
+    <ImageView
+        android:id="@+id/coachmark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:elevation="@dimen/dp5"
+        android:src="@drawable/coachmark"/>
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -27,9 +35,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        app:fab_fabBackgroundColor="@color/statusbar"
+        android:layout_marginBottom="@dimen/dp16"
 
-        app:fab_fabDrawable="@drawable/ic_action_add"
+        app:fab_fabBackgroundColor="@color/tagColor"
+
+        app:fab_fabDrawable="@drawable/fab_icon_records"
         app:fab_fabDrawableTint="#FFF"
         app:fab_fabRippleColor="#FFF"
         app:fab_menu="@menu/fab_vector"

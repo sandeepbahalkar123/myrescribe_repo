@@ -1,4 +1,4 @@
-package com.myrescribe.adapters;
+package com.myrescribe.adapters.myrecords;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -55,7 +56,6 @@ public class SelectedRecordsAdapter extends RecyclerView.Adapter<SelectedRecords
         final Image image = paths.get(position);
 
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.centerCrop();
         requestOptions.dontAnimate();
         requestOptions.override(imageSize, imageSize);
         requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
@@ -65,15 +65,11 @@ public class SelectedRecordsAdapter extends RecyclerView.Adapter<SelectedRecords
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(holder.imageView);
 
-        if (image.isSelected()) {
-            holder.itemLayout.setAlpha(0.5f);
-        } else {
-            holder.itemLayout.setAlpha(1f);
-        }
+        holder.removeCheckbox.setChecked(image.isSelected());
 
-        holder.addCaptionText.setText(image.getCaption());
+        holder.addCaptionText.setText(image.getParentCaption());
 
-        holder.itemLayout.setOnClickListener(new View.OnClickListener() {
+        holder.removeCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (image.isSelected())
@@ -85,13 +81,13 @@ public class SelectedRecordsAdapter extends RecyclerView.Adapter<SelectedRecords
             }
         });
 
-        holder.removeCheckbox.setOnClickListener(new View.OnClickListener() {
+        /*holder.removeCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 paths.remove(position);
                 notifyDataSetChanged();
             }
-        });
+        });*/
     }
 
     @Override
@@ -111,7 +107,7 @@ public class SelectedRecordsAdapter extends RecyclerView.Adapter<SelectedRecords
         TextView addCaptionText;
 
         @BindView(R.id.removeCheckbox)
-        ImageView removeCheckbox;
+        CheckBox removeCheckbox;
 
         FileViewHolder(View itemView) {
             super(itemView);

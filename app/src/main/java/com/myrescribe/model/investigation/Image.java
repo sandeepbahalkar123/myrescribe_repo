@@ -19,7 +19,9 @@ public class Image implements Parcelable {
             instance.imageId = ((String) in.readValue((String.class.getClassLoader())));
             instance.imagePath = ((String) in.readValue((String.class.getClassLoader())));
             instance.selected = ((boolean) in.readValue((boolean.class.getClassLoader())));
-            instance.caption = ((String) in.readValue((String.class.getClassLoader())));
+            instance.parentCaption = ((String) in.readValue((String.class.getClassLoader())));
+            instance.childCaption = ((String) in.readValue((String.class.getClassLoader())));
+            instance.uploading = ((boolean) in.readValue((boolean.class.getClassLoader())));
             return instance;
         }
 
@@ -37,9 +39,15 @@ public class Image implements Parcelable {
     @SerializedName("selected")
     @Expose
     private boolean selected = false;
-    @SerializedName("caption")
+    @SerializedName("parentCaption")
     @Expose
-    private String caption;
+    private String parentCaption = "";
+    @SerializedName("childCaption")
+    @Expose
+    private String childCaption = "";
+    @SerializedName("uploading")
+    @Expose
+    private boolean uploading = false;
 
     public String getImageId() {
         return imageId;
@@ -65,19 +73,37 @@ public class Image implements Parcelable {
         this.selected = selected;
     }
 
-    public String getCaption() {
-        return caption;
+    public String getParentCaption() {
+        return parentCaption;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setParentCaption(String parentCaption) {
+        this.parentCaption = parentCaption;
+    }
+
+    public String getChildCaption() {
+        return childCaption;
+    }
+
+    public void setChildCaption(String childCaption) {
+        this.childCaption = childCaption;
+    }
+
+    public boolean isUploading() {
+        return uploading;
+    }
+
+    public void setUploading(boolean uploading) {
+        this.uploading = uploading;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(imageId);
         dest.writeValue(imagePath);
         dest.writeValue(selected);
-        dest.writeValue(caption);
+        dest.writeValue(parentCaption);
+        dest.writeValue(childCaption);
+        dest.writeValue(uploading);
     }
 
     public int describeContents() {

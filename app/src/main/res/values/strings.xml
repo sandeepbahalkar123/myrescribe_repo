@@ -93,6 +93,7 @@
     <string name="title_activity_selected_docs">Selected Documents</string>
     <string name="upload">Upload</string>
     <string name="adddocs">Add Documents</string>
+    <string name="add_account">Add Account</string>
     <string name="title_activity_zoomview">Zoom View</string>
     <string name="investigation_msg">Have you done the investigations adviced by Dr. Shah?</string>
     <string name="appointment_msg">You have an appointment with Dr. ---- on --th June at --:-- am.</string>

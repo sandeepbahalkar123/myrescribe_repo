@@ -1,3 +1,4 @@
+/*
 package com.myrescribe.ui.customesViews.tree_view_structure;
 
 import android.content.Context;
@@ -14,9 +15,11 @@ import com.unnamed.b.atv.model.TreeNode;
 import com.myrescribe.R;
 import com.myrescribe.ui.customesViews.CustomTextView;
 
+*/
 /**
  * Created by Bogdan Melnychuk on 2/15/15.
- */
+ *//*
+
 public class DoctorListMainHeaderHolder extends TreeNode.BaseNodeViewHolder<DoctorListIconTreeItemHolder.IconTreeItem> {
     private Context mContext;
     TextView date;
@@ -26,9 +29,9 @@ public class DoctorListMainHeaderHolder extends TreeNode.BaseNodeViewHolder<Doct
     TextView doctorName;
     LinearLayout parentDataContainer;
 
-  /*  public DoctorListMainHeaderHolder(Context context, boolean isDefaultExpanded) {
-        this(context, isDefaultExpanded, (int) (context.getResources().getDimension(R.dimen.dp10) / context.getResources().getDisplayMetrics().density));
-    }*/
+//   public DoctorListMainHeaderHolder(Context context, boolean isDefaultExpanded) {
+//        this(context, isDefaultExpanded, (int) (context.getResources().getDimension(R.dimen.dp10) / context.getResources().getDisplayMetrics().density));
+//    }
 
     public DoctorListMainHeaderHolder(Context context) {
         super(context);
@@ -76,3 +79,4 @@ public class DoctorListMainHeaderHolder extends TreeNode.BaseNodeViewHolder<Doct
         //  nodeSelector.setChecked(mNode.isSelected());
     }
 }
+*/

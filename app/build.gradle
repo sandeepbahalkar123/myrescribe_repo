@@ -63,11 +63,12 @@ dependencies {
     // File Picker
     compile project(':monthPicker')
     compile project(':filepicker')
-    compile project(':library')
     compile project(':uploadservice')
     compile files('libs/nineoldandroids-2.4.0.jar')
 
     // Support Libraries
+    compile project(':library') // For drawer layout
+
 
     compile "com.android.support:gridlayout-v7:${project.ANDROID_SUPPORT_LIBRARY_VERSION}"
     compile "com.android.support:appcompat-v7:${project.ANDROID_SUPPORT_LIBRARY_VERSION}"
@@ -101,3 +102,14 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 //apply plugin: 'com.google.gms.google-services'
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '25.3.0'
+            }
+        }
+    }
+}

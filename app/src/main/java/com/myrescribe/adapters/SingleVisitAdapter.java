@@ -250,6 +250,11 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             String slash = "<font color='#737373'>"+"/"+"</font>";
             unitValue = bpMax+slash+bpMin;
 
+        }else if(categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.range_not_defined))||categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.range_not_defined))){
+            String bpMax = forBpMax;
+            String bpMin = forBpMin;
+            String slash = "<font color='#737373'>"+"/"+"</font>";
+            unitValue = bpMax+slash+bpMin;
         }
         return unitValue;
     }
@@ -550,8 +555,14 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 bpMinLayout.setBackground(mContext.getDrawable(R.drawable.vitals_curve_grey_bg_bottom_curves));
 
             }
+            if(rangeList.size()==0){
+                showVitalNameLayout.setBackground(mContext.getDrawable(R.drawable.vitals_curve_white_bg));
+            }
 
         } else {
+            if(rangeList.size()==0){
+
+            }
             showVitalNameLayout.setVisibility(View.GONE);
             showVitalRangeLayout.setVisibility(View.GONE);
             noOfVitalsDialog.setText(unitValue);

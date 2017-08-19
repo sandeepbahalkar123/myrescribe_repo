@@ -114,30 +114,22 @@ public class LoginHelper implements ConnectionListener {
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP);
     }
 
+
     public void doSignUp(SignUpRequestModel signUpRequestModel) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_SIGN_UP, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setPostParams(signUpRequestModel);
         mConnectionFactory.setUrl(Config.SIGN_UP_URL);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_SIGN_UP);
+    }
 
-       /* // TODO : HARDCODED JSON STRING PARSING FROM assets folder, will get remove
-        try {
-            InputStream is = mContext.getAssets().open("sign_up.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "doSignUp" + json);
-
-            SignUpModel model = new Gson().fromJson(json, SignUpModel.class);
-
-            CommonMethods.Log("doSignUp", "" + model.toString());
-            onResponse(ConnectionListener.RESPONSE_OK, model, MyRescribeConstants.TASK_SIGN_UP);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
+    public void doLoginWithPhoneNo(String mobileNo) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN, Request.Method.POST, true);
+        mConnectionFactory.setHeaderParams();
+        LoginRequestModel loginRequestModel = new LoginRequestModel();
+        loginRequestModel.setMobileNumber(mobileNo);
+        mConnectionFactory.setPostParams(loginRequestModel);
+        mConnectionFactory.setUrl(Config.LOGIN_URL);
+        mConnectionFactory.createConnection(MyRescribeConstants.TASK_LOGIN);
     }
 }

@@ -62,6 +62,24 @@ public class PrescriptionData {
     @SerializedName("endDate")
     @Expose
     private String endDate;
+    private String mealTime;
+
+    public String getSlotLabel() {
+        return slotLabel;
+    }
+
+    public void setSlotLabel(String slotLabel) {
+        this.slotLabel = slotLabel;
+    }
+
+    private String slotLabel;
+    public String getMealTime() {
+        return mealTime;
+    }
+
+    public void setMealTime(String mealTime) {
+        this.mealTime = mealTime;
+    }
 
     public String getFreq() {
         return freq;

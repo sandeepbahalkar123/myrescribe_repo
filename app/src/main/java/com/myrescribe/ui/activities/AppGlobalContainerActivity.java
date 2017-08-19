@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.myrescribe.R;
+import com.myrescribe.ui.activities.fragments.MobileNoOtpLogin;
 import com.myrescribe.ui.fragments.ForgotPassword;
 import com.myrescribe.ui.fragments.OTPConfirmationForSignUp;
 import com.myrescribe.ui.fragments.OtpConfirmationForLogin;
@@ -70,11 +71,13 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
             ForgotPassword forgotPassword = new ForgotPassword();
             forgotPassword.setArguments(b);
             fragmentTransaction.replace(R.id.blankContainer, forgotPassword);
-        }else if(type.equalsIgnoreCase(getString(R.string.enter_otp_for_login))){
+        }else if(type.equalsIgnoreCase(getString(R.string.enter_mobile_no))){
+            MobileNoOtpLogin mobileNoForLogin = new MobileNoOtpLogin();
+            fragmentTransaction.replace(R.id.blankContainer, mobileNoForLogin);
+        }
+        else if(type.equalsIgnoreCase(getString(R.string.enter_otp_for_login))){
             OtpConfirmationForLogin otpConfirmationForLogin = new OtpConfirmationForLogin();
-           // otpConfirmationForSignUp.setArguments(b);
             fragmentTransaction.replace(R.id.blankContainer, otpConfirmationForLogin);
-
         }
         fragmentTransaction.commit();
     }

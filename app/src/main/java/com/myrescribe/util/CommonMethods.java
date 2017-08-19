@@ -499,6 +499,7 @@ public class CommonMethods {
         }
 
         df = new SimpleDateFormat(destinyFormate, Locale.US);
+        System.out.print(df.format(date));
         return df.format(date);
     }
 

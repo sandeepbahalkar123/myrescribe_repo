@@ -44,14 +44,18 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String SENDERID = "HP-EMROTP";
+
+
     private CountDownTimer mCountDownTimer;
     private final long mStartTime = 30 * 1000;
     private final long mInterval = 1 * 1000;
 
     @BindView(R.id.otpEditText)
     EditText mOtpEditText;
-    @BindView(R.id.doneBtn)
-    Button mDoneBtn;
+
+    @BindView(R.id.submitBtn)
+    Button mSubmitBtn;
+
     @BindView(R.id.resendOtpBtn)
     TextView mResendOtpBtn;
     @BindView(R.id.progressTime)
@@ -60,9 +64,10 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
     TextView mHeaderMessageForMobileOTP;
     @BindView(R.id.resendOtpBtnLayout)
     LinearLayout mResendOtpBtnLayout;
-    @BindView(R.id.passwordEditText)
-    EditText mPasswordEditText;
+
     private SignUpRequestModel mSignUpRequestModel;
+
+    private String mMobileNo;
     private int mResendOTPCount = 0;
 //
 //    @BindView(R.id.progressBar)
@@ -93,21 +98,18 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View inflate = inflater.inflate(R.layout.enter_otp_password_login, container, false);
+        View inflate = inflater.inflate(R.layout.enter_generated_otp, container, false);
         ButterKnife.bind(this, inflate);
 
         OtpReader.bind(this, SENDERID);
         mCountDownTimer = new OtpConfirmationForLogin.MyCountDownTimer(mStartTime, mInterval);
         mCountDownTimer.start();
 
-        mOtpEditText.addTextChangedListener(new CustomTextWatcher(mOtpEditText, getString(R.string.enter_otp_for_login)));
-        mPasswordEditText.addTextChangedListener(new CustomTextWatcher(mPasswordEditText, getString(R.string.enter_password)));
-       /* if (getArguments() != null) {
+        if (getArguments() != null) {
             Bundle arguments = getArguments();
             mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(getString(R.string.details));
             mHeaderMessageForMobileOTP.setText("" + String.format(getString(R.string.message_for_mobile_otp), mSignUpRequestModel.getMobileNumber()));
-        }*/
-
+        }
 
         return inflate;
     }
@@ -120,7 +122,7 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
         CommonMethods.Log("otpReceived", "otpReceived reformatted:" + value);
         mCountDownTimer.onFinish();
         mOtpEditText.setText(String.valueOf(value).substring(0, 4));
-        mDoneBtn.setVisibility(View.VISIBLE);
+        mSubmitBtn.setVisibility(View.VISIBLE);
         onSubmitBtnClicked();
     }
 
@@ -148,27 +150,14 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
         }
     }
 
-    @OnClick(R.id.doneBtn)
-    public void onpasswordClicked() {
-        if (mPasswordEditText.getText().toString().trim().length() < 8 && mOtpEditText.getText().length() == 0) {
-            String message = getString(R.string.error_too_small_password);
-            mPasswordEditText.setError(message);
-            mPasswordEditText.requestFocus();
-
-        } else if (mOtpEditText.getText().length() == 0 && mPasswordEditText.getText().toString().trim().length() > 8) {
-            LoginHelper loginHelperForPassword = new LoginHelper(getActivity(), this);
-            loginHelperForPassword.doLoginByPassword(mPasswordEditText.getText().toString());
-        } else if (mOtpEditText.getText().toString().trim().length() == 4 && mPasswordEditText.getText().toString().trim().length() == 0) {
-            onSubmitBtnClicked();
-        }
-
-
-    }
-
+    @OnClick(R.id.submitBtn)
     public void onSubmitBtnClicked() {
         if (mOtpEditText.getText().toString().trim().length() == 4) {
+            SignUpVerifyOTPRequestModel model = new SignUpVerifyOTPRequestModel();
+            model.setMobileNumber(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,getActivity()));
+            model.setOTP(mOtpEditText.getText().toString().trim());
             LoginHelper loginHelper = new LoginHelper(getActivity(), this);
-            loginHelper.doLoginByOTP(mOtpEditText.getText().toString());
+            loginHelper.doVerifyGeneratedSignUpOTP(model);
         } else {
             CommonMethods.showToast(getActivity(), getString(R.string.err_otp_invalid));
         }
@@ -180,119 +169,58 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
             CommonMethods.showToast(getActivity(), getString(R.string.err_maximum_otp_retries));
         } else {
             LoginHelper loginHelper = new LoginHelper(getActivity(), this);
-            loginHelper.doSignUp(mSignUpRequestModel);
+            loginHelper.doLoginByOTP(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,getActivity()));
         }
 
     }
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (mOldDataTag.equalsIgnoreCase(MyRescribeConstants.TASK_LOGIN_WITH_PASSWORD)) {
-            LoginModel receivedModel = (LoginModel) customResponse;
-            if (receivedModel.getCommon().isSuccess()) {
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, receivedModel.getAuthToken(), getActivity());
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, receivedModel.getPatientId(), getActivity());
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, getActivity());
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mSignUpRequestModel.getMobileNumber().toString(), getActivity());
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mSignUpRequestModel.getPassword().toString(), getActivity());
-                Intent intent = new Intent(getActivity(), HomePageActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                getActivity().finish();
+        if (mOldDataTag.equalsIgnoreCase(MyRescribeConstants.TASK_SIGN_UP)) {
+            SignUpModel loginModel = (SignUpModel) customResponse;
+            if (loginModel.getCommon().isSuccess()) {
+                mResendOTPCount = mResendOTPCount + 1;
+                mCountDownTimer = new OtpConfirmationForLogin.MyCountDownTimer(mStartTime, mInterval);
+                mCountDownTimer.start();
+                mResendOtpBtnLayout.setVisibility(View.VISIBLE);
+                mSubmitBtn.setVisibility(View.VISIBLE);
+                mResendOtpBtn.setVisibility(View.GONE);
+                mOtpEditText.setText("");
             } else {
-                Intent intent = new Intent(getActivity(), LoginMainActivity.class);
-                intent.putExtra(getString(R.string.type),MyRescribeConstants.TASK_LOGIN_WITH_PASSWORD);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                getActivity().finish();
+                CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
             }
-        } else if (mOldDataTag.equalsIgnoreCase(MyRescribeConstants.TASK_LOGIN_WITH_OTP)) {
+        } else if (mOldDataTag.equalsIgnoreCase(MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP)) {
 
             LoginModel receivedModel = (LoginModel) customResponse;
             if (receivedModel.getCommon().isSuccess()) {
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, receivedModel.getAuthToken(), getActivity());
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, receivedModel.getPatientId(), getActivity());
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, getActivity());
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mSignUpRequestModel.getMobileNumber().toString(), getActivity());
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mSignUpRequestModel.getPassword().toString(), getActivity());
-
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,getActivity()),getActivity());
+             //   MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mSignUpRequestModel.getPassword().toString(), getActivity());
                 Intent intent = new Intent(getActivity(), HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 getActivity().finish();
             } else {
-                Intent intent = new Intent(getActivity(), LoginMainActivity.class);
-                intent.putExtra(getString(R.string.type),MyRescribeConstants.TASK_LOGIN_WITH_OTP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                getActivity().finish();
+                CommonMethods.showToast(getActivity(), receivedModel.getCommon().getStatusMessage());
             }
         }
     }
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-
+          CommonMethods.showToast(getActivity(),errorMessage);
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
-
+        CommonMethods.showToast(getActivity(),serverErrorMessage);
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-
-    }
-
-    private class CustomTextWatcher implements TextWatcher {
-        private EditText mEditText;
-        String checkStringForOtpOrPassword;
-
-        public CustomTextWatcher(EditText e, String textForOtpOrPassword) {
-            mEditText = e;
-            checkStringForOtpOrPassword = textForOtpOrPassword;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (checkStringForOtpOrPassword.equalsIgnoreCase(getString(R.string.enter_otp_for_login))) {
-                mPasswordEditText.setEnabled(false);
-                mPasswordEditText.setFocusable(false);
-            } else if (checkStringForOtpOrPassword.equalsIgnoreCase(getString(R.string.enter_password))) {
-                mOtpEditText.setFocusable(false);
-                mOtpEditText.setEnabled(false);
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            if (checkStringForOtpOrPassword.equalsIgnoreCase(getString(R.string.enter_otp_for_login))) {
-                if (mOtpEditText.getText().length() == 0) {
-                    mPasswordEditText.setFocusableInTouchMode(true);
-                    mPasswordEditText.setEnabled(true);
-                } else {
-                    mPasswordEditText.setEnabled(false);
-                    mPasswordEditText.setFocusable(false);
-                }
-            } else if (checkStringForOtpOrPassword.equalsIgnoreCase(getString(R.string.enter_password))) {
-                if (mPasswordEditText.getText().length() == 0) {
-                    mOtpEditText.setFocusableInTouchMode(true);
-                    mOtpEditText.setEnabled(true);
-                } else {
-                    mOtpEditText.setEnabled(false);
-                    mOtpEditText.setFocusable(false);
-                }
-            }
-        }
+        CommonMethods.showToast(getActivity(),serverErrorMessage);
     }
 }

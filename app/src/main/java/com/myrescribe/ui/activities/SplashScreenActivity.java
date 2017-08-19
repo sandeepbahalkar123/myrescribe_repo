@@ -42,7 +42,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     Intent intentObj = new Intent(SplashScreenActivity.this, HomePageActivity.class);
                     startActivity(intentObj);
                 } else {
-                    Intent intentObj = new Intent(SplashScreenActivity.this, LoginMainActivity.class);
+                    Intent intentObj = new Intent(SplashScreenActivity.this, LoginNewFlowActivity.class);
                     startActivity(intentObj);
                 }
                 finish();

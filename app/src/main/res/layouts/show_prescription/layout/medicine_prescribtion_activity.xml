@@ -16,7 +16,7 @@
         android:layout_marginTop="@dimen/dp4"
         android:gravity="right"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <com.myrescribe.ui.customesViews.CustomTextView
             android:layout_width="0dp"

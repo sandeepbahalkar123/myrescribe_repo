@@ -30,6 +30,7 @@
     <color name="divider">#265e5e5e</color>
     <color name="measure_of_vitals_color">#c9c9c9</color>
     <color name="vitals_name">#737373</color>
+    <color name="login_bg_color">#54d8c8</color>
     <color name="dose_completed">#666666</color>
     <color name="background_grey">#EDEDED</color>
     <color name="accent">#FF4081</color>

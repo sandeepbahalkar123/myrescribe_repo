@@ -137,6 +137,9 @@ public class PrescriptionActivity extends AppCompatActivity
 
             if (data != null) {
                 if (data.size() != 0) {
+                    for(int i = 0;i<data.size();i++){
+                        data.get(i).setMealTime(mGetMealTime);
+                    }
                     prescriptionListAdapter = new PrescriptionListAdapter(this, data, false, mGetMealTime);
                     mRecyclerView.setAdapter(prescriptionListAdapter);
                 }

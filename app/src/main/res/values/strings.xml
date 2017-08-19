@@ -194,6 +194,10 @@
     <string name="space">\u0020</string>
     <string name="enter_otp_for_login">Otp for Login</string>
     <string name="or">OR</string>
+    <string name="range_not_defined">Range Not Defined</string>
+    <string name="your_health">Your Own Healthcare Repository</string>
+    <string name="using_otp">Using OTP</string>
+    <string name="message_for_mobile">Please provide your mobile number to send otp</string>
     <!-- <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>-->
     <!-- //*** Google Map key-->
 

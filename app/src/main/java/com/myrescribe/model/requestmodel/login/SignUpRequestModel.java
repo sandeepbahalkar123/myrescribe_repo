@@ -21,6 +21,7 @@ public class SignUpRequestModel implements CustomResponse,Serializable {
     @Expose
     private String password;
 
+
     public String getName() {
         return name;
     }

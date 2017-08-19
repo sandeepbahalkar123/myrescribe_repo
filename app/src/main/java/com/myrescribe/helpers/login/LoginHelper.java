@@ -123,6 +123,7 @@ public class LoginHelper implements ConnectionListener {
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_SIGN_UP);
     }
 
+
     public void doLoginWithPhoneNo(String mobileNo) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
@@ -131,5 +132,6 @@ public class LoginHelper implements ConnectionListener {
         mConnectionFactory.setPostParams(loginRequestModel);
         mConnectionFactory.setUrl(Config.LOGIN_URL);
         mConnectionFactory.createConnection(MyRescribeConstants.TASK_LOGIN);
+
     }
 }

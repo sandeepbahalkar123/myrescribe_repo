@@ -51,10 +51,9 @@ public class MyRescribeConstants {
     public static final String CLIENT_ID_VALUE = "334a059d82304f4e9892ee5932f81425";
     public static final String TRUE = "true";
     public static final String FALSE = "false";
-    public static final String INVESTIGATION_TIME = "investigation_time";
+
     public static final String APPOINTMENT_TIME = "appointment_time";
     public static final String NOTIFICATION_TIME = "notification_time";
-    public static final String INVESTIGATION_DATE = "investigation_date";
     public static final String APPOINTMENT_DATE = "appointment_date";
     public static final String NOTIFICATION_DATE = "notification_date";
     public static final String TIME = "time";
@@ -67,11 +66,9 @@ public class MyRescribeConstants {
     public static final String MEDICINE_SLOT = "edicine_slot";
     public static final String MEDICINE_TYPE = "medicine_type";
     public static final String NOTIFICATION_ID = "notification_id";
-    public static final String INVESTIGATION_NOTIFICATION_ID = "investigation_notification_id";
+
     public static final String APPOINTMENT_NOTIFICATION_ID = "appointment_notification_id";
-    public static final String INVESTIGATION_MESSAGE = "investigation_message";
     public static final String APPOINTMENT_MESSAGE = "appointment_message";
-    public static final String INVESTIGATION_DATA = "investigation_data";
     public static final String BLANK = "";
     //Click codes
     public static final String CLICK_DELETE = MyRescribeConstants.BLANK + 0;
@@ -98,17 +95,24 @@ public class MyRescribeConstants {
     public static final String CASE_DETAILS_LIST = MyRescribeConstants.BLANK + 15;
 
     public static final String APPOINTMENT_NOTIFICATION = MyRescribeConstants.BLANK + 16;
-    public static final String TASK_RESPOND_NOTIFICATION_FOR_HEADER =MyRescribeConstants.BLANK+ "notify" ;
+    public static final String TASK_RESPOND_NOTIFICATION_FOR_HEADER = MyRescribeConstants.BLANK + "notify";
 
     public static final String INVESTIGATION_LIST = MyRescribeConstants.BLANK + 17;
     public static final String INVESTIGATION_UPLOAD_BY_GMAIL = MyRescribeConstants.BLANK + 18;
 
     public static final String INVESTIGATION_UPLOAD_FROM_UPLOADED = MyRescribeConstants.BLANK + 19;
-    public static final String TASK_LOGIN_WITH_PASSWORD = MyRescribeConstants.BLANK + 20;
-    public static final String TASK_LOGIN_WITH_OTP = MyRescribeConstants.BLANK + 21;
+
+    public static final String TASK_LOGIN_WITH_PASSWORD = MyRescribeConstants.BLANK + 22;
+    public static final String TASK_LOGIN_WITH_OTP = MyRescribeConstants.BLANK + 23;
+
+    //--------
+    public static final String TASK_GET_ALL_MY_RECORDS = MyRescribeConstants.BLANK + 20;
+    //--------
+    public static final String MY_RECORDS_DOCTOR_LIST = MyRescribeConstants.BLANK + 21;
+
+
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
-    public static final String INVESTIGATION_TEMP_DATA = "investigation_temp_data";
 
     public static final String TAKEN_DATE = "takenDate";
 
@@ -118,6 +122,10 @@ public class MyRescribeConstants {
     public static final String FILTER_REQUEST = "filter_request";
     public static final int MAX_RETRIES = 3;
     public static final String PATIENT_ID = "patientId=";
+    public static final String VISIT_DATE = "visitDate";
+    public static final String DOCTORS_ID = "doctorId";
+
+//    public static final String CANCEL_ALARM = "cancel_alarm";
 
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
@@ -158,6 +166,17 @@ public class MyRescribeConstants {
     }
 
 
+    public class INVESTIGATION_KEYS {
+        public static final String INVESTIGATION_DATE = "investigation_date";
+        public static final String INVESTIGATION_TIME = "investigation_time";
+        public static final String INVESTIGATION_TEMP_DATA = "investigation_temp_data";
+        public static final String INVESTIGATION_MESSAGE = "investigation_message";
+        public static final String INVESTIGATION_DATA = "investigation_data";
+        public static final String INVESTIGATION_NOTIFICATION_ID = "investigation_notification_id";
+
+        public static final String IMAGE_ID = "imgId";
+        public static final String INV_ID = "invId";
+    }
 }
 
 

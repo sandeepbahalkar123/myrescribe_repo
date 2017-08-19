@@ -3,6 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="horizontal_margin">26dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="spinner_curve">3dp</dimen>
     <dimen name="dp0">0dp</dimen>
     <dimen name="dp05">0.5dp</dimen>
     <dimen name="dp1">1dp</dimen>
@@ -20,6 +22,7 @@
     <dimen name="dp26">26dp</dimen>
     <dimen name="dp30">30dp</dimen>
     <dimen name="dp35">35dp</dimen>
+    <dimen name="dp38">38dp</dimen>
     <dimen name="dp56">56dp</dimen>
     <dimen name="sp10">10sp</dimen>
     <dimen name="dp40">40dp</dimen>
@@ -37,6 +40,5 @@
     <dimen name="sp17">17sp</dimen>
     <dimen name="sp38">38sp</dimen>
     <dimen name="sp28">28sp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="spinner_curve">3dp</dimen>
+    <dimen name="dp45">45dp</dimen>
 </resources>

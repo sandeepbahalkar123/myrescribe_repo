@@ -93,13 +93,13 @@
     <string name="title_activity_selected_docs">Selected Documents</string>
     <string name="upload">Upload</string>
     <string name="adddocs">Add Documents</string>
+    <string name="add_account">Add Account</string>
     <string name="title_activity_zoomview">Zoom View</string>
-    <string name="investigation_msg">Have you done the investigations adviced by Dr. Shah?</string>
+    <string name="investigation_msg">Have you done the investigations advised by Dr. Shah?</string>
     <string name="appointment_msg">You have an appointment with Dr. ---- on --th June at --:-- am.</string>
     <string name="appointment">Appointment</string>
     <string name="investigation">Investigation</string>
     <string name="appointments">Appointments</string>
-    <string name="records">My Records</string>
     <string name="addrecords">Add Records</string>
     <string name="doctor_filter_list">Doctor Filtered List</string>
     <string name="my_appointments">My Appointments</string>
@@ -187,8 +187,9 @@
     <string name="systolic_pressure">Systolic BP</string>
     <string name="diastolic_pressure">Diastolic BP</string>
 
+
     <!--//*** Google Map key-->
-    <string name="google_maps_key">AIzaSyCnnUyKo4ktLqWLTKXtO2jp1AtIt0u9TEA</string>
+
     <string name="times">times</string>
     <string name="days">days</string>
     <string name="space">\u0020</string>
@@ -199,6 +200,21 @@
     <string name="using_otp">Using OTP</string>
     <string name="message_for_mobile">Please provide your mobile number to send otp</string>
     <!-- <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>-->
+
+    <string name="no_investigation">Investigation not available</string>
+    <string name="bill_invoices">Bill Invoices</string>
+    <string name="case_encounter">Case Encounter</string>
+    <string name="others">Others</string>
+    <string name="title_activity_selected_records_group">SelectedRecordsGroupActivity</string>
+    <string name="title_activity_report_selection">Report Selection</string>
+    <string name="prescriptions">Prescriptions</string>
+    <string name="select_report">Please select Reports</string>
+    <string name="title_activity_reports">Reports</string>
+
+
     <!-- //*** Google Map key-->
+    <string name="google_maps_key">AIzaSyCnnUyKo4ktLqWLTKXtO2jp1AtIt0u9TEA</string>
+    <string name="profile_exists">User\'s profile is already exist!!</string>
+    <!-- <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>-->
 
 </resources>

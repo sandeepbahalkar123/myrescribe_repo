@@ -112,7 +112,8 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-
+        mEmptyListView.setVisibility(View.VISIBLE);
+        mExpandFilterDocListView.setVisibility(View.GONE);
     }
 
     @Override

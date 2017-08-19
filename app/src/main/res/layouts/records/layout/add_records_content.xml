@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/dp50"
+    android:background="@color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.myrescribe.ui.activities.AddRecordsActivity"
     tools:showIn="@layout/activity_add_records">
@@ -12,14 +12,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp50"
+        android:paddingBottom="@dimen/dp35"
+        android:paddingTop="@dimen/dp35"
         android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/banner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="@dimen/dp20"
+            android:layout_marginStart="@dimen/dp20"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ref" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/dp35"
             android:background="@drawable/curve_edges_common"
             android:orientation="vertical">
 
@@ -103,6 +115,7 @@
                     android:gravity="center_vertical"
                     android:hint="@string/select_doctor_name"
                     android:padding="@dimen/dp16"
+                    android:inputType="textPersonName"
                     android:paddingEnd="45dp"
                     android:paddingRight="45dp"
                     android:textCursorDrawable="@drawable/cursor" />
@@ -184,22 +197,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:clickable="true"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:background="@drawable/curve_edges_common">
 
-            <TextView
+            <EditText
                 android:id="@+id/selectAddressText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="@string/enter_address"
+                android:layout_toLeftOf="@+id/addressIcon"
+                android:layout_toStartOf="@+id/addressIcon"
                 android:textSize="@dimen/sp18"
+                android:inputType="textPostalAddress"
                 android:padding="@dimen/dp16"
-                android:paddingEnd="45dp"
-                android:paddingRight="45dp"
                 android:textCursorDrawable="@drawable/cursor" />
 
             <ImageView
@@ -216,18 +229,18 @@
 
         </RelativeLayout>
 
+        <Button
+            android:id="@+id/uploadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/curve_edges_button"
+            android:paddingEnd="@dimen/dp50"
+            android:paddingStart="@dimen/dp50"
+            android:layout_marginTop="@dimen/dp35"
+            android:text="@string/next"
+            android:textColor="@color/white" />
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/uploadButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/curve_edges_button"
-        android:paddingEnd="@dimen/dp40"
-        android:paddingStart="@dimen/dp40"
-        android:text="@string/upload"
-        android:textColor="@color/white" />
-
-</RelativeLayout>
+</ScrollView>

@@ -10,6 +10,7 @@ import com.myrescribe.helpers.database.AppDBHelper;
 import com.myrescribe.notification.AppointmentAlarmTask;
 import com.myrescribe.notification.DosesAlarmTask;
 import com.myrescribe.notification.InvestigationAlarmTask;
+import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -23,6 +24,7 @@ public class StartUpBootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+            if(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, context).equals(MyRescribeConstants.YES))
             notificationForMedicine(context);
         }
     }

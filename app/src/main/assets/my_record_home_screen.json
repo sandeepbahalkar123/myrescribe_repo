@@ -1,0 +1,304 @@
+{
+  "common": {
+    "success": true,
+    "statusCode": 200,
+    "statusMessage": "USER AUTHENTICATED"
+  },
+  "data": {
+    "yearsMonthsData": [
+      {
+        "year": 2017,
+        "months": [
+          "jan",
+          "feb",
+          "mar"
+        ]
+      },
+      {
+        "year": 2016,
+        "months": [
+          "aug",
+          "oct",
+          "dec"
+        ]
+      }
+    ],
+    "originalData": {
+      "year": 2017,
+      "months": {
+        "Mar": [
+          {
+            "doc": {
+              "doc_id": 10,
+              "doctor_name": "Dr. Shalu Gupta",
+              "OPDDate": "2017-06-09T00:00:00.000Z",
+              "Opdid": 10667,
+              "doctor_spaciality": "general physician",
+              "doctor_address": "Hadapsar, Pune",
+              "doctor_image_path": "assets/doc_profile/DR-avatar.png"
+            },
+            "reports": [
+              {
+                "parentCaptionName": "Investigations",
+                "reportDetails": [
+                  {
+                    "childCaptionName": "CT Scan",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png"
+                    ]
+                  },
+                  {
+                    "childCaptionName": "Profiles",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png"
+                    ]
+                  },
+                  {
+                    "childCaptionName": "Others",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png"
+                    ]
+                  }
+                ]
+              },
+              {
+                "parentCaptionName": "Prescriptionn",
+                "reportDetails": [
+                  {
+                    "childCaptionName": "",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/prescriptionnImage1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/prescriptionnImage2.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/prescriptionnImage3.png"
+                    ]
+                  }
+                ]
+              },
+              {
+                "parentCaptionName": "Bill Invoice",
+                "reportDetails": [
+                  {
+                    "childCaptionName": "",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/illInvoiceImage1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/illInvoiceImage2.png"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "Jun": [
+          {
+            "doc": {
+              "doc_id": 10,
+              "doctor_name": "Dr. Shalu Gupta",
+              "OPDDate": "2017-06-09T00:00:00.000Z",
+              "Opdid": 10667,
+              "doctor_spaciality": "general physician",
+              "doctor_address": "Hadapsar, Pune",
+              "doctor_image_path": "assets/doc_profile/DR-avatar.png"
+            },
+            "reports": [
+              {
+                "parentCaptionName": "Investigations",
+                "reportDetails": [
+                  {
+                    "childCaptionName": "CT Scan",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png"
+                    ]
+                  },
+                  {
+                    "childCaptionName": "Profiles",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png"
+                    ]
+                  },
+                  {
+                    "childCaptionName": "Others",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png"
+                    ]
+                  }
+                ]
+              },
+              {
+                "parentCaptionName": "Prescriptionn",
+                "reportDetails": [
+                  {
+                    "childCaptionName": "",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/prescriptionnImage1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/prescriptionnImage2.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/prescriptionnImage3.png"
+                    ]
+                  }
+                ]
+              },
+              {
+                "parentCaptionName": "Bill Invoice",
+                "reportDetails": [
+                  {
+                    "childCaptionName": "",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/illInvoiceImage1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/illInvoiceImage2.png"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "doc": {
+              "doc_id": 10,
+              "doctor_name": "Dr. Shalu Gupta 2",
+              "OPDDate": "2017-06-10T00:00:00.000Z",
+              "Opdid": 10667,
+              "doctor_spaciality": "general physician",
+              "doctor_address": "Hadapsar, Pune",
+              "doctor_image_path": "assets/doc_profile/DR-avatar.png"
+            },
+            "reports": [
+              {
+                "parentCaptionName": "Investigations",
+                "reportDetails": [
+                  {
+                    "childCaptionName": "CT Scan",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png"
+                    ]
+                  },
+                  {
+                    "childCaptionName": "Profiles",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png"
+                    ]
+                  },
+                  {
+                    "childCaptionName": "Others",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png"
+                    ]
+                  }
+                ]
+              },
+              {
+                "parentCaptionName": "Prescriptionn",
+                "reportDetails": [
+                  {
+                    "childCaptionName": "",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/prescriptionnImage1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/prescriptionnImage2.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/prescriptionnImage3.png"
+                    ]
+                  }
+                ]
+              },
+              {
+                "parentCaptionName": "Bill Invoice",
+                "reportDetails": [
+                  {
+                    "childCaptionName": "",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/illInvoiceImage1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/illInvoiceImage2.png"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "doc": {
+              "doc_id": 10,
+              "doctor_name": "Dr. Shalu Gupta 3",
+              "OPDDate": "2017-06-12T00:00:00.000Z",
+              "Opdid": 10667,
+              "doctor_spaciality": "general physician",
+              "doctor_address": "Hadapsar, Pune",
+              "doctor_image_path": "assets/doc_profile/DR-avatar.png"
+            },
+            "reports": [
+              {
+                "parentCaptionName": "Investigations",
+                "reportDetails": [
+                  {
+                    "childCaptionName": "CT Scan",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png"
+                    ]
+                  },
+                  {
+                    "childCaptionName": "Profiles",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png"
+                    ]
+                  },
+                  {
+                    "childCaptionName": "Others",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/image1.png"
+                    ]
+                  }
+                ]
+              },
+              {
+                "parentCaptionName": "Prescriptionn",
+                "reportDetails": [
+                  {
+                    "childCaptionName": "",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/prescriptionnImage1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/prescriptionnImage2.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/prescriptionnImage3.png"
+                    ]
+                  }
+                ]
+              },
+              {
+                "parentCaptionName": "Bill Invoice",
+                "reportDetails": [
+                  {
+                    "childCaptionName": "",
+                    "imageList": [
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/illInvoiceImage1.png",
+                      "http://192.168.0.182/medsonit-be/assets/doc_profile/illInvoiceImage2.png"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -3,13 +3,19 @@ package com.myrescribe.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import com.myrescribe.R;
+import com.myrescribe.ui.fragments.my_record.MyRecordListFragmentContainer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,37 +26,28 @@ import butterknife.OnClick;
  */
 
 public class MyRecordsActivity extends AppCompatActivity {
-    @BindView(R.id.recordsToolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.addRecord)
-    Button mAddRecord;
-    private Context mContext;
+    // Filter Start
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawer;
+    @BindView(R.id.nav_view)
+    FrameLayout nav_view;
+    private FragmentManager mFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_records);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        setContentView(R.layout.my_record_activity);
         ButterKnife.bind(this);
-        initialize();
+        mFragmentManager = getSupportFragmentManager();
+        loadFragment(MyRecordListFragmentContainer.newInstance(), false);
     }
 
-    private void initialize() {
-        mContext = MyRecordsActivity.this;
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(getString(R.string.records));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-    }
-
-    @OnClick(R.id.addRecord)
-    public void onViewClicked() {
-        Intent intent = new Intent(MyRecordsActivity.this, AddRecordsActivity.class);
-        startActivity(intent);
+    private void loadFragment(Fragment fragment, boolean requiredBackStack) {
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.myRecordViewContainer, fragment);
+        if (requiredBackStack) {
+            fragmentTransaction.addToBackStack(null);
+        }
+        fragmentTransaction.commit();
     }
 }

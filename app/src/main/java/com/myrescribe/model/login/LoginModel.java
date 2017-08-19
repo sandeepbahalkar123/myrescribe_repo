@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.model.Common;
+import com.myrescribe.model.YearsMonthsDataList;
 
 import java.util.ArrayList;
 
@@ -19,9 +20,9 @@ public class LoginModel implements CustomResponse {
     @Expose
     private String patientId;
 
-    @SerializedName("years")
+    @SerializedName("yearsMonthsData")
     @Expose
-    private ArrayList<Year> yearList = new ArrayList<>();
+    private ArrayList<YearsMonthsDataList> yearsMonthsDataList = new ArrayList<>();
 
     public String getPatientId() {
         return patientId;
@@ -47,11 +48,26 @@ public class LoginModel implements CustomResponse {
         this.authToken = authToken;
     }
 
+    public ArrayList<YearsMonthsDataList> getYearsMonthsDataList() {
+        return yearsMonthsDataList;
+    }
+
     public ArrayList<Year> getYearList() {
+        ArrayList<YearsMonthsDataList> yearsMonthsDataList = getYearsMonthsDataList();
+        ArrayList<Year> yearList = new ArrayList<>();
+        for (YearsMonthsDataList yearObject :
+                yearsMonthsDataList) {
+            String[] months = yearObject.getMonths();
+            if (months.length > 0) {
+                for (int i = 0; i < months.length; i++) {
+                    Year year = new Year();
+                    year.setYear(yearObject.getYear());
+                    year.setMonthName(months[i]);
+                    yearList.add(year);
+                }
+            }
+        }
         return yearList;
     }
 
-    public void setYearList(ArrayList<Year> yearList) {
-        this.yearList = yearList;
-    }
 }

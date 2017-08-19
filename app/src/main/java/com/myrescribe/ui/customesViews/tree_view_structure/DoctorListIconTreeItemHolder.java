@@ -1,3 +1,4 @@
+/*
 package com.myrescribe.ui.customesViews.tree_view_structure;
 
 import android.content.Context;
@@ -11,9 +12,11 @@ import com.myrescribe.R;
 import com.myrescribe.model.doctors.doctor_info.DoctorDetail;
 import com.unnamed.b.atv.model.TreeNode;
 
+*/
 /**
  * Created by Bogdan Melnychuk on 2/12/15.
- */
+ *//*
+
 public class DoctorListIconTreeItemHolder extends TreeNode.BaseNodeViewHolder<DoctorListIconTreeItemHolder.IconTreeItem> {
     private Context mContext;
     TextView date;
@@ -79,3 +82,4 @@ public class DoctorListIconTreeItemHolder extends TreeNode.BaseNodeViewHolder<Do
     }
 
 }
+*/

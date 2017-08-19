@@ -92,9 +92,9 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
         customProgressDialog = new CustomProgressDialog(mContext);
         customProgressDialog.setCancelable(false);
 
-        patient_id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext);
+        patient_id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
 
-        investigation = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_DATA);
+        investigation = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
 
         for (int i = 0; i < investigation.size(); i++) {
             if (investigation.get(i).isSelected() && !investigation.get(i).isUploaded() && investigation.get(i).getPhotos().size() > 0) {
@@ -263,6 +263,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
         Log.d("Status", imageUploadFailedCount + " Error " + uploadInfo.getUploadId());
         if (imageUploadFailedCount == photoPaths.size()) {
             CommonMethods.showToast(mContext, "Uploading Failed");
+            customProgressDialog.dismiss();
         } else if ((imageUploadedCount + imageUploadFailedCount) == photoPaths.size())
             allUploaded();
     }
@@ -288,27 +289,27 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
         int selectedCount = 0;
         for (InvestigationData dataObject : investigation) {
             if (dataObject.isSelected() && !dataObject.isUploaded()) {
-                    dataObject.setUploaded(dataObject.isSelected());
-                    Images images = new Images();
-                    images.setImageArray(photoPaths);
-                    dataObject.setPhotos(photoPaths);
-                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), new Gson().toJson(images));
-                }
-                if (dataObject.isSelected())
-                    selectedCount += 1;
+                dataObject.setUploaded(dataObject.isSelected());
+                Images images = new Images();
+                images.setImageArray(photoPaths);
+                dataObject.setPhotos(photoPaths);
+                appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), new Gson().toJson(images));
             }
+            if (dataObject.isSelected())
+                selectedCount += 1;
+        }
 
-            if (selectedCount == investigation.size()) {
-                Intent intent = new Intent(this, HomePageActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent();
-                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
-//                mIntent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
-                setResult(RESULT_OK, intent);
-            }
+        if (selectedCount == investigation.size()) {
+            Intent intent = new Intent(this, HomePageActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent();
+            intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigation);
+//                intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
+            setResult(RESULT_OK, intent);
+        }
 
         finish();
-        }
+    }
 }

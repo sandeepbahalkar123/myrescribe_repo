@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.helpers.login.LoginHelper;
@@ -60,7 +63,21 @@ public class LogInApp extends Fragment implements
         View inflate = inflater.inflate(R.layout.log_in, container, false);
         ButterKnife.bind(this, inflate);
         mContext = this.getContext();
+
         init();
+
+
+        mPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId== EditorInfo.IME_ACTION_DONE){
+                    //do something
+                }
+                return false;
+            }
+        });
+
+
         return inflate;
     }
 
@@ -134,7 +151,7 @@ public class LogInApp extends Fragment implements
                 CommonMethods.Log(TAG + " Token", loginModel.getAuthToken());
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, loginModel.getPatientId(), mContext);
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, loginModel.getPatientId(), mContext);
 
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mMobileNo.getText().toString(), mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mPassword.getText().toString(), mContext);

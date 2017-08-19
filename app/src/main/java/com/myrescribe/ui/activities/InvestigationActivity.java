@@ -93,10 +93,12 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         mContext = InvestigationActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
-        patientId = Integer.parseInt(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext));
+        String patientIdString = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+
+        patientId = Integer.parseInt(patientIdString.equals("") ? "0" : patientIdString);
 
         investigationHelper = new InvestigationHelper(mContext);
-        investigationHelper.getInvestigationList();
+        investigationHelper.getInvestigationList(true);
 
         // off recyclerView Animation
 
@@ -198,7 +200,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO || requestCode == UPLOADED_DOCS) {
             if (resultCode == RESULT_OK) {
                 investigationTemp.clear();
-                ArrayList<InvestigationData> invest = data.getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_DATA);
+                ArrayList<InvestigationData> invest = data.getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
                 changeOriginalData(invest);
                 investigationTemp.addAll(invest);
                 mAdapter.notifyDataSetChanged();
@@ -229,15 +231,15 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 }
                 if (selected) {
                     Intent intent = new Intent(mContext, SelectedDocsActivity.class);
-                    intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigationTemp);
+                    intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigationTemp);
                     startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
                 } else
                     CommonMethods.showToast(mContext, "Please select at least one Document.");
                 break;
             case R.id.selectUploadedButton:
                 Intent intent = new Intent(mContext, UploadedDocsActivity.class);
-                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigation);
-                intent.putExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA, investigationTemp);
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigation);
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TEMP_DATA, investigationTemp);
                 startActivityForResult(intent, UPLOADED_DOCS);
                 break;
             case R.id.gmailButton:
@@ -276,46 +278,50 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
             InvestigationListModel investigationListModel = (InvestigationListModel) customResponse;
 
-            investigation = investigationListModel.getData();
+            if (investigationListModel.getCommon().getStatusCode().equals(MyRescribeConstants.SUCCESS)) {
 
-            if (investigation.size() > 0) {
+                investigation = investigationListModel.getData();
 
-                for (InvestigationData dataObject : investigation) {
-                    Images images = new Images();
-                    images.setImageArray(dataObject.getPhotos());
-                    appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.getInvestigationKey(), dataObject.isUploaded(), new Gson().toJson(images));
-                }
+                if (investigation.size() > 0) {
 
-                int isAlreadyUploadedButtonVisible = View.GONE;
-
-                for (int i = 0; i < investigation.size(); i++) {
-                    InvestigationData data = appDBHelper.getInvestigationData(investigation.get(i).getId());
-                    boolean status = data.isUploaded();
-                    ArrayList<Image> imageArray = data.getPhotos();
-                    if (!status) {
-                        InvestigationData dataObject = new InvestigationData();
-                        dataObject.setId(investigation.get(i).getId());
-                        dataObject.setTitle(investigation.get(i).getTitle());
-                        dataObject.setInvestigationKey(investigation.get(i).getInvestigationKey());
-                        dataObject.setDoctorName(investigation.get(i).getDoctorName());
-                        dataObject.setOpdId(investigation.get(i).getOpdId());
-                        dataObject.setSelected(investigation.get(i).isSelected());
-                        dataObject.setUploaded(investigation.get(i).isUploaded());
-                        dataObject.setPhotos(imageArray);
-                        investigationTemp.add(dataObject);
-                    } else {
-                        isAlreadyUploadedButtonVisible = View.VISIBLE;
-                        investigation.get(i).setSelected(true);
-                        investigation.get(i).setUploaded(true);
-                        investigation.get(i).setPhotos(data.getPhotos());
+                    for (InvestigationData dataObject : investigation) {
+                        Images images = new Images();
+                        images.setImageArray(dataObject.getPhotos());
+                        appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.getInvestigationKey(), dataObject.getDoctorName(), dataObject.getOpdId(), dataObject.isUploaded(), new Gson().toJson(images));
                     }
-                }
 
-                buttonManage(isAlreadyUploadedButtonVisible);
+                    int isAlreadyUploadedButtonVisible = View.GONE;
 
-                mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
-                mRecyclerView.setAdapter(mAdapter);
-            } else CommonMethods.showInfoDialog("Investigation not available", mContext, true);
+                    for (int i = 0; i < investigation.size(); i++) {
+                        InvestigationData data = appDBHelper.getInvestigationData(investigation.get(i).getId());
+                        boolean status = data.isUploaded();
+                        ArrayList<Image> imageArray = data.getPhotos();
+                        if (!status) {
+                            InvestigationData dataObject = new InvestigationData();
+                            dataObject.setId(investigation.get(i).getId());
+                            dataObject.setTitle(investigation.get(i).getTitle());
+                            dataObject.setInvestigationKey(investigation.get(i).getInvestigationKey());
+                            dataObject.setDoctorName(investigation.get(i).getDoctorName());
+                            dataObject.setOpdId(investigation.get(i).getOpdId());
+                            dataObject.setSelected(investigation.get(i).isSelected());
+                            dataObject.setUploaded(investigation.get(i).isUploaded());
+                            dataObject.setPhotos(imageArray);
+                            investigationTemp.add(dataObject);
+                        } else {
+                            isAlreadyUploadedButtonVisible = View.VISIBLE;
+                            investigation.get(i).setSelected(true);
+                            investigation.get(i).setUploaded(true);
+                            investigation.get(i).setPhotos(data.getPhotos());
+                        }
+                    }
+
+                    buttonManage(isAlreadyUploadedButtonVisible);
+
+                    mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
+                    mRecyclerView.setAdapter(mAdapter);
+                } else
+                    CommonMethods.showInfoDialog(getResources().getString(R.string.no_investigation), mContext, true);
+            }
         } else if (customResponse instanceof InvestigationUploadByGmailModel) {
             InvestigationUploadByGmailModel investigationUploadByGmailModel = (InvestigationUploadByGmailModel) customResponse;
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);

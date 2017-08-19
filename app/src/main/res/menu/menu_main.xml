@@ -23,7 +23,7 @@
         <item
             android:id="@+id/records"
             android:icon="@drawable/menu_my_records"
-            android:title="@string/records"
+            android:title="@string/my_records"
            />
 
         <item

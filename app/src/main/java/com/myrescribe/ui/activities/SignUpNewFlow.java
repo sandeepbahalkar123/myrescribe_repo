@@ -120,11 +120,15 @@ public class SignUpNewFlow extends AppCompatActivity implements View.OnClickList
             SignUpModel loginModel = (SignUpModel) customResponse;
 
             if (loginModel.getCommon().isSuccess()) {
-                Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
-                intentObj.putExtra(getString(R.string.type), getString(R.string.enter_otp));
-                intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
-                intentObj.putExtra(getString(R.string.details), mSignUpRequestModel);
-                startActivity(intentObj);
+                if(loginModel.getCommon().getStatusMessage().equalsIgnoreCase(getString(R.string.profile_exists))){
+                    CommonMethods.showToast(this, loginModel.getCommon().getStatusMessage());
+                }else {
+                    Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
+                    intentObj.putExtra(getString(R.string.type), getString(R.string.enter_otp));
+                    intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
+                    intentObj.putExtra(getString(R.string.details), mSignUpRequestModel);
+                    startActivity(intentObj);
+                }
             } else {
                 CommonMethods.showToast(this, loginModel.getCommon().getStatusMessage());
             }

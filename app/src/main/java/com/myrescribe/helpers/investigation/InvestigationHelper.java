@@ -24,8 +24,8 @@ import java.util.Map;
 
 public class InvestigationHelper implements ConnectionListener {
 
-    String TAG = this.getClass().getName();
-    Context mContext;
+    private String TAG = this.getClass().getName();
+    private Context mContext;
 
     public InvestigationHelper(Context context) {
         this.mContext = context;
@@ -64,10 +64,10 @@ public class InvestigationHelper implements ConnectionListener {
 
     }
 
-    public void getInvestigationList() {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.INVESTIGATION_LIST, Request.Method.GET, true);
+    public void getInvestigationList(boolean progressBar) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, progressBar, MyRescribeConstants.INVESTIGATION_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=" + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATEINT_ID, mContext));
+        mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=" + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
 //        mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=4092");
         mConnectionFactory.createConnection(MyRescribeConstants.INVESTIGATION_LIST);
     }
@@ -94,8 +94,8 @@ public class InvestigationHelper implements ConnectionListener {
         headerParams.put(MyRescribeConstants.OSVERSION, device.getOSVersion());
         headerParams.put(MyRescribeConstants.DEVICE_TYPE, device.getDeviceType());
 
-        headerParams.put("imgId", imageIds);
-        headerParams.put("invId", invIds);
+        headerParams.put(MyRescribeConstants.INVESTIGATION_KEYS.IMAGE_ID, imageIds);
+        headerParams.put(MyRescribeConstants.INVESTIGATION_KEYS.INV_ID, invIds);
 
         mConnectionFactory.setHeaderParams(headerParams);
         mConnectionFactory.setUrl(Config.INVESTIGATION_UPLOAD);

@@ -66,8 +66,8 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
         appDBHelper = new AppDBHelper(mContext);
         investigationHelper = new InvestigationHelper(mContext);
 
-        investigation = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_DATA);
-        investigationTemp = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_TEMP_DATA);
+        investigation = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
+        investigationTemp = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TEMP_DATA);
 
         for (InvestigationData dataObject : investigation)
             photoPaths.addAll(dataObject.getPhotos());
@@ -134,7 +134,7 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
                 startActivity(intent);
             } else {
                 Intent intent = new Intent();
-                intent.putExtra(MyRescribeConstants.INVESTIGATION_DATA, investigationTemp);
+                intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigationTemp);
                 setResult(RESULT_OK, intent);
             }
             finish();

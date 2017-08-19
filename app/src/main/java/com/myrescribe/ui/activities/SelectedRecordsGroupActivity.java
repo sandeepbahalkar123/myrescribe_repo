@@ -201,7 +201,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
 
                     uploadButton.setEnabled(false);
 
-                    String Url = "http://192.168.0.115:8000/api/upload/myRecords";
+//                    String Url = "http://192.168.0.115:8000/api/upload/myRecords";
 
                     for (int i = 0; i < groups.size(); i++) {
 
@@ -209,8 +209,8 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
 
                         for (int j = 0; j < images.size(); j++) {
 
-//                            new MultipartUploadRequest(SelectedRecordsGroupActivity.this, i + "_" + j, baseUrl + Config.MY_RECORDS_UPLOAD)
-                            new MultipartUploadRequest(SelectedRecordsGroupActivity.this, i + "_" + j, Url)
+                            new MultipartUploadRequest(SelectedRecordsGroupActivity.this, i + "_" + j, baseUrl + Config.MY_RECORDS_UPLOAD)
+//                            new MultipartUploadRequest(SelectedRecordsGroupActivity.this, i + "_" + j, Url)
                                     .setNotificationConfig(uploadNotificationConfig)
                                     .setMaxRetries(0)
 

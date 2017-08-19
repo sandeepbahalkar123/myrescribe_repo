@@ -56,10 +56,6 @@ public class SignUpNewFlow extends AppCompatActivity implements View.OnClickList
 
     private void init() {
         mContext = SignUpNewFlow.this;
-        editTextName.setHint(getString(R.string.enter_full_name).toUpperCase());
-        editTextEmailID.setHint(getString(R.string.enter_email_id).toUpperCase());
-        editTextPassword.setHint(getString(R.string.enter_password).toUpperCase());
-        editTextMobileNo.setHint(getString(R.string.enter_mobile_no).toUpperCase());
     }
 
     private boolean validate(String name, String email, String password, String mobileNo) {

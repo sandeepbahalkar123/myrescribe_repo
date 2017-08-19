@@ -60,8 +60,6 @@ public class LoginNewFlowActivity extends AppCompatActivity implements View.OnCl
         intent = getIntent();
         btnLogin.setOnClickListener(this);
         btnOtp.setOnClickListener(this);
-        editTextPassword.setHint(getString(R.string.enter_password).toUpperCase());
-        editTextMobileNo.setHint(getString(R.string.enter_mobile_no).toUpperCase());
     }
 
     @Override
@@ -77,11 +75,13 @@ public class LoginNewFlowActivity extends AppCompatActivity implements View.OnCl
                 }
                 break;
             case R.id.btnOtp:
-                Intent intent = new Intent(mContext, AppGlobalContainerActivity.class);
-                intent.putExtra(getString(R.string.type), getString(R.string.enter_mobile_no));
-                intent.putExtra(getString(R.string.title),getString(R.string.log_in));
-                startActivity(intent);
+                String mobile = editTextMobileNo.getText().toString();
+                if (!validatePhoneNo(mobile)) {
+                    LoginHelper loginHelper = new LoginHelper(this, this);
+                    loginHelper.doLoginByOTP(mobile);
+                }
                 break;
+
         }
     }
 
@@ -94,7 +94,24 @@ public class LoginNewFlowActivity extends AppCompatActivity implements View.OnCl
         startActivity(intentObj);
     }
 
-
+    private boolean validatePhoneNo(String mobile) {
+        String message = null;
+        String enter = getString(R.string.enter);
+        if (mobile.isEmpty()) {
+            message = enter + getString(R.string.enter_mobile_no).toLowerCase(Locale.US);
+            editTextMobileNo.setError(message);
+            editTextMobileNo.requestFocus();
+        } else if ((mobile.trim().length() < 10) || !(mobile.trim().startsWith("7") || mobile.trim().startsWith("8") || mobile.trim().startsWith("9"))) {
+            message = getString(R.string.err_invalid_mobile_no);
+            editTextMobileNo.setError(message);
+            editTextMobileNo.requestFocus();
+        }
+        if (message != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     private boolean validate(String mobileNo, String password) {
         String message = null;
@@ -134,10 +151,8 @@ public class LoginNewFlowActivity extends AppCompatActivity implements View.OnCl
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, loginModel.getPatientId(), mContext);
-
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), mContext);
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, editTextPassword.getText().toString(), mContext);
-
                 Intent intent = new Intent(mContext, HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -145,12 +160,34 @@ public class LoginNewFlowActivity extends AppCompatActivity implements View.OnCl
                 finish();
             } else {
                 CommonMethods.showToast(mContext, loginModel.getCommon().getStatusMessage());
-               Intent intent = new Intent(mContext, SignUpNewFlow.class);
+                Intent intent = new Intent(mContext, SignUpNewFlow.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
+        } else if (mOldDataTag.equalsIgnoreCase(MyRescribeConstants.TASK_LOGIN_WITH_OTP)) {
+
+            LoginModel loginModel = (LoginModel) customResponse;
+            if (loginModel.getCommon().isSuccess()) {
+                CommonMethods.Log(TAG + " Token", loginModel.getAuthToken());
+                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), this);
+                Intent intent = new Intent(this, AppGlobalContainerActivity.class);
+                intent.putExtra(getString(R.string.type), getString(R.string.enter_otp_for_login));
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            } else {
+
+                Intent intent = new Intent(this, SignUpNewFlow.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+
+
         }
+
     }
 
     @Override

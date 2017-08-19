@@ -124,7 +124,7 @@
         <item>#178a00</item>
     </string-array>
 
-    <string name="name">NAME</string>
+    <string name="name">Name</string>
     <string name="specialization">SPECIALIZATION</string>
     <string name="address">ADDRESS</string>
     <string name="upcoming">upcoming</string>
@@ -142,7 +142,7 @@
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
     <string name="details">&#160;Details</string>
-    <string name="forgot_password">Forgot your password?</string>
+    <string name="forgot_password">Forgot  password?</string>
     <string name="forgot_password_header">Forgot Password</string>
     <string name="message_for_mobile_otp">Please input the OTP received on your Mobile No.&#160; %1$s</string>
     <string name="message_forgot_password">Please provide your email id to access the reset password link.</string>

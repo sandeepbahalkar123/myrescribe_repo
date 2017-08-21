@@ -7,16 +7,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-
 import com.myrescribe.R;
-import com.myrescribe.ui.activities.fragments.MobileNoOtpLogin;
 import com.myrescribe.ui.fragments.ForgotPassword;
 import com.myrescribe.ui.fragments.OTPConfirmationForSignUp;
 import com.myrescribe.ui.fragments.OtpConfirmationForLogin;
 import com.myrescribe.ui.fragments.SocialLoginInputMobileForConfirmation;
-
 import java.io.Serializable;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -72,8 +68,8 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
             forgotPassword.setArguments(b);
             fragmentTransaction.replace(R.id.blankContainer, forgotPassword);
         }else if(type.equalsIgnoreCase(getString(R.string.enter_mobile_no))){
-            MobileNoOtpLogin mobileNoForLogin = new MobileNoOtpLogin();
-            fragmentTransaction.replace(R.id.blankContainer, mobileNoForLogin);
+           /* MobileNoOtpLogin mobileNoForLogin = new MobileNoOtpLogin();
+            fragmentTransaction.replace(R.id.blankContainer, mobileNoForLogin);*/
         }
         else if(type.equalsIgnoreCase(getString(R.string.enter_otp_for_login))){
             OtpConfirmationForLogin otpConfirmationForLogin = new OtpConfirmationForLogin();

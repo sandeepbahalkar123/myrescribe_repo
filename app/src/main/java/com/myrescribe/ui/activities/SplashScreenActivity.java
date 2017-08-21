@@ -8,9 +8,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.myrescribe.R;
-import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.preference.MyRescribePreferencesManager;
-import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.Config;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -42,7 +40,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     Intent intentObj = new Intent(SplashScreenActivity.this, HomePageActivity.class);
                     startActivity(intentObj);
                 } else {
-                    Intent intentObj = new Intent(SplashScreenActivity.this, LoginNewFlowActivity.class);
+                    Intent intentObj = new Intent(SplashScreenActivity.this, LoginActivity.class);
                     startActivity(intentObj);
                 }
                 finish();

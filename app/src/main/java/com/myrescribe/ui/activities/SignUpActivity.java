@@ -27,7 +27,7 @@ import butterknife.OnClick;
 /**
  * Created by jeetal on 18/8/17.
  */
-public class SignUpNewFlow extends AppCompatActivity implements View.OnClickListener, HelperResponse {
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, HelperResponse {
     private final String TAG = this.getClass().getName();
     @BindView(R.id.editTextName)
     EditText editTextName;
@@ -48,14 +48,14 @@ public class SignUpNewFlow extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.signup_new_flow);
+        setContentView(R.layout.signup_layout);
         ButterKnife.bind(this);
         init();
 
     }
 
     private void init() {
-        mContext = SignUpNewFlow.this;
+        mContext = SignUpActivity.this;
     }
 
     private boolean validate(String name, String email, String password, String mobileNo) {
@@ -166,7 +166,7 @@ public class SignUpNewFlow extends AppCompatActivity implements View.OnClickList
 
     @OnClick(R.id.login)
     public void onLoginClicked() {
-        Intent intent = new Intent(mContext, LoginNewFlowActivity
+        Intent intent = new Intent(mContext, LoginActivity
                 .class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

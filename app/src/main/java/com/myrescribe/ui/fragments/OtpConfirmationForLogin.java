@@ -26,7 +26,6 @@ import com.myrescribe.model.requestmodel.login.SignUpRequestModel;
 import com.myrescribe.model.requestmodel.login.SignUpVerifyOTPRequestModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.activities.HomePageActivity;
-import com.myrescribe.ui.activities.LoginMainActivity;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -108,7 +107,7 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
         if (getArguments() != null) {
             Bundle arguments = getArguments();
             mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(getString(R.string.details));
-            mHeaderMessageForMobileOTP.setText("" + String.format(getString(R.string.message_for_mobile_otp), mSignUpRequestModel.getMobileNumber()));
+            mHeaderMessageForMobileOTP.setText("" + String.format(getString(R.string.mobile_otp_msg), MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,getActivity())));
         }
 
         return inflate;

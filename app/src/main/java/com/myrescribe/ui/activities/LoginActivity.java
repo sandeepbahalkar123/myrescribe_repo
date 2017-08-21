@@ -1,8 +1,11 @@
 package com.myrescribe.ui.activities;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +18,6 @@ import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.ui.customesViews.CustomTextView;
-import com.myrescribe.ui.fragments.SignUp;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
@@ -24,12 +26,15 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.RuntimePermissions;
 
 /**
  * Created by jeetal on 18/8/17.
  */
-
-public class LoginNewFlowActivity extends AppCompatActivity implements View.OnClickListener, HelperResponse {
+@RuntimePermissions
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, HelperResponse {
     private final String TAG = this.getClass().getName();
     @BindView(R.id.editTextMobileNo)
     EditText editTextMobileNo;
@@ -49,14 +54,15 @@ public class LoginNewFlowActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_new_flow_layout);
+        setContentView(R.layout.login_layout);
         ButterKnife.bind(this);
+        LoginActivityPermissionsDispatcher.askToReadMessageWithCheck(LoginActivity.this);
         init();
 
     }
 
     private void init() {
-        mContext = LoginNewFlowActivity.this;
+        mContext = LoginActivity.this;
         intent = getIntent();
         btnLogin.setOnClickListener(this);
         btnOtp.setOnClickListener(this);
@@ -160,7 +166,7 @@ public class LoginNewFlowActivity extends AppCompatActivity implements View.OnCl
                 finish();
             } else {
                 CommonMethods.showToast(mContext, loginModel.getCommon().getStatusMessage());
-                Intent intent = new Intent(mContext, SignUpNewFlow.class);
+                Intent intent = new Intent(mContext, SignUpActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -173,13 +179,11 @@ public class LoginNewFlowActivity extends AppCompatActivity implements View.OnCl
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), this);
                 Intent intent = new Intent(this, AppGlobalContainerActivity.class);
                 intent.putExtra(getString(R.string.type), getString(R.string.enter_otp_for_login));
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                finish();
+
             } else {
 
-                Intent intent = new Intent(this, SignUpNewFlow.class);
+                Intent intent = new Intent(this, SignUpActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -209,9 +213,28 @@ public class LoginNewFlowActivity extends AppCompatActivity implements View.OnCl
 
     @OnClick(R.id.signup)
     public void onViewClicked() {
-        Intent intent = new Intent(mContext, SignUpNewFlow.class);
+        Intent intent = new Intent(mContext, SignUpActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+    @NeedsPermission(Manifest.permission.READ_SMS)
+    public void askToReadMessage() {
+        //Do nothing
+    }
+
+    @OnPermissionDenied({Manifest.permission.READ_SMS})
+    void deniedReadSms() {
+        //Do nothing
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        LoginActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

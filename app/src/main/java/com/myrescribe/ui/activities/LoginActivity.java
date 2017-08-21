@@ -94,7 +94,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @OnClick({R.id.forgotPasswordView})
     public void onForgotPassword() {
         Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
-        intent.putExtra(getString(R.string.type), getString(R.string.enter_otp_for_login));
         intentObj.putExtra(getString(R.string.type), getString(R.string.forgot_password));
         intentObj.putExtra(getString(R.string.title), getString(R.string.forgot_password_header));
         startActivity(intentObj);
@@ -179,6 +178,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), this);
                 Intent intent = new Intent(this, AppGlobalContainerActivity.class);
                 intent.putExtra(getString(R.string.type), getString(R.string.enter_otp_for_login));
+                intent.putExtra(getString(R.string.title),getString(R.string.enter_otp_for_login));
                 startActivity(intent);
 
             } else {

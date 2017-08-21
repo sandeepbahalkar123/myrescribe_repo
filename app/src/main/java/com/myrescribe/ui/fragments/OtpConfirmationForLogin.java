@@ -107,7 +107,7 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
         if (getArguments() != null) {
             Bundle arguments = getArguments();
             mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(getString(R.string.details));
-            mHeaderMessageForMobileOTP.setText("" + String.format(getString(R.string.mobile_otp_msg), MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,getActivity())));
+            mHeaderMessageForMobileOTP.setText(getString(R.string.enter_otp_no));
         }
 
         return inflate;

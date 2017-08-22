@@ -86,7 +86,6 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
         mParentActivity = (MyRecordsActivity) getActivity();
         mContext = inflater.getContext();
 
-
         initialize();
         return mRootView;
     }
@@ -99,7 +98,6 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
     }
 
     private void initialize() {
-
 
         YearSpinnerInteractionListener listener = new YearSpinnerInteractionListener();
         mYearSpinnerView.setOnTouchListener(listener);

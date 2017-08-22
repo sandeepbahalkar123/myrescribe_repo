@@ -31,6 +31,13 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public static final String INV_UPLOADED_IMAGES = "uploaded_images";
     public static final String INVESTIGATION_TABLE = "investigation_table";
 
+    public static final String RECORDS_DOC_ID = "records_doc_id";
+    public static final String RECORDS_VISIT_DATE = "records_visit_date";
+    public static final String RECORDS_UPLOAD_ID = "records_upload_id";
+    public static final String RECORDS_STATUS = "records_upload_status";
+    public static final String RECORDS_IMAGE_DATA = "records_image_data";
+    public static final String MY_RECORDS_TABLE = "MyRecords";
+
     private final String TAG = "MyRescribe/AppDBHelper";
     private static final String PREFERENCES_TABLE = "preferences_table";
     private static final String DATABASE_NAME = "MyRescribe.sqlite";
@@ -173,7 +180,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         CommonMethods.Log("DeletedOfflineDatabase", "APP_DATA , PREFERENCES TABLE, INVESTIGATION");
     }
 
-    public boolean insertPreferences(String userId, String breakfastTime, String lunchTime,String snacksTime, String dinnerTime) {
+    public boolean insertPreferences(String userId, String breakfastTime, String lunchTime, String snacksTime, String dinnerTime) {
         if (preferencesTableNumberOfRows(userId) == 0) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
@@ -182,7 +189,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
             contentValues.put(BREAKFAST_TIME, breakfastTime);
             contentValues.put(LUNCH_TIME, lunchTime);
             contentValues.put(DINNER_TIME, dinnerTime);
-            contentValues.put(SNACKS_TIME,snacksTime);
+            contentValues.put(SNACKS_TIME, snacksTime);
 
             db.insert(PREFERENCES_TABLE, null, contentValues);
         } else {
@@ -201,13 +208,13 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + PREFERENCES_TABLE + " where " + USER_ID + "=" + userId + "", null);
     }
 
-    private boolean updatePreferences(String userId, String breakfastTime, String lunchTime,String snacksTime, String dinnerTime) {
+    private boolean updatePreferences(String userId, String breakfastTime, String lunchTime, String snacksTime, String dinnerTime) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(BREAKFAST_TIME, breakfastTime);
         contentValues.put(LUNCH_TIME, lunchTime);
         contentValues.put(DINNER_TIME, dinnerTime);
-        contentValues.put(SNACKS_TIME,snacksTime);
+        contentValues.put(SNACKS_TIME, snacksTime);
 
         db.update(PREFERENCES_TABLE, contentValues, USER_ID + " = ? ", new String[]{userId});
         return true;
@@ -299,4 +306,79 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 INV_ID + " = ? ",
                 new String[]{id});
     }
+
+    // MyRecords
+
+    public boolean insertMyRecordsData(String id, int status, String data, int docId, String visitDate) {
+        if (MyRecordsDataTableNumberOfRows(id) == 0) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(RECORDS_DOC_ID, docId);
+            contentValues.put(RECORDS_VISIT_DATE, visitDate);
+
+            contentValues.put(RECORDS_UPLOAD_ID, id);
+            contentValues.put(RECORDS_STATUS, status);
+            contentValues.put(RECORDS_IMAGE_DATA, data);
+
+            db.insert(MY_RECORDS_TABLE, null, contentValues);
+        }
+        return true;
+    }
+
+    private int MyRecordsDataTableNumberOfRows(String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return (int) DatabaseUtils.queryNumEntries(db, MY_RECORDS_TABLE, RECORDS_UPLOAD_ID + " = ? ", new String[]{id});
+    }
+
+    public int updateMyRecordsData(String id, int isUploaded) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(RECORDS_STATUS, isUploaded);
+
+        return db.update(MY_RECORDS_TABLE, contentValues, RECORDS_UPLOAD_ID + " = ? ", new String[]{id});
+    }
+
+    public MyRecordsData getMyRecordsData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + MY_RECORDS_TABLE, null);
+
+        MyRecordsData myRecordsData = new MyRecordsData();
+
+        int docId = 0;
+        String visitDate = null;
+        ArrayList<Image> imageArrayList = new ArrayList<>();
+
+        Gson gson = new Gson();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                String imageJson = cursor.getString(cursor.getColumnIndex(RECORDS_IMAGE_DATA));
+                Image image = gson.fromJson(imageJson, Image.class);
+                image.setUploading(cursor.getInt(cursor.getColumnIndex(RECORDS_STATUS)));
+                imageArrayList.add(image);
+                docId = cursor.getInt(cursor.getColumnIndex(RECORDS_DOC_ID));
+                visitDate = cursor.getString(cursor.getColumnIndex(RECORDS_VISIT_DATE));
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+
+        myRecordsData.setDocId(docId);
+        myRecordsData.setVisitDate(visitDate);
+        myRecordsData.setImageArrayList(imageArrayList);
+
+        return myRecordsData;
+    }
+
+    public Cursor getAllMyRecordsData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("select from " + MY_RECORDS_TABLE, null);
+    }
+
+    public int deleteMyRecords() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(MY_RECORDS_TABLE, null, null);
+    }
+
+    // End MyRecords
 }

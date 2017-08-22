@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.myrescribe.R;
+import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 /**
@@ -69,7 +70,7 @@ public class Device {
                 break;
         }
 
-        Log.d(TAG, density);
+        CommonMethods.Log(TAG, density);
 
         return density;
     }

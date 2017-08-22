@@ -2,37 +2,25 @@ package com.myrescribe.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
-import com.heinrichreimersoftware.materialdrawer.structure.DrawerFragmentItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 import com.heinrichreimersoftware.materialdrawer.theme.DrawerTheme;
 import com.myrescribe.R;
 import com.myrescribe.helpers.database.AppDBHelper;
+import com.myrescribe.helpers.database.MyRecordsData;
+import com.myrescribe.model.investigation.Image;
 import com.myrescribe.notification.AppointmentAlarmTask;
 import com.myrescribe.notification.DosesAlarmTask;
 import com.myrescribe.notification.InvestigationAlarmTask;
@@ -41,7 +29,8 @@ import com.myrescribe.ui.customesViews.ScrollableImageView;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
-import java.io.IOException;
+import net.gotev.uploadservice.UploadService;
+
 import java.util.Calendar;
 
 /**
@@ -57,6 +46,7 @@ public class HomePageActivity extends DrawerActivity {
     String dinnerTime = "";
     String snacksTime = "";
     private Toolbar toolbar;
+    private AppDBHelper appDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +58,8 @@ public class HomePageActivity extends DrawerActivity {
         if (getIntent().getBooleanExtra(MyRescribeConstants.ALERT, true))
             notificationForMedicine();
         drawerConfiguration();
+
+        appDBHelper = new AppDBHelper(mContext);
     }
 
     private void setImageBitmap(Bitmap bmp) {
@@ -233,6 +225,9 @@ public class HomePageActivity extends DrawerActivity {
     }*/
 
     private void logout() {
+        // Stop Uploads
+        UploadService.stopAllUploads();
+
         String baseUrl = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext);
         MyRescribePreferencesManager.clearSharedPref(mContext);
         MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, baseUrl, mContext);
@@ -309,7 +304,26 @@ public class HomePageActivity extends DrawerActivity {
                     Intent intent = new Intent(mContext, AppointmentActivity.class);
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.my_records))) {
-                    Intent intent = new Intent(mContext, MyRecordsActivity.class);
+                    MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
+
+                    int completeCount = 0;
+
+                    for (Image image : myRecordsData.getImageArrayList()) {
+                        if (image.isUploading() == MyRescribeConstants.COMPLETED)
+                            completeCount++;
+                    }
+
+                    Intent intent;
+                    if (completeCount == myRecordsData.getImageArrayList().size()) {
+                        appDBHelper.deleteMyRecords();
+                        intent = new Intent(mContext, MyRecordsActivity.class);
+                    } else {
+                        intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
+                        intent.putExtra(MyRescribeConstants.UPLOADING_STATUS, true);
+                        intent.putExtra(MyRescribeConstants.VISIT_DATE, myRecordsData.getVisitDate());
+                        intent.putExtra(MyRescribeConstants.DOCTORS_ID, myRecordsData.getDocId());
+                        intent.putExtra(MyRescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
+                    }
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.logout))) {
                     logout();

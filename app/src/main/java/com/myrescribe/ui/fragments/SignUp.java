@@ -362,7 +362,7 @@ public class SignUp extends Fragment implements HelperResponse, GoogleApiClient.
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
 
-            Log.e(TAG, "display name: " + acct.getDisplayName());
+            CommonMethods.Log(TAG, "display name: " + acct.getDisplayName());
 
             //-----------
             SignUpRequestModel signUpRequest = new SignUpRequestModel();

@@ -32,7 +32,6 @@ import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.Connector;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.model.Common;
-import com.myrescribe.model.MessageModel;
 import com.myrescribe.model.case_details.CaseDetailsModel;
 import com.myrescribe.model.doctors.appointments.DoctorAppointmentModel;
 import com.myrescribe.model.doctors.doctor_info.DoctorModel;
@@ -45,7 +44,7 @@ import com.myrescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
 import com.myrescribe.model.investigation.uploaded.InvestigationUploadFromUploadedModel;
 import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.SignUpModel;
-import com.myrescribe.model.myrecords.MyRecordsDoctorListModel;
+import com.myrescribe.model.my_records.MyRecordsDoctorListModel;
 import com.myrescribe.model.my_records.MyRecordBaseModel;
 import com.myrescribe.model.notification.AppointmentsNotificationModel;
 import com.myrescribe.model.notification.NotificationModel;
@@ -402,7 +401,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     @Override
     public void parseJson(String data, boolean isTokenExpired) {
         try {
-            Log.e(TAG, data);
+            CommonMethods.Log(TAG, data);
             Gson gson = new Gson();
 
             JSONObject jsonObject;
@@ -538,7 +537,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
             }
 
         } catch (JsonSyntaxException e) {
-            Log.d(TAG, "JsonException" + e.getMessage());
+            CommonMethods.Log(TAG, "JsonException" + e.getMessage());
             mConnectionListener.onResponse(ConnectionListener.PARSE_ERR0R, null, mOldDataTag);
         }
 

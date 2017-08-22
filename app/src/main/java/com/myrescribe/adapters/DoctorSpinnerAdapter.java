@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 import com.myrescribe.R;
-import com.myrescribe.model.myrecords.SpinnerDoctor;
+import com.myrescribe.model.my_records.SpinnerDoctor;
 import java.util.ArrayList;
 import java.util.List;
 

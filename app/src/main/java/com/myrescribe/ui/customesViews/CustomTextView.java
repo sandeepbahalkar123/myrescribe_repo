@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.myrescribe.R;
 import com.myrescribe.singleton.MyRescribeApplication;
+import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
 /**
@@ -46,7 +47,7 @@ public class CustomTextView extends android.support.v7.widget.AppCompatTextView 
         try {
             tf = Typeface.createFromAsset(ctx.getAssets(), "fonts/" + asset);
         } catch (Exception e) {
-            Log.e(TAG, "Could not get typeface: " + e.getMessage());
+            CommonMethods.Log(TAG, "Could not get typeface: " + e.getMessage());
             return false;
         }
 

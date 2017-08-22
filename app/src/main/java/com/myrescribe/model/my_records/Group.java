@@ -1,4 +1,4 @@
-package com.myrescribe.model.myrecords;
+package com.myrescribe.model.my_records;
 
 import android.os.Parcel;
 import android.os.Parcelable;

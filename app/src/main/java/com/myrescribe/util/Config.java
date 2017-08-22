@@ -16,7 +16,7 @@ public class Config {
     public static boolean DEV_BUILD = true;
     //Declared all URL used in app here
 
-    //public static String BASE_URL = "http://drrescribe.com:3003/";
+//    public static String BASE_URL = "http://drrescribe.com:3003/";
     public static String BASE_URL = "http://192.168.0.182:3003/";
 
     public Context mContext;
@@ -43,7 +43,7 @@ public class Config {
     public static final String MY_RECORDS_DOCTOR_LIST = "api/doctors";
     public static final String LIST_ALL_MY_RECORD = "api/records/getRecordList?patientId=";
 
-    public static final String MY_RECORDS_UPLOAD = "/api/upload/myRecords";
+    public static final String MY_RECORDS_UPLOAD = "api/upload/myRecords";
 
 }
 

@@ -57,21 +57,21 @@ public class MyRecordsHelper implements ConnectionListener {
                     }
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
                 }else if (mOldDataTag.equals(MyRescribeConstants.MY_RECORDS_DOCTOR_LIST)) {
-                    ((HelperResponse) mContext).onSuccess(mOldDataTag, customResponse);
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
 
                 break;
             case ConnectionListener.PARSE_ERR0R:
                 CommonMethods.Log(TAG, "parse error");
-                ((HelperResponse) mContext).onParseError(mOldDataTag, "parse error");
+                mHelperResponseManager.onParseError(mOldDataTag, "parse error");
                 break;
             case ConnectionListener.SERVER_ERROR:
                 CommonMethods.Log(TAG, "server error");
-                ((HelperResponse) mContext).onServerError(mOldDataTag, "server error");
+                mHelperResponseManager.onServerError(mOldDataTag, "server error");
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
                 CommonMethods.Log(TAG, "no connection error");
-                ((HelperResponse) mContext).onNoConnectionError(mOldDataTag, "no connection error");
+                mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");
                 break;
             default:
                 CommonMethods.Log(TAG, "default error");

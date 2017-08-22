@@ -120,6 +120,11 @@ public class MyRescribeConstants {
     public static final String VISIT_DATE = "visitDate";
     public static final String DOCTORS_ID = "doctorId";
 
+    public static final int UPLOADING = 1;
+    public static final int FAILED = 0;
+    public static final int COMPLETED = 3;
+    public static final String UPLOADING_STATUS = "uploading_status";
+
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 
 

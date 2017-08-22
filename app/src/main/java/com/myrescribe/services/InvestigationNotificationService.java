@@ -53,7 +53,6 @@ public class InvestigationNotificationService extends Service implements HelperR
 
     @Override
     public void onCreate() {
-        Log.i("NotificationService", "onCreate()");
     }
 
     @Override

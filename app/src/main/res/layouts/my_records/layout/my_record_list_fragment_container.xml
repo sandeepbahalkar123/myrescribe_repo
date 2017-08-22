@@ -84,11 +84,11 @@
         <Button
             android:id="@+id/addRecordButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp40"
             android:layout_alignParentBottom="true"
             android:text="@string/add_record"
             android:textColor="@color/white"
-            android:background="@drawable/button_enable"/>
+            android:background="@drawable/button_selector"/>
 
     </RelativeLayout>
 

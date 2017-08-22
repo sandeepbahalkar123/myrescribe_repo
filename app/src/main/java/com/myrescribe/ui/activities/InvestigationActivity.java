@@ -155,12 +155,6 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d("Restart", "onRestart");
-    }
-
-    @Override
     public void onBackPressed() {
         Intent intent = new Intent(InvestigationActivity.this, HomePageActivity.class);
         intent.putExtra(MyRescribeConstants.ALERT, false);

@@ -1,4 +1,4 @@
-package com.myrescribe.model.myrecords;
+package com.myrescribe.model.my_records;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

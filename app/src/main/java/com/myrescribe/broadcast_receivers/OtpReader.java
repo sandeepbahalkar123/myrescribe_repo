@@ -55,7 +55,6 @@ public class OtpReader extends BroadcastReceiver {
                 SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusArr[i]);
                 String senderNum = currentMessage.getDisplayOriginatingAddress();
                 String message = currentMessage.getDisplayMessageBody();
-                Log.e(TAG, "senderNum: " + senderNum + " message: " + message);
 
                 if (!TextUtils.isEmpty(receiverString) && senderNum.contains(receiverString)) { //If message received is from required number.
                     //If bound a listener interface, callback the overriden method.

@@ -21,7 +21,8 @@ public class Image implements Parcelable {
             instance.selected = ((boolean) in.readValue((boolean.class.getClassLoader())));
             instance.parentCaption = ((String) in.readValue((String.class.getClassLoader())));
             instance.childCaption = ((String) in.readValue((String.class.getClassLoader())));
-            instance.uploading = ((boolean) in.readValue((boolean.class.getClassLoader())));
+            instance.uploading = ((int) in.readValue((boolean.class.getClassLoader())));
+
             return instance;
         }
 
@@ -41,13 +42,13 @@ public class Image implements Parcelable {
     private boolean selected = false;
     @SerializedName("parentCaption")
     @Expose
-    private String parentCaption = "";
+    private String parentCaption = "Add Caption";
     @SerializedName("childCaption")
     @Expose
     private String childCaption = "";
     @SerializedName("uploading")
     @Expose
-    private boolean uploading = false;
+    private int uploading = -1;
 
     public String getImageId() {
         return imageId;
@@ -89,11 +90,11 @@ public class Image implements Parcelable {
         this.childCaption = childCaption;
     }
 
-    public boolean isUploading() {
+    public int isUploading() {
         return uploading;
     }
 
-    public void setUploading(boolean uploading) {
+    public void setUploading(int uploading) {
         this.uploading = uploading;
     }
 

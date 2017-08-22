@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.myrescribe.R;
-import com.myrescribe.model.myrecords.Group;
+import com.myrescribe.model.my_records.Group;
 
 import java.util.List;
 

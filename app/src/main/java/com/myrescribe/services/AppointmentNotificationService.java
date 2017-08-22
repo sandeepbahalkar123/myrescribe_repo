@@ -46,7 +46,6 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
     @Override
     public void onCreate() {
-        Log.i("NotificationService", "onCreate()");
     }
 
     @Override

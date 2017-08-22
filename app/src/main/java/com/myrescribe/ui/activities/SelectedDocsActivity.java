@@ -240,7 +240,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                                 .setDelegate(SelectedDocsActivity.this)
                                 .startUpload();
 
-                        Log.d("ImagedUploadId", uploadId);
+                        CommonMethods.Log("ImagedUploadId", uploadId);
                     } catch (Exception exc) {
                         Log.e("AndroidUploadService", exc.getMessage(), exc);
                     }
@@ -254,13 +254,13 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
 
     @Override
     public void onProgress(Context context, UploadInfo uploadInfo) {
-        Log.d("Status", uploadInfo.getProgressPercent() + " " + uploadInfo.getUploadId());
+        CommonMethods.Log("Status", uploadInfo.getProgressPercent() + " " + uploadInfo.getUploadId());
     }
 
     @Override
     public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
         imageUploadFailedCount++;
-        Log.d("Status", imageUploadFailedCount + " Error " + uploadInfo.getUploadId());
+        CommonMethods.Log("Status", imageUploadFailedCount + " Error " + uploadInfo.getUploadId());
         if (imageUploadFailedCount == photoPaths.size()) {
             CommonMethods.showToast(mContext, "Uploading Failed");
             customProgressDialog.dismiss();
@@ -272,7 +272,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
     public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
         imageUploadedCount++;
 
-        Log.d("Status", imageUploadedCount + " Completed " + uploadInfo.getUploadId());
+        CommonMethods.Log("Status", imageUploadedCount + " Completed " + uploadInfo.getUploadId());
 
         if ((imageUploadedCount + imageUploadFailedCount) == photoPaths.size())
             allUploaded();
@@ -280,7 +280,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
 
     @Override
     public void onCancelled(Context context, UploadInfo uploadInfo) {
-        Log.d("Status", "Cancelled");
+        CommonMethods.Log("Status", "Cancelled");
     }
 
     void allUploaded() {

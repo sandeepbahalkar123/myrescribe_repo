@@ -19,5 +19,4 @@
 
     <include layout="@layout/add_records_content" />
 
-
 </android.support.design.widget.CoordinatorLayout>

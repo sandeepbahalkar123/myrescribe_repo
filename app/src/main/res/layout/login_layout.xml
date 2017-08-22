@@ -15,12 +15,12 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="250dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/vector_smart_object" />
 
-        <com.myrescribe.ui.customesViews.CustomTextView
+        <com.rescribe.ui.customesViews.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -65,7 +65,7 @@
                 android:layout_height="@dimen/dp1"
                 android:background="@color/white" />
 
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/btnOtp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                 android:layout_marginTop="@dimen/dp6"
                 android:orientation="horizontal">
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/forgotPasswordView"
                     style="@style/AppLoginNewMainStyle"
                     android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
                     android:layout_marginRight="@dimen/dp10"
                     android:background="@color/white" />
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/signup"
                     style="@style/AppLoginNewMainStyle"
                     android:layout_height="wrap_content"

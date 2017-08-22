@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.myrescribe.ui.fragments.filter.SelectDoctorsFragment">
+    tools:context="com.rescribe.ui.fragments.filter.SelectDoctorsFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp19" />
 
-        <com.myrescribe.ui.customesViews.CustomTextView
+        <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

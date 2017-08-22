@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.myrescribe.ui.activities.AddRecordsActivity">
+    tools:context="com.rescribe.ui.activities.AddRecordsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

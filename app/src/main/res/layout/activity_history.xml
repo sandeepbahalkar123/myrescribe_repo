@@ -26,7 +26,7 @@
                 android:layout_weight="0.1"
                 app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
 
-            <com.myrescribe.ui.customesViews.CircularImageView
+            <com.rescribe.ui.customesViews.CircularImageView
                 android:id="@+id/showPatientIcon"
                 android:layout_width="@dimen/dp30"
                 android:layout_height="@dimen/dp30"

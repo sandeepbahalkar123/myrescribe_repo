@@ -24,7 +24,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/vitalNameDialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                 android:textSize="14sp"
                 app:customFont="@string/roboto_bold" />
 
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/noOfVitalsDialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -87,7 +87,7 @@
                     android:textSize="14sp"
                     app:customFont="@string/roboto_medium" />
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/normalRange"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
                 android:orientation="horizontal"
                 android:paddingTop="@dimen/dp16">
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -116,7 +116,7 @@
                     android:textSize="14sp"
                     app:customFont="@string/roboto_medium" />
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/moderateRange"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
                 android:orientation="horizontal"
                 android:paddingTop="@dimen/dp16">
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -144,7 +144,7 @@
                     android:textSize="14sp"
                     app:customFont="@string/roboto_medium" />
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/severeRange"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -166,7 +166,7 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <com.myrescribe.ui.customesViews.CustomTextView
+        <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/vitalTypeNameDialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
             android:textSize="14sp"
             app:customFont="@string/roboto_bold" />
 
-        <com.myrescribe.ui.customesViews.CustomTextView
+        <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/noOfVitalsTypeDialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -206,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -216,7 +216,7 @@
                     android:textSize="14sp"
                     app:customFont="@string/roboto_medium" />
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/normalSubTypeRange"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -235,7 +235,7 @@
                 android:orientation="horizontal"
                 android:paddingTop="@dimen/dp16">
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -245,7 +245,7 @@
                     android:textSize="14sp"
                     app:customFont="@string/roboto_medium" />
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/moderateSubTypeRange"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -263,7 +263,7 @@
                 android:orientation="horizontal"
                 android:paddingTop="@dimen/dp16">
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -273,7 +273,7 @@
                     android:textSize="14sp"
                     app:customFont="@string/roboto_medium" />
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/severeSubTypeRange"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

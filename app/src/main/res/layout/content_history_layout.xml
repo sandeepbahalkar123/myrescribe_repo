@@ -13,7 +13,7 @@
         android:background="@color/recentblue"
         android:orientation="horizontal">
 
-        <com.myrescribe.ui.customesViews.CircularImageView
+        <com.rescribe.ui.customesViews.CircularImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="right|center_vertical"
@@ -31,7 +31,7 @@
             android:orientation="vertical"
             android:paddingLeft="@dimen/dp16">
 
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorSpecialization"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                 android:textSize="@dimen/sp14"
                 app:customFont="@string/roboto_medium" />
 
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 android:textStyle="bold"
                 app:customFont="@string/roboto_medium" />
 
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctor_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
 
         </LinearLayout>
 
-        <com.myrescribe.ui.customesViews.CustomTextView
+        <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/dateTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

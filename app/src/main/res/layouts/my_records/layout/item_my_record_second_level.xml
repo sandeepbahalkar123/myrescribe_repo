@@ -72,7 +72,7 @@
                         android:src="@drawable/down_arrow"
                         android:visibility="gone" />
 
-                    <com.myrescribe.ui.customesViews.CustomTextView
+                    <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/headerName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

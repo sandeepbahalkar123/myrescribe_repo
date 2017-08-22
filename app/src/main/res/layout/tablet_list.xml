@@ -15,7 +15,7 @@
         android:layout_centerVertical="true"
         android:src="@drawable/capsule_01" />
 
-    <com.myrescribe.ui.customesViews.CustomTextView
+    <com.rescribe.ui.customesViews.CustomTextView
         android:id="@+id/tabNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         app:customFont="@string/roboto_bold"
         tools:text="Rantac" />
 
-    <com.myrescribe.ui.customesViews.CustomTextView
+    <com.rescribe.ui.customesViews.CustomTextView
         android:id="@+id/tabCountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

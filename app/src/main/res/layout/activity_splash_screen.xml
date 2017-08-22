@@ -15,13 +15,12 @@
         android:orientation="vertical">
 
     <ImageView
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-
         android:src="@drawable/vector_smart_object" />
 
-    <com.myrescribe.ui.customesViews.CustomTextView
+    <com.rescribe.ui.customesViews.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

@@ -18,7 +18,7 @@
         android:orientation="horizontal"
         android:visibility="visible">
 
-        <com.myrescribe.ui.customesViews.CustomTextView
+        <com.rescribe.ui.customesViews.CustomTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -31,7 +31,7 @@
             android:visibility="invisible"
             app:customFont="@string/roboto_bold" />
 
-        <com.myrescribe.ui.customesViews.CustomTextView
+        <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/showDoseAndSlot"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/medicineName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
                 android:layout_gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/doseAge"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                     android:textSize="@dimen/sp14"
                     app:customFont="@string/roboto_bold" />
 
-                <com.myrescribe.ui.customesViews.CustomTextView
+                <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/frequencyString"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                     android:gravity="right"
                     android:orientation="horizontal">
 
-                    <com.myrescribe.ui.customesViews.CustomTextView
+                    <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/days"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -159,7 +159,7 @@
                     android:layout_marginBottom="@dimen/dp4"
                     android:orientation="horizontal">
 
-                    <com.myrescribe.ui.customesViews.CustomTextView
+                    <com.rescribe.ui.customesViews.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/instructions"
@@ -167,7 +167,7 @@
                         android:textSize="@dimen/sp12"
                         app:customFont="@string/roboto_medium" />
 
-                    <com.myrescribe.ui.customesViews.CustomTextView
+                    <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/textViewhightlightInstructions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

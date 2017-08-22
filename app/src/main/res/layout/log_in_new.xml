@@ -54,7 +54,7 @@
             android:textAllCaps="true"
             android:textColor="@android:color/white" />
 
-        <com.myrescribe.ui.customesViews.CustomTextView
+        <com.rescribe.ui.customesViews.CustomTextView
             style="@style/AppLoginMainStyle"
             android:id="@+id/forgotPasswordView"
             android:layout_height="wrap_content"

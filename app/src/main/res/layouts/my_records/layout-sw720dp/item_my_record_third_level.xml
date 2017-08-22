@@ -61,7 +61,7 @@
                     android:layout_weight="5"
                     android:orientation="vertical">
                     <!-- Artist Name -->
-                    <com.myrescribe.ui.customesViews.CustomTextView
+                    <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/headerName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
                             android:src="@drawable/blue_dot"
                             android:visibility="visible" />
 
-                        <com.myrescribe.ui.customesViews.CustomTextView
+                        <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/childContent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

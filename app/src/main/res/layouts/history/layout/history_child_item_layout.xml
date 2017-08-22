@@ -13,14 +13,14 @@
         android:layout_marginLeft="@dimen/dp14"
         android:orientation="horizontal">
 
-        <com.myrescribe.ui.customesViews.CircularImageView
+        <com.rescribe.ui.customesViews.CircularImageView
             android:layout_width="@dimen/dp5"
             android:layout_height="@dimen/dp5"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dp40"
             android:background="@drawable/circular_bullet" />
 
-        <com.myrescribe.ui.customesViews.CustomTextView
+        <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/textView_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

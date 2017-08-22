@@ -19,7 +19,7 @@
             android:padding="@dimen/dp8"
             tools:src="@drawable/select_doctor" />
 
-        <com.myrescribe.ui.customesViews.CustomTextView
+        <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/caseTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

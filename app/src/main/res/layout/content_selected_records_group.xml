@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.myrescribe.ui.activities.SelectedRecordsGroupActivity"
+    tools:context="com.rescribe.ui.activities.SelectedRecordsGroupActivity"
     tools:showIn="@layout/activity_selected_records_group">
 
     <android.support.v7.widget.RecyclerView

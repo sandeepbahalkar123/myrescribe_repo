@@ -27,7 +27,7 @@
             android:layout_marginRight="@dimen/dp5"
             android:padding="3dip">
 
-            <com.myrescribe.ui.customesViews.CircularImageView
+            <com.rescribe.ui.customesViews.CircularImageView
                 android:layout_width="@dimen/dp50"
                 android:layout_height="@dimen/dp50"
                 android:layout_gravity="center"
@@ -46,7 +46,7 @@
             android:orientation="vertical">
 
             <!-- Title Of Song-->
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                 android:textStyle="bold" />
 
             <!-- Artist Name -->
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                 android:typeface="sans" />
 
             <!-- Rightend Duration -->
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/appointmentsTimeStamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

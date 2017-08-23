@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class MyRecordsData {
     private int docId;
     private String visitDate;
+    private int opdId;
     @SerializedName("imageArray")
     @Expose
     private ArrayList<Image> imageArrayList;
@@ -23,6 +24,14 @@ public class MyRecordsData {
 
     public void setDocId(int docId) {
         this.docId = docId;
+    }
+
+    public int getOpdId() {
+        return opdId;
+    }
+
+    public void setOpdId(int opdId) {
+        this.opdId = opdId;
     }
 
     public String getVisitDate() {

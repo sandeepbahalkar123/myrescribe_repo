@@ -6,6 +6,7 @@ import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,31 +14,29 @@ import java.util.HashMap;
  * Created by riteshpandhurkar on 16/6/17.
  */
 
-public class MyRecordDoctorInfo implements CustomResponse {
-    @SerializedName("doc_id")
+public class MyRecordDoctorInfo implements CustomResponse, Serializable {
+
+    @SerializedName("docId")
     @Expose
     private String id;
-    @SerializedName("doctor_name")
+    @SerializedName("doctorName")
     @Expose
     private String doctorName;
-
-    @SerializedName("doctor_address")
-    @Expose
-    private String address;
-
-    @SerializedName("OPDDate")
-    @Expose
-    private String date;
-    @SerializedName("doctor_spaciality")
-    @Expose
-    private String specialization;
-    @SerializedName("doctor_image_path")
-    @Expose
-    private String docImgURL;
-    @SerializedName("Opdid")
+    @SerializedName("opdId")
     @Expose
     private String OPDId;
-
+    @SerializedName("opdDate")
+    @Expose
+    private String date;
+    @SerializedName("doctorSpeciality")
+    @Expose
+    private String specialization;
+    @SerializedName("doctorAddress")
+    @Expose
+    private String address;
+    @SerializedName("doctorImageUrl")
+    @Expose
+    private String docImgURL;
 
     private int color;
 

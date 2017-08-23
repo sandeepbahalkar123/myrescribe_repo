@@ -83,7 +83,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
     private String patientId;
 
     // HardCoded
-    private String opdId = "9999";
+    private int opdId = 9999;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +92,14 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         imageArrayList = getIntent().getParcelableArrayListExtra(MyRescribeConstants.DOCUMENTS);
+
+        opdId = getIntent().getIntExtra(MyRescribeConstants.OPD_ID, 0);
+
         visitDate = getIntent().getStringExtra(MyRescribeConstants.VISIT_DATE);
         visitDate = CommonMethods.getFormatedDate(visitDate, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+
         docId = getIntent().getIntExtra(MyRescribeConstants.DOCTORS_ID, 0);
+
         patientId = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, SelectedRecordsGroupActivity.this);
 
         boolean isUploading = getIntent().getBooleanExtra(MyRescribeConstants.UPLOADING_STATUS, false);
@@ -267,7 +272,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                     .addHeader("imageId", image.getImageId())
                     .addHeader("parentCaptionName", image.getParentCaption())
                     .addHeader("childCaptionName", image.getChildCaption())
-                    .addHeader("opdId", opdId)
+                    .addHeader("opdId", String.valueOf(opdId))
 
                     .addFileToUpload(image.getImagePath(), "myRecord")
                     //                                    .setDelegate(MainActivity.this)
@@ -276,7 +281,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             e.printStackTrace();
         }
 
-        appDBHelper.insertMyRecordsData(uploadId, MyRescribeConstants.UPLOADING, new Gson().toJson(image), docId, visitDate);
+        appDBHelper.insertMyRecordsData(uploadId, MyRescribeConstants.UPLOADING, new Gson().toJson(image), docId, opdId, visitDate);
     }
 
     // Uploading

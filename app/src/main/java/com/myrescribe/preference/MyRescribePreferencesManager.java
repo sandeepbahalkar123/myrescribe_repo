@@ -221,5 +221,6 @@ public class MyRescribePreferencesManager {
         String MOBILE_NUMBER = "mobileNumber";
         String PASSWORD = "password";
         String COACHMARK = "coachmark";
+        String NOTIFY_DATE = "notify_date";
     }
 }

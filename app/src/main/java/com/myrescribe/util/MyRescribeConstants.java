@@ -124,6 +124,12 @@ public class MyRescribeConstants {
     public static final int FAILED = 0;
     public static final int COMPLETED = 3;
     public static final String UPLOADING_STATUS = "uploading_status";
+    public static final String INVESTIGATION_NOTIFICATION_TIME = "9:00 AM";
+    public static final String APPOINTMENT_NOTIFICATION_TIME = "9:00 AM";
+    public static final String GMAIL_PACKAGE = "com.google.android.gm";
+    public static final String EMAIL = "email";
+    public static final String OPD_ID = "opd_id";
+    public static final String MYRECORDDATAMODEL = "myrecorddatamodel";
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 

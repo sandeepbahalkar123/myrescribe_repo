@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.TreeMap;
  * Created by riteshpandhurkar on 15/6/17.
  */
 
-public class MyRecordReports implements CustomResponse {
+public class MyRecordReports implements CustomResponse, Serializable {
 
     @SerializedName("parentCaptionName")
     private String parentCaptionName;
@@ -36,7 +37,7 @@ public class MyRecordReports implements CustomResponse {
         this.reportList = reportList;
     }
 
-    public class MyRecordReportList implements CustomResponse {
+    public class MyRecordReportList implements CustomResponse, Serializable {
         @SerializedName("childCaptionName")
         private String childCaptionName;
         @SerializedName("imageList")

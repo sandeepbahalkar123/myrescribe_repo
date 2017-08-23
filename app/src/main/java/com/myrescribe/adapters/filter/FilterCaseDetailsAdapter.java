@@ -61,7 +61,7 @@ public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDet
             @Override
             public void onClick(View v) {
 
-                if (position == vitalsPos) {
+                /*if (position == vitalsPos) {
                     boolean isOtherSelected = false;
                     for (int inx = 0; inx < caseDetailsList.size(); inx++) {
                         if (inx != vitalsPos) {
@@ -79,7 +79,7 @@ public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDet
                 } else if (caseDetailsList.get(vitalsPos).isSelected()) {
                     caseDetailsList.get(position).setSelected(false);
                     CommonMethods.showInfoDialog(context.getResources().getString(R.string.case_details_message), context, false);
-                } else
+                } else*/
                     toggle(position);
 
                 itemClickListener.onCaseClick();

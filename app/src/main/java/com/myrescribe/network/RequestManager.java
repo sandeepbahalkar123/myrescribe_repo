@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import com.android.volley.AuthFailureError;
@@ -44,8 +43,15 @@ import com.myrescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
 import com.myrescribe.model.investigation.uploaded.InvestigationUploadFromUploadedModel;
 import com.myrescribe.model.login.LoginModel;
 import com.myrescribe.model.login.SignUpModel;
-import com.myrescribe.model.my_records.MyRecordsDoctorListModel;
 import com.myrescribe.model.my_records.MyRecordBaseModel;
+import com.myrescribe.model.my_records.MyRecordDataModel;
+import com.myrescribe.model.my_records.MyRecordInfoAndReports;
+import com.myrescribe.model.my_records.MyRecordInfoMonthContainer;
+import com.myrescribe.model.my_records.MyRecordsDoctorListModel;
+import com.myrescribe.model.my_records.new_pojo.NewMonth;
+import com.myrescribe.model.my_records.new_pojo.NewMyRecordBaseModel;
+import com.myrescribe.model.my_records.new_pojo.NewMyRecordDataModel;
+import com.myrescribe.model.my_records.new_pojo.NewOriginalData;
 import com.myrescribe.model.notification.AppointmentsNotificationModel;
 import com.myrescribe.model.notification.NotificationModel;
 import com.myrescribe.model.prescription_response_model.PrescriptionModel;
@@ -63,9 +69,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class RequestManager extends ConnectRequest implements Connector, RequestTimer.RequestTimerListener {
     private static final String TAG = "MyRescribe/RequestManager";
@@ -514,7 +522,8 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationUploadFromUploadedModel, mOldDataTag);
                         break;
                     case MyRescribeConstants.TASK_GET_ALL_MY_RECORDS: //This is for TASK_GET_ALL_MY_RECORDS
-                        MyRecordBaseModel model = new Gson().fromJson(data, MyRecordBaseModel.class);
+
+                        NewMyRecordBaseModel model = new Gson().fromJson(data, NewMyRecordBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, model, mOldDataTag);
                         break;
 

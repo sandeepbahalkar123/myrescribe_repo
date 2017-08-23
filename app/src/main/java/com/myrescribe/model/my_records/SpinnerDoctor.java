@@ -24,7 +24,7 @@ public class SpinnerDoctor {
     private String docImg;
     @SerializedName("visitDates")
     @Expose
-    private ArrayList<String> dates = new ArrayList<String>();
+    private ArrayList<VisitDate> dates = new ArrayList<VisitDate>();
 
     public int getId() {
         return id;
@@ -66,11 +66,11 @@ public class SpinnerDoctor {
         this.docImg = docImg;
     }
 
-    public ArrayList<String> getDates() {
+    public ArrayList<VisitDate> getDates() {
         return dates;
     }
 
-    public void setDates(ArrayList<String> dates) {
+    public void setDates(ArrayList<VisitDate> dates) {
         this.dates = dates;
     }
 

@@ -40,10 +40,11 @@ public class Config {
     public static final String INVESTIGATION_UPLOAD_BY_GMAIL = "api/patient/updateGmailInvestigationUploadStatus";
     public static final String INVESTIGATION_UPLOAD = "api/upload/InvestigationDocs";
 
-    public static final String MY_RECORDS_DOCTOR_LIST = "api/doctors";
+    public static final String MY_RECORDS_DOCTOR_LIST = "api/doctors/getDoctorsWithPatientVisits";
     public static final String LIST_ALL_MY_RECORD = "api/records/getRecordList?patientId=";
 
     public static final String MY_RECORDS_UPLOAD = "api/upload/myRecords";
+    public static final String MY_RECORDS_ADD_DOCTOR = "api/doctors/addDoctor";
 
 }
 

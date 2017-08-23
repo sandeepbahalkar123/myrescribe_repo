@@ -55,11 +55,17 @@ public class HomePageActivity extends DrawerActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContext = HomePageActivity.this;
-        if (getIntent().getBooleanExtra(MyRescribeConstants.ALERT, true))
-            notificationForMedicine();
+        appDBHelper = new AppDBHelper(mContext);
+
+        String currentDate = CommonMethods.getCurrentDate();
+        String pastDate = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.NOTIFY_DATE, mContext);
+
+        if (!currentDate.equals(pastDate)) {
+            if (getIntent().getBooleanExtra(MyRescribeConstants.ALERT, true))
+                notificationForMedicine();
+        }
         drawerConfiguration();
 
-        appDBHelper = new AppDBHelper(mContext);
     }
 
     private void setImageBitmap(Bitmap bmp) {
@@ -102,6 +108,9 @@ public class HomePageActivity extends DrawerActivity {
  */
     private void notificationForMedicine() {
 
+        String currentDate = CommonMethods.getCurrentDate();
+        MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.NOTIFY_DATE, currentDate, mContext);
+
         AppDBHelper appDBHelper = new AppDBHelper(mContext);
         Cursor cursor = appDBHelper.getPreferences("1");
         if (cursor.moveToFirst()) {
@@ -119,8 +128,8 @@ public class HomePageActivity extends DrawerActivity {
         String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
 
         new DosesAlarmTask(mContext, times, date).run();
-        new InvestigationAlarmTask(mContext, "9:00 AM", getResources().getString(R.string.investigation_msg)).run();
-        new AppointmentAlarmTask(mContext, "9:00 AM", getResources().getString(R.string.appointment_msg)).run();
+        new InvestigationAlarmTask(mContext, MyRescribeConstants.INVESTIGATION_NOTIFICATION_TIME, getResources().getString(R.string.investigation_msg)).run();
+        new AppointmentAlarmTask(mContext, MyRescribeConstants.APPOINTMENT_NOTIFICATION_TIME, getResources().getString(R.string.appointment_msg)).run();
     }
 
     @Override
@@ -273,9 +282,9 @@ public class HomePageActivity extends DrawerActivity {
                 new DrawerItem()
                         .setTextPrimary(getString(R.string.doctor_details))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_doctor_visit)),
-                new DrawerItem()
+                /*new DrawerItem()
                         .setTextPrimary(getString(R.string.investigation))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_investigations)),
+                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_investigations)),*/
                 new DrawerItem()
                         .setTextPrimary(getString(R.string.appointments))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_appointments)),
@@ -294,10 +303,10 @@ public class HomePageActivity extends DrawerActivity {
                 if (id.equalsIgnoreCase(getString(R.string.doctor_details))) {
                     Intent intent = new Intent(mContext, DoctorListActivity.class);
                     startActivity(intent);
-                } else if (id.equalsIgnoreCase(getString(R.string.investigation))) {
+                } /*else if (id.equalsIgnoreCase(getString(R.string.investigation))) {
                     Intent intent = new Intent(mContext, InvestigationActivity.class);
                     startActivity(intent);
-                } else if (id.equalsIgnoreCase(getString(R.string.going_medication))) {
+                }*/ else if (id.equalsIgnoreCase(getString(R.string.going_medication))) {
                     Intent intent = new Intent(mContext, PrescriptionActivity.class);
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.appointments))) {
@@ -321,6 +330,7 @@ public class HomePageActivity extends DrawerActivity {
                         intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
                         intent.putExtra(MyRescribeConstants.UPLOADING_STATUS, true);
                         intent.putExtra(MyRescribeConstants.VISIT_DATE, myRecordsData.getVisitDate());
+                        intent.putExtra(MyRescribeConstants.OPD_ID, myRecordsData.getDocId());
                         intent.putExtra(MyRescribeConstants.DOCTORS_ID, myRecordsData.getDocId());
                         intent.putExtra(MyRescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
                     }

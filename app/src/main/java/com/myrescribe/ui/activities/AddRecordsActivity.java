@@ -32,6 +32,7 @@ import com.myrescribe.helpers.myrecords.MyRecordsHelper;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.my_records.MyRecordsDoctorListModel;
+import com.myrescribe.model.my_records.VisitDate;
 import com.myrescribe.preference.MyRescribePreferencesManager;
 import com.myrescribe.util.CommonMethods;
 import com.myrescribe.util.MyRescribeConstants;
@@ -105,6 +106,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     private boolean isDatesThere = false;
     private String visitDate;
     private int doctorId;
+    private int opdId;
     private int mSelectedId;
 
     @Override
@@ -168,6 +170,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
                 isManual = true;
                 mSelectedId = -1;
+                opdId = 0;
                 mSelectDoctorString = "";
                 mSelectDateString = getResources().getString(R.string.select_date_text);
                 break;
@@ -219,6 +222,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 }
                 Intent intent = new Intent(mContext, SelectedRecordsActivity.class);
                 intent.putExtra(MyRescribeConstants.DOCTORS_ID, doctorId);
+                intent.putExtra(MyRescribeConstants.OPD_ID, opdId);
                 intent.putExtra(MyRescribeConstants.VISIT_DATE, visitDate);
                 startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
                 break;
@@ -308,7 +312,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    final ArrayList<String> spinnerList = new ArrayList<String>();
+                    final ArrayList<VisitDate> spinnerList = new ArrayList<VisitDate>();
                     mSelectDateString = getResources().getString(R.string.select_date_text);
                     mSelectDoctorString = doctorSpinnerAdapter.getDoctor(position).getDoctorName();
 
@@ -344,16 +348,22 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
                     isManual = false;
 
-                    spinnerList.add(getResources().getString(R.string.select_date_text));
-                    for (String date : doctorSpinnerAdapter.getDoctor(position).getDates())
-                        spinnerList.add(CommonMethods.getFormatedDate(date, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DD_MM_YYYY));
+                    VisitDate visitDate = new VisitDate();
+                    visitDate.setOpdDate(getResources().getString(R.string.select_date_text));
+                    visitDate.setOpdId(0);
+                    spinnerList.add(visitDate);
+                    for (VisitDate date : doctorSpinnerAdapter.getDoctor(position).getDates()) {
+                        date.setOpdDate(CommonMethods.getFormatedDate(date.getOpdDate(), MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DD_MM_YYYY));
+                        spinnerList.add(date);
+                    }
 
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddRecordsActivity.this, R.layout.simple_spinner_item, spinnerList);
+                    ArrayAdapter<VisitDate> arrayAdapter = new ArrayAdapter<>(AddRecordsActivity.this, R.layout.simple_spinner_item, spinnerList);
                     selectDateSpinner.setAdapter(arrayAdapter);
                     selectDateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            mSelectDateString = spinnerList.get(position);
+                            mSelectDateString = spinnerList.get(position).getOpdDate();
+                            opdId = spinnerList.get(position).getOpdId();
                         }
 
                         @Override

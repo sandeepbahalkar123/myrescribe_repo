@@ -227,6 +227,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
                     Intent intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
                     intent.putExtra(MyRescribeConstants.DOCTORS_ID, getIntent().getIntExtra(MyRescribeConstants.DOCTORS_ID, 0));
                     intent.putExtra(MyRescribeConstants.VISIT_DATE, getIntent().getStringExtra(MyRescribeConstants.VISIT_DATE));
+                    intent.putExtra(MyRescribeConstants.OPD_ID, getIntent().getStringExtra(MyRescribeConstants.OPD_ID));
                     intent.putExtra(MyRescribeConstants.DOCUMENTS, photoPaths);
                     startActivity(intent);
 

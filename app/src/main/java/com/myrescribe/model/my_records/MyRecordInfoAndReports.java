@@ -5,10 +5,11 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.myrescribe.interfaces.CustomResponse;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MyRecordInfoAndReports implements CustomResponse {
-    @SerializedName("doc")
+public class MyRecordInfoAndReports implements CustomResponse, Serializable {
+    @SerializedName("doctorDetail")
     @Expose
     private MyRecordDoctorInfo myRecordDoctorInfo;
 

@@ -33,6 +33,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     public static final String RECORDS_DOC_ID = "records_doc_id";
     public static final String RECORDS_VISIT_DATE = "records_visit_date";
+    public static final String RECORDS_OPDID = "records_opdid";
     public static final String RECORDS_UPLOAD_ID = "records_upload_id";
     public static final String RECORDS_STATUS = "records_upload_status";
     public static final String RECORDS_IMAGE_DATA = "records_image_data";
@@ -309,12 +310,13 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     // MyRecords
 
-    public boolean insertMyRecordsData(String id, int status, String data, int docId, String visitDate) {
+    public boolean insertMyRecordsData(String id, int status, String data, int docId,int opdId, String visitDate) {
         if (MyRecordsDataTableNumberOfRows(id) == 0) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(RECORDS_DOC_ID, docId);
+            contentValues.put(RECORDS_OPDID, opdId);
             contentValues.put(RECORDS_VISIT_DATE, visitDate);
 
             contentValues.put(RECORDS_UPLOAD_ID, id);
@@ -346,6 +348,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         MyRecordsData myRecordsData = new MyRecordsData();
 
         int docId = 0;
+        int opdId = 0;
         String visitDate = null;
         ArrayList<Image> imageArrayList = new ArrayList<>();
 
@@ -357,6 +360,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 image.setUploading(cursor.getInt(cursor.getColumnIndex(RECORDS_STATUS)));
                 imageArrayList.add(image);
                 docId = cursor.getInt(cursor.getColumnIndex(RECORDS_DOC_ID));
+                opdId = cursor.getInt(cursor.getColumnIndex(RECORDS_OPDID));
                 visitDate = cursor.getString(cursor.getColumnIndex(RECORDS_VISIT_DATE));
                 cursor.moveToNext();
             }
@@ -364,6 +368,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         cursor.close();
 
         myRecordsData.setDocId(docId);
+        myRecordsData.setOpdId(opdId);
         myRecordsData.setVisitDate(visitDate);
         myRecordsData.setImageArrayList(imageArrayList);
 

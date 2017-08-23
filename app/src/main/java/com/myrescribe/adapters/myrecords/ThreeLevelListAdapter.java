@@ -17,7 +17,6 @@ import com.myrescribe.R;
 import com.myrescribe.model.my_records.MyRecordDoctorInfo;
 import com.myrescribe.model.my_records.MyRecordInfoAndReports;
 import com.myrescribe.model.my_records.MyRecordReports;
-import com.myrescribe.ui.activities.AddRecordsActivity;
 import com.myrescribe.ui.activities.ShowRecordsActivity;
 import com.myrescribe.ui.customesViews.CustomTextView;
 import com.myrescribe.util.CommonMethods;
@@ -204,12 +203,12 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                 MyRecordReports childGroup = adapter.getGroup(groupPosition);
                 if (!childGroup.getParentCaptionName().equalsIgnoreCase(mInvestigationText)) {
                     secondLevelELV.collapseGroup(groupPosition);
-                    Intent i = new Intent(context, ShowRecordsActivity.class);
+                    Intent intent = new Intent(context, ShowRecordsActivity.class);
                     ArrayList<MyRecordReports.MyRecordReportList> reportList = childGroup.getReportList();
                     MyRecordReports.MyRecordReportList myRecordReportList = reportList.get(0);
                     String[] imageList = myRecordReportList.getImageList();
-                    i.putExtra(MyRescribeConstants.DOCUMENTS, imageList);
-                    context.startActivity(i);
+                    intent.putExtra(MyRescribeConstants.DOCUMENTS, imageList);
+                    context.startActivity(intent);
                 }
             }
         });
@@ -219,9 +218,9 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                 SecondLevelAdapter adapter = (SecondLevelAdapter) secondLevelELV.getExpandableListAdapter();
                 MyRecordReports.MyRecordReportList child = adapter.getChild(groupPosition, childPosition);
                 String[] imageList = child.getImageList();
-                Intent i = new Intent(context, ShowRecordsActivity.class);
-                i.putExtra(MyRescribeConstants.DOCUMENTS, imageList);
-                context.startActivity(i);
+                Intent intent = new Intent(context, ShowRecordsActivity.class);
+                intent.putExtra(MyRescribeConstants.DOCUMENTS, imageList);
+                context.startActivity(intent);
                 return false;
             }
         });

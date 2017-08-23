@@ -19,16 +19,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +33,6 @@ import android.widget.Toast;
 import com.myrescribe.R;
 import com.myrescribe.interfaces.CheckIpConnection;
 import com.myrescribe.interfaces.DatePickerDialogListener;
-import com.myrescribe.model.case_details.Range;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -58,7 +54,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -243,6 +238,13 @@ public class CommonMethods {
         dString.append("-");
         dString.append(year);
         return dString.toString();
+    }
+
+    public static String getCurrentDate() // for enrollmentId
+    {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat(MyRescribeConstants.DD_MM_YYYY, Locale.US);
+        return df.format(c.getTime());
     }
 
     public static void showSnack(Context mContext, View mViewById, String msg) {

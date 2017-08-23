@@ -57,6 +57,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp16"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
         </LinearLayout>
 
@@ -65,7 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabGravity="fill"
-            app:tabMaxWidth="0dp"
+            app:tabMaxWidth="500dp"
+            android:visibility="gone"
             app:tabMode="fixed" />
 
     </android.support.design.widget.AppBarLayout>
@@ -74,6 +76,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ImageView
+            android:id="@+id/noRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:src="@drawable/no_records_found"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"

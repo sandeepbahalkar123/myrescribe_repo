@@ -203,6 +203,8 @@
     <string name="please_select_doctor_name">Please enter Doctor Name</string>
     <string name="please_enter_date">Please enter Date</string>
     <string name="please_enter_doctor_address">Please enter Doctor Address</string>
+    <string name="please_select_at_least_one_document">Please select at least one Document.</string>
+    <string name="gmail_application_not_found">Gmail application not found</string>
     <!-- <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>-->
 
 </resources>

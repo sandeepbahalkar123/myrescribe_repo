@@ -6,10 +6,10 @@ import com.android.volley.Request;
 import com.myrescribe.interfaces.ConnectionListener;
 import com.myrescribe.interfaces.CustomResponse;
 import com.myrescribe.interfaces.HelperResponse;
-import com.myrescribe.model.my_records.MyRecordBaseModel;
 import com.myrescribe.model.my_records.MyRecordDataModel;
 import com.myrescribe.model.my_records.MyRecordInfoAndReports;
 import com.myrescribe.model.my_records.MyRecordInfoMonthContainer;
+import com.myrescribe.model.my_records.new_pojo.NewMyRecordBaseModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
 import com.myrescribe.preference.MyRescribePreferencesManager;
@@ -49,12 +49,8 @@ public class MyRecordsHelper implements ConnectionListener {
                 CommonMethods.Log(TAG, customResponse.getClass() + " success");
 
                 if (mOldDataTag.equals(MyRescribeConstants.TASK_GET_ALL_MY_RECORDS)) {
-                    MyRecordBaseModel model = (MyRecordBaseModel) customResponse;
-                    MyRecordDataModel recordMainDataModel = model.getRecordMainDataModel();
-                    if (recordMainDataModel.getMyRecordInfoMonthContainer() != null) {
-                        MyRecordInfoMonthContainer myRecordInfoMonthContainer = recordMainDataModel.getMyRecordInfoMonthContainer();
-                        yearWiseSortedMyRecordInfoAndReports.put(myRecordInfoMonthContainer.getYear(), myRecordInfoMonthContainer.getMonthWiseSortedMyRecords());
-                    }
+                    NewMyRecordBaseModel model = (NewMyRecordBaseModel) customResponse;
+
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
                 }else if (mOldDataTag.equals(MyRescribeConstants.MY_RECORDS_DOCTOR_LIST)) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
@@ -79,7 +75,12 @@ public class MyRecordsHelper implements ConnectionListener {
         }
     }
 
-    public Map<String, Map<String, ArrayList<MyRecordInfoAndReports>>> getYearWiseSortedMyRecordInfoAndReports() {
+    public Map<String, Map<String, ArrayList<MyRecordInfoAndReports>>> getYearWiseSortedMyRecordInfoAndReports(MyRecordDataModel recordMainDataModel) {
+        if (recordMainDataModel.getMyRecordInfoMonthContainer() != null) {
+            MyRecordInfoMonthContainer myRecordInfoMonthContainer = recordMainDataModel.getMyRecordInfoMonthContainer();
+            yearWiseSortedMyRecordInfoAndReports.put(myRecordInfoMonthContainer.getYear(), myRecordInfoMonthContainer.getMonthWiseSortedMyRecords());
+        }
+
         return yearWiseSortedMyRecordInfoAndReports;
     }
 
@@ -95,7 +96,7 @@ public class MyRecordsHelper implements ConnectionListener {
         mConnectionFactory.createConnection(MyRescribeConstants.MY_RECORDS_DOCTOR_LIST);
     }
 
-    public void doGetAllMyRecords(String year) {
+    public void doGetAllMyRecords() {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_GET_ALL_MY_RECORDS, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         String id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);

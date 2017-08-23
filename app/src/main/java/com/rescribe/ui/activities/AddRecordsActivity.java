@@ -32,9 +32,9 @@ import com.rescribe.helpers.myrecords.MyRecordsHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.myrecords.MyRecordsDoctorListModel;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 
 import java.util.ArrayList;
@@ -129,7 +129,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
         });
 
         MyRecordsHelper myRecordsHelper = new MyRecordsHelper(mContext, this);
-        myRecordsHelper.getDoctorList(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        myRecordsHelper.getDoctorList(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
 //        myRecordsHelper.getDoctorList("4092");
 
         Calendar now = Calendar.getInstance();
@@ -234,8 +234,8 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                     }
                 }
                 Intent intent = new Intent(mContext, SelectedRecordsActivity.class);
-                intent.putExtra(MyRescribeConstants.DOCTORS_ID, doctorId);
-                intent.putExtra(MyRescribeConstants.VISIT_DATE, visitDate);
+                intent.putExtra(RescribeConstants.DOCTORS_ID, doctorId);
+                intent.putExtra(RescribeConstants.VISIT_DATE, visitDate);
                 startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
                 break;
             case R.id.searchButton:
@@ -315,7 +315,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
         MyRecordsDoctorListModel myRecordsDoctorListModel = (MyRecordsDoctorListModel) customResponse;
 
-        if (myRecordsDoctorListModel.getCommon().getStatusCode().equals(MyRescribeConstants.SUCCESS)) {
+        if (myRecordsDoctorListModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
             mSelectDoctorName.setThreshold(1);
             doctorSpinnerAdapter = new DoctorSpinnerAdapter(AddRecordsActivity.this, R.layout.activity_add_records, R.id.doctorName, myRecordsDoctorListModel.getDoctors());
             mSelectDoctorName.setAdapter(doctorSpinnerAdapter);
@@ -362,7 +362,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
                     spinnerList.add("Select Date");
                     for (String date : doctorSpinnerAdapter.getDoctor(position).getDates())
-                        spinnerList.add(CommonMethods.getFormatedDate(date, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DD_MM_YYYY));
+                        spinnerList.add(CommonMethods.getFormatedDate(date, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY));
 
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddRecordsActivity.this, R.layout.simple_spinner_item, spinnerList);
                     selectDateSpinner.setAdapter(arrayAdapter);

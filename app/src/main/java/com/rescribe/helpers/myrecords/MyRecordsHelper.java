@@ -12,10 +12,10 @@ import com.rescribe.model.my_records.MyRecordInfoAndReports;
 import com.rescribe.model.my_records.MyRecordInfoMonthContainer;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -48,7 +48,7 @@ public class MyRecordsHelper implements ConnectionListener {
             case ConnectionListener.RESPONSE_OK:
                 CommonMethods.Log(TAG, customResponse.getClass() + " success");
 
-                if (mOldDataTag.equals(MyRescribeConstants.TASK_GET_ALL_MY_RECORDS)) {
+                if (mOldDataTag.equals(RescribeConstants.TASK_GET_ALL_MY_RECORDS)) {
                     MyRecordBaseModel model = (MyRecordBaseModel) customResponse;
                     MyRecordDataModel recordMainDataModel = model.getRecordMainDataModel();
                     if (recordMainDataModel.getMyRecordInfoMonthContainer() != null) {
@@ -56,7 +56,7 @@ public class MyRecordsHelper implements ConnectionListener {
                         yearWiseSortedMyRecordInfoAndReports.put(myRecordInfoMonthContainer.getYear(), myRecordInfoMonthContainer.getMonthWiseSortedMyRecords());
                     }
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
-                }else if (mOldDataTag.equals(MyRescribeConstants.MY_RECORDS_DOCTOR_LIST)) {
+                }else if (mOldDataTag.equals(RescribeConstants.MY_RECORDS_DOCTOR_LIST)) {
                     ((HelperResponse) mContext).onSuccess(mOldDataTag, customResponse);
                 }
 
@@ -89,18 +89,18 @@ public class MyRecordsHelper implements ConnectionListener {
     }
 
     public void getDoctorList(String patientId) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.MY_RECORDS_DOCTOR_LIST, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.MY_RECORDS_DOCTOR_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.MY_RECORDS_DOCTOR_LIST + "?patientId=" + patientId);
-        mConnectionFactory.createConnection(MyRescribeConstants.MY_RECORDS_DOCTOR_LIST);
+        mConnectionFactory.createConnection(RescribeConstants.MY_RECORDS_DOCTOR_LIST);
     }
 
     public void doGetAllMyRecords(String year) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_GET_ALL_MY_RECORDS, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_ALL_MY_RECORDS, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        String id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        String id = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
         mConnectionFactory.setUrl(Config.LIST_ALL_MY_RECORD + id);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_GET_ALL_MY_RECORDS);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_GET_ALL_MY_RECORDS);
 
        /* // TODO : HARDCODED JSON STRING PARSING FROM assets foler
         try {
@@ -113,7 +113,7 @@ public class MyRecordsHelper implements ConnectionListener {
             CommonMethods.Log(TAG, "doGetAllMyRecords" + json);
 
             MyRecordBaseModel model = new Gson().fromJson(json, MyRecordBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, model, MyRescribeConstants.TASK_GET_ALL_MY_RECORDS);
+            onResponse(ConnectionListener.RESPONSE_OK, model, RescribeConstants.TASK_GET_ALL_MY_RECORDS);
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -125,9 +125,9 @@ public class MyRecordsHelper implements ConnectionListener {
         public int compare(String m1, String m2) {
 
             //possibly check for nulls to avoid NullPointerException
-            //  String s = CommonMethods.formatDateTime(m1, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
-            Date m1Date = CommonMethods.convertStringToDate(m1, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
-            Date m2Date = CommonMethods.convertStringToDate(m2, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            //  String s = CommonMethods.formatDateTime(m1, RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
+            Date m1Date = CommonMethods.convertStringToDate(m1, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            Date m2Date = CommonMethods.convertStringToDate(m2, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
             int i = m2Date.compareTo(m1Date);
             return i;
         }

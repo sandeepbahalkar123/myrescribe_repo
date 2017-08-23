@@ -21,7 +21,7 @@ import butterknife.OnClick;
 
 public class PreferencesActivity extends AppCompatActivity {
 
-    private static final String TAG = "Preferences";
+    private final String TAG = this.getClass().getName();
     @BindView(R.id.breakFastSelect)
     TextView mBreakFastSelect;
     @BindView(R.id.lunchTimeSelect)

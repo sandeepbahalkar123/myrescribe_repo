@@ -83,7 +83,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.addMarker(new MarkerOptions().position(currentLocation).title(address).icon(getMarkerIcon("#04abdf")));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), 14.0f));
         } else
-            CommonMethods.showToast(MapsActivity.this, "Address not found");
+            CommonMethods.showToast(MapsActivity.this, getString(R.string.address_not_found));
 
     }
     public Address getLocationFromAddress(String strAddress) {

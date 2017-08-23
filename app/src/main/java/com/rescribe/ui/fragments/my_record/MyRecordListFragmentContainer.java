@@ -33,7 +33,7 @@ import com.rescribe.model.my_records.MyRecordInfoAndReports;
 import com.rescribe.ui.activities.AddRecordsActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -115,8 +115,8 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
 
         AppDBHelper appDBHelper = new AppDBHelper(mParentActivity);
 
-        if (appDBHelper.dataTableNumberOfRows(MyRescribeConstants.TASK_GET_ALL_MY_RECORDS) > 0) {
-            Cursor cursor = appDBHelper.getData(MyRescribeConstants.TASK_GET_ALL_MY_RECORDS);
+        if (appDBHelper.dataTableNumberOfRows(RescribeConstants.TASK_GET_ALL_MY_RECORDS) > 0) {
+            Cursor cursor = appDBHelper.getData(RescribeConstants.TASK_GET_ALL_MY_RECORDS);
             cursor.moveToFirst();
             String loginData = cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
             Gson gson = new Gson();
@@ -177,8 +177,8 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
 
                 MyRecordListFragment item = (MyRecordListFragment) mViewPagerAdapter.getItem(position);
                 Bundle arguments = item.getArguments();
-                String month = arguments.getString(MyRescribeConstants.MONTH);
-                String year = arguments.getString(MyRescribeConstants.YEAR);
+                String month = arguments.getString(RescribeConstants.MONTH);
+                String year = arguments.getString(RescribeConstants.YEAR);
                 CommonMethods.Log("onPageSelected", month + " " + year);
                 mCurrentSelectedTimePeriodTab.setMonthName(month);
                 mCurrentSelectedTimePeriodTab.setYear(year);

@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.ui.customesViews.zoomview.ZoomageView;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.io.File;
 
@@ -34,7 +34,7 @@ public class ZoomImageViewActivity extends AppCompatActivity {
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
-        Glide.with(this).load(new File(getIntent().getStringExtra(MyRescribeConstants.DOCUMENTS)))
+        Glide.with(this).load(new File(getIntent().getStringExtra(RescribeConstants.DOCUMENTS)))
                 .apply(requestOptions)
                 .into(zoomView);
 

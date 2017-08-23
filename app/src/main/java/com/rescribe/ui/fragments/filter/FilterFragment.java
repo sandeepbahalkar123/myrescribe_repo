@@ -20,7 +20,7 @@ import com.rescribe.adapters.filter.FilterCaseDetailsAdapter;
 import com.rescribe.model.filter.CaseDetailsData;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 import com.ngapps.ganeshshirole.monthpicker.RackMonthPicker;
 import com.ngapps.ganeshshirole.monthpicker.listener.DateMonthDialogListener;
 import com.ngapps.ganeshshirole.monthpicker.listener.OnCancelMonthDialogListener;
@@ -74,7 +74,7 @@ public class FilterFragment extends Fragment {
     public static FilterFragment newInstance(ArrayList<CaseDetailsData> caseDetailsList) {
         FilterFragment fragment = new FilterFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(MyRescribeConstants.CASE_DETAILS, caseDetailsList);
+        bundle.putParcelableArrayList(RescribeConstants.CASE_DETAILS, caseDetailsList);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -92,7 +92,7 @@ public class FilterFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         if (getArguments() != null) {
-            caseDetailsList = getArguments().getParcelableArrayList(MyRescribeConstants.CASE_DETAILS);
+            caseDetailsList = getArguments().getParcelableArrayList(RescribeConstants.CASE_DETAILS);
         }
 
         // off recyclerView Animation

@@ -15,14 +15,14 @@ import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 /**
  * Created by ganeshshirole on 10/7/17.
  */
 
 public class LoginHelper implements ConnectionListener {
-    String TAG = "MyRescribe/LoginHelper";
+    String TAG = this.getClass().getName();
     Context mContext;
     HelperResponse mHelperResponseManager;
 
@@ -38,17 +38,17 @@ public class LoginHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag.equals(MyRescribeConstants.TASK_LOGIN)) {
+                if (mOldDataTag.equals(RescribeConstants.TASK_LOGIN)) {
                     LoginModel loginModel = (LoginModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, loginModel);
-                } else if (mOldDataTag.equals(MyRescribeConstants.TASK_SIGN_UP)) {
+                } else if (mOldDataTag.equals(RescribeConstants.TASK_SIGN_UP)) {
                     SignUpModel signUpModel = (SignUpModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, signUpModel);
-                } else if (mOldDataTag.equals(MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP)) {
+                } else if (mOldDataTag.equals(RescribeConstants.TASK_VERIFY_SIGN_UP_OTP)) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag.equals(MyRescribeConstants.TASK_LOGIN_WITH_PASSWORD)) {
+                } else if (mOldDataTag.equals(RescribeConstants.TASK_LOGIN_WITH_PASSWORD)) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                }else if (mOldDataTag.equals(MyRescribeConstants.TASK_LOGIN_WITH_OTP)) {
+                }else if (mOldDataTag.equals(RescribeConstants.TASK_LOGIN_WITH_OTP)) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
@@ -75,60 +75,48 @@ public class LoginHelper implements ConnectionListener {
     }
 
     public void doLogin(String mobileNo,String password) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_LOGIN, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
         LoginRequestModel loginRequestModel = new LoginRequestModel();
         loginRequestModel.setMobileNumber(mobileNo);
         loginRequestModel.setPassword(password);
         mConnectionFactory.setPostParams(loginRequestModel);
         mConnectionFactory.setUrl(Config.LOGIN_URL);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_LOGIN);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_LOGIN);
     }
     public void doLoginByPassword(String password) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN_WITH_PASSWORD, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_LOGIN_WITH_PASSWORD, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
         LoginRequestModel loginRequestModel = new LoginRequestModel();
         loginRequestModel.setMobileNumber(password);
         mConnectionFactory.setPostParams(loginRequestModel);
         mConnectionFactory.setUrl(Config.LOGIN_WITH_PASSWORD_URL);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_LOGIN_WITH_PASSWORD);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_LOGIN_WITH_PASSWORD);
     }
     public void doLoginByOTP(String otp) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN_WITH_OTP, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_LOGIN_WITH_OTP, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
         LoginRequestModel loginRequestModel = new LoginRequestModel();
         loginRequestModel.setMobileNumber(otp);
         mConnectionFactory.setPostParams(loginRequestModel);
         mConnectionFactory.setUrl(Config.LOGIN_WITH_OTP_URL);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_LOGIN_WITH_OTP);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_LOGIN_WITH_OTP);
     }
 
     public void doVerifyGeneratedSignUpOTP(SignUpVerifyOTPRequestModel requestModel) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP, Request.Method.POST, false);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_VERIFY_SIGN_UP_OTP, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setPostParams(requestModel);
         mConnectionFactory.setUrl(Config.VERIFY_SIGN_UP_OTP);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_VERIFY_SIGN_UP_OTP);
     }
 
 
     public void doSignUp(SignUpRequestModel signUpRequestModel) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_SIGN_UP, Request.Method.POST, false);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SIGN_UP, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setPostParams(signUpRequestModel);
         mConnectionFactory.setUrl(Config.SIGN_UP_URL);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_SIGN_UP);
-    }
-
-
-    public void doLoginWithPhoneNo(String mobileNo) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_LOGIN, Request.Method.POST, true);
-        mConnectionFactory.setHeaderParams();
-        LoginRequestModel loginRequestModel = new LoginRequestModel();
-        loginRequestModel.setMobileNumber(mobileNo);
-        mConnectionFactory.setPostParams(loginRequestModel);
-        mConnectionFactory.setUrl(Config.LOGIN_URL);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_LOGIN);
-
+        mConnectionFactory.createConnection(RescribeConstants.TASK_SIGN_UP);
     }
 }

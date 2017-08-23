@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,7 +65,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class CommonMethods {
 
-    private static final String TAG = "MyRescribe/CommonMethods";
+    private static final String TAG = "Rescribe/CommonMethods";
     private static boolean encryptionIsOn = true;
     private static String aBuffer = "";
     private static CheckIpConnection mCheckIpConnection;
@@ -138,12 +137,12 @@ public class CommonMethods {
     public static void MyRescribeLogWriteFile(String title, String text, boolean textAppend) {
         try {
             byte[] keyBytes = getKey("password");
-            File directory = new File(Environment.getExternalStorageDirectory().getPath() + "/", MyRescribeConstants.MYRESCRIBE_LOG_FOLDER);
+            File directory = new File(Environment.getExternalStorageDirectory().getPath() + "/", RescribeConstants.RESCRIBE_LOG_FOLDER);
             if (!directory.exists()) {
                 directory.mkdir();
             }
             //make a new text file in that created new directory/folder
-            File file = new File(directory.getPath(), MyRescribeConstants.MYRESCRIBE_LOG_FILE);
+            File file = new File(directory.getPath(), RescribeConstants.RESCRIBE_LOG_FILE);
 
             if (!file.exists() && directory.exists()) {
                 file.createNewFile();
@@ -191,7 +190,7 @@ public class CommonMethods {
         try {
             byte[] keyBytes = getKey("password");
 
-            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/", MyRescribeConstants.MYRESCRIBE_LOG_FOLDER + "/" + MyRescribeConstants.MYRESCRIBE_LOG_FILE);
+            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/", RescribeConstants.RESCRIBE_LOG_FOLDER + "/" + RescribeConstants.RESCRIBE_LOG_FILE);
             InputStreamReader isr;
             if (encryptionIsOn) {
                 Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -308,33 +307,6 @@ public class CommonMethods {
 
         return mDiff;
     }
-
-    /*public static ArrayList<Year> getMonthsWithYear(String startDate, String endDate, String dateFormat) {
-        ArrayList<String> monthsWithYear = new ArrayList<>();
-        try {
-            Calendar startCal = Calendar.getInstance();
-            Calendar endCal = Calendar.getInstance();
-            SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
-            startCal.setTime(sdf.parse(startDate));
-            endCal.setTime(sdf.parse(endDate));
-            while (startCal.getTimeInMillis() <= endCal.getTimeInMillis()) {
-                monthsWithYear.add(String.valueOf(android.text.format.DateFormat.format("MMM-yyyy", startCal)));
-                startCal.add(Calendar.MONTH, 1);
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        ArrayList<Year> timePeriods = new ArrayList<>();
-        for (String data :
-                monthsWithYear) {
-            String[] splitValues = data.split("-");
-            Year timePeriod = new Year();
-            timePeriod.setMonthName(splitValues[0]);
-            timePeriod.setYear(splitValues[1]);
-            timePeriods.add(timePeriod);
-        }
-        return timePeriods;
-    }*/
 
     public static void dateDifference(Date startDate, Date endDate) {
         //milliseconds
@@ -509,8 +481,8 @@ public class CommonMethods {
     public static String formatDateTime(String selectedDateTime, String requestedFormat, String currentDateFormat, String formatString) {
 
 
-        if (formatString.equalsIgnoreCase(MyRescribeConstants.TIME)) {
-            // SimpleDateFormat ft = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.HH_MM, Locale.US);
+        if (formatString.equalsIgnoreCase(RescribeConstants.TIME)) {
+            // SimpleDateFormat ft = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.HH_MM, Locale.US);
             SimpleDateFormat ft = new SimpleDateFormat(currentDateFormat, Locale.US);
 
             Date dateObj = null;
@@ -528,7 +500,7 @@ public class CommonMethods {
 
         }//if
 
-        else if (formatString.equalsIgnoreCase(MyRescribeConstants.DATE)) {
+        else if (formatString.equalsIgnoreCase(RescribeConstants.DATE)) {
             SimpleDateFormat ft = new SimpleDateFormat(currentDateFormat, Locale.US);
 
             Date dateObj = null;
@@ -646,46 +618,6 @@ public class CommonMethods {
         });
 
         dialog.show();
-    }
-
-    public static Dialog showAlertDialog(Context activity, String dialogHeader, CheckIpConnection checkIpConnection) {
-        final Context mContext = activity;
-        mCheckIpConnection = checkIpConnection;
-        final Dialog dialog = new Dialog(activity);
-
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.show_dialog_layout);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        if (dialogHeader != null)
-            ((TextView) dialog.findViewById(R.id.textView_dialog_heading)).setText(dialogHeader);
-
-        dialog.findViewById(R.id.button_ok).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                EditText etServerPath = (EditText) dialog.findViewById(R.id.et_server_path);
-
-                if (isValidIP(etServerPath.getText().toString())) {
-                    String mServerPath = Config.HTTP + etServerPath.getText().toString() + Config.API;
-                    Log.e(TAG, "SERVER PATH===" + mServerPath);
-                    mCheckIpConnection.onOkButtonClickListner(mServerPath, mContext, dialog);
-                } else {
-                    Toast.makeText(mContext, R.string.error_in_ip, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-        dialog.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                ((Activity) mContext).finish();
-            }
-        });
-        dialog.show();
-
-        return dialog;
     }
 
     public static String getMealTime(int hour, int mint, Context context) {
@@ -851,49 +783,49 @@ public class CommonMethods {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.ellipse_2;
-        if (vitalDetailName.equalsIgnoreCase("BP"))
+        if (vitalDetailName.equalsIgnoreCase("bp"))
             abbreviation = R.drawable.bp;
-        else if (vitalDetailName.equalsIgnoreCase("Weight"))
+        else if (vitalDetailName.equalsIgnoreCase("weight"))
             abbreviation = R.drawable.weight;
-        else if (vitalDetailName.equalsIgnoreCase("Height"))
+        else if (vitalDetailName.equalsIgnoreCase("height"))
             abbreviation = R.drawable.height;
-        else if (vitalDetailName.equalsIgnoreCase("BMI"))
-            abbreviation = R.drawable.bmi_1;
-        else if (vitalDetailName.equalsIgnoreCase("Total HDL"))
-            abbreviation = R.drawable.total_hdl;
-        else if (vitalDetailName.equalsIgnoreCase("Cholesterol"))
-            abbreviation = R.drawable.cholesterol;
-        else if (vitalDetailName.equalsIgnoreCase("HDL"))
-            abbreviation = R.drawable.hdl;
-        else if (vitalDetailName.equalsIgnoreCase("LDL"))
-            abbreviation = R.drawable.ldl;
-        else if (vitalDetailName.equalsIgnoreCase("Triglycerides"))
+        else if (vitalDetailName.equalsIgnoreCase("bmi"))
+            abbreviation = R.drawable.bmi;
+        else if (vitalDetailName.equalsIgnoreCase("totalcholesterolhdlcholesterol"))
+            abbreviation = R.drawable.totalcholesterolhdlcholesterol;
+        else if (vitalDetailName.equalsIgnoreCase("ldlhdl"))
+            abbreviation = R.drawable.ldlhdl;
+        else if (vitalDetailName.equalsIgnoreCase("triglycerides"))
             abbreviation = R.drawable.triglycerides;
-        else if (vitalDetailName.equalsIgnoreCase("HDL Cholesterol"))
-            abbreviation = R.drawable.cholesterol;
-        else if (vitalDetailName.equalsIgnoreCase("GFR"))
+        else if (vitalDetailName.equalsIgnoreCase("hdlcholesterol"))
+            abbreviation = R.drawable.hdlcholesterol;
+        else if (vitalDetailName.equalsIgnoreCase("ldlcholesterol"))
+            abbreviation = R.drawable.ldlcholesterol;
+        else if (vitalDetailName.equalsIgnoreCase("totalcholesterol"))
+            abbreviation = R.drawable.totalcholesterol;
+        else if (vitalDetailName.equalsIgnoreCase("gfr"))
             abbreviation = R.drawable.gfr;
-        else if (vitalDetailName.equalsIgnoreCase("BUN"))
+        else if (vitalDetailName.equalsIgnoreCase("bun"))
             abbreviation = R.drawable.bun;
-        else if (vitalDetailName.equalsIgnoreCase("Sr. Creatinine"))
+        else if (vitalDetailName.equalsIgnoreCase("creatinine"))
             abbreviation = R.drawable.creatinine;
-        else if (vitalDetailName.equalsIgnoreCase("Respiratory Rate"))
-            abbreviation = R.drawable.respiratory_rate;
-        else if (vitalDetailName.equalsIgnoreCase("Heart Rate"))
-            abbreviation = R.drawable.heart_rate;
-        else if (vitalDetailName.equalsIgnoreCase("Temperature"))
+        else if (vitalDetailName.equalsIgnoreCase("respiratoryrate"))
+            abbreviation = R.drawable.respiratoryrate;
+        else if (vitalDetailName.equalsIgnoreCase("heartrate"))
+            abbreviation = R.drawable.heartrate;
+        else if (vitalDetailName.equalsIgnoreCase("temperature"))
             abbreviation = R.drawable.temperature;
-        else if (vitalDetailName.equalsIgnoreCase("Fasting Blood Sugar"))
+        else if (vitalDetailName.equalsIgnoreCase("fbs"))
             abbreviation = R.drawable.fbs;
-        else if (vitalDetailName.equalsIgnoreCase("PP Blood Sugar"))
+        else if (vitalDetailName.equalsIgnoreCase("ppbs"))
             abbreviation = R.drawable.ppbs;
-        else if (vitalDetailName.equalsIgnoreCase("Oxygen Saturation"))
-            abbreviation = R.drawable.sp_o_2;
-        else if (vitalDetailName.equalsIgnoreCase("Platelet Count"))
+        else if (vitalDetailName.equalsIgnoreCase("spo_2"))
+            abbreviation = R.drawable.spo_2;
+        else if (vitalDetailName.equalsIgnoreCase("platelet"))
             abbreviation = R.drawable.platelet;
-        else if (vitalDetailName.equalsIgnoreCase("ESR"))
+        else if (vitalDetailName.equalsIgnoreCase("esr"))
             abbreviation = R.drawable.esr;
-        else if (vitalDetailName.equalsIgnoreCase("Hb"))
+        else if (vitalDetailName.equalsIgnoreCase("hb"))
             abbreviation = R.drawable.hb;
 
         return abbreviation;

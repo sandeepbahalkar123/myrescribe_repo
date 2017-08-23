@@ -20,7 +20,7 @@ import com.rescribe.model.my_records.MyRecordReports;
 import com.rescribe.ui.activities.ShowRecordsActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -128,9 +128,9 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         groupViewHolder.sideBarView.setBackgroundColor(dataObject.getSideBarViewColor());
 
         //--------
-        String timeToShow = CommonMethods.formatDateTime(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.MMM_YYYY,
-                MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE).toLowerCase();
-        Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+        String timeToShow = CommonMethods.formatDateTime(dataObject.getDate(), RescribeConstants.DATE_PATTERN.MMM_YYYY,
+                RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE).toLowerCase();
+        Date date = CommonMethods.convertStringToDate(dataObject.getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup> ";// + timeToShow.toUpperCase(Locale.US);
@@ -207,7 +207,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                     ArrayList<MyRecordReports.MyRecordReportList> reportList = childGroup.getReportList();
                     MyRecordReports.MyRecordReportList myRecordReportList = reportList.get(0);
                     String[] imageList = myRecordReportList.getImageList();
-                    i.putExtra(MyRescribeConstants.DOCUMENTS, imageList);
+                    i.putExtra(RescribeConstants.DOCUMENTS, imageList);
                     context.startActivity(i);
                 }
             }
@@ -219,7 +219,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                 MyRecordReports.MyRecordReportList child = adapter.getChild(groupPosition, childPosition);
                 String[] imageList = child.getImageList();
                 Intent i = new Intent(context, ShowRecordsActivity.class);
-                i.putExtra(MyRescribeConstants.DOCUMENTS, imageList);
+                i.putExtra(RescribeConstants.DOCUMENTS, imageList);
                 context.startActivity(i);
                 return false;
             }

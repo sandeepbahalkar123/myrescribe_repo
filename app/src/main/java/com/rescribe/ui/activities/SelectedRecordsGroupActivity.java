@@ -22,11 +22,11 @@ import com.rescribe.adapters.myrecords.RecordsGroupAdapter;
 import com.rescribe.adapters.myrecords.RecordsGroupImageAdapter;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.myrecords.Group;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.Device;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.NetworkUtil;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
@@ -75,9 +75,9 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
         setContentView(R.layout.activity_selected_records_group);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        imageArrayList = getIntent().getParcelableArrayListExtra(MyRescribeConstants.DOCUMENTS);
-        visitDate = getIntent().getStringExtra(MyRescribeConstants.VISIT_DATE);
-        docId = getIntent().getIntExtra(MyRescribeConstants.DOCTORS_ID, 0);
+        imageArrayList = getIntent().getParcelableArrayListExtra(RescribeConstants.DOCUMENTS);
+        visitDate = getIntent().getStringExtra(RescribeConstants.VISIT_DATE);
+        docId = getIntent().getIntExtra(RescribeConstants.DOCTORS_ID, 0);
         createGroup();
 
         if (getSupportActionBar() != null) {
@@ -192,8 +192,8 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             if (NetworkUtil.isInternetAvailable(SelectedRecordsGroupActivity.this)) {
                 try {
                     Device device = Device.getInstance(SelectedRecordsGroupActivity.this);
-                    String baseUrl = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, SelectedRecordsGroupActivity.this);
-                    String authorizationString = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, SelectedRecordsGroupActivity.this);
+                    String baseUrl = Config.BASE_URL;
+                    String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, SelectedRecordsGroupActivity.this);
 
                     UploadNotificationConfig uploadNotificationConfig = new UploadNotificationConfig();
                     uploadNotificationConfig.setTitleForAllStatuses("Document Uploading");
@@ -214,11 +214,11 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                                     .setNotificationConfig(uploadNotificationConfig)
                                     .setMaxRetries(0)
 
-                                    .addHeader(MyRescribeConstants.AUTHORIZATION_TOKEN, authorizationString)
-                                    .addHeader(MyRescribeConstants.DEVICEID, device.getDeviceId())
-                                    .addHeader(MyRescribeConstants.OS, device.getOS())
-                                    .addHeader(MyRescribeConstants.OSVERSION, device.getOSVersion())
-                                    .addHeader(MyRescribeConstants.DEVICE_TYPE, device.getDeviceType())
+                                    .addHeader(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString)
+                                    .addHeader(RescribeConstants.DEVICEID, device.getDeviceId())
+                                    .addHeader(RescribeConstants.OS, device.getOS())
+                                    .addHeader(RescribeConstants.OSVERSION, device.getOSVersion())
+                                    .addHeader(RescribeConstants.DEVICE_TYPE, device.getDeviceType())
 
                                     .addHeader("docId", String.valueOf(docId))
                                     .addHeader("visitDate", visitDate)

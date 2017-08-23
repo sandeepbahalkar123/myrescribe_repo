@@ -31,9 +31,9 @@ import com.rescribe.model.investigation.InvestigationData;
 import com.rescribe.model.investigation.InvestigationListModel;
 import com.rescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
 import com.rescribe.model.investigation.request.InvestigationUploadByGmailRequest;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -93,7 +93,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         mContext = InvestigationActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
-        String patientIdString = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        String patientIdString = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
 
         patientId = Integer.parseInt(patientIdString.equals("") ? "0" : patientIdString);
 
@@ -163,7 +163,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(InvestigationActivity.this, HomePageActivity.class);
-        intent.putExtra(MyRescribeConstants.ALERT, false);
+        intent.putExtra(RescribeConstants.ALERT, false);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         super.onBackPressed();
@@ -200,7 +200,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO || requestCode == UPLOADED_DOCS) {
             if (resultCode == RESULT_OK) {
                 investigationTemp.clear();
-                ArrayList<InvestigationData> invest = data.getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
+                ArrayList<InvestigationData> invest = data.getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
                 changeOriginalData(invest);
                 investigationTemp.addAll(invest);
                 mAdapter.notifyDataSetChanged();
@@ -231,15 +231,15 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 }
                 if (selected) {
                     Intent intent = new Intent(mContext, SelectedDocsActivity.class);
-                    intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigationTemp);
+                    intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigationTemp);
                     startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
                 } else
                     CommonMethods.showToast(mContext, "Please select at least one Document.");
                 break;
             case R.id.selectUploadedButton:
                 Intent intent = new Intent(mContext, UploadedDocsActivity.class);
-                intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigation);
-                intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TEMP_DATA, investigationTemp);
+                intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigation);
+                intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TEMP_DATA, investigationTemp);
                 startActivityForResult(intent, UPLOADED_DOCS);
                 break;
             case R.id.gmailButton:
@@ -278,7 +278,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
             InvestigationListModel investigationListModel = (InvestigationListModel) customResponse;
 
-            if (investigationListModel.getCommon().getStatusCode().equals(MyRescribeConstants.SUCCESS)) {
+            if (investigationListModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
 
                 investigation = investigationListModel.getData();
 

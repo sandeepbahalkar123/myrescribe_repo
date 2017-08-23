@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.rescribe.R;
 import com.rescribe.model.prescription_response_model.PrescriptionData;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,15 +33,12 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
     private List<PrescriptionData> mPrescriptionData;
     private Context mContext;
-    private Boolean isPatientLogin;
-    private String mGetMealTime;
+
     private List<PrescriptionData> mSearchListByMedicineName;
 
-    public PrescriptionListAdapter(Context context, List<PrescriptionData> dataSet, Boolean isPatientLogin, String mMealTime) {
+    public PrescriptionListAdapter(Context context, List<PrescriptionData> dataSet) {
         this.mPrescriptionData = dataSet;
         this.mContext = context;
-        this.isPatientLogin = isPatientLogin;
-        this.mGetMealTime = mMealTime;
         this.mSearchListByMedicineName = new ArrayList<>();
         this.mSearchListByMedicineName.addAll(mPrescriptionData);
 
@@ -81,10 +79,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         holder.mCardViewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //----------
-                /*if (holder.mShowMedicineLayout.getVisibility() == View.VISIBLE) {}*/
-
+       //Expand and Collapse function
                 for (PrescriptionData object : mPrescriptionData) {
                     object.setExpanded(false);
                 }
@@ -103,10 +98,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
                     holder.mExpandLayout.setVisibility(View.GONE);
                     prescriptionDataObject.setExpanded(false);
                 }
-
                 notifyDataSetChanged();
-
-
             }
         });
        if(prescriptionDataObject.getMealTime().equalsIgnoreCase(mContext.getString(R.string.break_fast))){
@@ -119,7 +111,6 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
                holder.mShowDoseAndSlot.setText(prescriptionDataObject.getBreakfastBefore() + mContext.getString(R.string.space) +  mContext.getString(R.string.before) + mContext.getString(R.string.space) +mContext.getString(R.string.breakfast));
            }else{
                holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.GONE);
-
            }
 
        }else if(prescriptionDataObject.getMealTime().equalsIgnoreCase(mContext.getString(R.string.mlunch))){
@@ -166,7 +157,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
         holder.mTextviewNameOfMedicine.setText(prescriptionDataObject.getMedicineName());
         holder.mDays.setText(prescriptionDataObject.getDays()+mContext.getString(R.string.space)+mContext.getString(R.string.days));
-    //    holder.mDays.setText(calculateDays(CommonMethods.getCurrentDateTime(),CommonMethods.getFormatedDate(prescriptionDataObject.getEndDate(),MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY_hh_mm_ss,MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY)));
+    //    holder.mDays.setText(calculateDays(CommonMethods.getCurrentDateTime(),CommonMethods.getFormatedDate(prescriptionDataObject.getEndDate(),RescribeConstants.DATE_PATTERN.DD_MM_YYYY_hh_mm_ss,RescribeConstants.DATE_PATTERN.DD_MM_YYYY)));
         holder.mDoseAge.setText(prescriptionDataObject.getDosage());
         setPrescriptionDosageData(holder, position);
         holder.mMedicineType.setBackgroundDrawable(CommonMethods.getMedicineTypeImage(prescriptionDataObject.getMedicineTypeName(), mContext));
@@ -176,9 +167,6 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
     private void setPrescriptionDosageData(ListViewHolder holder, int position) {
 
-        //---------
-        //holder.mRightDoseLayout.setVisibility(View.INVISIBLE);
-        //--------
         final PrescriptionData prescriptionData = mPrescriptionData.get(position);
         String quantityOfDose = "";
         String timeOfDosage = "";
@@ -392,21 +380,10 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         }
     }
 
-    /* public String getfrequencyScheduleString(int noOfFrequency) {
-         String s = "1";
-         if (noOfFrequency == 2) {
-             s = "1-0-1";
-         } else {
-             for (int i = 0; i < noOfFrequency - 1; i++) {
-                 s = s.concat("-1");
-             }
-         }
-         return s;
-     }*/
     public String calculateDays(String currentDate, String actualStartDate) {
         long diff = 0;
         String days = "";
-        SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
+        SimpleDateFormat myFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
 
         try {
             Date date1 = myFormat.parse(currentDate);

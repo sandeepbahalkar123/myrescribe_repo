@@ -9,11 +9,11 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.investigation.request.InvestigationUploadByGmailRequest;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.Device;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,40 +65,38 @@ public class InvestigationHelper implements ConnectionListener {
     }
 
     public void getInvestigationList(boolean progressBar) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, progressBar, MyRescribeConstants.INVESTIGATION_LIST, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, progressBar, RescribeConstants.INVESTIGATION_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=" + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
 //        mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=4092");
-        mConnectionFactory.createConnection(MyRescribeConstants.INVESTIGATION_LIST);
+        mConnectionFactory.createConnection(RescribeConstants.INVESTIGATION_LIST);
     }
 
     public void uploadByGmail(InvestigationUploadByGmailRequest investigationUploadByGmailRequest) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL, Request.Method.POST, false);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setPostParams(investigationUploadByGmailRequest);
         mConnectionFactory.setUrl(Config.INVESTIGATION_UPLOAD_BY_GMAIL);
-        mConnectionFactory.createConnection(MyRescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL);
+        mConnectionFactory.createConnection(RescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL);
     }
 
     public void uploadFromAlreadyUploaded(String imageIds, String invIds) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED, Request.Method.POST, false);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED, Request.Method.POST, false);
 
         Device device = Device.getInstance(mContext);
 
         Map<String, String> headerParams = new HashMap<>();
-        String authorizationString = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
-        headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_URL_ENCODED);
-        headerParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, authorizationString);
-        headerParams.put(MyRescribeConstants.DEVICEID, device.getDeviceId());
-        headerParams.put(MyRescribeConstants.OS, device.getOS());
-        headerParams.put(MyRescribeConstants.OSVERSION, device.getOSVersion());
-        headerParams.put(MyRescribeConstants.DEVICE_TYPE, device.getDeviceType());
-
-        headerParams.put(MyRescribeConstants.INVESTIGATION_KEYS.IMAGE_ID, imageIds);
-        headerParams.put(MyRescribeConstants.INVESTIGATION_KEYS.INV_ID, invIds);
-
+        String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
+        headerParams.put(RescribeConstants.CONTENT_TYPE, RescribeConstants.APPLICATION_URL_ENCODED);
+        headerParams.put(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString);
+        headerParams.put(RescribeConstants.DEVICEID, device.getDeviceId());
+        headerParams.put(RescribeConstants.OS, device.getOS());
+        headerParams.put(RescribeConstants.OSVERSION, device.getOSVersion());
+        headerParams.put(RescribeConstants.DEVICE_TYPE, device.getDeviceType());
+        headerParams.put(RescribeConstants.INVESTIGATION_KEYS.IMAGE_ID, imageIds);
+        headerParams.put(RescribeConstants.INVESTIGATION_KEYS.INV_ID, invIds);
         mConnectionFactory.setHeaderParams(headerParams);
         mConnectionFactory.setUrl(Config.INVESTIGATION_UPLOAD);
-        mConnectionFactory.createConnection(MyRescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED);
+        mConnectionFactory.createConnection(RescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED);
     }
 }

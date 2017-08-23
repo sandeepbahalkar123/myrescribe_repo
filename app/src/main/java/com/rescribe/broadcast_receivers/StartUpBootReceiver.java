@@ -10,9 +10,9 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 /**
  * Created by ganeshshirole on 27/6/17.
@@ -24,7 +24,7 @@ public class StartUpBootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            if(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, context).equals(MyRescribeConstants.YES))
+            if(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, context).equals(RescribeConstants.YES))
             notificationForMedicine(context);
         }
     }
@@ -50,7 +50,7 @@ public class StartUpBootReceiver extends BroadcastReceiver {
 
 
         String times[] = {breakFast, lunchTime, dinnerTime,snacksTime};
-        String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+        String date = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
 
         new DosesAlarmTask(context, times, date).run();
         new InvestigationAlarmTask(context, "9:00 am", context.getResources().getString(R.string.investigation_msg)).run();

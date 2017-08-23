@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import com.rescribe.R;
 import com.rescribe.singleton.MyRescribeApplication;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 /**
  * Created by Sandeep Bahalkar
@@ -22,7 +22,7 @@ public class CustomEditText extends EditText {
             return;
         }
 
-        setTextColor(Color.parseColor(MyRescribeConstants.TEXT_COLOR));
+        setTextColor(Color.parseColor(RescribeConstants.TEXT_COLOR));
         setHintTextColor(context.getResources().getColor(R.color.placeHolder));
         setCustomFont(context, attrs);
     }

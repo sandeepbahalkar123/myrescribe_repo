@@ -9,7 +9,7 @@ import android.os.Bundle;
 import com.rescribe.R;
 import com.rescribe.services.NotificationService;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.Calendar;
 
@@ -81,20 +81,20 @@ public class DosesAlarmTask implements Runnable {
     private void cancelAlarm(int requestCode) {
         Intent intent = new Intent(context, NotificationService.class);
         intent.putExtra(NotificationService.INTENT_NOTIFY, false);
-        intent.putExtra(MyRescribeConstants.NOTIFICATION_ID, requestCode);
+        intent.putExtra(RescribeConstants.NOTIFICATION_ID, requestCode);
         context.startService(intent);
     }
 
     private void setAlarm(String time, String medicineSlot, int requestCode) {
         Intent intent = new Intent(context, NotificationService.class);
         intent.putExtra(NotificationService.INTENT_NOTIFY, true);
-        intent.putExtra(MyRescribeConstants.NOTIFICATION_TIME, time);
-        intent.putExtra(MyRescribeConstants.MEDICINE_SLOT, medicineSlot);
-        intent.putExtra(MyRescribeConstants.NOTIFICATION_DATE, date);
-        intent.putExtra(MyRescribeConstants.NOTIFICATION_ID, requestCode);
+        intent.putExtra(RescribeConstants.NOTIFICATION_TIME, time);
+        intent.putExtra(RescribeConstants.MEDICINE_SLOT, medicineSlot);
+        intent.putExtra(RescribeConstants.NOTIFICATION_DATE, date);
+        intent.putExtra(RescribeConstants.NOTIFICATION_ID, requestCode);
 
         Bundle bundle = new Bundle();
-        intent.putExtra(MyRescribeConstants.MEDICINE_NAME, bundle);
+        intent.putExtra(RescribeConstants.MEDICINE_NAME, bundle);
 
         PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent, 0);
 

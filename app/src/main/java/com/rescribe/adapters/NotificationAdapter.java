@@ -19,10 +19,10 @@ import com.rescribe.model.notification.AdapterNotificationModel;
 import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.SlotModel;
 import com.rescribe.model.response_model_notification.ResponseLogNotificationModel;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +59,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private ViewGroup mparentHeader;
     private String mSlotType;
     private View mSlotCardView;
-
 
     public NotificationAdapter(Context context, List<AdapterNotificationModel> dataSet, String time[]) {
 
@@ -124,7 +123,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     if (mSlotModel.getDinner().size() != 0) {
                         slotCard.setVisibility(View.VISIBLE);
                         slotTextView.setText(mContext.getResources().getString(R.string.dinner_medication));
-                        slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
+                        slotTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
                         addTabletView(slotTabletListLayout, position, parent, view, DINNER, mSlotModel.getDinner());
                         if (mDataSet.get(position).isDinnerExpanded()) {
                             slotTabletListLayout.setVisibility(View.VISIBLE);
@@ -142,7 +141,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
                                 mparentHeader = parent;
-                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasedinner), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1, MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
+                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasedinner), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
                             }
                         });
                         view.setOnClickListener(new View.OnClickListener() {
@@ -190,7 +189,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     if (mSlotModel.getLunch().size() != 0) {
                         slotCard.setVisibility(View.VISIBLE);
                         slotTextView.setText(mContext.getResources().getString(R.string.lunch_medication));
-                        slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
+                        slotTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
                         addTabletView(slotTabletListLayout, position, parent, view, LUNCH, mSlotModel.getLunch());
                         if (mDataSet.get(position).isLunchExpanded()) {
                             slotTabletListLayout.setVisibility(View.VISIBLE);
@@ -208,7 +207,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
                                 mparentHeader = parent;
-                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcaselunch), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1, MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
+                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcaselunch), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
 
                             }
                         });
@@ -255,7 +254,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     if (mSlotModel.getBreakfast().size() != 0) {
                         slotCard.setVisibility(View.VISIBLE);
                         slotTextView.setText(mContext.getResources().getString(R.string.breakfast_medication));
-                        slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
+                        slotTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
                         addTabletView(slotTabletListLayout, position, parent, view, BREAK_FAST, mSlotModel.getBreakfast());
                         if (mDataSet.get(position).isBreakFastExpanded()) {
                             slotTabletListLayout.setVisibility(View.VISIBLE);
@@ -273,7 +272,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
                                 mparentHeader = parent;
-                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasebreakfast), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1, MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
+                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasebreakfast), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
 
                             }
                         });
@@ -320,7 +319,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     if (mSlotModel.getSnacks().size() != 0) {
                         slotCard.setVisibility(View.VISIBLE);
                         slotTextView.setText(mContext.getResources().getString(R.string.snacks_medication));
-                        slotTimeTextView.setText(CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
+                        slotTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
                         addTabletView(slotTabletListLayout, position, parent, view, SNACKS, mSlotModel.getSnacks());
 
                         if (mDataSet.get(position).isSnacksExpanded()) {
@@ -340,7 +339,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
                                 mparentHeader = parent;
-                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasesnacks), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 1, MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
+                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasesnacks), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
 
 
                             }
@@ -427,7 +426,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     mView = view;
                     mSlotCardView = slotCardView;
                     mSlotCardParent = slotCardParent;
-                    mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), medicationList.get(finalI).getMedicinSlot(), medicationList.get(finalI).getMedicineId(), CommonMethods.formatDateTime(medicationList.get(finalI).getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE), 0, MyRescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI);
+                    mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), medicationList.get(finalI).getMedicinSlot(), medicationList.get(finalI).getMedicineId(), CommonMethods.formatDateTime(medicationList.get(finalI).getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI);
 
                 }
             });
@@ -453,7 +452,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION)) {
+        if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {
             ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
             String position = mOldDataTag;
 
@@ -504,7 +503,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     }
                 }
             }
-        } else if (mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
+        } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
             ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
             String position = mOldDataTag;
             String[] count = position.split("_");
@@ -570,7 +569,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        if (mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
+        if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
             String position = mOldDataTag;
             String[] count = position.split("_");
             String counter = count[1];
@@ -578,7 +577,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             mDataSet.get(Integer.parseInt(counter)).setTabSelected(false);
             headerCheckBox.setEnabled(true);
             headerCheckBox.setChecked(false);
-        } else if (mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION)) {
+        } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {
             String position = mOldDataTag;
             String[] count = position.split("_");
             String counter = count[1];

@@ -9,8 +9,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import com.rescribe.R;
-import com.rescribe.preference.MyRescribePreferencesManager;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.util.RescribeConstants;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -57,7 +58,7 @@ public class PhoneNoActivity extends AppCompatActivity implements View.OnClickLi
         switch (id) {
             case R.id.buttonOk:
                 String phoneNumber = mEditTextUserPhoneNumber.getText().toString();
-                MyRescribePreferencesManager.putString(MyRescribeConstants.PHONE, phoneNumber, mContext);
+                RescribePreferencesManager.putString(RescribeConstants.PHONE, phoneNumber, mContext);
                 Intent intent = new Intent(PhoneNoActivity.this, PrescriptionActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

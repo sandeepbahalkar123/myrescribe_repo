@@ -3,15 +3,12 @@ package com.rescribe.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
@@ -22,10 +19,9 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
-import com.rescribe.preference.MyRescribePreferencesManager;
-import com.rescribe.ui.customesViews.ScrollableImageView;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.Calendar;
 
@@ -50,49 +46,12 @@ public class HomePageActivity extends DrawerActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContext = HomePageActivity.this;
-        if (getIntent().getBooleanExtra(MyRescribeConstants.ALERT, true))
+        if (getIntent().getBooleanExtra(RescribeConstants.ALERT, true))
             notificationForMedicine();
         drawerConfiguration();
     }
 
-    private void setImageBitmap(Bitmap bmp) {
-        ImageView imageView = new ScrollableImageView(this);
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(bmp.getWidth(), bmp.getHeight() - toolbar.getHeight()));
-        imageView.setImageBitmap(bmp);
-        ViewGroup container = (ViewGroup) findViewById(R.id.container);
-        container.addView(imageView);
-    }
 
-    /* private class BitmapLoaderTask extends AsyncTask<String, Void, Bitmap> {
-
-         private ProgressBar progress;
-
-         @Override
-         protected void onPreExecute() {
-             super.onPreExecute();
-             progress = (ProgressBar) findViewById(android.R.id.progress);
-         }
-
-         @Override
-         protected Bitmap doInBackground(String... params) {
-             AssetManager assets = getAssets();
-             Bitmap bmp = null;
-             try {
-                 bmp = BitmapFactory.decodeStream(assets.open(params[0]));
-             } catch (IOException e) {
-                 // Log.e(DEBUG_TAG, e.getMessage(), e);
-             }
-             return bmp;
-         }
-
-         @Override
-         protected void onPostExecute(Bitmap result) {
-             super.onPostExecute(result);
-             progress.setVisibility(View.INVISIBLE);
-             setImageBitmap(result);
-         }
-     }
- */
     private void notificationForMedicine() {
 
         AppDBHelper appDBHelper = new AppDBHelper(mContext);
@@ -109,7 +68,7 @@ public class HomePageActivity extends DrawerActivity {
         cursor.close();
 
         String times[] = {breakFastTime, lunchTime, dinnerTime, snacksTime};
-        String date = CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+        String date = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
 
         new DosesAlarmTask(mContext, times, date).run();
         new InvestigationAlarmTask(mContext, "9:00 AM", getResources().getString(R.string.investigation_msg)).run();
@@ -147,36 +106,36 @@ public class HomePageActivity extends DrawerActivity {
             mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
             if (mGetMealTime.equals(getString(R.string.break_fast))) {
                 Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
-                intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
-                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-                intentNotification.putExtra(MyRescribeConstants.TIME, breakFastTime);
+                intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
+                intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intentNotification.putExtra(RescribeConstants.TIME, breakFastTime);
                 intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentNotification);
 
             } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
                 Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
-                intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
-                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-                intentNotification.putExtra(MyRescribeConstants.TIME, lunchTime);
+                intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
+                intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intentNotification.putExtra(RescribeConstants.TIME, lunchTime);
                 intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentNotification);
 
             } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
                 Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
-                intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
-                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-                intentNotification.putExtra(MyRescribeConstants.TIME, snacksTime);
+                intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
+                intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intentNotification.putExtra(RescribeConstants.TIME, snacksTime);
                 intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentNotification);
 
             } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
                 Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
-                intentNotification.putExtra(MyRescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intentNotification.putExtra(MyRescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-                intentNotification.putExtra(MyRescribeConstants.TIME, dinnerTime);
+                intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
+                intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intentNotification.putExtra(RescribeConstants.TIME, dinnerTime);
                 intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentNotification);
@@ -187,42 +146,9 @@ public class HomePageActivity extends DrawerActivity {
         return super.onOptionsItemSelected(item);
     }
 
-   /* @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        if (id == R.id.doctor_details) {
-            Intent intent = new Intent(mContext, DoctorListActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.investigations) {
-            Intent intent = new Intent(mContext, InvestigationActivity.class);
-
-            startActivity(intent);
-        } else if (id == R.id.onGoingMedication) {
-            Intent intent = new Intent(HomePageActivity.this, PrescriptionActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.appointments) {
-            Intent intent = new Intent(mContext, AppointmentActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.records) {
-            Intent intent = new Intent(mContext, MyRecordsActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.logout) {
-            logout();
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }*/
-
     private void logout() {
-        String baseUrl = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext);
-        MyRescribePreferencesManager.clearSharedPref(mContext);
-        MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, baseUrl, mContext);
-        MyRescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
-
+        RescribePreferencesManager.clearSharedPref(mContext);
+        RescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
         AppDBHelper appDBHelper = new AppDBHelper(mContext);
         appDBHelper.deleteDatabase();
 
@@ -245,18 +171,6 @@ public class HomePageActivity extends DrawerActivity {
                         .setTextColorPrimaryRes(R.color.white)
                         .setTextColorSecondaryRes(R.color.white)
         );
-       /* addItems(new DrawerItem()
-                        .setTextPrimary(getString(R.string.app_name))
-                        .setTextSecondary(getString(R.string.enter_email_id)),
-                new DrawerFragmentItem()
-                        .setFragment(new ListFragment())
-                        .setTextPrimary(getString(R.string.enter_mobile_no)),
-                new DrawerFragmentItem()
-                        .setFragment(new Fragment())
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.investigation))
-                        .setTextPrimary(getString(R.string.investigation))
-                        .setTextSecondary(getString(R.string.investigations))
-        );*/
 
         addItems(new DrawerItem()
                         .setTextPrimary(getString(R.string.going_medication))

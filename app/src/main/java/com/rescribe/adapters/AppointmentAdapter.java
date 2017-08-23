@@ -15,7 +15,7 @@ import com.rescribe.model.doctors.appointments.DoctorAppointment;
 import com.rescribe.ui.activities.MapsActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.NetworkUtil;
 
 import java.text.DateFormat;
@@ -63,7 +63,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         this.mAppointmentType = appointmentType;
         this.appointmentsList = appointmentsList;
         this.mContext = mContext;
-        DateFormat dateFormat = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, Locale.US);
+        DateFormat dateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.YYYY_MM_DD, Locale.US);
         mCurrentDate = dateFormat.format(new Date());
     }
 
@@ -84,7 +84,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
         //--- For address
         if (!mAppointmentType.equalsIgnoreCase(mContext.getString(R.string.completed))) {
-            Date timeStamp = CommonMethods.convertStringToDate(appointment.getAptDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            Date timeStamp = CommonMethods.convertStringToDate(appointment.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
             Calendar cal = Calendar.getInstance();
             cal.setTime(timeStamp);
             String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup>" + new SimpleDateFormat("MMM").format(cal.getTime());
@@ -100,19 +100,19 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         //--- For address
 
         //---For Date
-        String timeToShow = CommonMethods.formatDateTime(appointment.getAptDate(), MyRescribeConstants.DATE_PATTERN.hh_mm_a,
-                MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, MyRescribeConstants.DATE).toLowerCase();
+        String timeToShow = CommonMethods.formatDateTime(appointment.getAptDate(), RescribeConstants.DATE_PATTERN.hh_mm_a,
+                RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, RescribeConstants.DATE).toLowerCase();
         if (mAppointmentType.equalsIgnoreCase(mContext.getString(R.string.completed))) {
-            String timeStamp = CommonMethods.formatDateTime(appointment.getAptDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD,
-                    MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, MyRescribeConstants.DATE);
-            String dayFromDate = CommonMethods.getDayFromDate(MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, timeStamp);
+            String timeStamp = CommonMethods.formatDateTime(appointment.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD,
+                    RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, RescribeConstants.DATE);
+            String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.YYYY_MM_DD, timeStamp);
             if (mCurrentDate.equalsIgnoreCase(timeStamp)) {// for Current date
                 holder.appointmentsTimeStamp.setText(timeToShow);
             } else if (dayFromDate.equalsIgnoreCase("Yesterday")) { // for Yesterday date
-                holder.appointmentsTimeStamp.setText("" + android.text.format.DateFormat.format("EEE", CommonMethods.convertStringToDate(appointment.getAptDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a)));
+                holder.appointmentsTimeStamp.setText("" + android.text.format.DateFormat.format("EEE", CommonMethods.convertStringToDate(appointment.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a)));
             } else { // for date before yesterday
-                holder.appointmentsTimeStamp.setText("" + CommonMethods.formatDateTime(appointment.getAptDate(), MyRescribeConstants.DATE_PATTERN.DD_MM,
-                        MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, MyRescribeConstants.DATE));
+                holder.appointmentsTimeStamp.setText("" + CommonMethods.formatDateTime(appointment.getAptDate(), RescribeConstants.DATE_PATTERN.DD_MM,
+                        RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, RescribeConstants.DATE));
             }
         } else {
             holder.appointmentsTimeStamp.setText("" + timeToShow);

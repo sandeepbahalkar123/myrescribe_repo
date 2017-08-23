@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.rescribe.R;
 import com.rescribe.adapters.myrecords.ShowRecordsAdapter;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +38,7 @@ public class ShowRecordsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        String[] imageArrayExtra = getIntent().getStringArrayExtra(MyRescribeConstants.DOCUMENTS);
+        String[] imageArrayExtra = getIntent().getStringArrayExtra(RescribeConstants.DOCUMENTS);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

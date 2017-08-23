@@ -16,7 +16,8 @@ import com.rescribe.model.doctors.filter_doctor_list.DoctorFilteredInfoAndCaseDe
 import com.rescribe.model.doctors.filter_doctor_list.DoctorFilteredInfo;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -56,7 +57,7 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
             ArrayList<String> listToInsert = new ArrayList();
             for (Map.Entry<String, String[]> pair : caseDetailList.entrySet()) {
                 //--- Add case name as header in list
-                String data = "-1|" + pair.getKey() + "|" + MyRescribeConstants.TRUE;// this is set for header only, id|NAME|TRUE
+                String data = "-1|" + pair.getKey() + "|" + RescribeConstants.TRUE;// this is set for header only, id|NAME|TRUE
                 listToInsert.add(data);
                 //---
                 listToInsert.addAll(new ArrayList<String>(Arrays.asList(pair.getValue())));
@@ -94,7 +95,7 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
 
         String child = getChild(groupPosition, childPosition);
 
-        if (child.contains("|") && child.endsWith(MyRescribeConstants.TRUE)) {
+        if (child.contains("|") && child.endsWith(RescribeConstants.TRUE)) {
             String[] split = child.split("\\|");
             childViewHolder.headerName.setText(split[1]);
             childViewHolder.headerName.setVisibility(View.VISIBLE);
@@ -167,9 +168,9 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
         groupViewHolder.sideBarView.setBackgroundColor(dataObject.getSideBarViewColor());
 
         //--------
-        String timeToShow = CommonMethods.formatDateTime(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.MMM_YYYY,
-                MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE).toLowerCase();
-        Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+        String timeToShow = CommonMethods.formatDateTime(dataObject.getDate(), RescribeConstants.DATE_PATTERN.MMM_YYYY,
+                RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE).toLowerCase();
+        Date date = CommonMethods.convertStringToDate(dataObject.getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup> " + timeToShow.toUpperCase(Locale.US);

@@ -32,7 +32,7 @@ import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.login.Year;
 import com.rescribe.ui.activities.DoctorListActivity;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -117,8 +117,8 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
 
         AppDBHelper appDBHelper = new AppDBHelper(mParentActivity);
 
-        if (appDBHelper.dataTableNumberOfRows(MyRescribeConstants.TASK_LOGIN) > 0) {
-            Cursor cursor = appDBHelper.getData(MyRescribeConstants.TASK_LOGIN);
+        if (appDBHelper.dataTableNumberOfRows(RescribeConstants.TASK_LOGIN) > 0) {
+            Cursor cursor = appDBHelper.getData(RescribeConstants.TASK_LOGIN);
             cursor.moveToFirst();
             String loginData = cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
             Gson gson = new Gson();
@@ -180,8 +180,8 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
 
                 DoctorListFragment item = (DoctorListFragment) mViewPagerAdapter.getItem(position);
                 Bundle arguments = item.getArguments();
-                String month = arguments.getString(MyRescribeConstants.MONTH);
-                String year = arguments.getString(MyRescribeConstants.YEAR);
+                String month = arguments.getString(RescribeConstants.MONTH);
+                String year = arguments.getString(RescribeConstants.YEAR);
                 CommonMethods.Log("onPageSelected", month + " " + year);
                 mCurrentSelectedTimePeriodTab.setMonthName(month);
                 mCurrentSelectedTimePeriodTab.setYear(year);

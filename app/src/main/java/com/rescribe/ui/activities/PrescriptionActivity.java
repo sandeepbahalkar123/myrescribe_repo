@@ -25,7 +25,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.prescription_response_model.PrescriptionData;
 import com.rescribe.model.prescription_response_model.PrescriptionModel;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.Calendar;
 import java.util.List;
@@ -37,7 +37,7 @@ public class PrescriptionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HelperResponse, View.OnClickListener {
 
     private PrescriptionListAdapter prescriptionListAdapter;
-    private final String TAG = "Rescribe/PrescriptionActivity";
+    private final String TAG = this.getClass().getName();
     Context mContext;
     private String mGetMealTime;
     @BindView(R.id.toolbar)
@@ -122,7 +122,7 @@ public class PrescriptionActivity extends AppCompatActivity
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (mOldDataTag.equals(MyRescribeConstants.TASK_PRESCRIPTION_LIST)) {
+        if (mOldDataTag.equals(RescribeConstants.TASK_PRESCRIPTION_LIST)) {
             PrescriptionModel prescriptionDataReceived = (PrescriptionModel) customResponse;
             if(prescriptionDataReceived.getData().size()>0){
                 mRecyclerView.setVisibility(View.VISIBLE);
@@ -140,7 +140,7 @@ public class PrescriptionActivity extends AppCompatActivity
                     for(int i = 0;i<data.size();i++){
                         data.get(i).setMealTime(mGetMealTime);
                     }
-                    prescriptionListAdapter = new PrescriptionListAdapter(this, data, false, mGetMealTime);
+                    prescriptionListAdapter = new PrescriptionListAdapter(this, data);
                     mRecyclerView.setAdapter(prescriptionListAdapter);
                 }
             }

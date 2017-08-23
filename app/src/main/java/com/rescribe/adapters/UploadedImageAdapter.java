@@ -16,7 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.ui.activities.ZoomImageViewActivity;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class UploadedImageAdapter extends RecyclerView.Adapter<UploadedImageAdap
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ZoomImageViewActivity.class);
-                intent.putExtra(MyRescribeConstants.DOCUMENTS, path.getImagePath());
+                intent.putExtra(RescribeConstants.DOCUMENTS, path.getImagePath());
                 context.startActivity(intent);
             }
         });

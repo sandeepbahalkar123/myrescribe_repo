@@ -24,12 +24,12 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.investigation.Images;
 import com.rescribe.model.investigation.InvestigationData;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.Device;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.NetworkUtil;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
@@ -92,9 +92,9 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
         customProgressDialog = new CustomProgressDialog(mContext);
         customProgressDialog.setCancelable(false);
 
-        patient_id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
 
-        investigation = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
+        investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
 
         for (int i = 0; i < investigation.size(); i++) {
             if (investigation.get(i).isSelected() && !investigation.get(i).isUploaded() && investigation.get(i).getPhotos().size() > 0) {
@@ -221,18 +221,18 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                     uploadNotificationConfig.setIconColorForAllStatuses(Color.parseColor("#04abdf"));*/
 
                         Device device = Device.getInstance(mContext);
-                        String baseUrl = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext);
-                        String authorizationString = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
+                        String baseUrl = Config.BASE_URL;
+                        String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
 
                         String uploadId = new MultipartUploadRequest(SelectedDocsActivity.this, baseUrl + Config.INVESTIGATION_UPLOAD)
 //                            .setNotificationConfig(uploadNotificationConfig)
-                                .setMaxRetries(MyRescribeConstants.MAX_RETRIES)
+                                .setMaxRetries(RescribeConstants.MAX_RETRIES)
 
-                                .addHeader(MyRescribeConstants.AUTHORIZATION_TOKEN, authorizationString)
-                                .addHeader(MyRescribeConstants.DEVICEID, device.getDeviceId())
-                                .addHeader(MyRescribeConstants.OS, device.getOS())
-                                .addHeader(MyRescribeConstants.OSVERSION, device.getOSVersion())
-                                .addHeader(MyRescribeConstants.DEVICE_TYPE, device.getDeviceType())
+                                .addHeader(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString)
+                                .addHeader(RescribeConstants.DEVICEID, device.getDeviceId())
+                                .addHeader(RescribeConstants.OS, device.getOS())
+                                .addHeader(RescribeConstants.OSVERSION, device.getOSVersion())
+                                .addHeader(RescribeConstants.DEVICE_TYPE, device.getDeviceType())
 
                                 .addHeader("imgId", image.getImageId())
                                 .addHeader("invId", investigationIds)
@@ -305,7 +305,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
             startActivity(intent);
         } else {
             Intent intent = new Intent();
-            intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigation);
+            intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigation);
 //                intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
             setResult(RESULT_OK, intent);
         }

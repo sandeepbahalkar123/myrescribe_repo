@@ -17,7 +17,7 @@ import com.rescribe.R;
 import com.rescribe.adapters.filter.FilterDoctorSpecialitiesAdapter;
 import com.rescribe.model.filter.DoctorSpecialityData;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -48,8 +48,8 @@ public class SelectSpecialityFragment extends Fragment {
     public static SelectSpecialityFragment newInstance(ArrayList<DoctorSpecialityData> doctorSpecialityDataArrayList, String title) {
         SelectSpecialityFragment fragment = new SelectSpecialityFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(MyRescribeConstants.DOCTORS_LIST, doctorSpecialityDataArrayList);
-        bundle.putString(MyRescribeConstants.TITLE, title);
+        bundle.putParcelableArrayList(RescribeConstants.DOCTORS_LIST, doctorSpecialityDataArrayList);
+        bundle.putString(RescribeConstants.TITLE, title);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -66,9 +66,9 @@ public class SelectSpecialityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_select_doctors_speciality, container, false);
         unbinder = ButterKnife.bind(this, view);
         if (getArguments() != null) {
-            String title = getArguments().getString(MyRescribeConstants.TITLE);
+            String title = getArguments().getString(RescribeConstants.TITLE);
             titleTextView.setText(title);
-            doctorSpecialityList = getArguments().getParcelableArrayList(MyRescribeConstants.DOCTORS_LIST);
+            doctorSpecialityList = getArguments().getParcelableArrayList(RescribeConstants.DOCTORS_LIST);
         }
 
         // off recyclerView Animation

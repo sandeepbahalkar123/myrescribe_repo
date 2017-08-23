@@ -24,7 +24,7 @@ import com.rescribe.model.filter.DoctorSpecialityData;
 import com.rescribe.model.filter.FilterDoctorListModel;
 import com.rescribe.model.filter.FilterDoctorSpecialityListModel;
 import com.rescribe.model.filter.filter_request.DrFilterRequestModel;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.fragments.doctor.DoctorFilteredListFragment;
 import com.rescribe.ui.fragments.doctor.DoctorListFragmentContainer;
 import com.rescribe.ui.fragments.filter.FilterFragment;
@@ -95,7 +95,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     public void onApply() {
 
         DrFilterRequestModel drFilterRequestModel = new DrFilterRequestModel();
-        drFilterRequestModel.setPatientId(Integer.parseInt(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, DoctorListActivity.this)));
+        drFilterRequestModel.setPatientId(Integer.parseInt(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, DoctorListActivity.this)));
         drFilterRequestModel.setDocIds(docIdList);
         drFilterRequestModel.setDocSpecialities(doctorSpecialityList);
         drFilterRequestModel.setStartDate(filterFragment.getFromDate());

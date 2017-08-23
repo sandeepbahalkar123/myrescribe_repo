@@ -19,17 +19,14 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import com.rescribe.R;
 import com.rescribe.model.case_details.VisitCommonData;
 import com.rescribe.model.case_details.PatientHistory;
 import com.rescribe.model.case_details.Range;
 import com.rescribe.model.case_details.Vital;
 import com.rescribe.util.CommonMethods;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -151,7 +148,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                     showVitalDialog(mContext, mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName(),
                             mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(),
                             mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(),
-                            CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName()),
+                            CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getIcon()),
                             mListDataHeader.get(groupPosition).getVitals().get(finali).getCategory());
                 }
             });
@@ -171,12 +168,12 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 String[] unitForBp = unit.split("/");
                 String unitForBpMax = unitForBp[0];
                 String unitForBpMin = unitForBp[1];
-                vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName()));
+                vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getIcon()));
                 vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
                 noOfVitals.setText(Html.fromHtml(getUnitValueforBp(categoryForBpMin,categoryForBpMax,unitForBpMin,unitForBpMax)));
 
             }else {
-                vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName()));
+                vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getIcon()));
                 vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
               noOfVitals.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue());
                 if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.severeRange))) {
@@ -185,6 +182,8 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                     noOfVitals.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
                 } else if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.moderateRange))) {
                     noOfVitals.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
+                }else {
+                    noOfVitals.setTextColor(ContextCompat.getColor(mContext, R.color.view_detail_color));
                 }
             }
             tableRow.addView(item);
@@ -250,9 +249,9 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             String slash = "<font color='#737373'>"+"/"+"</font>";
             unitValue = bpMax+slash+bpMin;
 
-        }else if(categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.range_not_defined))||categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.range_not_defined))){
-            String bpMax = forBpMax;
-            String bpMin = forBpMin;
+        }else {
+            String bpMax = "<font color='#737373'>"+forBpMax+"</font>";
+            String bpMin = "<font color='#737373'>"+forBpMin+"</font>";
             String slash = "<font color='#737373'>"+"/"+"</font>";
             unitValue = bpMax+slash+bpMin;
         }
@@ -385,7 +384,9 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         String normal = "";
         String moderate = "";
         String severe = "";
+
         LinearLayout normalBpMaxRangeLayout = (LinearLayout) dialog.findViewById(R.id.normalRangeLayout);
+        LinearLayout showVitalUnitNameIconLayout = (LinearLayout) dialog.findViewById(R.id.showVitalUnitNameIconLayout);
         LinearLayout moderateBpMaxRangeLayout = (LinearLayout) dialog.findViewById(R.id.moderateRangeLayout);
         LinearLayout severeBpMaxRangeLayout = (LinearLayout) dialog.findViewById(R.id.severeRangeLayout);
         LinearLayout showVitalNameLayout = (LinearLayout) dialog.findViewById(R.id.showVitalNameLayout);
@@ -470,7 +471,6 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
                         severe += "," + finalString;
                         severeRange.setText(severe);
-
                     }
                 }
 
@@ -528,13 +528,18 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
             } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
                 noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
+            }else{
+                noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.view_detail_color));
             }
+
             if (categoryBpMin.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
                 noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
             } else if (categoryBpMin.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
                 noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
             } else if (categoryBpMin.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
                 noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
+            }else {
+                noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(mContext, R.color.view_detail_color));
             }
             noOfVitalsDialog.setText(unitBpMax);
             noOfVitalsTypeDialog.setText(unitBpMin);
@@ -550,53 +555,45 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             }
             if(normalBpMaxRange.getText().toString().trim().length() == 0&&moderateBpMaxRange.getText().toString().trim().length() == 0&&severeBpMaxRange.getText().toString().trim().length() == 0){
                 showVitalRangeLayout.setVisibility(View.GONE);
-                showVitalNameLayout.setBackgroundColor(ContextCompat.getColor(mContext,R.color.white));
-                bpMinLayout.setVisibility(View.VISIBLE);
-                bpMinLayout.setBackground(mContext.getDrawable(R.drawable.vitals_curve_grey_bg_bottom_curves));
-
-            }
-            if(rangeList.size()==0){
                 showVitalNameLayout.setBackground(mContext.getDrawable(R.drawable.vitals_curve_white_bg));
+                bpMinLayout.setVisibility(View.GONE);
+                showVitalUnitNameIconLayout.setBackground(mContext.getDrawable(R.drawable.vitals_curve_grey_bg));
+
             }
 
         } else {
-            if(rangeList.size()==0){
 
-            }
             showVitalNameLayout.setVisibility(View.GONE);
             showVitalRangeLayout.setVisibility(View.GONE);
             noOfVitalsDialog.setText(unitValue);
             vitalName.setText(unitName);
-        }
-
-        if (category.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
-            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
-        } else if (category.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
-            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
-        } else if (category.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
-            noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
-        }
-
-        //----Manage visibility----
-        if (normalRange.getText().toString().trim().length() == 0) {
-            LinearLayout normalRangeLayout = (LinearLayout) dialog.findViewById(R.id.normalSubTypeRangeLayout);
-            normalRangeLayout.setVisibility(View.GONE);
-        }
-        if (moderateRange.getText().toString().trim().length() == 0) {
-            LinearLayout moderateRangeLayout = (LinearLayout) dialog.findViewById(R.id.moderateSubTypeRangeLayout);
-            moderateRangeLayout.setVisibility(View.GONE);
-        }
-        if (severeRange.getText().toString().trim().length() == 0) {
-            LinearLayout severeRangeLayout = (LinearLayout) dialog.findViewById(R.id.severeSubTypeRangeLayout);
-            severeRangeLayout.setVisibility(View.GONE);
-        }
-        if(normalRange.getText().toString().trim().length() == 0&&moderateRange.getText().toString().trim().length() == 0&&severeRange.getText().toString().trim().length() == 0){
-            bpMinLayout.setVisibility(View.GONE);
-            showVitalNameLayout.setBackground(mContext.getDrawable(R.drawable.vitals_curve_grey_bg_bottom_curves));
+            if (category.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
+                noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
+            } else if (category.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
+                noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
+            } else if (category.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
+                noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
+            }
+            if (normalRange.getText().toString().trim().length() == 0) {
+                LinearLayout normalRangeLayout = (LinearLayout) dialog.findViewById(R.id.normalSubTypeRangeLayout);
+                normalRangeLayout.setVisibility(View.GONE);
+            }
+            if (moderateRange.getText().toString().trim().length() == 0) {
+                LinearLayout moderateRangeLayout = (LinearLayout) dialog.findViewById(R.id.moderateSubTypeRangeLayout);
+                moderateRangeLayout.setVisibility(View.GONE);
+            }
+            if (severeRange.getText().toString().trim().length() == 0) {
+                LinearLayout severeRangeLayout = (LinearLayout) dialog.findViewById(R.id.severeSubTypeRangeLayout);
+                severeRangeLayout.setVisibility(View.GONE);
+            }
+            if(normalRange.getText().toString().trim().length() == 0&&moderateRange.getText().toString().trim().length() == 0&&severeRange.getText().toString().trim().length() == 0){
+                bpMinLayout.setVisibility(View.GONE);
+                showVitalUnitNameIconLayout.setBackground(mContext.getDrawable(R.drawable.vital_curve_allcorners_grey));
 
 
+            }
         }
-        //--------
+
         ((ImageView) dialog.findViewById(R.id.vitalImageDialog)).setImageResource(drawable);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());

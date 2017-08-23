@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.rescribe.R;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 /**
  * Created by Sandeep Bahalkar
@@ -44,28 +44,28 @@ public class Device {
 
     public String getDensity() {
 
-        String density = MyRescribeConstants.HDPI;
+        String density = RescribeConstants.HDPI;
 
         DisplayMetrics metrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(metrics);
         switch (metrics.densityDpi) {
             case DisplayMetrics.DENSITY_LOW:
-                density = MyRescribeConstants.LDPI;
+                density = RescribeConstants.LDPI;
                 break;
             case DisplayMetrics.DENSITY_MEDIUM:
-                density = MyRescribeConstants.MDPI;
+                density = RescribeConstants.MDPI;
                 break;
             case DisplayMetrics.DENSITY_HIGH:
-                density = MyRescribeConstants.HDPI;
+                density = RescribeConstants.HDPI;
                 break;
             case DisplayMetrics.DENSITY_XHIGH:
-                density = MyRescribeConstants.XHDPI;
+                density = RescribeConstants.XHDPI;
                 break;
             case DisplayMetrics.DENSITY_XXHIGH:
-                density = MyRescribeConstants.XXHDPI;
+                density = RescribeConstants.XXHDPI;
                 break;
             case DisplayMetrics.DENSITY_XXXHIGH:
-                density = MyRescribeConstants.XXXHDPI;
+                density = RescribeConstants.XXXHDPI;
                 break;
         }
 
@@ -78,9 +78,9 @@ public class Device {
         String what = "";
         boolean tabletSize = context.getResources().getBoolean(R.bool.isTablet);
         if (tabletSize) {
-            what = MyRescribeConstants.TABLET;
+            what = RescribeConstants.TABLET;
         } else {
-            what = MyRescribeConstants.PHONE;
+            what = RescribeConstants.PHONE;
         }
         return what;
     }

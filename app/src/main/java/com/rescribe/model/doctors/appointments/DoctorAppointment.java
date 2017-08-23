@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 /**
  * Created by riteshpandhurkar on 19/7/17.
@@ -91,7 +91,7 @@ public class DoctorAppointment implements CustomResponse{
         if (aptDate.contains("T")) {
             String date[] = aptDate.split("T");
             String dateBeforeTime = date[0];
-            aptDate = CommonMethods.formatDateTime(dateBeforeTime+"T"+aptTime+".000Z", MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
+            aptDate = CommonMethods.formatDateTime(dateBeforeTime+"T"+aptTime+".000Z", RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
         }
         return aptDate;
     }

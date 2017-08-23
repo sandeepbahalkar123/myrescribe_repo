@@ -8,9 +8,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.rescribe.R;
-import com.rescribe.preference.MyRescribePreferencesManager;
-import com.rescribe.util.Config;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.util.RescribeConstants;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -26,7 +25,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         mContext = SplashScreenActivity.this;
-        MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, Config.BASE_URL, mContext);
         doNext();
         //  doAppCheckLogin();
 
@@ -36,7 +34,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, mContext).equals(MyRescribeConstants.YES)) {
+                if (RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, mContext).equals(RescribeConstants.YES)) {
                     Intent intentObj = new Intent(SplashScreenActivity.this, HomePageActivity.class);
                     startActivity(intentObj);
                 } else {
@@ -45,14 +43,14 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
                 finish();
             }
-        }, MyRescribeConstants.TIME_STAMPS.THREE_SECONDS);
+        }, RescribeConstants.TIME_STAMPS.THREE_SECONDS);
     }
 /*
     private void doLogin() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (MyRescribePreferencesManager.getString(MyRescribeConstants.USERNAME, mContext).equals("") && MyRescribePreferencesManager.getString(MyRescribeConstants.PHONE, mContext).equals("")) {
+                if (RescribePreferencesManager.getString(RescribeConstants.USERNAME, mContext).equals("") && RescribePreferencesManager.getString(RescribeConstants.PHONE, mContext).equals("")) {
                     Intent intentObj = new Intent(SplashScreenActivity.this, LoginActivity.class);
                     //---- TO show login screen enable below line
                     //  Intent intentObj = new Intent(SplashScreenActivity.this, LoginMainActivity.class);
@@ -61,7 +59,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intentObj);
-                } else if (!MyRescribePreferencesManager.getString(MyRescribeConstants.USERNAME, mContext).equals("") && MyRescribePreferencesManager.getString(MyRescribeConstants.PHONE, mContext).equals("")) {
+                } else if (!RescribePreferencesManager.getString(RescribeConstants.USERNAME, mContext).equals("") && RescribePreferencesManager.getString(RescribeConstants.PHONE, mContext).equals("")) {
                     //TODO : UNCOMMET PhoneNoActivity to OTP screen
                     //    Intent intentObj = new Intent(SplashScreenActivity.this, PhoneNoActivity.class);
                     //        Intent intentObj = new Intent(SplashScreenActivity.this, HistoryActivity.class);
@@ -70,7 +68,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intentObj);
-                } else if (!MyRescribePreferencesManager.getString(MyRescribeConstants.USERNAME, mContext).equals("") && (!MyRescribePreferencesManager.getString(MyRescribeConstants.PHONE, mContext).equals(""))) {
+                } else if (!RescribePreferencesManager.getString(RescribeConstants.USERNAME, mContext).equals("") && (!RescribePreferencesManager.getString(RescribeConstants.PHONE, mContext).equals(""))) {
                     Intent intentObj = new Intent(SplashScreenActivity.this, PrescriptionActivity.class);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intentObj.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -79,7 +77,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                 }
             }
-        }, MyRescribeConstants.TIME_STAMPS.THREE_SECONDS);
+        }, RescribeConstants.TIME_STAMPS.THREE_SECONDS);
 
     }
 
@@ -88,20 +86,20 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                String userName = MyRescribePreferencesManager.getString(MyRescribeConstants.USERNAME, mContext);
-                String password = MyRescribePreferencesManager.getString(MyRescribeConstants.PASSWORD, mContext);
+                String userName = RescribePreferencesManager.getString(RescribeConstants.USERNAME, mContext);
+                String password = RescribePreferencesManager.getString(RescribeConstants.PASSWORD, mContext);
 
                 Intent intentObj = null;
 
-                if (MyRescribeConstants.BLANK.equalsIgnoreCase(userName) || MyRescribeConstants.BLANK.equalsIgnoreCase(password)) {
-                    if (!MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.IS_VALID_IP_CONFIG, mContext).equals(MyRescribeConstants.TRUE)) {
+                if (RescribeConstants.BLANK.equalsIgnoreCase(userName) || RescribeConstants.BLANK.equalsIgnoreCase(password)) {
+                    if (!RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.IS_VALID_IP_CONFIG, mContext).equals(RescribeConstants.TRUE)) {
                         //alert dialog for serverpath
                         CommonMethods.showAlertDialog(SplashScreenActivity.this, getString(R.string.server_path) + "\n" + getString(R.string.for_example_server_path), new CheckIpConnection() {
                             @Override
                             public void onOkButtonClickListner(String serverPath, Context context, Dialog dialog) {
                                 mDialog = dialog;
                                 mContext = context;
-                                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, serverPath, context);
+                                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, serverPath, context);
 
                                 // mLoginHelper.checkConnectionToServer(serverPath);
 
@@ -133,7 +131,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
             }
-        }, MyRescribeConstants.TIME_STAMPS.THREE_SECONDS);
+        }, RescribeConstants.TIME_STAMPS.THREE_SECONDS);
 
 
         mContext = this;

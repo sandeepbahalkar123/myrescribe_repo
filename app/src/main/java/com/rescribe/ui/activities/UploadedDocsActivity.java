@@ -20,7 +20,7 @@ import com.rescribe.model.investigation.Image;
 import com.rescribe.model.investigation.InvestigationData;
 import com.rescribe.model.investigation.uploaded.InvestigationUploadFromUploadedModel;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -66,8 +66,8 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
         appDBHelper = new AppDBHelper(mContext);
         investigationHelper = new InvestigationHelper(mContext);
 
-        investigation = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
-        investigationTemp = getIntent().getParcelableArrayListExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TEMP_DATA);
+        investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
+        investigationTemp = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TEMP_DATA);
 
         for (InvestigationData dataObject : investigation)
             photoPaths.addAll(dataObject.getPhotos());
@@ -134,7 +134,7 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
                 startActivity(intent);
             } else {
                 Intent intent = new Intent();
-                intent.putExtra(MyRescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigationTemp);
+                intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigationTemp);
                 setResult(RESULT_OK, intent);
             }
             finish();

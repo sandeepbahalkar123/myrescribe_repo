@@ -55,7 +55,6 @@ public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApi
     Intent intent;
     private CallbackManager mCallbackManager;
     private GoogleApiClient mGoogleApiClient;
-    private SignUpRequestModel mSignUpRequestModel;
     private static final int RC_SIGN_IN = 007;
     private static final int REQUEST_PERMISSIONS = 001;
     private LoginFragment loginFragment;
@@ -66,7 +65,8 @@ public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApi
         setContentView(R.layout.login_signup_layout);
         ButterKnife.bind(this);
         LoginSignUpActivityPermissionsDispatcher.askToReadMessageWithCheck(LoginSignUpActivity.this);
-
+        String key = CommonMethods.printKeyHash(LoginSignUpActivity.this);
+        Log.e(TAG,key);
         googleInitialize();
         facebookInitialize();
         init();
@@ -94,7 +94,6 @@ public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApi
 
                     @Override
                     public void onCancel() {
-                        //Toast.makeText(LoginActivity.this, "Login Cancel", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -198,7 +197,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApi
             intentObj.putExtra(getString(R.string.details), signUpRequest);
             intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
             startActivity(intentObj);
-            finish();
+
 
         } else {
             // Signed out, show unauthenticated UI.
@@ -239,6 +238,4 @@ public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApi
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         LoginSignUpActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
-
-
 }

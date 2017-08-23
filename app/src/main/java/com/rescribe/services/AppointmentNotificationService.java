@@ -11,16 +11,16 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.rescribe.R;
-import com.rescribe.broadcast_receivers.NoClickReceiver;
-import com.rescribe.broadcast_receivers.YesClickReceiver;
+import com.rescribe.broadcast_receivers.ClickOnNotificationReceiver;
+import com.rescribe.broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver;
 import com.rescribe.helpers.notification.AppointmentHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.notification.AppointmentsNotificationData;
 import com.rescribe.model.notification.AppointmentsNotificationModel;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.List;
 
@@ -53,10 +53,10 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
         // If this service was started by out DosesAlarmTask intent then we want to show our notification
 
-        if (MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this).equals(MyRescribeConstants.YES)) {
+        if (RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this).equals(RescribeConstants.YES)) {
 
-            int notification_id = intent.getIntExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, 0);
-            notifyTime = intent.getStringExtra(MyRescribeConstants.APPOINTMENT_TIME);
+            int notification_id = intent.getIntExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, 0);
+            notifyTime = intent.getStringExtra(RescribeConstants.APPOINTMENT_TIME);
 
             if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
                 AppointmentHelper appointmentHelper = new AppointmentHelper(this);
@@ -81,25 +81,25 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
         String drName = data.get(index).getDoctorName();
         int subNotificationId = data.get(index).getAptId();
-        String date = CommonMethods.getFormatedDate(data.get(index).getAptDate(), MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DD_MM_YYYY);
-        String time = CommonMethods.getFormatedDate(data.get(index).getAptTime(), MyRescribeConstants.DATE_PATTERN.HH_mm_ss, MyRescribeConstants.DATE_PATTERN.hh_mm_a);
+        String date = CommonMethods.getFormatedDate(data.get(index).getAptDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY);
+        String time = CommonMethods.getFormatedDate(data.get(index).getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a);
         String message = "You have an appointment with " + drName + " on " + date + " at " + time.toLowerCase() + ".";
 
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
                 R.layout.appointment_notification_layout);
 
-        Intent mNotifyYesIntent = new Intent(this, YesClickReceiver.class);
-        mNotifyYesIntent.putExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, subNotificationId);
-        mNotifyYesIntent.putExtra(MyRescribeConstants.APPOINTMENT_TIME, time);
-        mNotifyYesIntent.putExtra(MyRescribeConstants.APPOINTMENT_MESSAGE, message);
+        Intent mNotifyYesIntent = new Intent(this, ClickOnCheckBoxOfNotificationReceiver.class);
+        mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, subNotificationId);
+        mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
+        mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, message);
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, subNotificationId, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
 
-        Intent mNotifyNoIntent = new Intent(this, NoClickReceiver.class);
-        mNotifyNoIntent.putExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, subNotificationId);
-        mNotifyNoIntent.putExtra(MyRescribeConstants.APPOINTMENT_TIME, time);
-        mNotifyNoIntent.putExtra(MyRescribeConstants.APPOINTMENT_MESSAGE, message);
+        Intent mNotifyNoIntent = new Intent(this, ClickOnNotificationReceiver.class);
+        mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, subNotificationId);
+        mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
+        mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, message);
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, subNotificationId, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mNoPendingIntent);
 

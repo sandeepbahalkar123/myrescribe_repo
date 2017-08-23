@@ -21,7 +21,7 @@ import com.rescribe.model.requestmodel.login.SignUpRequestModel;
 import com.rescribe.ui.activities.AppGlobalContainerActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.Locale;
 
@@ -174,7 +174,7 @@ public class SignUpFragment extends Fragment implements HelperResponse{
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (mOldDataTag.equalsIgnoreCase(MyRescribeConstants.TASK_SIGN_UP)) {
+        if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_SIGN_UP)) {
 
             SignUpModel loginModel = (SignUpModel) customResponse;
 

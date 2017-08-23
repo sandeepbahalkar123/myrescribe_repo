@@ -7,7 +7,7 @@ import android.content.Intent;
 
 import com.rescribe.services.AppointmentNotificationService;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.Calendar;
 
@@ -68,9 +68,9 @@ public class AppointmentAlarmTask implements Runnable {
     private void setAlarm(String time, String msg, int requestCode) {
         Intent intent = new Intent(context, AppointmentNotificationService.class);
         intent.putExtra(AppointmentNotificationService.INTENT_NOTIFY, true);
-        intent.putExtra(MyRescribeConstants.APPOINTMENT_TIME, time);
-        intent.putExtra(MyRescribeConstants.APPOINTMENT_MESSAGE, msg);
-        intent.putExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, requestCode);
+        intent.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
+        intent.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, msg);
+        intent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, requestCode);
 
         PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent, 0);
 
@@ -83,7 +83,7 @@ public class AppointmentAlarmTask implements Runnable {
     private void cancelAlarm(int requestCode) {
         Intent intent = new Intent(context, AppointmentNotificationService.class);
         intent.putExtra(AppointmentNotificationService.INTENT_NOTIFY, false);
-        intent.putExtra(MyRescribeConstants.APPOINTMENT_NOTIFICATION_ID, requestCode);
+        intent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, requestCode);
         context.startService(intent);
     }
 }

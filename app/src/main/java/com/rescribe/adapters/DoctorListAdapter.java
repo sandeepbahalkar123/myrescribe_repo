@@ -13,11 +13,11 @@ import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.model.doctors.doctor_info.DoctorDetail;
-import com.rescribe.ui.activities.OneDayVisitActivity;
+import com.rescribe.ui.activities.SingleVisitDetailsActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
         this.mContext = context;
         mDataList = dataList;
-        mDateFormat = new SimpleDateFormat(MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, Locale.US);
+        mDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, Locale.US);
 
     }
 
@@ -63,7 +63,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
         if (dataObject.isStartElement()) {
 
-            Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            Date date = CommonMethods.convertStringToDate(dataObject.getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
@@ -118,14 +118,14 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
         holder.mClickOnDoctorVisitLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String timeToShow = CommonMethods.formatDateTime(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.MMM_YYYY,
-                        MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE).toLowerCase();
-                Date date = CommonMethods.convertStringToDate(dataObject.getDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                String timeToShow = CommonMethods.formatDateTime(dataObject.getDate(), RescribeConstants.DATE_PATTERN.MMM_YYYY,
+                        RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE).toLowerCase();
+                Date date = CommonMethods.convertStringToDate(dataObject.getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);
                 timeToShow = timeToShow.substring(0, 1).toUpperCase() + timeToShow.substring(1);
                 String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup> " + timeToShow;
-                Intent intent = new Intent(mContext, OneDayVisitActivity.class);
+                Intent intent = new Intent(mContext, SingleVisitDetailsActivity.class);
                 intent.putExtra(mContext.getString(R.string.name), dataObject.getDoctorName());
                 intent.putExtra(mContext.getString(R.string.specialization), dataObject.getSpecialization());
                 intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());

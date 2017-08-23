@@ -15,7 +15,7 @@ import com.rescribe.helpers.doctor.DoctorHelper;
 import com.rescribe.model.doctors.doctor_info.DoctorDetail;
 import com.rescribe.model.login.Year;
 import com.rescribe.ui.activities.DoctorListActivity;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -49,8 +49,8 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
 
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mMonthName = arguments.getString(MyRescribeConstants.MONTH);
-            mYear = arguments.getString(MyRescribeConstants.YEAR);
+            mMonthName = arguments.getString(RescribeConstants.MONTH);
+            mYear = arguments.getString(RescribeConstants.YEAR);
         }
         return mRootView;
     }
@@ -58,8 +58,8 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
     public static DoctorListFragment createNewFragment(Year dataString) {
         DoctorListFragment fragment = new DoctorListFragment();
         Bundle args = new Bundle();
-        args.putString(MyRescribeConstants.MONTH, dataString.getMonthName());
-        args.putString(MyRescribeConstants.YEAR, dataString.getYear());
+        args.putString(RescribeConstants.MONTH, dataString.getMonthName());
+        args.putString(RescribeConstants.YEAR, dataString.getYear());
         fragment.setArguments(args);
         return fragment;
     }

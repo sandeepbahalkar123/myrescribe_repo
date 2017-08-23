@@ -12,10 +12,10 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.rescribe.R;
-import com.rescribe.broadcast_receivers.NoClickReceiver;
-import com.rescribe.broadcast_receivers.YesClickReceiver;
-import com.rescribe.preference.MyRescribePreferencesManager;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.broadcast_receivers.ClickOnNotificationReceiver;
+import com.rescribe.broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver;
+import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.util.RescribeConstants;
 
 
 /**
@@ -44,9 +44,9 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if (MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this).equals(MyRescribeConstants.YES)) {
+        if (RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this).equals(RescribeConstants.YES)) {
 
-            notification_id = intent.getIntExtra(MyRescribeConstants.NOTIFICATION_ID, 0);
+            notification_id = intent.getIntExtra(RescribeConstants.NOTIFICATION_ID, 0);
 
             // If this service was started by out DosesAlarmTask intent then we want to show our notification
             if (intent.getBooleanExtra(INTENT_NOTIFY, false))
@@ -73,18 +73,18 @@ public class NotificationService extends Service {
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
                 R.layout.notification_layout);
 
-        Intent mNotifyYesIntent = new Intent(this.getApplicationContext(), YesClickReceiver.class);
-        mNotifyYesIntent.putExtra(MyRescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
-        mNotifyYesIntent.putExtra(MyRescribeConstants.NOTIFICATION_ID, notification_id);
+        Intent mNotifyYesIntent = new Intent(this.getApplicationContext(), ClickOnCheckBoxOfNotificationReceiver.class);
+        mNotifyYesIntent.putExtra(RescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(RescribeConstants.MEDICINE_SLOT));
+        mNotifyYesIntent.putExtra(RescribeConstants.NOTIFICATION_ID, notification_id);
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mYesPendingIntent);
 
-        Intent mNotifyNoIntent = new Intent(this, NoClickReceiver.class);
-        mNotifyNoIntent.putExtra(MyRescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
-        mNotifyNoIntent.putExtra(MyRescribeConstants.NOTIFICATION_DATE, intentData.getStringExtra(MyRescribeConstants.NOTIFICATION_DATE));
-        mNotifyNoIntent.putExtra(MyRescribeConstants.NOTIFICATION_TIME, intentData.getStringExtra(MyRescribeConstants.NOTIFICATION_TIME));
-        mNotifyNoIntent.putExtra(MyRescribeConstants.MEDICINE_NAME, intentData.getBundleExtra(MyRescribeConstants.MEDICINE_NAME));
-        mNotifyNoIntent.putExtra(MyRescribeConstants.NOTIFICATION_ID, notification_id);
+        Intent mNotifyNoIntent = new Intent(this, ClickOnNotificationReceiver.class);
+        mNotifyNoIntent.putExtra(RescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(RescribeConstants.MEDICINE_SLOT));
+        mNotifyNoIntent.putExtra(RescribeConstants.NOTIFICATION_DATE, intentData.getStringExtra(RescribeConstants.NOTIFICATION_DATE));
+        mNotifyNoIntent.putExtra(RescribeConstants.NOTIFICATION_TIME, intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME));
+        mNotifyNoIntent.putExtra(RescribeConstants.MEDICINE_NAME, intentData.getBundleExtra(RescribeConstants.MEDICINE_NAME));
+        mNotifyNoIntent.putExtra(RescribeConstants.NOTIFICATION_ID, notification_id);
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
 
@@ -99,9 +99,9 @@ public class NotificationService extends Service {
                 .setContent(mRemoteViews)
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
 
-        mRemoteViews.setTextViewText(R.id.showMedicineName, intentData.getStringExtra(MyRescribeConstants.MEDICINE_SLOT));
+        mRemoteViews.setTextViewText(R.id.showMedicineName, intentData.getStringExtra(RescribeConstants.MEDICINE_SLOT));
         mRemoteViews.setTextViewText(R.id.questionText, getText(R.string.taken_medicine));
-        mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(MyRescribeConstants.NOTIFICATION_TIME));
+        mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME));
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationmanager.notify(notification_id, builder.build());
 

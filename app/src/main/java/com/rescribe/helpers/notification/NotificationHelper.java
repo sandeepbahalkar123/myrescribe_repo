@@ -9,10 +9,10 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 /**
  * Created by jeetal on 20/7/17.
@@ -20,7 +20,7 @@ import com.rescribe.util.MyRescribeConstants;
 
 public class NotificationHelper implements ConnectionListener {
 
-    String TAG = "MyRescribe/NotificationHelper";
+    String TAG = this.getClass().getName();
     Context mContext;
     HelperResponse mHelperResponseManager;
 
@@ -36,7 +36,7 @@ public class NotificationHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == MyRescribeConstants.TASK_NOTIFICATION) {
+                if (mOldDataTag == RescribeConstants.TASK_NOTIFICATION) {
                     NotificationModel model = (NotificationModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
                 }
@@ -69,10 +69,10 @@ public class NotificationHelper implements ConnectionListener {
     }
 
     public void doGetNotificationList() {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, MyRescribeConstants.TASK_NOTIFICATION, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_NOTIFICATION, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.NOTIFICATION_URL + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_NOTIFICATION);
+        mConnectionFactory.setUrl(Config.NOTIFICATION_URL + RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        mConnectionFactory.createConnection(RescribeConstants.TASK_NOTIFICATION);
     }
 
 

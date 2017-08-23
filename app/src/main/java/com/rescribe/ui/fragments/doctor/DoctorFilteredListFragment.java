@@ -24,7 +24,7 @@ import com.rescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
 import com.rescribe.model.doctors.filter_doctor_list.DoctorFilteredInfoAndCaseDetails;
 import com.rescribe.model.filter.filter_request.DrFilterRequestModel;
 import com.rescribe.ui.activities.DoctorListActivity;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -69,7 +69,7 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
         Bundle arguments = getArguments();
         DrFilterRequestModel tempReceivedObject = new DrFilterRequestModel();
         if (arguments != null) {
-            tempReceivedObject = arguments.getParcelable(MyRescribeConstants.FILTER_REQUEST);
+            tempReceivedObject = arguments.getParcelable(RescribeConstants.FILTER_REQUEST);
         }
         initialize(tempReceivedObject);
         return mRootView;
@@ -86,7 +86,7 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
     public static DoctorFilteredListFragment newInstance(DrFilterRequestModel drFilterRequestModel) {
         DoctorFilteredListFragment fragment = new DoctorFilteredListFragment();
         Bundle b = new Bundle();
-        b.putParcelable(MyRescribeConstants.FILTER_REQUEST, drFilterRequestModel);
+        b.putParcelable(RescribeConstants.FILTER_REQUEST, drFilterRequestModel);
         fragment.setArguments(b);
         return fragment;
     }

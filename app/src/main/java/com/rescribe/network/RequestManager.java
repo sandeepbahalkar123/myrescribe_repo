@@ -51,12 +51,12 @@ import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.model.prescription_response_model.PrescriptionModel;
 import com.rescribe.model.requestmodel.login.LoginRequestModel;
 import com.rescribe.model.response_model_notification.ResponseLogNotificationModel;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.Device;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.NetworkUtil;
 
 import org.json.JSONException;
@@ -340,7 +340,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 //                    mContext.startActivity(intent);
 //                    ((AppCompatActivity) mContext).finishAffinity();
 
-//                    MyRescribePreferencesManager.clearSharedPref(mContext);
+//                    RescribePreferencesManager.clearSharedPref(mContext);
 //                    Intent intent = new Intent(mContext, SplashScreenActivity.class);
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -408,7 +408,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
             try {
                 jsonObject = new JSONObject(data);
                 Common common = gson.fromJson(jsonObject.optString("common"), Common.class);
-                if (!common.getStatusCode().equals(MyRescribeConstants.SUCCESS)) {
+                if (!common.getStatusCode().equals(RescribeConstants.SUCCESS)) {
                     CommonMethods.showToast(mContext, common.getStatusMessage());
                 }
             } catch (JSONException e) {
@@ -416,18 +416,18 @@ public class RequestManager extends ConnectRequest implements Connector, Request
             }
 
             /*MessageModel messageModel = gson.fromJson(data, MessageModel.class);
-            if (!messageModel.getCommon().getStatusCode().equals(MyRescribeConstants.SUCCESS))
+            if (!messageModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS))
                 CommonMethods.showToast(mContext, messageModel.getCommon().getStatusMessage());*/
 
             if (isTokenExpired) {
                 // This success response is for refresh token
                 // Need to Add
                 LoginModel loginModel = gson.fromJson(data, LoginModel.class);
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MyRescribeConstants.YES, mContext);
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, loginModel.getPatientId(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, loginModel.getPatientId(), mContext);
 
-                mHeaderParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, loginModel.getAuthToken());
+                mHeaderParams.put(RescribeConstants.AUTHORIZATION_TOKEN, loginModel.getAuthToken());
 
                 connect();
 
@@ -438,106 +438,106 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
                     // Need to add
 
-                    case MyRescribeConstants.TASK_PRESCRIPTION_LIST: //This is for get archived list
+                    case RescribeConstants.TASK_PRESCRIPTION_LIST: //This is for get archived list
                         PrescriptionModel ipTestResponseModel = gson.fromJson(data, PrescriptionModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, ipTestResponseModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.TASK_LOGIN: //This is for get archived list
+                    case RescribeConstants.TASK_LOGIN: //This is for get archived list
                         LoginModel loginModel = gson.fromJson(data, LoginModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginModel, mOldDataTag);
                         break;
-                    case MyRescribeConstants.TASK_ONE_DAY_VISIT: //This is for get archived list
+                    case RescribeConstants.TASK_ONE_DAY_VISIT: //This is for get archived list
                         CaseDetailsModel caseDetailsModel = gson.fromJson(data, CaseDetailsModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, caseDetailsModel, mOldDataTag);
                         break;
-                    case MyRescribeConstants.TASK_DOCTOR_LIST: //This is for get archived list
+                    case RescribeConstants.TASK_DOCTOR_LIST: //This is for get archived list
                         DoctorModel doctorsModel = new Gson().fromJson(data, DoctorModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorsModel, mOldDataTag);
                         break;
-                    case MyRescribeConstants.TASK_DOCTOR_LIST_FILTERING: //This is for get archived list
+                    case RescribeConstants.TASK_DOCTOR_LIST_FILTERING: //This is for get archived list
                         DoctorFilterModel doctorFilterModel = new Gson().fromJson(data, DoctorFilterModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorFilterModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.TASK_SIGN_UP: //This is for get sign-up
+                    case RescribeConstants.TASK_SIGN_UP: //This is for get sign-up
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, new Gson().fromJson(data, SignUpModel.class), mOldDataTag);
                         break;
-                    case MyRescribeConstants.TASK_VERIFY_SIGN_UP_OTP: //This is for to verify sign-up otp
+                    case RescribeConstants.TASK_VERIFY_SIGN_UP_OTP: //This is for to verify sign-up otp
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, new Gson().fromJson(data, LoginModel.class), mOldDataTag);
                         break;
-                    case MyRescribeConstants.TASK_NOTIFICATION: //This is for get archived list
+                    case RescribeConstants.TASK_NOTIFICATION: //This is for get archived list
                         NotificationModel notificationModel = new Gson().fromJson(data, NotificationModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, notificationModel, mOldDataTag);
                         break;
-                   /* case MyRescribeConstants.TASK_RESPOND_NOTIFICATION: //This is for get archived list
+                   /* case RescribeConstants.TASK_RESPOND_NOTIFICATION: //This is for get archived list
                         ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
                         break;*/
 
-                    case MyRescribeConstants.FILTER_DOCTOR_LIST: //This is for get archived list
+                    case RescribeConstants.FILTER_DOCTOR_LIST: //This is for get archived list
                         FilterDoctorListModel filterDoctorListModel = new Gson().fromJson(data, FilterDoctorListModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, filterDoctorListModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.FILTER_DOCTOR_SPECIALITY_LIST: //This is for get archived list
+                    case RescribeConstants.FILTER_DOCTOR_SPECIALITY_LIST: //This is for get archived list
                         FilterDoctorSpecialityListModel filterDoctorSpecialityListModel = new Gson().fromJson(data, FilterDoctorSpecialityListModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, filterDoctorSpecialityListModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.CASE_DETAILS_LIST: //This is for get archived list
+                    case RescribeConstants.CASE_DETAILS_LIST: //This is for get archived list
                         CaseDetailsListModel caseDetailsListModel = new Gson().fromJson(data, CaseDetailsListModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, caseDetailsListModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.APPOINTMENT_NOTIFICATION: //This is for get archived list
+                    case RescribeConstants.APPOINTMENT_NOTIFICATION: //This is for get archived list
                         AppointmentsNotificationModel appointmentsNotificationModel = new Gson().fromJson(data, AppointmentsNotificationModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, appointmentsNotificationModel, mOldDataTag);
                         break;
-                    case MyRescribeConstants.TASK_DOCTOR_APPOINTMENT: //This is for TASK_DOCTOR_APPOINTMENT
+                    case RescribeConstants.TASK_DOCTOR_APPOINTMENT: //This is for TASK_DOCTOR_APPOINTMENT
                         DoctorAppointmentModel doctorAppointmentModel = new Gson().fromJson(data, DoctorAppointmentModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorAppointmentModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.INVESTIGATION_LIST: //This is for INVESTIGATION_LIST
+                    case RescribeConstants.INVESTIGATION_LIST: //This is for INVESTIGATION_LIST
                         InvestigationListModel investigationListModel = new Gson().fromJson(data, InvestigationListModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationListModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL: //This is for INVESTIGATION_UPLOAD_BY_GMAIL
+                    case RescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL: //This is for INVESTIGATION_UPLOAD_BY_GMAIL
                         InvestigationUploadByGmailModel investigationUploadByGmailModel = new Gson().fromJson(data, InvestigationUploadByGmailModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationUploadByGmailModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED: //This is for INVESTIGATION_UPLOAD_FROM_UPLOADED
+                    case RescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED: //This is for INVESTIGATION_UPLOAD_FROM_UPLOADED
                         InvestigationUploadFromUploadedModel investigationUploadFromUploadedModel = new Gson().fromJson(data, InvestigationUploadFromUploadedModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationUploadFromUploadedModel, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.TASK_LOGIN_WITH_PASSWORD: //This is for get archived list
+                    case RescribeConstants.TASK_LOGIN_WITH_PASSWORD: //This is for get archived list
                         LoginModel loginWithPasswordModel = new Gson().fromJson(data, LoginModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginWithPasswordModel, mOldDataTag);
                         break;
-                    case MyRescribeConstants.TASK_LOGIN_WITH_OTP: //This is for get archived list
+                    case RescribeConstants.TASK_LOGIN_WITH_OTP: //This is for get archived list
                         LoginModel loginWithOtpModel = new Gson().fromJson(data, LoginModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginWithOtpModel, mOldDataTag);
                         break;
-                    case MyRescribeConstants.TASK_GET_ALL_MY_RECORDS: //This is for TASK_GET_ALL_MY_RECORDS
+                    case RescribeConstants.TASK_GET_ALL_MY_RECORDS: //This is for TASK_GET_ALL_MY_RECORDS
                         MyRecordBaseModel model = new Gson().fromJson(data, MyRecordBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, model, mOldDataTag);
                         break;
 
-                    case MyRescribeConstants.MY_RECORDS_DOCTOR_LIST: //This is for get archived list
+                    case RescribeConstants.MY_RECORDS_DOCTOR_LIST: //This is for get archived list
                         MyRecordsDoctorListModel myRecordsDoctorListModel = new Gson().fromJson(data, MyRecordsDoctorListModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, myRecordsDoctorListModel, mOldDataTag);
                         break;
 
                     default:
                         //This is for get PDF VisitData
-                        if (mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION)) {
+                        if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {
                             ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
-                        } else if (mDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
+                        } else if (mDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
                             ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
                         }
@@ -616,39 +616,39 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     private void tokenRefreshRequest() {
         loginRequest();
         // Commented as login API is not implemented yet.
-       /* String url = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
-        CommonMethods.Log(TAG, "Refersh token while sending refresh token api: " + MyRescribePreferencesManager.getString(MyRescribeConstants.REFRESH_TOKEN, mContext));
+       /* String url = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
+        CommonMethods.Log(TAG, "Refersh token while sending refresh token api: " + RescribePreferencesManager.getString(RescribeConstants.REFRESH_TOKEN, mContext));
         Map<String, String> headerParams = new HashMap<>();
         headerParams.putAll(mHeaderParams);
-        headerParams.remove(MyRescribeConstants.CONTENT_TYPE);
-        headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_URL_ENCODED);
+        headerParams.remove(RescribeConstants.CONTENT_TYPE);
+        headerParams.put(RescribeConstants.CONTENT_TYPE, RescribeConstants.APPLICATION_URL_ENCODED);
 
         Map<String, String> postParams = new HashMap<>();
-        postParams.put(MyRescribeConstants.GRANT_TYPE_KEY, MyRescribeConstants.REFRESH_TOKEN);
-        postParams.put(MyRescribeConstants.REFRESH_TOKEN, MyRescribePreferencesManager.getString(MyRescribeConstants.REFRESH_TOKEN, mContext));
-        postParams.put(MyRescribeConstants.CLIENT_ID_KEY, MyRescribeConstants.CLIENT_ID_VALUE);
+        postParams.put(RescribeConstants.GRANT_TYPE_KEY, RescribeConstants.REFRESH_TOKEN);
+        postParams.put(RescribeConstants.REFRESH_TOKEN, RescribePreferencesManager.getString(RescribeConstants.REFRESH_TOKEN, mContext));
+        postParams.put(RescribeConstants.CLIENT_ID_KEY, RescribeConstants.CLIENT_ID_VALUE);
 
         stringRequest(url, Request.Method.POST, headerParams, postParams, true);*/
     }
 
     private void loginRequest() {
         CommonMethods.Log(TAG, "Refresh token while sending refresh token api: ");
-        String url = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.LOGIN_URL;
+        String url = Config.BASE_URL + Config.LOGIN_URL;
 
         LoginRequestModel loginRequestModel = new LoginRequestModel();
-        loginRequestModel.setMobileNumber(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
-        loginRequestModel.setPassword(MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mContext));
-        if (!(MyRescribeConstants.BLANK.equalsIgnoreCase(loginRequestModel.getMobileNumber()) &&
-                MyRescribeConstants.BLANK.equalsIgnoreCase(loginRequestModel.getPassword()))) {
+        loginRequestModel.setMobileNumber(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+        loginRequestModel.setPassword(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mContext));
+        if (!(RescribeConstants.BLANK.equalsIgnoreCase(loginRequestModel.getMobileNumber()) &&
+                RescribeConstants.BLANK.equalsIgnoreCase(loginRequestModel.getPassword()))) {
             Map<String, String> headerParams = new HashMap<>();
             headerParams.putAll(mHeaderParams);
             Device device = Device.getInstance(mContext);
 
-            headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
-            headerParams.put(MyRescribeConstants.DEVICEID, device.getDeviceId());
-            headerParams.put(MyRescribeConstants.OS, device.getOS());
-            headerParams.put(MyRescribeConstants.OSVERSION, device.getOSVersion());
-            headerParams.put(MyRescribeConstants.DEVICE_TYPE, device.getDeviceType());
+            headerParams.put(RescribeConstants.CONTENT_TYPE, RescribeConstants.APPLICATION_JSON);
+            headerParams.put(RescribeConstants.DEVICEID, device.getDeviceId());
+            headerParams.put(RescribeConstants.OS, device.getOS());
+            headerParams.put(RescribeConstants.OSVERSION, device.getOSVersion());
+            headerParams.put(RescribeConstants.DEVICE_TYPE, device.getDeviceType());
             CommonMethods.Log(TAG, "setHeaderParams:" + headerParams.toString());
             jsonRequest(url, Request.Method.POST, headerParams, loginRequestModel, true);
         } else {

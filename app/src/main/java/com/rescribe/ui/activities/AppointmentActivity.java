@@ -19,7 +19,7 @@ import com.rescribe.model.doctors.appointments.DoctorAppointment;
 import com.rescribe.model.doctors.appointments.DoctorAppointmentModel;
 import com.rescribe.ui.fragments.AppointmentFragment;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -151,7 +151,7 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(AppointmentActivity.this, HomePageActivity.class);
-        intent.putExtra(MyRescribeConstants.ALERT, false);
+        intent.putExtra(RescribeConstants.ALERT, false);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         super.onBackPressed();
@@ -170,8 +170,8 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
         Collections.sort(tempList, new Comparator<DoctorAppointment>() {
             @Override
             public int compare(DoctorAppointment o1, DoctorAppointment o2) {
-                Date m1Date = CommonMethods.convertStringToDate(o1.getAptDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
-                Date m2Date = CommonMethods.convertStringToDate(o2.getAptDate(), MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
+                Date m1Date = CommonMethods.convertStringToDate(o1.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
+                Date m2Date = CommonMethods.convertStringToDate(o2.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
 
                 return m2Date.compareTo(m1Date);
             }

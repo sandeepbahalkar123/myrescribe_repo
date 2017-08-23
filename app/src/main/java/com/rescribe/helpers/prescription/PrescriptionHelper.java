@@ -9,10 +9,10 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.prescription_response_model.PrescriptionModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 /**
  * Created by riteshpandhurkar on 1/3/17.
@@ -20,7 +20,7 @@ import com.rescribe.util.MyRescribeConstants;
 
 public class PrescriptionHelper implements ConnectionListener {
 
-    String TAG = "MyRescribe/PrescriptionHelper";
+    String TAG = this.getClass().getName();
     Context mContext;
     HelperResponse mHelperResponseManager;
 
@@ -36,7 +36,7 @@ public class PrescriptionHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == MyRescribeConstants.TASK_PRESCRIPTION_LIST) {
+                if (mOldDataTag == RescribeConstants.TASK_PRESCRIPTION_LIST) {
                     PrescriptionModel model = (PrescriptionModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
                 }
@@ -69,11 +69,11 @@ public class PrescriptionHelper implements ConnectionListener {
     }
 
     public void doGetPrescriptionList() {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_PRESCRIPTION_LIST, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_PRESCRIPTION_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
 
-        mConnectionFactory.setUrl(Config.PRESCRIPTION_URL + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_PRESCRIPTION_LIST);
+        mConnectionFactory.setUrl(Config.PRESCRIPTION_URL + RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        mConnectionFactory.createConnection(RescribeConstants.TASK_PRESCRIPTION_LIST);
     }
 
 }

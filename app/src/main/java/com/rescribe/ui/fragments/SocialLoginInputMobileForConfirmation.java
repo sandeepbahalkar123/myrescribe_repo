@@ -17,7 +17,7 @@ import com.rescribe.model.login.SignUpModel;
 import com.rescribe.model.requestmodel.login.SignUpRequestModel;
 import com.rescribe.ui.activities.AppGlobalContainerActivity;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.Locale;
 
@@ -86,7 +86,7 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
             Bundle arguments = getArguments();
             mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(getString(R.string.details));
             mEmailLayout.setVisibility(View.GONE);
-            if (mSignUpRequestModel.getEmailId() == null || MyRescribeConstants.BLANK.equalsIgnoreCase(mSignUpRequestModel.getEmailId())) {
+            if (mSignUpRequestModel.getEmailId() == null || RescribeConstants.BLANK.equalsIgnoreCase(mSignUpRequestModel.getEmailId())) {
                 mEmailLayout.setVisibility(View.VISIBLE);
             } else {
                 mSocialLoginEmail.setText("" + mSignUpRequestModel.getEmailId());
@@ -147,7 +147,7 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (mOldDataTag.equalsIgnoreCase(MyRescribeConstants.TASK_SIGN_UP)) {
+        if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_SIGN_UP)) {
 
             SignUpModel loginModel = (SignUpModel) customResponse;
 

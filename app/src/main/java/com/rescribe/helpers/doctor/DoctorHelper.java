@@ -15,10 +15,10 @@ import com.rescribe.model.doctors.doctor_info.DoctorModel;
 import com.rescribe.model.filter.filter_request.DrFilterRequestModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -55,17 +55,17 @@ public class DoctorHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == MyRescribeConstants.TASK_DOCTOR_LIST) {
+                if (mOldDataTag == RescribeConstants.TASK_DOCTOR_LIST) {
                     DoctorModel model = (DoctorModel) customResponse;
                     if (model.getDoctorInfoMonthContainer() != null) {
                         DoctorInfoMonthContainer doctorInfoMonthContainer = model.getDoctorInfoMonthContainer();
                         yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
                     }
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
-                } else if (mOldDataTag == MyRescribeConstants.TASK_DOCTOR_APPOINTMENT) {
+                } else if (mOldDataTag == RescribeConstants.TASK_DOCTOR_APPOINTMENT) {
                     DoctorAppointmentModel doctorAppointmentModel = (DoctorAppointmentModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, doctorAppointmentModel);
-                } else if (mOldDataTag == MyRescribeConstants.TASK_DOCTOR_LIST_FILTERING) {
+                } else if (mOldDataTag == RescribeConstants.TASK_DOCTOR_LIST_FILTERING) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
@@ -168,39 +168,39 @@ public class DoctorHelper implements ConnectionListener {
         public int compare(String m1, String m2) {
 
             //possibly check for nulls to avoid NullPointerException
-            //  String s = CommonMethods.formatDateTime(m1, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
-            Date m1Date = CommonMethods.convertStringToDate(m1, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
-            Date m2Date = CommonMethods.convertStringToDate(m2, MyRescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            //  String s = CommonMethods.formatDateTime(m1, RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
+            Date m1Date = CommonMethods.convertStringToDate(m1, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            Date m2Date = CommonMethods.convertStringToDate(m2, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
             int i = m2Date.compareTo(m1Date);
             return i;
         }
     }
 
     public void doGetDoctorList(String year) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        String id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        String id = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
 
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + id + "&year=" + year);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_LIST);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_LIST);
 
     }
 
     public void doGetDoctorAppointment() {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_APPOINTMENT, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_APPOINTMENT, Request.Method.GET, true);
 
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.APPOINTMENTS_DETAILS_URL + MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_APPOINTMENT);
+        mConnectionFactory.setUrl(Config.APPOINTMENTS_DETAILS_URL + RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_APPOINTMENT);
 
     }
 
     public void doFilterDoctorList(DrFilterRequestModel mRequestedFilterRequestModel) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.TASK_DOCTOR_LIST_FILTERING, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_LIST_FILTERING, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
 
         mConnectionFactory.setPostParams(mRequestedFilterRequestModel);
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_FILTER_URL);
-        mConnectionFactory.createConnection(MyRescribeConstants.TASK_DOCTOR_LIST_FILTERING);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_LIST_FILTERING);
     }
 }

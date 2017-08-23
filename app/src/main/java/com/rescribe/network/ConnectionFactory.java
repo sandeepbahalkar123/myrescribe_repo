@@ -10,10 +10,11 @@ import android.view.View;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.Connector;
 import com.rescribe.interfaces.CustomResponse;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.Device;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.Config;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,13 +45,13 @@ public class ConnectionFactory extends ConnectRequest {
     public void setHeaderParams() {
 
         Map<String, String> headerParams = new HashMap<>();
-        String authorizationString = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
-        headerParams.put(MyRescribeConstants.CONTENT_TYPE, MyRescribeConstants.APPLICATION_JSON);
-        headerParams.put(MyRescribeConstants.AUTHORIZATION_TOKEN, authorizationString);
-        headerParams.put(MyRescribeConstants.DEVICEID, device.getDeviceId());
-        headerParams.put(MyRescribeConstants.OS, device.getOS());
-        headerParams.put(MyRescribeConstants.OSVERSION, device.getOSVersion());
-        headerParams.put(MyRescribeConstants.DEVICE_TYPE, device.getDeviceType());
+        String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
+        headerParams.put(RescribeConstants.CONTENT_TYPE, RescribeConstants.APPLICATION_JSON);
+        headerParams.put(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString);
+        headerParams.put(RescribeConstants.DEVICEID, device.getDeviceId());
+        headerParams.put(RescribeConstants.OS, device.getOS());
+        headerParams.put(RescribeConstants.OSVERSION, device.getOSVersion());
+        headerParams.put(RescribeConstants.DEVICE_TYPE, device.getDeviceType());
         CommonMethods.Log(TAG, "setHeaderParams:" + headerParams.toString());
         this.mHeaderParams = headerParams;
     }
@@ -64,8 +65,7 @@ public class ConnectionFactory extends ConnectRequest {
     }
 
     public void setUrl(String url) {
-        String baseUrl = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext);
-        this.mURL = baseUrl + url;
+        this.mURL = Config.BASE_URL + url;
         CommonMethods.Log(TAG, "mURL: " + this.mURL);
     }
 

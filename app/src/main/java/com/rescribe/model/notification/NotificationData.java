@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 public class NotificationData implements CustomResponse{
 
@@ -119,7 +119,7 @@ public class NotificationData implements CustomResponse{
 
     public String getPrescriptionDate() {
         if (prescriptionDate.contains("T")) {
-            prescriptionDate = CommonMethods.formatDateTime(prescriptionDate, MyRescribeConstants.DATE_PATTERN.DD_MM_YYYY, MyRescribeConstants.DATE_PATTERN.UTC_PATTERN, MyRescribeConstants.DATE);
+            prescriptionDate = CommonMethods.formatDateTime(prescriptionDate, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
         }
         return prescriptionDate;
     }

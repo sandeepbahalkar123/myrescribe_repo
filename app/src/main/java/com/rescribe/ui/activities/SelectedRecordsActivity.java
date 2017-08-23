@@ -25,9 +25,9 @@ import android.widget.Toast;
 import com.rescribe.R;
 import com.rescribe.adapters.myrecords.SelectedRecordsAdapter;
 import com.rescribe.model.investigation.Image;
-import com.rescribe.preference.MyRescribePreferencesManager;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -83,12 +83,12 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         });
 
         mContext = SelectedRecordsActivity.this;
-        String coachMarkStatus = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.COACHMARK, mContext);
-        if (coachMarkStatus.equals(MyRescribeConstants.YES))
+        String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.COACHMARK, mContext);
+        if (coachMarkStatus.equals(RescribeConstants.YES))
             coachmark.setVisibility(View.GONE);
 //        appDBHelper = new AppDBHelper(mContext);
 
-        patient_id = MyRescribePreferencesManager.getString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
 
         /*for (int i = 0; i < investigation.size(); i++) {
             if (investigation.get(i).isSelected() && !investigation.get(i).isUploaded() && investigation.get(i).getPhotos().size() > 0) {
@@ -240,14 +240,14 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.coachmark:
                 coachmark.setVisibility(View.GONE);
-                MyRescribePreferencesManager.putString(MyRescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.COACHMARK, MyRescribeConstants.YES, mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.COACHMARK, RescribeConstants.YES, mContext);
                 break;
             case R.id.uploadButton:
                 if (photoPaths.size() > 0 && photoPaths != null) {
                     Intent intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
-                    intent.putExtra(MyRescribeConstants.DOCTORS_ID, getIntent().getIntExtra(MyRescribeConstants.DOCTORS_ID, 0));
-                    intent.putExtra(MyRescribeConstants.VISIT_DATE, getIntent().getStringExtra(MyRescribeConstants.VISIT_DATE));
-                    intent.putExtra(MyRescribeConstants.DOCUMENTS, photoPaths);
+                    intent.putExtra(RescribeConstants.DOCTORS_ID, getIntent().getIntExtra(RescribeConstants.DOCTORS_ID, 0));
+                    intent.putExtra(RescribeConstants.VISIT_DATE, getIntent().getStringExtra(RescribeConstants.VISIT_DATE));
+                    intent.putExtra(RescribeConstants.DOCUMENTS, photoPaths);
                     startActivity(intent);
 
                 } else {

@@ -12,7 +12,7 @@ import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
-import com.rescribe.util.MyRescribeConstants;
+import com.rescribe.util.RescribeConstants;
 
 /**
  * Created by jeetal on 20/7/17.
@@ -20,7 +20,7 @@ import com.rescribe.util.MyRescribeConstants;
 
 public class RespondToNotificationHelper implements ConnectionListener {
 
-    String TAG = "MyRescribe/RespondToNotificationHelper";
+    String TAG = this.getClass().getName();
     Context mContext;
     HelperResponse mHelperResponseManager;
 
@@ -36,11 +36,11 @@ public class RespondToNotificationHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION)) {
+                if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {
                     ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, responseLogNotificationModel);
 
-                }else if(mOldDataTag.startsWith(MyRescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)){
+                }else if(mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)){
                     ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, responseLogNotificationModel);
                 }

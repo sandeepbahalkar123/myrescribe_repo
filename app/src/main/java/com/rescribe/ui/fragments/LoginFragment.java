@@ -21,7 +21,7 @@ import com.rescribe.model.login.LoginModel;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.AppGlobalContainerActivity;
 import com.rescribe.ui.activities.HomePageActivity;
-import com.rescribe.ui.activities.SignUpActivity;
+import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -205,10 +205,6 @@ public class LoginFragment extends Fragment implements HelperResponse{
                 getActivity().finish();
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
-                Intent intent = new Intent(getActivity(), SignUpActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
             }
         } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_LOGIN_WITH_OTP)) {
 
@@ -220,15 +216,9 @@ public class LoginFragment extends Fragment implements HelperResponse{
                 intent.putExtra(getString(R.string.type), getString(R.string.enter_otp_for_login));
                 intent.putExtra(getString(R.string.title),getString(R.string.enter_otp_for_login));
                 startActivity(intent);
-
             } else {
-                Intent intent = new Intent(getActivity(), SignUpActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
             }
-
-
         }
     }
 

@@ -105,6 +105,7 @@ public class MyRescribeConstants {
     public static final String TASK_GET_ALL_MY_RECORDS = MyRescribeConstants.BLANK + 20;
     //--------
     public static final String MY_RECORDS_DOCTOR_LIST = MyRescribeConstants.BLANK + 21;
+    public static final String MY_RECORDS_ADD_DOCTOR = MyRescribeConstants.BLANK + 22;;
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;

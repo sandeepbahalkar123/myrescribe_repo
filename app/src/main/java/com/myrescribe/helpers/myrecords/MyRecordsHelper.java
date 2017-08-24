@@ -9,7 +9,7 @@ import com.myrescribe.interfaces.HelperResponse;
 import com.myrescribe.model.my_records.MyRecordDataModel;
 import com.myrescribe.model.my_records.MyRecordInfoAndReports;
 import com.myrescribe.model.my_records.MyRecordInfoMonthContainer;
-import com.myrescribe.model.my_records.new_pojo.NewMyRecordBaseModel;
+import com.myrescribe.model.my_records.RequestAddDoctorModel;
 import com.myrescribe.network.ConnectRequest;
 import com.myrescribe.network.ConnectionFactory;
 import com.myrescribe.preference.MyRescribePreferencesManager;
@@ -47,15 +47,7 @@ public class MyRecordsHelper implements ConnectionListener {
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 CommonMethods.Log(TAG, customResponse.getClass() + " success");
-
-                if (mOldDataTag.equals(MyRescribeConstants.TASK_GET_ALL_MY_RECORDS)) {
-                    NewMyRecordBaseModel model = (NewMyRecordBaseModel) customResponse;
-
-                    mHelperResponseManager.onSuccess(mOldDataTag, model);
-                }else if (mOldDataTag.equals(MyRescribeConstants.MY_RECORDS_DOCTOR_LIST)) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                }
-
+                mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 break;
             case ConnectionListener.PARSE_ERR0R:
                 CommonMethods.Log(TAG, "parse error");
@@ -94,6 +86,14 @@ public class MyRecordsHelper implements ConnectionListener {
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.MY_RECORDS_DOCTOR_LIST + "?patientId=" + patientId);
         mConnectionFactory.createConnection(MyRescribeConstants.MY_RECORDS_DOCTOR_LIST);
+    }
+
+    public void addDoctor(RequestAddDoctorModel requestAddDoctorModel) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, MyRescribeConstants.MY_RECORDS_ADD_DOCTOR, Request.Method.POST, false);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setPostParams(requestAddDoctorModel);
+        mConnectionFactory.setUrl(Config.MY_RECORDS_ADD_DOCTOR);
+        mConnectionFactory.createConnection(MyRescribeConstants.MY_RECORDS_ADD_DOCTOR);
     }
 
     public void doGetAllMyRecords() {

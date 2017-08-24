@@ -57,6 +57,13 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         final PrescriptionData prescriptionDataObject = mPrescriptionData.get(position);
         if (prescriptionDataObject.getInstruction().equals("")) {
             holder.mHighlightedInstructionView.setVisibility(View.GONE);
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,0
+            );
+            param.setMargins(0,0,0,10);
+            holder.showMedicineLayout.setLayoutParams(param);
+
         } else {
             holder.mHighlightedInstructionView.setVisibility(View.VISIBLE);
             holder.mTextViewhightlightInstructions.setText(prescriptionDataObject.getInstruction());
@@ -373,6 +380,8 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         LinearLayout mShowDurationAndQuantityOfDoseLayout;
         @BindView(R.id.doseAge)
         TextView mDoseAge;
+        @BindView(R.id.showMedicineLayout)
+        LinearLayout showMedicineLayout;
 
 
         ListViewHolder(View view) {

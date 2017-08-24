@@ -176,9 +176,9 @@ public class HomePageActivity extends DrawerActivity {
     private void drawerConfiguration() {
         setDrawerTheme(
                 new DrawerTheme(this)
-                        .setBackgroundColorRes(R.color.recentblue)
-                        .setTextColorPrimaryRes(R.color.white)
-                        .setTextColorSecondaryRes(R.color.white)
+                        .setBackgroundColorRes(R.color.drawer_bg)
+                        .setTextColorPrimaryRes(R.color.drawer_menu_text_color)
+                        .setTextColorSecondaryRes(R.color.drawer_menu_text_color)
         );
 
         addItems(new DrawerItem()

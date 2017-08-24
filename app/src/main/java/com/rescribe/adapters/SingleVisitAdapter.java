@@ -161,12 +161,12 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             if(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName().equals(mContext.getString(R.string.bp))){
                 String category = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory();
                 String[] categoryForBp = category.split(":");
-                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+               /* LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                         0,
                         ViewGroup.LayoutParams.WRAP_CONTENT,
-                        0.7f
+                        1f
                 );
-                unitValuesLayout.setLayoutParams(param);
+                unitValuesLayout.setLayoutParams(param);*/
                 String categoryForBpMax = categoryForBp[0];
                 String categoryForBpMin = categoryForBp[1];
                 String unit = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue();

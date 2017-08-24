@@ -17,15 +17,14 @@
 
         <ImageView
             android:id="@+id/vitalImage"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/dp40"
+            android:layout_height="@dimen/dp40"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="22dp"
-            android:src="@drawable/remarks" />
+            android:layout_margin="@dimen/dp20" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:background="#FFFFFF"
             android:layout_margin="1dp"
             android:gravity="center_vertical"
@@ -34,37 +33,29 @@
             <com.rescribe.ui.customesViews.CustomTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"
+                android:layout_weight="0.6"
                 android:id="@+id/vital_name"
                 android:textColor="@color/vitals_name"
-                android:textSize="@dimen/sp12"
+                android:textSize="@dimen/sp11"
                 app:customFont="@string/roboto_bold"/>
             <LinearLayout
                 android:id="@+id/unitValuesLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:layout_weight="0.4"
+                android:layout_weight="0.6"
                 android:orientation="horizontal">
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/noOfVitals"
-                    android:textSize="@dimen/sp14"
+                    android:text="fgfg"
+                    android:layout_gravity="right"
+                    android:textSize="@dimen/sp12"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     app:customFont="@string/roboto_medium" />
-                <com.rescribe.ui.customesViews.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:textSize="@dimen/sp12"
-                    android:textColor="@color/measure_of_vitals_color"
-                    android:paddingLeft="@dimen/dp4"
-                    android:layout_alignBaseline="@id/vital_name"
-                    app:customFont="@string/roboto_bold"
-                    android:textStyle="bold" />
+
             </LinearLayout>
 
 

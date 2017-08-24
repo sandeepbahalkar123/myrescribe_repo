@@ -12,7 +12,9 @@
     <item name="errorColor" type="color">#BD362F</item>
     <color name="recentblue">#04abdf</color>
     <color name="darkblue">#0E7EAB</color>
+    <color name="drawer_menu_text_color">#646464</color>
     <color name="black">#000000</color>
+    <color name="drawer_bg"> #edf1f4 </color>
     <color name="view_detail_color">#737373</color>
     <color name="lightskyBlue">#b2e6fa</color>
     <color name="cobalt_blue">#0020C2</color>

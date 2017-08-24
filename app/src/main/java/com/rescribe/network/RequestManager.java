@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import com.android.volley.AuthFailureError;
@@ -44,6 +43,8 @@ import com.rescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
 import com.rescribe.model.investigation.uploaded.InvestigationUploadFromUploadedModel;
 import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.login.SignUpModel;
+import com.rescribe.model.my_records.AddDoctorModel;
+import com.rescribe.model.my_records.new_pojo.NewMyRecordBaseModel;
 import com.rescribe.model.myrecords.MyRecordsDoctorListModel;
 import com.rescribe.model.my_records.MyRecordBaseModel;
 import com.rescribe.model.notification.AppointmentsNotificationModel;
@@ -401,7 +402,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     @Override
     public void parseJson(String data, boolean isTokenExpired) {
         try {
-            Log.e(TAG, data);
+            CommonMethods.Log(TAG, data);
             Gson gson = new Gson();
 
             JSONObject jsonObject;
@@ -514,6 +515,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, investigationUploadFromUploadedModel, mOldDataTag);
                         break;
 
+                    case RescribeConstants.TASK_GET_ALL_MY_RECORDS: //This is for TASK_GET_ALL_MY_RECORDS
+                        NewMyRecordBaseModel model = new Gson().fromJson(data, NewMyRecordBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, model, mOldDataTag);
+                        break;
+
                     case RescribeConstants.TASK_LOGIN_WITH_PASSWORD: //This is for get archived list
                         LoginModel loginWithPasswordModel = new Gson().fromJson(data, LoginModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginWithPasswordModel, mOldDataTag);
@@ -522,14 +528,15 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         LoginModel loginWithOtpModel = new Gson().fromJson(data, LoginModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginWithOtpModel, mOldDataTag);
                         break;
-                    case RescribeConstants.TASK_GET_ALL_MY_RECORDS: //This is for TASK_GET_ALL_MY_RECORDS
-                        MyRecordBaseModel model = new Gson().fromJson(data, MyRecordBaseModel.class);
-                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, model, mOldDataTag);
-                        break;
 
                     case RescribeConstants.MY_RECORDS_DOCTOR_LIST: //This is for get archived list
                         MyRecordsDoctorListModel myRecordsDoctorListModel = new Gson().fromJson(data, MyRecordsDoctorListModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, myRecordsDoctorListModel, mOldDataTag);
+                        break;
+
+                    case RescribeConstants.MY_RECORDS_ADD_DOCTOR: //This is for get archived list
+                        AddDoctorModel addDoctorModel = new Gson().fromJson(data, AddDoctorModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, addDoctorModel, mOldDataTag);
                         break;
 
                     default:
@@ -546,7 +553,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
             }
 
         } catch (JsonSyntaxException e) {
-            Log.d(TAG, "JsonException" + e.getMessage());
+            CommonMethods.Log(TAG, "JsonException" + e.getMessage());
             mConnectionListener.onResponse(ConnectionListener.PARSE_ERR0R, null, mOldDataTag);
         }
 

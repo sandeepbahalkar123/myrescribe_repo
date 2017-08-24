@@ -2,7 +2,6 @@ package com.rescribe.ui.fragments.my_record;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
@@ -18,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-
 import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.adapters.CustomSpinnerAdapter;
@@ -30,6 +28,11 @@ import com.rescribe.model.login.Year;
 import com.rescribe.model.my_records.MyRecordBaseModel;
 import com.rescribe.model.my_records.MyRecordDataModel;
 import com.rescribe.model.my_records.MyRecordInfoAndReports;
+import com.rescribe.model.my_records.MyRecordInfoMonthContainer;
+import com.rescribe.model.my_records.new_pojo.NewMonth;
+import com.rescribe.model.my_records.new_pojo.NewMyRecordBaseModel;
+import com.rescribe.model.my_records.new_pojo.NewMyRecordDataModel;
+import com.rescribe.model.my_records.new_pojo.NewOriginalData;
 import com.rescribe.ui.activities.AddRecordsActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.util.CommonMethods;
@@ -42,6 +45,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +65,8 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
     Spinner mYearSpinnerView;
     @BindView(R.id.addRecordButton)
     Button addRecordButton;
-
+    @BindView(R.id.noRecords)
+    ImageView noRecords;
 
     private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<Year> mTimePeriodList = new ArrayList<>();
@@ -71,6 +76,11 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
     private HashSet<String> mGeneratedRequestForYearList = new HashSet<>();
     private MyRecordsActivity mParentActivity;
     private Context mContext;
+    private TreeMap<String, ArrayList<MyRecordInfoAndReports>> monthWiseSortedMyRecords = monthWiseSortedMyRecords = new TreeMap<String, ArrayList<MyRecordInfoAndReports>>(String.CASE_INSENSITIVE_ORDER);
+    private MyRecordDataModel myRecordDataModel = new MyRecordDataModel();
+    ;
+    private NewMyRecordDataModel newRecordMainDataModel;
+    private MyRecordBaseModel model = new MyRecordBaseModel();
 
     public MyRecordListFragmentContainer() {
         // Required empty public constructor
@@ -86,7 +96,6 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
         mParentActivity = (MyRecordsActivity) getActivity();
         mContext = inflater.getContext();
 
-
         initialize();
         return mRootView;
     }
@@ -100,7 +109,6 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
 
     private void initialize() {
 
-
         YearSpinnerInteractionListener listener = new YearSpinnerInteractionListener();
         mYearSpinnerView.setOnTouchListener(listener);
         mYearSpinnerView.setOnItemSelectedListener(listener);
@@ -113,7 +121,7 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
         //-------
         //----
 
-        AppDBHelper appDBHelper = new AppDBHelper(mParentActivity);
+        /*AppDBHelper appDBHelper = new AppDBHelper(mParentActivity);
 
         if (appDBHelper.dataTableNumberOfRows(RescribeConstants.TASK_GET_ALL_MY_RECORDS) > 0) {
             Cursor cursor = appDBHelper.getData(RescribeConstants.TASK_GET_ALL_MY_RECORDS);
@@ -127,7 +135,7 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList);
             mYearSpinnerView.setAdapter(mCustomSpinAdapter);
             mTimePeriodList = recordMainDataModel.getFormattedYearList();
-        }
+        }*/
 
         if (mTimePeriodList.size() < 6) {
             mTabLayout.setTabMode(TabLayout.MODE_FIXED);
@@ -159,7 +167,7 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
         mViewPagerAdapter.mFragmentTitleList.clear();
         for (Year data :
                 mTimePeriodList) {
-            Fragment fragment = MyRecordListFragment.createNewFragment(data); // pass data here
+            Fragment fragment = MyRecordListFragment.createNewFragment(data, myRecordDataModel); // pass data here
             mViewPagerAdapter.addFragment(fragment, data); // pass title here
         }
         mViewpager.setOffscreenPageLimit(0);
@@ -192,10 +200,12 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
 
                 //-----THis condition calls API only once for that specific year.----
                 if (!mGeneratedRequestForYearList.contains(year)) {
-                    Map<String, Map<String, ArrayList<MyRecordInfoAndReports>>> yearWiseSortedMyRecordInfoAndReports = mMyRecordHelper.getYearWiseSortedMyRecordInfoAndReports();
+                    Map<String, Map<String, ArrayList<MyRecordInfoAndReports>>> yearWiseSortedMyRecordInfoAndReports = mMyRecordHelper.getYearWiseSortedMyRecordInfoAndReports(myRecordDataModel);
                     if (yearWiseSortedMyRecordInfoAndReports.get(year) == null) {
                         mGeneratedRequestForYearList.add(year);
-                        mMyRecordHelper.doGetAllMyRecords(year);
+//                        mMyRecordHelper.doGetAllMyRecords(year);
+                        if (newRecordMainDataModel != null && !newRecordMainDataModel.getYearsMonthsData().isEmpty())
+                            getYearData(Integer.parseInt(year));
                     }
                 }
                 //---------
@@ -275,6 +285,9 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             if (mYearSpinnerConfigChange) {
                 // Your selection handling code here
+
+                // YearListener
+
                 mYearSpinnerConfigChange = false;
                 if (parent.getId() == R.id.year && !mYearSpinnerConfigChange) {
                     String selectedYear = mYearList.get(parent.getSelectedItemPosition());
@@ -300,7 +313,50 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
     //---------------
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        MyRecordBaseModel model = (MyRecordBaseModel) customResponse;
+        NewMyRecordBaseModel newModel = (NewMyRecordBaseModel) customResponse;
+
+        newRecordMainDataModel = newModel.getData();
+        model.setCommon(newModel.getCommon());
+        model.setRecordMainDataModel(myRecordDataModel);
+        myRecordDataModel.setReceivedYearMap(newRecordMainDataModel.getYearsMonthsData());
+
+        if (newRecordMainDataModel == null || newRecordMainDataModel.getYearsMonthsData().isEmpty()) {
+            noRecords.setVisibility(View.VISIBLE);
+            mYearSpinnerView.setVisibility(View.GONE);
+            mTabLayout.setVisibility(View.GONE);
+        } else {
+            noRecords.setVisibility(View.GONE);
+            mYearSpinnerView.setVisibility(View.VISIBLE);
+            mTabLayout.setVisibility(View.VISIBLE);
+            getYearData(newRecordMainDataModel.getYearsMonthsData().get(0).getYear());
+        }
+    }
+
+    private void getYearData(int year) {
+        int yearPos = 0;
+        for (int pos = 0; pos < newRecordMainDataModel.getYearsMonthsData().size(); pos++) {
+            if (year == newRecordMainDataModel.getYearsMonthsData().get(pos).getYear()) {
+                yearPos = pos;
+                break;
+            }
+        }
+
+        MyRecordInfoMonthContainer myRecordInfoMonthContainerNew = new MyRecordInfoMonthContainer();
+
+        myRecordInfoMonthContainerNew.setYear(String.valueOf(newRecordMainDataModel.getOriginalData().get(yearPos).getYear()));
+        NewOriginalData newOriginalData = newRecordMainDataModel.getOriginalData().get(yearPos);
+
+        //monthWiseSortedMyRecords = new TreeMap<String, ArrayList<MyRecordInfoAndReports>>(String.CASE_INSENSITIVE_ORDER);
+        for (NewMonth newMonth : newOriginalData.getMonths()) {
+            ArrayList<MyRecordInfoAndReports> docVisits = newMonth.getDocVisits();
+            String month = newMonth.getMonth();
+            monthWiseSortedMyRecords.put(month, docVisits);
+        }
+
+        myRecordInfoMonthContainerNew.setMonthWiseSortedMyRecords(monthWiseSortedMyRecords);
+
+        myRecordDataModel.setMyRecordInfoMonthContainer(myRecordInfoMonthContainerNew);
+
         MyRecordDataModel recordMainDataModel = model.getRecordMainDataModel();
         mTimePeriodList = recordMainDataModel.getFormattedYearList();
         if (mViewPagerAdapter == null) {
@@ -331,14 +387,14 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
     }
     //---------------
 
-
     @Override
     public void onResume() {
         super.onResume();
         if (!mGeneratedRequestForYearList.contains(mCurrentSelectedTimePeriodTab.getYear())) {
-            Map<String, Map<String, ArrayList<MyRecordInfoAndReports>>> yearWiseSortedMyRecordInfoAndReports = mMyRecordHelper.getYearWiseSortedMyRecordInfoAndReports();
+            Map<String, Map<String, ArrayList<MyRecordInfoAndReports>>> yearWiseSortedMyRecordInfoAndReports = mMyRecordHelper.getYearWiseSortedMyRecordInfoAndReports(myRecordDataModel);
             if (yearWiseSortedMyRecordInfoAndReports.get(mCurrentSelectedTimePeriodTab.getYear()) == null) {
-                mMyRecordHelper.doGetAllMyRecords(mCurrentSelectedTimePeriodTab.getYear());
+                mMyRecordHelper.doGetAllMyRecords();
+//                getYearData(mCurrentSelectedTimePeriodTab.getYear());
                 mGeneratedRequestForYearList.add(mCurrentSelectedTimePeriodTab.getYear());
             }
         }

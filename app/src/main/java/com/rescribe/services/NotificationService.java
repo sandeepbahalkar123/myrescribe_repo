@@ -38,7 +38,6 @@ public class NotificationService extends Service {
 
     @Override
     public void onCreate() {
-        Log.i("NotificationService", "onCreate()");
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.investigation.Image;
+import com.rescribe.util.RescribeConstants;
 
 import java.io.File;
 import java.util.List;
@@ -34,6 +36,7 @@ public class RecordsGroupImageAdapter extends RecyclerView.Adapter<RecordsGroupI
         RelativeLayout progressBarLay;
         ImageView removeCheckbox;
         TextView addCaptionText;
+        Button retryButton;
 
         MyViewHolder(View view) {
             super(view);
@@ -43,6 +46,7 @@ public class RecordsGroupImageAdapter extends RecyclerView.Adapter<RecordsGroupI
             removeCheckbox = (ImageView) view.findViewById(R.id.removeCheckbox);
             removeCheckbox.setAlpha(.5f);
             addCaptionText = (TextView) view.findViewById(R.id.addCaptionText);
+            retryButton = (Button) view.findViewById(R.id.retryButton);
         }
     }
 
@@ -87,13 +91,23 @@ public class RecordsGroupImageAdapter extends RecyclerView.Adapter<RecordsGroupI
         requestOptions.override(imageSize, imageSize);
         requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
 
-//        holder.progressBar.setProgress(image.getProgress());
-//        if (image.getProgress() == 100)
-//            image.setUploading(false);
-
-        if (image.isUploading())
+        if (image.isUploading() == RescribeConstants.UPLOADING) {
             holder.progressBarLay.setVisibility(View.VISIBLE);
-        else holder.progressBarLay.setVisibility(View.GONE);
+            holder.removeCheckbox.setVisibility(View.GONE);
+            holder.retryButton.setVisibility(View.GONE);
+        } else if (image.isUploading() == RescribeConstants.FAILED) {
+            holder.progressBarLay.setVisibility(View.GONE);
+            holder.retryButton.setVisibility(View.VISIBLE);
+            holder.removeCheckbox.setVisibility(View.GONE);
+        } else if (image.isUploading() == RescribeConstants.COMPLETED) {
+            holder.progressBarLay.setVisibility(View.GONE);
+            holder.removeCheckbox.setVisibility(View.GONE);
+            holder.retryButton.setVisibility(View.GONE);
+        } else {
+            holder.progressBarLay.setVisibility(View.GONE);
+            holder.removeCheckbox.setVisibility(View.VISIBLE);
+            holder.retryButton.setVisibility(View.GONE);
+        }
 
         Glide.with(mContext)
                 .load(new File(image.getImagePath()))
@@ -101,6 +115,14 @@ public class RecordsGroupImageAdapter extends RecyclerView.Adapter<RecordsGroupI
                 .into(holder.imageView);
 
         holder.addCaptionText.setText(image.getChildCaption());
+
+        holder.retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // add retry code
+                itemListener.uploadImage(mainPosition + "_" + position, image);
+            }
+        });
 
         holder.removeCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +147,7 @@ public class RecordsGroupImageAdapter extends RecyclerView.Adapter<RecordsGroupI
 
     public interface ItemListener {
         void onRemoveClick(int mainPosition, int position);
-
         void onAddCaptionClick(int mainPosition, int position);
+        void uploadImage(String uploadId, Image image);
     }
 }

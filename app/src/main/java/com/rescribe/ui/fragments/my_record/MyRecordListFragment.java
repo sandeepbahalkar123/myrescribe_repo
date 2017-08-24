@@ -8,15 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
-
 import com.rescribe.R;
 import com.rescribe.adapters.myrecords.ThreeLevelListAdapter;
 import com.rescribe.helpers.myrecords.MyRecordsHelper;
 import com.rescribe.model.login.Year;
+import com.rescribe.model.my_records.MyRecordDataModel;
 import com.rescribe.model.my_records.MyRecordInfoAndReports;
 import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.util.RescribeConstants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -38,6 +39,7 @@ public class MyRecordListFragment extends Fragment {
     private String mYear;
     private ThreeLevelListAdapter mAdapter;
     private String mInvestigationText;
+    private MyRecordDataModel myRecordDataModel;
 
     public MyRecordListFragment() {
         // Required empty public constructor
@@ -54,15 +56,17 @@ public class MyRecordListFragment extends Fragment {
         if (arguments != null) {
             mMonthName = arguments.getString(RescribeConstants.MONTH);
             mYear = arguments.getString(RescribeConstants.YEAR);
+            myRecordDataModel = (MyRecordDataModel) arguments.getSerializable(RescribeConstants.MYRECORDDATAMODEL);
         }
         mInvestigationText = getString(R.string.investigation);
 
         return mRootView;
     }
 
-    public static MyRecordListFragment createNewFragment(Year dataString) {
+    public static MyRecordListFragment createNewFragment(Year dataString, MyRecordDataModel myRecordDataModel) {
         MyRecordListFragment fragment = new MyRecordListFragment();
         Bundle args = new Bundle();
+        args.putSerializable(RescribeConstants.MYRECORDDATAMODEL, myRecordDataModel);
         args.putString(RescribeConstants.MONTH, dataString.getMonthName());
         args.putString(RescribeConstants.YEAR, dataString.getYear());
         fragment.setArguments(args);
@@ -74,7 +78,7 @@ public class MyRecordListFragment extends Fragment {
         MyRecordsHelper parentMyRecordHelper = parentFragment.getParentMyRecordHelper();
         if (parentMyRecordHelper != null) {
 
-            Map<String, Map<String, ArrayList<MyRecordInfoAndReports>>> yearWiseSortedMyRecordInfoAndReports = parentMyRecordHelper.getYearWiseSortedMyRecordInfoAndReports();
+            Map<String, Map<String, ArrayList<MyRecordInfoAndReports>>> yearWiseSortedMyRecordInfoAndReports = parentMyRecordHelper.getYearWiseSortedMyRecordInfoAndReports(myRecordDataModel);
             if (yearWiseSortedMyRecordInfoAndReports.size() != 0) {
                 Map<String, ArrayList<MyRecordInfoAndReports>> monthArrayListHashMap = yearWiseSortedMyRecordInfoAndReports.get(mYear);
                 if (monthArrayListHashMap != null) {

@@ -20,7 +20,7 @@
         android:layout_height="@dimen/dp40"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/button_enable"
+        android:background="@drawable/button_selector"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:paddingEnd="@dimen/dp50"
         android:paddingStart="@dimen/dp50"

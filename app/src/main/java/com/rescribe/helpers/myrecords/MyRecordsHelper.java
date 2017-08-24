@@ -6,10 +6,10 @@ import com.android.volley.Request;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.my_records.MyRecordBaseModel;
 import com.rescribe.model.my_records.MyRecordDataModel;
 import com.rescribe.model.my_records.MyRecordInfoAndReports;
 import com.rescribe.model.my_records.MyRecordInfoMonthContainer;
+import com.rescribe.model.my_records.RequestAddDoctorModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -47,31 +47,19 @@ public class MyRecordsHelper implements ConnectionListener {
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 CommonMethods.Log(TAG, customResponse.getClass() + " success");
-
-                if (mOldDataTag.equals(RescribeConstants.TASK_GET_ALL_MY_RECORDS)) {
-                    MyRecordBaseModel model = (MyRecordBaseModel) customResponse;
-                    MyRecordDataModel recordMainDataModel = model.getRecordMainDataModel();
-                    if (recordMainDataModel.getMyRecordInfoMonthContainer() != null) {
-                        MyRecordInfoMonthContainer myRecordInfoMonthContainer = recordMainDataModel.getMyRecordInfoMonthContainer();
-                        yearWiseSortedMyRecordInfoAndReports.put(myRecordInfoMonthContainer.getYear(), myRecordInfoMonthContainer.getMonthWiseSortedMyRecords());
-                    }
-                    mHelperResponseManager.onSuccess(mOldDataTag, model);
-                }else if (mOldDataTag.equals(RescribeConstants.MY_RECORDS_DOCTOR_LIST)) {
-                    ((HelperResponse) mContext).onSuccess(mOldDataTag, customResponse);
-                }
-
+                mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 break;
             case ConnectionListener.PARSE_ERR0R:
                 CommonMethods.Log(TAG, "parse error");
-                ((HelperResponse) mContext).onParseError(mOldDataTag, "parse error");
+                mHelperResponseManager.onParseError(mOldDataTag, "parse error");
                 break;
             case ConnectionListener.SERVER_ERROR:
                 CommonMethods.Log(TAG, "server error");
-                ((HelperResponse) mContext).onServerError(mOldDataTag, "server error");
+                mHelperResponseManager.onServerError(mOldDataTag, "server error");
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
                 CommonMethods.Log(TAG, "no connection error");
-                ((HelperResponse) mContext).onNoConnectionError(mOldDataTag, "no connection error");
+                mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");
                 break;
             default:
                 CommonMethods.Log(TAG, "default error");
@@ -79,7 +67,12 @@ public class MyRecordsHelper implements ConnectionListener {
         }
     }
 
-    public Map<String, Map<String, ArrayList<MyRecordInfoAndReports>>> getYearWiseSortedMyRecordInfoAndReports() {
+    public Map<String, Map<String, ArrayList<MyRecordInfoAndReports>>> getYearWiseSortedMyRecordInfoAndReports(MyRecordDataModel recordMainDataModel) {
+        if (recordMainDataModel.getMyRecordInfoMonthContainer() != null) {
+            MyRecordInfoMonthContainer myRecordInfoMonthContainer = recordMainDataModel.getMyRecordInfoMonthContainer();
+            yearWiseSortedMyRecordInfoAndReports.put(myRecordInfoMonthContainer.getYear(), myRecordInfoMonthContainer.getMonthWiseSortedMyRecords());
+        }
+
         return yearWiseSortedMyRecordInfoAndReports;
     }
 
@@ -94,8 +87,16 @@ public class MyRecordsHelper implements ConnectionListener {
         mConnectionFactory.setUrl(Config.MY_RECORDS_DOCTOR_LIST + "?patientId=" + patientId);
         mConnectionFactory.createConnection(RescribeConstants.MY_RECORDS_DOCTOR_LIST);
     }
+    
+    public void addDoctor(RequestAddDoctorModel requestAddDoctorModel) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.MY_RECORDS_ADD_DOCTOR, Request.Method.POST, false);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setPostParams(requestAddDoctorModel);
+        mConnectionFactory.setUrl(Config.MY_RECORDS_ADD_DOCTOR);
+        mConnectionFactory.createConnection(RescribeConstants.MY_RECORDS_ADD_DOCTOR);
+    }
 
-    public void doGetAllMyRecords(String year) {
+    public void doGetAllMyRecords() {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_ALL_MY_RECORDS, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);

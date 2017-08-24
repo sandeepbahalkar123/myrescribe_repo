@@ -155,12 +155,6 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d("Restart", "onRestart");
-    }
-
-    @Override
     public void onBackPressed() {
         Intent intent = new Intent(InvestigationActivity.this, HomePageActivity.class);
         intent.putExtra(RescribeConstants.ALERT, false);
@@ -234,7 +228,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                     intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigationTemp);
                     startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
                 } else
-                    CommonMethods.showToast(mContext, "Please select at least one Document.");
+                    CommonMethods.showToast(mContext, getResources().getString(R.string.please_select_at_least_one_document));
                 break;
             case R.id.selectUploadedButton:
                 Intent intent = new Intent(mContext, UploadedDocsActivity.class);
@@ -243,7 +237,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 startActivityForResult(intent, UPLOADED_DOCS);
                 break;
             case R.id.gmailButton:
-                if (isAppAvailable("com.google.android.gm")) {
+                if (isAppAvailable(RescribeConstants.GMAIL_PACKAGE)) {
                     ArrayList<Integer> investigationId = new ArrayList<>();
                     for (InvestigationData dataObject : investigationTemp) {
                         if (dataObject.isSelected() && !dataObject.isUploaded())
@@ -255,7 +249,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                     investigationUploadByGmailRequest.setInvestigationId(investigationId);
                     investigationHelper.uploadByGmail(investigationUploadByGmailRequest);
                 } else {
-                    CommonMethods.showToast(mContext, "Gmail application not found");
+                    CommonMethods.showToast(mContext, getResources().getString(R.string.gmail_application_not_found));
                 }
                 break;
         }
@@ -325,7 +319,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         } else if (customResponse instanceof InvestigationUploadByGmailModel) {
             InvestigationUploadByGmailModel investigationUploadByGmailModel = (InvestigationUploadByGmailModel) customResponse;
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("email", investigationUploadByGmailModel.getData().getEmailId());
+            ClipData clip = ClipData.newPlainText(RescribeConstants.EMAIL, investigationUploadByGmailModel.getData().getEmailId());
             clipboard.setPrimaryClip(clip);
 
             for (InvestigationData dataObject : investigationTemp) {

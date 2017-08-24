@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.rescribe.R;
+import com.rescribe.util.CommonMethods;
 
 /**
  * Created by Sandeep Bahalkar
@@ -42,7 +42,7 @@ public class CustomTextView extends android.support.v7.widget.AppCompatTextView 
         try {
             tf = Typeface.createFromAsset(ctx.getAssets(), "fonts/" + asset);
         } catch (Exception e) {
-            Log.e(TAG, "Could not get typeface: " + e.getMessage());
+            CommonMethods.Log(TAG, "Could not get typeface: " + e.getMessage());
             return false;
         }
 

@@ -80,14 +80,6 @@ public class SelectedRecordsAdapter extends RecyclerView.Adapter<SelectedRecords
                 notifyItemChanged(position);
             }
         });
-
-        /*holder.removeCheckbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                paths.remove(position);
-                notifyDataSetChanged();
-            }
-        });*/
     }
 
     @Override

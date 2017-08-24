@@ -6,24 +6,29 @@ import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.YearsMonthsDataList;
 import com.rescribe.model.login.Year;
+import com.rescribe.model.my_records.new_pojo.NewYearsMonthsData;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.model.YearsMonthsDataList;
+import com.rescribe.model.login.Year;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class MyRecordDataModel implements CustomResponse {
+public class MyRecordDataModel implements CustomResponse, Serializable{
 
     @SerializedName("yearsMonthsData")
     @Expose
-    private ArrayList<YearsMonthsDataList> receivedYearMap = new ArrayList<>();
+    private ArrayList<NewYearsMonthsData> receivedYearMap = new ArrayList<>();
     @SerializedName("originalData")
     @Expose
     private MyRecordInfoMonthContainer myRecordInfoMonthContainer;
 
-    public ArrayList<YearsMonthsDataList> getReceivedYearMap() {
+    public ArrayList<NewYearsMonthsData> getReceivedYearMap() {
         return receivedYearMap;
     }
 
-    public void setReceivedYearMap(ArrayList<YearsMonthsDataList> receivedYearMap) {
+    public void setReceivedYearMap(ArrayList<NewYearsMonthsData> receivedYearMap) {
         this.receivedYearMap = receivedYearMap;
     }
 
@@ -45,15 +50,18 @@ public class MyRecordDataModel implements CustomResponse {
 
 
     public ArrayList<Year> getFormattedYearList() {
-        ArrayList<YearsMonthsDataList> yearsMonthsDataList = getReceivedYearMap();
+        ArrayList<NewYearsMonthsData> yearsMonthsDataList = getReceivedYearMap();
         ArrayList<Year> yearList = new ArrayList<>();
-        for (YearsMonthsDataList yearObject :
+        for (NewYearsMonthsData yearObject :
                 yearsMonthsDataList) {
-            String[] months = yearObject.getMonths();
+
+
+
+            String[] months = yearObject.getMonths().toArray(new String[yearObject.getMonths().size()]);
             if (months.length > 0) {
                 for (int i = 0; i < months.length; i++) {
                     Year year = new Year();
-                    year.setYear(yearObject.getYear());
+                    year.setYear(String.valueOf(yearObject.getYear()));
                     year.setMonthName(months[i]);
                     yearList.add(year);
                 }
@@ -63,11 +71,11 @@ public class MyRecordDataModel implements CustomResponse {
     }
 
     public ArrayList<String> getUniqueYears() {
-        ArrayList<YearsMonthsDataList> yearsMonthsDataList = getReceivedYearMap();
+        ArrayList<NewYearsMonthsData> yearsMonthsDataList = getReceivedYearMap();
         HashSet<String> strings = new HashSet<>();
-        for (YearsMonthsDataList yearObject :
+        for (NewYearsMonthsData yearObject :
                 yearsMonthsDataList) {
-            strings.add(yearObject.getYear());
+            strings.add(String.valueOf(yearObject.getYear()));
         }
         return new ArrayList(strings);
     }

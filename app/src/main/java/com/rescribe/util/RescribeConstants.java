@@ -102,14 +102,14 @@ public class RescribeConstants {
 
     public static final String INVESTIGATION_UPLOAD_FROM_UPLOADED = RescribeConstants.BLANK + 19;
 
-    public static final String TASK_LOGIN_WITH_PASSWORD = RescribeConstants.BLANK + 22;
-    public static final String TASK_LOGIN_WITH_OTP = RescribeConstants.BLANK + 23;
-
     //--------
     public static final String TASK_GET_ALL_MY_RECORDS = RescribeConstants.BLANK + 20;
     //--------
     public static final String MY_RECORDS_DOCTOR_LIST = RescribeConstants.BLANK + 21;
+    public static final String MY_RECORDS_ADD_DOCTOR = RescribeConstants.BLANK + 22;
 
+    public static final String TASK_LOGIN_WITH_PASSWORD = RescribeConstants.BLANK + 23;
+    public static final String TASK_LOGIN_WITH_OTP = RescribeConstants.BLANK + 24;
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
@@ -126,6 +126,17 @@ public class RescribeConstants {
     public static final String DOCTORS_ID = "doctorId";
     public static final String GMAIL_LOGIN = "gmail_login";
     public static final String FACEBOOK_LOGIN = "facebook_login";
+
+    public static final int UPLOADING = 1;
+    public static final int FAILED = 0;
+    public static final int COMPLETED = 3;
+    public static final String UPLOADING_STATUS = "uploading_status";
+    public static final String INVESTIGATION_NOTIFICATION_TIME = "9:00 AM";
+    public static final String APPOINTMENT_NOTIFICATION_TIME = "9:00 AM";
+    public static final String GMAIL_PACKAGE = "com.google.android.gm";
+    public static final String EMAIL = "email";
+    public static final String OPD_ID = "opd_id";
+    public static final String MYRECORDDATAMODEL = "myrecorddatamodel";
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 

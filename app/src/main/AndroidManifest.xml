@@ -194,7 +194,13 @@
             android:label="@string/title_activity_reports"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <receiver android:name=".broadcast_receivers.OtpReader">
+        <receiver android:name=".broadcast_receivers.FileUploadReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="net.gotev.uploadservice.broadcast.status" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.rescribe.broadcast_receivers.OtpReader">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>

@@ -5,7 +5,10 @@
     tools:ignore="MissingTranslation"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/activity_horizontal_margin"
+    android:paddingEnd="@dimen/dp16"
+    android:paddingStart="@dimen/dp16"
+    android:paddingBottom="@dimen/dp10"
+    android:paddingTop="@dimen/dp10"
     app:customFont="@string/roboto_bold"
     android:text="@string/select_date_text"
     android:textSize="@dimen/sp16" />

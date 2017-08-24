@@ -84,7 +84,6 @@ public class InvestigationViewAdapter extends RecyclerView
             title = (TextView) itemView.findViewById(R.id.title);
             uploaded = (CheckBox) itemView.findViewById(R.id.selected);
             this.itemView = itemView;
-            Log.i(TAG, "Adding Listener");
         }
     }
 }

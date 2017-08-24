@@ -58,10 +58,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
     private static final int MAX_ATTACHMENT_COUNT = 10;
     private Context mContext;
     private ArrayList<Image> photoPaths = new ArrayList<>();
-    //    private int media_id = -1;
     private SelectedRecordsAdapter selectedRecordsAdapter;
-    //    private ArrayList<InvestigationData> investigation = new ArrayList<>();
-    //    private AppDBHelper appDBHelper;
     private String patient_id = "";
 
     @Override
@@ -86,23 +83,8 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK, mContext);
         if (coachMarkStatus.equals(RescribeConstants.YES))
             coachmark.setVisibility(View.GONE);
-//        appDBHelper = new AppDBHelper(mContext);
 
         patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
-
-        /*for (int i = 0; i < investigation.size(); i++) {
-            if (investigation.get(i).isSelected() && !investigation.get(i).isUploaded() && investigation.get(i).getPhotos().size() > 0) {
-                media_id = i;
-                break;
-            }
-        }
-
-        if (media_id == -1) {
-            SelectedRecordsActivityPermissionsDispatcher.onPickPhotoWithCheck(SelectedRecordsActivity.this);
-            photoPaths = new ArrayList<>();
-        } else {
-            photoPaths = investigation.get(media_id).getPhotos();
-        }*/
 
         SelectedRecordsActivityPermissionsDispatcher.onPickPhotoWithCheck(SelectedRecordsActivity.this);
         // off recyclerView Animation
@@ -210,9 +192,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
             finish();
         else {
             if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
-//            int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
                 if (resultCode == Activity.RESULT_OK) {
-//                    photoPaths.clear();
 
                     for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)) {
                         boolean isExist = false;
@@ -247,9 +227,9 @@ public class SelectedRecordsActivity extends AppCompatActivity {
                     Intent intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
                     intent.putExtra(RescribeConstants.DOCTORS_ID, getIntent().getIntExtra(RescribeConstants.DOCTORS_ID, 0));
                     intent.putExtra(RescribeConstants.VISIT_DATE, getIntent().getStringExtra(RescribeConstants.VISIT_DATE));
+                    intent.putExtra(RescribeConstants.OPD_ID, getIntent().getStringExtra(RescribeConstants.OPD_ID));
                     intent.putExtra(RescribeConstants.DOCUMENTS, photoPaths);
                     startActivity(intent);
-
                 } else {
                     CommonMethods.showToast(mContext, "Please select at least one document");
                 }

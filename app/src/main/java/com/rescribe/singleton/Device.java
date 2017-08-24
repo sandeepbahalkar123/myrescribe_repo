@@ -4,10 +4,10 @@ import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
 
 import com.rescribe.R;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 /**
@@ -69,7 +69,7 @@ public class Device {
                 break;
         }
 
-        Log.d(TAG, density);
+        CommonMethods.Log(TAG, density);
 
         return density;
     }

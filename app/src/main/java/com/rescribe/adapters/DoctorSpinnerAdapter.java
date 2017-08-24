@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
+
 import com.rescribe.R;
-import com.rescribe.model.myrecords.SpinnerDoctor;
+import com.rescribe.model.my_records.SpinnerDoctor;
+
 import java.util.ArrayList;
 import java.util.List;
 

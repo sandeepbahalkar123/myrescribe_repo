@@ -14,8 +14,11 @@ import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 import com.heinrichreimersoftware.materialdrawer.theme.DrawerTheme;
+import net.gotev.uploadservice.UploadService;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.helpers.database.MyRecordsData;
+import com.rescribe.model.investigation.Image;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
@@ -38,6 +41,7 @@ public class HomePageActivity extends DrawerActivity {
     String dinnerTime = "";
     String snacksTime = "";
     private Toolbar toolbar;
+    private AppDBHelper appDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +50,24 @@ public class HomePageActivity extends DrawerActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContext = HomePageActivity.this;
-        if (getIntent().getBooleanExtra(RescribeConstants.ALERT, true))
-            notificationForMedicine();
+        appDBHelper = new AppDBHelper(mContext);
+
+        String currentDate = CommonMethods.getCurrentDate();
+        String pastDate = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.NOTIFY_DATE, mContext);
+
+        if (!currentDate.equals(pastDate)) {
+            if (getIntent().getBooleanExtra(RescribeConstants.ALERT, true))
+                notificationForMedicine();
+        }
         drawerConfiguration();
     }
 
 
     private void notificationForMedicine() {
- // set time for notification.
+
+        String currentDate = CommonMethods.getCurrentDate();
+        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.NOTIFY_DATE, currentDate, mContext);
+
         AppDBHelper appDBHelper = new AppDBHelper(mContext);
         Cursor cursor = appDBHelper.getPreferences("1");
         if (cursor.moveToFirst()) {
@@ -71,8 +85,8 @@ public class HomePageActivity extends DrawerActivity {
         String date = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
          // notification for prescription , investigation and appointment initiated here
         new DosesAlarmTask(mContext, times, date).run();
-        new InvestigationAlarmTask(mContext, "9:00 AM", getResources().getString(R.string.investigation_msg)).run();
-        new AppointmentAlarmTask(mContext, "9:00 AM", getResources().getString(R.string.appointment_msg)).run();
+        new InvestigationAlarmTask(mContext, RescribeConstants.INVESTIGATION_NOTIFICATION_TIME, getResources().getString(R.string.investigation_msg)).run();
+        new AppointmentAlarmTask(mContext, RescribeConstants.APPOINTMENT_NOTIFICATION_TIME, getResources().getString(R.string.appointment_msg)).run();
     }
 
     @Override
@@ -147,6 +161,14 @@ public class HomePageActivity extends DrawerActivity {
     }
 
     private void logout() {
+        // Stop Uploads
+        UploadService.stopAllUploads();
+
+        String baseUrl = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext);
+        RescribePreferencesManager.clearSharedPref(mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SERVER_PATH, baseUrl, mContext);
+        RescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
+
         //Logout functionality
         String facebook = RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN,mContext);
         String gmail = RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN,mContext);
@@ -158,9 +180,8 @@ public class HomePageActivity extends DrawerActivity {
         RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN,gmail,mContext);
         RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN,facebook,mContext);
         RescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
-        AppDBHelper appDBHelper = new AppDBHelper(mContext);
-        appDBHelper.deleteDatabase();
 
+        appDBHelper.deleteDatabase();
 
         new DosesAlarmTask(mContext, null, null).run();
         new AppointmentAlarmTask(mContext, null, null).run();
@@ -187,9 +208,9 @@ public class HomePageActivity extends DrawerActivity {
                 new DrawerItem()
                         .setTextPrimary(getString(R.string.doctor_details))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_doctor_visit)),
-                new DrawerItem()
+                /*new DrawerItem()
                         .setTextPrimary(getString(R.string.investigation))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_investigations)),
+                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_investigations)),*/
                 new DrawerItem()
                         .setTextPrimary(getString(R.string.appointments))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_appointments)),
@@ -208,17 +229,37 @@ public class HomePageActivity extends DrawerActivity {
                 if (id.equalsIgnoreCase(getString(R.string.doctor_details))) {
                     Intent intent = new Intent(mContext, DoctorListActivity.class);
                     startActivity(intent);
-                } else if (id.equalsIgnoreCase(getString(R.string.investigation))) {
+                } /*else if (id.equalsIgnoreCase(getString(R.string.investigation))) {
                     Intent intent = new Intent(mContext, InvestigationActivity.class);
                     startActivity(intent);
-                } else if (id.equalsIgnoreCase(getString(R.string.going_medication))) {
+                }*/ else if (id.equalsIgnoreCase(getString(R.string.going_medication))) {
                     Intent intent = new Intent(mContext, PrescriptionActivity.class);
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.appointments))) {
                     Intent intent = new Intent(mContext, AppointmentActivity.class);
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.my_records))) {
-                    Intent intent = new Intent(mContext, MyRecordsActivity.class);
+                    MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
+
+                    int completeCount = 0;
+
+                    for (Image image : myRecordsData.getImageArrayList()) {
+                        if (image.isUploading() == RescribeConstants.COMPLETED)
+                            completeCount++;
+                    }
+
+                    Intent intent;
+                    if (completeCount == myRecordsData.getImageArrayList().size()) {
+                        appDBHelper.deleteMyRecords();
+                        intent = new Intent(mContext, MyRecordsActivity.class);
+                    } else {
+                        intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
+                        intent.putExtra(RescribeConstants.UPLOADING_STATUS, true);
+                        intent.putExtra(RescribeConstants.VISIT_DATE, myRecordsData.getVisitDate());
+                        intent.putExtra(RescribeConstants.OPD_ID, myRecordsData.getDocId());
+                        intent.putExtra(RescribeConstants.DOCTORS_ID, myRecordsData.getDocId());
+                        intent.putExtra(RescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
+                    }
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.logout))) {
                     logout();

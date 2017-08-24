@@ -12,7 +12,6 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.rescribe.R;
 import com.rescribe.model.my_records.MyRecordDoctorInfo;
 import com.rescribe.model.my_records.MyRecordInfoAndReports;
@@ -21,7 +20,6 @@ import com.rescribe.ui.activities.ShowRecordsActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -203,12 +201,12 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                 MyRecordReports childGroup = adapter.getGroup(groupPosition);
                 if (!childGroup.getParentCaptionName().equalsIgnoreCase(mInvestigationText)) {
                     secondLevelELV.collapseGroup(groupPosition);
-                    Intent i = new Intent(context, ShowRecordsActivity.class);
+                    Intent intent = new Intent(context, ShowRecordsActivity.class);
                     ArrayList<MyRecordReports.MyRecordReportList> reportList = childGroup.getReportList();
                     MyRecordReports.MyRecordReportList myRecordReportList = reportList.get(0);
                     String[] imageList = myRecordReportList.getImageList();
-                    i.putExtra(RescribeConstants.DOCUMENTS, imageList);
-                    context.startActivity(i);
+                    intent.putExtra(RescribeConstants.DOCUMENTS, imageList);
+                    context.startActivity(intent);
                 }
             }
         });
@@ -218,9 +216,9 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                 SecondLevelAdapter adapter = (SecondLevelAdapter) secondLevelELV.getExpandableListAdapter();
                 MyRecordReports.MyRecordReportList child = adapter.getChild(groupPosition, childPosition);
                 String[] imageList = child.getImageList();
-                Intent i = new Intent(context, ShowRecordsActivity.class);
-                i.putExtra(RescribeConstants.DOCUMENTS, imageList);
-                context.startActivity(i);
+                Intent intent = new Intent(context, ShowRecordsActivity.class);
+                intent.putExtra(RescribeConstants.DOCUMENTS, imageList);
+                context.startActivity(intent);
                 return false;
             }
         });

@@ -67,6 +67,7 @@ public class InvestigationHelper implements ConnectionListener {
     public void getInvestigationList(boolean progressBar) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, progressBar, RescribeConstants.INVESTIGATION_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
+        // HardCoded
         mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
 //        mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=4092");
         mConnectionFactory.createConnection(RescribeConstants.INVESTIGATION_LIST);

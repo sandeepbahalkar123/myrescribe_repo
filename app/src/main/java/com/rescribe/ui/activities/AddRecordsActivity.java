@@ -31,11 +31,15 @@ import com.rescribe.adapters.DoctorSpinnerAdapter;
 import com.rescribe.helpers.myrecords.MyRecordsHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.myrecords.MyRecordsDoctorListModel;
+import com.rescribe.model.my_records.AddDoctorModel;
+import com.rescribe.model.my_records.MyRecordsDoctorListModel;
+import com.rescribe.model.my_records.RequestAddDoctorModel;
+import com.rescribe.model.my_records.VisitDate;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.SelectedRecordsActivity;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.RescribeConstants;
 import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -104,8 +108,10 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     private String mSelectDateString = "Select Date";
     private boolean isDatesThere = false;
     private String visitDate;
-    private int doctorId;
+    private int doctorId = -1;
+    private int opdId;
     private int mSelectedId;
+    private MyRecordsHelper myRecordsHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,8 +134,9 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
             }
         });
 
-        MyRecordsHelper myRecordsHelper = new MyRecordsHelper(mContext, this);
+        myRecordsHelper = new MyRecordsHelper(mContext, this);
         myRecordsHelper.getDoctorList(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        // HardCoded
 //        myRecordsHelper.getDoctorList("4092");
 
         Calendar now = Calendar.getInstance();
@@ -152,23 +159,6 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
     }
 
-    /*MyRecordsDoctorListModel getFilteredDoctorList() {
-        try {
-            InputStream is = mContext.getAssets().open("spinner_doctor.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-
-            return new Gson().fromJson(json, MyRecordsDoctorListModel.class);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }*/
-
     @OnClick({R.id.clearButton, R.id.selectDateTextView, R.id.dateIcon, R.id.uploadButton, R.id.searchButton, R.id.addressIcon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -184,8 +174,10 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
                 isManual = true;
                 mSelectedId = -1;
+                doctorId = -1;
+                opdId = 0;
                 mSelectDoctorString = "";
-                mSelectDateString = "Select Date ";
+                mSelectDateString = getResources().getString(R.string.select_date_text);
                 break;
             case R.id.selectDateTextView:
                 datePickerDialog.show(getSupportFragmentManager(), getResources().getString(R.string.select_date_text));
@@ -196,47 +188,51 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
             case R.id.uploadButton:
                 if (isManual) {
                     if (mSelectDoctorName.getText().length() == 0) {
-                        CommonMethods.showToast(mContext, "Please enter Doctor Name");
+                        CommonMethods.showToast(mContext, getResources().getString(R.string.please_select_doctor_name));
                         return;
                     }
                     if (selectDate.getText().length() == 0) {
-                        CommonMethods.showToast(mContext, "Please enter Date");
+                        CommonMethods.showToast(mContext, getResources().getString(R.string.please_enter_date));
                         return;
                     }
                     if (selectAddressText.getText().length() == 0) {
-                        CommonMethods.showToast(mContext, "Please enter Doctor Address");
+                        CommonMethods.showToast(mContext, getResources().getString(R.string.please_enter_doctor_address));
                         return;
                     }
                     visitDate = selectDate.getText().toString();
-                    doctorId = -1; // needs to generate
                 } else {
                     doctorId = mSelectedId;
                     if (isDatesThere) {
                         if (mSelectDoctorString.length() == 0) {
-                            CommonMethods.showToast(mContext, "Please enter Doctor Name");
+                            CommonMethods.showToast(mContext, getResources().getString(R.string.please_select_doctor_name));
                             return;
                         }
-                        if (mSelectDateString.equals("Select Date")) {
-                            CommonMethods.showToast(mContext, "Please enter Date");
+                        if (mSelectDateString.equals(getResources().getString(R.string.select_date_text))) {
+                            CommonMethods.showToast(mContext, getResources().getString(R.string.please_enter_date));
                             return;
                         }
                         visitDate = mSelectDateString;
                     } else {
                         if (mSelectDoctorString.length() == 0) {
-                            CommonMethods.showToast(mContext, "Please enter Doctor Name");
+                            CommonMethods.showToast(mContext, getResources().getString(R.string.please_select_doctor_name));
                             return;
                         }
                         if (selectDate.getText().length() == 0) {
-                            CommonMethods.showToast(mContext, "Please enter Date");
+                            CommonMethods.showToast(mContext, getResources().getString(R.string.please_enter_date));
                             return;
                         }
                         visitDate = selectDate.getText().toString();
                     }
                 }
-                Intent intent = new Intent(mContext, SelectedRecordsActivity.class);
-                intent.putExtra(RescribeConstants.DOCTORS_ID, doctorId);
-                intent.putExtra(RescribeConstants.VISIT_DATE, visitDate);
-                startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
+
+                if (doctorId != -1) {
+                    callRecordsActivity();
+                } else {
+                    RequestAddDoctorModel requestAddDoctorModel = new RequestAddDoctorModel();
+                    requestAddDoctorModel.setAddress(selectAddressText.getText().toString());
+                    requestAddDoctorModel.setName(mSelectDoctorName.getText().toString());
+                    myRecordsHelper.addDoctor(requestAddDoctorModel);
+                }
                 break;
             case R.id.searchButton:
                 mSelectDoctorName.setText("");
@@ -245,6 +241,14 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 AddRecordsActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
                 break;
         }
+    }
+
+    private void callRecordsActivity() {
+        Intent intent = new Intent(mContext, SelectedRecordsActivity.class);
+        intent.putExtra(RescribeConstants.DOCTORS_ID, doctorId);
+        intent.putExtra(RescribeConstants.OPD_ID, opdId);
+        intent.putExtra(RescribeConstants.VISIT_DATE, visitDate);
+        startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
     }
 
     @Override
@@ -313,72 +317,85 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
 
-        MyRecordsDoctorListModel myRecordsDoctorListModel = (MyRecordsDoctorListModel) customResponse;
+        if (customResponse instanceof MyRecordsDoctorListModel) {
+            MyRecordsDoctorListModel myRecordsDoctorListModel = (MyRecordsDoctorListModel) customResponse;
+            if (myRecordsDoctorListModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
+                mSelectDoctorName.setThreshold(1);
+                doctorSpinnerAdapter = new DoctorSpinnerAdapter(AddRecordsActivity.this, R.layout.activity_add_records, R.id.doctorName, myRecordsDoctorListModel.getDoctors());
+                mSelectDoctorName.setAdapter(doctorSpinnerAdapter);
 
-        if (myRecordsDoctorListModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
-            mSelectDoctorName.setThreshold(1);
-            doctorSpinnerAdapter = new DoctorSpinnerAdapter(AddRecordsActivity.this, R.layout.activity_add_records, R.id.doctorName, myRecordsDoctorListModel.getDoctors());
-            mSelectDoctorName.setAdapter(doctorSpinnerAdapter);
+                mSelectDoctorName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            mSelectDoctorName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        final ArrayList<VisitDate> spinnerList = new ArrayList<VisitDate>();
+                        mSelectDateString = getResources().getString(R.string.select_date_text);
+                        mSelectDoctorString = doctorSpinnerAdapter.getDoctor(position).getDoctorName();
 
-                    final ArrayList<String> spinnerList = new ArrayList<String>();
-                    mSelectDateString = "Select Date";
-                    mSelectDoctorString = doctorSpinnerAdapter.getDoctor(position).getDoctorName();
+                        mSelectedId = doctorSpinnerAdapter.getDoctor(position).getId();
+                        if (!doctorSpinnerAdapter.getDoctor(position).getDates().isEmpty()) {
+                            isDatesThere = true;
 
-                    mSelectedId = doctorSpinnerAdapter.getDoctor(position).getId();
-                    if (!doctorSpinnerAdapter.getDoctor(position).getDates().isEmpty()) {
-                        isDatesThere = true;
+                            dropdownLayout.setVisibility(View.VISIBLE);
+                            autocompleteLayout.setVisibility(View.GONE);
+                            doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
+                            doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
+                            doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
 
-                        dropdownLayout.setVisibility(View.VISIBLE);
-                        autocompleteLayout.setVisibility(View.GONE);
-                        doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
-                        doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
-                        doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
+                            dateSpinnerLayout.setVisibility(View.VISIBLE);
+                            selectDateLayout.setVisibility(View.GONE);
 
-                        dateSpinnerLayout.setVisibility(View.VISIBLE);
-                        selectDateLayout.setVisibility(View.GONE);
+                            selectAddressLayout.setVisibility(View.GONE);
+                        } else {
+                            isDatesThere = false;
 
-                        selectAddressLayout.setVisibility(View.GONE);
-                    } else {
-                        isDatesThere = false;
+                            mSelectDoctorName.setText("");
+                            dropdownLayout.setVisibility(View.VISIBLE);
+                            autocompleteLayout.setVisibility(View.GONE);
+                            doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
+                            doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
+                            doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
 
-                        mSelectDoctorName.setText("");
-                        dropdownLayout.setVisibility(View.VISIBLE);
-                        autocompleteLayout.setVisibility(View.GONE);
-                        doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
-                        doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
-                        doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
+                            dateSpinnerLayout.setVisibility(View.GONE);
+                            selectDateLayout.setVisibility(View.VISIBLE);
 
-                        dateSpinnerLayout.setVisibility(View.GONE);
-                        selectDateLayout.setVisibility(View.VISIBLE);
+                            selectAddressLayout.setVisibility(View.GONE);
+                        }
 
-                        selectAddressLayout.setVisibility(View.GONE);
+                        isManual = false;
+
+                        VisitDate visitDate = new VisitDate();
+                        visitDate.setOpdDate(getResources().getString(R.string.select_date_text));
+                        visitDate.setOpdId(0);
+                        spinnerList.add(visitDate);
+                        for (VisitDate date : doctorSpinnerAdapter.getDoctor(position).getDates()) {
+                            date.setOpdDate(CommonMethods.getFormatedDate(date.getOpdDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY));
+                            spinnerList.add(date);
+                        }
+
+                        ArrayAdapter<VisitDate> arrayAdapter = new ArrayAdapter<>(AddRecordsActivity.this, R.layout.simple_spinner_item, spinnerList);
+                        selectDateSpinner.setAdapter(arrayAdapter);
+                        selectDateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                mSelectDateString = spinnerList.get(position).getOpdDate();
+                                opdId = spinnerList.get(position).getOpdId();
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
                     }
-
-                    isManual = false;
-
-                    spinnerList.add("Select Date");
-                    for (String date : doctorSpinnerAdapter.getDoctor(position).getDates())
-                        spinnerList.add(CommonMethods.getFormatedDate(date, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY));
-
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddRecordsActivity.this, R.layout.simple_spinner_item, spinnerList);
-                    selectDateSpinner.setAdapter(arrayAdapter);
-                    selectDateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            mSelectDateString = spinnerList.get(position);
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
-                    });
-                }
-            });
+                });
+            }
+        } else if (customResponse instanceof AddDoctorModel) {
+            AddDoctorModel addDoctorModel = (AddDoctorModel) customResponse;
+            if (addDoctorModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
+                doctorId = addDoctorModel.getDocId();
+                callRecordsActivity();
+            }
         }
     }
 

@@ -44,9 +44,8 @@ import com.rescribe.model.investigation.uploaded.InvestigationUploadFromUploaded
 import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.login.SignUpModel;
 import com.rescribe.model.my_records.AddDoctorModel;
+import com.rescribe.model.my_records.MyRecordsDoctorListModel;
 import com.rescribe.model.my_records.new_pojo.NewMyRecordBaseModel;
-import com.rescribe.model.myrecords.MyRecordsDoctorListModel;
-import com.rescribe.model.my_records.MyRecordBaseModel;
 import com.rescribe.model.notification.AppointmentsNotificationModel;
 import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.model.prescription_response_model.PrescriptionModel;

@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.rescribe.R;
-import com.rescribe.model.myrecords.Group;
+import com.rescribe.model.my_records.Group;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class RecordsGroupAdapter extends RecyclerView.Adapter<RecordsGroupAdapter.MyViewHolder> {
 
     private final Context context;
-    private List<Group> groups;
+    private ArrayList<Group> groups;
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         RecyclerView gridView;
@@ -41,7 +41,7 @@ public class RecordsGroupAdapter extends RecyclerView.Adapter<RecordsGroupAdapte
     }
 
 
-    public RecordsGroupAdapter(List<Group> patients, Context context) {
+    public RecordsGroupAdapter(ArrayList<Group> patients, Context context) {
         this.groups = patients;
         this.context = context;
     }

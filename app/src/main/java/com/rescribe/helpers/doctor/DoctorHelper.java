@@ -180,7 +180,6 @@ public class DoctorHelper implements ConnectionListener {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
-
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + id + "&year=" + year);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_LIST);
 

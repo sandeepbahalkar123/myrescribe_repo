@@ -107,18 +107,13 @@
                 android:text="@string/sign_up"
                 android:textAllCaps="true"
                 android:textColor="@android:color/white" />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="@dimen/dp2"
-                android:orientation="horizontal">
 
-                <com.rescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/login"
-                    style="@style/AppLoginNewMainStyle"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:padding="@dimen/dp6"
+                    android:layout_gravity="right"
                     android:maxLines="2"
                     android:layout_marginRight="@dimen/dp10"
                     android:text="@string/log_in"
@@ -128,8 +123,6 @@
                     android:textStyle="bold"
                     android:typeface="sans" />
 
-
-            </LinearLayout>
         </LinearLayout>
 
 

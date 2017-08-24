@@ -164,7 +164,6 @@ public class HomePageActivity extends DrawerActivity {
     private void logout() {
         // Stop Uploads
         UploadService.stopAllUploads();
-        RescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
 
         //Logout functionality
         String facebook = RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN,mContext);
@@ -194,9 +193,9 @@ public class HomePageActivity extends DrawerActivity {
     private void drawerConfiguration() {
         setDrawerTheme(
                 new DrawerTheme(this)
-                        .setBackgroundColorRes(R.color.recentblue)
-                        .setTextColorPrimaryRes(R.color.white)
-                        .setTextColorSecondaryRes(R.color.white)
+                        .setBackgroundColorRes(R.color.drawer_bg)
+                        .setTextColorPrimaryRes(R.color.drawer_menu_text_color)
+                        .setTextColorSecondaryRes(R.color.drawer_menu_text_color)
         );
 
         addItems(new DrawerItem()
@@ -269,14 +268,14 @@ public class HomePageActivity extends DrawerActivity {
         addProfile(new DrawerProfile()
                 .setId(1)
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.big))
-                .setBackground(ContextCompat.getDrawable(this, R.drawable.drawer_header_bg))
+                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr.Avinash Deshpande")
                 .setDescription("avinash_deshpande@gmail.com")
         );
         addProfile(new DrawerProfile()
                 .setId(2)
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.small_copy))
-                .setBackground(ContextCompat.getDrawable(this, R.drawable.drawer_header_bg))
+                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr.Sandeep Deshmukh ")
                 .setDescription("sandeep_deshmukh@gmail.com")
         );

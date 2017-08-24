@@ -217,7 +217,6 @@ public class LoginFragment extends Fragment implements HelperResponse{
             //After login user navigated to HomepageActivity
             LoginModel loginModel = (LoginModel) customResponse;
             if (loginModel.getCommon().isSuccess()) {
-                CommonMethods.Log(TAG + " Token", loginModel.getAuthToken());
                 RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), getActivity());
                 Intent intent = new Intent(getActivity(), AppGlobalContainerActivity.class);
                 intent.putExtra(getString(R.string.type), getString(R.string.enter_otp_for_login));

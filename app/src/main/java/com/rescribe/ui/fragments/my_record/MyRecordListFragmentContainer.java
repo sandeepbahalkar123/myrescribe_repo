@@ -137,13 +137,13 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             mTimePeriodList = recordMainDataModel.getFormattedYearList();
         }*/
 
-        if (mTimePeriodList.size() < 6) {
+        /*if (mTimePeriodList.size() < 6) {
             mTabLayout.setTabMode(TabLayout.MODE_FIXED);
             mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        } else {
+        } else {*/
             mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
             mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-        }
+//        }
         //---------
 
     }

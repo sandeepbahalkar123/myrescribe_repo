@@ -7,7 +7,6 @@
     android:padding="@dimen/dp5">
 
     <RelativeLayout
-        android:id="@+id/rounded_corner_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/addCaptionText"

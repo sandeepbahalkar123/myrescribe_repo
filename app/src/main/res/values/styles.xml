@@ -115,11 +115,6 @@
         </attr>
     </declare-styleable>
 
-    <style name="NavigationViewStyle">
-        <item name="android:textSize">14sp</item> <!-- menu item text size-->
-        <!--<item name="android:listPreferredItemHeightSmall">40dp</item>--><!-- menu item height-->
-    </style>
-
     <style name="scrollbar_style">
         <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
         <item name="android:scrollbarStyle">outsideOverlay</item>

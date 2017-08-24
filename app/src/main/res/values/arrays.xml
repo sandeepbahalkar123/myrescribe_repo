@@ -17,14 +17,6 @@
         <item>@android:color/white</item>
     </array>
 
-    <array name="black_array">
-        <item>@android:color/black</item>
-        <item>@android:color/black</item>
-        <item>@android:color/black</item>
-        <item>@android:color/black</item>
-        <item>@android:color/black</item>
-    </array>
-
     <array name="labels">
         <item>@drawable/label</item>
         <item>@drawable/label</item>

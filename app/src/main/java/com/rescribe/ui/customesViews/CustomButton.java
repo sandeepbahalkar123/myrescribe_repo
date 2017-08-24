@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.widget.Button;
 
 import com.rescribe.R;
-import com.rescribe.singleton.MyRescribeApplication;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.util.RescribeConstants;
 
 /**
@@ -32,7 +32,7 @@ public class CustomButton extends Button {
     }
 
     public void setCustomFont(Context ctx, String asset) {
-        Typeface typeface = MyRescribeApplication.get(ctx, "fonts/" + asset);
+        Typeface typeface = RescribeApplication.get(ctx, "fonts/" + asset);
         setTypeface(typeface);
     }
 }

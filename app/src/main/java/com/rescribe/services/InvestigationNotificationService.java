@@ -59,7 +59,7 @@ public class InvestigationNotificationService extends Service implements HelperR
 
         this.intent = intent;
 
-        if (RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this).equals(RescribeConstants.YES)) {
+        if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this).equals(RescribeConstants.YES)) {
             notification_id = intent.getIntExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, 0);
             // If this service was started by out DosesAlarmTask intent then we want to show our notification
             InvestigationHelper investigationHelper;

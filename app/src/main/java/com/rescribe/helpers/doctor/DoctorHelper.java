@@ -179,7 +179,7 @@ public class DoctorHelper implements ConnectionListener {
     public void doGetDoctorList(String year) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        String id = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
 
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + id + "&year=" + year);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_LIST);
@@ -190,7 +190,7 @@ public class DoctorHelper implements ConnectionListener {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_APPOINTMENT, Request.Method.GET, true);
 
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.APPOINTMENTS_DETAILS_URL + RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        mConnectionFactory.setUrl(Config.APPOINTMENTS_DETAILS_URL + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
         mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_APPOINTMENT);
 
     }

@@ -28,8 +28,6 @@ public class PrescriptionHelper implements ConnectionListener {
         this.mContext = context;
         this.mHelperResponseManager = loginActivity1;
     }
-
-
     @Override
     public void onResponse(int responseResult, CustomResponse customResponse, String mOldDataTag) {
 
@@ -67,12 +65,11 @@ public class PrescriptionHelper implements ConnectionListener {
     public void onTimeout(ConnectRequest request) {
 
     }
-
+ //get prescription list of medicines
     public void doGetPrescriptionList() {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_PRESCRIPTION_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-
-        mConnectionFactory.setUrl(Config.PRESCRIPTION_URL + RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        mConnectionFactory.setUrl(Config.PRESCRIPTION_URL + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
         mConnectionFactory.createConnection(RescribeConstants.TASK_PRESCRIPTION_LIST);
     }
 

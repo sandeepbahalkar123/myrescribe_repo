@@ -101,6 +101,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
                 notifyDataSetChanged();
             }
         });
+        //condition check for before after dosage slot wise
        if(prescriptionDataObject.getMealTime().equalsIgnoreCase(mContext.getString(R.string.break_fast))){
            if(!prescriptionDataObject.getBreakfastAfter().isEmpty()){
                holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
@@ -159,8 +160,9 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         holder.mDays.setText(prescriptionDataObject.getDays()+mContext.getString(R.string.space)+mContext.getString(R.string.days));
     //    holder.mDays.setText(calculateDays(CommonMethods.getCurrentDateTime(),CommonMethods.getFormatedDate(prescriptionDataObject.getEndDate(),RescribeConstants.DATE_PATTERN.DD_MM_YYYY_hh_mm_ss,RescribeConstants.DATE_PATTERN.DD_MM_YYYY)));
         holder.mDoseAge.setText(prescriptionDataObject.getDosage());
-        setPrescriptionDosageData(holder, position);
         holder.mMedicineType.setBackgroundDrawable(CommonMethods.getMedicineTypeImage(prescriptionDataObject.getMedicineTypeName(), mContext));
+
+        setPrescriptionDosageData(holder, position);
 
 
     }

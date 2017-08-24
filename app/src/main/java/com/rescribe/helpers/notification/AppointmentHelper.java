@@ -25,7 +25,7 @@ public class AppointmentHelper implements ConnectionListener {
 
     public AppointmentHelper(Context context) {
         this.mContext = context;
-        patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
     }
 
 

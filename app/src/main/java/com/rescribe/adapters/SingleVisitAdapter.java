@@ -40,6 +40,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
     public SingleVisitAdapter(Context context, List<PatientHistory> listDataHeader) {
         this.mContext = context;
+        //  case details with no data are not added in the list
         for (int i = 0; i < listDataHeader.size(); i++) {
             List<VisitCommonData> commonData = listDataHeader.get(i).getCommonData();
             List<Vital> commonDatasVitals = listDataHeader.get(i).getVitals();
@@ -73,11 +74,14 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
     }
 
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+
+       // Onclick of vitals UI is different from those of other case details
         final List<VisitCommonData> childObject = mListDataHeader.get(groupPosition).getCommonData();
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
         String headerName = mListDataHeader.get(groupPosition).getCaseDetailName();
         switch (headerName) {
             case CHILD_TYPE_1:
+                //set data and UI for vitals
                 convertView = inflater.inflate(R.layout.vitals_main_activity, null);
                 convertView.setTag(headerName);
                 TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.table);
@@ -112,6 +116,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 break;
 
             default:
+                // set data and UI for other case study
                 convertView = inflater.inflate(R.layout.history_child_item_layout, null);
                 convertView.setTag(headerName);
                 TextView txtListChild = (TextView) convertView.findViewById(R.id.textView_name);
@@ -128,7 +133,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
         return convertView;
     }
-
+   // Created dynamic grid function to list of  vitals
     private View addTableRow(final List<Vital> vital, final int groupPosition) {
         int i;
         TableRow tableRow = new TableRow(mContext);
@@ -141,7 +146,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             TextView noOfVitals = (TextView) item.findViewById(R.id.noOfVitals);
             LinearLayout unitValuesLayout = (LinearLayout)item.findViewById(R.id.unitValuesLayout);
             final int finali = mPosition;
-
+         //dialog is opened to see info of vitals , Note : BpMin and BpMax is together shown as Bp
             vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -173,6 +178,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 noOfVitals.setText(Html.fromHtml(getUnitValueforBp(categoryForBpMin,categoryForBpMax,unitForBpMin,unitForBpMax)));
 
             }else {
+                //TextColor of vital unit is set according to category
                 vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getIcon()));
                 vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
               noOfVitals.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue());
@@ -191,7 +197,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         }
         return tableRow;
     }
-
+   //set Unit Value of Bp according to category
     private String getUnitValueforBp( String categoryForBpMin, String categoryForBpMax,String forBpMin, String forBpMax) {
        String unitValue = "";
         if(categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.severeRange))&&categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange))){
@@ -403,6 +409,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         TextView vitalName = (TextView) dialog.findViewById(R.id.vitalNameDialog);
         LinearLayout bpMinLayout = (LinearLayout) dialog.findViewById(R.id.bpMinLayout);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        
         for (int i = 0; i < rangeList.size(); i++) {
             if (rangeList.get(i).getNameOfVital() != null) {
             if (rangeList.get(i).getNameOfVital().equalsIgnoreCase(mContext.getString(R.string.bp_max))) {

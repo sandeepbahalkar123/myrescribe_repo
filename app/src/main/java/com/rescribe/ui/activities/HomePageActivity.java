@@ -53,7 +53,7 @@ public class HomePageActivity extends DrawerActivity {
 
 
     private void notificationForMedicine() {
-
+ // set time for notification.
         AppDBHelper appDBHelper = new AppDBHelper(mContext);
         Cursor cursor = appDBHelper.getPreferences("1");
         if (cursor.moveToFirst()) {
@@ -69,7 +69,7 @@ public class HomePageActivity extends DrawerActivity {
 
         String times[] = {breakFastTime, lunchTime, dinnerTime, snacksTime};
         String date = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
-
+         // notification for prescription , investigation and appointment initiated here
         new DosesAlarmTask(mContext, times, date).run();
         new InvestigationAlarmTask(mContext, "9:00 AM", getResources().getString(R.string.investigation_msg)).run();
         new AppointmentAlarmTask(mContext, "9:00 AM", getResources().getString(R.string.appointment_msg)).run();
@@ -147,7 +147,16 @@ public class HomePageActivity extends DrawerActivity {
     }
 
     private void logout() {
+        //Logout functionality
+        String facebook = RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN,mContext);
+        String gmail = RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN,mContext);
+        String mobileNo = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,mContext);
+        String password = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD,mContext);
         RescribePreferencesManager.clearSharedPref(mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,mobileNo,mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD,password,mContext);
+        RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN,gmail,mContext);
+        RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN,facebook,mContext);
         RescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
         AppDBHelper appDBHelper = new AppDBHelper(mContext);
         appDBHelper.deleteDatabase();

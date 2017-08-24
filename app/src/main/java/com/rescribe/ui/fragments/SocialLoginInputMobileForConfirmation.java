@@ -15,6 +15,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.login.SignUpModel;
 import com.rescribe.model.requestmodel.login.SignUpRequestModel;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.AppGlobalContainerActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -80,6 +81,7 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //For Both gmail and login signup this fragment is loaded , By setting isGmailLogin or is FacebookLogin true functinality of social media login  works
         View inflate = inflater.inflate(R.layout.social_login_confirm_mobileno_password, container, false);
         ButterKnife.bind(this, inflate);
         if (getArguments() != null) {
@@ -139,6 +141,11 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
                     mSignUpRequestModel.setMobileNumber(mobileNo);
                     mSignUpRequestModel.setEmailId(email);
                     mSignUpRequestModel.setPassword(password);
+                    if(mSignUpRequestModel.isGmailLogin()){
+                        mSignUpRequestModel.setGmailLogin(true);
+                    }else if(mSignUpRequestModel.isFaceBookLogin()){
+                        mSignUpRequestModel.setFaceBookLogin(true);
+                    }
                     loginHelper.doSignUp(mSignUpRequestModel);
                 }
                 break;
@@ -152,9 +159,8 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
             SignUpModel loginModel = (SignUpModel) customResponse;
 
             if (loginModel.getCommon().isSuccess()) {
-
-                AppGlobalContainerActivity activity = (AppGlobalContainerActivity) getActivity();
-                activity.loadFragment(getString(R.string.enter_otp), mSignUpRequestModel, getString(R.string.sign_up_confirmation));
+                     AppGlobalContainerActivity activity = (AppGlobalContainerActivity) getActivity();
+                     activity.loadFragment(getString(R.string.enter_otp), mSignUpRequestModel, getString(R.string.sign_up_confirmation));
 
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());

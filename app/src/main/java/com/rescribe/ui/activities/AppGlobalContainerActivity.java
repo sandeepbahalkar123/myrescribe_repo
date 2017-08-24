@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,10 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import com.rescribe.R;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.fragments.ForgotPassword;
 import com.rescribe.ui.fragments.OTPConfirmationForSignUp;
 import com.rescribe.ui.fragments.OtpConfirmationForLogin;
 import com.rescribe.ui.fragments.SocialLoginInputMobileForConfirmation;
+import com.rescribe.util.RescribeConstants;
+
 import java.io.Serializable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,12 +29,14 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
     @BindView(R.id.blankContainer)
     FrameLayout mBlankContainer;
     private ActionBar mActionBar;
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.blank_layout);
         ButterKnife.bind(this);
+        mContext = AppGlobalContainerActivity.this;
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         String header = getIntent().getStringExtra(getString(R.string.title));
@@ -45,7 +51,7 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
     }
 
     public void loadFragment(String type, Serializable serializableExtra, String header) {
-
+          //When ever this activity will be called respective function fragement will be loaded for eg .Forgotpassword according to type set through intent
         mActionBar.setTitle(header);
 
         FragmentManager supportFragmentManager = getSupportFragmentManager();
@@ -59,17 +65,19 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
             OTPConfirmationForSignUp otpConfirmationForSignUp = new OTPConfirmationForSignUp();
             otpConfirmationForSignUp.setArguments(b);
             fragmentTransaction.replace(R.id.blankContainer, otpConfirmationForSignUp);
-        } else if (type.equalsIgnoreCase(getString(R.string.login_social_media))) {
+        } else if (type.equalsIgnoreCase(getString(R.string.login_with_facebook))) {
             SocialLoginInputMobileForConfirmation socialLoginInputMobileForConfirmation = new SocialLoginInputMobileForConfirmation();
             socialLoginInputMobileForConfirmation.setArguments(b);
             fragmentTransaction.replace(R.id.blankContainer, socialLoginInputMobileForConfirmation);
+        } else if (type.equalsIgnoreCase(getString(R.string.login_with_gmail))) {
+            SocialLoginInputMobileForConfirmation socialLoginInputMobileForConfirmation = new SocialLoginInputMobileForConfirmation();
+            socialLoginInputMobileForConfirmation.setArguments(b);
+            fragmentTransaction.replace(R.id.blankContainer, socialLoginInputMobileForConfirmation);
+
         } else if (type.equalsIgnoreCase(getString(R.string.forgot_password))) {
             ForgotPassword forgotPassword = new ForgotPassword();
             forgotPassword.setArguments(b);
             fragmentTransaction.replace(R.id.blankContainer, forgotPassword);
-        }else if(type.equalsIgnoreCase(getString(R.string.enter_mobile_no))){
-           /* MobileNoOtpLogin mobileNoForLogin = new MobileNoOtpLogin();
-            fragmentTransaction.replace(R.id.blankContainer, mobileNoForLogin);*/
         }
         else if(type.equalsIgnoreCase(getString(R.string.enter_otp_for_login))){
             OtpConfirmationForLogin otpConfirmationForLogin = new OtpConfirmationForLogin();

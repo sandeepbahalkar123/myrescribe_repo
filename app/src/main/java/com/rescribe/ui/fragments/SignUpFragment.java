@@ -99,6 +99,7 @@ public class SignUpFragment extends Fragment implements HelperResponse{
     @OnClick({R.id.btnSignUp, R.id.login, R.id.signUpWithFacebook, R.id.signUpWithGoogle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            //Onclick of Signup button
             case R.id.btnSignUp:
                 String name = editTextName.getText().toString();
                 String email = editTextEmailID.getText().toString();
@@ -114,15 +115,18 @@ public class SignUpFragment extends Fragment implements HelperResponse{
                     loginHelper.doSignUp(mSignUpRequestModel);
                 }
                 break;
+            //Onclick of Login text
             case R.id.login:
                 FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
                 supportFragmentManager.popBackStack();
                 break;
+            //Onclick of Facebook button logic immplemented in LoginSignupActivity
             case R.id.signUpWithFacebook:
-                mListener.onClickFacebook();
+                mListener.onClickFacebook(getString(R.string.sign_up));
                 break;
+            //Onclick of gmail button logic immplemented in LoginSignupActivity
             case R.id.signUpWithGoogle:
-                mListener.onClickGoogle();
+                mListener.onClickGoogle(getString(R.string.sign_up));
                 break;
         }
     }
@@ -221,8 +225,8 @@ public class SignUpFragment extends Fragment implements HelperResponse{
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onClickGoogle();
+        void onClickGoogle(String Signup);
 
-        void onClickFacebook();
+        void onClickFacebook(String Signup);
     }
 }

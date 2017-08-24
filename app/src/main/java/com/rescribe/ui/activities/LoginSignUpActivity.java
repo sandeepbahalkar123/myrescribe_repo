@@ -28,10 +28,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.rescribe.R;
+import com.rescribe.helpers.login.LoginHelper;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.requestmodel.login.SignUpRequestModel;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.fragments.LoginFragment;
 import com.rescribe.ui.fragments.SignUpFragment;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import org.json.JSONObject;
 
@@ -47,7 +53,7 @@ import permissions.dispatcher.RuntimePermissions;
  * Created by jeetal on 18/8/17.
  */
 @RuntimePermissions
-public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener, LoginFragment.OnFragmentInteractionListener, SignUpFragment.OnFragmentInteractionListener {
+public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, LoginFragment.OnFragmentInteractionListener, SignUpFragment.OnFragmentInteractionListener, HelperResponse {
     private final String TAG = this.getClass().getName();
     @BindView(R.id.container)
     FrameLayout container;
@@ -66,7 +72,8 @@ public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApi
         ButterKnife.bind(this);
         LoginSignUpActivityPermissionsDispatcher.askToReadMessageWithCheck(LoginSignUpActivity.this);
         String key = CommonMethods.printKeyHash(LoginSignUpActivity.this);
-        Log.e(TAG,key);
+        Log.e(TAG, key);
+        // Code for facebook and gmail login for both signup and login fragment is written in LoginSignUpActivity
         googleInitialize();
         facebookInitialize();
         init();
@@ -74,6 +81,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApi
 
     private void init() {
         mContext = LoginSignUpActivity.this;
+        //Fragment for Signup and login is loaded in LoginSignUpActivity , Facebook and google Login click is handled in LoginSignUpActivity
         loginFragment = new LoginFragment();
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
@@ -113,7 +121,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApi
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
     }
-
+ //Request to facebook for user info
     private void requestUserInfo(AccessToken accessToken) {
         String FIELDS = "fields";
         String ID = "id";
@@ -142,13 +150,17 @@ public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApi
                         signUpRequest.setName(json.optString("name"));
                         signUpRequest.setEmailId(json.optString("email"));
                         signUpRequest.setPassword(null);
+                        signUpRequest.setFaceBookLogin(true);
                         //-----------
                         Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
-                        intentObj.putExtra(getString(R.string.type), getString(R.string.login_social_media));
+                        intentObj.putExtra(getString(R.string.type), getString(R.string.login_with_facebook));
                         intentObj.putExtra(getString(R.string.details), signUpRequest);
-                        intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
+                        if(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_OR_SIGNUP,mContext).equalsIgnoreCase(getString(R.string.sign_up))) {
+                            intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
+                        }else if(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_OR_SIGNUP,mContext).equalsIgnoreCase(getString(R.string.log_in))){
+                            intentObj.putExtra(getString(R.string.title), getString(R.string.login_confirmation));
+                        }
                         startActivity(intentObj);
-                        finish();
 
                     }
                 });
@@ -176,7 +188,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApi
 
         }
     }
-
+//Request to Google for user info
     private void handleSignInResult(GoogleSignInResult result) {
         CommonMethods.Log(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
@@ -191,11 +203,16 @@ public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApi
             signUpRequest.setName(acct.getDisplayName());
             signUpRequest.setEmailId(acct.getEmail());
             signUpRequest.setPassword(null);
+            signUpRequest.setGmailLogin(true);
             //-----------
             Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
-            intentObj.putExtra(getString(R.string.type), getString(R.string.login_social_media));
+            intentObj.putExtra(getString(R.string.type), getString(R.string.login_with_gmail));
             intentObj.putExtra(getString(R.string.details), signUpRequest);
-            intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
+            if(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_OR_SIGNUP,mContext).equalsIgnoreCase(getString(R.string.sign_up))) {
+                intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
+            }else if(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_OR_SIGNUP,mContext).equalsIgnoreCase(getString(R.string.log_in))){
+                intentObj.putExtra(getString(R.string.title), getString(R.string.login_confirmation));
+            }
             startActivity(intentObj);
 
 
@@ -213,14 +230,31 @@ public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApi
     }
 
     @Override
-    public void onClickGoogle() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+    public void onClickGoogle(String loginOrSignup) {
+        if (RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_gmail))) {
+            String mobileNo = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext);
+            String password = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, mContext);
+            LoginHelper loginHelper = new LoginHelper(this, this);
+            loginHelper.doLogin(mobileNo, password);
+
+        } else {
+            RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_OR_SIGNUP,loginOrSignup,mContext);
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        }
     }
 
     @Override
-    public void onClickFacebook() {
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("user_friends", "email", "public_profile"));
+    public void onClickFacebook(String loginOrSignup) {
+        if (RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_facebook))) {
+            String mobileNo = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext);
+            String password = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, mContext);
+            LoginHelper loginHelper = new LoginHelper(this, this);
+            loginHelper.doLogin(mobileNo, password);
+        } else {
+            RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_OR_SIGNUP,loginOrSignup,mContext);
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("user_friends", "email", "public_profile"));
+        }
     }
 
     @NeedsPermission(Manifest.permission.READ_SMS)
@@ -237,5 +271,45 @@ public class LoginSignUpActivity extends AppCompatActivity implements  GoogleApi
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         LoginSignUpActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        // User can login through gmail or facebook
+        if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_LOGIN)) {
+
+            LoginModel loginModel = (LoginModel) customResponse;
+            if (loginModel.getCommon().isSuccess()) {
+                CommonMethods.Log(TAG + " Token", loginModel.getAuthToken());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, loginModel.getPatientId(), mContext);
+              /*  RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, editTextPassword.getText().toString(), mContext);*/
+                Intent intent = new Intent(this, HomePageActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            } else {
+                CommonMethods.showToast(mContext, loginModel.getCommon().getStatusMessage());
+            }
+        }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+        CommonMethods.Log(TAG, errorMessage);
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+        CommonMethods.Log(TAG, serverErrorMessage);
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+        CommonMethods.Log(TAG, serverErrorMessage);
     }
 }

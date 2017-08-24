@@ -124,6 +124,8 @@ public class RescribeConstants {
     public static final String PATIENT_ID = "patientId=";
     public static final String VISIT_DATE = "visitDate";
     public static final String DOCTORS_ID = "doctorId";
+    public static final String GMAIL_LOGIN = "gmail_login";
+    public static final String FACEBOOK_LOGIN = "facebook_login";
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 

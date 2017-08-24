@@ -16,7 +16,7 @@ import com.rescribe.util.RescribeConstants;
 
 public class Device {
 
-    private static final String TAG = "MyRescribe/Device";
+    private  final String TAG = this.getClass().getName();
     private Context context;
     private WindowManager windowManager;
 

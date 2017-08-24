@@ -92,7 +92,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
         customProgressDialog = new CustomProgressDialog(mContext);
         customProgressDialog.setCancelable(false);
 
-        patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
 
         investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
 
@@ -222,7 +222,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
 
                         Device device = Device.getInstance(mContext);
                         String baseUrl = Config.BASE_URL;
-                        String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
+                        String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
 
                         String uploadId = new MultipartUploadRequest(SelectedDocsActivity.this, baseUrl + Config.INVESTIGATION_UPLOAD)
 //                            .setNotificationConfig(uploadNotificationConfig)

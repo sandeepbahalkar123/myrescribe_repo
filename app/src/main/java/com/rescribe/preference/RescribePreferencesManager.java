@@ -22,7 +22,6 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class RescribePreferencesManager {
 
-    private static final String TAG = "MyRescribe/RescribePreferencesManager";
     private static SharedPreferences sharedPreferences = null;
     private static byte[] sKey;
 
@@ -210,7 +209,7 @@ public class RescribePreferencesManager {
     }
 
 
-    public interface MYRESCRIBE_PREFERENCES_KEY {
+    public interface RESCRIBE_PREFERENCES_KEY {
         String SERVER_PATH = "server_path";
         String USER_GENDER = "user_gender";
         String SERVER_CONNECTION_SUCCESS = "success";
@@ -220,6 +219,7 @@ public class RescribePreferencesManager {
         String LOGIN_STATUS = "login_status";
         String MOBILE_NUMBER = "mobileNumber";
         String PASSWORD = "password";
+        String LOGIN_OR_SIGNUP = "signup_login";
         String COACHMARK = "coachmark";
     }
 }

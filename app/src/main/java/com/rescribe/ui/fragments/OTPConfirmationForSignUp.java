@@ -117,6 +117,7 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
 
     @Override
     public void otpReceived(String smsText) {
+        // Automate sms read and navigate to HomepageActivty
         //Do whatever you want to do with the text
         CommonMethods.Log("otpReceived", "otpReceived:" + smsText);
         int value = Integer.parseInt(smsText.replaceAll("[^0-9]", ""));
@@ -169,6 +170,7 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
     }
 
     @OnClick(R.id.resendOtpBtn)
+    // Resend otp function
     public void resendOTP() {
         if (mResendOTPCount == 3) {
             CommonMethods.showToast(getActivity(), getString(R.string.err_maximum_otp_retries));
@@ -198,12 +200,17 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
 
             LoginModel receivedModel = (LoginModel) customResponse;
             if (receivedModel.getCommon().isSuccess()) {
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, receivedModel.getAuthToken(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, receivedModel.getPatientId(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mSignUpRequestModel.getMobileNumber().toString(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mSignUpRequestModel.getPassword().toString(), getActivity());
+                if(mSignUpRequestModel.isGmailLogin()){
+                    RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN,getString(R.string.login_with_gmail),getActivity());
+                }else if(mSignUpRequestModel.isFaceBookLogin()){
+                    RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN,getString(R.string.login_with_facebook),getActivity());
 
+                }
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, receivedModel.getAuthToken(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, receivedModel.getPatientId(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mSignUpRequestModel.getMobileNumber().toString(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, mSignUpRequestModel.getPassword().toString(), getActivity());
                 Intent intent = new Intent(getActivity(), HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

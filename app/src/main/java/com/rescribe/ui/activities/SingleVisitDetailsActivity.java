@@ -14,7 +14,7 @@ import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 
 import com.rescribe.adapters.SingleVisitAdapter;
-import com.rescribe.helpers.one_day_visit.SingleVisitDetailHelper;
+import com.rescribe.helpers.single_visit_details.SingleVisitDetailHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.case_details.VisitData;
@@ -128,7 +128,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         }
         List<PatientHistory> patientHistoryList = visitData.getPatientHistory();
         List<Vital> vitalSortedList = new ArrayList<>();
-
+  // Bpmin and Bpmax is clubed together as Bp in vitals
         for (int i = 0; i < patientHistoryList.size(); i++) {
             if (patientHistoryList.get(i).getVitals() != null) {
                 String pos = null;

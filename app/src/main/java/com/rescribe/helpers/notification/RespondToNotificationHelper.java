@@ -72,7 +72,7 @@ public class RespondToNotificationHelper implements ConnectionListener {
 
     }
 
-
+  // for click of checkbox in sublist , whether medicine taken or not , isBundle = 0 .i.e. respond to medicne in the list one at time
     public void doRespondToNotification(Integer patientID,String slot,Integer medicineId,String takenDate,Integer isBundle,String pos) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, pos, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
@@ -86,7 +86,7 @@ public class RespondToNotificationHelper implements ConnectionListener {
         mConnectionFactory.setUrl(Config.RESPOND_TO_NOTIFICATION_URL);
         mConnectionFactory.createConnection(pos);
     }
-
+    // for click of checkbox in header  , whether bundle of medicines of particular slot taken or not i.e. isBundle = 1
     public void doRespondToNotificationForHeader(Integer patientID,String slot,Integer medicineId,String takenDate,Integer isBundle,String pos) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, pos, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();

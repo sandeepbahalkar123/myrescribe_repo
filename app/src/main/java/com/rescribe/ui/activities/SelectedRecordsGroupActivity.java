@@ -193,7 +193,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                 try {
                     Device device = Device.getInstance(SelectedRecordsGroupActivity.this);
                     String baseUrl = Config.BASE_URL;
-                    String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, SelectedRecordsGroupActivity.this);
+                    String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, SelectedRecordsGroupActivity.this);
 
                     UploadNotificationConfig uploadNotificationConfig = new UploadNotificationConfig();
                     uploadNotificationConfig.setTitleForAllStatuses("Document Uploading");

@@ -34,7 +34,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, mContext).equals(RescribeConstants.YES)) {
+                if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, mContext).equals(RescribeConstants.YES)) {
                     Intent intentObj = new Intent(SplashScreenActivity.this, HomePageActivity.class);
                     startActivity(intentObj);
                 } else {
@@ -92,14 +92,14 @@ public class SplashScreenActivity extends AppCompatActivity {
                 Intent intentObj = null;
 
                 if (RescribeConstants.BLANK.equalsIgnoreCase(userName) || RescribeConstants.BLANK.equalsIgnoreCase(password)) {
-                    if (!RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.IS_VALID_IP_CONFIG, mContext).equals(RescribeConstants.TRUE)) {
+                    if (!RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.IS_VALID_IP_CONFIG, mContext).equals(RescribeConstants.TRUE)) {
                         //alert dialog for serverpath
                         CommonMethods.showAlertDialog(SplashScreenActivity.this, getString(R.string.server_path) + "\n" + getString(R.string.for_example_server_path), new CheckIpConnection() {
                             @Override
                             public void onOkButtonClickListner(String serverPath, Context context, Dialog dialog) {
                                 mDialog = dialog;
                                 mContext = context;
-                                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, serverPath, context);
+                                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SERVER_PATH, serverPath, context);
 
                                 // mLoginHelper.checkConnectionToServer(serverPath);
 

@@ -73,7 +73,7 @@ public class LoginHelper implements ConnectionListener {
     public void onTimeout(ConnectRequest request) {
 
     }
-
+     //Do login using mobileNo and password
     public void doLogin(String mobileNo,String password) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_LOGIN, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
@@ -84,15 +84,7 @@ public class LoginHelper implements ConnectionListener {
         mConnectionFactory.setUrl(Config.LOGIN_URL);
         mConnectionFactory.createConnection(RescribeConstants.TASK_LOGIN);
     }
-    public void doLoginByPassword(String password) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_LOGIN_WITH_PASSWORD, Request.Method.POST, true);
-        mConnectionFactory.setHeaderParams();
-        LoginRequestModel loginRequestModel = new LoginRequestModel();
-        loginRequestModel.setMobileNumber(password);
-        mConnectionFactory.setPostParams(loginRequestModel);
-        mConnectionFactory.setUrl(Config.LOGIN_WITH_PASSWORD_URL);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_LOGIN_WITH_PASSWORD);
-    }
+   //Do login using Otp
     public void doLoginByOTP(String otp) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_LOGIN_WITH_OTP, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
@@ -102,7 +94,7 @@ public class LoginHelper implements ConnectionListener {
         mConnectionFactory.setUrl(Config.LOGIN_WITH_OTP_URL);
         mConnectionFactory.createConnection(RescribeConstants.TASK_LOGIN_WITH_OTP);
     }
-
+    //Verify Otp sent
     public void doVerifyGeneratedSignUpOTP(SignUpVerifyOTPRequestModel requestModel) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_VERIFY_SIGN_UP_OTP, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
@@ -111,7 +103,7 @@ public class LoginHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_VERIFY_SIGN_UP_OTP);
     }
 
-
+  //SignUp
     public void doSignUp(SignUpRequestModel signUpRequestModel) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SIGN_UP, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();

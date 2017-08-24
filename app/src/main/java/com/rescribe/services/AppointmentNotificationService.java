@@ -53,7 +53,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
         // If this service was started by out DosesAlarmTask intent then we want to show our notification
 
-        if (RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this).equals(RescribeConstants.YES)) {
+        if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this).equals(RescribeConstants.YES)) {
 
             int notification_id = intent.getIntExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, 0);
             notifyTime = intent.getStringExtra(RescribeConstants.APPOINTMENT_TIME);

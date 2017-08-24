@@ -72,6 +72,7 @@ public class PrescriptionActivity extends AppCompatActivity
     }
 
     private void initializeVariables() {
+        // prescription given to particular user is fetched through below api
         mContext = PrescriptionActivity.this;
         mPrescriptionHelper = new PrescriptionHelper(this, this);
         setSupportActionBar(mToolbar);
@@ -134,12 +135,13 @@ public class PrescriptionActivity extends AppCompatActivity
             }
 
             List<PrescriptionData> data = prescriptionDataReceived.getData();
-
+  // Mealtime is set here because according to mealtime doseage is highlighted in UI
             if (data != null) {
                 if (data.size() != 0) {
                     for(int i = 0;i<data.size();i++){
                         data.get(i).setMealTime(mGetMealTime);
                     }
+
                     prescriptionListAdapter = new PrescriptionListAdapter(this, data);
                     mRecyclerView.setAdapter(prescriptionListAdapter);
                 }

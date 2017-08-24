@@ -101,27 +101,6 @@ public class CommonMethods {
         }
     }
 
-    /**
-     * Returns Message for Error codes
-     *
-     * @param messageCode
-     * @return
-     */
-    public static String getResponseCodeMessage(String messageCode) {
-        String strMessage = "";
-        try {
-            if (messageCode.length() >= 3) {
-                if (messageCode.equalsIgnoreCase("900")) {
-                    strMessage = "Registration Error";
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return strMessage;
-
-    }
 
     public static void hideKeyboard(Activity cntx) {
         // Check if no view has focus:
@@ -130,95 +109,6 @@ public class CommonMethods {
             InputMethodManager inputManager = (InputMethodManager) cntx.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
-    }
-
-
-    //create the new folder in sd card & write the data in text file which is created in that folder.
-    public static void MyRescribeLogWriteFile(String title, String text, boolean textAppend) {
-        try {
-            byte[] keyBytes = getKey("password");
-            File directory = new File(Environment.getExternalStorageDirectory().getPath() + "/", RescribeConstants.RESCRIBE_LOG_FOLDER);
-            if (!directory.exists()) {
-                directory.mkdir();
-            }
-            //make a new text file in that created new directory/folder
-            File file = new File(directory.getPath(), RescribeConstants.RESCRIBE_LOG_FILE);
-
-            if (!file.exists() && directory.exists()) {
-                file.createNewFile();
-            }
-//            OutputStreamWriter osw;
-//            osw = new FileWriter(file, textAppend);
-//
-//            BufferedWriter out = new BufferedWriter(osw);
-//            out.write("************" + getCurrentDateTime() + "************" + title + ": " + text + "\n");
-//            out.close();
-
-            OutputStreamWriter osw;
-            if (encryptionIsOn) {
-                Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-                SecretKeySpec secretKeySpec = new SecretKeySpec(keyBytes, "AES");
-                IvParameterSpec ivParameterSpec = new IvParameterSpec(keyBytes);
-                cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
-
-                FileOutputStream fos = new FileOutputStream(file, textAppend);
-                CipherOutputStream cos = new CipherOutputStream(fos, cipher);
-                osw = new OutputStreamWriter(cos, "UTF-8");
-            } else    // not encryptionIsOn
-                osw = new FileWriter(file, textAppend);
-
-            BufferedWriter out = new BufferedWriter(osw);
-            out.write("************" + getCurrentDateTime() + "************" + title + ": " + text + "\n");
-            out.close();
-
-
-        } catch (Exception e) {
-            System.out.println("Encryption Exception " + e);
-        }
-    }
-
-    private static byte[] getKey(String password) {
-        String key = "";
-        while (key.length() < 16)
-            key += password;
-        return key.substring(0, 16).getBytes();
-    }
-
-    // read the whole file data with previous data also
-    public static String MyRescribeLogReadFile() {
-
-        try {
-            byte[] keyBytes = getKey("password");
-
-            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/", RescribeConstants.RESCRIBE_LOG_FOLDER + "/" + RescribeConstants.RESCRIBE_LOG_FILE);
-            InputStreamReader isr;
-            if (encryptionIsOn) {
-                Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-                SecretKeySpec secretKeySpec = new SecretKeySpec(keyBytes, "AES");
-                IvParameterSpec ivParameterSpec = new IvParameterSpec(keyBytes);
-                cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
-
-                FileInputStream fis = new FileInputStream(file);
-                CipherInputStream cis = new CipherInputStream(fis, cipher);
-                isr = new InputStreamReader(cis, "UTF-8");
-            } else
-                isr = new FileReader(file);
-
-            BufferedReader in = new BufferedReader(isr);
-            //	    		String line = in.readLine();
-            StringBuffer s = new StringBuffer();
-            int cr = 0;
-            while ((cr = in.read()) != -1) {
-                s.append((char) cr);
-            }
-            aBuffer = s.toString();
-            CommonMethods.Log(TAG, "Text read: " + aBuffer);
-            in.close();
-            return aBuffer;
-        } catch (Exception e) {
-            System.out.println("Decryption Exception " + e);
-        }
-        return aBuffer;
     }
 
     public static String getCurrentDateTime() // for enrollmentId
@@ -246,34 +136,6 @@ public class CommonMethods {
         snack.show();
     }
 
-    public static String splitToComponentTimes(int seconds) {
-        int hr = seconds / 3600;
-        int rem = seconds % 3600;
-        int mn = rem / 60;
-        int sec = rem % 60;
-        String hrStr = (hr < 10 ? "0" : "") + hr;
-        String mnStr = (mn < 10 ? "0" : "") + mn;
-        String secStr = (sec < 10 ? "0" : "") + sec;
-        return hrStr + ":" + mnStr + ":" + secStr;
-    }
-
-    public static String getHoursFromSeconds(int seconds) {
-        int hr = seconds / 3600;
-        int rem = seconds % 3600;
-        int mn = rem / 60;
-        int sec = rem % 60;
-        String hrStr = (hr < 10 ? "0" : "") + hr;
-        String mnStr = (mn < 10 ? "0" : "") + mn;
-        String secStr = (sec < 10 ? "0" : "") + sec;
-        float hour = (float) Integer.parseInt(hrStr);
-        float minuite = (float) Integer.parseInt(mnStr);
-        if (minuite > 0) {
-            minuite = minuite / 60;
-        }
-
-        float finalvalue = hour + minuite;
-        return "" + new DecimalFormat("##.##").format(finalvalue);
-    }
 
     public static String getCurrentTimeStamp(String expectedFormat) {
         try {
@@ -289,24 +151,6 @@ public class CommonMethods {
         }
     }
 
-    public static int getTimeStampDifference(String startTime, String endTime) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-
-        Date secondParsedDate = null;
-        Date firstParsedDate = null;
-        long diff = 0;
-        int mDiff = 0;
-        try {
-            firstParsedDate = dateFormat.parse(startTime);
-            secondParsedDate = dateFormat.parse(endTime);
-            diff = secondParsedDate.getTime() - firstParsedDate.getTime();
-            mDiff = (int) (diff / 1000) % 60;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return mDiff;
-    }
 
     public static void dateDifference(Date startDate, Date endDate) {
         //milliseconds
@@ -436,23 +280,6 @@ public class CommonMethods {
     }
 
 
-    public static View loadView(int resourceName, Context mActivity) {
-
-        LayoutInflater inflater = (LayoutInflater) mActivity
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        // param.gravity = Gravity.CENTER;
-        View child = inflater.inflate(resourceName, null);
-        LinearLayout l1 = new LinearLayout(mActivity);
-        child.setLayoutParams(param);
-
-        l1.setLayoutParams(param);
-        l1.addView(child);
-        return l1;
-    }
-
-
     public static String getFormatedDate(String strDate, String sourceFormate,
                                          String destinyFormate) {
         SimpleDateFormat df;
@@ -522,67 +349,6 @@ public class CommonMethods {
 
     }
 
-    private static boolean isValidIP(String ipAddr) {
-
-        Pattern ptn = Pattern.compile("(\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b)\\.(\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b)\\.(\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b)\\.(\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b)\\:(\\d{1,4})$");
-        Matcher mtch = ptn.matcher(ipAddr);
-        return mtch.find();
-    }
-
-    public static File getCacheFile(Context context, String base64Pdf, String filename, String extension) {
-        // Create a file in the Internal Storage
-
-        byte[] pdfAsBytes = Base64.decode(base64Pdf, 0);
-
-        File file = null;
-        FileOutputStream outputStream;
-        try {
-
-            file = new File(context.getCacheDir(), filename + "." + extension);
-
-            outputStream = new FileOutputStream(file);
-            outputStream.write(pdfAsBytes);
-            outputStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return file;
-    }
-
-    public static File storeAndGetDocument(Context context, String base64Pdf, String filename, String extension) {
-        // Create a file in the Internal Storage
-
-        String filepath = Environment.getExternalStorageDirectory().getPath();
-        File file = null;
-
-        byte[] pdfAsBytes = Base64.decode(base64Pdf, 0);
-
-        FileOutputStream outputStream;
-        try {
-
-            file = new File(filepath + "/Android/data/" + context.getPackageName() + "/Documents");
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-
-            file = new File(file.getAbsolutePath(), filename + "." + extension);
-
-            outputStream = new FileOutputStream(file);
-            outputStream.write(pdfAsBytes);
-            outputStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return file;
-    }
-
-    public static float convertPixelsToDp(float px) {
-        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        float dp = px / (metrics.densityDpi / 160f);
-        return Math.round(dp);
-    }
 
     public static int convertDpToPixel(float dp) {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
@@ -590,11 +356,6 @@ public class CommonMethods {
         return Math.round(px);
     }
 
-    public static boolean isTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
-    }
 
     public static void showInfoDialog(String msg, final Context mContext, final boolean closeActivity) {
 
@@ -932,31 +693,6 @@ public class CommonMethods {
                 datePickerDialog.show();
             }
         }
-    }
-
-
-    public static String readJsonFile(Context mContext, String fileName) {
-        try {
-            InputStream is = mContext.getAssets().open(fileName);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            return new String(buffer, "UTF-8");
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return "{}";
-    }
-
-    public static String[] splitTextInChunk(String s, int chunkSize) {
-        int chunkCount = (s.length() / chunkSize) + (s.length() % chunkSize == 0 ? 0 : 1);
-        String[] returnVal = new String[chunkCount];
-        for (int i = 0; i < chunkCount; i++) {
-            returnVal[i] = s.substring(i * chunkSize, Math.min((i + 1) * chunkSize - 1, s.length()));
-        }
-        return returnVal;
     }
 }
 

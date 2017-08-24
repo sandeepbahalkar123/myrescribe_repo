@@ -98,7 +98,7 @@ public class MyRecordsHelper implements ConnectionListener {
     public void doGetAllMyRecords(String year) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_ALL_MY_RECORDS, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        String id = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
         mConnectionFactory.setUrl(Config.LIST_ALL_MY_RECORD + id);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_ALL_MY_RECORDS);
 

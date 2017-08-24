@@ -21,7 +21,6 @@ import com.rescribe.model.login.LoginModel;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.AppGlobalContainerActivity;
 import com.rescribe.ui.activities.HomePageActivity;
-import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -104,6 +103,7 @@ public class LoginFragment extends Fragment implements HelperResponse{
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnOtp:
+                //input mobile no and click on otp button
                 String mobile = editTextMobileNo.getText().toString();
                 if (!validatePhoneNo(mobile)) {
                     LoginHelper loginHelper = new LoginHelper(getActivity(), this);
@@ -111,6 +111,7 @@ public class LoginFragment extends Fragment implements HelperResponse{
                 }
                 break;
             case R.id.btn_login:
+                // input mobileNo and password on click of Login buttton
                 String mobileNo = editTextMobileNo.getText().toString();
                 String password = editTextPassword.getText().toString();
                 if (!validate(mobileNo, password)) {
@@ -119,12 +120,14 @@ public class LoginFragment extends Fragment implements HelperResponse{
                 }
                 break;
             case R.id.forgotPasswordView:
+                // on click of forgotPassword
                 Intent intentObj = new Intent(getActivity(), AppGlobalContainerActivity.class);
                 intentObj.putExtra(getString(R.string.type), getString(R.string.forgot_password));
                 intentObj.putExtra(getString(R.string.title), getString(R.string.forgot_password_header));
                 startActivity(intentObj);
                 break;
             case R.id.signup:
+                //on click of signup
                 signupFragment = new SignUpFragment();
                 FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
@@ -133,13 +136,16 @@ public class LoginFragment extends Fragment implements HelperResponse{
                 fragmentTransaction.commit();
                 break;
             case R.id.loginUpWithFacebook:
-                mListener.onClickFacebook();
+                //Onclick of Facebook button logic immplemented in LoginSignupActivity
+                mListener.onClickFacebook(getString(R.string.log_in));
                 break;
             case R.id.loginUpWithGmail:
-                mListener.onClickGoogle();
+                //Onclick of gmail button logic immplemented in LoginSignupActivity
+                mListener.onClickGoogle(getString(R.string.log_in));
                 break;
         }
     }
+    //validation for mobileNo and password on click of Login Button
     private boolean validatePhoneNo(String mobile) {
         String message = null;
         String enter = getString(R.string.enter);
@@ -158,6 +164,7 @@ public class LoginFragment extends Fragment implements HelperResponse{
             return false;
         }
     }
+    //validation for mobileNo on click of otp Button
     private boolean validate(String mobileNo, String password) {
         String message = null;
         String enter = getString(R.string.enter);
@@ -189,15 +196,15 @@ public class LoginFragment extends Fragment implements HelperResponse{
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_LOGIN)) {
-
+             //After login user navigated to HomepageActivity
             LoginModel loginModel = (LoginModel) customResponse;
             if (loginModel.getCommon().isSuccess()) {
                 CommonMethods.Log(TAG + " Token", loginModel.getAuthToken());
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, loginModel.getPatientId(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, editTextPassword.getText().toString(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, loginModel.getPatientId(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, editTextPassword.getText().toString(), getActivity());
                 Intent intent = new Intent(getActivity(), HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -207,11 +214,11 @@ public class LoginFragment extends Fragment implements HelperResponse{
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
             }
         } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_LOGIN_WITH_OTP)) {
-
+            //After login user navigated to HomepageActivity
             LoginModel loginModel = (LoginModel) customResponse;
             if (loginModel.getCommon().isSuccess()) {
                 CommonMethods.Log(TAG + " Token", loginModel.getAuthToken());
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), getActivity());
                 Intent intent = new Intent(getActivity(), AppGlobalContainerActivity.class);
                 intent.putExtra(getString(R.string.type), getString(R.string.enter_otp_for_login));
                 intent.putExtra(getString(R.string.title),getString(R.string.enter_otp_for_login));
@@ -249,8 +256,8 @@ public class LoginFragment extends Fragment implements HelperResponse{
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onClickGoogle();
+        void onClickGoogle(String login);
 
-        void onClickFacebook();
+        void onClickFacebook(String login);
     }
 }

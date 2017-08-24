@@ -106,6 +106,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     private void addSlotCards(final ViewGroup parent, final String slotType, final int position) {
+        // in each row four slots of dinner ,breakfast, lunch and snacks are added to show respective dosage of medicine of user
         final View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.notification_slot_card, parent, false);
         CustomTextView slotTextView = (CustomTextView) view.findViewById(R.id.slotTextView);
@@ -124,6 +125,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         slotCard.setVisibility(View.VISIBLE);
                         slotTextView.setText(mContext.getResources().getString(R.string.dinner_medication));
                         slotTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
+                        //no of medicines to be taken in dinner slot is shown
                         addTabletView(slotTabletListLayout, position, parent, view, DINNER, mSlotModel.getDinner());
                         if (mDataSet.get(position).isDinnerExpanded()) {
                             slotTabletListLayout.setVisibility(View.VISIBLE);
@@ -134,6 +136,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             dividerLine.setVisibility(View.GONE);
                             selectView.setVisibility(View.VISIBLE);
                         }
+
+                        //Onclick of checkbox of dinner slot
                         selectView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -141,9 +145,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
                                 mparentHeader = parent;
-                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasedinner), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
+                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasedinner), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
                             }
                         });
+                        //expand and collapse for each slot in one row
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -190,6 +195,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         slotCard.setVisibility(View.VISIBLE);
                         slotTextView.setText(mContext.getResources().getString(R.string.lunch_medication));
                         slotTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
+                        //no of medicines to be taken in lunch slot is shown
                         addTabletView(slotTabletListLayout, position, parent, view, LUNCH, mSlotModel.getLunch());
                         if (mDataSet.get(position).isLunchExpanded()) {
                             slotTabletListLayout.setVisibility(View.VISIBLE);
@@ -200,6 +206,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             dividerLine.setVisibility(View.GONE);
                             selectView.setVisibility(View.VISIBLE);
                         }
+
+                        //Onclick of checkbox of lunch slot
                         selectView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -207,10 +215,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
                                 mparentHeader = parent;
-                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcaselunch), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
+                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcaselunch), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
 
                             }
                         });
+                        //expand and collapse for each slot in one row
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -255,6 +264,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         slotCard.setVisibility(View.VISIBLE);
                         slotTextView.setText(mContext.getResources().getString(R.string.breakfast_medication));
                         slotTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
+                        //no of medicines to be taken in breakfast slot is shown
                         addTabletView(slotTabletListLayout, position, parent, view, BREAK_FAST, mSlotModel.getBreakfast());
                         if (mDataSet.get(position).isBreakFastExpanded()) {
                             slotTabletListLayout.setVisibility(View.VISIBLE);
@@ -265,6 +275,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             slotTabletListLayout.setVisibility(View.GONE);
                             selectView.setVisibility(View.VISIBLE);
                         }
+
+                        //Onclick of checkbox of breakfast slot
                         selectView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -272,10 +284,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
                                 mparentHeader = parent;
-                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasebreakfast), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
+                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasebreakfast), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
 
                             }
                         });
+                        //expand and collapse for each slot in one row
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -320,6 +333,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         slotCard.setVisibility(View.VISIBLE);
                         slotTextView.setText(mContext.getResources().getString(R.string.snacks_medication));
                         slotTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, mDataSet.get(position).getPrescriptionDate()));
+                        //no of medicines to be taken in snacks slot is shown
+
                         addTabletView(slotTabletListLayout, position, parent, view, SNACKS, mSlotModel.getSnacks());
 
                         if (mDataSet.get(position).isSnacksExpanded()) {
@@ -332,6 +347,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             selectView.setVisibility(View.VISIBLE);
                             dividerLine.setVisibility(View.GONE);
                         }
+                        //Onclick of checkbox of snacks slot
                         selectView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -339,7 +355,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
                                 mparentHeader = parent;
-                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasesnacks), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
+                                mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasesnacks), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
 
 
                             }
@@ -426,7 +442,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     mView = view;
                     mSlotCardView = slotCardView;
                     mSlotCardParent = slotCardParent;
-                    mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), medicationList.get(finalI).getMedicinSlot(), medicationList.get(finalI).getMedicineId(), CommonMethods.formatDateTime(medicationList.get(finalI).getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI);
+                    mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), medicationList.get(finalI).getMedicinSlot(), medicationList.get(finalI).getMedicineId(), CommonMethods.formatDateTime(medicationList.get(finalI).getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI);
 
                 }
             });

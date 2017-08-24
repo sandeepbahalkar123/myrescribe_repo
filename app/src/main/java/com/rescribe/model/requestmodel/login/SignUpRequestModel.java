@@ -21,6 +21,24 @@ public class SignUpRequestModel implements CustomResponse,Serializable {
     @Expose
     private String password;
 
+    private boolean isGmailLogin;
+    private boolean isFaceBookLogin;
+
+    public boolean isGmailLogin() {
+        return isGmailLogin;
+    }
+
+    public void setGmailLogin(boolean gmailLogin) {
+        isGmailLogin = gmailLogin;
+    }
+
+    public boolean isFaceBookLogin() {
+        return isFaceBookLogin;
+    }
+
+    public void setFaceBookLogin(boolean faceBookLogin) {
+        isFaceBookLogin = faceBookLogin;
+    }
 
     public String getName() {
         return name;

@@ -31,7 +31,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public static final String INV_UPLOADED_IMAGES = "uploaded_images";
     public static final String INVESTIGATION_TABLE = "investigation_table";
 
-    private final String TAG = "MyRescribe/AppDBHelper";
+    private final String TAG = "Rescribe/AppDBHelper";
     private static final String PREFERENCES_TABLE = "preferences_table";
     private static final String DATABASE_NAME = "MyRescribe.sqlite";
     private static final String DB_PATH_SUFFIX = "/data/data/com.rescribe/databases/";

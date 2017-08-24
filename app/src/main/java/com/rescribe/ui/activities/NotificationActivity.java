@@ -124,6 +124,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     }
 
     private void doGetNotification() {
+        //notification api called
         NotificationHelper mPrescriptionHelper = new NotificationHelper(this);
         mPrescriptionHelper.doGetNotificationList();
     }
@@ -192,7 +193,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 mSelectView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), finalSlotMedicine, mMedicineId, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + 0);
+                        mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), finalSlotMedicine, mMedicineId, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + 0);
                     }
                 });
 
@@ -250,7 +251,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 public void onClick(View v) {
                     if (selectViewTab.isChecked()) {
                         mView = view;
-                        mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI);
+                        mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI);
                     } else {
                         mTodayDataList.get(finalI).setTabSelected(false);
                     }
@@ -282,6 +283,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         String todayDate = null;
 
         if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {
+            //onclick of checkbox of sublist
             ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
             String position = mOldDataTag;
             String[] count = position.split("_");
@@ -295,6 +297,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                     mHeaderLayoutParent.removeView(mHeaderLayout);
             }
         } else if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
+
             if (customResponse != null) {
                 NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
                 if (prescriptionDataReceived.getData().size() > 0) {
@@ -307,6 +310,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 List<NotificationData> notificationData = prescriptionDataReceived.getData();
                 String date = CommonMethods.getCurrentDateTime();
                 CommonMethods.Log(TAG, date);
+                //Current date and slot data is sorted to show in header of UI
                 for (int k = 0; k < notificationData.size(); k++) {
                     if (notificationData.get(k).getPrescriptionDate().equals(CommonMethods.getCurrentDateTime())) {
                         String prescriptionDate = notificationData.get(k).getPrescriptionDate();
@@ -328,7 +332,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                         addHeader(notificationListForHeader);
                     }
                 }
-
+   // Data for recyclerview Adapter is sorted to set data according to UI .
                 List<AdapterNotificationData> adapterNotificationParentData = new ArrayList<>();
                 List<AdapterNotificationModel> adapterNotificationModelListForDinner = new ArrayList<>();
                 String notifyDate = "";
@@ -400,6 +404,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             }
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
             ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+           //onclick of checkbox of header layout
             if (responseLogNotificationModel.getCommon().isSuccess()) {
                 CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
                 mHeaderLayoutParent.removeView(mHeaderLayout);

@@ -86,6 +86,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             CommonMethods.showToast(MapsActivity.this, getString(R.string.address_not_found));
 
     }
+    //get latitude longitude from user address and map it on map
     public Address getLocationFromAddress(String strAddress) {
         Address location = null;
         Geocoder coder = new Geocoder(this);
@@ -109,6 +110,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         return location;
     }
+    //Change marker icon
     public BitmapDescriptor getMarkerIcon(String color) {
         float[] hsv = new float[3];
         Color.colorToHSV(Color.parseColor(color), hsv);

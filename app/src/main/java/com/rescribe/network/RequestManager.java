@@ -68,7 +68,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestManager extends ConnectRequest implements Connector, RequestTimer.RequestTimerListener {
-    private static final String TAG = "MyRescribe/RequestManager";
+    private  final String TAG = this.getClass().getName();
     private static final int CONNECTION_TIME_OUT = 1000 * 60;
     private static final int N0OF_RETRY = 0;
     private AppDBHelper dbHelper;
@@ -423,9 +423,9 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 // This success response is for refresh token
                 // Need to Add
                 LoginModel loginModel = gson.fromJson(data, LoginModel.class);
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, loginModel.getPatientId(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, loginModel.getPatientId(), mContext);
 
                 mHeaderParams.put(RescribeConstants.AUTHORIZATION_TOKEN, loginModel.getAuthToken());
 
@@ -616,7 +616,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     private void tokenRefreshRequest() {
         loginRequest();
         // Commented as login API is not implemented yet.
-       /* String url = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
+       /* String url = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
         CommonMethods.Log(TAG, "Refersh token while sending refresh token api: " + RescribePreferencesManager.getString(RescribeConstants.REFRESH_TOKEN, mContext));
         Map<String, String> headerParams = new HashMap<>();
         headerParams.putAll(mHeaderParams);
@@ -636,8 +636,8 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         String url = Config.BASE_URL + Config.LOGIN_URL;
 
         LoginRequestModel loginRequestModel = new LoginRequestModel();
-        loginRequestModel.setMobileNumber(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
-        loginRequestModel.setPassword(RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PASSWORD, mContext));
+        loginRequestModel.setMobileNumber(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+        loginRequestModel.setPassword(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, mContext));
         if (!(RescribeConstants.BLANK.equalsIgnoreCase(loginRequestModel.getMobileNumber()) &&
                 RescribeConstants.BLANK.equalsIgnoreCase(loginRequestModel.getPassword()))) {
             Map<String, String> headerParams = new HashMap<>();

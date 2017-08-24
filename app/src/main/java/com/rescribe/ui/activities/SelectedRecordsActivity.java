@@ -83,12 +83,12 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         });
 
         mContext = SelectedRecordsActivity.this;
-        String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.COACHMARK, mContext);
+        String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK, mContext);
         if (coachMarkStatus.equals(RescribeConstants.YES))
             coachmark.setVisibility(View.GONE);
 //        appDBHelper = new AppDBHelper(mContext);
 
-        patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
 
         /*for (int i = 0; i < investigation.size(); i++) {
             if (investigation.get(i).isSelected() && !investigation.get(i).isUploaded() && investigation.get(i).getPhotos().size() > 0) {
@@ -240,7 +240,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.coachmark:
                 coachmark.setVisibility(View.GONE);
-                RescribePreferencesManager.putString(RescribePreferencesManager.MYRESCRIBE_PREFERENCES_KEY.COACHMARK, RescribeConstants.YES, mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK, RescribeConstants.YES, mContext);
                 break;
             case R.id.uploadButton:
                 if (photoPaths.size() > 0 && photoPaths != null) {

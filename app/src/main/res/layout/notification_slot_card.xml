@@ -21,7 +21,7 @@
             android:paddingEnd="@dimen/horizontal_margin"
             android:paddingStart="@dimen/horizontal_margin">
 
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/slotTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
                 android:textSize="@dimen/sp20"
                 app:customFont="@string/roboto_bold" />
 
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/slotTimeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                     android:paddingEnd="@dimen/horizontal_margin"
                     android:paddingStart="@dimen/horizontal_margin">
 
-                    <com.myrescribe.ui.customesViews.CustomTextView
+                    <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/slotQuestionTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

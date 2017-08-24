@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context="com.myrescribe.ui.activities.ZoomImageViewActivity">
+    tools:context="com.rescribe.ui.activities.ZoomImageViewActivity">
 
-    <com.myrescribe.ui.customesViews.zoomview.ZoomageView
+    <com.rescribe.ui.customesViews.zoomview.ZoomageView
         android:id="@+id/zoomView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

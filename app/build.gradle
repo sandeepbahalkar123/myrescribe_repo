@@ -9,10 +9,13 @@ android {
             storePassword 'scorg123'
         }
     }
+    lintOptions {
+        disable 'MissingTranslation'
+    }
     compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
     buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
     defaultConfig {
-        applicationId "com.myrescribe"
+        applicationId "com.rescribe"
         minSdkVersion Integer.parseInt(project.ANDROID_BUILD_MIN_SDK_VERSION)
         targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
         versionName project.VERSION_NAME
@@ -24,9 +27,11 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
     }
     sourceSets {
         main {
@@ -84,11 +89,11 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.facebook.android:facebook-android-sdk:+'
+    compile 'com.facebook.android:facebook-android-sdk:4.23.+'
     compile 'com.github.bumptech.glide:glide:4.0.0'
     compile 'com.android.support:multidex:1.0.1'
-    compile 'org.osmdroid:osmdroid-android:4.3'
     compile 'com.jakewharton:butterknife:8.5.1'
+    compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'

@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:fitsSystemWindows="true">
 
@@ -27,8 +28,19 @@
         android:background="@color/white"
         android:childDivider="@null"
         android:divider="@null"
+        android:visibility="gone"
         android:groupIndicator="@null"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"></ExpandableListView>
-
+<RelativeLayout
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/noRecordAvailable">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/no_records_found"/>
+</RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

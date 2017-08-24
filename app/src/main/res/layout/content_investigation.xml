@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.myrescribe.ui.activities.InvestigationActivity"
+    tools:context="com.rescribe.ui.activities.InvestigationActivity"
     tools:showIn="@layout/activity_investigation">
 
     <LinearLayout
@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/dp10">
 
-        <com.myrescribe.ui.customesViews.CustomTextView
+        <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
 
         </LinearLayout>
 
-        <com.myrescribe.ui.customesViews.CustomTextView
+        <com.rescribe.ui.customesViews.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="OR"

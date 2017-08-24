@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.myrescribe.ui.customesViews.CustomTextView
+    <com.rescribe.ui.customesViews.CustomTextView
         android:id="@+id/groupName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

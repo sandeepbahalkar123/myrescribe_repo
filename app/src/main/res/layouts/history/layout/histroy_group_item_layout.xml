@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -30,7 +31,7 @@
             android:layout_marginLeft="@dimen/dp6"
             android:orientation="vertical">
 
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/viewDetailHeaderLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,7 +48,7 @@
                 android:background="@color/divider"
                 android:visibility="gone" />
 
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/detailFirstPoint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

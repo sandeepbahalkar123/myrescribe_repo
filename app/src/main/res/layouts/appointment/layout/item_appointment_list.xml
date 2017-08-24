@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/dp16"
@@ -9,7 +10,8 @@
     android:layout_marginRight="@dimen/dp6"
     android:layout_marginTop="@dimen/dp16"
     android:background="@color/white"
-    android:clickable="true">
+    android:clickable="true"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +28,7 @@
             android:layout_marginRight="@dimen/dp5"
             android:padding="3dip">
 
-            <com.myrescribe.ui.customesViews.CircularImageView
+            <com.rescribe.ui.customesViews.CircularImageView
                 android:layout_width="@dimen/dp50"
                 android:layout_height="@dimen/dp50"
                 android:layout_gravity="center"
@@ -45,7 +47,7 @@
             android:orientation="vertical">
 
             <!-- Title Of Song-->
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,7 +59,7 @@
                 android:textStyle="bold" />
 
             <!-- Artist Name -->
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,7 +72,7 @@
                 android:typeface="sans" />
 
             <!-- Rightend Duration -->
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -89,7 +91,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <com.myrescribe.ui.customesViews.CustomTextView
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/appointmentsTimeStamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,5 +109,9 @@
                 android:src="@drawable/location" />
         </LinearLayout>
     </LinearLayout>
-
+<View
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp1"
+    android:layout_marginTop="@dimen/dp16"
+    android:background="@color/divider"/>
 </LinearLayout>

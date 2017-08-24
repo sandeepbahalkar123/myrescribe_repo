@@ -27,7 +27,7 @@ import java.util.List;
 public class RackMonthPicker {
 
     private static final String FROM = "From";
-    private static final String TO = "to";
+    private static final String TO = "To";
 
     private AlertDialog mAlertDialog;
     private RackMonthPicker.Builder builder;

@@ -204,8 +204,10 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                     Intent intent = new Intent(context, ShowRecordsActivity.class);
                     ArrayList<MyRecordReports.MyRecordReportList> reportList = childGroup.getReportList();
                     MyRecordReports.MyRecordReportList myRecordReportList = reportList.get(0);
+                    String caption = myRecordReportList.getChildCaptionName();
                     String[] imageList = myRecordReportList.getImageList();
                     intent.putExtra(RescribeConstants.DOCUMENTS, imageList);
+                    intent.putExtra(RescribeConstants.CAPTION, caption);
                     context.startActivity(intent);
                 }
             }
@@ -216,8 +218,10 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                 SecondLevelAdapter adapter = (SecondLevelAdapter) secondLevelELV.getExpandableListAdapter();
                 MyRecordReports.MyRecordReportList child = adapter.getChild(groupPosition, childPosition);
                 String[] imageList = child.getImageList();
+                String caption = child.getChildCaptionName();
                 Intent intent = new Intent(context, ShowRecordsActivity.class);
                 intent.putExtra(RescribeConstants.DOCUMENTS, imageList);
+                intent.putExtra(RescribeConstants.CAPTION, caption);
                 context.startActivity(intent);
                 return false;
             }

@@ -24,6 +24,7 @@ import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.Calendar;
@@ -163,10 +164,6 @@ public class HomePageActivity extends DrawerActivity {
     private void logout() {
         // Stop Uploads
         UploadService.stopAllUploads();
-
-        String baseUrl = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext);
-        RescribePreferencesManager.clearSharedPref(mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SERVER_PATH, baseUrl, mContext);
         RescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
 
         //Logout functionality

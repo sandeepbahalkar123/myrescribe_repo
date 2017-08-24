@@ -90,7 +90,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     public boolean insertData(String dataId, String data) {
         if (dataTableNumberOfRows(dataId) == 0) {
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
             contentValues.put("dataId", dataId);
@@ -104,17 +104,17 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getData(String dataId) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + APP_DATA_TABLE + " where dataId=" + dataId + "", null);
     }
 
     public int dataTableNumberOfRows(String dataId) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         return (int) DatabaseUtils.queryNumEntries(db, APP_DATA_TABLE, "dataId = ? ", new String[]{dataId});
     }
 
     private boolean updateData(String dataId, String data) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("data", data);
 
@@ -123,7 +123,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     public Integer deleteData(Integer dataId) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         return db.delete(APP_DATA_TABLE,
                 "dataId = ? ",
                 new String[]{Integer.toString(dataId)});
@@ -184,7 +184,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     public boolean insertPreferences(String userId, String breakfastTime, String lunchTime, String snacksTime, String dinnerTime) {
         if (preferencesTableNumberOfRows(userId) == 0) {
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(USER_ID, userId);
@@ -201,17 +201,17 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     private int preferencesTableNumberOfRows(String userId) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         return (int) DatabaseUtils.queryNumEntries(db, PREFERENCES_TABLE, USER_ID + " = ? ", new String[]{userId});
     }
 
     public Cursor getPreferences(String userId) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + PREFERENCES_TABLE + " where " + USER_ID + "=" + userId + "", null);
     }
 
     private boolean updatePreferences(String userId, String breakfastTime, String lunchTime, String snacksTime, String dinnerTime) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(BREAKFAST_TIME, breakfastTime);
         contentValues.put(LUNCH_TIME, lunchTime);
@@ -223,7 +223,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     private int deletePreferences(String userId) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         return db.delete(PREFERENCES_TABLE,
                 USER_ID + " = ? ",
                 new String[]{userId});
@@ -233,7 +233,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     public boolean insertInvestigationData(int id, String name, String key, String dr_name, int opd_id, boolean isUploaded, String imageJson) {
         if (investigationDataTableNumberOfRows(id) == 0) {
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(INV_ID, id);
@@ -252,12 +252,12 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     private int investigationDataTableNumberOfRows(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         return (int) DatabaseUtils.queryNumEntries(db, INVESTIGATION_TABLE, INV_ID + " = ? ", new String[]{String.valueOf(id)});
     }
 
     public int updateInvestigationData(int id, boolean isUploaded, String imageJson) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(INV_UPLOAD_STATUS, isUploaded ? 1 : 0);
         contentValues.put(INV_UPLOADED_IMAGES, imageJson);
@@ -266,7 +266,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     public InvestigationData getInvestigationData(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + INVESTIGATION_TABLE + " where " + INV_ID + "=" + id + "", null);
 
         InvestigationData dataObject = new InvestigationData();
@@ -298,12 +298,12 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getAllInvestigationData() {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + INVESTIGATION_TABLE, null);
     }
 
     public int deleteInvestigation(String id) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         return db.delete(INVESTIGATION_TABLE,
                 INV_ID + " = ? ",
                 new String[]{id});
@@ -313,7 +313,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     public boolean insertMyRecordsData(String id, int status, String data, int docId,int opdId, String visitDate) {
         if (MyRecordsDataTableNumberOfRows(id) == 0) {
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(RECORDS_DOC_ID, docId);
@@ -330,12 +330,12 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     private int MyRecordsDataTableNumberOfRows(String id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         return (int) DatabaseUtils.queryNumEntries(db, MY_RECORDS_TABLE, RECORDS_UPLOAD_ID + " = ? ", new String[]{id});
     }
 
     public int updateMyRecordsData(String id, int isUploaded) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(RECORDS_STATUS, isUploaded);
 
@@ -343,7 +343,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     public MyRecordsData getMyRecordsData() {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + MY_RECORDS_TABLE, null);
 
         MyRecordsData myRecordsData = new MyRecordsData();
@@ -377,12 +377,12 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getAllMyRecordsData() {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select from " + MY_RECORDS_TABLE, null);
     }
 
     public int deleteMyRecords() {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         return db.delete(MY_RECORDS_TABLE, null, null);
     }
 

@@ -104,8 +104,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
                 if (open) {
                     fab.getMainFab().setImageResource(R.drawable.x);
                     fab.getMainFab().setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.statusbar));
-                }
-                else {
+                } else {
                     fab.getMainFab().setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.tagColor));
                     fab.getMainFab().setImageResource(R.drawable.fab_icon_records);
                 }
@@ -186,11 +185,13 @@ public class SelectedRecordsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA) == null)
-            finish();
-        else if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA).size() == 0)
-            finish();
-        else {
+        if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA) == null) {
+            if (photoPaths.isEmpty())
+                finish();
+        } else if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA).size() == 0) {
+            if (photoPaths.isEmpty())
+                finish();
+        } else {
             if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
                 if (resultCode == Activity.RESULT_OK) {
 

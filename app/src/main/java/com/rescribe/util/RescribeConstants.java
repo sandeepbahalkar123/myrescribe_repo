@@ -137,6 +137,7 @@ public class RescribeConstants {
     public static final String EMAIL = "email";
     public static final String OPD_ID = "opd_id";
     public static final String MYRECORDDATAMODEL = "myrecorddatamodel";
+    public static final String CAPTION = "caption";
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 

@@ -22,6 +22,8 @@ import com.rescribe.util.RescribeConstants;
 import java.io.File;
 import java.util.List;
 
+import static com.rescribe.ui.activities.SelectedRecordsGroupActivity.INVESTIGATIONS;
+
 public class RecordsGroupImageAdapter extends RecyclerView.Adapter<RecordsGroupImageAdapter.MyViewHolder> {
 
     private final Context mContext;
@@ -36,7 +38,9 @@ public class RecordsGroupImageAdapter extends RecyclerView.Adapter<RecordsGroupI
         RelativeLayout progressBarLay;
         ImageView removeCheckbox;
         TextView addCaptionText;
+        ImageView scroller;
         Button retryButton;
+        RelativeLayout addCaptionLayout;
 
         MyViewHolder(View view) {
             super(view);
@@ -44,6 +48,8 @@ public class RecordsGroupImageAdapter extends RecyclerView.Adapter<RecordsGroupI
             progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
             progressBarLay = (RelativeLayout) view.findViewById(R.id.progress_bar_lay);
             removeCheckbox = (ImageView) view.findViewById(R.id.removeCheckbox);
+            scroller = (ImageView) view.findViewById(R.id.scroller);
+            addCaptionLayout = (RelativeLayout) view.findViewById(R.id.addCaptionLayout);
             removeCheckbox.setAlpha(.5f);
             addCaptionText = (TextView) view.findViewById(R.id.addCaptionText);
             retryButton = (Button) view.findViewById(R.id.retryButton);
@@ -131,13 +137,16 @@ public class RecordsGroupImageAdapter extends RecyclerView.Adapter<RecordsGroupI
             }
         });
 
-        holder.addCaptionText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                itemListener.onAddCaptionClick(mainPosition, position);
-            }
-        });
-
+        if (image.getParentCaption().equals(INVESTIGATIONS)) {
+            holder.scroller.setVisibility(View.VISIBLE);
+            holder.addCaptionLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemListener.onAddCaptionClick(mainPosition, position);
+                }
+            });
+        } else
+            holder.scroller.setVisibility(View.GONE);
     }
 
     @Override

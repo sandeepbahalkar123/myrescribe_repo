@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -23,11 +24,13 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
 
     private final String[] paths;
     private final Context context;
+    private final String caption;
     private int imageSize;
 
-    public ShowRecordsAdapter(Context context, String[] paths) {
+    public ShowRecordsAdapter(Context context, String[] paths, String caption) {
         this.context = context;
         this.paths = paths;
+        this.caption = caption;
         setColumnNumber(context, 2);
     }
 
@@ -60,6 +63,7 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(holder.imageView);
 
+        holder.addCaptionText.setText(caption);
     }
 
     @Override
@@ -71,6 +75,8 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
 
         @BindView(R.id.iv_photo)
         ImageView imageView;
+        @BindView(R.id.addCaptionText)
+        TextView addCaptionText;
 
         FileViewHolder(View itemView) {
             super(itemView);

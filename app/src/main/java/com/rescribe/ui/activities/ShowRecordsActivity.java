@@ -39,6 +39,7 @@ public class ShowRecordsActivity extends AppCompatActivity {
         }
 
         String[] imageArrayExtra = getIntent().getStringArrayExtra(RescribeConstants.DOCUMENTS);
+        String caption = getIntent().getStringExtra(RescribeConstants.CAPTION);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +56,7 @@ public class ShowRecordsActivity extends AppCompatActivity {
                 if (animator instanceof SimpleItemAnimator)
                     ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
 
-                showRecordsAdapter = new ShowRecordsAdapter(mContext, imageArrayExtra);
+                showRecordsAdapter = new ShowRecordsAdapter(mContext, imageArrayExtra, caption);
                 recyclerView.setAdapter(showRecordsAdapter);
                 GridLayoutManager layoutManager = new GridLayoutManager(mContext, 2);
                 recyclerView.setLayoutManager(layoutManager);

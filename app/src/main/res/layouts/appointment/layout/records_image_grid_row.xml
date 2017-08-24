@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/addCaptionText"
-        android:background="@drawable/curve_edges_common">
+        android:background="@drawable/curve_edges_image">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -64,14 +64,34 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/addCaptionText"
+    <RelativeLayout
+        android:id="@+id/addCaptionLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/curve_edges_common"
-        android:hint="@string/add_caption"
-        android:padding="@dimen/dp6" />
+        android:background="@drawable/curve_edges_caption">
+
+        <TextView
+            android:id="@+id/addCaptionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/scroller"
+            android:hint="@string/add_caption"
+            android:padding="@dimen/dp6"
+            android:layout_toLeftOf="@+id/scroller" />
+
+        <ImageView
+            android:id="@+id/scroller"
+            android:layout_width="@dimen/dp10"
+            android:layout_height="@dimen/dp10"
+            android:layout_marginEnd="@dimen/dp10"
+            android:layout_marginStart="@dimen/dp10"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/scroller"
+            android:clickable="false"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/removeCheckbox"

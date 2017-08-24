@@ -28,8 +28,8 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.Device;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
-import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.NetworkUtil;
+import com.rescribe.util.RescribeConstants;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.ServerResponse;
@@ -76,7 +76,6 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
     private AppDBHelper appDBHelper;
     private UploadNotificationConfig uploadNotificationConfig;
     private String authorizationString;
-    private String baseUrl;
     private Device device;
     private String Url;
     private String patientId;
@@ -145,9 +144,8 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
         // Uploading
 
         device = Device.getInstance(SelectedRecordsGroupActivity.this);
-        baseUrl = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SERVER_PATH, SelectedRecordsGroupActivity.this);
 
-        Url = baseUrl + Config.MY_RECORDS_UPLOAD;
+        Url = Config.BASE_URL + Config.MY_RECORDS_UPLOAD;
 //        Url = "http://192.168.0.115:8000/" + Config.MY_RECORDS_UPLOAD;
 
         authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, SelectedRecordsGroupActivity.this);
@@ -255,6 +253,10 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
     @Override
     public void uploadImage(String uploadId, Image image) {
         try {
+
+            if (image.getChildCaption() == null || image.getChildCaption().equals(""))
+                image.setChildCaption(OTHERS);
+
             new MultipartUploadRequest(SelectedRecordsGroupActivity.this, uploadId, Url)
                     //                            new MultipartUploadRequest(SelectedRecordsGroupActivity.this, i + "_" + j, Url)
                     .setNotificationConfig(uploadNotificationConfig)
@@ -345,6 +347,14 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
 
             groups.get(finalI).getImages().get(finalJ).setUploading(RescribeConstants.COMPLETED);
             mAdapter.notifyItemChanged(finalI);
+
+            if (uploadInfo.getSuccessfullyUploadedFiles().size() == imageArrayList.size()) {
+                Intent intent = new Intent(SelectedRecordsGroupActivity.this, MyRecordsActivity.class);
+                intent.putExtra(RescribeConstants.ALERT, false);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+
             CommonMethods.Log("ImagedUploadId", uploadInfo.getUploadId() + " onCompleted");
         }
 
@@ -369,7 +379,6 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
 
     @Override
     public void onAddCaptionClick(final int mainPosition, final int position) {
-        if (groups.get(mainPosition).getGroupname().equals(INVESTIGATIONS)) {
             captionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
@@ -379,6 +388,5 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                 }
             });
             alertDialog.show();
-        }
     }
 }

@@ -369,8 +369,12 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                         visitDate.setOpdId(0);
                         spinnerList.add(visitDate);
                         for (VisitDate date : doctorSpinnerAdapter.getDoctor(position).getDates()) {
-                            date.setOpdDate(CommonMethods.getFormatedDate(date.getOpdDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY));
-                            spinnerList.add(date);
+                            String formatedDate = CommonMethods.getFormatedDate(date.getOpdDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY);
+
+                            VisitDate visitD = new VisitDate();
+                            visitD.setOpdDate(formatedDate);
+                            visitD.setOpdId(date.getOpdId());
+                            spinnerList.add(visitD);
                         }
 
                         ArrayAdapter<VisitDate> arrayAdapter = new ArrayAdapter<>(AddRecordsActivity.this, R.layout.simple_spinner_item, spinnerList);

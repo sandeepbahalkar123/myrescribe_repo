@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class VisitDate implements Parcelable {
 
-    @SerializedName("opdDate")
+    @SerializedName("visitDate")
     @Expose
     private String opdDate;
     @SerializedName("opdId")

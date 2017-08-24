@@ -23,7 +23,7 @@ import com.rescribe.adapters.myrecords.RecordsGroupAdapter;
 import com.rescribe.adapters.myrecords.RecordsGroupImageAdapter;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.investigation.Image;
-import com.rescribe.model.myrecords.Group;
+import com.rescribe.model.my_records.Group;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.Device;
 import com.rescribe.util.CommonMethods;

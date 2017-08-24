@@ -23,7 +23,7 @@ public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
     private ArrayList<SpinnerDoctor> suggestions;
     private TextEnterListener textEnterListener;
 
-    public DoctorSpinnerAdapter(Context context, int resource, int textViewResourceId, List<SpinnerDoctor> items) {
+    public DoctorSpinnerAdapter(Context context, int resource, int textViewResourceId, ArrayList<SpinnerDoctor> items) {
         super(context, resource, textViewResourceId, items);
         this.context = context;
         this.items = items;

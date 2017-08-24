@@ -173,9 +173,10 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
                 Date m1Date = CommonMethods.convertStringToDate(o1.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
                 Date m2Date = CommonMethods.convertStringToDate(o2.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
 
-                return m2Date.compareTo(m1Date);
+                return m1Date.compareTo(m2Date);
             }
         });
+
         return tempList;
     }
 

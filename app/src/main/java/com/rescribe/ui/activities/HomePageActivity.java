@@ -272,14 +272,14 @@ public class HomePageActivity extends DrawerActivity {
         addProfile(new DrawerProfile()
                 .setId(1)
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.big))
-                .setBackground(ContextCompat.getDrawable(this, R.drawable.drawer_header_bg))
+                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr.Avinash Deshpande")
                 .setDescription("avinash_deshpande@gmail.com")
         );
         addProfile(new DrawerProfile()
                 .setId(2)
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.small_copy))
-                .setBackground(ContextCompat.getDrawable(this, R.drawable.drawer_header_bg))
+                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr.Sandeep Deshmukh ")
                 .setDescription("sandeep_deshmukh@gmail.com")
         );

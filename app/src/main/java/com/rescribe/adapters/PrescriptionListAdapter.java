@@ -59,7 +59,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             holder.mHighlightedInstructionView.setVisibility(View.GONE);
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,0
+                    ViewGroup.LayoutParams.MATCH_PARENT
             );
             param.setMargins(0,0,0,10);
             holder.showMedicineLayout.setLayoutParams(param);

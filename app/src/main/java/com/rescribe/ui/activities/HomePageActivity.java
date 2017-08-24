@@ -163,12 +163,6 @@ public class HomePageActivity extends DrawerActivity {
     private void logout() {
         // Stop Uploads
         UploadService.stopAllUploads();
-
-        String baseUrl = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext);
-        RescribePreferencesManager.clearSharedPref(mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SERVER_PATH, baseUrl, mContext);
-        RescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
-
         //Logout functionality
         String facebook = RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN,mContext);
         String gmail = RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN,mContext);

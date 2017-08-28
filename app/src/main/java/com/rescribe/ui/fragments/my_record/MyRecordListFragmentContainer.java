@@ -17,10 +17,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import com.google.gson.Gson;
+
 import com.rescribe.R;
 import com.rescribe.adapters.CustomSpinnerAdapter;
-import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.myrecords.MyRecordsHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
@@ -137,13 +136,6 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             mTimePeriodList = recordMainDataModel.getFormattedYearList();
         }*/
 
-        /*if (mTimePeriodList.size() < 6) {
-            mTabLayout.setTabMode(TabLayout.MODE_FIXED);
-            mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        } else {*/
-            mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-//        }
         //---------
 
     }
@@ -367,6 +359,14 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             mYearSpinnerView.setAdapter(mCustomSpinAdapter);
         }
         setupViewPager();
+
+        if (mTimePeriodList.size() < 6) {
+            mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+            mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        } else {
+            mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        }
     }
 
     @Override

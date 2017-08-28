@@ -183,8 +183,10 @@
     <string name="address_not_found">Address not Found</string>
     <string name="login_with_gmail">Login with gmail</string>
     <string name="login_with_facebook">Login with facebook</string>
-    <string name="facebook_app_id">657015034488708</string>
-    <string name="fb_login_protocol_scheme">fb657015034488708</string>
+
+    <!--sandeep sir account credentials-->
+    <string name="facebook_app_id">1351340758298095</string>
+    <string name="fb_login_protocol_scheme">fb1351340758298095</string>
     <string name="login_confirmation">Login Confirmation</string>
 
 </resources>

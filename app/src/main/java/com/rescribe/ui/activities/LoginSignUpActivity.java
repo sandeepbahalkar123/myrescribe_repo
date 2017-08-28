@@ -81,7 +81,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
 
     private void init() {
         mContext = LoginSignUpActivity.this;
-        //Fragment for Signup and login is loaded in LoginSignUpActivity , Facebook and google Login click is handled in LoginSignUpActivity
+        //Fragment  login is loaded in LoginSignUpActivity , Facebook and google Login click is handled in LoginSignUpActivity
         loginFragment = new LoginFragment();
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();

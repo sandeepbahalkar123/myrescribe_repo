@@ -79,7 +79,6 @@
                         android:layout_weight="1"
                         android:paddingBottom="@dimen/dp2"
                         android:paddingTop="@dimen/dp2"
-                        android:text="Rihanna Love the way lie"
                         android:textColor="@color/dose_completed"
                         android:textSize="@dimen/sp16"
                         android:textStyle="bold"

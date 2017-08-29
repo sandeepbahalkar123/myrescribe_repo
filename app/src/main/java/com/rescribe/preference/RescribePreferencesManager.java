@@ -221,5 +221,9 @@ public class RescribePreferencesManager {
         String LOGIN_OR_SIGNUP = "signup_login";
         String COACHMARK = "coachmark";
         String NOTIFY_DATE = "notify_date";
+        String MOBILE_NUMBER_GMAIL = "mobile_number_gmail" ;
+        String PASSWORD_GMAIL = "password_gmail";
+        String MOBILE_NUMBER_FACEBOOK = "mobile_number_facebook";
+        String PASSWORD_FACEBOOK = "password_facebook";
     }
 }

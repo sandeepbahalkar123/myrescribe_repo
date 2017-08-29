@@ -85,6 +85,7 @@ public class RescribeConstants {
 
     public static final String TASK_NOTIFICATION = RescribeConstants.BLANK + 8;
     public static final String TASK_RESPOND_NOTIFICATION = RescribeConstants.BLANK + "notification";
+    public static final String TASK_RESPOND_NOTIFICATION_ADAPTER = RescribeConstants.BLANK + "adapternotification";
 
     public static final String TASK_DOCTOR_LIST_FILTERING = RescribeConstants.BLANK + 10;
     public static final String TASK_SIGN_UP = RescribeConstants.BLANK + 11;
@@ -96,6 +97,7 @@ public class RescribeConstants {
 
     public static final String APPOINTMENT_NOTIFICATION = RescribeConstants.BLANK + 16;
     public static final String TASK_RESPOND_NOTIFICATION_FOR_HEADER = RescribeConstants.BLANK + "notify";
+    public static final String TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER = RescribeConstants.BLANK + "adapternotify";
 
     public static final String INVESTIGATION_LIST = RescribeConstants.BLANK + 17;
     public static final String INVESTIGATION_UPLOAD_BY_GMAIL = RescribeConstants.BLANK + 18;
@@ -138,6 +140,8 @@ public class RescribeConstants {
     public static final String OPD_ID = "opd_id";
     public static final String MYRECORDDATAMODEL = "myrecorddatamodel";
     public static final String CAPTION = "caption";
+    public static final String TYPE_OF_LOGIN = "";
+    public static final String SENDERID = "EMROTP";
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 

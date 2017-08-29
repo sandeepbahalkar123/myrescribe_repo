@@ -82,6 +82,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingBottom="@dimen/dp2"
+                            android:layout_gravity="center_vertical"
                             android:text="Excessive Sweating"
                             android:textColor="@color/dose_completed"
                             android:textSize="@dimen/sp14"

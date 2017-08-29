@@ -44,8 +44,6 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String SENDERID = "HP-EMROTP";
-
 
     private CountDownTimer mCountDownTimer;
     private final long mStartTime = 30 * 1000;
@@ -102,7 +100,7 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
         View inflate = inflater.inflate(R.layout.enter_generated_otp, container, false);
         ButterKnife.bind(this, inflate);
 
-        OtpReader.bind(this, SENDERID);
+        OtpReader.bind(this, RescribeConstants.SENDERID);
         mCountDownTimer = new MyCountDownTimer(mStartTime, mInterval);
         mCountDownTimer.start();
 
@@ -202,9 +200,13 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
             if (receivedModel.getCommon().isSuccess()) {
                 if(mSignUpRequestModel.isGmailLogin()){
                     RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN,getString(R.string.login_with_gmail),getActivity());
-                }else if(mSignUpRequestModel.isFaceBookLogin()){
+                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL,mSignUpRequestModel.getMobileNumber(),getActivity());
+                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL,mSignUpRequestModel.getPassword(),getActivity());
+                }
+                if(mSignUpRequestModel.isFaceBookLogin()){
                     RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN,getString(R.string.login_with_facebook),getActivity());
-
+                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK,mSignUpRequestModel.getMobileNumber(),getActivity());
+                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK,mSignUpRequestModel.getPassword(),getActivity());
                 }
                 RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, receivedModel.getAuthToken(), getActivity());
                 RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, receivedModel.getPatientId(), getActivity());

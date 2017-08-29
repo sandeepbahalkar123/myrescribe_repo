@@ -45,7 +45,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationAdapter.OnHeaderClickListener {
+public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationAdapter.OnNotificationClickListener {
 
     private NotificationAdapter mAdapter;
     private String mMedicineSlot;
@@ -409,6 +409,12 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
                 mHeaderLayoutParent.removeView(mHeaderLayout);
             }
+        }else  if(mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)){
+            mAdapter.onSuccessOfNotificationCheckBoxClick(mOldDataTag,customResponse);
+
+        }else  if(mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)){
+            mAdapter.onSuccessOfNotificationCheckBoxClick(mOldDataTag,customResponse);
+
         }
     }
 
@@ -458,6 +464,12 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             checkBox.setChecked(false);
         } else if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
             mNoDataAvailable.setVisibility(View.VISIBLE);
+        }else  if(mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)){
+            mAdapter.onNoConnectionOfNotificationCheckBoxClick(mOldDataTag,serverErrorMessage);
+
+        }else  if(mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)){
+            mAdapter.onNoConnectionOfNotificationCheckBoxClick(mOldDataTag,serverErrorMessage);
+
         }
 
 
@@ -470,4 +482,16 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         mSelectView.setVisibility(View.VISIBLE);
         isHeaderExpand = false;
     }
+
+    @Override
+    public void setOnClickCheckBoxListener(View mViewForHeader, int pos, String slotType, ViewGroup viewGroup, Integer medicineId, String takenDate, Integer bundleValue, String taskName, boolean isHeaderCheckboxClick) {
+        if(isHeaderCheckboxClick) {
+            mRespondToNotificationHelper.doRespondToNotificationForHeaderOfNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName);
+        }else{
+            mRespondToNotificationHelper.doRespondToNotificationForNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName);
+
+        }
+    }
+
+
 }

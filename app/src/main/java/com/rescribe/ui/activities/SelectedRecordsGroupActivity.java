@@ -80,8 +80,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
     private String Url;
     private String patientId;
 
-    // HardCoded
-    private int opdId = 9999;
+    private int opdId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +187,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                 default:
                     others.add(image);
                     image.setChildCaption(OTHERS + "_" + others.size());
+                    image.setParentCaption(OTHERS);
                     break;
             }
         }
@@ -230,11 +230,9 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
 
     @OnClick(R.id.uploadButton)
     public void onViewClicked() {
-
         if (groups.isEmpty()) {
             CommonMethods.showToast(SelectedRecordsGroupActivity.this, getResources().getString(R.string.select_report));
         } else {
-
             if (NetworkUtil.isInternetAvailable(SelectedRecordsGroupActivity.this)) {
                     uploadButton.setEnabled(false);
 
@@ -277,7 +275,6 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                     .addHeader("opdId", String.valueOf(opdId))
 
                     .addFileToUpload(image.getImagePath(), "myRecord")
-                    //                                    .setDelegate(MainActivity.this)
                     .startUpload();
         } catch (FileNotFoundException | MalformedURLException e) {
             e.printStackTrace();
@@ -287,7 +284,6 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
     }
 
     // Uploading
-
 
     @Override
     public void onBackPressed() {
@@ -372,9 +368,6 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             mAdapter.notifyDataSetChanged();
         } else
             mAdapter.notifyItemChanged(mainPosition);
-
-//        if (groups.isEmpty())
-//            uploadButton.setEnabled(false);
     }
 
     @Override

@@ -22,6 +22,7 @@ public class Image implements Parcelable {
             instance.parentCaption = ((String) in.readValue((String.class.getClassLoader())));
             instance.childCaption = ((String) in.readValue((String.class.getClassLoader())));
             instance.uploading = ((int) in.readValue((boolean.class.getClassLoader())));
+            instance.type = ((int) in.readValue((boolean.class.getClassLoader())));
 
             return instance;
         }
@@ -49,6 +50,10 @@ public class Image implements Parcelable {
     @SerializedName("uploading")
     @Expose
     private int uploading = -1;
+
+    @SerializedName("type")
+    @Expose
+    private int type;
 
     public String getImageId() {
         return imageId;
@@ -98,6 +103,15 @@ public class Image implements Parcelable {
         this.uploading = uploading;
     }
 
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(imageId);
         dest.writeValue(imagePath);
@@ -105,6 +119,7 @@ public class Image implements Parcelable {
         dest.writeValue(parentCaption);
         dest.writeValue(childCaption);
         dest.writeValue(uploading);
+        dest.writeValue(type);
     }
 
     public int describeContents() {

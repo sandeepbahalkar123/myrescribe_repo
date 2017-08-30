@@ -131,6 +131,13 @@ public class DocPickerFragment extends BaseFragment {
     private void setUpViewPager() {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getChildFragmentManager());
         ArrayList<FileType> supportedTypes = PickerManager.getInstance().getFileTypes();
+
+        if (supportedTypes.size() == 1) {
+            if (supportedTypes.get(0).title.equals(""))
+                tabLayout.setVisibility(View.GONE);
+            else tabLayout.setVisibility(View.VISIBLE);
+        }
+
         for (int index = 0; index < supportedTypes.size(); index++) {
             adapter.addFragment(DocFragment.newInstance(supportedTypes.get(index)),supportedTypes.get(index).title);
         }

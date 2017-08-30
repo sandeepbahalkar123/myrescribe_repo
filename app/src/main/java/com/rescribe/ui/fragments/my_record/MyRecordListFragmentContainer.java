@@ -117,24 +117,6 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
         mCurrentSelectedTimePeriodTab = new Year();
         mCurrentSelectedTimePeriodTab.setMonthName(new SimpleDateFormat("MMM", Locale.US).format(new Date()));
         mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy", Locale.US).format(new Date()));
-        //-------
-        //----
-
-        /*AppDBHelper appDBHelper = new AppDBHelper(mParentActivity);
-
-        if (appDBHelper.dataTableNumberOfRows(RescribeConstants.TASK_GET_ALL_MY_RECORDS) > 0) {
-            Cursor cursor = appDBHelper.getData(RescribeConstants.TASK_GET_ALL_MY_RECORDS);
-            cursor.moveToFirst();
-            String loginData = cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
-            Gson gson = new Gson();
-
-            MyRecordBaseModel model = gson.fromJson(loginData, MyRecordBaseModel.class);
-            MyRecordDataModel recordMainDataModel = model.getRecordMainDataModel();
-            mYearList = recordMainDataModel.getUniqueYears();
-            mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList);
-            mYearSpinnerView.setAdapter(mCustomSpinAdapter);
-            mTimePeriodList = recordMainDataModel.getFormattedYearList();
-        }*/
 
         //---------
 

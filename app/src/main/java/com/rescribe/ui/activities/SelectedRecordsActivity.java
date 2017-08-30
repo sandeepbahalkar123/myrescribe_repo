@@ -2,8 +2,12 @@ package com.rescribe.ui.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,9 +62,11 @@ public class SelectedRecordsActivity extends AppCompatActivity {
 
     private static final int MAX_ATTACHMENT_COUNT = 10;
     private Context mContext;
-    private ArrayList<Image> photoPaths = new ArrayList<>();
+    private ArrayList<Image> imagePaths = new ArrayList<>();
+
     private SelectedRecordsAdapter selectedRecordsAdapter;
     private String patient_id = "";
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,14 +93,47 @@ public class SelectedRecordsActivity extends AppCompatActivity {
 
         patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
 
-        SelectedRecordsActivityPermissionsDispatcher.onPickPhotoWithCheck(SelectedRecordsActivity.this);
+        // Show two options for user
+
+        dialog = new Dialog(mContext);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.select_file_dialog);
+        dialog.setCanceledOnTouchOutside(false);
+
+        dialog.findViewById(R.id.gallery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                SelectedRecordsActivityPermissionsDispatcher.onPickPhotoWithCheck(SelectedRecordsActivity.this);
+            }
+        });
+
+        dialog.findViewById(R.id.files).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                SelectedRecordsActivityPermissionsDispatcher.onPickDocWithCheck(SelectedRecordsActivity.this);
+            }
+        });
+
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                if (imagePaths.isEmpty())
+                    onBackPressed();
+            }
+        });
+        dialog.show();
+
+        // End
         // off recyclerView Animation
 
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator)
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
 
-        selectedRecordsAdapter = new SelectedRecordsAdapter(mContext, photoPaths);
+        selectedRecordsAdapter = new SelectedRecordsAdapter(mContext, imagePaths);
         recyclerView.setAdapter(selectedRecordsAdapter);
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 2);
         recyclerView.setLayoutManager(layoutManager);
@@ -114,7 +154,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
             @Override
             public void onMenuItemClick(FloatingActionButton miniFab, @Nullable TextView label, int itemId) {
-                for (Image image : photoPaths) {
+                for (Image image : imagePaths) {
                     if (image.isSelected()) {
                         if (label != null) {
                             image.setParentCaption(label.getText().toString());
@@ -138,30 +178,24 @@ public class SelectedRecordsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_docs:
-                SelectedRecordsActivityPermissionsDispatcher.onPickPhotoWithCheck(this);
+                dialog.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.putExtra(FilePickerConst.KEY_SELECTED_MEDIA, photoPaths);
-        setResult(RESULT_CANCELED, intent);
-        super.onBackPressed();
-    }
-
     @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
     public void onPickPhoto() {
-        if (photoPaths.size() == MAX_ATTACHMENT_COUNT)
+        if (imagePaths.size() == MAX_ATTACHMENT_COUNT)
             Toast.makeText(this, "Cannot select more than " + MAX_ATTACHMENT_COUNT + " documents", Toast.LENGTH_SHORT).show();
         else {
 
             ArrayList photos = new ArrayList();
-            for (Image photo : photoPaths)
+            for (Image photo : imagePaths) {
+                if (photo.getType() == FilePickerConst.REQUEST_CODE_PHOTO)
                 photos.add(photo.getImagePath());
+            }
 
             FilePickerBuilder.getInstance().setMaxCount(MAX_ATTACHMENT_COUNT)
                     .setSelectedFiles(photos)
@@ -175,6 +209,28 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         }
     }
 
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    public void onPickDoc() {
+        String[] documents = {".doc", ".docx", ".odt", ".pdf"};
+        if (imagePaths.size() == MAX_ATTACHMENT_COUNT)
+            Toast.makeText(this, "Cannot select more than " + MAX_ATTACHMENT_COUNT + " documents", Toast.LENGTH_SHORT).show();
+        else {
+            ArrayList photos = new ArrayList();
+            for (Image photo : imagePaths) {
+                if (photo.getType() == FilePickerConst.REQUEST_CODE_DOC)
+                    photos.add(photo.getImagePath());
+            }
+
+            FilePickerBuilder.getInstance().setMaxCount(MAX_ATTACHMENT_COUNT)
+                    .setSelectedFiles(photos)
+                    .setActivityTheme(R.style.AppTheme)
+                    .addFileSupport(documents)
+                    .enableDocSupport(false)
+                    .enableOrientation(true)
+                    .pickFile(this);
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -184,36 +240,42 @@ public class SelectedRecordsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA) == null) {
-            if (photoPaths.isEmpty())
-                finish();
-        } else if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA).size() == 0) {
-            if (photoPaths.isEmpty())
-                finish();
-        } else {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
-                if (resultCode == Activity.RESULT_OK) {
+                if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA).size() == 0) {
+                    if (imagePaths.isEmpty())
+                        finish();
+                } else
+                    addFiles(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA), FilePickerConst.REQUEST_CODE_PHOTO);
+            } else if (requestCode == FilePickerConst.REQUEST_CODE_DOC) {
+                if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS).size() == 0) {
+                    if (imagePaths.isEmpty())
+                        finish();
+                } else
+                    addFiles(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS), FilePickerConst.REQUEST_CODE_DOC);
+            }
+        } else if (imagePaths.isEmpty())
+            finish();
+    }
 
-                    for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)) {
-                        boolean isExist = false;
-                        for (Image imagePre : photoPaths) {
-                            if (imagePre.getImagePath().equals(imagePath))
-                                isExist = true;
-                        }
+    private void addFiles(ArrayList<String> data, int type) {
+        for (String imagePath : data) {
+            boolean isExist = false;
+            for (Image imagePre : imagePaths) {
+                if (imagePre.getImagePath().equals(imagePath))
+                    isExist = true;
+            }
 
-                        if (!isExist) {
-                            Image image = new Image();
-                            image.setImageId(patient_id + "_" + UUID.randomUUID().toString());
-                            image.setImagePath(imagePath);
-                            image.setSelected(false);
-                            photoPaths.add(image);
-                        }
-                    }
-                    selectedRecordsAdapter.notifyDataSetChanged();
-                }
+            if (!isExist) {
+                Image image = new Image();
+                image.setImageId(patient_id + "_" + UUID.randomUUID().toString());
+                image.setImagePath(imagePath);
+                image.setType(type);
+                image.setSelected(false);
+                imagePaths.add(image);
             }
         }
+        selectedRecordsAdapter.notifyDataSetChanged();
     }
 
     @OnClick({R.id.coachmark, R.id.uploadButton})
@@ -224,12 +286,12 @@ public class SelectedRecordsActivity extends AppCompatActivity {
                 RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK, RescribeConstants.YES, mContext);
                 break;
             case R.id.uploadButton:
-                if (photoPaths.size() > 0 && photoPaths != null) {
+                if (imagePaths.size() > 0 && imagePaths != null) {
                     Intent intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
                     intent.putExtra(RescribeConstants.DOCTORS_ID, getIntent().getIntExtra(RescribeConstants.DOCTORS_ID, 0));
                     intent.putExtra(RescribeConstants.VISIT_DATE, getIntent().getStringExtra(RescribeConstants.VISIT_DATE));
-                    intent.putExtra(RescribeConstants.OPD_ID, getIntent().getStringExtra(RescribeConstants.OPD_ID));
-                    intent.putExtra(RescribeConstants.DOCUMENTS, photoPaths);
+                    intent.putExtra(RescribeConstants.OPD_ID, getIntent().getIntExtra(RescribeConstants.OPD_ID, 0));
+                    intent.putExtra(RescribeConstants.DOCUMENTS, imagePaths);
                     startActivity(intent);
                 } else {
                     CommonMethods.showToast(mContext, "Please select at least one document");

@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/instruction_color"
             android:textSize="@dimen/sp12"
-            tools:text="@string/dummy" />
+            tools:text="@string/dummy_full" />
 
     </LinearLayout>
 

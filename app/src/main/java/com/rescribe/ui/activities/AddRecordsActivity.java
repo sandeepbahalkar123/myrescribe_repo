@@ -26,6 +26,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSpinnerAdapter;
 import com.rescribe.helpers.myrecords.MyRecordsHelper;
@@ -36,9 +37,7 @@ import com.rescribe.model.my_records.MyRecordsDoctorListModel;
 import com.rescribe.model.my_records.RequestAddDoctorModel;
 import com.rescribe.model.my_records.VisitDate;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.ui.activities.SelectedRecordsActivity;
 import com.rescribe.util.CommonMethods;
-import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -248,7 +247,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
         intent.putExtra(RescribeConstants.DOCTORS_ID, doctorId);
         intent.putExtra(RescribeConstants.OPD_ID, opdId);
         intent.putExtra(RescribeConstants.VISIT_DATE, visitDate);
-        startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
+        startActivity(intent);
     }
 
     @Override
@@ -306,7 +305,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
     @Override
     public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-        selectDate.setText(dayOfMonth + "-" + monthOfYear + "-" + year);
+        selectDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
     }
 
     @Override

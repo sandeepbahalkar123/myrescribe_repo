@@ -144,8 +144,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mSlotTypeForHeader = slotType;
                                 mparentHeader = parent;
                                 mOnNotificationClickListener.setOnClickCheckBoxListener(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcasedinner), mparentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true);
-
-                                //  mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasedinner), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
                             }
                         });
                         //expand and collapse for each slot in one row
@@ -215,9 +213,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
                                 mparentHeader = parent;
-
-                                //mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcaselunch), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
-
                                 mOnNotificationClickListener.setOnClickCheckBoxListener(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcaselunch), mparentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true);
 
                             }
@@ -289,8 +284,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mparentHeader = parent;
                                 mOnNotificationClickListener.setOnClickCheckBoxListener(mViewForHeader,mHeaderPosition, mContext.getString(R.string.smallcasebreakfast),mparentHeader,mMedicineID,CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition,true);
 
-                              //  mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasebreakfast), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
-
                             }
                         });
                         //expand and collapse for each slot in one row
@@ -361,8 +354,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mSlotTypeForHeader = slotType;
                                 mparentHeader = parent;
                                 mOnNotificationClickListener.setOnClickCheckBoxListener(mViewForHeader,mHeaderPosition, mContext.getString(R.string.smallcasesnacks),mparentHeader,mMedicineID,CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition,true);
-                              //  mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), mContext.getString(R.string.smallcasesnacks), mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + mHeaderPosition);
-
 
                             }
                         });
@@ -450,8 +441,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     mSlotCardParent = slotCardParent;
                     mOnNotificationClickListener.setOnClickCheckBoxListener(mView,mPos, medicationList.get(finalI).getMedicinSlot(),mSlotCardParent,medicationList.get(finalI).getMedicineId(),CommonMethods.formatDateTime(medicationList.get(finalI).getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER + "_" + finalI,false);
 
-                  //  mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), medicationList.get(finalI).getMedicinSlot(), medicationList.get(finalI).getMedicineId(), CommonMethods.formatDateTime(medicationList.get(finalI).getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI);
-
                 }
             });
             view.setTag(parent.getTag());
@@ -474,7 +463,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return mDataSet.size();
     }
 
-
+// this method is called from NotificationActivity Onsuccess of TASK_RESPOND_NOTIFICATION_ADAPTER or TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER
      public void onSuccessOfNotificationCheckBoxClick(String mOldDataTag, CustomResponse customResponse){
          if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
              ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
@@ -581,6 +570,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
      }
 
+    //this method is called from Notification Activity when there when no connection error occurs , on click of checkbox
      public void onNoConnectionOfNotificationCheckBoxClick(String mOldDataTag, String errorMessage){
          if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
              String position = mOldDataTag;

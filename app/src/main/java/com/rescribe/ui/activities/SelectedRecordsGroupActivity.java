@@ -257,8 +257,13 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             if (image.getChildCaption() == null || image.getChildCaption().equals(""))
                 image.setChildCaption(OTHERS);
 
+            String childCaptionName;
+            if (image.getParentCaption().equals(INVESTIGATIONS))
+                childCaptionName = image.getChildCaption();
+            else
+                childCaptionName = image.getParentCaption();
+
             new MultipartUploadRequest(SelectedRecordsGroupActivity.this, uploadId, Url)
-                    //                            new MultipartUploadRequest(SelectedRecordsGroupActivity.this, i + "_" + j, Url)
                     .setNotificationConfig(uploadNotificationConfig)
                     .setMaxRetries(RescribeConstants.MAX_RETRIES)
 
@@ -273,7 +278,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                     .addHeader("visitDate", visitDate)
                     .addHeader("imageId", image.getImageId())
                     .addHeader("parentCaptionName", image.getParentCaption())
-                    .addHeader("childCaptionName", image.getChildCaption())
+                    .addHeader("childCaptionName", childCaptionName)
                     .addHeader("opdId", String.valueOf(opdId))
 
                     .addFileToUpload(image.getImagePath(), "myRecord")

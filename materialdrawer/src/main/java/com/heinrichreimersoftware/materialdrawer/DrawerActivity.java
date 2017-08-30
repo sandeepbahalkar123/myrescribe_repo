@@ -469,6 +469,46 @@ public class DrawerActivity extends AppCompatActivity {
         return this;
     }
 
+    // Added
+
+    /**
+     * Gets the profile click listener of the drawer
+     *
+     * @return Profile click listener of the drawer
+     */
+    public DrawerProfile.OnProfileItemClickListener getOnProfileItemClickListener() {
+        return mDrawer.getOnProfileItemClickListener();
+    }
+
+    /**
+     * Sets a profile click listener to the drawer
+     *
+     * @param listener Listener to set
+     */
+    public DrawerActivity setOnProfileItemClickListener(DrawerProfile.OnProfileItemClickListener listener) {
+        mDrawer.setOnProfileItemClickListener(listener);
+        return this;
+    }
+
+    /**
+     * Gets whether the drawer has a profile click listener set to it
+     *
+     * @return True if the drawer has a profile click listener set to it, false otherwise.
+     */
+    public boolean hasOnProfileItemClickListener() {
+        return mDrawer.hasOnProfileItemClickListener();
+    }
+
+    /**
+     * Removes the profile click listener from the drawer
+     */
+    public DrawerActivity removeOnProfileItemClickListener() {
+        mDrawer.removeOnProfileItemClickListener();
+        return this;
+    }
+    
+    // End Added
+    
     /**
      * Gets the profile switch listener of the drawer
      *

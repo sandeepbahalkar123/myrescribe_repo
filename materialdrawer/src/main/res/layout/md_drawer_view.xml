@@ -131,11 +131,11 @@
                                 android:clickable="true"
                                 android:gravity="center" />
 
-                            <View
+                         <!--   <View
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/md_list_item_height_two_line"
                                 android:layout_alignParentBottom="true"
-                                android:background="@drawable/md_scrim" />
+                                android:background="@drawable/md_scrim" />-->
 
                             <LinearLayout
                                 android:layout_width="match_parent"

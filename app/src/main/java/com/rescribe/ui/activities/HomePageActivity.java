@@ -14,7 +14,6 @@ import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 import com.heinrichreimersoftware.materialdrawer.theme.DrawerTheme;
-import net.gotev.uploadservice.UploadService;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.database.MyRecordsData;
@@ -24,8 +23,9 @@ import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
+
+import net.gotev.uploadservice.UploadService;
 
 import java.util.Calendar;
 
@@ -35,6 +35,8 @@ import java.util.Calendar;
 
 public class HomePageActivity extends DrawerActivity {
 
+    private static final long MANAGE_ACCOUNT = 121;
+    private static final long ADD_ACCOUNT = 122;
     private Context mContext;
     private String mGetMealTime;
     String breakFastTime = "";
@@ -225,10 +227,7 @@ public class HomePageActivity extends DrawerActivity {
                 if (id.equalsIgnoreCase(getString(R.string.doctor_details))) {
                     Intent intent = new Intent(mContext, DoctorListActivity.class);
                     startActivity(intent);
-                } /*else if (id.equalsIgnoreCase(getString(R.string.investigation))) {
-                    Intent intent = new Intent(mContext, InvestigationActivity.class);
-                    startActivity(intent);
-                }*/ else if (id.equalsIgnoreCase(getString(R.string.going_medication))) {
+                } else if (id.equalsIgnoreCase(getString(R.string.going_medication))) {
                     Intent intent = new Intent(mContext, PrescriptionActivity.class);
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.appointments))) {
@@ -257,6 +256,7 @@ public class HomePageActivity extends DrawerActivity {
                 } else if (id.equalsIgnoreCase(getString(R.string.logout))) {
                     logout();
                 }
+
                 closeDrawer();
             }
         });
@@ -264,18 +264,50 @@ public class HomePageActivity extends DrawerActivity {
         // TODO : HARDEDCODED will get remove once done with APIs.
         addProfile(new DrawerProfile()
                 .setId(1)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.big))
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.allergy))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr.Avinash Deshpande")
                 .setDescription("avinash_deshpande@gmail.com")
         );
         addProfile(new DrawerProfile()
                 .setId(2)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.small_copy))
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.advice))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr.Sandeep Deshmukh ")
                 .setDescription("sandeep_deshmukh@gmail.com")
         );
 
+        addProfile(new DrawerProfile()
+                .setId(3)
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.small_copy))
+                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
+                .setName("Mr.Ganesh Deshmukh ")
+                .setDescription("ganesh_deshmukh@gmail.com")
+        );
+
+        addProfile(new DrawerProfile()
+                .setId(ADD_ACCOUNT)
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.add_account))
+                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
+                .setDescription("Add Patient").setProfile(false)
+        );
+
+        addProfile(new DrawerProfile()
+                .setId(MANAGE_ACCOUNT)
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.setting))
+                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
+                .setDescription("Manage Profile").setProfile(false)
+        );
+        setOnProfileItemClickListener(new DrawerProfile.OnProfileItemClickListener() {
+            @Override
+            public void onProfileItemClick(DrawerProfile profile, long id) {
+                if (id == ADD_ACCOUNT) {
+                    CommonMethods.showToast(mContext, profile.getDescription());
+                }else if (id == MANAGE_ACCOUNT){
+                    CommonMethods.showToast(mContext, profile.getDescription());
+                }
+                closeDrawer();
+            }
+        });
     }
 }

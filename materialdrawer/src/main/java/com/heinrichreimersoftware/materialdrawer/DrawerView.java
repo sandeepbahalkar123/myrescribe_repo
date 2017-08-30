@@ -106,6 +106,7 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
     private DrawerAdapter mAdapter;
     private DrawerAdapter mAdapterFixed;
     private DrawerProfile.OnProfileClickListener onProfileClickListener;
+    private DrawerProfile.OnProfileItemClickListener onProfileItemClickListener;
     private DrawerProfile.OnProfileSwitchListener onProfileSwitchListener;
     private DrawerItem.OnItemClickListener mOnItemClickListener;
     private DrawerItem.OnItemClickListener mOnFixedItemClickListener;
@@ -166,7 +167,11 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
             @Override
             public void onItemClick(LinearListView parent, View view, int position, long id) {
                 if (position != 0) {
+                    if (mProfileAdapter.getItem(position).isProfile())
                     selectProfile(mProfileAdapter.getItem(position));
+                    else
+                        // added listener
+                        onProfileItemClickListener.onProfileItemClick(mProfileAdapter.getItem(position), mProfileAdapter.getItem(position).getId());
                 }
             }
         });
@@ -208,6 +213,13 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
         });
 
         resetDrawerTheme();
+
+        linearLayoutProfileTextContainer.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleProfileList();
+            }
+        });
 
         imageViewOpenProfileListIcon.setOnClickListener(new OnClickListener() {
             @Override
@@ -348,10 +360,9 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
     private void updateProfile() {
         if (loggingEnabled) Log.d(TAG, "updateProfile()");
         if (mProfileAdapter.getCount() > 0 && isInViewHierarchy) {
-
-            if (mProfileAdapter.getCount() > 2) {
+            if (mProfileAdapter.getProfileCount() > 2) {
                 /* More than two profiles. Should show a little badge. */
-                textViewProfileAvatarCount.setText(getResources().getString(R.string.md_label_plus, mProfileAdapter.getCount() - 1));
+                textViewProfileAvatarCount.setText(getResources().getString(R.string.md_label_plus, mProfileAdapter.getProfileCount() - 1));
                 textViewProfileAvatarCount.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -377,7 +388,7 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                 imageViewProfileAvatarSecondary.setVisibility(INVISIBLE);
                 textViewProfileAvatarCount.setVisibility(VISIBLE);
                 imageViewOpenProfileListIcon.setVisibility(VISIBLE);
-            } else if (mProfileAdapter.getCount() == 2) {
+            } else if (mProfileAdapter.getProfileCount() == 2) {
                 /* Two profiles. Should show the second profile avatar. */
                 if (mProfileAdapter.getItem(1).hasAvatar()) {
                     imageViewProfileAvatarSecondary.setImageDrawable(mProfileAdapter.getItem(1).getAvatar());
@@ -499,7 +510,7 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
     private void animateToProfile(DrawerProfile profile) {
         if (loggingEnabled) Log.d(TAG, "animateToProfile(*" + profile.getId() + ")");
 
-        if (mProfileAdapter.getCount() > 1) {
+        if (mProfileAdapter.getProfileCount() > 1) {
             List<Animator> animators = new ArrayList<>();
             List<Animator.AnimatorListener> listeners = new ArrayList<>();
 
@@ -626,7 +637,7 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
             animators.add(textSet);
 
             AnimatorSet profileSet = new AnimatorSet();
-            if (mProfileAdapter.getCount() == 2) {
+            if (mProfileAdapter.getProfileCount() == 2) {
 
                 /* Avatar animation */
 
@@ -726,7 +737,11 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                             @Override
                             public void onItemClick(LinearListView parent, View view, int position, long id) {
                                 if (position != 0) {
-                                    selectProfile(mProfileAdapter.getItem(position));
+                                    if (mProfileAdapter.getItem(position).isProfile())
+                                        selectProfile(mProfileAdapter.getItem(position));
+                                    else
+                                        // added listener
+                                        onProfileItemClickListener.onProfileItemClick(mProfileAdapter.getItem(position), mProfileAdapter.getItem(position).getId());
                                 }
                             }
                         });
@@ -1114,6 +1129,46 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
         return this;
     }
 
+    // Added
+
+    /**
+     * Gets the profile click listener of the drawer
+     *
+     * @return Profile click listener of the drawer
+     */
+    public DrawerProfile.OnProfileItemClickListener getOnProfileItemClickListener() {
+        return onProfileItemClickListener;
+    }
+
+    /**
+     * Sets a profile click listener to the drawer
+     *
+     * @param listener Listener to set
+     */
+    public DrawerView setOnProfileItemClickListener(DrawerProfile.OnProfileItemClickListener listener) {
+        onProfileItemClickListener = listener;
+        return this;
+    }
+
+    /**
+     * Gets whether the drawer has a profile click listener set to it
+     *
+     * @return True if the drawer has a profile click listener set to it, false otherwise.
+     */
+    public boolean hasOnProfileItemClickListener() {
+        return onProfileItemClickListener != null;
+    }
+
+    /**
+     * Removes the profile click listener from the drawer
+     */
+    public DrawerView removeOnProfileItemClickListener() {
+        onProfileItemClickListener = null;
+        return this;
+    }
+
+    // End Added
+    
     /**
      * Gets the profile switch listener of the drawer
      *

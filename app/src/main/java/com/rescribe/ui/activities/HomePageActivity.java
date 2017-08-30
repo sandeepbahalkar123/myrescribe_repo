@@ -236,14 +236,11 @@ public class HomePageActivity extends DrawerActivity {
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.my_records))) {
                     MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
-
                     int completeCount = 0;
-
                     for (Image image : myRecordsData.getImageArrayList()) {
                         if (image.isUploading() == RescribeConstants.COMPLETED)
                             completeCount++;
                     }
-
                     Intent intent;
                     if (completeCount == myRecordsData.getImageArrayList().size()) {
                         appDBHelper.deleteMyRecords();

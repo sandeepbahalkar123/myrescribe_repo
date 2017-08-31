@@ -6,14 +6,14 @@ import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 
-public class DoctorModel implements CustomResponse {
+public class DoctorBaseModel implements CustomResponse {
 
     @SerializedName("common")
     @Expose
     private Common common;
     @SerializedName("data")
     @Expose
-    private DoctorInfoMonthContainer doctorInfoMonthContainer;
+    private DoctorDataModel doctorDataModel;
 
     public Common getCommon() {
         return common;
@@ -23,19 +23,19 @@ public class DoctorModel implements CustomResponse {
         this.common = common;
     }
 
-    public DoctorInfoMonthContainer getDoctorInfoMonthContainer() {
-        return doctorInfoMonthContainer;
+    public DoctorDataModel getDoctorDataModel() {
+        return doctorDataModel;
     }
 
-    public void setDoctorInfoMonthContainer(DoctorInfoMonthContainer doctorInfoMonthContainer) {
-        this.doctorInfoMonthContainer = doctorInfoMonthContainer;
+    public void setDoctorDataModel(DoctorDataModel doctorDataModel) {
+        this.doctorDataModel = doctorDataModel;
     }
 
     @Override
     public String toString() {
-        return "DoctorModel{" +
+        return "DoctorBaseModel{" +
                 "common=" + common +
-                ", doctorInfoMonthContainer=" + doctorInfoMonthContainer +
+                ", doctorDataModel=" + doctorDataModel +
                 '}';
     }
 }

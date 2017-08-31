@@ -27,9 +27,12 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.doctor.DoctorHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.doctors.doctor_info.DoctorBaseModel;
+import com.rescribe.model.doctors.doctor_info.DoctorDataModel;
 import com.rescribe.model.doctors.doctor_info.DoctorDetail;
 import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.login.Year;
+import com.rescribe.model.my_records.new_pojo.NewMyRecordDataModel;
 import com.rescribe.ui.activities.DoctorListActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -61,6 +64,8 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
     Spinner mYearSpinnerView;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.noRecords)
+    ImageView noRecords;
 
     private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<Year> mTimePeriodList = new ArrayList<>();
@@ -114,7 +119,7 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
         mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy", Locale.US).format(new Date()));
         //-------
         //----
-
+/*
         AppDBHelper appDBHelper = new AppDBHelper(mParentActivity);
 
         if (appDBHelper.dataTableNumberOfRows(RescribeConstants.TASK_LOGIN) > 0) {
@@ -137,7 +142,7 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
         //---------
         //----
         mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        mTabLayout.setupWithViewPager(mViewpager);
+        mTabLayout.setupWithViewPager(mViewpager);*/
     }
 
     @OnClick({R.id.backArrow, R.id.fab})
@@ -303,7 +308,30 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
     //---------------
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        DoctorBaseModel baseModel = (DoctorBaseModel) customResponse;
+        if (baseModel != null) {
+            DoctorDataModel doctorDataModel = baseModel.getDoctorDataModel();
+            if (doctorDataModel != null) {
+                mTimePeriodList = doctorDataModel.getFormattedYearList();
+                if (mViewPagerAdapter == null) {
+                    mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
+                    mTabLayout.setupWithViewPager(mViewpager);
+                    mYearList = doctorDataModel.getUniqueYears();
+                    mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList);
+                    mYearSpinnerView.setAdapter(mCustomSpinAdapter);
+                }
+                if (doctorDataModel.getReceivedYearMap().isEmpty()) {
+                    noRecords.setVisibility(View.VISIBLE);
+                    mYearSpinnerView.setVisibility(View.GONE);
+                    mTabLayout.setVisibility(View.GONE);
+                } else {
+                    noRecords.setVisibility(View.GONE);
+                    mYearSpinnerView.setVisibility(View.VISIBLE);
+                    mTabLayout.setVisibility(View.VISIBLE);
+                }
+            }
 
+        }
         setupViewPager();
     }
 

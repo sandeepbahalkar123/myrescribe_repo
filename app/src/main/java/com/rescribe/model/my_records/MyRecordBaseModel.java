@@ -33,7 +33,7 @@ public class MyRecordBaseModel implements CustomResponse {
 
     @Override
     public String toString() {
-        return "DoctorModel{" +
+        return "DoctorBaseModel{" +
                 "common=" + common +
                 ", recordMainDataModel=" + recordMainDataModel +
                 '}';

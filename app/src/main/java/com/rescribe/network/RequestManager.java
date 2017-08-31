@@ -33,7 +33,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 import com.rescribe.model.case_details.CaseDetailsModel;
 import com.rescribe.model.doctors.appointments.DoctorAppointmentModel;
-import com.rescribe.model.doctors.doctor_info.DoctorModel;
+import com.rescribe.model.doctors.doctor_info.DoctorBaseModel;
 import com.rescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
 import com.rescribe.model.filter.CaseDetailsListModel;
 import com.rescribe.model.filter.FilterDoctorListModel;
@@ -452,7 +452,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, caseDetailsModel, mOldDataTag);
                         break;
                     case RescribeConstants.TASK_DOCTOR_LIST: //This is for get archived list
-                        DoctorModel doctorsModel = new Gson().fromJson(data, DoctorModel.class);
+                        DoctorBaseModel doctorsModel = new Gson().fromJson(data, DoctorBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorsModel, mOldDataTag);
                         break;
                     case RescribeConstants.TASK_DOCTOR_LIST_FILTERING: //This is for get archived list

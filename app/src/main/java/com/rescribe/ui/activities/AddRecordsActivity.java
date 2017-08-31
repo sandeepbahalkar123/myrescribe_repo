@@ -396,7 +396,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
         } else if (customResponse instanceof AddDoctorModel) {
             AddDoctorModel addDoctorModel = (AddDoctorModel) customResponse;
             if (addDoctorModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
-                doctorId = addDoctorModel.getDocId();
+                doctorId = addDoctorModel.getData().getDocId();
                 callRecordsActivity();
             }
         }

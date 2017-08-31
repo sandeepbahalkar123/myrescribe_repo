@@ -64,7 +64,6 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
     Spinner mYearSpinnerView;
     @BindView(R.id.noRecords)
     ImageView noRecords;
-
     private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<Year> mTimePeriodList = new ArrayList<>();
     private Year mCurrentSelectedTimePeriodTab;

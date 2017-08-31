@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/home/jeetal/jeetal_projects/myrescribe_repo/library/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_light.xml",
+        "source": "/home/jeetal/.android/build-cache/81683a88c51f3e1c1920fdc76360378f77618cd2/output/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
+    },
+    {
+        "merged": "/home/jeetal/jeetal_projects/myrescribe_repo/library/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_dark.xml",
+        "source": "/home/jeetal/.android/build-cache/81683a88c51f3e1c1920fdc76360378f77618cd2/output/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
+    }
+]

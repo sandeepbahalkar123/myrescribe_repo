@@ -64,6 +64,7 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
     Spinner mYearSpinnerView;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+
     @BindView(R.id.noRecords)
     ImageView noRecords;
 

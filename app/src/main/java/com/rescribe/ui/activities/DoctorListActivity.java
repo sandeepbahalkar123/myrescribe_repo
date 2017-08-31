@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -47,7 +48,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     DrawerLayout mDrawer;
     @BindView(R.id.nav_view)
     FrameLayout nav_view;
-    boolean isOnApplyFilterCalledBefore = false; // this is added for maintaining stack of filter result
+ //   boolean isOnApplyFilterCalledBefore = false; // this is added for maintaining stack of filter result
     // Filter End
     private FragmentManager mFragmentManager;
     private FilterFragment filterFragment;
@@ -83,6 +84,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         } else {
             super.onBackPressed();
         }
+
     }
 
     public DrawerLayout getActivityDrawer() {
@@ -106,20 +108,12 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         CommonMethods.Log("FilterRequest", gson.toJson(drFilterRequestModel, DrFilterRequestModel.class));
         mDrawer.closeDrawer(GravityCompat.END);
 
-        if (!isOnApplyFilterCalledBefore) {
-            isOnApplyFilterCalledBefore = true;
             DoctorFilteredListFragment doctorFilteredListFragment = DoctorFilteredListFragment.newInstance(drFilterRequestModel);
             FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.doctorViewContainer, doctorFilteredListFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
-        } else {
-            Fragment currentFragment = mFragmentManager.findFragmentById(R.id.doctorViewContainer);
-            if (currentFragment instanceof DoctorFilteredListFragment) {
-                DoctorFilteredListFragment currentFragmentObject = (DoctorFilteredListFragment) currentFragment;
-                currentFragmentObject.initialize(drFilterRequestModel);
-            }
-        }
+
     }
 
     @Override
@@ -279,6 +273,15 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
             fragmentTransaction.addToBackStack(null);
         }
         fragmentTransaction.commit();
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+
+        }
     }
 
 }

@@ -30,6 +30,8 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -40,7 +42,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.text.TextUtilsCompat;
-import android.support.v7.graphics.Palette;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Property;
@@ -106,7 +107,7 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
     private DrawerAdapter mAdapter;
     private DrawerAdapter mAdapterFixed;
     private DrawerProfile.OnProfileClickListener onProfileClickListener;
-    private DrawerProfile.OnProfileItemClickListener onProfileItemClickListener;
+    private DrawerProfile.OnNonProfileClickListener onNonProfileClickListener;
     private DrawerProfile.OnProfileSwitchListener onProfileSwitchListener;
     private DrawerItem.OnItemClickListener mOnItemClickListener;
     private DrawerItem.OnItemClickListener mOnFixedItemClickListener;
@@ -168,10 +169,10 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
             public void onItemClick(LinearListView parent, View view, int position, long id) {
                 if (position != 0) {
                     if (mProfileAdapter.getItem(position).isProfile())
-                    selectProfile(mProfileAdapter.getItem(position));
+                        selectProfile(mProfileAdapter.getItem(position));
                     else
                         // added listener
-                        onProfileItemClickListener.onProfileItemClick(mProfileAdapter.getItem(position), mProfileAdapter.getItem(position).getId());
+                        onNonProfileClickListener.onProfileItemClick(mProfileAdapter.getItem(position), mProfileAdapter.getItem(position).getId());
                 }
             }
         });
@@ -255,7 +256,6 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
         textViewProfileDescription = (TextView) findViewById(R.id.mdProfileDescription);
         imageViewOpenProfileListIcon = (ImageView) findViewById(R.id.mdOpenProfileListIcon);
         linearListViewProfileList = (LinearListView) findViewById(R.id.mdProfileList);
-
 
         linearListView = (LinearListView) findViewById(R.id.mdList);
 
@@ -370,7 +370,17 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                     }
                 });
 
-                if (mProfileAdapter.getItem(0).getBackground() instanceof BitmapDrawable) {
+                Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                        R.drawable.profile);
+                imageViewProfileAvatarSecondary.setImageDrawable(new BitmapDrawable(getResources(), icon));
+                imageViewProfileAvatarSecondary.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openProfileList();
+                    }
+                });
+
+                /*if (mProfileAdapter.getItem(0).getBackground() instanceof BitmapDrawable) {
                     new Palette.Builder(((BitmapDrawable) mProfileAdapter.getItem(0).getBackground()).getBitmap())
                             .resizeBitmapSize(500)
                             .generate(new Palette.PaletteAsyncListener() {
@@ -383,9 +393,9 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                                     }
                                 }
                             });
-                }
+                }*/
 
-                imageViewProfileAvatarSecondary.setVisibility(INVISIBLE);
+                imageViewProfileAvatarSecondary.setVisibility(VISIBLE);  // Change
                 textViewProfileAvatarCount.setVisibility(VISIBLE);
                 imageViewOpenProfileListIcon.setVisibility(VISIBLE);
             } else if (mProfileAdapter.getProfileCount() == 2) {
@@ -552,7 +562,7 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                 public void onAnimationEnd(Animator animation) {
                     imageViewProfileBackground.setImageDrawable(newProfile.getBackground());
 
-                    if (newProfile.getBackground() instanceof BitmapDrawable) {
+                    /*if (newProfile.getBackground() instanceof BitmapDrawable) {
                         new Palette.Builder(((BitmapDrawable) newProfile.getBackground()).getBitmap())
                                 .resizeBitmapSize(500)
                                 .generate(new Palette.PaletteAsyncListener() {
@@ -565,8 +575,9 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                                         }
                                     }
                                 });
-                    }
+                    }*/
 
+                    imageViewProfileAvatarSecondary.setClickable(true);
                     imageViewProfileBackgroundOverlay.setVisibility(GONE);
 
                     if (hasOnProfileSwitchListener()) {
@@ -741,7 +752,7 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                                         selectProfile(mProfileAdapter.getItem(position));
                                     else
                                         // added listener
-                                        onProfileItemClickListener.onProfileItemClick(mProfileAdapter.getItem(position), mProfileAdapter.getItem(position).getId());
+                                        onNonProfileClickListener.onProfileItemClick(mProfileAdapter.getItem(position), mProfileAdapter.getItem(position).getId());
                                 }
                             }
                         });
@@ -978,8 +989,10 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
             }
         }
         profile.attachTo(this);
-        mProfileAdapter.add(profile);
-        if (mProfileAdapter.getCount() == 1) {
+        if (profile.isProfile())
+            mProfileAdapter.insert(profile, mProfileAdapter.getProfileCount());
+        else mProfileAdapter.add(profile);
+        if (mProfileAdapter.getProfileCount() == 1) {
             selectProfile(profile);
         }
         updateProfile();
@@ -993,6 +1006,24 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
      */
     public List<DrawerProfile> getProfiles() {
         return mProfileAdapter.getItems();
+    }
+
+    /**
+     * Gets all profiles from the drawer view
+     *
+     * @return Profiles from the drawer view
+     */
+    public int getProfileCount() {
+        return mProfileAdapter.getProfileCount();
+    }
+
+    /**
+     * Gets all profiles from the drawer view
+     *
+     * @return Profiles from the drawer view
+     */
+    public int getNonProfileCount() {
+        return mProfileAdapter.getNonProfileCount();
     }
 
     /**
@@ -1136,8 +1167,8 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
      *
      * @return Profile click listener of the drawer
      */
-    public DrawerProfile.OnProfileItemClickListener getOnProfileItemClickListener() {
-        return onProfileItemClickListener;
+    public DrawerProfile.OnNonProfileClickListener getOnNonProfileClickListener() {
+        return onNonProfileClickListener;
     }
 
     /**
@@ -1145,8 +1176,8 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
      *
      * @param listener Listener to set
      */
-    public DrawerView setOnProfileItemClickListener(DrawerProfile.OnProfileItemClickListener listener) {
-        onProfileItemClickListener = listener;
+    public DrawerView setOnNonProfileClickListener(DrawerProfile.OnNonProfileClickListener listener) {
+        onNonProfileClickListener = listener;
         return this;
     }
 
@@ -1156,19 +1187,19 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
      * @return True if the drawer has a profile click listener set to it, false otherwise.
      */
     public boolean hasOnProfileItemClickListener() {
-        return onProfileItemClickListener != null;
+        return onNonProfileClickListener != null;
     }
 
     /**
      * Removes the profile click listener from the drawer
      */
     public DrawerView removeOnProfileItemClickListener() {
-        onProfileItemClickListener = null;
+        onNonProfileClickListener = null;
         return this;
     }
 
     // End Added
-    
+
     /**
      * Gets the profile switch listener of the drawer
      *

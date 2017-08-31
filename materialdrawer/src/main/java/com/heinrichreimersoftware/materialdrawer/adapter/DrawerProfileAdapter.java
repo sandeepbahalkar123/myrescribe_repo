@@ -88,11 +88,11 @@ public class DrawerProfileAdapter extends ArrayAdapter<DrawerProfile> {
         }
 
         if (position == 0) {
-            viewHolder.getRoot().setSelected(true);
-            viewHolder.getRoot().setClickable(false);
-
-            textColorPrimary = drawerTheme.getHighlightColor();
+            viewHolder.getRoot().setVisibility(View.GONE); // Ganesh Added
+//            viewHolder.getRoot().setClickable(false);
+//            textColorPrimary = drawerTheme.getHighlightColor();
         } else {
+            viewHolder.getRoot().setVisibility(View.VISIBLE); // Ganesh Added
             viewHolder.getRoot().setSelected(false);
             viewHolder.getRoot().setClickable(true);
         }

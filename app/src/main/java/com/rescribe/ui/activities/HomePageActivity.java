@@ -269,6 +269,7 @@ public class HomePageActivity extends DrawerActivity {
                 .setName("Mr.Avinash Deshpande")
                 .setDescription("avinash_deshpande@gmail.com")
         );
+
         addProfile(new DrawerProfile()
                 .setId(2)
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.advice))
@@ -278,35 +279,47 @@ public class HomePageActivity extends DrawerActivity {
         );
 
         addProfile(new DrawerProfile()
-                .setId(3)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.small_copy))
-                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
-                .setName("Mr.Ganesh Deshmukh ")
-                .setDescription("ganesh_deshmukh@gmail.com")
-        );
-
-        addProfile(new DrawerProfile()
                 .setId(ADD_ACCOUNT)
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.add_account))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
-                .setDescription("Add Patient").setProfile(false)
+                .setDescription("Add Patient").setProfile(false) // for fixed item set profile false
         );
 
         addProfile(new DrawerProfile()
                 .setId(MANAGE_ACCOUNT)
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.setting))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
-                .setDescription("Manage Profile").setProfile(false)
+                .setDescription("Manage Profile").setProfile(false) // for fixed item set profile false
         );
-        setOnProfileItemClickListener(new DrawerProfile.OnProfileItemClickListener() {
+
+        setOnNonProfileClickListener(new DrawerProfile.OnNonProfileClickListener() {
             @Override
             public void onProfileItemClick(DrawerProfile profile, long id) {
                 if (id == ADD_ACCOUNT) {
-                    CommonMethods.showToast(mContext, profile.getDescription());
+
+                    // Do stuff here
+
+                    addProfile(new DrawerProfile()
+                            .setId(3)
+                            .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(mContext, R.drawable.inhaler))
+                            .setBackground(ContextCompat.getDrawable(mContext, R.drawable.group_2))
+                            .setName("Mr.Ganesh Deshmukh")
+                            .setDescription("ganesh_deshmukh@gmail.com")
+                    );
+                    CommonMethods.showToast(mContext, "Profile Added");
+
                 }else if (id == MANAGE_ACCOUNT){
                     CommonMethods.showToast(mContext, profile.getDescription());
                 }
                 closeDrawer();
+            }
+        });
+
+        setOnProfileSwitchListener(new DrawerProfile.OnProfileSwitchListener() {
+            @Override
+            public void onSwitch(DrawerProfile oldProfile, long oldId, DrawerProfile newProfile, long newId) {
+                // do stuff here
+                CommonMethods.showToast(mContext, "Welcome " + newProfile.getName());
             }
         });
     }

@@ -386,7 +386,7 @@ public class DrawerProfile {
         void onSwitch(DrawerProfile oldProfile, long oldId, DrawerProfile newProfile, long newId);
     }
 
-    public interface OnProfileItemClickListener {
+    public interface OnNonProfileClickListener {
         void onProfileItemClick(DrawerProfile profile, long id);
     }
 }

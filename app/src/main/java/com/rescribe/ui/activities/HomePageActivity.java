@@ -282,7 +282,7 @@ public class HomePageActivity extends DrawerActivity {
         // TODO : HARDEDCODED will get remove once done with APIs.
         addProfile(new DrawerProfile()
                 .setId(1)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.allergy))
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr.Avinash Deshpande")
                 .setDescription("avinash_deshpande@gmail.com")
@@ -290,7 +290,7 @@ public class HomePageActivity extends DrawerActivity {
 
         addProfile(new DrawerProfile()
                 .setId(2)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.advice))
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr.Sandeep Deshmukh ")
                 .setDescription("sandeep_deshmukh@gmail.com")
@@ -319,7 +319,7 @@ public class HomePageActivity extends DrawerActivity {
 
                     addProfile(new DrawerProfile()
                             .setId(3)
-                            .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(mContext, R.drawable.inhaler))
+                            .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(mContext, R.drawable.profile))
                             .setBackground(ContextCompat.getDrawable(mContext, R.drawable.group_2))
                             .setName("Mr.Ganesh Deshmukh")
                             .setDescription("ganesh_deshmukh@gmail.com")

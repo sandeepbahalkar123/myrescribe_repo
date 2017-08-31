@@ -63,7 +63,7 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(holder.imageView);
 
-        holder.addCaptionText.setText(caption);
+        holder.addCaptionText.setText(caption + "_" + (position + 1));
     }
 
     @Override

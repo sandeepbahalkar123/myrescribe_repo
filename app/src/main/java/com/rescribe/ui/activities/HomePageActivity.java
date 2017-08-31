@@ -306,10 +306,11 @@ public class HomePageActivity extends DrawerActivity {
                             .setName("Mr.Ganesh Deshmukh")
                             .setDescription("ganesh_deshmukh@gmail.com")
                     );
-                    CommonMethods.showToast(mContext, "Profile Added");
+//                    CommonMethods.showToast(mContext, "Profile Added");
 
                 }else if (id == MANAGE_ACCOUNT){
-                    CommonMethods.showToast(mContext, profile.getDescription());
+                    // Do stuff here
+//                    CommonMethods.showToast(mContext, profile.getDescription());
                 }
                 closeDrawer();
             }
@@ -319,7 +320,7 @@ public class HomePageActivity extends DrawerActivity {
             @Override
             public void onSwitch(DrawerProfile oldProfile, long oldId, DrawerProfile newProfile, long newId) {
                 // do stuff here
-                CommonMethods.showToast(mContext, "Welcome " + newProfile.getName());
+//                CommonMethods.showToast(mContext, "Welcome " + newProfile.getName());
             }
         });
     }

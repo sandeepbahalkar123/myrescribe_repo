@@ -54,8 +54,6 @@ public class FilterFragment extends Fragment {
     CustomTextView drSpecialityTextView;
     @BindView(R.id.drCalenderTextView)
     CustomTextView drCalenderTextView;
-    @BindView(R.id.nestedScrollView)
-    NestedScrollView nestedScrollView;
     private OnDrawerInteractionListener mListener;
     private String monthSelected;
     private RackMonthPicker rackMonthPicker;

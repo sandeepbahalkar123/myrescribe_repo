@@ -19,14 +19,17 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import com.rescribe.R;
 import com.rescribe.model.case_details.VisitCommonData;
 import com.rescribe.model.case_details.PatientHistory;
 import com.rescribe.model.case_details.Range;
 import com.rescribe.model.case_details.Vital;
 import com.rescribe.util.CommonMethods;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -75,7 +78,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-       // Onclick of vitals UI is different from those of other case details
+        // Onclick of vitals UI is different from those of other case details
         final List<VisitCommonData> childObject = mListDataHeader.get(groupPosition).getCommonData();
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
         String headerName = mListDataHeader.get(groupPosition).getCaseDetailName();
@@ -133,9 +136,12 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
         return convertView;
     }
-   // Created dynamic grid function to list of  vitals
+
+    // Created dynamic grid function to list of  vitals
     private View addTableRow(final List<Vital> vital, final int groupPosition) {
         int i;
+        String categoryForBpMax = "";
+        String categoryForBpMin = "";
         TableRow tableRow = new TableRow(mContext);
         for (i = 0; i < vital.size(); i++) {
             View item = LayoutInflater.from(mContext)
@@ -144,9 +150,9 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             ImageView vitalImage = (ImageView) item.findViewById(R.id.vitalImage);
             TextView vital_name = (TextView) item.findViewById(R.id.vital_name);
             TextView noOfVitals = (TextView) item.findViewById(R.id.noOfVitals);
-            LinearLayout unitValuesLayout = (LinearLayout)item.findViewById(R.id.unitValuesLayout);
+            LinearLayout unitValuesLayout = (LinearLayout) item.findViewById(R.id.unitValuesLayout);
             final int finali = mPosition;
-         //dialog is opened to see info of vitals , Note : BpMin and BpMax is together shown as Bp
+            //dialog is opened to see info of vitals , Note : BpMin and BpMax is together shown as Bp
             vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -158,37 +164,34 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 }
             });
 
-            if(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName().equals(mContext.getString(R.string.bp))){
+            if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName().equals(mContext.getString(R.string.bp))) {
                 String category = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory();
-                String[] categoryForBp = category.split(":");
-               /* LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                        0,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        1f
-                );
-                unitValuesLayout.setLayoutParams(param);*/
-                String categoryForBpMax = categoryForBp[0];
-                String categoryForBpMin = categoryForBp[1];
+                if (!category.equals(":")) {
+                    String[] categoryForBp = category.split(":");
+
+                    categoryForBpMax = categoryForBp[0];
+                    categoryForBpMin = categoryForBp[1];
+                }
                 String unit = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue();
                 String[] unitForBp = unit.split("/");
                 String unitForBpMax = unitForBp[0];
                 String unitForBpMin = unitForBp[1];
                 vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getIcon()));
                 vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
-                noOfVitals.setText(Html.fromHtml(getUnitValueforBp(categoryForBpMin,categoryForBpMax,unitForBpMin,unitForBpMax)));
+                noOfVitals.setText(Html.fromHtml(getUnitValueforBp(categoryForBpMin, categoryForBpMax, unitForBpMin, unitForBpMax)));
 
-            }else {
+            } else {
                 //TextColor of vital unit is set according to category
                 vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getIcon()));
                 vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
-              noOfVitals.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue());
+                noOfVitals.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue());
                 if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.severeRange))) {
                     noOfVitals.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
                 } else if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.normalRange))) {
                     noOfVitals.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
                 } else if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.moderateRange))) {
                     noOfVitals.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
-                }else {
+                } else {
                     noOfVitals.setTextColor(ContextCompat.getColor(mContext, R.color.view_detail_color));
                 }
             }
@@ -197,69 +200,70 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         }
         return tableRow;
     }
-   //set Unit Value of Bp according to category
-    private String getUnitValueforBp( String categoryForBpMin, String categoryForBpMax,String forBpMin, String forBpMax) {
-       String unitValue = "";
-        if(categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.severeRange))&&categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange))){
-            String bpMax = "<font color='#FF0000'>"+forBpMax+"</font>";
-            String bpMin = "<font color='#FF0000'>"+forBpMin+"</font>";
-            String slash = "<font color='#737373'>"+"/"+"</font>";
-            unitValue = bpMax+slash+bpMin;
+
+    //set Unit Value of Bp according to category
+    private String getUnitValueforBp(String categoryForBpMin, String categoryForBpMax, String forBpMin, String forBpMax) {
+        String unitValue = "";
+        if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.severeRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
+            String bpMax = "<font color='#FF0000'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#FF0000'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
 
 
-        }else if(categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.severeRange))&&categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange))){
-            String bpMax = "<font color='#FF0000'>"+forBpMax+"</font>";
-            String bpMin = "<font color='#ff9500'>"+forBpMin+"</font>";
-            String slash = "<font color='#737373'>"+"/"+"</font>";
-            unitValue = bpMax+slash+bpMin;
+        } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.severeRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
+            String bpMax = "<font color='#FF0000'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#ff9500'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
 
-        }else if(categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.severeRange))&&categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.normalRange))){
-            String bpMax = "<font color='#FF0000'>"+forBpMax+"</font>";
-            String bpMin = "<font color='#178a00'>"+forBpMin+"</font>";
-            String slash = "<font color='#737373'>"+"/"+"</font>";
-            unitValue = bpMax+slash+bpMin;
+        } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.severeRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
+            String bpMax = "<font color='#FF0000'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#178a00'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
 
-        }else  if(categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.normalRange))&&categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange))){
-            String bpMax = "<font color='#178a00'>"+forBpMax+"</font>";
-            String bpMin = "<font color='#FF0000'>"+forBpMin+"</font>";
-            String slash = "<font color='#737373'>"+"/"+"</font>";
-            unitValue = bpMax+slash+bpMin;
+        } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.normalRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
+            String bpMax = "<font color='#178a00'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#FF0000'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
 
-        } else if(categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.normalRange))&&categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange))){
-            String bpMax = "<font color='#178a00'>"+forBpMax+"</font>";
-            String bpMin = "<font color='#ff9500'>"+forBpMin+"</font>";
-            String slash = "<font color='#737373'>"+"/"+"</font>";
-            unitValue = bpMax+slash+bpMin;
+        } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.normalRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
+            String bpMax = "<font color='#178a00'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#ff9500'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
 
-        }else if(categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.normalRange))&&categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.normalRange))){
-            String bpMax = "<font color='#178a00'>"+forBpMax+"</font>";
-            String bpMin = "<font color='#178a00'>"+forBpMin+"</font>";
-            String slash = "<font color='#737373'>"+"/"+"</font>";
-            unitValue = bpMax+slash+bpMin;
+        } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.normalRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
+            String bpMax = "<font color='#178a00'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#178a00'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
 
-        }else  if(categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.moderateRange))&&categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange))){
-            String bpMax = "<font color='#ff9500'>"+forBpMax+"</font>";
-            String bpMin = "<font color='#FF0000'>"+forBpMin+"</font>";
-            String slash = "<font color='#737373'>"+"/"+"</font>";
-            unitValue = bpMax+slash+bpMin;
+        } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
+            String bpMax = "<font color='#ff9500'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#FF0000'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
 
-        }else if(categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.moderateRange))&&categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange))){
-            String bpMax = "<font color='#ff9500'>"+forBpMax+"</font>";
-            String bpMin = "<font color='#ff9500'>"+forBpMin+"</font>";
-            String slash = "<font color='#737373'>"+"/"+"</font>";
-            unitValue = bpMax+slash+bpMin;
+        } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
+            String bpMax = "<font color='#ff9500'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#ff9500'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
 
-        }else if(categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.moderateRange))&&categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.normalRange))){
-            String bpMax = "<font color='#ff9500'>"+forBpMax+"</font>";
-            String bpMin = "<font color='#178a00'>"+forBpMin+"</font>";
-            String slash = "<font color='#737373'>"+"/"+"</font>";
-            unitValue = bpMax+slash+bpMin;
+        } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
+            String bpMax = "<font color='#ff9500'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#178a00'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
 
-        }else {
-            String bpMax = "<font color='#737373'>"+forBpMax+"</font>";
-            String bpMin = "<font color='#737373'>"+forBpMin+"</font>";
-            String slash = "<font color='#737373'>"+"/"+"</font>";
-            unitValue = bpMax+slash+bpMin;
+        } else {
+            String bpMax = "<font color='#737373'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#737373'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
         }
         return unitValue;
     }
@@ -383,7 +387,8 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
         final Context mContext = context;
         final Dialog dialog = new Dialog(context);
-
+        String categoryForBpMax = "";
+        String categoryBpMin = "";
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.vitals_dialog_layout);
         dialog.setCancelable(true);
@@ -409,108 +414,105 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         TextView vitalName = (TextView) dialog.findViewById(R.id.vitalNameDialog);
         LinearLayout bpMinLayout = (LinearLayout) dialog.findViewById(R.id.bpMinLayout);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        
+
         for (int i = 0; i < rangeList.size(); i++) {
             if (rangeList.get(i).getNameOfVital() != null) {
-            if (rangeList.get(i).getNameOfVital().equalsIgnoreCase(mContext.getString(R.string.bp_max))) {
-                if(rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
-                    if (normal.equals("")) {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
-                        normal += finalString;
-                        normalBpMaxRange.setText(normal);
-                    } else {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
-                        normal += "," + finalString;
-                        normalBpMaxRange.setText(normal);
-                    }
-                }else if(rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange))){
-                    if (moderate.equals("")) {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
-                        moderate += finalString;
-                        moderateBpMaxRange.setText(moderate);
-                    } else {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
-                        moderate += "," + finalString;
-                        moderateBpMaxRange.setText(moderate);
-                    }
-                }
-                else if(rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange))){
-                    if (severe.equals("")) {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
-                        severe += finalString;
-                        severeBpMaxRange.setText(severe);
-                    } else {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
-                        severe += "," + finalString;
-                        severeBpMaxRange.setText(severe);
+                if (rangeList.get(i).getNameOfVital().equalsIgnoreCase(mContext.getString(R.string.bp_max))) {
+                    if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
+                        if (normal.equals("")) {
+                            String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
+                            normal += finalString;
+                            normalBpMaxRange.setText(normal);
+                        } else {
+                            String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
+                            normal += "," + finalString;
+                            normalBpMaxRange.setText(normal);
+                        }
+                    } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
+                        if (moderate.equals("")) {
+                            String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
+                            moderate += finalString;
+                            moderateBpMaxRange.setText(moderate);
+                        } else {
+                            String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
+                            moderate += "," + finalString;
+                            moderateBpMaxRange.setText(moderate);
+                        }
+                    } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
+                        if (severe.equals("")) {
+                            String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
+                            severe += finalString;
+                            severeBpMaxRange.setText(severe);
+                        } else {
+                            String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
+                            severe += "," + finalString;
+                            severeBpMaxRange.setText(severe);
 
+                        }
                     }
-                }
-            } else if (rangeList.get(i).getNameOfVital().equalsIgnoreCase(mContext.getString(R.string.bp_min))) {
+                } else if (rangeList.get(i).getNameOfVital().equalsIgnoreCase(mContext.getString(R.string.bp_min))) {
 
-                if(rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
-                    if (normal.equals("")) {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
-                        normal += finalString;
-                        normalRange.setText(normal);
-                    } else {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
-                        normal += "," + finalString;
-                        normalRange.setText(normal);
+                    if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
+                        if (normal.equals("")) {
+                            String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
+                            normal += finalString;
+                            normalRange.setText(normal);
+                        } else {
+                            String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
+                            normal += "," + finalString;
+                            normalRange.setText(normal);
+                        }
+                    } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
+                        if (moderate.equals("")) {
+                            String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
+                            moderate += finalString;
+                            moderateRange.setText(moderate);
+                        } else {
+                            String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
+                            moderate += "," + finalString;
+                            moderateRange.setText(moderate);
+                        }
+                    } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
+                        if (severe.equals("")) {
+                            String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
+                            severe += finalString;
+                            severeRange.setText(severe);
+                        } else {
+                            String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
+                            severe += "," + finalString;
+                            severeRange.setText(severe);
+                        }
                     }
-                }else if(rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange))){
-                    if (moderate.equals("")) {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
-                        moderate += finalString;
-                        moderateRange.setText(moderate);
-                    } else {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
-                        moderate += "," + finalString;
-                        moderateRange.setText(moderate);
-                    }
-                }
-                else if(rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange))){
-                    if (severe.equals("")) {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
-                        severe += finalString;
-                        severeRange.setText(severe);
-                    } else {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
-                        severe += "," + finalString;
-                        severeRange.setText(severe);
-                    }
-                }
 
-            }
-        }else if(rangeList.get(i).getNameOfVital()==null){
-                if(rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
+                }
+            } else if (rangeList.get(i).getNameOfVital() == null) {
+                if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
                     if (normal.equals("")) {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
+                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                         normal += finalString;
                         normalRange.setText(normal);
                     } else {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
+                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                         normal += "," + finalString;
                         normalRange.setText(normal);
                     }
-                }else if(rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange))){
+                } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
                     if (moderate.equals("")) {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
+                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                         moderate += finalString;
                         moderateRange.setText(moderate);
                     } else {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
+                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                         moderate += "," + finalString;
                         moderateRange.setText(moderate);
                     }
-                }
-                else if(rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange))){
+                } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
                     if (severe.equals("")) {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
+                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                         severe += finalString;
                         severeRange.setText(severe);
                     } else {
-                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(),rangeList.get(i).getValue(),rangeList.get(i).getMin(),rangeList.get(i).getMax());
+                        String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                         severe += "," + finalString;
                         severeRange.setText(severe);
 
@@ -526,16 +528,18 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             showVitalNameLayout.setVisibility(View.VISIBLE);
             showVitalRangeLayout.setVisibility(View.VISIBLE);
             vitalName.setText(mContext.getString(R.string.systolic_pressure));
-            String[] categoryForBp = category.split(":");
-            String categoryForBpMax = categoryForBp[0];
-            String categoryBpMin = categoryForBp[1];
+            if (!category.equals(":")) {
+                String[] categoryForBp = category.split(":");
+                categoryForBpMax = categoryForBp[0];
+                categoryBpMin = categoryForBp[1];
+            }
             if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
                 noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
             } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
                 noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
             } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
                 noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
-            }else{
+            } else {
                 noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.view_detail_color));
             }
 
@@ -545,7 +549,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
             } else if (categoryBpMin.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
                 noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
-            }else {
+            } else {
                 noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(mContext, R.color.view_detail_color));
             }
             noOfVitalsDialog.setText(unitBpMax);
@@ -560,7 +564,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             if (severeBpMaxRange.getText().toString().trim().length() == 0) {
                 severeBpMaxRangeLayout.setVisibility(View.GONE);
             }
-            if(normalBpMaxRange.getText().toString().trim().length() == 0&&moderateBpMaxRange.getText().toString().trim().length() == 0&&severeBpMaxRange.getText().toString().trim().length() == 0){
+            if (normalBpMaxRange.getText().toString().trim().length() == 0 && moderateBpMaxRange.getText().toString().trim().length() == 0 && severeBpMaxRange.getText().toString().trim().length() == 0) {
                 showVitalRangeLayout.setVisibility(View.GONE);
                 showVitalNameLayout.setBackground(mContext.getDrawable(R.drawable.vitals_curve_white_bg));
                 bpMinLayout.setVisibility(View.GONE);
@@ -593,7 +597,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 LinearLayout severeRangeLayout = (LinearLayout) dialog.findViewById(R.id.severeSubTypeRangeLayout);
                 severeRangeLayout.setVisibility(View.GONE);
             }
-            if(normalRange.getText().toString().trim().length() == 0&&moderateRange.getText().toString().trim().length() == 0&&severeRange.getText().toString().trim().length() == 0){
+            if (normalRange.getText().toString().trim().length() == 0 && moderateRange.getText().toString().trim().length() == 0 && severeRange.getText().toString().trim().length() == 0) {
                 bpMinLayout.setVisibility(View.GONE);
                 showVitalUnitNameIconLayout.setBackground(mContext.getDrawable(R.drawable.vital_curve_allcorners_grey));
 
@@ -615,31 +619,29 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         return dialog;
     }
 
-    private String getSortedRangeValues(String category, String operator , String value , String min, String max) {
+    private String getSortedRangeValues(String category, String operator, String value, String min, String max) {
         String range = "";
         if (category.equalsIgnoreCase(mContext.getString(R.string.normalRange)) && operator.equalsIgnoreCase(mContext.getString(R.string.less))) {
             range = mContext.getString(R.string.less_than_sign) + value;
         } else if (category.equalsIgnoreCase(mContext.getString(R.string.normalRange)) && operator.equalsIgnoreCase(mContext.getString(R.string.equal))) {
-            range= min + mContext.getString(R.string.dash) +max;
-        } else if (category.equalsIgnoreCase(mContext.getString(R.string.normalRange)) &&operator.equalsIgnoreCase(mContext.getString(R.string.greater))) {
-            range =    mContext.getString(R.string.greater_than_sign) + value;
+            range = min + mContext.getString(R.string.dash) + max;
+        } else if (category.equalsIgnoreCase(mContext.getString(R.string.normalRange)) && operator.equalsIgnoreCase(mContext.getString(R.string.greater))) {
+            range = mContext.getString(R.string.greater_than_sign) + value;
         } else if (category.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && operator.equalsIgnoreCase(mContext.getString(R.string.less))) {
-            range =  mContext.getString(R.string.less_than_sign) + value;
+            range = mContext.getString(R.string.less_than_sign) + value;
         } else if (category.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && operator.equalsIgnoreCase(mContext.getString(R.string.equal))) {
-            range =  min + mContext.getString(R.string.dash) + max;
+            range = min + mContext.getString(R.string.dash) + max;
         } else if (category.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && operator.equalsIgnoreCase(mContext.getString(R.string.greater))) {
             range = mContext.getString(R.string.greater_than_sign) + value;
         } else if (category.equalsIgnoreCase(mContext.getString(R.string.severeRange)) && operator.equalsIgnoreCase(mContext.getString(R.string.less))) {
-            range =   mContext.getString(R.string.less_than_sign) + value;
+            range = mContext.getString(R.string.less_than_sign) + value;
         } else if (category.equalsIgnoreCase(mContext.getString(R.string.severeRange)) && operator.equalsIgnoreCase(mContext.getString(R.string.equal))) {
             range = min + mContext.getString(R.string.dash) + max;
         } else if (category.equalsIgnoreCase(mContext.getString(R.string.severeRange)) && operator.equalsIgnoreCase(mContext.getString(R.string.greater))) {
-            range =  mContext.getString(R.string.greater_than_sign) +value;
+            range = mContext.getString(R.string.greater_than_sign) + value;
         }
         return range;
     }
-
-
 
 
 }

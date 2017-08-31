@@ -88,16 +88,21 @@ public class DrawerProfileAdapter extends ArrayAdapter<DrawerProfile> {
         }
 
         if (position == 0) {
-            viewHolder.getRoot().setSelected(true);
-            viewHolder.getRoot().setClickable(false);
-
-            textColorPrimary = drawerTheme.getHighlightColor();
+            viewHolder.getRoot().setVisibility(View.GONE); // Ganesh Added
+//            viewHolder.getRoot().setClickable(false);
+//            textColorPrimary = drawerTheme.getHighlightColor();
         } else {
+            viewHolder.getRoot().setVisibility(View.VISIBLE); // Ganesh Added
             viewHolder.getRoot().setSelected(false);
             viewHolder.getRoot().setClickable(true);
         }
 
         if (drawerProfile.hasAvatar()) {
+
+            if (drawerProfile.isProfile())
+                viewHolder.getImageView().setScaleType(ImageView.ScaleType.CENTER_CROP);
+            else viewHolder.getImageView().setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
             viewHolder.getImageView().setVisibility(View.VISIBLE);
             viewHolder.getImageView().setImageDrawable(drawerProfile.getAvatar());
 
@@ -155,6 +160,24 @@ public class DrawerProfileAdapter extends ArrayAdapter<DrawerProfile> {
             items.add(getItem(i));
         }
         return items;
+    }
+
+    public int getNonProfileCount() {
+        int count = 0;
+        for (DrawerProfile drawerProfile : getItems()) {
+            if (!drawerProfile.isProfile())
+                count += 1;
+        }
+        return count;
+    }
+
+    public int getProfileCount() {
+        int count = 0;
+        for (DrawerProfile drawerProfile : getItems()) {
+            if (drawerProfile.isProfile())
+                count += 1;
+        }
+        return count;
     }
 
     private static class ViewHolder {

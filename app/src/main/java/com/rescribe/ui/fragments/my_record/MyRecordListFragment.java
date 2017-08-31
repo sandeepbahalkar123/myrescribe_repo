@@ -40,7 +40,6 @@ public class MyRecordListFragment extends Fragment {
     private String mYear;
     private ThreeLevelListAdapter mAdapter;
     private String mInvestigationText;
-    private MyRecordDataModel myRecordDataModel;
 
     public MyRecordListFragment() {
         // Required empty public constructor
@@ -57,7 +56,6 @@ public class MyRecordListFragment extends Fragment {
         if (arguments != null) {
             mMonthName = arguments.getString(RescribeConstants.MONTH);
             mYear = arguments.getString(RescribeConstants.YEAR);
-            myRecordDataModel = (MyRecordDataModel) arguments.getSerializable(RescribeConstants.MYRECORDDATAMODEL);
         }
         mInvestigationText = getString(R.string.investigation);
         mExpandMyRecordListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -74,10 +72,9 @@ public class MyRecordListFragment extends Fragment {
         return mRootView;
     }
 
-    public static MyRecordListFragment createNewFragment(Year dataString, MyRecordDataModel myRecordDataModel) {
+    public static MyRecordListFragment createNewFragment(Year dataString) {
         MyRecordListFragment fragment = new MyRecordListFragment();
         Bundle args = new Bundle();
-        args.putSerializable(RescribeConstants.MYRECORDDATAMODEL, myRecordDataModel);
         args.putString(RescribeConstants.MONTH, dataString.getMonthName());
         args.putString(RescribeConstants.YEAR, dataString.getYear());
         fragment.setArguments(args);
@@ -89,7 +86,7 @@ public class MyRecordListFragment extends Fragment {
         MyRecordsHelper parentMyRecordHelper = parentFragment.getParentMyRecordHelper();
         if (parentMyRecordHelper != null) {
 
-            Map<String, Map<String, ArrayList<MyRecordInfoAndReports>>> yearWiseSortedMyRecordInfoAndReports = parentMyRecordHelper.getYearWiseSortedMyRecordInfoAndReports(myRecordDataModel);
+            Map<String, Map<String, ArrayList<MyRecordInfoAndReports>>> yearWiseSortedMyRecordInfoAndReports = parentMyRecordHelper.getYearWiseSortedMyRecordInfoAndReports();
             if (yearWiseSortedMyRecordInfoAndReports.size() != 0) {
                 Map<String, ArrayList<MyRecordInfoAndReports>> monthArrayListHashMap = yearWiseSortedMyRecordInfoAndReports.get(mYear);
                 if (monthArrayListHashMap != null) {

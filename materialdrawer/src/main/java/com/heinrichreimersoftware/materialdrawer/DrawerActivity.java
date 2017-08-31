@@ -376,6 +376,24 @@ public class DrawerActivity extends AppCompatActivity {
     }
 
     /**
+     * Gets all profiles from the drawer view
+     *
+     * @return Profiles from the drawer view
+     */
+    public int getProfileCount() {
+        return mDrawer.getProfileCount();
+    }
+
+    /**
+     * Gets all profiles from the drawer view
+     *
+     * @return Profiles from the drawer view
+     */
+    public int getNonProfileCount() {
+        return mDrawer.getNonProfileCount();
+    }
+
+    /**
      * Gets a profile from the drawer view
      *
      * @param id The profile ID
@@ -469,6 +487,46 @@ public class DrawerActivity extends AppCompatActivity {
         return this;
     }
 
+    // Added
+
+    /**
+     * Gets the profile click listener of the drawer
+     *
+     * @return Profile click listener of the drawer
+     */
+    public DrawerProfile.OnNonProfileClickListener getOnProfileItemClickListener() {
+        return mDrawer.getOnProfileItemClickListener();
+    }
+
+    /**
+     * Sets a profile click listener to the drawer
+     *
+     * @param listener Listener to set
+     */
+    public DrawerActivity setOnNonProfileClickListener(DrawerProfile.OnNonProfileClickListener listener) {
+        mDrawer.setOnProfileItemClickListener(listener);
+        return this;
+    }
+
+    /**
+     * Gets whether the drawer has a profile click listener set to it
+     *
+     * @return True if the drawer has a profile click listener set to it, false otherwise.
+     */
+    public boolean hasOnProfileItemClickListener() {
+        return mDrawer.hasOnProfileItemClickListener();
+    }
+
+    /**
+     * Removes the profile click listener from the drawer
+     */
+    public DrawerActivity removeOnProfileItemClickListener() {
+        mDrawer.removeOnProfileItemClickListener();
+        return this;
+    }
+    
+    // End Added
+    
     /**
      * Gets the profile switch listener of the drawer
      *

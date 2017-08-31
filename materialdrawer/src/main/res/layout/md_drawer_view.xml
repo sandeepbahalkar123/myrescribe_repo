@@ -119,23 +119,26 @@
                             <TextView
                                 android:id="@id/mdAvatarProfileCount"
                                 style="@style/Base.TextAppearance.AppCompat.Body2"
-                                android:layout_width="@dimen/md_avatar_size"
-                                android:layout_height="@dimen/md_avatar_size"
+                                android:layout_width="@dimen/md_count_size"
+                                android:layout_height="@dimen/md_count_size"
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignParentLeft="false"
                                 android:layout_alignParentRight="true"
                                 android:layout_alignParentStart="false"
                                 android:layout_alignParentTop="true"
-                                android:layout_margin="@dimen/md_baseline"
+                                android:layout_margin="@dimen/md_baseline_count"
+                                android:textSize="11sp"
+                                tools:text="+10"
+                                android:textColor="@android:color/white"
                                 android:background="@drawable/md_more_background"
                                 android:clickable="true"
                                 android:gravity="center" />
 
-                            <View
+                         <!--   <View
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/md_list_item_height_two_line"
                                 android:layout_alignParentBottom="true"
-                                android:background="@drawable/md_scrim" />
+                                android:background="@drawable/md_scrim" />-->
 
                             <LinearLayout
                                 android:layout_width="match_parent"

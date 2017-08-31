@@ -242,7 +242,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
 
                         CommonMethods.Log("ImagedUploadId", uploadId);
                     } catch (Exception exc) {
-                        Log.e("AndroidUploadService", exc.getMessage(), exc);
+                        CommonMethods.Log("AndroidUploadService", exc.getMessage());
                     }
                 }
             } else

@@ -80,6 +80,11 @@ public class FilePickerBuilder {
         return this;
     }
 
+    public FilePickerBuilder addFileSupport(String[] extensions) {
+        PickerManager.getInstance().addFileType(new FileType("", extensions, 0));
+        return this;
+    }
+
     public FilePickerBuilder setId(int id) {
         mPickerOptionsBundle.putInt(FilePickerConst.MEDIA_ID, id);
         return this;

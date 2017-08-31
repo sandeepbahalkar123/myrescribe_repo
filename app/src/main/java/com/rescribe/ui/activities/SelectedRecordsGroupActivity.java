@@ -22,6 +22,7 @@ import com.rescribe.R;
 import com.rescribe.adapters.myrecords.RecordsGroupAdapter;
 import com.rescribe.adapters.myrecords.RecordsGroupImageAdapter;
 import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.helpers.database.MyRecordsData;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.my_records.Group;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -54,6 +55,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
     public static final String PRESCRIPTIONS = "Prescriptions";
     public static final String BILL_INVOICES = "Bill Invoices";
     public static final String OTHERS = "Others";
+    private static final String IMAGEDUPLOADID = "ImagedUploadId";
 
     ArrayList<Image> imageArrayList;
     ArrayList<Group> groups = new ArrayList<>();
@@ -80,8 +82,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
     private String Url;
     private String patientId;
 
-    // HardCoded
-    private int opdId = 9999;
+    private int opdId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +189,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                 default:
                     others.add(image);
                     image.setChildCaption(OTHERS + "_" + others.size());
+                    image.setParentCaption(OTHERS);
                     break;
             }
         }
@@ -230,11 +232,9 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
 
     @OnClick(R.id.uploadButton)
     public void onViewClicked() {
-
         if (groups.isEmpty()) {
             CommonMethods.showToast(SelectedRecordsGroupActivity.this, getResources().getString(R.string.select_report));
         } else {
-
             if (NetworkUtil.isInternetAvailable(SelectedRecordsGroupActivity.this)) {
                     uploadButton.setEnabled(false);
 
@@ -257,8 +257,13 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             if (image.getChildCaption() == null || image.getChildCaption().equals(""))
                 image.setChildCaption(OTHERS);
 
+            String childCaptionName;
+            if (image.getParentCaption().equals(INVESTIGATIONS))
+                childCaptionName = image.getChildCaption();
+            else
+                childCaptionName = image.getParentCaption();
+
             new MultipartUploadRequest(SelectedRecordsGroupActivity.this, uploadId, Url)
-                    //                            new MultipartUploadRequest(SelectedRecordsGroupActivity.this, i + "_" + j, Url)
                     .setNotificationConfig(uploadNotificationConfig)
                     .setMaxRetries(RescribeConstants.MAX_RETRIES)
 
@@ -273,11 +278,10 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                     .addHeader("visitDate", visitDate)
                     .addHeader("imageId", image.getImageId())
                     .addHeader("parentCaptionName", image.getParentCaption())
-                    .addHeader("childCaptionName", image.getChildCaption())
+                    .addHeader("childCaptionName", childCaptionName)
                     .addHeader("opdId", String.valueOf(opdId))
 
                     .addFileToUpload(image.getImagePath(), "myRecord")
-                    //                                    .setDelegate(MainActivity.this)
                     .startUpload();
         } catch (FileNotFoundException | MalformedURLException e) {
             e.printStackTrace();
@@ -287,7 +291,6 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
     }
 
     // Uploading
-
 
     @Override
     public void onBackPressed() {
@@ -325,22 +328,32 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                 mAdapter.notifyDataSetChanged();
             }
 
-            CommonMethods.Log("ImagedUploadId", uploadInfo.getUploadId() + " onProgress " + uploadInfo.getProgressPercent());
+            CommonMethods.Log(IMAGEDUPLOADID, uploadInfo.getUploadId() + " onProgress " + uploadInfo.getProgressPercent());
         }
 
         @Override
         public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
+
+            appDBHelper.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.FAILED);
+            CommonMethods.Log("ImagedUploadIdHome", uploadInfo.getUploadId() + " onError");
+
             String pos[] = uploadInfo.getUploadId().split("_");
             int finalI = Integer.parseInt(pos[0]);
             int finalJ = Integer.parseInt(pos[1]);
 
             groups.get(finalI).getImages().get(finalJ).setUploading(RescribeConstants.FAILED);
             mAdapter.notifyItemChanged(finalI);
-            CommonMethods.Log("ImagedUploadId", uploadInfo.getUploadId() + " onError");
+            CommonMethods.Log(IMAGEDUPLOADID, uploadInfo.getUploadId() + " onError");
+
+            navigate();
         }
 
         @Override
         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
+
+            appDBHelper.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
+            CommonMethods.Log("ImagedUploadIdHome", uploadInfo.getUploadId() + " onCompleted");
+
             String pos[] = uploadInfo.getUploadId().split("_");
             int finalI = Integer.parseInt(pos[0]);
             int finalJ = Integer.parseInt(pos[1]);
@@ -348,21 +361,33 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             groups.get(finalI).getImages().get(finalJ).setUploading(RescribeConstants.COMPLETED);
             mAdapter.notifyItemChanged(finalI);
 
-            if (uploadInfo.getSuccessfullyUploadedFiles().size() == imageArrayList.size()) {
-                Intent intent = new Intent(SelectedRecordsGroupActivity.this, MyRecordsActivity.class);
-                intent.putExtra(RescribeConstants.ALERT, false);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
+            CommonMethods.Log(IMAGEDUPLOADID, uploadInfo.getUploadId() + " onCompleted");
 
-            CommonMethods.Log("ImagedUploadId", uploadInfo.getUploadId() + " onCompleted");
+            navigate();
         }
 
         @Override
         public void onCancelled(Context context, UploadInfo uploadInfo) {
-            CommonMethods.Log("ImagedUploadId", uploadInfo.getUploadId() + " onCancelled");
+            CommonMethods.Log(IMAGEDUPLOADID, uploadInfo.getUploadId() + " onCancelled");
         }
     };
+
+    private void navigate() {
+        // Navigate
+        MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
+        int completeCount = 0;
+        for (Image image : myRecordsData.getImageArrayList()) {
+            if (image.isUploading() == RescribeConstants.COMPLETED)
+                completeCount++;
+        }
+        if (completeCount == myRecordsData.getImageArrayList().size()) {
+            Intent intent = new Intent(SelectedRecordsGroupActivity.this, MyRecordsActivity.class);
+            intent.putExtra(RescribeConstants.ALERT, false);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        // End Navigate
+    }
 
     @Override
     public void onRemoveClick(int mainPosition, int position) {
@@ -372,9 +397,6 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             mAdapter.notifyDataSetChanged();
         } else
             mAdapter.notifyItemChanged(mainPosition);
-
-//        if (groups.isEmpty())
-//            uploadButton.setEnabled(false);
     }
 
     @Override

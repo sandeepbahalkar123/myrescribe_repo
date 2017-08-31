@@ -16,6 +16,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 
 import com.rescribe.R;
+import com.rescribe.util.CommonMethods;
 
 /**
  * Created by Sandeep Bahalkar
@@ -237,7 +238,7 @@ public class CircularImageView extends AppCompatImageView {
             return bitmap;
         } catch (OutOfMemoryError e) {
             // Simply return null of failed bitmap creations
-            Log.e(getClass().toString(), "Encountered OutOfMemoryError while generating bitmap!");
+            CommonMethods.Log(getClass().toString(), "Encountered OutOfMemoryError while generating bitmap!");
             return null;
         }
     }

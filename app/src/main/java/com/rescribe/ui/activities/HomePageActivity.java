@@ -14,9 +14,6 @@ import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 import com.heinrichreimersoftware.materialdrawer.theme.DrawerTheme;
-
-import net.gotev.uploadservice.UploadService;
-
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.database.MyRecordsData;
@@ -26,8 +23,9 @@ import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
+
+import net.gotev.uploadservice.UploadService;
 
 import java.util.Calendar;
 
@@ -37,6 +35,8 @@ import java.util.Calendar;
 
 public class HomePageActivity extends DrawerActivity {
 
+    private static final long MANAGE_ACCOUNT = 121;
+    private static final long ADD_ACCOUNT = 122;
     private Context mContext;
     private String mGetMealTime;
     String breakFastTime = "";
@@ -181,7 +181,7 @@ public class HomePageActivity extends DrawerActivity {
             passwordGmail = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL, mContext);
 
         }
-        if(RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_facebook))) {
+        if (RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_facebook))) {
             facebookLogin = RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext);
             mobileNoFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mContext);
             passwordFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, mContext);
@@ -245,10 +245,7 @@ public class HomePageActivity extends DrawerActivity {
                 if (id.equalsIgnoreCase(getString(R.string.doctor_details))) {
                     Intent intent = new Intent(mContext, DoctorListActivity.class);
                     startActivity(intent);
-                } /*else if (id.equalsIgnoreCase(getString(R.string.investigation))) {
-                    Intent intent = new Intent(mContext, InvestigationActivity.class);
-                    startActivity(intent);
-                }*/ else if (id.equalsIgnoreCase(getString(R.string.going_medication))) {
+                } else if (id.equalsIgnoreCase(getString(R.string.going_medication))) {
                     Intent intent = new Intent(mContext, PrescriptionActivity.class);
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.appointments))) {
@@ -256,14 +253,11 @@ public class HomePageActivity extends DrawerActivity {
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.my_records))) {
                     MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
-
                     int completeCount = 0;
-
                     for (Image image : myRecordsData.getImageArrayList()) {
                         if (image.isUploading() == RescribeConstants.COMPLETED)
                             completeCount++;
                     }
-
                     Intent intent;
                     if (completeCount == myRecordsData.getImageArrayList().size()) {
                         appDBHelper.deleteMyRecords();
@@ -280,6 +274,7 @@ public class HomePageActivity extends DrawerActivity {
                 } else if (id.equalsIgnoreCase(getString(R.string.logout))) {
                     logout();
                 }
+
                 closeDrawer();
             }
         });
@@ -287,18 +282,64 @@ public class HomePageActivity extends DrawerActivity {
         // TODO : HARDEDCODED will get remove once done with APIs.
         addProfile(new DrawerProfile()
                 .setId(1)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.big))
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr.Avinash Deshpande")
                 .setDescription("avinash_deshpande@gmail.com")
         );
+
         addProfile(new DrawerProfile()
                 .setId(2)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.small_copy))
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr.Sandeep Deshmukh ")
                 .setDescription("sandeep_deshmukh@gmail.com")
         );
 
+        addProfile(new DrawerProfile()
+                .setId(ADD_ACCOUNT)
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.add_account))
+                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
+                .setDescription("Add Patient").setProfile(false) // for fixed item set profile false
+        );
+
+        addProfile(new DrawerProfile()
+                .setId(MANAGE_ACCOUNT)
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.setting))
+                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
+                .setDescription("Manage Profile").setProfile(false) // for fixed item set profile false
+        );
+
+        setOnNonProfileClickListener(new DrawerProfile.OnNonProfileClickListener() {
+            @Override
+            public void onProfileItemClick(DrawerProfile profile, long id) {
+                if (id == ADD_ACCOUNT) {
+
+                    // Do stuff here
+
+                    addProfile(new DrawerProfile()
+                            .setId(3)
+                            .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(mContext, R.drawable.profile))
+                            .setBackground(ContextCompat.getDrawable(mContext, R.drawable.group_2))
+                            .setName("Mr.Ganesh Deshmukh")
+                            .setDescription("ganesh_deshmukh@gmail.com")
+                    );
+//                    CommonMethods.showToast(mContext, "Profile Added");
+
+                } else if (id == MANAGE_ACCOUNT) {
+                    // Do stuff here
+//                    CommonMethods.showToast(mContext, profile.getDescription());
+                }
+                closeDrawer();
+            }
+        });
+
+        setOnProfileSwitchListener(new DrawerProfile.OnProfileSwitchListener() {
+            @Override
+            public void onSwitch(DrawerProfile oldProfile, long oldId, DrawerProfile newProfile, long newId) {
+                // do stuff here
+//                CommonMethods.showToast(mContext, "Welcome " + newProfile.getName());
+            }
+        });
     }
 }

@@ -48,6 +48,8 @@ public class DrawerProfile {
     private String mName;
     private String mDescription;
 
+    private boolean isProfile = true;
+
     private OnProfileClickListener mOnClickListener;
     private DrawerView mDrawerView;
 
@@ -360,6 +362,15 @@ public class DrawerProfile {
         return this;
     }
 
+    public boolean isProfile() {
+        return isProfile;
+    }
+
+    public DrawerProfile setProfile(boolean profile) {
+        isProfile = profile;
+        return this;
+    }
+
     protected void notifyDataChanged() {
         if (mDrawerView != null) {
             mDrawerView.selectProfile(this);
@@ -373,5 +384,9 @@ public class DrawerProfile {
 
     public interface OnProfileSwitchListener {
         void onSwitch(DrawerProfile oldProfile, long oldId, DrawerProfile newProfile, long newId);
+    }
+
+    public interface OnNonProfileClickListener {
+        void onProfileItemClick(DrawerProfile profile, long id);
     }
 }

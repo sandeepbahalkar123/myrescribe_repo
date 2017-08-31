@@ -72,7 +72,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
         ButterKnife.bind(this);
         LoginSignUpActivityPermissionsDispatcher.askToReadMessageWithCheck(LoginSignUpActivity.this);
         String key = CommonMethods.printKeyHash(LoginSignUpActivity.this);
-        Log.e(TAG, key);
+        CommonMethods.Log(TAG, key);
         // Code for facebook and gmail login for both signup and login fragment is written in LoginSignUpActivity
         googleInitialize();
         facebookInitialize();
@@ -195,7 +195,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
 
-            Log.e(TAG, "display name: " + acct.getDisplayName());
+            CommonMethods.Log(TAG, "display name: " + acct.getDisplayName());
 
             //-----------
             SignUpRequestModel signUpRequest = new SignUpRequestModel();

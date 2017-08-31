@@ -74,7 +74,7 @@ dependencies {
     compile files('libs/nineoldandroids-2.4.0.jar')
     // Support Libraries
 
-    compile project(':library') // For drawer layout
+    compile project(':materialdrawer') // For drawer layout
     compile "com.android.support:gridlayout-v7:${project.ANDROID_SUPPORT_LIBRARY_VERSION}"
     compile "com.android.support:appcompat-v7:${project.ANDROID_SUPPORT_LIBRARY_VERSION}"
     compile "com.android.support:recyclerview-v7:${project.ANDROID_SUPPORT_LIBRARY_VERSION}"

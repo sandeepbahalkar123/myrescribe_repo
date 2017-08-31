@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/dp10"
-            tools:text="@string/dummy" />
+            tools:text="@string/dummy_full" />
 
         <Button
             android:id="@+id/button_ok"

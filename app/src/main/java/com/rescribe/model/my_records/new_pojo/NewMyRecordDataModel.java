@@ -12,7 +12,7 @@ public class NewMyRecordDataModel {
     private ArrayList<NewYearsMonthsData> yearsMonthsData = new ArrayList<NewYearsMonthsData>();
     @SerializedName("originalData")
     @Expose
-    private ArrayList<NewOriginalData> originalData = new ArrayList<NewOriginalData>();
+    private NewOriginalData originalData = new NewOriginalData();
 
     public ArrayList<NewYearsMonthsData> getYearsMonthsData() {
         return yearsMonthsData;
@@ -22,12 +22,11 @@ public class NewMyRecordDataModel {
         this.yearsMonthsData = yearsMonthsData;
     }
 
-    public ArrayList<NewOriginalData> getOriginalData() {
+    public NewOriginalData getOriginalData() {
         return originalData;
     }
 
-    public void setOriginalData(ArrayList<NewOriginalData> originalData) {
+    public void setOriginalData(NewOriginalData originalData) {
         this.originalData = originalData;
     }
-
 }

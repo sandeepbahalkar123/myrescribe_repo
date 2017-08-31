@@ -45,7 +45,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationAdapter.OnHeaderClickListener {
+public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationAdapter.OnNotificationClickListener {
 
     private NotificationAdapter mAdapter;
     private String mMedicineSlot;
@@ -281,7 +281,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         List<NotificationData> notificationListForAdapter = new ArrayList<>();
         List<NotificationData> notificationListForHeader = new ArrayList<>();
         String todayDate = null;
-
+        // on click of NotificationActivity checkbox of sublist layout
         if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {
             //onclick of checkbox of sublist
             ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
@@ -332,7 +332,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                         addHeader(notificationListForHeader);
                     }
                 }
-   // Data for recyclerview Adapter is sorted to set data according to UI .
+                // Data for recyclerview Adapter is sorted to set data according to UI .
                 List<AdapterNotificationData> adapterNotificationParentData = new ArrayList<>();
                 List<AdapterNotificationModel> adapterNotificationModelListForDinner = new ArrayList<>();
                 String notifyDate = "";
@@ -404,11 +404,18 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             }
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
             ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
-           //onclick of checkbox of header layout
+            //onclick of NotificationActivity checkbox of header layout
             if (responseLogNotificationModel.getCommon().isSuccess()) {
                 CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
                 mHeaderLayoutParent.removeView(mHeaderLayout);
             }
+            //handled click from NotificationAdapter checkbox in header layout
+        } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
+            mAdapter.onSuccessOfNotificationCheckBoxClick(mOldDataTag, customResponse);
+            //handled click from NotificationAdapter checkbox in sublist layout
+        } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
+            mAdapter.onSuccessOfNotificationCheckBoxClick(mOldDataTag, customResponse);
+
         }
     }
 
@@ -458,6 +465,11 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             checkBox.setChecked(false);
         } else if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
             mNoDataAvailable.setVisibility(View.VISIBLE);
+        } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
+            mAdapter.onNoConnectionOfNotificationCheckBoxClick(mOldDataTag, serverErrorMessage);
+        } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
+            mAdapter.onNoConnectionOfNotificationCheckBoxClick(mOldDataTag, serverErrorMessage);
+
         }
 
 
@@ -469,5 +481,14 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         mTabletListLayout.setVisibility(View.GONE);
         mSelectView.setVisibility(View.VISIBLE);
         isHeaderExpand = false;
+    }
+
+    @Override
+    public void setOnClickCheckBoxListener(View mViewForHeader, int pos, String slotType, ViewGroup viewGroup, Integer medicineId, String takenDate, Integer bundleValue, String taskName, boolean isHeaderCheckboxClick) {
+        if (isHeaderCheckboxClick) {
+            mRespondToNotificationHelper.doRespondToNotificationForHeaderOfNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName);
+        } else {
+            mRespondToNotificationHelper.doRespondToNotificationForNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName);
+        }
     }
 }

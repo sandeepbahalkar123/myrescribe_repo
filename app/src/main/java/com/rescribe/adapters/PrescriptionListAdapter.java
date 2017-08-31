@@ -17,8 +17,10 @@ import com.rescribe.util.RescribeConstants;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -164,8 +166,8 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         //-split medicineName at 15th, if long string-----------
 
         holder.mTextviewNameOfMedicine.setText(prescriptionDataObject.getMedicineName());
-        holder.mDays.setText(prescriptionDataObject.getDays()+mContext.getString(R.string.space)+mContext.getString(R.string.days));
-    //    holder.mDays.setText(calculateDays(CommonMethods.getCurrentDateTime(),CommonMethods.getFormatedDate(prescriptionDataObject.getEndDate(),RescribeConstants.DATE_PATTERN.DD_MM_YYYY_hh_mm_ss,RescribeConstants.DATE_PATTERN.DD_MM_YYYY)));
+        //holder.mDays.setText(prescriptionDataObject.getDays()+mContext.getString(R.string.space)+mContext.getString(R.string.days));
+     holder.mDays.setText(calculateDays(CommonMethods.getCurrentDateTime(),CommonMethods.getFormatedDate(prescriptionDataObject.getEndDate(),RescribeConstants.DATE_PATTERN.UTC_PATTERN,RescribeConstants.DATE_PATTERN.DD_MM_YYYY)));
         holder.mDoseAge.setText(prescriptionDataObject.getDosage());
         holder.mMedicineType.setBackgroundDrawable(CommonMethods.getMedicineTypeImage(prescriptionDataObject.getMedicineTypeName(), mContext));
 
@@ -392,20 +394,27 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
     }
 
     public String calculateDays(String currentDate, String actualStartDate) {
-        long diff = 0;
-        String days = "";
-        SimpleDateFormat myFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+        long delta = 0;
+        SimpleDateFormat myFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, Locale.US);
 
         try {
             Date date1 = myFormat.parse(currentDate);
             Date date2 = myFormat.parse(actualStartDate);
-            diff = date2.getTime() - date1.getTime();
-            days = String.valueOf(diff);
-            System.out.println("Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+            long timeOne = date1.getTime();
+            long timeTwo = date2.getTime();
+            long oneDay = 1000 * 60 * 60 * 24;
+            delta = (timeTwo - timeOne) / oneDay;
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        if (delta > 0) {
+            return delta + mContext.getString(R.string.space)+mContext.getString(R.string.days);
+        } else {
+            delta *= -1;
+            return delta+ mContext.getString(R.string.space)+mContext.getString(R.string.days);
+        }
 
-        return days;
     }
+
 }

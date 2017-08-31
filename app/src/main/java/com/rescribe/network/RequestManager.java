@@ -546,6 +546,12 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         } else if (mDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
                             ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
+                        }else if (mDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
+                            ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
+                            this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
+                        }else if (mDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
+                            ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
+                            this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
                         }
 
                 }
@@ -642,6 +648,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         String url = Config.BASE_URL + Config.LOGIN_URL;
 
         LoginRequestModel loginRequestModel = new LoginRequestModel();
+
         loginRequestModel.setMobileNumber(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
         loginRequestModel.setPassword(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, mContext));
         if (!(RescribeConstants.BLANK.equalsIgnoreCase(loginRequestModel.getMobileNumber()) &&

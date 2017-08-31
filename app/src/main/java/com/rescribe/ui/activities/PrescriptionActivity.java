@@ -34,7 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PrescriptionActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, HelperResponse, View.OnClickListener {
+        implements HelperResponse, View.OnClickListener {
 
     private PrescriptionListAdapter prescriptionListAdapter;
     private final String TAG = this.getClass().getName();
@@ -42,10 +42,6 @@ public class PrescriptionActivity extends AppCompatActivity
     private String mGetMealTime;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout mDrawer;
-    @BindView(R.id.nav_view)
-    NavigationView mNavigationView;
     @BindView(R.id.recyclerViewShowMedicineDoseList)
     RecyclerView mRecyclerView;
     @BindView(R.id.noDataView)
@@ -100,22 +96,6 @@ public class PrescriptionActivity extends AppCompatActivity
         super.onBackPressed();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        return true;
-    }
 
     private void doGetPrescriptionList() {
         mPrescriptionHelper.doGetPrescriptionList();

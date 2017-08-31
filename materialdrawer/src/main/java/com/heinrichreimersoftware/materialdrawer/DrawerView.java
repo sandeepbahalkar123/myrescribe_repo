@@ -366,7 +366,8 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                 textViewProfileAvatarCount.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        openProfileList();
+                        toggleProfileList();
+//                        openProfileList();
                     }
                 });
 
@@ -376,7 +377,8 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                 imageViewProfileAvatarSecondary.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        openProfileList();
+                        toggleProfileList();
+//                        openProfileList();
                     }
                 });
 

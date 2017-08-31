@@ -103,7 +103,7 @@ public class LoginFragment extends Fragment implements HelperResponse{
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnOtp:
-                //input mobile no and click on otp button
+                //input mobile no and click on otp button ,TASK_LOGIN_WITH_OTP is used
                 String mobile = editTextMobileNo.getText().toString();
                 if (!validatePhoneNo(mobile)) {
                     LoginHelper loginHelper = new LoginHelper(getActivity(), this);
@@ -111,7 +111,7 @@ public class LoginFragment extends Fragment implements HelperResponse{
                 }
                 break;
             case R.id.btn_login:
-                // input mobileNo and password on click of Login buttton
+                // input mobileNo and password on click of Login buttton , TASK_LOGIN is used
                 String mobileNo = editTextMobileNo.getText().toString();
                 String password = editTextPassword.getText().toString();
                 if (!validate(mobileNo, password)) {
@@ -127,7 +127,7 @@ public class LoginFragment extends Fragment implements HelperResponse{
                 startActivity(intentObj);
                 break;
             case R.id.signup:
-                //on click of signup
+                //on click of signup , Signup fragment is loaded here.
                 signupFragment = new SignUpFragment();
                 FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();

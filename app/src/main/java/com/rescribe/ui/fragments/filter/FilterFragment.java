@@ -4,6 +4,7 @@ package com.rescribe.ui.fragments.filter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,20 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-
+import com.ngapps.ganeshshirole.monthpicker.RackMonthPicker;
+import com.ngapps.ganeshshirole.monthpicker.listener.DateMonthDialogListener;
+import com.ngapps.ganeshshirole.monthpicker.listener.OnCancelMonthDialogListener;
+import com.ngapps.ganeshshirole.monthpicker.util.MonthOfYear;
 import com.rescribe.R;
 import com.rescribe.adapters.filter.FilterCaseDetailsAdapter;
 import com.rescribe.model.filter.CaseDetailsData;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-import com.ngapps.ganeshshirole.monthpicker.RackMonthPicker;
-import com.ngapps.ganeshshirole.monthpicker.listener.DateMonthDialogListener;
-import com.ngapps.ganeshshirole.monthpicker.listener.OnCancelMonthDialogListener;
-import com.ngapps.ganeshshirole.monthpicker.util.MonthOfYear;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -56,6 +54,8 @@ public class FilterFragment extends Fragment {
     CustomTextView drSpecialityTextView;
     @BindView(R.id.drCalenderTextView)
     CustomTextView drCalenderTextView;
+    @BindView(R.id.nestedScrollView)
+    NestedScrollView nestedScrollView;
     private OnDrawerInteractionListener mListener;
     private String monthSelected;
     private RackMonthPicker rackMonthPicker;
@@ -106,6 +106,7 @@ public class FilterFragment extends Fragment {
                 linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
         filterCaseDetailsAdapter = new FilterCaseDetailsAdapter(getContext(), caseDetailsList);
         recyclerView.setAdapter(filterCaseDetailsAdapter);
 
@@ -181,11 +182,11 @@ public class FilterFragment extends Fragment {
         drSpecialityTextView.setText(speciality);
     }
 
-    public String getFromDate(){
+    public String getFromDate() {
         return fromDate;
     }
 
-    public String getToDate(){
+    public String getToDate() {
         return toDate;
     }
 
@@ -208,8 +209,12 @@ public class FilterFragment extends Fragment {
 
     public interface OnDrawerInteractionListener {
         void onApply();
+
         void onSelectDoctors();
+
         void onSelectSpeciality();
+
         void onReset();
     }
+
 }

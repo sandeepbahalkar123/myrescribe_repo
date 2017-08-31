@@ -36,6 +36,7 @@ public class MyRecordListFragment extends Fragment {
     private Context mContext;
     private MyRecordsActivity mParentActivity;
     private String mMonthName;
+    private int lastExpandedPosition = -1;
     private String mYear;
     private ThreeLevelListAdapter mAdapter;
     private String mInvestigationText;
@@ -59,7 +60,17 @@ public class MyRecordListFragment extends Fragment {
             myRecordDataModel = (MyRecordDataModel) arguments.getSerializable(RescribeConstants.MYRECORDDATAMODEL);
         }
         mInvestigationText = getString(R.string.investigation);
+        mExpandMyRecordListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    mExpandMyRecordListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
         return mRootView;
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
 import com.android.volley.Request;
+import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
@@ -20,6 +21,8 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -177,12 +180,28 @@ public class DoctorHelper implements ConnectionListener {
     }
 
     public void doGetDoctorList(String year) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
-        mConnectionFactory.setHeaderParams();
-        String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
-        mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + id + "&year=" + year);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_LIST);
+        //ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
+       // mConnectionFactory.setHeaderParams();
+      //  String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+       // mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + id + "&year=" + year);
+      //  mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_LIST);
 
+            // TODO : HARDCODED JSON STRING PARSING FROM assets foler
+        try {
+            InputStream is = mContext.getAssets().open("doctor_list_update.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+            CommonMethods.Log(TAG, "doGetAllMyRecords" + json);
+
+            DoctorModel model = new Gson().fromJson(json, DoctorModel.class);
+            onResponse(ConnectionListener.RESPONSE_OK, model, RescribeConstants.TASK_DOCTOR_LIST);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void doGetDoctorAppointment() {

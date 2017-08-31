@@ -61,7 +61,6 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
     Spinner mYearSpinnerView;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-
     private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<Year> mTimePeriodList = new ArrayList<>();
     private Year mCurrentSelectedTimePeriodTab;

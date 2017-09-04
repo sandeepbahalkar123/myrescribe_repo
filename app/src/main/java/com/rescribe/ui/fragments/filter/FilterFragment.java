@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -61,6 +62,12 @@ public class FilterFragment extends Fragment {
     CustomTextView drSpecialityTextView;
     @BindView(R.id.drCalenderTextView)
     CustomTextView drCalenderTextView;
+    @BindView(R.id.mainContentLayout)
+    LinearLayout mMainContentLayout;
+    @BindView(R.id.mainContentParentLayout)
+    LinearLayout mMainContentParentLayout;
+
+    NestedScrollView mNestedScrollView = null;
 
     private OnDrawerInteractionListener mListener;
     private String monthSelected;
@@ -71,6 +78,7 @@ public class FilterFragment extends Fragment {
     private String fromDateTemp = "";
     private String toDate = "";
     private String fromDate = "";
+    //--------
 
 
     public FilterFragment() {
@@ -95,14 +103,26 @@ public class FilterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_filter, container, false);
+
         unbinder = ButterKnife.bind(this, view);
 
         if (getArguments() != null) {
             caseDetailsList = getArguments().getParcelableArrayList(RescribeConstants.CASE_DETAILS);
         }
 
-        // off recyclerView Animation
+        //-- Add ScrollView runtime if orientation is LANDSCAPE. : START
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mNestedScrollView = new NestedScrollView(getActivity());
+            mNestedScrollView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            mMainContentParentLayout.removeView(mMainContentLayout);
+            mMainContentParentLayout.addView(mNestedScrollView);
+            mNestedScrollView.addView(mMainContentLayout);
+        }
+        //-- Add ScrollView runtime if orientation is LANDSCAPE. : END
 
+
+        // off recyclerView Animation
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator)
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
@@ -228,21 +248,23 @@ public class FilterFragment extends Fragment {
         super.onConfigurationChanged(newConfig);
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            //   Toast.makeText(getActivity(), "landscape filter fragment", Toast.LENGTH_SHORT).show();
+            mNestedScrollView = new NestedScrollView(getActivity());
+            mNestedScrollView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            mMainContentParentLayout.removeView(mMainContentLayout);
+            mMainContentParentLayout.addView(mNestedScrollView);
+            mNestedScrollView.addView(mMainContentLayout);
 
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-           // Toast.makeText(getActivity(), "portrait filter fragment", Toast.LENGTH_SHORT).show();
-            recyclerView.setOnTouchListener(new View.OnTouchListener() {
-                // Setting on Touch Listener for handling the touch inside ScrollView
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    // Disallow the touch request for parent scroll on touch of child view
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    return false;
+            if (mNestedScrollView != null) {
+                LinearLayout contentLayout = (LinearLayout) mNestedScrollView.getChildAt(0);
+                if (contentLayout.getParent() != null) {
+                    ((ViewGroup) contentLayout.getParent()).removeView(contentLayout);
                 }
-            });
-
+                mMainContentParentLayout.removeView(mNestedScrollView);
+                contentLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                mMainContentLayout = contentLayout;
+                mMainContentParentLayout.addView(mMainContentLayout);
+            }
         }
-
     }
 }

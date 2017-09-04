@@ -8,7 +8,6 @@
       <module fileurl="file://$PROJECT_DIR$/materialdrawer/materialdrawer.iml" filepath="$PROJECT_DIR$/materialdrawer/materialdrawer.iml" />
       <module fileurl="file://$PROJECT_DIR$/monthPicker/monthPicker.iml" filepath="$PROJECT_DIR$/monthPicker/monthPicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/myrescribe_repo.iml" filepath="$PROJECT_DIR$/myrescribe_repo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rescribe_repo.iml" filepath="$PROJECT_DIR$/rescribe_repo.iml" />
       <module fileurl="file://$PROJECT_DIR$/uploadservice/uploadservice.iml" filepath="$PROJECT_DIR$/uploadservice/uploadservice.iml" />
     </modules>
   </component>

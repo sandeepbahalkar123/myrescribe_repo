@@ -585,9 +585,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             }
             if (normalRange.getText().toString().trim().length() == 0 && moderateRange.getText().toString().trim().length() == 0 && severeRange.getText().toString().trim().length() == 0) {
                 bpMinLayout.setVisibility(View.GONE);
-                showVitalUnitNameIconLayout.setBackground(mContext.getDrawable(R.drawable.vital_curve_allcorners_grey));
-
-
+                showVitalUnitNameIconLayout.setBackground(mContext.getDrawable(R.drawable.vitals_curve_grey_bg));
             }
 
         } else {

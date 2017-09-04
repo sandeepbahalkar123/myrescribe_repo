@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@mipmap/login_bg"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_weight="0.7"
-        android:layout_marginTop="@dimen/dp20"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp20"
+        android:layout_weight="0.7"
         android:orientation="vertical">
 
         <ImageView
@@ -54,8 +54,8 @@
 
             <EditText
                 android:id="@+id/editTextPassword"
-                android:layout_marginTop="@dimen/dp8"
                 style="@style/AppLoginNewMainStyle"
+                android:layout_marginTop="@dimen/dp8"
                 android:hint="@string/enter_password"
                 android:inputType="textPassword"
                 android:textStyle="bold"
@@ -88,16 +88,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp40"
                 android:layout_gravity="center"
-                android:background="@color/login_bg_color"
-                android:gravity="center"
-                android:textSize="@dimen/sp16"
                 android:layout_marginLeft="@dimen/dp10"
                 android:layout_marginRight="@dimen/dp10"
+                android:background="@color/login_bg_color"
+                android:gravity="center"
                 android:paddingBottom="@dimen/dp10"
                 android:paddingTop="@dimen/dp10"
                 android:text="@string/log_in"
                 android:textAllCaps="true"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/sp16" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,7 +108,7 @@
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/forgotPasswordView"
-                 android:layout_width="wrap_content"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="@dimen/dp6"
@@ -125,10 +126,10 @@
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/signup"
-                    android:padding="@dimen/dp6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:padding="@dimen/dp6"
                     android:text="@string/sign_up"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp14"
@@ -150,11 +151,11 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_gravity="center"
-            android:src="@drawable/or"
             android:layout_marginLeft="@dimen/dp10"
             android:layout_marginRight="@dimen/dp10"
+            android:gravity="center_vertical"
+            android:src="@drawable/or"
             android:textColor="@color/white" />
 
         <ImageView
@@ -162,11 +163,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp20"
+            android:layout_marginRight="@dimen/dp20"
             android:layout_marginTop="@dimen/dp16"
             android:gravity="center_vertical"
             android:src="@drawable/fb_logo"
-            android:layout_marginLeft="@dimen/dp20"
-            android:layout_marginRight="@dimen/dp20"
             android:textColor="@color/white" />
 
         <ImageView
@@ -185,9 +186,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dp8"
             android:layout_marginTop="@dimen/dp16"
             android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/dp8"
             android:src="@drawable/by_continuing_you_accept_the_terms_of_use_and_privacy_policy"
             android:textColor="@color/white" />
     </LinearLayout>

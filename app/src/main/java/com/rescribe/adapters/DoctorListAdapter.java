@@ -40,17 +40,17 @@ import butterknife.ButterKnife;
 public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.ListViewHolder> {
 
     private final String TAG = getClass().getName();
-    private int imageSize;
     Context mContext;
     ArrayList<DoctorDetail> mDataList;
     private SimpleDateFormat mDateFormat;
+    private int imageSize;
 
 
     public DoctorListAdapter(Context context, ArrayList<DoctorDetail> dataList) {
         this.mContext = context;
         mDataList = dataList;
         mDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, Locale.US);
-        setColumnNumber(mContext,2);
+        setColumnNumber(context, 2);
 
     }
 
@@ -134,6 +134,8 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
                 intent.putExtra(mContext.getString(R.string.name), dataObject.getDoctorName());
                 intent.putExtra(mContext.getString(R.string.specialization), dataObject.getSpecialization());
                 intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());
+                intent.putExtra(mContext.getString(R.string.doctor_image),dataObject.getDocImg());
+
                 intent.putExtra(mContext.getString(R.string.one_day_visit_date), toDisplay);
                 intent.putExtra(mContext.getString(R.string.opd_id), dataObject.getOpdId());
                 intent.putExtra(mContext.getString(R.string.doctor_image),dataObject.getDocImg());
@@ -200,6 +202,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
             this.view = view;
         }
     }
+
     private void setColumnNumber(Context context, int columnNum) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
@@ -207,5 +210,6 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
         int widthPixels = metrics.widthPixels;
         imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
+
 }
 

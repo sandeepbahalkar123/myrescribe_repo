@@ -1,6 +1,7 @@
 package com.rescribe.adapters.myrecords;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.ui.activities.WebViewActivity;
 import com.rescribe.util.CommonMethods;
 
 import java.io.File;
@@ -51,17 +53,40 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
 
     @Override
     public void onBindViewHolder(final ShowRecordsAdapter.FileViewHolder holder, final int position) {
-        final String image = paths[position];
+        final String urlString = paths[position];
+
+        String fileExtension = urlString.substring(urlString.lastIndexOf("."));
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.override(imageSize, imageSize);
-        requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
 
+        if (fileExtension.endsWith("pdf")) {
+            requestOptions.placeholder(R.drawable.ic_action_picture_as_pdf);
+        } else {
+            requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+        }
         Glide.with(context)
-                .load(new File(image))
+                //  .load(new File(image))
+                .load(urlString)
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(holder.imageView);
+
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tag = "" + urlString;
+                String fileExtension = tag.substring(tag.lastIndexOf("."));
+
+                if (fileExtension.endsWith("pdf")) {
+                    Intent intent = new Intent(context, WebViewActivity.class);
+                    intent.putExtra(context.getString(R.string.title_activity_selected_docs), "" + v.getTag());
+                    context.startActivity(intent);
+                }
+
+            }
+        });
 
         holder.addCaptionText.setText(caption + "_" + (position + 1));
     }
@@ -83,4 +108,6 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
             ButterKnife.bind(this, itemView);
         }
     }
+
+
 }

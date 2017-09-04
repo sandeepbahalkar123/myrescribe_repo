@@ -89,7 +89,7 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
         MyRecordReports group = getGroup(groupPosition);
 
         childGroupViewHolder.headerName.setText(group.getParentCaptionName());
-        if (mInvestigationText.equalsIgnoreCase(group.getParentCaptionName())) {
+        if (group.getParentCaptionName().startsWith(mInvestigationText)) {
             childGroupViewHolder.secondLevelAttachmentIcon.setVisibility(View.GONE);
             childGroupViewHolder.secondLevelUpDownArrow.setVisibility(View.VISIBLE);
           /*  if (isExpanded) {
@@ -99,6 +99,11 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
             }
             childGroupViewHolder.headerName.setCompoundDrawablePadding(Math.round(context.getResources().getDimension(R.dimen.dp4)));
         */
+            if (isExpanded) {
+                childGroupViewHolder.secondLevelUpDownArrow.setImageResource(R.drawable.up_arrow);
+            } else {
+                childGroupViewHolder.secondLevelUpDownArrow.setImageResource(R.drawable.down_arrow);
+            }
         } else {
             childGroupViewHolder.secondLevelUpDownArrow.setVisibility(View.INVISIBLE);
             childGroupViewHolder.secondLevelAttachmentIcon.setVisibility(View.VISIBLE);

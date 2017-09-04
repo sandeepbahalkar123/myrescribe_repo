@@ -59,16 +59,20 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     @BindView(R.id.doctorImg)
     CircularImageView mDoctorImg;
     private int imageSize;
+
     private int mLastExpandedPosition = -1;
     Intent mIntent;
     private String TAG = getClass().getName();
     private SingleVisitDetailHelper mSingleVisitDetailHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_details_activity);
         ButterKnife.bind(this);
+        setColumnNumber(this, 2);
+
         initialize();
     }
 
@@ -99,6 +103,19 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 mDateTextView.setText(Html.fromHtml(stringExtra));
             }
         }
+
+        //---
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.override(imageSize, imageSize);
+        requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+
+        Glide.with(this)
+                .load(mIntent.getStringExtra(getString(R.string.doctor_image)))
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(mDoctorImg);
+
+        //--
 
 
         mSingleVisitDetailHelper = new SingleVisitDetailHelper(this, this);
@@ -222,6 +239,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         mHistoryExpandableListView.setVisibility(View.GONE);
         mNoRecordAvailable.setVisibility(View.VISIBLE);
     }
+
     private void setColumnNumber(Context context, int columnNum) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
@@ -229,5 +247,6 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         int widthPixels = metrics.widthPixels;
         imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
+
 }
 

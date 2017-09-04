@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
+
+        <ImageView
+            android:id="@+id/caseIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp8"
+            android:layout_marginStart="@dimen/dp8"
+            android:adjustViewBounds="true"
+            android:padding="@dimen/dp8"
+            tools:src="@drawable/select_doctor" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/caseTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/caseIcon"
+            android:layout_toLeftOf="@+id/selectCheckbox"
+            android:layout_toRightOf="@+id/caseIcon"
+            android:layout_toStartOf="@+id/selectCheckbox"
+            android:padding="@dimen/dp8"
+            android:textColor="@color/tagColor"
+            android:textSize="@dimen/sp16"
+            app:customFont="@string/roboto_medium"
+            tools:text="@string/select_doctors" />
+
+        <CheckBox
+            android:id="@+id/selectCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:clickable="false"
+            android:layout_marginEnd="@dimen/dp30"
+            android:layout_marginRight="@dimen/dp30"
+            android:button="@drawable/checkboxselecter" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

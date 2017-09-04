@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/clickOnDoctorVisitLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/childSideBarView"
+            android:layout_width="@dimen/dp4"
+            android:layout_height="match_parent"
+            android:background="@color/transparent" />
+
+        <LinearLayout
+            android:id="@+id/parentDataContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dp6">
+
+            <View
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="@dimen/dp20"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/upperLine"
+                    android:layout_width="@dimen/dp1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@color/recentblue" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/dp0"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dp5"
+                android:layout_weight="0.9"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp5"
+                    android:layout_weight="5"
+                    android:orientation="vertical">
+                    <!-- Artist Name -->
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/headerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/dp2"
+                        android:text="Rihanna Love the way lie"
+                        android:textColor="@color/recentblue"
+                        android:textSize="@dimen/sp16"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/cardDetailsBullet"
+                            android:layout_width="@dimen/dp10"
+                            android:layout_height="@dimen/dp6"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/dp5"
+                            android:src="@drawable/blue_dot"
+                            android:visibility="visible" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/childContent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/dp2"
+                            android:text="Excessive Sweating"
+                            android:textColor="@color/dose_completed"
+                            android:textSize="@dimen/sp14"
+                            android:typeface="sans" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

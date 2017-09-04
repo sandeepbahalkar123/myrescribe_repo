@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/slotCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dp10">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp10"
+            android:paddingEnd="@dimen/horizontal_margin"
+            android:paddingStart="@dimen/horizontal_margin">
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/slotTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dinner_medication"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp20"
+                app:customFont="@string/roboto_bold" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/slotTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp16"
+                app:customFont="@string/roboto_bold" />
+
+        </FrameLayout>
+
+        <View
+            android:id="@+id/dividerLineInHeader"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp05"
+            android:layout_marginBottom="@dimen/dp10"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:background="@color/divider" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp10"
+                    android:paddingEnd="@dimen/horizontal_margin"
+                    android:paddingStart="@dimen/horizontal_margin">
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/slotQuestionTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/selectView"
+                        android:layout_toStartOf="@+id/selectView"
+                        android:text="@string/dosage_completed"
+                        android:textColor="@color/dose_completed"
+                        android:textSize="@dimen/sp19"
+                        app:customFont="@string/roboto_medium" />
+
+                    <CheckBox
+                        android:id="@+id/selectView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:button="@drawable/checkboxselecter"
+                        android:checked="false"
+                        android:paddingEnd="@dimen/dp10"
+                        android:paddingRight="@dimen/dp10"
+                        android:visibility="visible"
+                        tools:visibility="invisible" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/slotTabletListLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--<include layout="@layout/tablet_list"/>-->
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/divider" />
+    </LinearLayout>
+
+</LinearLayout>

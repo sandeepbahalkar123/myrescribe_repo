@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/dividerForInstruction"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp05"
+        android:layout_marginTop="@dimen/dp6"
+        android:background="@color/divider"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/expandedMedicineDoseLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginBottom="@dimen/dp4"
+        android:layout_marginTop="@dimen/dp8"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/showMorningDosage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginBottom="@dimen/dp6"
+                android:layout_weight="0.2"
+                android:src="@drawable/breakfast_normal_copy" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/morningDose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp6"
+                android:paddingLeft="@dimen/dp10"
+
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp14"
+                android:visibility="visible"
+                app:customFont="@string/roboto_medium" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/morningDoseQuantity"
+                android:layout_width="0dp"
+                android:paddingLeft="@dimen/dp10"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp6"
+                android:layout_marginEnd="@dimen/dp12"
+                android:layout_marginRight="@dimen/dp12"
+                android:layout_weight="1.5"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp11"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:customFont="@string/roboto_medium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/showAfternoonDosage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginBottom="@dimen/dp6"
+                android:layout_weight="0.2"
+                android:src="@drawable/lunch_highlighted_copy" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/afternoonDose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp6"
+
+                android:paddingLeft="@dimen/dp10"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp14"
+                android:visibility="visible"
+                app:customFont="@string/roboto_medium" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/afternoonDoseQuantity"
+                android:layout_width="0dp"
+                android:paddingLeft="@dimen/dp10"
+
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp6"
+                android:layout_marginEnd="@dimen/dp12"
+                android:layout_marginRight="@dimen/dp12"
+                android:layout_weight="1.5"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp11"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:customFont="@string/roboto_medium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/showEveningDosage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginBottom="@dimen/dp6"
+                android:layout_weight="0.2"
+                android:src="@drawable/evening_11_copy_2" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/eveningDose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp6"
+
+                android:paddingLeft="@dimen/dp10"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp14"
+                android:visibility="visible"
+                app:customFont="@string/roboto_medium" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/eveningDoseQuantity"
+                android:layout_width="0dp"
+                android:paddingLeft="@dimen/dp10"
+
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp6"
+                android:layout_marginEnd="@dimen/dp12"
+                android:layout_marginRight="@dimen/dp12"
+                android:layout_weight="1.5"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp11"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:customFont="@string/roboto_medium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/showDinnerDosage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginBottom="@dimen/dp6"
+                android:layout_weight="0.2"
+                android:src="@drawable/night_dinner_copy_5" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/nightDose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:paddingLeft="@dimen/dp10"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp14"
+                android:visibility="visible"
+                app:customFont="@string/roboto_medium" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/nightDoseQuantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp12"
+                android:layout_marginRight="@dimen/dp12"
+                android:layout_weight="1.5"
+                android:text=""
+                android:paddingLeft="@dimen/dp10"
+
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp11"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:customFont="@string/roboto_medium" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

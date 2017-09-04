@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/clickOnDoctorVisitLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/childSideBarView"
+            android:layout_width="@dimen/dp4"
+            android:layout_height="match_parent"
+            android:background="@color/transparent" />
+
+        <LinearLayout
+            android:id="@+id/parentDataContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dp6">
+
+            <View
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="@dimen/dp20"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/upperLine"
+                    android:layout_width="@dimen/dp1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@color/recentblue" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/dp0"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dp5"
+                android:layout_weight="0.9"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp5"
+                    android:layout_weight="5"
+                    android:orientation="horizontal">
+                    <!-- Artist Name -->
+                    <ImageView
+                        android:id="@+id/secondLevelUpDownArrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingBottom="@dimen/dp2"
+                        android:paddingRight="@dimen/dp4"
+                        android:paddingTop="@dimen/dp2"
+                        android:src="@drawable/down_arrow"
+                        android:visibility="gone" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/headerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingBottom="@dimen/dp2"
+                        android:paddingTop="@dimen/dp2"
+                        android:textColor="@color/dose_completed"
+                        android:textSize="@dimen/sp16"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <ImageView
+                        android:id="@+id/secondLevelAttachmentIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingBottom="@dimen/dp2"
+                        android:paddingRight="@dimen/dp30"
+                        android:paddingTop="@dimen/dp2"
+                        android:src="@drawable/attachment"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -105,7 +105,6 @@ public class DoctorHelper implements ConnectionListener {
 
     }
 
-
     public Map<String, Map<String, ArrayList<DoctorDetail>>> getYearWiseSortedDoctorList() {
         return yearWiseSortedDoctorList;
     }

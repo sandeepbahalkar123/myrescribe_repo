@@ -1,0 +1,131 @@
+{
+  "common": {
+    "success": true,
+    "statusCode": 200,
+    "statusMessage": "USER AUTHENTICATED"
+  },
+  "data": [
+    {
+      "doc": {
+        "doc_id": 10,
+        "doctor_name": "Dr. Shalu Gupta",
+        "OPDDate": "2017-06-08T09:51:37.000Z",
+        "Opdid": 10642,
+        "doctor_spaciality": "General Physician",
+        "doctor_address": "Hadapsar, Pune",
+        "doctor_image_path": "assets/doc_profile/DR-avatar.png"
+      },
+      "cases": {
+        "diagnosis": [
+          "ALLERGIC RHINITIS"
+        ]
+      }
+    },
+    {
+      "doc": {
+        "doc_id": 10,
+        "doctor_name": "Dr. Shalu Gupta",
+        "OPDDate": "2017-06-09T00:00:00.000Z",
+        "Opdid": 10667,
+        "doctor_spaciality": "General Physician",
+        "doctor_address": "Hadapsar, Pune",
+        "doctor_image_path": "assets/doc_profile/DR-avatar.png"
+      },
+      "cases": {
+        "complaints": [
+          "H/O FALL,KNEE PAIN",
+          "Giddiness"
+        ],
+        "diagnosis": [
+          "ALLERGIC RHINITIS DUE TO POLLE",
+          "IHD AWMI VSD , HT , DM WITH NEUROPATHY",
+          "DSFFSDFGSDF",
+          "HT , HYPOTHYROIDISM , DEQUEVAINS TENOSYNOVITIS"
+        ]
+      }
+    },
+    {
+      "doc": {
+        "doc_id": 10,
+        "doctor_name": "Dr. Shalu Gupta",
+        "OPDDate": "2017-06-13T10:22:51.000Z",
+        "Opdid": 10679,
+        "doctor_spaciality": "General Physician",
+        "doctor_address": "Hadapsar, Pune",
+        "doctor_image_path": "assets/doc_profile/DR-avatar.png"
+      },
+      "cases": {
+        "complaints": [
+          "Giddiness"
+        ],
+        "diagnosis": [
+          "ANXITY",
+          "APD , EPILIPSY",
+          "ALLERGIC RHINITIS"
+        ]
+      }
+    },
+    {
+      "doc": {
+        "doc_id": 10,
+        "doctor_name": "Dr. Shalu Gupta",
+        "OPDDate": "2017-06-15T11:21:52.000Z",
+        "Opdid": 10738,
+        "doctor_spaciality": "General Physician",
+        "doctor_address": "Hadapsar, Pune",
+        "doctor_image_path": "assets/doc_profile/DR-avatar.png"
+      },
+      "cases": {
+        "complaints": [
+          "giddiness",
+          "Vertigo, Anaemia - 10.5%",
+          "Giddiness"
+        ],
+        "diagnosis": [
+          "ALLERGIC RHINITIS DUE TO POLLE",
+          "APD",
+          "HT , DIABETES , HYPOTHYROIDISM",
+          "BRONCHITIS"
+        ]
+      }
+    },
+    {
+      "doc": {
+        "doc_id": 10,
+        "doctor_name": "Dr. Shalu Gupta",
+        "OPDDate": "2017-06-19T13:41:32.000Z",
+        "Opdid": 10755,
+        "doctor_spaciality": "General Physician",
+        "doctor_address": "Hadapsar, Pune",
+        "doctor_image_path": "assets/doc_profile/DR-avatar.png"
+      },
+      "cases": {
+        "complaints": [
+          "Giddiness",
+          "abdominal pain-lower abdominal pain"
+        ],
+        "diagnosis": [
+          "ALLERGIC RHINITIS DUE TO POLLE",
+          "APD"
+        ]
+      }
+    },
+    {
+      "doc": {
+        "doc_id": 10,
+        "doctor_name": "Dr. Shalu Gupta",
+        "OPDDate": "2017-06-21T13:12:15.000Z",
+        "Opdid": 10773,
+        "doctor_spaciality": "General Physician",
+        "doctor_address": "Hadapsar, Pune",
+        "doctor_image_path": "assets/doc_profile/DR-avatar.png"
+      },
+      "cases": {
+        "diagnosis": [
+          "ALLERGIC RHINITIS",
+          "ALLERGIC RHINITIS DUE TO POLLE"
+        ]
+      }
+    }
+  ]
+}

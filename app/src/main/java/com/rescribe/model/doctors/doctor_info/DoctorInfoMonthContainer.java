@@ -1,7 +1,9 @@
 package com.rescribe.model.doctors.doctor_info;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.model.my_records.new_pojo.NewYearsMonthsData;
 
 import java.util.ArrayList;
 import java.util.Map;

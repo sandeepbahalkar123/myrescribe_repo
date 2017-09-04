@@ -12,10 +12,7 @@ public class AddDoctorModel implements CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private String data;
-    @SerializedName("docId")
-    @Expose
-    private int docId;
+    private DocID data;
 
     public Common getCommon() {
         return common;
@@ -25,20 +22,26 @@ public class AddDoctorModel implements CustomResponse {
         this.common = common;
     }
 
-    public String getData() {
+    public DocID getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(DocID data) {
         this.data = data;
     }
 
-    public int getDocId() {
-        return docId;
-    }
 
-    public void setDocId(int docId) {
-        this.docId = docId;
-    }
+    public class DocID {
+        @SerializedName("docId")
+        @Expose
+        private int docId;
 
+        public int getDocId() {
+            return docId;
+        }
+
+        public void setDocId(int docId) {
+            this.docId = docId;
+        }
+    }
 }

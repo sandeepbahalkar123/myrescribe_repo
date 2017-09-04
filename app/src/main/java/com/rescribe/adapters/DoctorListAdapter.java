@@ -4,13 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.doctors.doctor_info.DoctorDetail;
 import com.rescribe.ui.activities.SingleVisitDetailsActivity;
@@ -19,6 +23,7 @@ import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,17 +40,17 @@ import butterknife.ButterKnife;
 public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.ListViewHolder> {
 
     private final String TAG = getClass().getName();
-
+    private int imageSize;
     Context mContext;
     ArrayList<DoctorDetail> mDataList;
     private SimpleDateFormat mDateFormat;
 
 
     public DoctorListAdapter(Context context, ArrayList<DoctorDetail> dataList) {
-
         this.mContext = context;
         mDataList = dataList;
         mDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, Locale.US);
+        setColumnNumber(mContext,2);
 
     }
 
@@ -131,9 +136,21 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
                 intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());
                 intent.putExtra(mContext.getString(R.string.one_day_visit_date), toDisplay);
                 intent.putExtra(mContext.getString(R.string.opd_id), dataObject.getOpdId());
+                intent.putExtra(mContext.getString(R.string.doctor_image),dataObject.getDocImg());
                 mContext.startActivity(intent);
             }
         });
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.override(imageSize, imageSize);
+        requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+
+        Glide.with(mContext)
+                .load(dataObject.getDocImg())
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(holder.docProfileImage);
+
 
 
     }
@@ -183,6 +200,12 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
             this.view = view;
         }
     }
-
+    private void setColumnNumber(Context context, int columnNum) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        int widthPixels = metrics.widthPixels;
+        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+    }
 }
 

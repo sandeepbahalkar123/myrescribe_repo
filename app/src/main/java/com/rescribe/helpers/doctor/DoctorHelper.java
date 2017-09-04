@@ -10,9 +10,10 @@ import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.doctors.appointments.DoctorAppointmentModel;
+import com.rescribe.model.doctors.doctor_info.DoctorBaseModel;
+import com.rescribe.model.doctors.doctor_info.DoctorDataModel;
 import com.rescribe.model.doctors.doctor_info.DoctorDetail;
 import com.rescribe.model.doctors.doctor_info.DoctorInfoMonthContainer;
-import com.rescribe.model.doctors.doctor_info.DoctorModel;
 import com.rescribe.model.filter.filter_request.DrFilterRequestModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
@@ -51,7 +52,6 @@ public class DoctorHelper implements ConnectionListener {
         this.mHelperResponseManager = loginActivity;
     }
 
-
     @Override
     public void onResponse(int responseResult, CustomResponse customResponse, String mOldDataTag) {
 
@@ -59,12 +59,15 @@ public class DoctorHelper implements ConnectionListener {
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag == RescribeConstants.TASK_DOCTOR_LIST) {
-                    DoctorModel model = (DoctorModel) customResponse;
-                    if (model.getDoctorInfoMonthContainer() != null) {
-                        DoctorInfoMonthContainer doctorInfoMonthContainer = model.getDoctorInfoMonthContainer();
-                        yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
+                    DoctorBaseModel baseModel = (DoctorBaseModel) customResponse;
+                    if (baseModel != null) {
+                        DoctorDataModel doctorDataModel = baseModel.getDoctorDataModel();
+                        if (doctorDataModel.getDoctorInfoMonthContainer() != null) {
+                            DoctorInfoMonthContainer doctorInfoMonthContainer = doctorDataModel.getDoctorInfoMonthContainer();
+                            yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
+                        }
                     }
-                    mHelperResponseManager.onSuccess(mOldDataTag, model);
+                    mHelperResponseManager.onSuccess(mOldDataTag, baseModel);
                 } else if (mOldDataTag == RescribeConstants.TASK_DOCTOR_APPOINTMENT) {
                     DoctorAppointmentModel doctorAppointmentModel = (DoctorAppointmentModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, doctorAppointmentModel);
@@ -180,28 +183,12 @@ public class DoctorHelper implements ConnectionListener {
     }
 
     public void doGetDoctorList(String year) {
-        //ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
-       // mConnectionFactory.setHeaderParams();
-      //  String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
-       // mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + id + "&year=" + year);
-      //  mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_LIST);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
+        mConnectionFactory.setHeaderParams();
+        String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + id + "&year=" + year);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_LIST);
 
-            // TODO : HARDCODED JSON STRING PARSING FROM assets foler
-        try {
-            InputStream is = mContext.getAssets().open("doctor_list_update.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            CommonMethods.Log(TAG, "doGetAllMyRecords" + json);
-
-            DoctorModel model = new Gson().fromJson(json, DoctorModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, model, RescribeConstants.TASK_DOCTOR_LIST);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
 
     public void doGetDoctorAppointment() {

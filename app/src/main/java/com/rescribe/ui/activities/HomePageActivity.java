@@ -251,7 +251,10 @@ public class HomePageActivity extends DrawerActivity {
                 } else if (id.equalsIgnoreCase(getString(R.string.appointments))) {
                     Intent intent = new Intent(mContext, AppointmentActivity.class);
                     startActivity(intent);
-                } else if (id.equalsIgnoreCase(getString(R.string.my_records))) {
+                } /*else if (id.equalsIgnoreCase(getString(R.string.investigation))) {
+                    Intent intent = new Intent(mContext, InvestigationActivity.class);
+                    startActivity(intent);
+                }*/ else if (id.equalsIgnoreCase(getString(R.string.my_records))) {
                     MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
                     int completeCount = 0;
                     for (Image image : myRecordsData.getImageArrayList()) {

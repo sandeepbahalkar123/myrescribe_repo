@@ -15,9 +15,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.ui.activities.WebViewActivity;
+import com.rescribe.ui.activities.ZoomImageViewActivity;
 import com.rescribe.util.CommonMethods;
-
-import java.io.File;
+import com.rescribe.util.RescribeConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,18 +60,13 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.override(imageSize, imageSize);
+        requestOptions.placeholder(CommonMethods.getDocumentIconByExtension(fileExtension));
+        requestOptions.error(CommonMethods.getDocumentIconByExtension(fileExtension));
 
-        if (fileExtension.endsWith("pdf")) {
-            requestOptions.placeholder(R.drawable.ic_action_picture_as_pdf);
-        } else {
-            requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
-        }
         Glide.with(context)
-                //  .load(new File(image))
                 .load(urlString)
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(holder.imageView);
-
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,9 +74,15 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
                 String tag = "" + urlString;
                 String fileExtension = tag.substring(tag.lastIndexOf("."));
 
-                if (fileExtension.endsWith("pdf")) {
+                if (fileExtension.contains(".doc") || fileExtension.contains(".odt") || fileExtension.contains(".ppt") || fileExtension.contains(".odp") || fileExtension.contains(".xls") || fileExtension.contains(".ods") || fileExtension.contains(".pdf")){
                     Intent intent = new Intent(context, WebViewActivity.class);
-                    intent.putExtra(context.getString(R.string.title_activity_selected_docs), "" + v.getTag());
+                    intent.putExtra(context.getString(R.string.title_activity_selected_docs), urlString);
+                    context.startActivity(intent);
+                }else {
+                    // do stuff here
+                    Intent intent = new Intent(context, ZoomImageViewActivity.class);
+                    intent.putExtra(RescribeConstants.DOCUMENTS, urlString);
+                    intent.putExtra(RescribeConstants.IS_URL, true);
                     context.startActivity(intent);
                 }
 

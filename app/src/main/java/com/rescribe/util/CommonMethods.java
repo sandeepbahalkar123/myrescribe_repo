@@ -53,6 +53,18 @@ public class CommonMethods {
     }
 
 
+    public static int getDocumentIconByExtension(String extension) {
+        if (extension.contains(".doc") || extension.contains(".odt")) {
+            return R.drawable.word;
+        } else if (extension.contains(".ppt") || extension.contains(".odp")) {
+            return R.drawable.ppt;
+        } else if (extension.contains(".xls") || extension.contains(".ods")) {
+            return R.drawable.excel;
+        } else if (extension.contains(".pdf")) {
+            return R.drawable.pdf;
+        } else return droidninja.filepicker.R.drawable.image_placeholder;
+    }
+
     public static void showSnack(View mViewById, String msg) {
         if (mViewById != null) {
             Snackbar.make(mViewById, msg, Snackbar.LENGTH_LONG)

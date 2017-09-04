@@ -180,6 +180,11 @@
             android:label="@string/add_record"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.activities.WebViewActivity"
+            android:configChanges="orientation|keyboard|screenSize"
+            android:label="@string/select_report"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.activities.SelectedRecordsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_selected_docs"
@@ -194,7 +199,9 @@
             android:label="@string/title_activity_reports"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <receiver android:name=".broadcast_receivers.FileUploadReceiver" android:exported="false">
+        <receiver
+            android:name=".broadcast_receivers.FileUploadReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="net.gotev.uploadservice.broadcast.status" />
             </intent-filter>

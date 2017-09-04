@@ -192,5 +192,6 @@
     <string name="dummy_normal">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
     <string name="gallery">Gallery</string>
     <string name="files">Files</string>
+    <string name="doctor_image">Doctor Image</string>
 
 </resources>

@@ -20,10 +20,6 @@ public class LoginModel implements CustomResponse {
     @Expose
     private String patientId;
 
-    @SerializedName("yearsMonthsData")
-    @Expose
-    private ArrayList<YearsMonthsDataList> yearsMonthsDataList = new ArrayList<>();
-
     public String getPatientId() {
         return patientId;
     }
@@ -47,7 +43,7 @@ public class LoginModel implements CustomResponse {
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
     }
-
+/*
     public ArrayList<YearsMonthsDataList> getYearsMonthsDataList() {
         return yearsMonthsDataList;
     }
@@ -68,6 +64,6 @@ public class LoginModel implements CustomResponse {
             }
         }
         return yearList;
-    }
+    }*/
 
 }

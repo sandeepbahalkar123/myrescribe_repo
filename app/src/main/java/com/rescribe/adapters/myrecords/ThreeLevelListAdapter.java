@@ -12,6 +12,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.rescribe.R;
 import com.rescribe.model.my_records.MyRecordDoctorInfo;
 import com.rescribe.model.my_records.MyRecordInfoAndReports;
@@ -20,6 +21,7 @@ import com.rescribe.ui.activities.ShowRecordsActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,7 +33,6 @@ import butterknife.ButterKnife;
 
 public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
-    private String mInvestigationText;
     private List<MyRecordInfoAndReports> mListDataHeader;// header titles
     // child data in format of header title, child title
     private HashMap<MyRecordInfoAndReports, ArrayList<MyRecordReports>> mListDataChild;
@@ -42,7 +43,6 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
     public ThreeLevelListAdapter(Context context, ArrayList<MyRecordInfoAndReports> mOriginalList) {
         this.context = context;
         this.mOriginalList = mOriginalList;
-        mInvestigationText = context.getString(R.string.investigation);
 
         this.mListDataHeader = new ArrayList<>();
         this.mListDataChild = new HashMap<>();
@@ -199,7 +199,8 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
                 previousGroup = groupPosition;*/
                 SecondLevelAdapter adapter = (SecondLevelAdapter) secondLevelELV.getExpandableListAdapter();
                 MyRecordReports childGroup = adapter.getGroup(groupPosition);
-                if (!childGroup.getParentCaptionName().equalsIgnoreCase(mInvestigationText)) {
+                if (childGroup.getParentCaptionName().equalsIgnoreCase(context.getString(R.string.investigation)) || childGroup.getParentCaptionName().equalsIgnoreCase(context.getString(R.string.investigations))) {
+                } else {
                     secondLevelELV.collapseGroup(groupPosition);
                     Intent intent = new Intent(context, ShowRecordsActivity.class);
                     ArrayList<MyRecordReports.MyRecordReportList> reportList = childGroup.getReportList();

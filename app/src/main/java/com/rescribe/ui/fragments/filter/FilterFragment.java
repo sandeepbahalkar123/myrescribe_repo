@@ -2,6 +2,7 @@ package com.rescribe.ui.fragments.filter;
 
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
@@ -11,10 +12,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.Toast;
+
 import com.ngapps.ganeshshirole.monthpicker.RackMonthPicker;
 import com.ngapps.ganeshshirole.monthpicker.listener.DateMonthDialogListener;
 import com.ngapps.ganeshshirole.monthpicker.listener.OnCancelMonthDialogListener;
@@ -25,7 +30,9 @@ import com.rescribe.model.filter.CaseDetailsData;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -54,6 +61,7 @@ public class FilterFragment extends Fragment {
     CustomTextView drSpecialityTextView;
     @BindView(R.id.drCalenderTextView)
     CustomTextView drCalenderTextView;
+
     private OnDrawerInteractionListener mListener;
     private String monthSelected;
     private RackMonthPicker rackMonthPicker;
@@ -215,4 +223,26 @@ public class FilterFragment extends Fragment {
         void onReset();
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //   Toast.makeText(getActivity(), "landscape filter fragment", Toast.LENGTH_SHORT).show();
+
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+           // Toast.makeText(getActivity(), "portrait filter fragment", Toast.LENGTH_SHORT).show();
+            recyclerView.setOnTouchListener(new View.OnTouchListener() {
+                // Setting on Touch Listener for handling the touch inside ScrollView
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    // Disallow the touch request for parent scroll on touch of child view
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
+                }
+            });
+
+        }
+
+    }
 }

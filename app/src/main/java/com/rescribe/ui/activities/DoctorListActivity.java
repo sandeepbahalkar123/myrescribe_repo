@@ -9,6 +9,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.rescribe.R;
@@ -48,7 +49,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     DrawerLayout mDrawer;
     @BindView(R.id.nav_view)
     FrameLayout nav_view;
- //   boolean isOnApplyFilterCalledBefore = false; // this is added for maintaining stack of filter result
+    //   boolean isOnApplyFilterCalledBefore = false; // this is added for maintaining stack of filter result
     // Filter End
     private FragmentManager mFragmentManager;
     private FilterFragment filterFragment;
@@ -108,11 +109,11 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         CommonMethods.Log("FilterRequest", gson.toJson(drFilterRequestModel, DrFilterRequestModel.class));
         mDrawer.closeDrawer(GravityCompat.END);
 
-            DoctorFilteredListFragment doctorFilteredListFragment = DoctorFilteredListFragment.newInstance(drFilterRequestModel);
-            FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.doctorViewContainer, doctorFilteredListFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+        DoctorFilteredListFragment doctorFilteredListFragment = DoctorFilteredListFragment.newInstance(drFilterRequestModel);
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.doctorViewContainer, doctorFilteredListFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
 
     }
 
@@ -274,14 +275,8 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         }
         fragmentTransaction.commit();
     }
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
 
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
 
-        }
-    }
+
 
 }

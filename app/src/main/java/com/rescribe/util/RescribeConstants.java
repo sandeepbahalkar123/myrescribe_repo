@@ -142,6 +142,7 @@ public class RescribeConstants {
     public static final String CAPTION = "caption";
     public static final String TYPE_OF_LOGIN = "";
     public static final String SENDERID = "EMROTP";
+    public static final String IS_URL = "isUrl";
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 

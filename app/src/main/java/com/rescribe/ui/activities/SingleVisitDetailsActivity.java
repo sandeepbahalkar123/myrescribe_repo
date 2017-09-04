@@ -1,27 +1,33 @@
 package com.rescribe.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.view.View;
-
-import com.rescribe.R;
-
+import android.view.WindowManager;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.rescribe.R;
 import com.rescribe.adapters.SingleVisitAdapter;
 import com.rescribe.helpers.single_visit_details.SingleVisitDetailHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.case_details.VisitData;
 import com.rescribe.model.case_details.PatientHistory;
 import com.rescribe.model.case_details.Range;
+import com.rescribe.model.case_details.VisitData;
 import com.rescribe.model.case_details.Vital;
+import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,16 +56,21 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     CustomTextView mDateTextView;
     @BindView(R.id.noRecordAvailable)
     RelativeLayout mNoRecordAvailable;
+    @BindView(R.id.doctorImg)
+    CircularImageView doctorImg;
     private int mLastExpandedPosition = -1;
     Intent mIntent;
     private String TAG = getClass().getName();
     private SingleVisitDetailHelper mSingleVisitDetailHelper;
+    private int imageSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_details_activity);
         ButterKnife.bind(this);
+        setColumnNumber(this, 2);
+
         initialize();
     }
 
@@ -71,12 +82,25 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
             mDoctor_address.setText(mIntent.getStringExtra(getString(R.string.address)));
             String stringExtra = mIntent.getStringExtra(getString(R.string.one_day_visit_date));
 
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 mDateTextView.setText(Html.fromHtml(stringExtra, Html.FROM_HTML_MODE_LEGACY));
             } else {
                 mDateTextView.setText(Html.fromHtml(stringExtra));
             }
         }
+
+        //---
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.override(imageSize, imageSize);
+        requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+
+        Glide.with(this)
+                .load(mIntent.getStringExtra(getString(R.string.doctor_image)))
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(doctorImg);
+
+        //--
 
 
         mSingleVisitDetailHelper = new SingleVisitDetailHelper(this, this);
@@ -119,16 +143,16 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         String bpMin = "";
         VisitData visitData = (VisitData) customResponse;
-        if(visitData!=null){
+        if (visitData != null) {
             mHistoryExpandableListView.setVisibility(View.VISIBLE);
             mNoRecordAvailable.setVisibility(View.GONE);
-        }else{
+        } else {
             mHistoryExpandableListView.setVisibility(View.GONE);
             mNoRecordAvailable.setVisibility(View.VISIBLE);
         }
         List<PatientHistory> patientHistoryList = visitData.getPatientHistory();
         List<Vital> vitalSortedList = new ArrayList<>();
-  // Bpmin and Bpmax is clubed together as Bp in vitals
+        // Bpmin and Bpmax is clubed together as Bp in vitals
         for (int i = 0; i < patientHistoryList.size(); i++) {
             if (patientHistoryList.get(i).getVitals() != null) {
                 String pos = null;
@@ -143,7 +167,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                             vital.setUnitValue(dataObject.getUnitValue());
                             vital.setCategory(dataObject.getCategory());
                             vital.setIcon(dataObject.getIcon());
-                            for(int k = 0;k<dataObject.getRanges().size();k++){
+                            for (int k = 0; k < dataObject.getRanges().size(); k++) {
                                 dataObject.getRanges().get(k).setNameOfVital(getString(R.string.bp_max));
                             }
                             vital.setRanges(dataObject.getRanges());
@@ -179,7 +203,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         }
 
 
-        SingleVisitAdapter singleVisitAdapter = new SingleVisitAdapter(this,patientHistoryList);
+        SingleVisitAdapter singleVisitAdapter = new SingleVisitAdapter(this, patientHistoryList);
         mHistoryExpandableListView.setAdapter(singleVisitAdapter);
 
 
@@ -200,5 +224,14 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         mHistoryExpandableListView.setVisibility(View.GONE);
         mNoRecordAvailable.setVisibility(View.VISIBLE);
     }
+
+    private void setColumnNumber(Context context, int columnNum) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        int widthPixels = metrics.widthPixels;
+        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+    }
+
 }
 

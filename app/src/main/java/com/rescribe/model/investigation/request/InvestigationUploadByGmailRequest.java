@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class InvestigationUploadByGmailRequest implements CustomResponse {
 
-    @SerializedName("investigationId")
+    @SerializedName("invIds")
     @Expose
     private ArrayList<Integer> investigationId = new ArrayList<Integer>();
     @SerializedName("patientId")

@@ -285,6 +285,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
 
     void allUploaded() {
         customProgressDialog.dismiss();
+        CommonMethods.showToast(mContext, getResources().getString(R.string.documents_uploaded_successfully));
         imageUploadedCount = 0;
         int selectedCount = 0;
         for (InvestigationData dataObject : investigation) {

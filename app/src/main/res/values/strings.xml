@@ -193,5 +193,6 @@
     <string name="gallery">Gallery</string>
     <string name="files">Files</string>
     <string name="doctor_image">Doctor Image</string>
+    <string name="documents_uploaded_successfully">Documents Uploaded Successfully</string>
 
 </resources>

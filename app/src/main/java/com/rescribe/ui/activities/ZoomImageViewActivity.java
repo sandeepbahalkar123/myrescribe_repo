@@ -34,9 +34,19 @@ public class ZoomImageViewActivity extends AppCompatActivity {
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
-        Glide.with(this).load(new File(getIntent().getStringExtra(RescribeConstants.DOCUMENTS)))
-                .apply(requestOptions)
-                .into(zoomView);
+        requestOptions.error(droidninja.filepicker.R.drawable.image_placeholder);
+
+        boolean isUrl = getIntent().getBooleanExtra(RescribeConstants.IS_URL, false);
+        String url = getIntent().getStringExtra(RescribeConstants.DOCUMENTS);
+
+        if (isUrl)
+            Glide.with(this).load(url)
+                    .apply(requestOptions)
+                    .into(zoomView);
+        else
+            Glide.with(this).load(new File(getIntent().getStringExtra(RescribeConstants.DOCUMENTS)))
+                    .apply(requestOptions)
+                    .into(zoomView);
 
     }
 

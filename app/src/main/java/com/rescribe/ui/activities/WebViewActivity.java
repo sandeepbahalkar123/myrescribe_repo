@@ -32,14 +32,16 @@ public class WebViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
-
         ButterKnife.bind(this);
-        loadWebViewData(getIntent().getStringExtra(getString(R.string.title_activity_selected_docs)));
+
+        String url = getIntent().getStringExtra(getString(R.string.title_activity_selected_docs));
+
+        loadWebViewData(url);
     }
 
     @OnClick(R.id.backButton)
     public void back() {
-        finish();
+        onBackPressed();
     }
 
     private void loadWebViewData(String url) {

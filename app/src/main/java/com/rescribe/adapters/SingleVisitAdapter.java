@@ -571,6 +571,22 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 showVitalUnitNameIconLayout.setBackground(mContext.getDrawable(R.drawable.vitals_curve_grey_bg));
 
             }
+            if (normalRange.getText().toString().trim().length() == 0) {
+                LinearLayout normalRangeLayout = (LinearLayout) dialog.findViewById(R.id.normalSubTypeRangeLayout);
+                normalRangeLayout.setVisibility(View.GONE);
+            }
+            if (moderateRange.getText().toString().trim().length() == 0) {
+                LinearLayout moderateRangeLayout = (LinearLayout) dialog.findViewById(R.id.moderateSubTypeRangeLayout);
+                moderateRangeLayout.setVisibility(View.GONE);
+            }
+            if (severeRange.getText().toString().trim().length() == 0) {
+                LinearLayout severeRangeLayout = (LinearLayout) dialog.findViewById(R.id.severeSubTypeRangeLayout);
+                severeRangeLayout.setVisibility(View.GONE);
+            }
+            if (normalRange.getText().toString().trim().length() == 0 && moderateRange.getText().toString().trim().length() == 0 && severeRange.getText().toString().trim().length() == 0) {
+                bpMinLayout.setVisibility(View.GONE);
+                showVitalUnitNameIconLayout.setBackground(mContext.getDrawable(R.drawable.vitals_curve_grey_bg));
+            }
 
         } else {
 

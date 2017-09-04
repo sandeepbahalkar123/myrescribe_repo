@@ -211,7 +211,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
 
     @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
     public void onPickDoc() {
-        String[] documents = {".doc", ".docx", ".odt", ".pdf"};
+        String[] documents = {".doc", ".docx", ".odt", ".pdf", ".xls", ".xlsx", ".ods", ".ppt", ".pptx"};
         if (imagePaths.size() == MAX_ATTACHMENT_COUNT)
             Toast.makeText(this, "Cannot select more than " + MAX_ATTACHMENT_COUNT + " documents", Toast.LENGTH_SHORT).show();
         else {

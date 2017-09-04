@@ -23,6 +23,7 @@ import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,7 +40,6 @@ import butterknife.ButterKnife;
 public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.ListViewHolder> {
 
     private final String TAG = getClass().getName();
-
     Context mContext;
     ArrayList<DoctorDetail> mDataList;
     private SimpleDateFormat mDateFormat;
@@ -47,7 +47,6 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
 
     public DoctorListAdapter(Context context, ArrayList<DoctorDetail> dataList) {
-
         this.mContext = context;
         mDataList = dataList;
         mDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, Locale.US);
@@ -139,11 +138,11 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
                 intent.putExtra(mContext.getString(R.string.one_day_visit_date), toDisplay);
                 intent.putExtra(mContext.getString(R.string.opd_id), dataObject.getOpdId());
+                intent.putExtra(mContext.getString(R.string.doctor_image),dataObject.getDocImg());
                 mContext.startActivity(intent);
             }
         });
 
-        //---
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.override(imageSize, imageSize);
@@ -154,7 +153,6 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(holder.docProfileImage);
 
-        //--
 
 
     }

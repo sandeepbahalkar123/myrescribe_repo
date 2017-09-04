@@ -57,12 +57,14 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     @BindView(R.id.noRecordAvailable)
     RelativeLayout mNoRecordAvailable;
     @BindView(R.id.doctorImg)
-    CircularImageView doctorImg;
+    CircularImageView mDoctorImg;
+    private int imageSize;
+
     private int mLastExpandedPosition = -1;
     Intent mIntent;
     private String TAG = getClass().getName();
     private SingleVisitDetailHelper mSingleVisitDetailHelper;
-    private int imageSize;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +76,25 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         initialize();
     }
 
+
     private void initialize() {
         mIntent = getIntent();
+        setColumnNumber(this,2);
         if (getIntent().getExtras() != null) {
             mDoctorName.setText(mIntent.getStringExtra(getString(R.string.name)));
             mDoctorSpecialization.setText(mIntent.getStringExtra(getString(R.string.specialization)));
             mDoctor_address.setText(mIntent.getStringExtra(getString(R.string.address)));
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.dontAnimate();
+            requestOptions.override(imageSize, imageSize);
+            requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+
+            Glide.with(this)
+                    .load(mIntent.getStringExtra(getString(R.string.doctor_image)))
+                    .apply(requestOptions).thumbnail(0.5f)
+                    .into(mDoctorImg);
+
+
             String stringExtra = mIntent.getStringExtra(getString(R.string.one_day_visit_date));
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -98,7 +113,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         Glide.with(this)
                 .load(mIntent.getStringExtra(getString(R.string.doctor_image)))
                 .apply(requestOptions).thumbnail(0.5f)
-                .into(doctorImg);
+                .into(mDoctorImg);
 
         //--
 

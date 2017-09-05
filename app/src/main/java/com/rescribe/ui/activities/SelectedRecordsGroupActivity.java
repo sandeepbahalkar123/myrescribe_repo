@@ -236,7 +236,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             CommonMethods.showToast(SelectedRecordsGroupActivity.this, getResources().getString(R.string.select_report));
         } else {
             if (NetworkUtil.isInternetAvailable(SelectedRecordsGroupActivity.this)) {
-                    uploadButton.setEnabled(false);
+                uploadButton.setEnabled(false);
 
                 for (int parentIndex = 0; parentIndex < groups.size(); parentIndex++) {
 
@@ -244,7 +244,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
 
                     for (int childIndex = 0; childIndex < images.size(); childIndex++)
                         uploadImage(parentIndex + "_" + childIndex, images.get(childIndex));
-                    }
+                }
             } else
                 CommonMethods.showToast(SelectedRecordsGroupActivity.this, getResources().getString(R.string.internet));
         }
@@ -263,7 +263,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             else
                 childCaptionName = image.getParentCaption();
 
-            new MultipartUploadRequest(SelectedRecordsGroupActivity.this, uploadId, Url)
+            MultipartUploadRequest uploadRequest = new MultipartUploadRequest(SelectedRecordsGroupActivity.this, uploadId, Url)
                     .setNotificationConfig(uploadNotificationConfig)
                     .setMaxRetries(RescribeConstants.MAX_RETRIES)
 
@@ -279,10 +279,14 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                     .addHeader("imageId", image.getImageId())
                     .addHeader("parentCaptionName", image.getParentCaption())
                     .addHeader("childCaptionName", childCaptionName)
-                    .addHeader("opdId", String.valueOf(opdId))
 
-                    .addFileToUpload(image.getImagePath(), "myRecord")
-                    .startUpload();
+                    .addFileToUpload(image.getImagePath(), "myRecord");
+
+            if (opdId != 0)
+                uploadRequest.addHeader("opdId", String.valueOf(opdId));
+
+            uploadRequest.startUpload();
+
         } catch (FileNotFoundException | MalformedURLException e) {
             e.printStackTrace();
         }
@@ -401,14 +405,14 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
 
     @Override
     public void onAddCaptionClick(final int mainPosition, final int position) {
-            captionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                    groups.get(mainPosition).getImages().get(position).setChildCaption(childCaptions[pos]);
-                    mAdapter.notifyItemChanged(mainPosition);
-                    alertDialog.dismiss();
-                }
-            });
-            alertDialog.show();
+        captionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+                groups.get(mainPosition).getImages().get(position).setChildCaption(childCaptions[pos]);
+                mAdapter.notifyItemChanged(mainPosition);
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 }

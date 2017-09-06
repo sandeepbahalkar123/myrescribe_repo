@@ -92,7 +92,7 @@ artifacts {
 }
 
 Properties properties = new Properties()
-//properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//properties.load(project.rootProject.file('local.properties').newDataInputStream()) // THIS IS COMMENTED AS GIVING ERROR ON JEKING WHILE BUILDIG IT.
 
 // https://github.com/bintray/gradle-bintray-plugin
 bintray {

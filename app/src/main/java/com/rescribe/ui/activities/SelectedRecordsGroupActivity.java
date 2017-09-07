@@ -273,17 +273,17 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                     .addHeader(RescribeConstants.OSVERSION, device.getOSVersion())
                     .addHeader(RescribeConstants.DEVICE_TYPE, device.getDeviceType())
 
-                    .addHeader("patientId", patientId)
-                    .addHeader("docId", String.valueOf(docId))
-                    .addHeader("visitDate", visitDate)
-                    .addHeader("imageId", image.getImageId())
-                    .addHeader("parentCaptionName", image.getParentCaption())
-                    .addHeader("childCaptionName", childCaptionName)
+                    .addParameter("patientId", patientId)
+                    .addParameter("docId", String.valueOf(docId))
+                    .addParameter("visitDate", visitDate)
+                    .addParameter("imageId", image.getImageId())
+                    .addParameter("parentCaptionName", image.getParentCaption())
+                    .addParameter("childCaptionName", childCaptionName)
 
                     .addFileToUpload(image.getImagePath(), "myRecord");
 
             if (opdId != 0)
-                uploadRequest.addHeader("opdId", String.valueOf(opdId));
+                uploadRequest.addParameter("opdId", String.valueOf(opdId));
 
             uploadRequest.startUpload();
 
@@ -339,7 +339,6 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
         public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
 
             appDBHelper.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.FAILED);
-            CommonMethods.Log("ImagedUploadIdHome", uploadInfo.getUploadId() + " onError");
 
             String pos[] = uploadInfo.getUploadId().split("_");
             int finalI = Integer.parseInt(pos[0]);
@@ -356,7 +355,6 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
 
             appDBHelper.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
-            CommonMethods.Log("ImagedUploadIdHome", uploadInfo.getUploadId() + " onCompleted");
 
             String pos[] = uploadInfo.getUploadId().split("_");
             int finalI = Integer.parseInt(pos[0]);
@@ -365,7 +363,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             groups.get(finalI).getImages().get(finalJ).setUploading(RescribeConstants.COMPLETED);
             mAdapter.notifyItemChanged(finalI);
 
-            CommonMethods.Log(IMAGEDUPLOADID, uploadInfo.getUploadId() + " onCompleted");
+            CommonMethods.Log(IMAGEDUPLOADID, uploadInfo.getUploadId() + " onCompleted " + serverResponse.getBodyAsString());
 
             navigate();
         }

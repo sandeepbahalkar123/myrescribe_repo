@@ -221,10 +221,9 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                     uploadNotificationConfig.setIconColorForAllStatuses(Color.parseColor("#04abdf"));*/
 
                         Device device = Device.getInstance(mContext);
-                        String baseUrl = Config.BASE_URL;
                         String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
 
-                        String uploadId = new MultipartUploadRequest(SelectedDocsActivity.this, baseUrl + Config.INVESTIGATION_UPLOAD)
+                        String uploadId = new MultipartUploadRequest(SelectedDocsActivity.this, Config.BASE_URL + Config.INVESTIGATION_UPLOAD)
 //                            .setNotificationConfig(uploadNotificationConfig)
                                 .setMaxRetries(RescribeConstants.MAX_RETRIES)
 
@@ -234,8 +233,8 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                                 .addHeader(RescribeConstants.OSVERSION, device.getOSVersion())
                                 .addHeader(RescribeConstants.DEVICE_TYPE, device.getDeviceType())
 
-                                .addHeader("imgId", image.getImageId())
-                                .addHeader("invId", investigationIds)
+                                .addParameter("imgId", image.getImageId())
+                                .addParameter("invId", investigationIds)
                                 .addFileToUpload(image.getImagePath(), "investigationDoc")
                                 .setDelegate(SelectedDocsActivity.this)
                                 .startUpload();

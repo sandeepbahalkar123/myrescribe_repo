@@ -1,10 +1,12 @@
 package com.rescribe.services;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
@@ -87,6 +89,7 @@ public class NotificationService extends Service {
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
 
+        RingtoneManager ringtoneManager = new RingtoneManager(this.getApplicationContext());
         android.support.v4.app.NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 // Set Icon
                 .setSmallIcon(R.drawable.logosmall)
@@ -96,13 +99,18 @@ public class NotificationService extends Service {
                 .setAutoCancel(true)
                 // Set RemoteViews into Notification
                 .setContent(mRemoteViews)
+                .setVibrate(new long[]{1000, 1000,1000})
+                .setSound(ringtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
+                //   .setPriority(NotificationCompat.PRIORITY_HIGH) //must give priority to High, Max which will considered as heads-up notification
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, intentData.getStringExtra(RescribeConstants.MEDICINE_SLOT));
         mRemoteViews.setTextViewText(R.id.questionText, getText(R.string.taken_medicine));
         mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME));
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationmanager.notify(notification_id, builder.build());
+        Notification build = builder.build();
+        build.flags |= Notification.FLAG_INSISTENT;
+        notificationmanager.notify(notification_id, build);
 
         stopSelf();
     }

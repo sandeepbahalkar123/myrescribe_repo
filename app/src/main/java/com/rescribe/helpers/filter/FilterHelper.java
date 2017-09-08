@@ -3,6 +3,7 @@ package com.rescribe.helpers.filter;
 import android.content.Context;
 
 import com.android.volley.Request;
+import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
@@ -35,20 +36,20 @@ public class FilterHelper implements ConnectionListener {
                 ((HelperResponse) mContext).onSuccess(mOldDataTag, customResponse);
                 break;
             case ConnectionListener.PARSE_ERR0R:
-                CommonMethods.Log(TAG, "parse error");
-                ((HelperResponse) mContext).onParseError(mOldDataTag, "parse error");
+                CommonMethods.Log(TAG, mContext.getString(R.string.parse_error));
+                ((HelperResponse) mContext).onParseError(mOldDataTag, mContext.getString(R.string.parse_error));
                 break;
             case ConnectionListener.SERVER_ERROR:
-                CommonMethods.Log(TAG, "server error");
-                ((HelperResponse) mContext).onServerError(mOldDataTag, "server error");
+                CommonMethods.Log(TAG, mContext.getString(R.string.server_error));
+                ((HelperResponse) mContext).onServerError(mOldDataTag, mContext.getString(R.string.server_error));
 
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
-                CommonMethods.Log(TAG, "no connection error");
-                ((HelperResponse) mContext).onNoConnectionError(mOldDataTag, "no connection error");
+                CommonMethods.Log(TAG, mContext.getString(R.string.no_connection_error));
+                ((HelperResponse) mContext).onNoConnectionError(mOldDataTag, mContext.getString(R.string.no_connection_error));
                 break;
             default:
-                CommonMethods.Log(TAG, "default error");
+                CommonMethods.Log(TAG, mContext.getString(R.string.default_error));
                 break;
         }
     }

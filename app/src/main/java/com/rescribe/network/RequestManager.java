@@ -50,7 +50,7 @@ import com.rescribe.model.my_records.MyRecordsDoctorListModel;
 import com.rescribe.model.my_records.new_pojo.NewMyRecordBaseModel;
 import com.rescribe.model.notification.AppointmentsNotificationModel;
 import com.rescribe.model.notification.NotificationModel;
-import com.rescribe.model.prescription_response_model.PrescriptionModel;
+import com.rescribe.model.prescription_response_model.PrescriptionBaseModel;
 import com.rescribe.model.requestmodel.login.LoginRequestModel;
 import com.rescribe.model.response_model_notification.ResponseLogNotificationModel;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -441,7 +441,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     // Need to add
 
                     case RescribeConstants.TASK_PRESCRIPTION_LIST: //This is for get archived list
-                        PrescriptionModel ipTestResponseModel = gson.fromJson(data, PrescriptionModel.class);
+                        PrescriptionBaseModel ipTestResponseModel = gson.fromJson(data, PrescriptionBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, ipTestResponseModel, mOldDataTag);
                         break;
 

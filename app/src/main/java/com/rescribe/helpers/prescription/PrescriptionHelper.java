@@ -6,7 +6,7 @@ import com.android.volley.Request;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.prescription_response_model.PrescriptionModel;
+import com.rescribe.model.prescription_response_model.PrescriptionBaseModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -35,7 +35,7 @@ public class PrescriptionHelper implements ConnectionListener {
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag == RescribeConstants.TASK_PRESCRIPTION_LIST) {
-                    PrescriptionModel model = (PrescriptionModel) customResponse;
+                    PrescriptionBaseModel model = (PrescriptionBaseModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
                 }
                 break;

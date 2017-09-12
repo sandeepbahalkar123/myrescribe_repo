@@ -10,18 +10,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rescribe.R;
-import com.rescribe.model.prescription_response_model.PrescriptionData;
+import com.rescribe.model.prescription_response_model.PrescriptionModel;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,12 +31,12 @@ import butterknife.ButterKnife;
 
 public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionListAdapter.ListViewHolder> {
 
-    private List<PrescriptionData> mPrescriptionData;
+    private List<PrescriptionModel> mPrescriptionData;
     private Context mContext;
 
-    private List<PrescriptionData> mSearchListByMedicineName;
+    private List<PrescriptionModel> mSearchListByMedicineName;
 
-    public PrescriptionListAdapter(Context context, List<PrescriptionData> dataSet) {
+    public PrescriptionListAdapter(Context context, List<PrescriptionModel> dataSet) {
         this.mPrescriptionData = dataSet;
         this.mContext = context;
         this.mSearchListByMedicineName = new ArrayList<>();
@@ -56,7 +54,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
     @Override
     public void onBindViewHolder(final PrescriptionListAdapter.ListViewHolder holder, final int position) {
 
-        final PrescriptionData prescriptionDataObject = mPrescriptionData.get(position);
+        final PrescriptionModel prescriptionDataObject = mPrescriptionData.get(position);
         if (prescriptionDataObject.getInstruction().equals("")) {
             holder.mHighlightedInstructionView.setVisibility(View.GONE);
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
@@ -89,7 +87,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             @Override
             public void onClick(View v) {
        //Expand and Collapse function
-                for (PrescriptionData object : mPrescriptionData) {
+                for (PrescriptionModel object : mPrescriptionData) {
                     object.setExpanded(false);
                 }
                 if (holder.mExpandLayout.getVisibility() == View.GONE) {
@@ -178,7 +176,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
     private void setPrescriptionDosageData(ListViewHolder holder, int position) {
 
-        final PrescriptionData prescriptionData = mPrescriptionData.get(position);
+        final PrescriptionModel prescriptionData = mPrescriptionData.get(position);
         String quantityOfDose = "";
         String timeOfDosage = "";
         String durationOfBreakFast = "";

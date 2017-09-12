@@ -162,7 +162,7 @@
     <string name="case_encounter">Case Encounter</string>
     <string name="others">Others</string>
     <string name="title_activity_report_selection">Report Selection</string>
-    <string name="prescriptions">Prescriptions</string>
+    <string name="prescriptionModels">Prescriptions</string>
     <string name="select_report">Please select Reports</string>
     <string name="title_activity_reports">Reports</string>
 

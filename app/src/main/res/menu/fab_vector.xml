@@ -14,7 +14,7 @@
     <item
         android:icon="@drawable/fab_prescription"
         android:orderInCategory="3"
-        android:title="@string/prescriptions" />
+        android:title="@string/prescriptionModels" />
 
     <item
         android:icon="@drawable/fab_bill_invoices"

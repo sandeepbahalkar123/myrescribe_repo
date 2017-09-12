@@ -124,7 +124,7 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
         AppDBHelper appDBHelper = new AppDBHelper(mParentActivity);
 
         if (appDBHelper.dataTableNumberOfRows(RescribeConstants.TASK_LOGIN) > 0) {
-            Cursor cursor = appDBHelper.getData(RescribeConstants.TASK_LOGIN);
+            Cursor cursor = appDBHelper.getPrescriptionData(RescribeConstants.TASK_LOGIN);
             cursor.moveToFirst();
             String loginData = cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
             Gson gson = new Gson();

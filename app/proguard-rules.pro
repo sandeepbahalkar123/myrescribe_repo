@@ -127,7 +127,7 @@
 -keep public class android.support.design.R$* { *; }
 
 # for DexGuard only
-#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#-keepresourcexmlelements manifest/application/meta-prescriptionData@value=GlideModule
 # End For Glide
 
 # If your project uses WebView with JS, uncomment the following

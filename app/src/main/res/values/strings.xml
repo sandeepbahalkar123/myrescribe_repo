@@ -45,6 +45,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="sign_up_confirmation">Sign Up Confirmation</string>
     <string name="logout">Logout</string>
+    <string name="phone_no_activity">Phone No Activity</string>
     <string name="customnotificationticker">Medicine Dose Notification</string>
     <string name="notification">Notification</string>
    <!-- <string name="facebook_app_id">297092640737799</string>
@@ -86,7 +87,7 @@
     <string name="already_upload">Already Uploaded</string>
     <string name="new_document">New Document</string>
     <string name="title_activity_uploaded_docs">Uploaded Documents</string>
-
+    <string name="roboto_regular">roboto_regular.ttf</string>
     <string name="name">Name</string>
     <string name="specialization">SPECIALIZATION</string>
     <string name="address">ADDRESS</string>
@@ -193,5 +194,32 @@
     <string name="gallery">Gallery</string>
     <string name="files">Files</string>
     <string name="doctor_image">Doctor Image</string>
+    <string name="doctor_connect">Doctor Connect</string>
+    <string name="chats">Chats</string>
+    <string name="connect">Connect</string>
+    <string name="search">Search</string>
+    <string name="doctor_activity">Doctor Activity</string>
+    <string name="pick_speciality">Pick Speciality</string>
+    <string name="details_note"><![CDATA[Your details will remain 100% private & secure. If you think you have medical emergency, contact your doctor immediately.]]></string>
+    <string name="vital_graph">Vital Graph</string>
+    <string name="post_your_query">Post Your Query</string>
+    <string name="cardiologist">cardiologist</string>
+    <string name="ophthalmologist">ophthalmologist</string>
+    <string name="gastro">gastro</string>
+    <string name="physiotherapist">physiotherapist</string>
+    <string name="orthopaedic">orthopaedic</string>
+    <string name="ent">ent</string>
+    <string name="dentist">dentist</string>
+    <string name="gynecologist">gynecologist</string>
+    <string name="paediatric">paediatric</string>
+    <string name="dermatologist">dermatologist</string>
+    <string name="neurologist">neurologist</string>
+    <string name="physician">physician</string>
+    <string name="psychiatrist">psychiatrist</string>
+    <string name="oncologist">oncologist</string>
+    <string name="urologist">urologist</string>
+    <string name="nephrologist">nephrologist</string>
+    <string name="surgeon">surgeon</string>
+    <string name="endocrinologist">endocrinologist</string>
 
 </resources>

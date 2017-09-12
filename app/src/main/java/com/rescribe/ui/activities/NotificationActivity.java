@@ -332,7 +332,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                         addHeader(notificationListForHeader);
                     }
                 }
-                // Data for recyclerview Adapter is sorted to set data according to UI .
+                // DoctorConnectChatData for recyclerview Adapter is sorted to set data according to UI .
                 List<AdapterNotificationData> adapterNotificationParentData = new ArrayList<>();
                 List<AdapterNotificationModel> adapterNotificationModelListForDinner = new ArrayList<>();
                 String notifyDate = "";

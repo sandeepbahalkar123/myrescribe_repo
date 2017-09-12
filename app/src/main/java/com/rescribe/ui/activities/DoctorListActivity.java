@@ -108,7 +108,6 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         Gson gson = new Gson();
         CommonMethods.Log("FilterRequest", gson.toJson(drFilterRequestModel, DrFilterRequestModel.class));
         mDrawer.closeDrawer(GravityCompat.END);
-
         DoctorFilteredListFragment doctorFilteredListFragment = DoctorFilteredListFragment.newInstance(drFilterRequestModel);
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.doctorViewContainer, doctorFilteredListFragment);

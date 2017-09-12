@@ -32,6 +32,8 @@ import com.rescribe.interfaces.Connector;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 import com.rescribe.model.case_details.CaseDetailsModel;
+import com.rescribe.model.doctor_connect_chat.DoctorConnectChatBaseModel;
+import com.rescribe.model.doctor_connect_search.DoctorConnectSearchBaseModel;
 import com.rescribe.model.doctors.appointments.DoctorAppointmentModel;
 import com.rescribe.model.doctors.doctor_info.DoctorBaseModel;
 import com.rescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
@@ -536,6 +538,15 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.MY_RECORDS_ADD_DOCTOR: //This is for get archived list
                         AddDoctorModel addDoctorModel = new Gson().fromJson(data, AddDoctorModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, addDoctorModel, mOldDataTag);
+                        break;
+
+                    case RescribeConstants.TASK_DOCTOR_CONNECT_CHAT: //This is for get archived list
+                        DoctorConnectChatBaseModel doctorConnectChatBaseModel = new Gson().fromJson(data, DoctorConnectChatBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorConnectChatBaseModel, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_DOCTOR__FILTER_DOCTOR_SPECIALITY_LIST: //This is for get archived list
+                        DoctorConnectSearchBaseModel doctorConnectSearchBaseModel = new Gson().fromJson(data, DoctorConnectSearchBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorConnectSearchBaseModel, mOldDataTag);
                         break;
 
                     default:

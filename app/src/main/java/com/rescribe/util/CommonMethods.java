@@ -585,6 +585,49 @@ public class CommonMethods {
 
         return abbreviation;
     }
+    public static int getDoctorSpecialistIcons(String caseStudyName,Context mContext) {
+
+        // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
+        int abbreviation = R.drawable.gynecologist;
+        if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.cardiologist)))
+            abbreviation = R.drawable.cardiologist;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.ophthalmologist)))
+            abbreviation = R.drawable.ophthalmologist;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.gastro)))
+            abbreviation = R.drawable.gastro;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.physiotherapist)))
+            abbreviation = R.drawable.physiotherapist;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.orthopaedic)))
+            abbreviation = R.drawable.orthopaedic;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.ent)))
+            abbreviation = R.drawable.ent;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.dentist)))
+            abbreviation = R.drawable.dentist;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.gynecologist)))
+            abbreviation = R.drawable.gynecologist;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.paediatric)))
+            abbreviation = R.drawable.paediatric;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.dermatologist)))
+            abbreviation = R.drawable.dermatologist;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.neurologist)))
+            abbreviation = R.drawable.neurologist;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.physician)))
+            abbreviation = R.drawable.physician;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.psychiatrist)))
+            abbreviation = R.drawable.psychiatrist;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.oncologist)))
+            abbreviation = R.drawable.oncologist;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.urologist)))
+            abbreviation = R.drawable.urologist;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.nephrologist)))
+            abbreviation = R.drawable.nephrologist;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.surgeon)))
+            abbreviation = R.drawable.surgeon;
+        else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.endocrinologist)))
+            abbreviation = R.drawable.endocrinologist;
+
+        return abbreviation;
+    }
 
 
     public static Date convertStringToDate(String dateString, String dateFormat) {

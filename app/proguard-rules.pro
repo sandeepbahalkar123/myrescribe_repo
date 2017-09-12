@@ -78,11 +78,6 @@
 -keep class org.apache.http.** { *; }
 -dontwarn org.apache.http.**
 
-
-#-dontwarn com.theartofdev.edmodo.cropper.**
-#-keep class com.theartofdev.edmodo.cropper.** { *; }
--optimizations !method/inlining/*
-
 ##---------------Begin: proguard configuration for Gson  ----------
 # Gson uses generic type information stored in a class file when working with fields. Proguard
 # removes such information by default, so configure it to keep all of it.
@@ -101,11 +96,7 @@
 -keep class * implements com.google.gson.JsonSerializer
 -keep class * implements com.google.gson.JsonDeserializer
 
-##---------------End: proguard configuration for Gson  ----------
-# Application classes that will be serialized/deserialized over Gson
 -keep class com.rescribe.model.** { *; }
-
-##---------------End: proguard configuration for Gson  ----------
 
 # Retain generated class which implement Unbinder.
 -keep public class * implements butterknife.Unbinder { public <init>(**, android.view.View); }

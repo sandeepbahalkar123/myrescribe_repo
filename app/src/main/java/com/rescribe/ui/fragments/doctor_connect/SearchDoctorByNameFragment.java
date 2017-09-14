@@ -76,6 +76,8 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
             emptyListView.setVisibility(View.VISIBLE);
 
         }else {
+            //Added Dr. to doctorName
+            //TODO : Temporary Fix as data from Server is not in Proper format
             mRecyclerView.setVisibility(View.VISIBLE);
             emptyListView.setVisibility(View.GONE);
             for (int i = 0; i < filterDataOnDocSpeciality().size(); i++) {

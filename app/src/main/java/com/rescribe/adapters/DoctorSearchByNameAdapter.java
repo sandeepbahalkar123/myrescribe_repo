@@ -100,6 +100,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         holder.onlineStatusTextView.setText(connectList.getOnlineStatus());
         holder.paidStatusTextView.setText(connectList.getPaidStatus());
         String doctorName = connectList.getDoctorName();
+        // Removed Dr. from doctor name to get starting letter of doctorName to set to image icon.
         doctorName = doctorName.replace("Dr. ", "");
         if (doctorName != null) {
             int color2 = mColorGenerator.getColor(doctorName);
@@ -111,8 +112,8 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
                     .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
             holder.imageOfDoctor.setImageDrawable(drawable);
         }
+       //Used spannable to show searchtext in different colour
         SpannableString spannableStringSearch = null;
-
         if ((searchString != null) && (!searchString.isEmpty())) {
 
             spannableStringSearch = new SpannableString(connectList.getDoctorName());

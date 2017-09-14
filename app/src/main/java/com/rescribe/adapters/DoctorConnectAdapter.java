@@ -39,7 +39,6 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
 
     private Context mContext;
     private ArrayList<ConnectList> connectLists;
-    String searchString = "";
     private ColorGenerator mColorGenerator;
     private String mIdle, mOnline, mOffline;
 
@@ -55,7 +54,6 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         TextView paidStatusTextView;
         @BindView(R.id.imageOfDoctor)
         ImageView imageOfDoctor;
-
         View view;
 
         ListViewHolder(View view) {
@@ -104,7 +102,7 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         holder.paidStatusTextView.setText(connectList.getPaidStatus());
 
         String doctorName = connectList.getDoctorName();
-
+     // Removed Dr. from doctor name to get starting letter of doctorName to set to image icon.
         doctorName = doctorName.replace("Dr. ", "");
         if (doctorName != null) {
             int color2 = mColorGenerator.getColor(doctorName);
@@ -117,24 +115,8 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
             holder.imageOfDoctor.setImageDrawable(drawable);
         }
 
-        SpannableString spannableStringSearch = null;
 
-        if ((searchString != null) && (!searchString.isEmpty())) {
-            spannableStringSearch = new SpannableString(connectList.getDoctorName());
-            Pattern pattern = Pattern.compile(searchString, Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(connectList.getDoctorName());
-            while (matcher.find()) {
-                spannableStringSearch.setSpan(new ForegroundColorSpan(
-                                ContextCompat.getColor(mContext, R.color.tagColor)),
-                        matcher.start(), matcher.end(),
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-        }
-        if (spannableStringSearch != null) {
-            holder.doctorName.setText(spannableStringSearch);
-        } else {
             holder.doctorName.setText(connectList.getDoctorName());
-        }
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

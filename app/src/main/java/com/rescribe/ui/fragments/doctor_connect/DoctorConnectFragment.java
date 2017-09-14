@@ -91,8 +91,10 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     }
 
     public void setAdapter() {
+        //Added Dr. to doctorName
         for (int i = 0; i < mDoctorConnectDataModel.getConnectList().size(); i++) {
             String doctorName = mDoctorConnectDataModel.getConnectList().get(i).getDoctorName();
+            //TODO : Temporary Fix as data from Server is not in Proper format
             if (doctorName.startsWith("DR. ")) {
                 String drName =  doctorName.replace("DR. ", "Dr. ");
                 mDoctorConnectDataModel.getConnectList().get(i).setDoctorName(drName);

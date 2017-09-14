@@ -22,7 +22,6 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.doctor_connect.ConnectList;
 import com.rescribe.model.doctor_connect.DoctorConnectBaseModel;
 import com.rescribe.model.doctor_connect.DoctorConnectDataModel;
-import com.rescribe.model.doctor_connect_chat.Data;
 import com.rescribe.model.doctor_connect_chat.DoctorConnectChatBaseModel;
 import com.rescribe.model.doctor_connect_search.DoctorConnectSearchBaseModel;
 import com.rescribe.model.doctor_connect_search.DoctorSpeciality;
@@ -260,18 +259,16 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
 
     public interface OnClickOfSearchBar {
         void setOnClickOfSearchBar(String searchText);
-
     }
 
     //TODO: parceable has to be used to getSpecialityOFDoctorList
-
+    //Call Back from DoctorConnectSearchContainer
     public void addSpecializationOfDoctorFragment(Bundle bundleData) {
         // Show speciality of Doctor fragment loaded
         mFragmentLoaded = SPECIALIZATION_DOCTOR_FRAGMENT;
         if (searchDataModel == null) {
             searchDataModel = new SearchDataModel();
         }
-
         searchBySpecializationOfDoctorFragment = SearchBySpecializationOfDoctorFragment.newInstance(searchDataModel.getDoctorSpecialities());
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
@@ -279,14 +276,12 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         fragmentTransaction.commit();
 
     }
-
-
+    //Call Back from SearchBySpecializationOfDoctor
     public void addSearchDoctorByNameFragment(Bundle bundleData) {
         mFragmentLoaded = SPECIALIZATION_DOCTOR_FRAGMENT_BYNAME;
         if (bundleData != null) {
             mSearchView.setText("" + bundleData.getString(getString(R.string.clicked_item_data)));
         }
-
         searchDoctorByNameFragment = SearchDoctorByNameFragment.newInstance(getmConnectLists(), bundleData);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();

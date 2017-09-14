@@ -10,25 +10,25 @@ import com.rescribe.interfaces.CustomResponse;
 
 import java.util.ArrayList;
 
-public class Data implements Parcelable,CustomResponse {
+public class ChatData implements Parcelable,CustomResponse {
 
     @SerializedName("doctorList")
     @Expose
     private ArrayList<ChatList> chatList = null;
-    public final static Creator<Data> CREATOR = new Creator<Data>() {
+    public final static Creator<ChatData> CREATOR = new Creator<ChatData>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public Data createFromParcel(Parcel in) {
-            Data instance = new Data();
+        public ChatData createFromParcel(Parcel in) {
+            ChatData instance = new ChatData();
             in.readList(instance.chatList, (ChatList.class.getClassLoader()));
             return instance;
         }
 
-        public Data[] newArray(int size) {
-            return (new Data[size]);
+        public ChatData[] newArray(int size) {
+            return (new ChatData[size]);
         }
 
     };

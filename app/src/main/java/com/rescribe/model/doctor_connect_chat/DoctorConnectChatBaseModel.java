@@ -17,7 +17,7 @@ public class DoctorConnectChatBaseModel implements Parcelable, CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private Data data;
+    private ChatData data;
     public final static Creator<DoctorConnectChatBaseModel> CREATOR = new Creator<DoctorConnectChatBaseModel>() {
 
 
@@ -27,7 +27,7 @@ public class DoctorConnectChatBaseModel implements Parcelable, CustomResponse {
         public DoctorConnectChatBaseModel createFromParcel(Parcel in) {
             DoctorConnectChatBaseModel instance = new DoctorConnectChatBaseModel();
             instance.common = ((Common) in.readValue((Common.class.getClassLoader())));
-            instance.data = ((Data) in.readValue((Data.class.getClassLoader())));
+            instance.data = ((ChatData) in.readValue((ChatData.class.getClassLoader())));
             return instance;
         }
 
@@ -45,11 +45,11 @@ public class DoctorConnectChatBaseModel implements Parcelable, CustomResponse {
         this.common = common;
     }
 
-    public Data getData() {
+    public ChatData getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(ChatData data) {
         this.data = data;
     }
 

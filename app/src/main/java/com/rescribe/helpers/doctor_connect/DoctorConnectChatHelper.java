@@ -78,30 +78,11 @@ public class DoctorConnectChatHelper implements ConnectionListener {
 
     }
 
-
-    //-- Sort date in descending order, copied from SRDaoImplManager.java
-
-
     public void doDoctorConnectChat() {
-       ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_CONNECT_CHAT, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_CONNECT_CHAT, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.DOCTOR_CHAT_LIST_URL);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_CONNECT_CHAT);
-     /*   try {
-            InputStream is = mContext.getAssets().open("doctor_connect_chat.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "doDoctorConnectChat" + json);
-
-            DoctorConnectChatBaseModel doctorConnectChatModel = new Gson().fromJson(json, DoctorConnectChatBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, doctorConnectChatModel, RescribeConstants.TASK_DOCTOR_CONNECT_CHAT);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
     }
 
 }

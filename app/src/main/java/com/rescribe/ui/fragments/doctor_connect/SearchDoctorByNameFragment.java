@@ -71,30 +71,37 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
     }
 
     private void init() {
-        mRecyclerView.setVisibility(View.VISIBLE);
-        for (int i = 0; i < filterDataOnDocSpeciality().size(); i++) {
-            String doctorName = filterDataOnDocSpeciality().get(i).getDoctorName();
-            if (doctorName.startsWith("DR. ")) {
-                String drName =  doctorName.replace("DR. ", "Dr. ");
-                filterDataOnDocSpeciality().get(i).setDoctorName(drName);
-            } else if (doctorName.startsWith("DR.")) {
-                String drName =   doctorName.replace("DR.", "Dr. ");
-                filterDataOnDocSpeciality().get(i).setDoctorName(drName);
-            }  else if (doctorName.startsWith("Dr. ")) {
-                String drName =   doctorName.replace("Dr. ", "Dr. ");
-                filterDataOnDocSpeciality().get(i).setDoctorName(drName);
-            } else {
-                filterDataOnDocSpeciality().get(i).setDoctorName("Dr. " + doctorName);
+        if(mReceivedList==null){
+            mRecyclerView.setVisibility(View.GONE);
+            emptyListView.setVisibility(View.VISIBLE);
+
+        }else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            emptyListView.setVisibility(View.GONE);
+            for (int i = 0; i < filterDataOnDocSpeciality().size(); i++) {
+                String doctorName = filterDataOnDocSpeciality().get(i).getDoctorName();
+                if (doctorName.startsWith("DR. ")) {
+                    String drName = doctorName.replace("DR. ", "Dr. ");
+                    filterDataOnDocSpeciality().get(i).setDoctorName(drName);
+                } else if (doctorName.startsWith("DR.")) {
+                    String drName = doctorName.replace("DR.", "Dr. ");
+                    filterDataOnDocSpeciality().get(i).setDoctorName(drName);
+                } else if (doctorName.startsWith("Dr. ")) {
+                    String drName = doctorName.replace("Dr. ", "Dr. ");
+                    filterDataOnDocSpeciality().get(i).setDoctorName(drName);
+                } else {
+                    filterDataOnDocSpeciality().get(i).setDoctorName("Dr. " + doctorName);
+                }
             }
+            doctorSearchByNameAdapter = new DoctorSearchByNameAdapter(getActivity(), filterDataOnDocSpeciality());
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                    DividerItemDecoration.VERTICAL);
+            mRecyclerView.addItemDecoration(dividerItemDecoration);
+            mRecyclerView.setAdapter(doctorSearchByNameAdapter);
         }
-        doctorSearchByNameAdapter = new DoctorSearchByNameAdapter(getActivity(), filterDataOnDocSpeciality());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
-        mRecyclerView.setAdapter(doctorSearchByNameAdapter);
     }
 
     @Override

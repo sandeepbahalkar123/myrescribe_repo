@@ -75,19 +75,27 @@ public class SearchBySpecializationOfDoctorFragment extends Fragment implements 
     }
 
     private void init() {
-        pickSpeciality.setVisibility(View.VISIBLE);
-        displayNote.setVisibility(View.VISIBLE);
-        doctorConnectAdapter = new DoctorConnectSearchAdapter(getActivity(), this, searchDataModelList);
-        mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(doctorConnectAdapter);
-        int spanCount = 3; // 3 columns
-        int spacing = 50; // 50px
-        boolean includeEdge = true;
-        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-
+        if(searchDataModelList==null){
+            emptyListView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+            pickSpeciality.setVisibility(View.GONE);
+            displayNote.setVisibility(View.GONE);
+        }else {
+            emptyListView.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            pickSpeciality.setVisibility(View.VISIBLE);
+            displayNote.setVisibility(View.VISIBLE);
+            doctorConnectAdapter = new DoctorConnectSearchAdapter(getActivity(), this, searchDataModelList);
+            mRecyclerView.setHasFixedSize(true);
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
+            mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            mRecyclerView.setAdapter(doctorConnectAdapter);
+            int spanCount = 3; // 3 columns
+            int spacing = 50; // 50px
+            boolean includeEdge = true;
+            mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+        }
     }
 
     @Override

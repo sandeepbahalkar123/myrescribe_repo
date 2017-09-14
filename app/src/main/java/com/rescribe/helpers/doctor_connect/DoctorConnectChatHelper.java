@@ -2,13 +2,17 @@ package com.rescribe.helpers.doctor_connect;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.android.volley.Request;
 import com.google.gson.Gson;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.doctor_connect_chat.DoctorConnectChatBaseModel;
 import com.rescribe.network.ConnectRequest;
+import com.rescribe.network.ConnectionFactory;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
 import java.io.IOException;
@@ -79,13 +83,11 @@ public class DoctorConnectChatHelper implements ConnectionListener {
 
 
     public void doDoctorConnectChat() {
-       /* ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_CONNECT_CHAT, Request.Method.POST, true);
+       ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_CONNECT_CHAT, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-
-        mConnectionFactory.setPostParams(mRequestedFilterRequestModel);
-        mConnectionFactory.setUrl(Config.DOCTOR_LIST_FILTER_URL);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_CONNECT_CHAT);*/
-        try {
+        mConnectionFactory.setUrl(Config.DOCTOR_CHAT_LIST_URL);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_CONNECT_CHAT);
+     /*   try {
             InputStream is = mContext.getAssets().open("doctor_connect_chat.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -99,7 +101,7 @@ public class DoctorConnectChatHelper implements ConnectionListener {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        }*/
     }
 
 }

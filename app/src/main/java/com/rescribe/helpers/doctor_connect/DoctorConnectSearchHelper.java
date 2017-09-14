@@ -2,13 +2,17 @@ package com.rescribe.helpers.doctor_connect;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.android.volley.Request;
 import com.google.gson.Gson;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.doctor_connect_search.DoctorConnectSearchBaseModel;
 import com.rescribe.network.ConnectRequest;
+import com.rescribe.network.ConnectionFactory;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
 import java.io.IOException;
@@ -66,12 +70,12 @@ public class DoctorConnectSearchHelper implements ConnectionListener {
 
     public void getDoctorSpecialityList() {
 
-      /*  ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR__FILTER_DOCTOR_SPECIALITY_LIST, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR__FILTER_DOCTOR_SPECIALITY_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.FILTER_DOCTOR_SPECIALIST_LIST);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR__FILTER_DOCTOR_SPECIALITY_LIST);*/
+        mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR__FILTER_DOCTOR_SPECIALITY_LIST);
 
-        try {
+    /*    try {
             InputStream is = mContext.getAssets().open("doctor_connect_search.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -85,7 +89,7 @@ public class DoctorConnectSearchHelper implements ConnectionListener {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        }*/
 
     }
 

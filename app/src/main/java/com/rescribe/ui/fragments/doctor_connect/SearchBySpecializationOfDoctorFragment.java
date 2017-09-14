@@ -10,16 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorConnectSearchAdapter;
 import com.rescribe.model.doctor_connect_search.DoctorSpeciality;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
+
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
@@ -36,6 +40,8 @@ public class SearchBySpecializationOfDoctorFragment extends Fragment implements 
     CustomTextView pickSpeciality;
     @BindView(R.id.displayNote)
     RelativeLayout displayNote;
+    @BindView(R.id.fragmentContainer)
+    RelativeLayout fragmentContainer;
     private View mRootView;
     private DoctorConnectSearchAdapter doctorConnectAdapter;
     private OnAddFragmentListener mListener;
@@ -97,8 +103,8 @@ public class SearchBySpecializationOfDoctorFragment extends Fragment implements 
 
 
     @Override
-    public void setOnClickOfDoctorSpeciality() {
-        mListener.addSearchDoctorByNameFragment();
+    public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
+        mListener.addSearchDoctorByNameFragment(bundleData);
     }
 
     @Override
@@ -119,7 +125,7 @@ public class SearchBySpecializationOfDoctorFragment extends Fragment implements 
     }
 
     public interface OnAddFragmentListener {
-        void addSearchDoctorByNameFragment();
+        void addSearchDoctorByNameFragment(Bundle bundleData);
     }
 
 }

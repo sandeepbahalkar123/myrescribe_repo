@@ -19,6 +19,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.interfaces.OTPListener;
 import com.rescribe.model.login.LoginModel;
+import com.rescribe.model.login.LoginWithOtp;
 import com.rescribe.model.login.SignUpModel;
 import com.rescribe.model.requestmodel.login.SignUpRequestModel;
 import com.rescribe.model.requestmodel.login.SignUpVerifyOTPRequestModel;
@@ -175,7 +176,7 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_LOGIN_WITH_OTP)) {
-            LoginModel loginModel = (LoginModel) customResponse;
+            LoginWithOtp loginModel = (LoginWithOtp) customResponse;
             if (loginModel.getCommon().isSuccess()) {
                 mResendOTPCount = mResendOTPCount + 1;
                 mCountDownTimer = new OtpConfirmationForLogin.MyCountDownTimer(mStartTime, mInterval);
@@ -185,15 +186,15 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
                 mResendOtpBtn.setVisibility(View.GONE);
                 mOtpEditText.setText("");
             } else {
-                CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
+                CommonMethods.showToast(getActivity(), loginModel.getData());
             }
         } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_VERIFY_SIGN_UP_OTP)) {
 
             LoginModel receivedModel = (LoginModel) customResponse;
             if (receivedModel.getCommon().isSuccess()) {
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, receivedModel.getAuthToken(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, receivedModel.getPatientId(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, receivedModel.getLoginData().getAuthToken(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, receivedModel.getLoginData().getPatientId(), getActivity());
                 RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, getActivity());
                 RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,getActivity()),getActivity());
              //  RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, mSignUpRequestModel.getPassword().toString(), getActivity());

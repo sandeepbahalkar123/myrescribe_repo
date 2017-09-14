@@ -18,8 +18,8 @@ import com.rescribe.helpers.prescription.PrescriptionHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 
-import com.rescribe.model.prescription_response_model.PrescriptionBaseModel;
 import com.rescribe.model.prescription_response_model.PrescriptionData;
+import com.rescribe.model.prescription_response_model.PrescriptionBaseModel;
 import com.rescribe.model.prescription_response_model.PrescriptionModel;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -102,9 +102,9 @@ public class PrescriptionActivity extends AppCompatActivity
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equals(RescribeConstants.TASK_PRESCRIPTION_LIST)) {
             PrescriptionBaseModel prescriptionBaseModel = (PrescriptionBaseModel)customResponse;
-            PrescriptionData prescriptionDataReceived = prescriptionBaseModel.getPrescriptionData();
+            PrescriptionData dataReceived = prescriptionBaseModel.getData();
 
-            if(prescriptionDataReceived.getPrescriptionModels().size()>0){
+            if(dataReceived.getPrescriptionModels().size()>0){
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mNoDataView.setVisibility(View.GONE);
 
@@ -113,7 +113,7 @@ public class PrescriptionActivity extends AppCompatActivity
                 mNoDataView.setVisibility(View.VISIBLE);
             }
 
-            List<PrescriptionModel> data = prescriptionDataReceived.getPrescriptionModels();
+            List<PrescriptionModel> data = dataReceived.getPrescriptionModels();
   // Mealtime is set here because according to mealtime doseage is highlighted in UI
             if (data != null) {
                 if (data.size() != 0) {

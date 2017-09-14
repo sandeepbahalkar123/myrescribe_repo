@@ -4,14 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.model.doctors.appointments.DoctorAppointment;
+import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.MapsActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -33,38 +37,25 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private String mCurrentDate;
     private String mAppointmentType;
     private Context mContext;
-    private ArrayList<DoctorAppointment> appointmentsList;
-
-    static class ListViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.doctorName)
-        CustomTextView doctorName;
-        @BindView(R.id.doctorType)
-        TextView doctorType;
-        @BindView(R.id.doctorAddress)
-        TextView doctorAddress;
-
-        @BindView(R.id.gMapLocationView)
-        ImageView mGmapLocationView;
-        @BindView(R.id.appointmentsTimeStamp)
-        TextView appointmentsTimeStamp;
-
-        View view;
-
-        ListViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-            this.view = view;
-        }
-    }
+    private ArrayList<AptList> appointmentsList;
+    private int imageSize;
 
 
-    public AppointmentAdapter(Context mContext, ArrayList<DoctorAppointment> appointmentsList, String appointmentType) {
+    public AppointmentAdapter(Context mContext, ArrayList<AptList> appointmentsList, String appointmentType) {
         this.mAppointmentType = appointmentType;
         this.appointmentsList = appointmentsList;
         this.mContext = mContext;
         DateFormat dateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.YYYY_MM_DD, Locale.US);
         mCurrentDate = dateFormat.format(new Date());
+        setColumnNumber(mContext, 2);
+    }
+
+    private void setColumnNumber(Context context, int columnNum) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        int widthPixels = metrics.widthPixels;
+        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     @Override
@@ -77,7 +68,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        DoctorAppointment appointment = appointmentsList.get(position);
+        AptList appointment = appointmentsList.get(position);
 
         holder.doctorName.setText(appointment.getDoctorName());
         holder.doctorType.setText(appointment.getSpecialization());
@@ -122,17 +113,29 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         holder.mGmapLocationView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(NetworkUtil.isInternetAvailable(mContext)) {
-                    DoctorAppointment appointment1 = appointmentsList.get(Integer.parseInt("" + v.getTag()));
+                if (NetworkUtil.isInternetAvailable(mContext)) {
+                    AptList appointment1 = appointmentsList.get(Integer.parseInt("" + v.getTag()));
                     Intent intent = new Intent(mContext, MapsActivity.class);
                     intent.putExtra(mContext.getString(R.string.address), appointment1.getAddress());
                     //intent.putExtra(mContext.getString(R.string.longitude), appointment1.getLongitude());
                     mContext.startActivity(intent);
-                }else{
-                    CommonMethods.showToast(mContext,mContext.getString(R.string.internet));
+                } else {
+                    CommonMethods.showToast(mContext, mContext.getString(R.string.internet));
                 }
             }
         });
+
+        //-------Load image-------
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.override(imageSize, imageSize);
+        requestOptions.placeholder(R.drawable.layer_12);
+
+        Glide.with(mContext)
+                .load(appointment.getImageUrl())
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(holder.mImageURL);
+        //--------------
 
     }
 
@@ -140,4 +143,31 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     public int getItemCount() {
         return appointmentsList.size();
     }
+
+    static class ListViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.doctorName)
+        CustomTextView doctorName;
+        @BindView(R.id.doctorType)
+        TextView doctorType;
+        @BindView(R.id.doctorAddress)
+        TextView doctorAddress;
+
+        @BindView(R.id.gMapLocationView)
+        ImageView mGmapLocationView;
+        @BindView(R.id.imageURL)
+        ImageView mImageURL;
+        @BindView(R.id.appointmentsTimeStamp)
+        TextView appointmentsTimeStamp;
+
+        View view;
+
+        ListViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+            this.view = view;
+        }
+    }
+
+
 }

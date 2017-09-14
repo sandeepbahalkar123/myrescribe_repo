@@ -48,8 +48,8 @@
     <string name="phone_no_activity">Phone No Activity</string>
     <string name="customnotificationticker">Medicine Dose Notification</string>
     <string name="notification">Notification</string>
-   <!-- <string name="facebook_app_id">297092640737799</string>
-    <string name="fb_login_protocol_scheme">fb1879555372255897</string>-->
+    <!-- <string name="facebook_app_id">297092640737799</string>
+     <string name="fb_login_protocol_scheme">fb1879555372255897</string>-->
     <string name="roboto_bold">roboto_bold.ttf</string>
     <string name="roboto_medium">roboto_medium.ttf</string>
     <string name="title_activity_preferences">Preferences</string>
@@ -136,7 +136,6 @@
     <string name="greater">greater</string>
     <string name="less_than_sign"><![CDATA[<]]></string>
     <string name="greater_than_sign"><![CDATA[>]]></string>
-    <string name="server_error">Server Error</string>
     <string name="bp_max">BpMax</string>
     <string name="bp">BP</string>
     <string name="colon_sign">:</string>
@@ -165,7 +164,6 @@
     <string name="prescriptionModels">Prescriptions</string>
     <string name="select_report">Please select Reports</string>
     <string name="title_activity_reports">Reports</string>
-
     <string name="retry">Retry</string>
     <string name="please_select_doctor_name">Please enter Doctor Name</string>
     <string name="please_enter_date">Please enter Date</string>
@@ -173,12 +171,12 @@
     <string name="please_select_at_least_one_document">Please select at least one Document.</string>
     <string name="gmail_application_not_found">Gmail application not found</string>
     <!-- <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>-->
-<!--Key for Release-->
+    <!--Key for Release-->
     <string name="google_maps_key">AIzaSyCO8J2ASZDrJ4ARM1VVnZV7e5EQGryfeEE</string>
 
     <!--Key for Debug-->
 
-   <!-- <string name="google_maps_key">AIzaSyBtI5h1jCRJZFXQowkuglxMtNYPURtHX5M</string>-->
+    <!-- <string name="google_maps_key">AIzaSyBtI5h1jCRJZFXQowkuglxMtNYPURtHX5M</string>-->
     <string name="profile_exists">User\'s profile is already exist!!</string>
     <string name="enter_otp_no">Enter otp received on your mobile no.</string>
     <string name="address_not_found">Address not Found</string>
@@ -194,6 +192,7 @@
     <string name="gallery">Gallery</string>
     <string name="files">Files</string>
     <string name="doctor_image">Doctor Image</string>
+
     <string name="doctor_connect">Doctor Connect</string>
     <string name="chats">Chats</string>
     <string name="connect">Connect</string>
@@ -222,4 +221,15 @@
     <string name="surgeon">surgeon</string>
     <string name="endocrinologist">endocrinologist</string>
 
+    <string name="documents_uploaded_successfully">Documents Uploaded Successfully</string>
+
+
+    <!-- Error string -->
+    <string name="parse_error">parse error</string>
+    <string name="no_connection_error">no connection error</string>
+    <string name="default_error">default error</string>
+    <string name="server_error">Server Error</string>
+    <string name="dr">Dr.</string>
+    <string name="clicked_item_data">clicked_item_data</string>
+    <!-- Error string -->
 </resources>

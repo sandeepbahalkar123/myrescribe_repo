@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
 import com.rescribe.model.doctor_connect.ConnectList;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -34,9 +33,9 @@ import butterknife.ButterKnife;
 public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdapter.ListViewHolder> {
 
     private Context mContext;
-    private ArrayList<ConnectList> appointmentsList;
-    private ArrayList<ConnectList> mArrayList;
+    private ArrayList<ConnectList> connectLists;
     String searchString = "";
+    private ColorGenerator mColorGenerator;
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
 
@@ -61,10 +60,10 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
     }
 
 
-    public DoctorConnectAdapter(Context mContext, ArrayList<ConnectList> appointmentsList) {
-        this.appointmentsList = appointmentsList;
-        mArrayList = appointmentsList;
+    public DoctorConnectAdapter(Context mContext, ArrayList<ConnectList> connectLists) {
+        this.connectLists = connectLists;
         this.mContext = mContext;
+        mColorGenerator = ColorGenerator.MATERIAL;
 
     }
 
@@ -78,31 +77,35 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        ConnectList doctorConnectChatModel = appointmentsList.get(position);
-
-        // holder.doctorName.setText(doctorConnectChatModel.getDoctorName());
-        holder.doctorType.setText(doctorConnectChatModel.getSpecialization());
-        if (doctorConnectChatModel.getOnlineStatus().equalsIgnoreCase("Online")) {
+        ConnectList connectList = connectLists.get(position);
+        holder.doctorType.setText(connectList.getSpecialization());
+        if (connectList.getOnlineStatus().equalsIgnoreCase("Online")) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.green_light));
         } else {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
         }
-        holder.onlineStatusTextView.setText(doctorConnectChatModel.getOnlineStatus());
-        holder.paidStatusTextView.setText(doctorConnectChatModel.getPaidStatus());
-        String s = doctorConnectChatModel.getDoctorName();
-        s = s.replace("Dr. ", "");
-        char first = s.charAt(0);
+        holder.onlineStatusTextView.setText(connectList.getOnlineStatus());
+        holder.paidStatusTextView.setText(connectList.getPaidStatus());
 
-        TextDrawable drawable = TextDrawable.builder()
-                .buildRound(String.valueOf(first), getRandomColor());
-        holder.imageOfDoctor.setImageDrawable(drawable);
+        String doctorName = connectList.getDoctorName();
+        doctorName = doctorName.replace("Dr.", "");
+        if (doctorName != null) {
+            int color2 = mColorGenerator.getColor(doctorName);
+            TextDrawable drawable = TextDrawable.builder()
+                    .beginConfig()
+                    .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                    .endConfig()
+                    .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
+            holder.imageOfDoctor.setImageDrawable(drawable);
+        }
 
         SpannableString spannableStringSearch = null;
 
         if ((searchString != null) && (!searchString.isEmpty())) {
-            spannableStringSearch = new SpannableString(doctorConnectChatModel.getDoctorName());
+            spannableStringSearch = new SpannableString(connectList.getDoctorName());
             Pattern pattern = Pattern.compile(searchString, Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(doctorConnectChatModel.getDoctorName());
+            Matcher matcher = pattern.matcher(connectList.getDoctorName());
             while (matcher.find()) {
                 spannableStringSearch.setSpan(new ForegroundColorSpan(
                                 ContextCompat.getColor(mContext, R.color.tagColor)),
@@ -113,21 +116,14 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         if (spannableStringSearch != null) {
             holder.doctorName.setText(spannableStringSearch);
         } else {
-            holder.doctorName.setText(doctorConnectChatModel.getDoctorName());
+            holder.doctorName.setText(connectList.getDoctorName());
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return appointmentsList.size();
-    }
-
-
-    public int getRandomColor() {
-        Random rnd = new Random();
-        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        return color;
+        return connectLists.size();
     }
 
 }

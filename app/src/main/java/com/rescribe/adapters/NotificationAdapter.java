@@ -18,7 +18,7 @@ import com.rescribe.listeners.SwipeDismissTouchListener;
 import com.rescribe.model.notification.AdapterNotificationModel;
 import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.SlotModel;
-import com.rescribe.model.response_model_notification.ResponseLogNotificationModel;
+import com.rescribe.model.response_model_notification.NotificationResponseBaseModel;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -466,13 +466,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 // this method is called from NotificationActivity Onsuccess of TASK_RESPOND_NOTIFICATION_ADAPTER or TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER
      public void onSuccessOfNotificationCheckBoxClick(String mOldDataTag, CustomResponse customResponse){
          if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
-             ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+             NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
              String position = mOldDataTag;
 
              String[] count = position.split("_");
              String counter = count[1];
              if (responseLogNotificationModel.getCommon().isSuccess()) {
-                 CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
+                 CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
                  if (mSlotType.equals(BREAK_FAST)) {
                      mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabSelected(true);
                      mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabWebService(false);
@@ -517,12 +517,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                  }
              }
          } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
-             ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+             NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
              String position = mOldDataTag;
              String[] count = position.split("_");
              String counter = count[1];
              if (responseLogNotificationModel.getCommon().isSuccess()) {
-                 CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
+                 CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
                  if (mSlotTypeForHeader.equals(DINNER)) {
                      mDataSet.get(Integer.parseInt(counter)).setDinnerThere(false);
                      mparentHeader.removeView(mViewForHeader);

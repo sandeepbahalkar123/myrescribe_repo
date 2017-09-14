@@ -17,7 +17,7 @@ public class CaseDetailsListModel implements Parcelable, CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private ArrayList<CaseDetailsData> caseDetailsDatas = new ArrayList<CaseDetailsData>();
+    private CaseHeadingsModel caseHeadingsModel;
     public final static Parcelable.Creator<CaseDetailsListModel> CREATOR = new Creator<CaseDetailsListModel>() {
 
 
@@ -27,7 +27,7 @@ public class CaseDetailsListModel implements Parcelable, CustomResponse {
         public CaseDetailsListModel createFromParcel(Parcel in) {
             CaseDetailsListModel instance = new CaseDetailsListModel();
             instance.common = ((Common) in.readValue((Common.class.getClassLoader())));
-            in.readList(instance.caseDetailsDatas, (CaseDetailsData.class.getClassLoader()));
+            instance.caseHeadingsModel = ((CaseHeadingsModel) in.readValue((CaseHeadingsModel.class.getClassLoader())));
             return instance;
         }
 
@@ -35,7 +35,8 @@ public class CaseDetailsListModel implements Parcelable, CustomResponse {
             return (new CaseDetailsListModel[size]);
         }
 
-    };
+    }
+            ;
 
     public Common getCommon() {
         return common;
@@ -45,21 +46,20 @@ public class CaseDetailsListModel implements Parcelable, CustomResponse {
         this.common = common;
     }
 
-    public ArrayList<CaseDetailsData> getCaseDetailsDatas() {
-        return caseDetailsDatas;
+    public CaseHeadingsModel getCaseHeadingsModel() {
+        return caseHeadingsModel;
     }
 
-    public void setCaseDetailsDatas(ArrayList<CaseDetailsData> caseDetailsDatas) {
-        this.caseDetailsDatas = caseDetailsDatas;
+    public void setCaseHeadingsModel(CaseHeadingsModel caseHeadingsModel) {
+        this.caseHeadingsModel = caseHeadingsModel;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(common);
-        dest.writeList(caseDetailsDatas);
+        dest.writeValue(caseHeadingsModel);
     }
 
     public int describeContents() {
         return 0;
     }
-
 }

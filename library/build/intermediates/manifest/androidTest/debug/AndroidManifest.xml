@@ -13,7 +13,7 @@
         android:label="Tests for com.heinrichreimersoftware.materialdrawer.test"
         android:targetPackage="com.heinrichreimersoftware.materialdrawer.test" />
 
-    <meta-prescriptionData
+    <meta-data
         android:name="android.support.VERSION"
         android:value="25.3.0" />
 

@@ -274,7 +274,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
             if (investigationListModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
 
-                investigation = investigationListModel.getData();
+                investigation = investigationListModel.getInvestigationNotification().getNotifications();
 
                 if (investigation.size() > 0) {
 
@@ -319,20 +319,24 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         } else if (customResponse instanceof InvestigationUploadByGmailModel) {
             InvestigationUploadByGmailModel investigationUploadByGmailModel = (InvestigationUploadByGmailModel) customResponse;
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(RescribeConstants.EMAIL, investigationUploadByGmailModel.getData().getEmailId());
-            clipboard.setPrimaryClip(clip);
+            String email = "";
+            if (investigationUploadByGmailModel.getData() != null) {
+                email = investigationUploadByGmailModel.getData().getEmailId();
+                ClipData clip = ClipData.newPlainText(RescribeConstants.EMAIL, email);
+                clipboard.setPrimaryClip(clip);
 
-            for (InvestigationData dataObject : investigationTemp) {
-                if (dataObject.isSelected() && !dataObject.isUploaded()) {
-                    dataObject.setUploaded(dataObject.isSelected());
-                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), "");
+                for (InvestigationData dataObject : investigationTemp) {
+                    if (dataObject.isSelected() && !dataObject.isUploaded()) {
+                        dataObject.setUploaded(dataObject.isSelected());
+                        appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), "");
+                    }
                 }
+                changeOriginalData(investigationTemp);
+                buttonEnable();
+                buttonManage(View.VISIBLE);
+                startActivity(gmailIntent);
+                CommonMethods.showToast(mContext, investigationUploadByGmailModel.getData().getEmailId());
             }
-            changeOriginalData(investigationTemp);
-            buttonEnable();
-            buttonManage(View.VISIBLE);
-            startActivity(gmailIntent);
-            CommonMethods.showToast(mContext, investigationUploadByGmailModel.getData().getEmailId());
         }
     }
 

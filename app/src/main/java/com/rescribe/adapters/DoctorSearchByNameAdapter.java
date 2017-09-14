@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
 import com.rescribe.model.doctor_connect.ConnectList;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -24,20 +25,20 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 /**
  * Created by jeetal on 8/9/17.
  */
 
 public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearchByNameAdapter.ListViewHolder> implements Filterable {
-
+    private ColorGenerator mColorGenerator;
     private Context mContext;
     private ArrayList<ConnectList> appointmentsList;
     private ArrayList<ConnectList> mArrayList;
-    String searchString="";
+    String searchString = "";
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
 
@@ -66,6 +67,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         this.appointmentsList = appointmentsList;
         mArrayList = appointmentsList;
         this.mContext = mContext;
+        mColorGenerator = ColorGenerator.MATERIAL;
 
     }
 
@@ -88,31 +90,33 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         }
         holder.onlineStatusTextView.setText(connectList.getOnlineStatus());
         holder.paidStatusTextView.setText(connectList.getPaidStatus());
-        String s = connectList.getDoctorName();
-        s = s.replace("Dr. ", "");
-        char first = s.charAt(0);
-
-        TextDrawable drawable = TextDrawable.builder()
-                .buildRound(String.valueOf(first), getRandomColor());
-        holder.imageOfDoctor.setImageDrawable(drawable);
-
+        String doctorName = connectList.getDoctorName();
+        doctorName = doctorName.replace("Dr.", "");
+        if (doctorName != null) {
+            int color2 = mColorGenerator.getColor(doctorName);
+            TextDrawable drawable = TextDrawable.builder()
+                    .beginConfig()
+                    .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                    .endConfig()
+                    .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
+            holder.imageOfDoctor.setImageDrawable(drawable);
+        }
         SpannableString spannableStringSearch = null;
 
-        if ((searchString!= null) && (!searchString.isEmpty())) {
+        if ((searchString != null) && (!searchString.isEmpty())) {
+
             spannableStringSearch = new SpannableString(connectList.getDoctorName());
-            Pattern pattern = Pattern.compile(searchString, Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(connectList.getDoctorName());
-            while (matcher.find()) {
-                spannableStringSearch.setSpan(new ForegroundColorSpan(
-                                ContextCompat.getColor(mContext, R.color.tagColor)),
-                        matcher.start(), matcher.end(),
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
+
+            spannableStringSearch.setSpan(new ForegroundColorSpan(
+                            ContextCompat.getColor(mContext, R.color.tagColor)),
+                   3, 3+searchString.length(),//hightlight searchString
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
         }
-        if(spannableStringSearch !=null){
+        if (spannableStringSearch != null) {
             holder.doctorName.setText(spannableStringSearch);
-        }
-        else{
+        } else {
             holder.doctorName.setText(connectList.getDoctorName());
         }
 
@@ -141,7 +145,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
 
                     for (ConnectList doctorConnectModel : mArrayList) {
 
-                        if (doctorConnectModel.getDoctorName().toLowerCase().contains(charString.toLowerCase())) {
+                        if (doctorConnectModel.getDoctorName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + charString.toLowerCase())) {
 
                             filteredList.add(doctorConnectModel);
                         }
@@ -162,12 +166,5 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
             }
         };
     }
-
-    public int getRandomColor() {
-        Random rnd = new Random();
-        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        return color;
-    }
-
 }
 

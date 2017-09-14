@@ -19,7 +19,7 @@
             android:authorities="${applicationId}.droidninja.filepicker.provider"
             android:exported="false"
             android:grantUriPermissions="true">
-            <meta-prescriptionData
+            <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
         </provider>

@@ -3,10 +3,11 @@ package com.rescribe.helpers.notification;
 import android.content.Context;
 
 import com.android.volley.Request;
+import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.response_model_notification.ResponseLogNotificationModel;
+import com.rescribe.model.response_model_notification.NotificationResponseBaseModel;
 import com.rescribe.model.response_model_notification.ResponseNotificationModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
@@ -37,38 +38,38 @@ public class RespondToNotificationHelper implements ConnectionListener {
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {
-                    ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+                    NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, responseLogNotificationModel);
 
                 }else if(mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)){
-                    ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+                    NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, responseLogNotificationModel);
                 }else if(mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)){
-                    ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+                    NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, responseLogNotificationModel);
                 }else if(mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)){
-                    ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+                    NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, responseLogNotificationModel);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
-                CommonMethods.Log(TAG, "parse error");
-                mHelperResponseManager.onParseError(mOldDataTag, "parse error");
+                CommonMethods.Log(TAG, mContext.getString(R.string.parse_error));
+                mHelperResponseManager.onParseError(mOldDataTag, mContext.getString(R.string.parse_error));
                 break;
             case ConnectionListener.SERVER_ERROR:
-                CommonMethods.Log(TAG, "server error");
-                mHelperResponseManager.onServerError(mOldDataTag, "server error");
+                CommonMethods.Log(TAG, mContext.getString(R.string.server_error));
+                mHelperResponseManager.onServerError(mOldDataTag, mContext.getString(R.string.server_error));
                 break;
             case ConnectionListener.NO_INTERNET:
-                CommonMethods.Log(TAG, "no connection error");
-                mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");
+                CommonMethods.Log(TAG,mContext.getString(R.string.no_connection_error));
+                mHelperResponseManager.onNoConnectionError(mOldDataTag,mContext.getString(R.string.no_connection_error));
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
-                CommonMethods.Log(TAG, "no connection error");
-                mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");
+                CommonMethods.Log(TAG,mContext.getString(R.string.no_connection_error));
+                mHelperResponseManager.onNoConnectionError(mOldDataTag,mContext.getString(R.string.no_connection_error));
                 break;
             default:
-                CommonMethods.Log(TAG, "default error");
+                CommonMethods.Log(TAG, mContext.getString(R.string.default_error));
                 break;
         }
     }

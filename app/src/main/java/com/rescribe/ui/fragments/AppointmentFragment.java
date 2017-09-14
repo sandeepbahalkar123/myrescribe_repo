@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.adapters.AppointmentAdapter;
-import com.rescribe.model.doctors.appointments.DoctorAppointment;
+import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.AppointmentActivity;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class AppointmentFragment extends Fragment {
     }
 
     private void setDoctorListAdapter() {
-        ArrayList<DoctorAppointment> appointmentList = mParentActivity.getAppointmentList(mAppointmentTypeName);
+        ArrayList<AptList> appointmentList = mParentActivity.getAppointmentList(mAppointmentTypeName);
         if (appointmentList != null) {
             if (appointmentList.size() == 0) {
                 mAppointmentListView.setVisibility(View.GONE);

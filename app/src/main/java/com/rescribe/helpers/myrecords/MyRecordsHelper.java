@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.android.volley.Request;
+import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
@@ -90,19 +91,19 @@ public class MyRecordsHelper implements ConnectionListener {
                 mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 break;
             case ConnectionListener.PARSE_ERR0R:
-                CommonMethods.Log(TAG, "parse error");
-                mHelperResponseManager.onParseError(mOldDataTag, "parse error");
+                CommonMethods.Log(TAG,  mContext.getString(R.string.parse_error));
+                mHelperResponseManager.onParseError(mOldDataTag, mContext.getString(R.string.parse_error));
                 break;
             case ConnectionListener.SERVER_ERROR:
-                CommonMethods.Log(TAG, "server error");
-                mHelperResponseManager.onServerError(mOldDataTag, "server error");
+                CommonMethods.Log(TAG, mContext.getString(R.string.server_error));
+                mHelperResponseManager.onServerError(mOldDataTag, mContext.getString(R.string.server_error));
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
-                CommonMethods.Log(TAG, "no connection error");
-                mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");
+                CommonMethods.Log(TAG,mContext.getString(R.string.no_connection_error));
+                mHelperResponseManager.onNoConnectionError(mOldDataTag,mContext.getString(R.string.no_connection_error));
                 break;
             default:
-                CommonMethods.Log(TAG, "default error");
+                CommonMethods.Log(TAG, mContext.getString(R.string.default_error));
                 break;
         }
     }
@@ -134,8 +135,8 @@ public class MyRecordsHelper implements ConnectionListener {
     public void doGetAllMyRecords(String year) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_ALL_MY_RECORDS, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
-        String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
-        mConnectionFactory.setUrl(Config.LIST_ALL_MY_RECORD + id + "&year=" + year);
+        String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        mConnectionFactory.setUrl(Config.LIST_ALL_MY_RECORD + patientId + "&year=" + year);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_ALL_MY_RECORDS);
     }
 

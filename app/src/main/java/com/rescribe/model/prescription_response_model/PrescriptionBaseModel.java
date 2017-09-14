@@ -13,7 +13,7 @@ public class PrescriptionBaseModel implements CustomResponse{
     private Common common;
     @SerializedName("data")
     @Expose
-    private PrescriptionData prescriptionData;
+    private PrescriptionData data;
 
     public Common getCommon() {
         return common;
@@ -23,12 +23,12 @@ public class PrescriptionBaseModel implements CustomResponse{
         this.common = common;
     }
 
-    public PrescriptionData getPrescriptionData() {
-        return prescriptionData;
+    public PrescriptionData getData() {
+        return data;
     }
 
-    public void setPrescriptionData(PrescriptionData prescriptionData) {
-        this.prescriptionData = prescriptionData;
+    public void setData(PrescriptionData data) {
+        this.data = data;
     }
 
 }

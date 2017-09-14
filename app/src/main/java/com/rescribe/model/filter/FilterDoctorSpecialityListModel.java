@@ -12,6 +12,12 @@ import java.util.ArrayList;
 
 public class FilterDoctorSpecialityListModel implements Parcelable, CustomResponse {
 
+    @SerializedName("common")
+    @Expose
+    private Common common;
+    @SerializedName("data")
+    @Expose
+    private DoctorSpecialitiesModel doctorSpecialitiesModel;
     public final static Parcelable.Creator<FilterDoctorSpecialityListModel> CREATOR = new Creator<FilterDoctorSpecialityListModel>() {
 
 
@@ -21,7 +27,7 @@ public class FilterDoctorSpecialityListModel implements Parcelable, CustomRespon
         public FilterDoctorSpecialityListModel createFromParcel(Parcel in) {
             FilterDoctorSpecialityListModel instance = new FilterDoctorSpecialityListModel();
             instance.common = ((Common) in.readValue((Common.class.getClassLoader())));
-            in.readList(instance.doctorSpecialityData, (DoctorSpecialityData.class.getClassLoader()));
+            instance.doctorSpecialitiesModel = ((DoctorSpecialitiesModel) in.readValue((DoctorSpecialitiesModel.class.getClassLoader())));
             return instance;
         }
 
@@ -29,13 +35,8 @@ public class FilterDoctorSpecialityListModel implements Parcelable, CustomRespon
             return (new FilterDoctorSpecialityListModel[size]);
         }
 
-    };
-    @SerializedName("common")
-    @Expose
-    private Common common;
-    @SerializedName("data")
-    @Expose
-    private ArrayList<DoctorSpecialityData> doctorSpecialityData = new ArrayList<>();
+    }
+            ;
 
     public Common getCommon() {
         return common;
@@ -45,17 +46,17 @@ public class FilterDoctorSpecialityListModel implements Parcelable, CustomRespon
         this.common = common;
     }
 
-    public ArrayList<DoctorSpecialityData> getDoctorSpecialityData() {
-        return doctorSpecialityData;
+    public DoctorSpecialitiesModel getDoctorSpecialitiesModel() {
+        return doctorSpecialitiesModel;
     }
 
-    public void setDoctorSpecialityData(ArrayList<DoctorSpecialityData> doctorSpecialityData) {
-        this.doctorSpecialityData = doctorSpecialityData;
+    public void setDoctorSpecialitiesModel(DoctorSpecialitiesModel doctorSpecialitiesModel) {
+        this.doctorSpecialitiesModel = doctorSpecialitiesModel;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(common);
-        dest.writeList(doctorSpecialityData);
+        dest.writeValue(doctorSpecialitiesModel);
     }
 
     public int describeContents() {

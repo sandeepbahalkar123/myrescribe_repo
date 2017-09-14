@@ -15,7 +15,7 @@ public class MyRecordsDoctorListModel implements CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private ArrayList<SpinnerDoctor> doctors = new ArrayList<SpinnerDoctor>();
+    private DoctorListModel doctorListModel;
 
     public Common getCommon() {
         return common;
@@ -25,12 +25,12 @@ public class MyRecordsDoctorListModel implements CustomResponse {
         this.common = common;
     }
 
-    public ArrayList<SpinnerDoctor> getDoctors() {
-        return doctors;
+    public DoctorListModel getDoctorListModel() {
+        return doctorListModel;
     }
 
-    public void setDoctors(ArrayList<SpinnerDoctor> doctors) {
-        this.doctors = doctors;
+    public void setDoctorListModel(DoctorListModel doctorListModel) {
+        this.doctorListModel = doctorListModel;
     }
 
 }

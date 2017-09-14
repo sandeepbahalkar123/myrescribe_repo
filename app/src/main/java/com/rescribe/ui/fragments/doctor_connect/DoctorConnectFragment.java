@@ -13,7 +13,15 @@ import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorConnectAdapter;
+import com.rescribe.adapters.DoctorConnectChatAdapter;
+import com.rescribe.helpers.doctor_connect.DoctorConnectHelper;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.doctor_connect.ConnectList;
+import com.rescribe.model.doctor_connect.DoctorConnectBaseModel;
+import com.rescribe.model.doctor_connect.DoctorConnectDataModel;
+import com.rescribe.ui.activities.DoctorConnectActivity;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -27,7 +35,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * Created by jeetal on 5/9/17.
  */
-public class DoctorConnectFragment extends Fragment {
+public class DoctorConnectFragment extends Fragment implements HelperResponse {
     private static final String DATA = "DATA";
     @BindView(R.id.listView)
     RecyclerView mRecyclerView;
@@ -36,16 +44,17 @@ public class DoctorConnectFragment extends Fragment {
     Unbinder unbinder;
     private View mRootView;
     private DoctorConnectAdapter doctorConnectAdapter;
-    private ArrayList<ConnectList> connectLists;
+    private DoctorConnectHelper mDoctorConnectHelper;
+    private DoctorConnectBaseModel doctorConnectBaseModel;
+    private DoctorConnectDataModel mDoctorConnectDataModel = new DoctorConnectDataModel();
 
 
     public DoctorConnectFragment() {
     }
 
-    public static DoctorConnectFragment newInstance(ArrayList<ConnectList> connectLists) {
+    public static DoctorConnectFragment newInstance() {
         DoctorConnectFragment fragment = new DoctorConnectFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(RescribeConstants.CONNECT_REQUEST, connectLists);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,18 +64,43 @@ public class DoctorConnectFragment extends Fragment {
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
 
-
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            connectLists = getArguments().getParcelableArrayList(RescribeConstants.CONNECT_REQUEST);
-        }
         unbinder = ButterKnife.bind(this, mRootView);
         init();
         return mRootView;
     }
 
     private void init() {
-        doctorConnectAdapter = new DoctorConnectAdapter(getActivity(), connectLists);
+        mDoctorConnectHelper = new DoctorConnectHelper(getActivity(), this);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mDoctorConnectDataModel.getConnectList() == null) {
+            mDoctorConnectHelper.doDoctorConnecList();
+        }else {
+            setAdapter();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    public void setAdapter() {
+        for (int i = 0; i < mDoctorConnectDataModel.getConnectList().size(); i++) {
+            String doctorName = mDoctorConnectDataModel.getConnectList().get(i).getDoctorName();
+            if (doctorName.startsWith(getString(R.string.dr))) {
+                mDoctorConnectDataModel.getConnectList().get(i).setDoctorName(doctorName);
+            } else {
+                String drName = getString(R.string.dr) + doctorName;
+                mDoctorConnectDataModel.getConnectList().get(i).setDoctorName(drName);
+            }
+        }
+        doctorConnectAdapter = new DoctorConnectAdapter(getActivity(), mDoctorConnectDataModel.getConnectList());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -77,15 +111,29 @@ public class DoctorConnectFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        //setDoctorListAdapter();
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_DOCTOR_CONNECT)) {
+            doctorConnectBaseModel = (DoctorConnectBaseModel) customResponse;
+            mDoctorConnectDataModel = doctorConnectBaseModel.getDoctorConnectDataModel();
+            DoctorConnectActivity activity = (DoctorConnectActivity) getActivity();
+            activity.setmConnectLists(mDoctorConnectDataModel.getConnectList());
+            setAdapter();
+        }
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+    public void onParseError(String mOldDataTag, String errorMessage) {
+        CommonMethods.showToast(getActivity(),errorMessage);
+
     }
 
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+        CommonMethods.showToast(getActivity(),serverErrorMessage);
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+        CommonMethods.showToast(getActivity(),serverErrorMessage);
+    }
 }

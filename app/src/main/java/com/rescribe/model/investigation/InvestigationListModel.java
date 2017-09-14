@@ -12,6 +12,12 @@ import java.util.ArrayList;
 
 public class InvestigationListModel implements Parcelable, CustomResponse {
 
+    @SerializedName("common")
+    @Expose
+    private Common common;
+    @SerializedName("data")
+    @Expose
+    private InvestigationNotification investigationNotification;
     public final static Parcelable.Creator<InvestigationListModel> CREATOR = new Creator<InvestigationListModel>() {
 
 
@@ -21,7 +27,7 @@ public class InvestigationListModel implements Parcelable, CustomResponse {
         public InvestigationListModel createFromParcel(Parcel in) {
             InvestigationListModel instance = new InvestigationListModel();
             instance.common = ((Common) in.readValue((Common.class.getClassLoader())));
-            in.readList(instance.data, (InvestigationData.class.getClassLoader()));
+            instance.investigationNotification = ((InvestigationNotification) in.readValue((InvestigationNotification.class.getClassLoader())));
             return instance;
         }
 
@@ -29,13 +35,8 @@ public class InvestigationListModel implements Parcelable, CustomResponse {
             return (new InvestigationListModel[size]);
         }
 
-    };
-    @SerializedName("common")
-    @Expose
-    private Common common;
-    @SerializedName("data")
-    @Expose
-    private ArrayList<InvestigationData> data = new ArrayList<InvestigationData>();
+    }
+            ;
 
     public Common getCommon() {
         return common;
@@ -45,17 +46,17 @@ public class InvestigationListModel implements Parcelable, CustomResponse {
         this.common = common;
     }
 
-    public ArrayList<InvestigationData> getData() {
-        return data;
+    public InvestigationNotification getInvestigationNotification() {
+        return investigationNotification;
     }
 
-    public void setData(ArrayList<InvestigationData> data) {
-        this.data = data;
+    public void setInvestigationNotification(InvestigationNotification investigationNotification) {
+        this.investigationNotification = investigationNotification;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(common);
-        dest.writeList(data);
+        dest.writeValue(investigationNotification);
     }
 
     public int describeContents() {

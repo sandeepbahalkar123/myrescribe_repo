@@ -15,7 +15,7 @@ public class DoctorFilterModel implements CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private ArrayList<DoctorFilteredInfoAndCaseDetails> doctorsInfoAndCaseDetailsList;
+    private FilterModel filterModel;
 
     public Common getCommon() {
         return common;
@@ -25,20 +25,12 @@ public class DoctorFilterModel implements CustomResponse {
         this.common = common;
     }
 
-    public ArrayList<DoctorFilteredInfoAndCaseDetails> getDoctorsInfoAndCaseDetailsList() {
-        return doctorsInfoAndCaseDetailsList;
+    public FilterModel getFilterModel() {
+        return filterModel;
     }
 
-    public void setDoctorsInfoAndCaseDetailsList(ArrayList<DoctorFilteredInfoAndCaseDetails> doctorsInfoAndCaseDetailsList) {
-        this.doctorsInfoAndCaseDetailsList = doctorsInfoAndCaseDetailsList;
-    }
-
-    @Override
-    public String toString() {
-        return "DoctorFilterModel{" +
-                "common=" + common +
-                ", doctorsInfoAndCaseDetailsList=" + doctorsInfoAndCaseDetailsList +
-                '}';
+    public void setFilterModel(FilterModel filterModel) {
+        this.filterModel = filterModel;
     }
 
 

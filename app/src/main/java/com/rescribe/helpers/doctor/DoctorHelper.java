@@ -76,26 +76,26 @@ public class DoctorHelper implements ConnectionListener {
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
-                CommonMethods.Log(TAG, "parse error");
-                mHelperResponseManager.onParseError(mOldDataTag, "parse error");
+                CommonMethods.Log(TAG,  mContext.getString(R.string.parse_error));
+                mHelperResponseManager.onParseError(mOldDataTag, mContext.getString(R.string.parse_error));
                 break;
             case ConnectionListener.SERVER_ERROR:
-                CommonMethods.Log(TAG, "server error");
-                mHelperResponseManager.onServerError(mOldDataTag, "server error");
+                CommonMethods.Log(TAG, mContext.getString(R.string.server_error));
+                mHelperResponseManager.onServerError(mOldDataTag, mContext.getString(R.string.server_error));
 
                 break;
             case ConnectionListener.NO_INTERNET:
-                CommonMethods.Log(TAG, "no connection error");
-                mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");
+                CommonMethods.Log(TAG,mContext.getString(R.string.no_connection_error));
+                mHelperResponseManager.onNoConnectionError(mOldDataTag,mContext.getString(R.string.no_connection_error));
 
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
-                CommonMethods.Log(TAG, "no connection error");
-                mHelperResponseManager.onNoConnectionError(mOldDataTag, "no connection error");
+                CommonMethods.Log(TAG,mContext.getString(R.string.no_connection_error));
+                mHelperResponseManager.onNoConnectionError(mOldDataTag,mContext.getString(R.string.no_connection_error));
 
                 break;
             default:
-                CommonMethods.Log(TAG, "default error");
+                CommonMethods.Log(TAG, mContext.getString(R.string.default_error));
                 break;
         }
     }
@@ -104,7 +104,6 @@ public class DoctorHelper implements ConnectionListener {
     public void onTimeout(ConnectRequest request) {
 
     }
-
 
     public Map<String, Map<String, ArrayList<DoctorDetail>>> getYearWiseSortedDoctorList() {
         return yearWiseSortedDoctorList;

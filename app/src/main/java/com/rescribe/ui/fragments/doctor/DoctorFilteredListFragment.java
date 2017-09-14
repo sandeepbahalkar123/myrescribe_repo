@@ -95,7 +95,7 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         DoctorFilterModel model = (DoctorFilterModel) customResponse;
         if (model != null) {
-            ArrayList<DoctorFilteredInfoAndCaseDetails> doctorsInfoAndCaseDetailsList = model.getDoctorsInfoAndCaseDetailsList();
+            ArrayList<DoctorFilteredInfoAndCaseDetails> doctorsInfoAndCaseDetailsList = model.getFilterModel().getDocVisits();
             if (doctorsInfoAndCaseDetailsList != null) {
                 setListAdapter(doctorsInfoAndCaseDetailsList);
             }

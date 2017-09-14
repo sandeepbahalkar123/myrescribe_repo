@@ -29,6 +29,7 @@
             android:padding="3dip">
 
             <com.rescribe.ui.customesViews.CircularImageView
+                android:id="@+id/imageURL"
                 android:layout_width="@dimen/dp50"
                 android:layout_height="@dimen/dp50"
                 android:layout_gravity="center"
@@ -109,9 +110,10 @@
                 android:src="@drawable/location" />
         </LinearLayout>
     </LinearLayout>
-<View
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/dp1"
-    android:layout_marginTop="@dimen/dp16"
-    android:background="@color/divider"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:layout_marginTop="@dimen/dp16"
+        android:background="@color/divider" />
 </LinearLayout>

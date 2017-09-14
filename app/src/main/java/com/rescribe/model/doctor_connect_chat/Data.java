@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Data implements Parcelable,CustomResponse {
 
-    @SerializedName("chatList")
+    @SerializedName("doctorList")
     @Expose
     private ArrayList<ChatList> chatList = null;
     public final static Creator<Data> CREATOR = new Creator<Data>() {

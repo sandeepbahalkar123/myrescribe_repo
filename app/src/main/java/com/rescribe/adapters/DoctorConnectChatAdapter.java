@@ -9,13 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
 import com.rescribe.model.doctor_connect_chat.ChatList;
 import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,8 +28,9 @@ import butterknife.ButterKnife;
  */
 public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnectChatAdapter.ListViewHolder> {
 
+    private ColorGenerator mColorGenerator;
     private Context mContext;
-    private ArrayList<ChatList> appointmentsList;
+    private ArrayList<ChatList> chatLists;
 
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
@@ -49,10 +53,10 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
     }
 
 
-    public DoctorConnectChatAdapter(Context mContext, ArrayList<ChatList> appointmentsList) {
-        this.appointmentsList = appointmentsList;
+    public DoctorConnectChatAdapter(Context mContext, ArrayList<ChatList> chatList) {
+        this.chatLists = chatList;
         this.mContext = mContext;
-
+        mColorGenerator = ColorGenerator.MATERIAL;
     }
 
     @Override
@@ -65,7 +69,7 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        ChatList doctorConnectChatModel = appointmentsList.get(position);
+        ChatList doctorConnectChatModel = chatLists.get(position);
 
         holder.doctorName.setText(doctorConnectChatModel.getDoctorName());
         holder.doctorType.setText(doctorConnectChatModel.getSpecialization());
@@ -76,24 +80,25 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
         }
 
+        String doctorName = doctorConnectChatModel.getDoctorName();
+        doctorName = doctorName.replace("Dr. ", "");
 
-        String s = doctorConnectChatModel.getDoctorName();
-        s = s.replace("Dr. ", "");
-        char first = s.charAt(0);
-
-        TextDrawable drawable = TextDrawable.builder()
-                .buildRound(String.valueOf(first), getRandomColor());
-        holder.imageOfDoctor.setImageDrawable(drawable);
+        if (doctorName != null) {
+            int color2 = mColorGenerator.getColor(doctorName);
+            TextDrawable drawable = TextDrawable.builder()
+                    .beginConfig()
+                    .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                    .endConfig()
+                    .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
+            holder.imageOfDoctor.setImageDrawable(drawable);
+        }
 
     }
-    public int getRandomColor() {
-        Random rnd = new Random();
-        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        return color;
-    }
+
     @Override
     public int getItemCount() {
-        return appointmentsList.size();
+        return chatLists.size();
     }
 
 

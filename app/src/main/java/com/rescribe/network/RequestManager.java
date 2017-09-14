@@ -44,6 +44,7 @@ import com.rescribe.model.investigation.InvestigationListModel;
 import com.rescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
 import com.rescribe.model.investigation.uploaded.InvestigationUploadFromUploadedModel;
 import com.rescribe.model.login.LoginModel;
+import com.rescribe.model.login.LoginWithOtp;
 import com.rescribe.model.login.SignUpModel;
 import com.rescribe.model.my_records.AddDoctorModel;
 import com.rescribe.model.my_records.MyRecordsDoctorListModel;
@@ -52,7 +53,7 @@ import com.rescribe.model.notification.AppointmentsNotificationModel;
 import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.model.prescription_response_model.PrescriptionBaseModel;
 import com.rescribe.model.requestmodel.login.LoginRequestModel;
-import com.rescribe.model.response_model_notification.ResponseLogNotificationModel;
+import com.rescribe.model.response_model_notification.NotificationResponseBaseModel;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.Device;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
@@ -425,11 +426,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 // This success response is for refresh token
                 // Need to Add
                 LoginModel loginModel = gson.fromJson(data, LoginModel.class);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getAuthToken(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), mContext);
                 RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, loginModel.getPatientId(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, loginModel.getLoginData().getPatientId(), mContext);
 
-                mHeaderParams.put(RescribeConstants.AUTHORIZATION_TOKEN, loginModel.getAuthToken());
+                mHeaderParams.put(RescribeConstants.AUTHORIZATION_TOKEN, loginModel.getLoginData().getAuthToken());
 
                 connect();
 
@@ -472,10 +473,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         NotificationModel notificationModel = new Gson().fromJson(data, NotificationModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, notificationModel, mOldDataTag);
                         break;
-                   /* case RescribeConstants.TASK_RESPOND_NOTIFICATION: //This is for get archived list
-                        ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
-                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
-                        break;*/
+
 
                     case RescribeConstants.FILTER_DOCTOR_LIST: //This is for get archived list
                         FilterDoctorListModel filterDoctorListModel = new Gson().fromJson(data, FilterDoctorListModel.class);
@@ -526,7 +524,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginWithPasswordModel, mOldDataTag);
                         break;
                     case RescribeConstants.TASK_LOGIN_WITH_OTP: //This is for get archived list
-                        LoginModel loginWithOtpModel = new Gson().fromJson(data, LoginModel.class);
+                        LoginWithOtp loginWithOtpModel = new Gson().fromJson(data, LoginWithOtp.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginWithOtpModel, mOldDataTag);
                         break;
 
@@ -552,16 +550,16 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     default:
                         //This is for get PDF VisitData
                         if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {
-                            ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
+                            NotificationResponseBaseModel responseLogNotificationModel = new Gson().fromJson(data, NotificationResponseBaseModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
                         } else if (mDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
-                            ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
+                            NotificationResponseBaseModel responseLogNotificationModel = new Gson().fromJson(data, NotificationResponseBaseModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
                         }else if (mDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
-                            ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
+                            NotificationResponseBaseModel responseLogNotificationModel = new Gson().fromJson(data, NotificationResponseBaseModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
                         }else if (mDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
-                            ResponseLogNotificationModel responseLogNotificationModel = new Gson().fromJson(data, ResponseLogNotificationModel.class);
+                            NotificationResponseBaseModel responseLogNotificationModel = new Gson().fromJson(data, NotificationResponseBaseModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
                         }
 

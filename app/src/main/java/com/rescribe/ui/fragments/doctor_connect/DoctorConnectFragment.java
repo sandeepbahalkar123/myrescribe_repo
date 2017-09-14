@@ -93,11 +93,17 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     public void setAdapter() {
         for (int i = 0; i < mDoctorConnectDataModel.getConnectList().size(); i++) {
             String doctorName = mDoctorConnectDataModel.getConnectList().get(i).getDoctorName();
-            if (doctorName.startsWith(getString(R.string.dr))) {
-                mDoctorConnectDataModel.getConnectList().get(i).setDoctorName(doctorName);
-            } else {
-                String drName = getString(R.string.dr) + doctorName;
+            if (doctorName.startsWith("DR. ")) {
+                String drName =  doctorName.replace("DR. ", "Dr. ");
                 mDoctorConnectDataModel.getConnectList().get(i).setDoctorName(drName);
+            } else if (doctorName.startsWith("DR.")) {
+                String drName =   doctorName.replace("DR.", "Dr. ");
+                mDoctorConnectDataModel.getConnectList().get(i).setDoctorName(drName);
+            }  else if (doctorName.startsWith("Dr. ")) {
+                String drName =   doctorName.replace("Dr. ", "Dr. ");
+                mDoctorConnectDataModel.getConnectList().get(i).setDoctorName(drName);
+            } else {
+                mDoctorConnectDataModel.getConnectList().get(i).setDoctorName("Dr. " + doctorName);
             }
         }
         doctorConnectAdapter = new DoctorConnectAdapter(getActivity(), mDoctorConnectDataModel.getConnectList());
@@ -135,5 +141,7 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
         CommonMethods.showToast(getActivity(),serverErrorMessage);
+        emptyListView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
     }
 }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class DoctorConnectDataModel implements Parcelable, CustomResponse {
 
-    @SerializedName("connectList")
+    @SerializedName("doctorList")
     @Expose
     private ArrayList<ConnectList> connectList = null;
     public final static Creator<DoctorConnectDataModel> CREATOR = new Creator<DoctorConnectDataModel>() {

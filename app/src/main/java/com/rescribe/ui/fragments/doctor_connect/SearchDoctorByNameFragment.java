@@ -74,11 +74,17 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
         mRecyclerView.setVisibility(View.VISIBLE);
         for (int i = 0; i < filterDataOnDocSpeciality().size(); i++) {
             String doctorName = filterDataOnDocSpeciality().get(i).getDoctorName();
-            if (doctorName.startsWith(getString(R.string.dr))) {
-                filterDataOnDocSpeciality().get(i).setDoctorName(doctorName);
-            } else {
-                String drName = getString(R.string.dr) + doctorName;
+            if (doctorName.startsWith("DR. ")) {
+                String drName =  doctorName.replace("DR. ", "Dr. ");
                 filterDataOnDocSpeciality().get(i).setDoctorName(drName);
+            } else if (doctorName.startsWith("DR.")) {
+                String drName =   doctorName.replace("DR.", "Dr. ");
+                filterDataOnDocSpeciality().get(i).setDoctorName(drName);
+            }  else if (doctorName.startsWith("Dr. ")) {
+                String drName =   doctorName.replace("Dr. ", "Dr. ");
+                filterDataOnDocSpeciality().get(i).setDoctorName(drName);
+            } else {
+                filterDataOnDocSpeciality().get(i).setDoctorName("Dr. " + doctorName);
             }
         }
         doctorSearchByNameAdapter = new DoctorSearchByNameAdapter(getActivity(), filterDataOnDocSpeciality());

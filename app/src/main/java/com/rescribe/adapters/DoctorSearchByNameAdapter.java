@@ -91,7 +91,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         holder.onlineStatusTextView.setText(connectList.getOnlineStatus());
         holder.paidStatusTextView.setText(connectList.getPaidStatus());
         String doctorName = connectList.getDoctorName();
-        doctorName = doctorName.replace("Dr.", "");
+        doctorName = doctorName.replace("Dr. ", "");
         if (doctorName != null) {
             int color2 = mColorGenerator.getColor(doctorName);
             TextDrawable drawable = TextDrawable.builder()
@@ -110,7 +110,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
 
             spannableStringSearch.setSpan(new ForegroundColorSpan(
                             ContextCompat.getColor(mContext, R.color.tagColor)),
-                   3, 3+searchString.length(),//hightlight searchString
+                   4, 4+searchString.length(),//hightlight searchString
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         }
@@ -145,7 +145,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
 
                     for (ConnectList doctorConnectModel : mArrayList) {
 
-                        if (doctorConnectModel.getDoctorName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + charString.toLowerCase())) {
+                        if (doctorConnectModel.getDoctorName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() +mContext.getString(R.string.space)+ charString.toLowerCase())) {
 
                             filteredList.add(doctorConnectModel);
                         }

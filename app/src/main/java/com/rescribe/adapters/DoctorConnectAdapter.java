@@ -41,6 +41,7 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
     private ArrayList<ConnectList> connectLists;
     String searchString = "";
     private ColorGenerator mColorGenerator;
+    private String mIdle, mOnline, mOffline;
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
 
@@ -69,7 +70,9 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         this.connectLists = connectLists;
         this.mContext = mContext;
         mColorGenerator = ColorGenerator.MATERIAL;
-
+        mOnline = mContext.getString(R.string.online);
+        mOffline = mContext.getString(R.string.offline);
+        mIdle = mContext.getString(R.string.idle);
     }
 
     @Override
@@ -84,11 +87,19 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
     public void onBindViewHolder(ListViewHolder holder, int position) {
         final ConnectList connectList = connectLists.get(position);
         holder.doctorType.setText(connectList.getSpecialization());
-        if (connectList.getOnlineStatus().equalsIgnoreCase("Online")) {
+
+        //-----------
+        if (connectList.getOnlineStatus().equalsIgnoreCase(mOnline)) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.green_light));
+        } else if (connectList.getOnlineStatus().equalsIgnoreCase(mIdle)) {
+            holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
+        } else if (connectList.getOnlineStatus().equalsIgnoreCase(mOffline)) {
+            holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.grey_500));
         } else {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
         }
+        //-----------
+
         holder.onlineStatusTextView.setText(connectList.getOnlineStatus());
         holder.paidStatusTextView.setText(connectList.getPaidStatus());
 

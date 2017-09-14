@@ -31,6 +31,7 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
     private ColorGenerator mColorGenerator;
     private Context mContext;
     private ArrayList<ChatList> chatLists;
+    private String mIdle, mOnline, mOffline;
 
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
@@ -57,6 +58,9 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         this.chatLists = chatList;
         this.mContext = mContext;
         mColorGenerator = ColorGenerator.MATERIAL;
+        mOnline = mContext.getString(R.string.online);
+        mOffline = mContext.getString(R.string.offline);
+        mIdle = mContext.getString(R.string.idle);
     }
 
     @Override
@@ -74,11 +78,17 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         holder.doctorName.setText(doctorConnectChatModel.getDoctorName());
         holder.doctorType.setText(doctorConnectChatModel.getSpecialization());
         holder.onlineStatusTextView.setText(doctorConnectChatModel.getOnlineStatus());
-        if (doctorConnectChatModel.getOnlineStatus().equalsIgnoreCase("Online")) {
+        //-----------
+        if (doctorConnectChatModel.getOnlineStatus().equalsIgnoreCase(mOnline)) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.green_light));
+        } else if (doctorConnectChatModel.getOnlineStatus().equalsIgnoreCase(mIdle)) {
+            holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
+        } else if (doctorConnectChatModel.getOnlineStatus().equalsIgnoreCase(mOffline)) {
+            holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.grey_500));
         } else {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
         }
+        //-----------
 
         String doctorName = doctorConnectChatModel.getDoctorName();
         doctorName = doctorName.replace("Dr. ", "");

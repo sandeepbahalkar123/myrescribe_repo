@@ -252,6 +252,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
 
                 messageList.addAll(0, messageListTemp);
                 chatAdapter.notifyDataSetChanged();
+                chatList.scrollToPosition(messageList.size() - 1);
             }
         }
     }

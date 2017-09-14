@@ -45,6 +45,8 @@ public class Config {
     public static final String MY_RECORDS_UPLOAD = "api/upload/myRecords";
     public static final String MY_RECORDS_ADD_DOCTOR = "api/doctors/addDoctor";
 
+    public static final String SEND_MSG_TO_DOCTOR = "api/chat/sendMsgToDoctor";
+
 }
 
 

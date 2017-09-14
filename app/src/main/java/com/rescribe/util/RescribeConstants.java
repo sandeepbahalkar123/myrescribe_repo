@@ -99,6 +99,9 @@ public class RescribeConstants {
     public static final String TASK_DOCTOR_CONNECT_CHAT = RescribeConstants.BLANK + 25;
     public static final String TASK_DOCTOR_CONNECT = RescribeConstants.BLANK + 26;
     public static final String TASK_DOCTOR__FILTER_DOCTOR_SPECIALITY_LIST = RescribeConstants.BLANK + 27;
+
+    public static final String SEND_MESSAGE = RescribeConstants.BLANK + 28;
+
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
     public static final String TAKEN_DATE = "takenDate";
@@ -129,6 +132,7 @@ public class RescribeConstants {
     public static final String TYPE_OF_LOGIN = "";
     public static final String SENDERID = "EMROTP";
     public static final String IS_URL = "isUrl";
+    public static final String DOCTORS_INFO = "doctor_info";
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 
@@ -162,6 +166,7 @@ public class RescribeConstants {
         public static String HH_MM = "hh:mm";
         public static String MMM_YYYY = "MMM, yyyy";
         public static String DD_MM_YYYY_hh_mm_ss = "dd-MM-yyyy hh:mm:ss";
+        public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
     }
 
     public static class TIME_STAMPS {

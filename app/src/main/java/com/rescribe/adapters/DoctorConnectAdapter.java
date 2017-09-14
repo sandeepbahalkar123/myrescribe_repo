@@ -1,6 +1,7 @@
 package com.rescribe.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +17,9 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
 import com.rescribe.model.doctor_connect.ConnectList;
+import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -77,7 +80,7 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        ConnectList connectList = connectLists.get(position);
+        final ConnectList connectList = connectLists.get(position);
         holder.doctorType.setText(connectList.getSpecialization());
         if (connectList.getOnlineStatus().equalsIgnoreCase("Online")) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.green_light));
@@ -118,6 +121,15 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         } else {
             holder.doctorName.setText(connectList.getDoctorName());
         }
+
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ChatActivity.class);
+                intent.putExtra(RescribeConstants.DOCTORS_INFO, connectList);
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 

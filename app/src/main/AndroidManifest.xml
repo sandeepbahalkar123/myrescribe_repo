@@ -124,6 +124,15 @@
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".ui.activities.ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <service
+            android:name=".services.MQTTService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name=".ui.activities.NotificationActivity"

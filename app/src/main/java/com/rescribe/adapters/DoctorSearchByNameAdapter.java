@@ -91,6 +91,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         holder.onlineStatusTextView.setText(connectList.getOnlineStatus());
         holder.paidStatusTextView.setText(connectList.getPaidStatus());
         String doctorName = connectList.getDoctorName();
+        // Removed Dr. from doctor name to get starting letter of doctorName to set to image icon.
         doctorName = doctorName.replace("Dr. ", "");
         if (doctorName != null) {
             int color2 = mColorGenerator.getColor(doctorName);
@@ -102,15 +103,15 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
                     .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
             holder.imageOfDoctor.setImageDrawable(drawable);
         }
+       //Used spannable to show searchtext in different colour
         SpannableString spannableStringSearch = null;
-
         if ((searchString != null) && (!searchString.isEmpty())) {
 
             spannableStringSearch = new SpannableString(connectList.getDoctorName());
 
             spannableStringSearch.setSpan(new ForegroundColorSpan(
                             ContextCompat.getColor(mContext, R.color.tagColor)),
-                   4, 4+searchString.length(),//hightlight searchString
+                    4, 4 + searchString.length(),//hightlight searchString
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         }
@@ -145,7 +146,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
 
                     for (ConnectList doctorConnectModel : mArrayList) {
 
-                        if (doctorConnectModel.getDoctorName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() +mContext.getString(R.string.space)+ charString.toLowerCase())) {
+                        if (doctorConnectModel.getDoctorName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase())) {
 
                             filteredList.add(doctorConnectModel);
                         }

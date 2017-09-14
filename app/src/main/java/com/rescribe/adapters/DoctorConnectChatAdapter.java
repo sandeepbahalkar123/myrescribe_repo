@@ -79,7 +79,7 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         } else {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
         }
-
+        // Removed Dr. from doctor name to get starting letter of doctorName to set to image icon.
         String doctorName = doctorConnectChatModel.getDoctorName();
         doctorName = doctorName.replace("Dr. ", "");
 

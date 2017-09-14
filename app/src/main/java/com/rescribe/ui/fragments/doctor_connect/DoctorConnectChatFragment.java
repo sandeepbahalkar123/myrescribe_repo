@@ -10,20 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorConnectChatAdapter;
 import com.rescribe.helpers.doctor_connect.DoctorConnectChatHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.doctor_connect_chat.ChatList;
-import com.rescribe.model.doctor_connect_chat.Data;
+import com.rescribe.model.doctor_connect_chat.ChatData;
 import com.rescribe.model.doctor_connect_chat.DoctorConnectChatBaseModel;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +41,7 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     private View mRootView;
     private DoctorConnectChatHelper mDoctorConnectChatHelper;
     private DoctorConnectChatBaseModel mDoctorConnectChatBaseModel;
-    private Data mData = new Data();
+    private ChatData mData = new ChatData();
 
     public static DoctorConnectChatFragment newInstance() {
         DoctorConnectChatFragment fragment = new DoctorConnectChatFragment();
@@ -120,9 +116,10 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     }
 
     public void setAdapter() {
+        //Added Dr. to doctorName
         for (int i = 0; i < mData.getChatList().size(); i++) {
             String doctorName = mData.getChatList().get(i).getDoctorName();
-            // TODO, THIS IS AADED FOR NOW, CHANGE THIS LOGIC
+            //TODO : Temporary Fix as data from Server is not in Proper format
             if (doctorName.startsWith("DR. ")) {
               String drName =  doctorName.replace("DR. ", "Dr. ");
                 mData.getChatList().get(i).setDoctorName(drName);
@@ -135,14 +132,6 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
             } else {
                 mData.getChatList().get(i).setDoctorName("Dr. " + doctorName);
             }
-
-
-            /*if (doctorName.toLowerCase().startsWith(getString(R.string.dr).toLowerCase())) {
-                mData.getChatList().get(i).setDoctorName(doctorName);
-            } else {
-                String drName = getString(R.string.dr) + getString(R.string.space) + doctorName;
-
-            }*/
         }
 
         mDoctorConnectChatAdapter = new DoctorConnectChatAdapter(getActivity(), mData.getChatList());

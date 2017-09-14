@@ -25,6 +25,7 @@ import com.rescribe.model.doctor_connect.DoctorConnectDataModel;
 import com.rescribe.model.doctor_connect_chat.Data;
 import com.rescribe.model.doctor_connect_chat.DoctorConnectChatBaseModel;
 import com.rescribe.model.doctor_connect_search.DoctorConnectSearchBaseModel;
+import com.rescribe.model.doctor_connect_search.DoctorSpeciality;
 import com.rescribe.model.doctor_connect_search.SearchDataModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
@@ -209,7 +210,6 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_DOCTOR__FILTER_DOCTOR_SPECIALITY_LIST)) {
             doctorConnectSearchBaseModel = (DoctorConnectSearchBaseModel) customResponse;
             searchDataModel = doctorConnectSearchBaseModel.getSearchDataModel();
-
         }
     }
 
@@ -268,6 +268,10 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
     public void addSpecializationOfDoctorFragment(Bundle bundleData) {
         // Show speciality of Doctor fragment loaded
         mFragmentLoaded = SPECIALIZATION_DOCTOR_FRAGMENT;
+        if (searchDataModel == null) {
+            searchDataModel = new SearchDataModel();
+        }
+
         searchBySpecializationOfDoctorFragment = SearchBySpecializationOfDoctorFragment.newInstance(searchDataModel.getDoctorSpecialities());
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();

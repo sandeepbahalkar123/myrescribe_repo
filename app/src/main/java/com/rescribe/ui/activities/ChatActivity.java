@@ -17,15 +17,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.adapters.chat.ChatAdapter;
 import com.rescribe.helpers.chat.ChatHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.chat.MessageList;
-import com.rescribe.model.chat.MessageModel;
 import com.rescribe.model.chat.SendMessageModel;
+import com.rescribe.model.chat.history.ChatHistory;
+import com.rescribe.model.chat.history.ChatHistoryModel;
 import com.rescribe.model.doctor_connect.ConnectList;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
@@ -34,6 +34,7 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,10 +78,10 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
             boolean isFailed = intent.getBooleanExtra(MQTTService.FAILED, false);
 
             if (!isFailed) {
-                MessageList message = intent.getParcelableExtra(MQTTService.MESSAGE);
-                if (message.getDocId() == connectList.getId()) {
+                MessageList messageL = intent.getParcelableExtra(MQTTService.MESSAGE);
+                if (messageL.getDocId() == connectList.getId()) {
                     if (chatAdapter != null) {
-                        messageList.add(message);
+                        messageList.add(messageL);
                         chatAdapter.notifyItemInserted(messageList.size() - 1);
                         chatList.smoothScrollToPosition(messageList.size() - 1);
                     }
@@ -99,7 +100,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
     private static final String TAG = "ChatActivity";
     private ChatAdapter chatAdapter;
     private ArrayList<MessageList> messageList = new ArrayList<>();
-    private Gson gson = new Gson();
 
     private ConnectList connectList;
     private String patId;
@@ -114,23 +114,17 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
 
         chatHelper = new ChatHelper(this, this);
         patId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this);
+        chatHelper.getChatHistory(1, connectList.getId(), Integer.parseInt(patId));
 
         // startService
-
         // use this to start and trigger a service
         serviceIntent = new Intent(this, MQTTService.class);
         // potentially add data to the serviceIntent
         serviceIntent.putExtra(MQTTService.IS_MESSAGE, false);
         startService(serviceIntent);
 
-        // add history api
-        String data = "{ \"messageList\": [] }";
-
-        MessageModel messageModel = gson.fromJson(data, MessageModel.class);
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         chatList.setLayoutManager(mLayoutManager);
-        messageList.addAll(messageModel.getMessageList());
         chatAdapter = new ChatAdapter(messageList);
         chatList.setAdapter(chatAdapter);
         chatList.scrollToPosition(messageList.size() - 1);
@@ -236,6 +230,28 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
                     chatAdapter.notifyItemRemoved(messageList.size() - 1);
                 }
                 CommonMethods.showToast(ChatActivity.this, sendMessageModel.getCommon().getStatusMessage());
+            }
+        } else if (customResponse instanceof ChatHistoryModel) {
+            ChatHistoryModel chatHistoryModel = (ChatHistoryModel) customResponse;
+            if (chatHistoryModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
+                List<ChatHistory> chatHistory = chatHistoryModel.getHistoryData().getChatHistory();
+
+                ArrayList<MessageList> messageListTemp = new ArrayList<>();
+
+                for (ChatHistory chatH : chatHistory) {
+                    MessageList messageL = new MessageList();
+                    messageL.setMsgId(chatH.getChatId());
+                    messageL.setMsg(chatH.getMsg());
+                    messageL.setDocId(chatH.getUser1Id());
+                    messageL.setPatId(chatH.getUser2Id());
+                    messageL.setWho(chatH.getSender().equals("user2") ? ChatAdapter.SENDER : ChatAdapter.RECEIVER);
+                    String msgTime = CommonMethods.getFormatedDate(chatH.getMsgTime(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss);
+                    messageL.setMsgTime(msgTime);
+                    messageListTemp.add(messageL);
+                }
+
+                messageList.addAll(0, messageListTemp);
+                chatAdapter.notifyDataSetChanged();
             }
         }
     }

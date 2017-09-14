@@ -22,6 +22,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.util.Random;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -45,6 +47,9 @@ public class MQTTService extends Service {
     private Subscription sendStateSubscription;
     private int[] qos;
     private MqttConnectOptions connOpts;
+    private Random random;
+    int min = 65;
+    int max = 80;
 
     @Override
     public void onCreate() {
@@ -52,6 +57,7 @@ public class MQTTService extends Service {
 
         initRxNetwork();
 
+        random = new Random();
         //MQTT client id to use for the device. "" will generate a client id automatically
         String clientId = "rescribe";
         clientId = clientId + System.currentTimeMillis();
@@ -144,12 +150,12 @@ public class MQTTService extends Service {
                             String userLogin = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MQTTService.this);
 
                             if (userLogin.equals(RescribeConstants.YES)) {
-                                if (myid.equals(String.valueOf(messageL.getDocId())) && topic.equals(TOPIC[0])) {
+                                if (myid.equals(String.valueOf(messageL.getPatId())) && topic.equals(TOPIC[0])) {
                                     messageL.setMsgId(msg.getId());
                                     messageL.setWho(ChatAdapter.RECEIVER);
                                     messageL.setTopic(topic);
 
-                                    MessageNotification.notify(MQTTService.this, messageL.getTopic(), messageL.getMsg(), 0, messageL.getMsgId());
+                                    MessageNotification.notify(MQTTService.this, messageL.getTopic(), messageL.getMsg(), 0, random.nextInt(max - min + 1) + min);
 
                                     Intent intent = new Intent(NOTIFY);
                                     intent.putExtra(FAILED, false);

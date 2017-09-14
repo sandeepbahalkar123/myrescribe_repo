@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -88,7 +90,8 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         holder.paidStatusTextView.setText(connectList.getPaidStatus());
 
         String doctorName = connectList.getDoctorName();
-        doctorName = doctorName.replace("Dr.", "");
+
+        doctorName = doctorName.replace("Dr. ", "");
         if (doctorName != null) {
             int color2 = mColorGenerator.getColor(doctorName);
             TextDrawable drawable = TextDrawable.builder()

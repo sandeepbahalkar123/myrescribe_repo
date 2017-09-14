@@ -11,13 +11,13 @@ import com.rescribe.interfaces.CustomResponse;
 
 public class ConnectList implements Parcelable, CustomResponse {
 
-    @SerializedName("id")
+    @SerializedName("docId")
     @Expose
     private Integer id;
-    @SerializedName("doctorName")
+    @SerializedName("docName")
     @Expose
     private String doctorName;
-    @SerializedName("specialization")
+    @SerializedName("speciality")
     @Expose
     private String specialization;
     @SerializedName("onlineStatus")

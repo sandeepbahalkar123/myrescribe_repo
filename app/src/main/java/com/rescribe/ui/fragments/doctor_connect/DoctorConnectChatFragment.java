@@ -22,17 +22,20 @@ import com.rescribe.model.doctor_connect_chat.Data;
 import com.rescribe.model.doctor_connect_chat.DoctorConnectChatBaseModel;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by jeetal on 6/9/17.
  */
 
-public class DoctorConnectChatFragment extends Fragment implements HelperResponse{
+public class DoctorConnectChatFragment extends Fragment implements HelperResponse {
     @BindView(R.id.listView)
     RecyclerView mRecyclerView;
     @BindView(R.id.emptyListView)
@@ -70,7 +73,7 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     @Override
     public void onResume() {
         super.onResume();
-        if (mData.getChatList()== null) {
+        if (mData.getChatList() == null) {
             mDoctorConnectChatHelper.doDoctorConnectChat();
         } else {
             setAdapter();
@@ -87,39 +90,62 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_DOCTOR_CONNECT_CHAT)) {
             mDoctorConnectChatBaseModel = (DoctorConnectChatBaseModel) customResponse;
-            mData = mDoctorConnectChatBaseModel.getData();
-            setAdapter();
+            if (mDoctorConnectChatBaseModel.getData() == null) {
+                emptyListView.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
+            } else {
+                emptyListView.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mData = mDoctorConnectChatBaseModel.getData();
+                setAdapter();
+            }
         }
     }
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-        CommonMethods.showToast(getActivity(),errorMessage);
+        CommonMethods.showToast(getActivity(), errorMessage);
 
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
-        CommonMethods.showToast(getActivity(),serverErrorMessage);
+        CommonMethods.showToast(getActivity(), serverErrorMessage);
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        CommonMethods.showToast(getActivity(),serverErrorMessage);
+        emptyListView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
     }
 
     public void setAdapter() {
         for (int i = 0; i < mData.getChatList().size(); i++) {
             String doctorName = mData.getChatList().get(i).getDoctorName();
-            if (doctorName.toLowerCase().startsWith(getString(R.string.dr).toLowerCase())) {
+            // TODO, THIS IS AADED FOR NOW, CHANGE THIS LOGIC
+            if (doctorName.startsWith("DR. ")) {
+              String drName =  doctorName.replace("DR. ", "Dr. ");
+                mData.getChatList().get(i).setDoctorName(drName);
+            } else if (doctorName.startsWith("DR.")) {
+                String drName =   doctorName.replace("DR.", "Dr. ");
+                mData.getChatList().get(i).setDoctorName(drName);
+            }  else if (doctorName.startsWith("Dr. ")) {
+                String drName =   doctorName.replace("Dr. ", "Dr. ");
+                mData.getChatList().get(i).setDoctorName(drName);
+            } else {
+                mData.getChatList().get(i).setDoctorName("Dr. " + doctorName);
+            }
+
+
+            /*if (doctorName.toLowerCase().startsWith(getString(R.string.dr).toLowerCase())) {
                 mData.getChatList().get(i).setDoctorName(doctorName);
             } else {
-                String drName = getString(R.string.dr) + doctorName;
-                mData.getChatList().get(i).setDoctorName(drName);
-            }
+                String drName = getString(R.string.dr) + getString(R.string.space) + doctorName;
+
+            }*/
         }
 
-        mDoctorConnectChatAdapter = new DoctorConnectChatAdapter(getActivity(),  mData.getChatList());
+        mDoctorConnectChatAdapter = new DoctorConnectChatAdapter(getActivity(), mData.getChatList());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());

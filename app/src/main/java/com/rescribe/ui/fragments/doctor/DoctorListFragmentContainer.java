@@ -348,7 +348,9 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        setupViewPager();
+        noRecords.setVisibility(View.VISIBLE);
+        mYearSpinnerView.setVisibility(View.GONE);
+        mTabLayout.setVisibility(View.GONE);
 
     }
     //---------------

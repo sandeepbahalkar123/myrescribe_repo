@@ -15,7 +15,7 @@ public class SearchDataModel implements Parcelable, CustomResponse {
 
     @SerializedName("doctorSpecialities")
     @Expose
-    private ArrayList<DoctorSpeciality> doctorSpecialities = null;
+    private ArrayList<DoctorSpeciality> doctorSpecialities = new ArrayList<>();
     public final static Creator<SearchDataModel> CREATOR = new Creator<SearchDataModel>() {
 
 

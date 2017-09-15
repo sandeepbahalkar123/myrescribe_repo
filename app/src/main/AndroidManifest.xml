@@ -129,10 +129,7 @@
             android:label="@string/title_activity_chat"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <service
-            android:name=".services.MQTTService"
-            android:enabled="true"
-            android:exported="true" />
+        <service android:name=".services.MQTTService" />
 
         <activity
             android:name=".ui.activities.NotificationActivity"
@@ -144,7 +141,6 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
 
         <meta-data
             android:name="com.google.android.gms.version"

@@ -2,27 +2,27 @@ package com.rescribe.services;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.rescribe.adapters.chat.ChatAdapter;
 import com.rescribe.model.chat.MessageList;
 import com.rescribe.notification.MessageNotification;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.rxnetwork.RxNetwork;
 
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-
-import java.util.Random;
 
 import rx.Observable;
 import rx.Subscription;
@@ -36,20 +36,22 @@ public class MQTTService extends Service {
     public static final String NOTIFY = "com.rescribe";
     public static final String IS_MESSAGE = "is_message";
     public static final String MESSAGE_ID = "message_id";
-    public static final String FAILED = "delivery";
+    public static final String RECEIVED = "delivery";
     public static final String DOCTOR_CONNECT = "doctorConnect";
     private static final String TOPIC[] = {"doctorConnect", "online"};
+    public static final String DELIVERED = "delivered";
 
-    private MqttClient mqttClient;
-    private static final String BROKER = "tcp://broker.hivemq.com:1883";
+//    public static final String DOCTOR = "user1";
+    public static final String PATIENT = "user2";
+
+    private MqttAsyncClient mqttClient;
+    private static final String BROKER = "tcp://test.mosquitto.org:1883";
+
+    private InternetState internetState;
     private Gson gson = new Gson();
 
     private Subscription sendStateSubscription;
     private int[] qos;
-    private MqttConnectOptions connOpts;
-    private Random random;
-    int min = 65;
-    int max = 80;
 
     @Override
     public void onCreate() {
@@ -57,13 +59,11 @@ public class MQTTService extends Service {
 
         initRxNetwork();
 
-        random = new Random();
         //MQTT client id to use for the device. "" will generate a client id automatically
-        String clientId = "rescribe";
-        clientId = clientId + System.currentTimeMillis();
         MemoryPersistence persistence = new MemoryPersistence();
         try {
-            mqttClient = new MqttClient(BROKER, clientId, persistence);
+            mqttClient = new MqttAsyncClient(BROKER, MqttAsyncClient.generateClientId(), persistence);
+            initMqttCallback();
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -86,49 +86,39 @@ public class MQTTService extends Service {
                             @Override
                             public void call(InternetState internetState) {
                                 // do stuff here for UI
-
+                                MQTTService.this.internetState = internetState;
                                 try {
                                     if (internetState.isEnabled) {
                                         if (!mqttClient.isConnected()) {
-                                            mqttClient.connect();
-                                            mqttClient.subscribe(TOPIC);
-                                        }
+                                            mqttClient.reconnect();
+                                        } else Log.d(TAG, "Not Connected 2");
                                     } else
                                         mqttClient.disconnect();
                                 } catch (MqttException ignored) {
 
                                 }
-
-//                                Toast.makeText(MQTTService.this, mqttClient.isConnected() + " " + internetState.state, Toast.LENGTH_SHORT).show();
                             }
                         });
     }
 
+    IBinder mBinder = new LocalBinder();
+
     @Override
     public IBinder onBind(Intent intent) {
         //TODO for communication return IBinder implementation
-        return null;
+        return mBinder;
+    }
+
+    public class LocalBinder extends Binder {
+        public MQTTService getServerInstance() {
+            return MQTTService.this;
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        MessageList message = intent.getParcelableExtra(MESSAGE);
-
-        if (intent.getBooleanExtra(IS_MESSAGE, false)) {
-            if (message != null)
-                if (mqttClient.isConnected())
-                    passMessage(message);
-                else
-                    initMqttCallback();
-        } else {
-            if (TOPIC != null) {
-                if (!mqttClient.isConnected())
-                    initMqttCallback();
-            }
-        }
-
-        return START_REDELIVER_INTENT;
+        return START_STICKY;
     }
 
     void initMqttCallback() {
@@ -139,8 +129,7 @@ public class MQTTService extends Service {
 
         try {
             mqttClient.setCallback(new MqttCallback() {
-                public void messageArrived(final String topic, final MqttMessage msg)
-                        throws Exception {
+                public void messageArrived(final String topic, final MqttMessage msg) {
                     Log.d(TAG + "Received:", topic + " " + new String(msg.getPayload()));
 
                     try {
@@ -152,15 +141,14 @@ public class MQTTService extends Service {
                             if (userLogin.equals(RescribeConstants.YES)) {
                                 if (myid.equals(String.valueOf(messageL.getPatId())) && topic.equals(TOPIC[0])) {
                                     messageL.setMsgId(msg.getId());
-                                    messageL.setWho(ChatAdapter.RECEIVER);
                                     messageL.setTopic(topic);
-
-                                    MessageNotification.notify(MQTTService.this, messageL.getTopic(), messageL.getMsg(), 0, random.nextInt(max - min + 1) + min);
-
-                                    Intent intent = new Intent(NOTIFY);
-                                    intent.putExtra(FAILED, false);
-                                    intent.putExtra(MESSAGE, messageL);
-                                    sendBroadcast(intent);
+                                    if (!messageL.getSender().equals(MQTTService.PATIENT)) {
+                                        MessageNotification.notify(MQTTService.this, messageL.getTopic(), messageL.getMsg(), 0, messageL.getMsgId());
+                                        Intent intent = new Intent(NOTIFY);
+                                        intent.putExtra(RECEIVED, true);
+                                        intent.putExtra(MESSAGE, messageL);
+                                        sendBroadcast(intent);
+                                    } else Log.d(TAG + " DOCTOR_MES", new String(msg.getPayload()));
                                 } else Log.d(TAG + " OTHERS_MES", new String(msg.getPayload()));
                             }
                         } else Log.d(TAG + " LOGOUT_MES", new String(msg.getPayload()));
@@ -174,11 +162,10 @@ public class MQTTService extends Service {
                     Log.d(TAG, "Delivery Complete");
                     Log.d(TAG + " MESSAGE_ID", String.valueOf(token.getMessageId()));
 
-                    /*Intent intent = new Intent(NOTIFY);
-                        intent.putExtra(MESSAGE_ID, messageId);
-                        intent.putExtra(FAILED, true);
-                        intent.putExtra(MESSAGE, message);
-                        sendBroadcast(intent);*/
+                    Intent intent = new Intent(NOTIFY);
+                    intent.putExtra(MESSAGE_ID, String.valueOf(token.getMessageId()));
+                    intent.putExtra(DELIVERED, true);
+                    sendBroadcast(intent);
                 }
 
                 public void connectionLost(Throwable arg0) {
@@ -191,13 +178,30 @@ public class MQTTService extends Service {
                 }
             });
 
-            connOpts = new MqttConnectOptions();
+            MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(false);
-//            connOpts.setUserName("kevpfvww");
-//            String password = "4nWoMhwCRlPi";
+//            connOpts.setUserName("ganesh");
+//            String password = "windows10";
 //            connOpts.setPassword(password.toCharArray());
-            mqttClient.connect(connOpts);
-            mqttClient.subscribe(this.TOPIC, qos);
+
+
+            IMqttActionListener mqttConnect = new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    Log.d(TAG, "Connected");
+                    try {
+                        mqttClient.subscribe(TOPIC, qos);
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Log.d(TAG, "Not Connected");
+                }
+            };
+            mqttClient.connect(connOpts, MQTTService.this, mqttConnect);
 
         } catch (MqttException me) {
             Log.e(TAG + "reason ", "" + me.getReasonCode());
@@ -209,10 +213,12 @@ public class MQTTService extends Service {
         }
     }
 
-    private void passMessage(MessageList messageList) {
+    public boolean getNetworkStatus() {
+        return internetState.isEnabled;
+    }
 
+    public void passMessage(MessageList messageList) {
         String content = gson.toJson(messageList, MessageList.class);
-
         try {
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(1);
@@ -226,16 +232,13 @@ public class MQTTService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mqttClient != null) {
-            if (mqttClient.isConnected()) {
-                try {
-                    mqttClient.disconnect();
-                    Log.d(TAG, "disconnect");
-                } catch (MqttException e) {
-                    e.printStackTrace();
-                }
+        if (mqttClient.isConnected()) {
+            try {
+                mqttClient.disconnect();
+            } catch (MqttException e) {
+                e.printStackTrace();
             }
-        }
+        } else Log.d(TAG, "Not Connected 1");
 
         sendStateSubscription.unsubscribe();
         sendStateSubscription = null;

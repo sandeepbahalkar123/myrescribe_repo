@@ -118,32 +118,6 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
         mCurrentSelectedTimePeriodTab = new Year();
         mCurrentSelectedTimePeriodTab.setMonthName(new SimpleDateFormat("MMM", Locale.US).format(new Date()));
         mCurrentSelectedTimePeriodTab.setYear(new SimpleDateFormat("yyyy", Locale.US).format(new Date()));
-        //-------
-        //----
-/*
-        AppDBHelper appDBHelper = new AppDBHelper(mParentActivity);
-
-        if (appDBHelper.dataTableNumberOfRows(RescribeConstants.TASK_LOGIN) > 0) {
-            Cursor cursor = appDBHelper.getData(RescribeConstants.TASK_LOGIN);
-            cursor.moveToFirst();
-            String loginData = cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
-            Gson gson = new Gson();
-            LoginModel loginModel = gson.fromJson(loginData, LoginModel.class);
-            mTimePeriodList = loginModel.getYearList();
-        }
-
-        if (mTimePeriodList.size() < 6) {
-            mTabLayout.setTabMode(TabLayout.MODE_FIXED);
-            mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        } else {
-            mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-        }
-
-        //---------
-        //----
-        mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        mTabLayout.setupWithViewPager(mViewpager);*/
     }
 
     @OnClick({R.id.backArrow, R.id.fab})
@@ -348,7 +322,9 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        setupViewPager();
+        noRecords.setVisibility(View.VISIBLE);
+        mYearSpinnerView.setVisibility(View.GONE);
+        mTabLayout.setVisibility(View.GONE);
 
     }
     //---------------

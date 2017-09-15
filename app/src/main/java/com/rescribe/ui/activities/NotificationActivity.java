@@ -32,7 +32,7 @@ import com.rescribe.model.notification.NotificationData;
 import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.model.notification.SlotModel;
-import com.rescribe.model.response_model_notification.ResponseLogNotificationModel;
+import com.rescribe.model.response_model_notification.NotificationResponseBaseModel;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
@@ -284,12 +284,12 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         // on click of NotificationActivity checkbox of sublist layout
         if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {
             //onclick of checkbox of sublist
-            ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+            NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
             String position = mOldDataTag;
             String[] count = position.split("_");
             String counter = count[1];
             if (responseLogNotificationModel.getCommon().isSuccess()) {
-                CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
+                CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
                 mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(true);
                 mTodayDataList.get(Integer.parseInt(counter)).setTabWebService(false);
                 mView.findViewById(R.id.selectViewTab).setEnabled(false);
@@ -300,14 +300,14 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
             if (customResponse != null) {
                 NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
-                if (prescriptionDataReceived.getData().size() > 0) {
+                if (prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification().size() > 0) {
                     mNotificationLayout.setVisibility(View.VISIBLE);
                     mNoDataAvailable.setVisibility(View.GONE);
                 } else {
                     mNotificationLayout.setVisibility(View.GONE);
                     mNoDataAvailable.setVisibility(View.VISIBLE);
                 }
-                List<NotificationData> notificationData = prescriptionDataReceived.getData();
+                List<NotificationData> notificationData = prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification();
                 String date = CommonMethods.getCurrentDateTime();
                 CommonMethods.Log(TAG, date);
                 //Current date and slot data is sorted to show in header of UI
@@ -332,7 +332,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                         addHeader(notificationListForHeader);
                     }
                 }
-                // Data for recyclerview Adapter is sorted to set data according to UI .
+                // DoctorConnectChatData for recyclerview Adapter is sorted to set data according to UI .
                 List<AdapterNotificationData> adapterNotificationParentData = new ArrayList<>();
                 List<AdapterNotificationModel> adapterNotificationModelListForDinner = new ArrayList<>();
                 String notifyDate = "";
@@ -403,10 +403,10 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 CommonMethods.Log("", "" + adapterNotificationParentData);
             }
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
-            ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+            NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
             //onclick of NotificationActivity checkbox of header layout
             if (responseLogNotificationModel.getCommon().isSuccess()) {
-                CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
+                CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
                 mHeaderLayoutParent.removeView(mHeaderLayout);
             }
             //handled click from NotificationAdapter checkbox in header layout

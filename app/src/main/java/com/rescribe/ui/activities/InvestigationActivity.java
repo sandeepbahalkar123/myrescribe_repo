@@ -274,7 +274,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
             if (investigationListModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
 
-                investigation = investigationListModel.getData();
+                investigation = investigationListModel.getInvestigationNotification().getNotifications();
 
                 if (investigation.size() > 0) {
 

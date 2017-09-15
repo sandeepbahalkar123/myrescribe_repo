@@ -5,8 +5,9 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rescribe.interfaces.CustomResponse;
 
-public class DoctorSpecialityData implements Parcelable {
+public class DoctorSpecialityData implements Parcelable, CustomResponse {
 
     public final static Parcelable.Creator<DoctorSpecialityData> CREATOR = new Creator<DoctorSpecialityData>() {
 

@@ -172,7 +172,7 @@ public class InvestigationNotificationService extends Service implements HelperR
 
             InvestigationListModel investigationListModel = (InvestigationListModel) customResponse;
 
-            ArrayList<InvestigationData> investigation = investigationListModel.getData();
+            ArrayList<InvestigationData> investigation = investigationListModel.getInvestigationNotification().getNotifications();
 
             if (investigation.size() > 0) {
 

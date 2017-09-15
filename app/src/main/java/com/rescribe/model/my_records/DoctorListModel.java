@@ -1,0 +1,21 @@
+package com.rescribe.model.my_records;
+
+import java.util.ArrayList;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class DoctorListModel {
+
+@SerializedName("docList")
+@Expose
+private ArrayList<SpinnerDoctor> docList = null;
+
+public ArrayList<SpinnerDoctor> getDocList() {
+return docList;
+}
+
+public void setDocList(ArrayList<SpinnerDoctor> docList) {
+this.docList = docList;
+}
+
+}

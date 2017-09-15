@@ -236,7 +236,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             CommonMethods.showToast(SelectedRecordsGroupActivity.this, getResources().getString(R.string.select_report));
         } else {
             if (NetworkUtil.isInternetAvailable(SelectedRecordsGroupActivity.this)) {
-                    uploadButton.setEnabled(false);
+                uploadButton.setEnabled(false);
 
                 for (int parentIndex = 0; parentIndex < groups.size(); parentIndex++) {
 
@@ -244,7 +244,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
 
                     for (int childIndex = 0; childIndex < images.size(); childIndex++)
                         uploadImage(parentIndex + "_" + childIndex, images.get(childIndex));
-                    }
+                }
             } else
                 CommonMethods.showToast(SelectedRecordsGroupActivity.this, getResources().getString(R.string.internet));
         }
@@ -263,7 +263,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             else
                 childCaptionName = image.getParentCaption();
 
-            new MultipartUploadRequest(SelectedRecordsGroupActivity.this, uploadId, Url)
+            MultipartUploadRequest uploadRequest = new MultipartUploadRequest(SelectedRecordsGroupActivity.this, uploadId, Url)
                     .setNotificationConfig(uploadNotificationConfig)
                     .setMaxRetries(RescribeConstants.MAX_RETRIES)
 
@@ -279,10 +279,14 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                     .addHeader("imageId", image.getImageId())
                     .addHeader("parentCaptionName", image.getParentCaption())
                     .addHeader("childCaptionName", childCaptionName)
-                    .addHeader("opdId", String.valueOf(opdId))
 
-                    .addFileToUpload(image.getImagePath(), "myRecord")
-                    .startUpload();
+                    .addFileToUpload(image.getImagePath(), "myRecord");
+
+            if (opdId != 0)
+                uploadRequest.addParameter("opdId", String.valueOf(opdId));
+
+            uploadRequest.startUpload();
+
         } catch (FileNotFoundException | MalformedURLException e) {
             e.printStackTrace();
         }
@@ -335,7 +339,6 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
         public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
 
             appDBHelper.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.FAILED);
-            CommonMethods.Log("ImagedUploadIdHome", uploadInfo.getUploadId() + " onError");
 
             String pos[] = uploadInfo.getUploadId().split("_");
             int finalI = Integer.parseInt(pos[0]);
@@ -352,7 +355,6 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
 
             appDBHelper.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
-            CommonMethods.Log("ImagedUploadIdHome", uploadInfo.getUploadId() + " onCompleted");
 
             String pos[] = uploadInfo.getUploadId().split("_");
             int finalI = Integer.parseInt(pos[0]);
@@ -361,7 +363,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             groups.get(finalI).getImages().get(finalJ).setUploading(RescribeConstants.COMPLETED);
             mAdapter.notifyItemChanged(finalI);
 
-            CommonMethods.Log(IMAGEDUPLOADID, uploadInfo.getUploadId() + " onCompleted");
+            CommonMethods.Log(IMAGEDUPLOADID, uploadInfo.getUploadId() + " onCompleted " + serverResponse.getBodyAsString());
 
             navigate();
         }
@@ -401,14 +403,14 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
 
     @Override
     public void onAddCaptionClick(final int mainPosition, final int position) {
-            captionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                    groups.get(mainPosition).getImages().get(position).setChildCaption(childCaptions[pos]);
-                    mAdapter.notifyItemChanged(mainPosition);
-                    alertDialog.dismiss();
-                }
-            });
-            alertDialog.show();
+        captionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+                groups.get(mainPosition).getImages().get(position).setChildCaption(childCaptions[pos]);
+                mAdapter.notifyItemChanged(mainPosition);
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 }

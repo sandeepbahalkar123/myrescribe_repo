@@ -320,7 +320,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
             MyRecordsDoctorListModel myRecordsDoctorListModel = (MyRecordsDoctorListModel) customResponse;
             if (myRecordsDoctorListModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
                 mSelectDoctorName.setThreshold(1);
-                doctorSpinnerAdapter = new DoctorSpinnerAdapter(AddRecordsActivity.this, R.layout.activity_add_records, R.id.doctorName, myRecordsDoctorListModel.getDoctors());
+                doctorSpinnerAdapter = new DoctorSpinnerAdapter(AddRecordsActivity.this, R.layout.activity_add_records, R.id.doctorName, myRecordsDoctorListModel.getDoctorListModel().getDocList());
                 mSelectDoctorName.setAdapter(doctorSpinnerAdapter);
 
                 mSelectDoctorName.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -108,7 +108,6 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         Gson gson = new Gson();
         CommonMethods.Log("FilterRequest", gson.toJson(drFilterRequestModel, DrFilterRequestModel.class));
         mDrawer.closeDrawer(GravityCompat.END);
-
         DoctorFilteredListFragment doctorFilteredListFragment = DoctorFilteredListFragment.newInstance(drFilterRequestModel);
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.doctorViewContainer, doctorFilteredListFragment);
@@ -120,7 +119,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     @Override
     public void onSelectDoctors() {
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        SelectDoctorsFragment selectDoctorsFragment = SelectDoctorsFragment.newInstance(filterDoctorListModel.getData(), getResources().getString(R.string.doctors));
+        SelectDoctorsFragment selectDoctorsFragment = SelectDoctorsFragment.newInstance(filterDoctorListModel.getDoctorNameModel().getDoctorNames(), getResources().getString(R.string.doctors));
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
         fragmentTransaction.add(R.id.nav_view, selectDoctorsFragment, getResources().getString(R.string.doctors));
         fragmentTransaction.addToBackStack(null);
@@ -130,7 +129,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     @Override
     public void onSelectSpeciality() {
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        SelectSpecialityFragment selectSpecialityFragment = SelectSpecialityFragment.newInstance(filterDoctorSpecialityListModel.getDoctorSpecialityData(), getResources().getString(R.string.doctors_speciality));
+        SelectSpecialityFragment selectSpecialityFragment = SelectSpecialityFragment.newInstance(filterDoctorSpecialityListModel.getDoctorSpecialitiesModel().getDoctorSpecialities(), getResources().getString(R.string.doctors_speciality));
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
         fragmentTransaction.add(R.id.nav_view, selectSpecialityFragment, getResources().getString(R.string.doctors_speciality));
         fragmentTransaction.addToBackStack(null);
@@ -144,15 +143,15 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         doctorSpecialityList.clear();
         caseList.clear();
 
-        for (DoctorData doctorDetail : filterDoctorListModel.getData()) {
+        for (DoctorData doctorDetail : filterDoctorListModel.getDoctorNameModel().getDoctorNames()) {
             doctorDetail.setSelected(false);
         }
 
-        for (DoctorSpecialityData doctorSpecialityData : filterDoctorSpecialityListModel.getDoctorSpecialityData()) {
+        for (DoctorSpecialityData doctorSpecialityData : filterDoctorSpecialityListModel.getDoctorSpecialitiesModel().getDoctorSpecialities()) {
             doctorSpecialityData.setSelected(false);
         }
 
-        for (CaseDetailsData caseDetails : caseDetailsListModel.getCaseDetailsDatas())
+        for (CaseDetailsData caseDetails : caseDetailsListModel.getCaseHeadingsModel().getCaseHeadings())
             caseDetails.setSelected(false);
 
         filterFragment.notifyCaseDetails();
@@ -180,7 +179,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
         String doctorName = getResources().getString(R.string.select_doctors);
         int count = 0;
-        for (DoctorData doctorDetail : filterDoctorListModel.getData()) {
+        for (DoctorData doctorDetail : filterDoctorListModel.getDoctorNameModel().getDoctorNames()) {
             if (doctorDetail.isSelected()) {
 
                 docIdList.add(doctorDetail.getId());
@@ -204,7 +203,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
         String doctorSpeciality = getResources().getString(R.string.select_doctors_speciality);
         int count = 0;
-        for (DoctorSpecialityData doctorSpecialityData : filterDoctorSpecialityListModel.getDoctorSpecialityData()) {
+        for (DoctorSpecialityData doctorSpecialityData : filterDoctorSpecialityListModel.getDoctorSpecialitiesModel().getDoctorSpecialities()) {
             if (doctorSpecialityData.isSelected()) {
 
                 doctorSpecialityList.add(doctorSpecialityData.getSpeciality());
@@ -226,7 +225,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
         caseList.clear();
 
-        for (CaseDetailsData caseDetailsData : caseDetailsListModel.getCaseDetailsDatas()) {
+        for (CaseDetailsData caseDetailsData : caseDetailsListModel.getCaseHeadingsModel().getCaseHeadings()) {
             if (caseDetailsData.isSelected())
                 caseList.add(caseDetailsData.getName());
         }
@@ -243,7 +242,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
             caseDetailsListModel = (CaseDetailsListModel) customResponse;
 
             FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-            filterFragment = FilterFragment.newInstance(caseDetailsListModel.getCaseDetailsDatas());
+            filterFragment = FilterFragment.newInstance(caseDetailsListModel.getCaseHeadingsModel().getCaseHeadings());
             fragmentTransaction.add(R.id.nav_view, filterFragment, "Filter");
             fragmentTransaction.commit();
 

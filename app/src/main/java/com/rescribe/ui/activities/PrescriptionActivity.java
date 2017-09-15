@@ -2,16 +2,12 @@ package com.rescribe.ui.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -23,6 +19,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 
 import com.rescribe.model.prescription_response_model.PrescriptionData;
+import com.rescribe.model.prescription_response_model.PrescriptionBaseModel;
 import com.rescribe.model.prescription_response_model.PrescriptionModel;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -104,8 +101,10 @@ public class PrescriptionActivity extends AppCompatActivity
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equals(RescribeConstants.TASK_PRESCRIPTION_LIST)) {
-            PrescriptionModel prescriptionDataReceived = (PrescriptionModel) customResponse;
-            if(prescriptionDataReceived.getData().size()>0){
+            PrescriptionBaseModel prescriptionBaseModel = (PrescriptionBaseModel)customResponse;
+            PrescriptionData dataReceived = prescriptionBaseModel.getData();
+
+            if(dataReceived.getPrescriptionModels().size()>0){
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mNoDataView.setVisibility(View.GONE);
 
@@ -114,7 +113,7 @@ public class PrescriptionActivity extends AppCompatActivity
                 mNoDataView.setVisibility(View.VISIBLE);
             }
 
-            List<PrescriptionData> data = prescriptionDataReceived.getData();
+            List<PrescriptionModel> data = dataReceived.getPrescriptionModels();
   // Mealtime is set here because according to mealtime doseage is highlighted in UI
             if (data != null) {
                 if (data.size() != 0) {

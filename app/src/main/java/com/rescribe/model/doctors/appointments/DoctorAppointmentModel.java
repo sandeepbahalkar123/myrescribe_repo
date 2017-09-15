@@ -15,7 +15,17 @@ public class DoctorAppointmentModel implements CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private ArrayList<DoctorAppointment> doctorAppointmentList;
+
+    private AppointmentModel appointmentModel;
+
+    public AppointmentModel getAppointmentModel() {
+        return appointmentModel;
+    }
+
+    public void setAppointmentModel(AppointmentModel appointmentModel) {
+        this.appointmentModel = appointmentModel;
+    }
+
 
     public Common getCommon() {
         return common;
@@ -25,19 +35,5 @@ public class DoctorAppointmentModel implements CustomResponse {
         this.common = common;
     }
 
-    public ArrayList<DoctorAppointment> getDoctorAppointmentList() {
-        return doctorAppointmentList;
-    }
 
-    public void setDoctorAppointmentList(ArrayList<DoctorAppointment> doctorAppointmentList) {
-        this.doctorAppointmentList = doctorAppointmentList;
-    }
-
-    @Override
-    public String toString() {
-        return "DoctorAppointmentModel{" +
-                "common=" + common +
-                ", doctorAppointmentList=" + doctorAppointmentList +
-                '}';
-    }
 }

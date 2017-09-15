@@ -22,6 +22,7 @@ import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.services.MQTTService;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -63,6 +64,13 @@ public class HomePageActivity extends DrawerActivity {
                 notificationForMedicine();
         }
         drawerConfiguration();
+
+        // start mqtt Service
+        // use this to start and trigger a service
+        Intent serviceIntent = new Intent(this, MQTTService.class);
+        // potentially add data to the serviceIntent
+        serviceIntent.putExtra(MQTTService.IS_MESSAGE, false);
+        startService(serviceIntent);
     }
 
 
@@ -234,8 +242,21 @@ public class HomePageActivity extends DrawerActivity {
                         .setTextPrimary(getString(R.string.my_records))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_my_records)),
                 new DrawerItem()
+                        .setTextPrimary(getString(R.string.doctor_connect))
+                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_doctor_connect)),
+                new DrawerItem()
+                        .setTextPrimary(getString(R.string.vital_graph))
+                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_vital_graph)),
+                new DrawerItem()
+                        .setTextPrimary(getString(R.string.post_your_query))
+                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_post_your_query)),
+                new DrawerItem()
+                        .setTextPrimary(getString(R.string.book_appointment))
+                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_post_your_query)),
+                new DrawerItem()
                         .setTextPrimary(getString(R.string.logout))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_logout))
+
         );
         setOnItemClickListener(new DrawerItem.OnItemClickListener() {
             @Override
@@ -276,6 +297,16 @@ public class HomePageActivity extends DrawerActivity {
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.logout))) {
                     logout();
+                } else if (id.equalsIgnoreCase(getString(R.string.doctor_connect))) {
+                    Intent intent = new Intent(mContext, DoctorConnectActivity.class);
+                    startActivity(intent);
+                } else if (id.equalsIgnoreCase(getString(R.string.vital_graph))) {
+
+                } else if (id.equalsIgnoreCase(getString(R.string.post_your_query))) {
+
+                } else if (id.equalsIgnoreCase(getString(R.string.book_appointment))) {
+                    Intent intent = new Intent(mContext, BookAppointment.class);
+                    startActivity(intent);
                 }
 
                 closeDrawer();

@@ -215,6 +215,7 @@ public class RescribePreferencesManager {
         String IS_VALID_IP_CONFIG = "isvalidipconfig";
         String AUTHTOKEN = "authToken";
         String PATIENT_ID = "patientId";
+        String DOCTOR_ID = "doctorId";
         String LOGIN_STATUS = "login_status";
         String MOBILE_NUMBER = "mobileNumber";
         String PASSWORD = "password";

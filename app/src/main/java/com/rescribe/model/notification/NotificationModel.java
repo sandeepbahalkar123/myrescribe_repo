@@ -12,9 +12,18 @@ public class NotificationModel implements CustomResponse{
     @SerializedName("common")
     @Expose
     private Common common;
+
     @SerializedName("data")
     @Expose
-    private List<NotificationData> data = null;
+    private NotificationPrescriptionModel notificationPrescriptionModel;
+
+    public NotificationPrescriptionModel getNotificationPrescriptionModel() {
+        return notificationPrescriptionModel;
+    }
+
+    public void setNotificationPrescriptionModel(NotificationPrescriptionModel notificationPrescriptionModel) {
+        this.notificationPrescriptionModel = notificationPrescriptionModel;
+    }
 
     public Common getCommon() {
         return common;
@@ -22,14 +31,6 @@ public class NotificationModel implements CustomResponse{
 
     public void setCommon(Common common) {
         this.common = common;
-    }
-
-    public List<NotificationData> getData() {
-        return data;
-    }
-
-    public void setData(List<NotificationData> data) {
-        this.data = data;
     }
 
 }

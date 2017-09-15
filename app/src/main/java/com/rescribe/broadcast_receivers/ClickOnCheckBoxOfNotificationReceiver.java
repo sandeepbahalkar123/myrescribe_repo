@@ -9,7 +9,7 @@ import com.rescribe.R;
 import com.rescribe.helpers.notification.RespondToNotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.response_model_notification.ResponseLogNotificationModel;
+import com.rescribe.model.response_model_notification.NotificationResponseBaseModel;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
@@ -79,9 +79,9 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        ResponseLogNotificationModel responseLogNotificationModel = (ResponseLogNotificationModel) customResponse;
+        NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
         if (responseLogNotificationModel.getCommon().isSuccess()) {
-            CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
+            CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
         }
     }
 

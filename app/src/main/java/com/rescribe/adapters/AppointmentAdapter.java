@@ -15,14 +15,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.model.doctors.appointments.DoctorAppointment;
+import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.MapsActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.NetworkUtil;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,11 +37,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private String mCurrentDate;
     private String mAppointmentType;
     private Context mContext;
-    private ArrayList<DoctorAppointment> appointmentsList;
+    private ArrayList<AptList> appointmentsList;
     private int imageSize;
 
 
-    public AppointmentAdapter(Context mContext, ArrayList<DoctorAppointment> appointmentsList, String appointmentType) {
+    public AppointmentAdapter(Context mContext, ArrayList<AptList> appointmentsList, String appointmentType) {
         this.mAppointmentType = appointmentType;
         this.appointmentsList = appointmentsList;
         this.mContext = mContext;
@@ -69,7 +68,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        DoctorAppointment appointment = appointmentsList.get(position);
+        AptList appointment = appointmentsList.get(position);
 
         holder.doctorName.setText(appointment.getDoctorName());
         holder.doctorType.setText(appointment.getSpecialization());
@@ -115,7 +114,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             @Override
             public void onClick(View v) {
                 if (NetworkUtil.isInternetAvailable(mContext)) {
-                    DoctorAppointment appointment1 = appointmentsList.get(Integer.parseInt("" + v.getTag()));
+                    AptList appointment1 = appointmentsList.get(Integer.parseInt("" + v.getTag()));
                     Intent intent = new Intent(mContext, MapsActivity.class);
                     intent.putExtra(mContext.getString(R.string.address), appointment1.getAddress());
                     //intent.putExtra(mContext.getString(R.string.longitude), appointment1.getLongitude());

@@ -15,6 +15,9 @@ public class FilterDoctorListModel implements Parcelable, CustomResponse {
     @SerializedName("common")
     @Expose
     private Common common;
+    @SerializedName("data")
+    @Expose
+    private DoctorNameModel doctorNameModel;
     public final static Parcelable.Creator<FilterDoctorListModel> CREATOR = new Creator<FilterDoctorListModel>() {
 
 
@@ -24,7 +27,7 @@ public class FilterDoctorListModel implements Parcelable, CustomResponse {
         public FilterDoctorListModel createFromParcel(Parcel in) {
             FilterDoctorListModel instance = new FilterDoctorListModel();
             instance.common = ((Common) in.readValue((Common.class.getClassLoader())));
-            in.readList(instance.data, (DoctorData.class.getClassLoader()));
+            instance.doctorNameModel = ((DoctorNameModel) in.readValue((DoctorNameModel.class.getClassLoader())));
             return instance;
         }
 
@@ -32,10 +35,8 @@ public class FilterDoctorListModel implements Parcelable, CustomResponse {
             return (new FilterDoctorListModel[size]);
         }
 
-    };
-    @SerializedName("data")
-    @Expose
-    private ArrayList<DoctorData> data = new ArrayList<>();
+    }
+            ;
 
     public Common getCommon() {
         return common;
@@ -45,21 +46,20 @@ public class FilterDoctorListModel implements Parcelable, CustomResponse {
         this.common = common;
     }
 
-    public ArrayList<DoctorData> getData() {
-        return data;
+    public DoctorNameModel getDoctorNameModel() {
+        return doctorNameModel;
     }
 
-    public void setData(ArrayList<DoctorData> data) {
-        this.data = data;
+    public void setDoctorNameModel(DoctorNameModel doctorNameModel) {
+        this.doctorNameModel = doctorNameModel;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(common);
-        dest.writeList(data);
+        dest.writeValue(doctorNameModel);
     }
 
     public int describeContents() {
         return 0;
     }
-
 }

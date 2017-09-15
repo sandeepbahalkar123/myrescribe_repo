@@ -15,7 +15,7 @@ import com.rescribe.R;
 import com.rescribe.helpers.doctor.DoctorHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.doctors.appointments.DoctorAppointment;
+import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.model.doctors.appointments.DoctorAppointmentModel;
 import com.rescribe.ui.fragments.AppointmentFragment;
 import com.rescribe.util.CommonMethods;
@@ -41,7 +41,7 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
     String[] mFragmentTitleList = new String[3];
 
     private DoctorHelper mDoctorHelper;
-    private ArrayList<DoctorAppointment> mAppointmentList;
+    private ArrayList<AptList> mAppointmentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +89,7 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         DoctorAppointmentModel model = (DoctorAppointmentModel) customResponse;
         if (model != null) {
-            ArrayList<DoctorAppointment> doctorAppointmentList = model.getDoctorAppointmentList();
+            ArrayList<AptList> doctorAppointmentList = model.getAppointmentModel().getAptList();
             if (doctorAppointmentList != null) {
                 mAppointmentList = doctorAppointmentList;
                 setupViewPager();
@@ -157,19 +157,19 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
         super.onBackPressed();
     }
 
-    public ArrayList<DoctorAppointment> getAppointmentList(String type) {
-        ArrayList<DoctorAppointment> tempList = new ArrayList<>();
+    public ArrayList<AptList> getAppointmentList(String type) {
+        ArrayList<AptList> tempList = new ArrayList<>();
         if (mAppointmentList != null) {
-            for (DoctorAppointment dataObject :
+            for (AptList dataObject :
                     mAppointmentList) {
                 if (dataObject.getAppointmentType().equalsIgnoreCase(type)) {
                     tempList.add(dataObject);
                 }
             }
         }
-        Collections.sort(tempList, new Comparator<DoctorAppointment>() {
+        Collections.sort(tempList, new Comparator<AptList>() {
             @Override
-            public int compare(DoctorAppointment o1, DoctorAppointment o2) {
+            public int compare(AptList o1, AptList o2) {
                 Date m1Date = CommonMethods.convertStringToDate(o1.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
                 Date m2Date = CommonMethods.convertStringToDate(o2.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
 

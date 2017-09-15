@@ -10,7 +10,7 @@ import com.rescribe.util.RescribeConstants;
  * Created by riteshpandhurkar on 19/7/17.
  */
 
-public class DoctorAppointment implements CustomResponse{
+public class AptList implements CustomResponse{
     @SerializedName("aptId")
     @Expose
     private String id;

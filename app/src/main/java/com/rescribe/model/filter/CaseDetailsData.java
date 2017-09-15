@@ -5,8 +5,9 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rescribe.interfaces.CustomResponse;
 
-public class CaseDetailsData implements Parcelable {
+public class CaseDetailsData implements Parcelable ,CustomResponse{
 
     @SerializedName("vit_id")
     @Expose

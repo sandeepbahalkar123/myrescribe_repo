@@ -17,21 +17,25 @@ public class AdapterNotificationData  implements CustomResponse{
     private Common common;
     @SerializedName("data")
     @Expose
-    private List<AdapterNotificationModel> data = null;
+    private AdapterNotificationPrescriptionModel adapterNotificationPrescriptionModel;
+
 
     public Common getCommon() {
         return common;
     }
 
+    public AdapterNotificationPrescriptionModel getAdapterNotificationPrescriptionModel() {
+        return adapterNotificationPrescriptionModel;
+    }
+
+    public void setAdapterNotificationPrescriptionModel(AdapterNotificationPrescriptionModel adapterNotificationPrescriptionModel) {
+        this.adapterNotificationPrescriptionModel = adapterNotificationPrescriptionModel;
+    }
+
     public void setCommon(Common common) {
+
         this.common = common;
     }
 
-    public List<AdapterNotificationModel> getData() {
-        return data;
-    }
 
-    public void setData(List<AdapterNotificationModel> data) {
-        this.data = data;
-    }
 }

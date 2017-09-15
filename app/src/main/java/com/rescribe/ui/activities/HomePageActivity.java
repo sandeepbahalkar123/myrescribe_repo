@@ -22,6 +22,7 @@ import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.services.MQTTService;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -63,6 +64,13 @@ public class HomePageActivity extends DrawerActivity {
                 notificationForMedicine();
         }
         drawerConfiguration();
+
+        // start mqtt Service
+        // use this to start and trigger a service
+        Intent serviceIntent = new Intent(this, MQTTService.class);
+        // potentially add data to the serviceIntent
+        serviceIntent.putExtra(MQTTService.IS_MESSAGE, false);
+        startService(serviceIntent);
     }
 
 

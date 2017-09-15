@@ -40,9 +40,7 @@ public class ChatHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag.equals(RescribeConstants.SEND_MESSAGE)) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                }
                 break;
             case ConnectionListener.PARSE_ERR0R:
                 CommonMethods.Log(TAG, "parse error");
@@ -88,6 +86,13 @@ public class ChatHelper implements ConnectionListener {
         mConnectionFactory.setPostParams(messageRequestModel);
         mConnectionFactory.setUrl(Config.SEND_MSG_TO_DOCTOR);
         mConnectionFactory.createConnection(RescribeConstants.SEND_MESSAGE);
+    }
+
+    public void getChatHistory(int pgNmbr, int user1id, int user2id) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.CHAT_HISTORY, Request.Method.GET, false);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setUrl(Config.CHAT_HISTORY + "user1id=" + user1id + "&user2id=" + user2id + "&pgNmbr=" + pgNmbr);
+        mConnectionFactory.createConnection(RescribeConstants.CHAT_HISTORY);
     }
 }
 

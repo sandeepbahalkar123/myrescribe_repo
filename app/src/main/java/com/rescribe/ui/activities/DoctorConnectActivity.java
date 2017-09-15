@@ -12,19 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.rescribe.R;
-import com.rescribe.helpers.doctor_connect.DoctorConnectChatHelper;
-import com.rescribe.helpers.doctor_connect.DoctorConnectHelper;
 import com.rescribe.helpers.doctor_connect.DoctorConnectSearchHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.doctor_connect.ConnectList;
-import com.rescribe.model.doctor_connect.DoctorConnectBaseModel;
-import com.rescribe.model.doctor_connect.DoctorConnectDataModel;
-import com.rescribe.model.doctor_connect_chat.DoctorConnectChatBaseModel;
 import com.rescribe.model.doctor_connect_search.DoctorConnectSearchBaseModel;
-import com.rescribe.model.doctor_connect_search.DoctorSpeciality;
 import com.rescribe.model.doctor_connect_search.SearchDataModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
@@ -59,6 +54,8 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
     CustomTextView title;
     @BindView(R.id.searchView)
     EditTextWithDeleteButton mSearchView;
+    @BindView(R.id.whiteUnderLine)
+    TextView mWhiteUnderLine;
     private static final String SPECIALIZATION_DOCTOR_FRAGMENT = "SpecializationOfDoctorFragment";
     private static final String SPECIALIZATION_DOCTOR_FRAGMENT_BYNAME = "SearchDoctorByNameFragment";
     private DoctorConnectSearchContainerFragment doctorConnectSearchContainerFragment;
@@ -88,6 +85,7 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
                 int tabPosition = mTabsDoctorConnect.getSelectedTabPosition();
                 if (tabPosition == 2) {
                     mSearchView.setVisibility(View.VISIBLE);
+                    mWhiteUnderLine.setVisibility(View.VISIBLE);
                     title.setVisibility(View.GONE);
                 } else {
                     mSearchView.setVisibility(View.GONE);
@@ -101,6 +99,8 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
                 if (tabPosition == 2) {
                     title.setVisibility(View.GONE);
                     mSearchView.setVisibility(View.VISIBLE);
+                    mWhiteUnderLine.setVisibility(View.VISIBLE);
+
                 } else {
                     mSearchView.setVisibility(View.GONE);
                     title.setVisibility(View.VISIBLE);
@@ -112,6 +112,8 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
                 int tabPosition = mTabsDoctorConnect.getSelectedTabPosition();
                 if (tabPosition == 2) {
                     mSearchView.setVisibility(View.VISIBLE);
+                    mWhiteUnderLine.setVisibility(View.VISIBLE);
+
                     title.setVisibility(View.GONE);
                 } else {
                     mSearchView.setVisibility(View.GONE);
@@ -276,6 +278,7 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         fragmentTransaction.commit();
 
     }
+
     //Call Back from SearchBySpecializationOfDoctor
     public void addSearchDoctorByNameFragment(Bundle bundleData) {
         mFragmentLoaded = SPECIALIZATION_DOCTOR_FRAGMENT_BYNAME;

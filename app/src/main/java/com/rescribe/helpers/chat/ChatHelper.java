@@ -78,8 +78,8 @@ public class ChatHelper implements ConnectionListener {
         // 2017-10-13 12:08:07
         messageRequestModel.setMsgTime(CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss));
         messageRequestModel.setSender("user2");
-        messageRequestModel.setUser1id(messageL.getPatId());
-        messageRequestModel.setUser2id(messageL.getDocId());
+        messageRequestModel.setUser1id(messageL.getDocId());
+        messageRequestModel.setUser2id(messageL.getPatId());
 
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.SEND_MESSAGE, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();

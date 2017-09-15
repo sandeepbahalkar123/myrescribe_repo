@@ -243,6 +243,9 @@ public class HomePageActivity extends DrawerActivity {
                         .setTextPrimary(getString(R.string.post_your_query))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_post_your_query)),
                 new DrawerItem()
+                        .setTextPrimary(getString(R.string.book_appointment))
+                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_post_your_query)),
+                new DrawerItem()
                         .setTextPrimary(getString(R.string.logout))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_logout))
 
@@ -293,6 +296,9 @@ public class HomePageActivity extends DrawerActivity {
 
                 } else if (id.equalsIgnoreCase(getString(R.string.post_your_query))) {
 
+                } else if (id.equalsIgnoreCase(getString(R.string.book_appointment))) {
+                    Intent intent = new Intent(mContext, BookAppointment.class);
+                    startActivity(intent);
                 }
 
                 closeDrawer();

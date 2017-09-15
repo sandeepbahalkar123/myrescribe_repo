@@ -78,14 +78,10 @@ public class DoctorConnectHelper implements ConnectionListener {
 
     }
 
-
-    //-- Sort date in descending order, copied from SRDaoImplManager.java
-
-
-    public void doDoctorConnecList() {
-       ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_CONNECT, Request.Method.GET, true);
+    public void doDoctorConnecList(String patientId) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_CONNECT, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.DOCTOR_CHAT_LIST_URL);
+        mConnectionFactory.setUrl(Config.DOCTOR_CHAT_LIST_URL + "?patientId=" + patientId);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_CONNECT);
       /*  try {
             InputStream is = mContext.getAssets().open("doctor_connect.json");

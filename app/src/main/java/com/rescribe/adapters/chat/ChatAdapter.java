@@ -51,7 +51,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         }
 
         //TODO, sendProfiile Image will set, added it for now
-        holder.senderProfilePhoto.setImageDrawable(mReceiverTextDrawable);
+        holder.receiverProfilePhoto.setImageDrawable(mReceiverTextDrawable);
 
     }
 
@@ -80,4 +80,3 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         }
     }
 }
-

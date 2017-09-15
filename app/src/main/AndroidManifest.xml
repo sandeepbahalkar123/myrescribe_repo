@@ -85,6 +85,13 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+        <activity
+            android:name=".ui.activities.BookAppointment"
+            android:configChanges="orientation|keyboard|screenSize"
+            android:label="@string/doctor_activity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
 
         <activity
             android:name=".ui.activities.DoctorConnectActivity"

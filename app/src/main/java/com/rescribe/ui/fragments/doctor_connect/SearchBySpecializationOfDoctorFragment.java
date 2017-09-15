@@ -10,20 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorConnectSearchAdapter;
 import com.rescribe.model.doctor_connect_search.DoctorSpeciality;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
-
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
@@ -54,7 +50,7 @@ public class SearchBySpecializationOfDoctorFragment extends Fragment implements 
     public static SearchBySpecializationOfDoctorFragment newInstance(ArrayList<DoctorSpeciality> searchDataModels) {
         SearchBySpecializationOfDoctorFragment fragment = new SearchBySpecializationOfDoctorFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(RescribeConstants.SEARCH__REQUEST,searchDataModels);
+        args.putParcelableArrayList(RescribeConstants.SEARCH__REQUEST, searchDataModels);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,19 +71,27 @@ public class SearchBySpecializationOfDoctorFragment extends Fragment implements 
     }
 
     private void init() {
-        pickSpeciality.setVisibility(View.VISIBLE);
-        displayNote.setVisibility(View.VISIBLE);
-        doctorConnectAdapter = new DoctorConnectSearchAdapter(getActivity(), this, searchDataModelList);
-        mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(doctorConnectAdapter);
-        int spanCount = 3; // 3 columns
-        int spacing = 50; // 50px
-        boolean includeEdge = true;
-        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-
+        if (searchDataModelList == null) {
+            emptyListView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+            pickSpeciality.setVisibility(View.GONE);
+            displayNote.setVisibility(View.GONE);
+        } else {
+            emptyListView.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            pickSpeciality.setVisibility(View.VISIBLE);
+            displayNote.setVisibility(View.VISIBLE);
+            doctorConnectAdapter = new DoctorConnectSearchAdapter(getActivity(), this, searchDataModelList);
+            mRecyclerView.setHasFixedSize(true);
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
+            mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            mRecyclerView.setAdapter(doctorConnectAdapter);
+            int spanCount = 3; // 3 columns
+            int spacing = 50; // 50px
+            boolean includeEdge = true;
+            mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+        }
     }
 
     @Override

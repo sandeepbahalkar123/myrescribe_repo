@@ -39,8 +39,8 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
 
     private Context mContext;
     private ArrayList<ConnectList> connectLists;
-    String searchString = "";
     private ColorGenerator mColorGenerator;
+    private String mIdle, mOnline, mOffline;
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
 
@@ -54,7 +54,6 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         TextView paidStatusTextView;
         @BindView(R.id.imageOfDoctor)
         ImageView imageOfDoctor;
-
         View view;
 
         ListViewHolder(View view) {
@@ -69,7 +68,9 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         this.connectLists = connectLists;
         this.mContext = mContext;
         mColorGenerator = ColorGenerator.MATERIAL;
-
+        mOnline = mContext.getString(R.string.online);
+        mOffline = mContext.getString(R.string.offline);
+        mIdle = mContext.getString(R.string.idle);
     }
 
     @Override
@@ -81,19 +82,27 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
     }
 
     @Override
-    public void onBindViewHolder(ListViewHolder holder, int position) {
+    public void onBindViewHolder(final ListViewHolder holder, int position) {
         final ConnectList connectList = connectLists.get(position);
         holder.doctorType.setText(connectList.getSpecialization());
-        if (connectList.getOnlineStatus().equalsIgnoreCase("Online")) {
+
+        //-----------
+        if (connectList.getOnlineStatus().equalsIgnoreCase(mOnline)) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.green_light));
+        } else if (connectList.getOnlineStatus().equalsIgnoreCase(mIdle)) {
+            holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
+        } else if (connectList.getOnlineStatus().equalsIgnoreCase(mOffline)) {
+            holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.grey_500));
         } else {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
         }
+        //-----------
+
         holder.onlineStatusTextView.setText(connectList.getOnlineStatus());
         holder.paidStatusTextView.setText(connectList.getPaidStatus());
 
         String doctorName = connectList.getDoctorName();
-
+        // Removed Dr. from doctor name to get starting letter of doctorName to set to image icon.
         doctorName = doctorName.replace("Dr. ", "");
         if (doctorName != null) {
             int color2 = mColorGenerator.getColor(doctorName);
@@ -106,30 +115,15 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
             holder.imageOfDoctor.setImageDrawable(drawable);
         }
 
-        SpannableString spannableStringSearch = null;
 
-        if ((searchString != null) && (!searchString.isEmpty())) {
-            spannableStringSearch = new SpannableString(connectList.getDoctorName());
-            Pattern pattern = Pattern.compile(searchString, Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(connectList.getDoctorName());
-            while (matcher.find()) {
-                spannableStringSearch.setSpan(new ForegroundColorSpan(
-                                ContextCompat.getColor(mContext, R.color.tagColor)),
-                        matcher.start(), matcher.end(),
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-        }
-        if (spannableStringSearch != null) {
-            holder.doctorName.setText(spannableStringSearch);
-        } else {
-            holder.doctorName.setText(connectList.getDoctorName());
-        }
+        holder.doctorName.setText(connectList.getDoctorName());
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ChatActivity.class);
                 intent.putExtra(RescribeConstants.DOCTORS_INFO, connectList);
+                intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
                 mContext.startActivity(intent);
             }
         });

@@ -120,7 +120,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
 
     private ConnectList connectList;
     private String patId;
-    private TextDrawable mTextDrawable;
+    private TextDrawable doctorTextDrawable;
 
     // load more
     int next = 1;
@@ -140,24 +140,23 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
         doctorName = doctorName.replace("Dr. ", "");
         if (doctorName != null) {
             int color2 = ColorGenerator.MATERIAL.getColor(doctorName);
-            mTextDrawable = TextDrawable.builder()
+            doctorTextDrawable = TextDrawable.builder()
                     .beginConfig()
                     .width(Math.round(getResources().getDimension(R.dimen.dp40)))  // width in px
                     .height(Math.round(getResources().getDimension(R.dimen.dp40))) // height in px
                     .endConfig()
                     .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-            profilePhoto.setImageDrawable(mTextDrawable);
+            profilePhoto.setImageDrawable(doctorTextDrawable);
         }
 
         dateTime.setText(connectList.getOnlineStatus());
 
         chatHelper = new ChatHelper(this, this);
         patId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this);
-        chatHelper.getChatHistory(1, connectList.getId(), Integer.parseInt(patId));
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         chatList.setLayoutManager(mLayoutManager);
-        chatAdapter = new ChatAdapter(messageList, mTextDrawable);
+        chatAdapter = new ChatAdapter(messageList, doctorTextDrawable);
         chatList.setAdapter(chatAdapter);
 
         chatHelper.getChatHistory(next, connectList.getId(), Integer.parseInt(patId));
@@ -224,10 +223,10 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
                         messageL.setPatId(Integer.parseInt(patId));
 
                         // send msg by http api
-                        chatHelper.sendMsgToPatient(messageL);
+//                        chatHelper.sendMsgToPatient(messageL);
 
                         // send msg by mqtt
-//                        mqttService.passMessage(messageL);
+                        mqttService.passMessage(messageL);
 
                         if (mqttService.getNetworkStatus()) {
                             if (chatAdapter != null) {

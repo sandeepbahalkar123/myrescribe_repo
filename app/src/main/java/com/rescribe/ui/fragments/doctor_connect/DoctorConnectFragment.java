@@ -10,22 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorConnectAdapter;
-import com.rescribe.adapters.DoctorConnectChatAdapter;
 import com.rescribe.helpers.doctor_connect.DoctorConnectHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.doctor_connect.ConnectList;
 import com.rescribe.model.doctor_connect.DoctorConnectBaseModel;
 import com.rescribe.model.doctor_connect.DoctorConnectDataModel;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -78,7 +73,8 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     public void onResume() {
         super.onResume();
         if (mDoctorConnectDataModel.getConnectList() == null) {
-            mDoctorConnectHelper.doDoctorConnecList();
+            String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, getContext());
+            mDoctorConnectHelper.doDoctorConnecList(patientId);
         }else {
             setAdapter();
         }
@@ -91,8 +87,10 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     }
 
     public void setAdapter() {
+        //Added Dr. to doctorName
         for (int i = 0; i < mDoctorConnectDataModel.getConnectList().size(); i++) {
             String doctorName = mDoctorConnectDataModel.getConnectList().get(i).getDoctorName();
+            //TODO : Temporary Fix as data from Server is not in Proper format
             if (doctorName.startsWith("DR. ")) {
                 String drName =  doctorName.replace("DR. ", "Dr. ");
                 mDoctorConnectDataModel.getConnectList().get(i).setDoctorName(drName);

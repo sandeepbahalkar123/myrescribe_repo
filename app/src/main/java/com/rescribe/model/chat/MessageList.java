@@ -20,10 +20,10 @@ public class MessageList implements Parcelable {
     @SerializedName("msgTime")
     @Expose
     private String msgTime;
-    @SerializedName("user2id")
+    @SerializedName("user1id")
     @Expose
     private int docId;
-    @SerializedName("user1id")
+    @SerializedName("user2id")
     @Expose
     private int patId;
     @SerializedName("who")

@@ -10,22 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorConnectAdapter;
-import com.rescribe.adapters.DoctorConnectChatAdapter;
 import com.rescribe.helpers.doctor_connect.DoctorConnectHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.doctor_connect.ConnectList;
 import com.rescribe.model.doctor_connect.DoctorConnectBaseModel;
 import com.rescribe.model.doctor_connect.DoctorConnectDataModel;
 import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;

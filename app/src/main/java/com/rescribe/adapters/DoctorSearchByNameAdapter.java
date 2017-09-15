@@ -1,6 +1,7 @@
 package com.rescribe.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +20,9 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
 import com.rescribe.model.doctor_connect.ConnectList;
+import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -83,8 +86,8 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
     }
 
     @Override
-    public void onBindViewHolder(DoctorSearchByNameAdapter.ListViewHolder holder, int position) {
-        ConnectList connectList = appointmentsList.get(position);
+    public void onBindViewHolder(final DoctorSearchByNameAdapter.ListViewHolder holder, int position) {
+        final ConnectList connectList = appointmentsList.get(position);
         holder.doctorType.setText(connectList.getSpecialization());
         //-----------
         if (connectList.getOnlineStatus().equalsIgnoreCase(mOnline)) {
@@ -112,7 +115,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
                     .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
             holder.imageOfDoctor.setImageDrawable(drawable);
         }
-       //Used spannable to show searchtext in different colour
+        //Used spannable to show searchtext in different colour
         SpannableString spannableStringSearch = null;
         if ((searchString != null) && (!searchString.isEmpty())) {
 
@@ -129,6 +132,18 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         } else {
             holder.doctorName.setText(connectList.getDoctorName());
         }
+
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ChatActivity.class);
+
+                intent.putExtra(RescribeConstants.DOCTORS_INFO, connectList);
+                intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
+                mContext.startActivity(intent);
+            }
+        });
+
 
     }
 

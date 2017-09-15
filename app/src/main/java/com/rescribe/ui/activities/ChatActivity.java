@@ -41,6 +41,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 public class ChatActivity extends AppCompatActivity implements HelperResponse {
 
     @BindView(R.id.backButton)
@@ -121,6 +122,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
         //------set values----
         receiverName.setText(connectList.getDoctorName());
         onlineStatus.setText(connectList.getOnlineStatus());
+        onlineStatus.setTextColor(getIntent().getIntExtra(RescribeConstants.STATUS_COLOR, 0));
         //--- TODO, PROFILE SHOULD BE HERE, added temperately
         String patientName = connectList.getDoctorName();
         patientName = patientName.replace("Dr. ", "");

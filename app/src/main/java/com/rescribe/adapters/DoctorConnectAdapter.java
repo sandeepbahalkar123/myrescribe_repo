@@ -82,7 +82,7 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
     }
 
     @Override
-    public void onBindViewHolder(ListViewHolder holder, int position) {
+    public void onBindViewHolder(final ListViewHolder holder, int position) {
         final ConnectList connectList = connectLists.get(position);
         holder.doctorType.setText(connectList.getSpecialization());
 
@@ -102,7 +102,7 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         holder.paidStatusTextView.setText(connectList.getPaidStatus());
 
         String doctorName = connectList.getDoctorName();
-     // Removed Dr. from doctor name to get starting letter of doctorName to set to image icon.
+        // Removed Dr. from doctor name to get starting letter of doctorName to set to image icon.
         doctorName = doctorName.replace("Dr. ", "");
         if (doctorName != null) {
             int color2 = mColorGenerator.getColor(doctorName);
@@ -116,13 +116,14 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         }
 
 
-            holder.doctorName.setText(connectList.getDoctorName());
+        holder.doctorName.setText(connectList.getDoctorName());
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ChatActivity.class);
                 intent.putExtra(RescribeConstants.DOCTORS_INFO, connectList);
+                intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
                 mContext.startActivity(intent);
             }
         });

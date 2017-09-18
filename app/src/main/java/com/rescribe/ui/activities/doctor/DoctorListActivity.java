@@ -1,4 +1,4 @@
-package com.rescribe.ui.activities;
+package com.rescribe.ui.activities.doctor;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

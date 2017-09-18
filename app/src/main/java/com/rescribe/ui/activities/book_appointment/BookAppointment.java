@@ -1,4 +1,4 @@
-package com.rescribe.ui.activities;
+package com.rescribe.ui.activities.book_appointment;
 
 import android.Manifest;
 import android.content.Context;
@@ -27,7 +27,7 @@ import com.rescribe.helpers.book_appointment.ServicesHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesModel;
-import com.rescribe.ui.customesViews.CustomTextView;
+ import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.rescribe.ui.activities;
+package com.rescribe.ui.activities.book_appointment;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

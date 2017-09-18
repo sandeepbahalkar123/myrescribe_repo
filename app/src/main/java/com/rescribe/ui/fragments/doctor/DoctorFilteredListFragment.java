@@ -23,7 +23,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
 import com.rescribe.model.doctors.filter_doctor_list.DoctorFilteredInfoAndCaseDetails;
 import com.rescribe.model.filter.filter_request.DrFilterRequestModel;
-import com.rescribe.ui.activities.DoctorListActivity;
+import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;

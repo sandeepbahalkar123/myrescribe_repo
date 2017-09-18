@@ -242,5 +242,10 @@
     <string name="not_connected">Not Connected</string>
     <string name="send">Send</string>
     <string name="book_appointment">Book Appointment</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="clinic_fees">Clinic Fees</string>
+    <string name="availability">Availability</string>
     <!-- Error string -->
 </resources>

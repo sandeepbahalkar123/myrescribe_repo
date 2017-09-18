@@ -151,7 +151,7 @@
     <style name="drawer_filter_header_direction_icon_layout">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginRight">@dimen/dp30</item>
+        <item name="android:layout_marginEnd">@dimen/dp30</item>
         <item name="android:layout_marginRight">@dimen/dp30</item>
         <item name="android:layout_gravity">center</item>
     </style>

@@ -102,6 +102,7 @@ public class RescribeConstants {
 
     public static final String SEND_MESSAGE = RescribeConstants.BLANK + 28;
     public static final String CHAT_HISTORY = RescribeConstants.BLANK + 29;
+    public static final String TASK_BOOK_APPOINTMENT_SERVICES = RescribeConstants.BLANK + 30;
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;

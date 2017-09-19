@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
-    <com.rescribe.ui.customesViews.CircleIndicator
-        android:id="@+id/circleIndicator"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="top"
-        android:layout_marginBottom="48dp"
-        app:ci_animator="@anim/indicator_no_animator"
-        app:ci_drawable="@drawable/white_radius"
-        app:ci_drawable_unselected="@drawable/black_radius"/>
-</FrameLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+
+        <com.rescribe.ui.customesViews.CircleIndicator
+            android:id="@+id/circleIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/dp4"
+            app:ci_animator="@anim/indicator_no_animator"
+            app:ci_drawable="@drawable/white_radius"
+            app:ci_drawable_unselected="@drawable/black_radius" />
+
+    </FrameLayout>
+
+    <include layout="@layout/book_appointment_recyclerview" />
+</LinearLayout>

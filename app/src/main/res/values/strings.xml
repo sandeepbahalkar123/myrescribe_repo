@@ -250,7 +250,12 @@
     <string name="availability">Availability</string>
 
     <string name="doctor">Doctor</string>
+
     <string name="about_doctor">About Doctor</string>
+
+
+    <string name="recently_visit_doctor">Recently Visited Doctor</string>
+    <string name="clickhere">Still in doubt ?......click here</string>
 
     <!-- Error string -->
 </resources>

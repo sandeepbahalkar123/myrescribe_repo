@@ -308,8 +308,8 @@ public class HomePageActivity extends DrawerActivity {
                 } else if (id.equalsIgnoreCase(getString(R.string.post_your_query))) {
 
                 } else if (id.equalsIgnoreCase(getString(R.string.book_appointment))) {
-                  //  Intent intent = new Intent(mContext, BookAppointment.class);
-                    Intent intent = new Intent(mContext, DoctorListToBookAppointment.class);
+                     Intent intent = new Intent(mContext, BookAppointment.class);
+                  //  Intent intent = new Intent(mContext, DoctorListToBookAppointment.class);
                     startActivity(intent);
                 }
 

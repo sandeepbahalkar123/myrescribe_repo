@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <LinearLayout
+            android:background="@color/tagColor"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:orientation="horizontal">
@@ -59,11 +61,32 @@
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
-        <include
-            android:layout_height="match_parent"
+        <FrameLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            layout="@layout/recent_visit_doctor"/>
-    </android.support.design.widget.AppBarLayout>
+            android:layout_height="wrap_content">
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/emptyListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/no_records_found"
+                android:gravity="center"
+                android:orientation="vertical" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -86,11 +86,12 @@ public class SearchBySpecializationOfDoctorFragment extends Fragment implements 
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
             mRecyclerView.setLayoutManager(layoutManager);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-            mRecyclerView.setAdapter(doctorConnectAdapter);
             int spanCount = 3; // 3 columns
             int spacing = 50; // 50px
             boolean includeEdge = true;
             mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+            mRecyclerView.setAdapter(doctorConnectAdapter);
+
         }
     }
 

@@ -82,7 +82,4 @@ public class DoctorListToBookAppointment extends AppCompatActivity implements He
     public void onReset() {
 
     }
-
-
-
 }

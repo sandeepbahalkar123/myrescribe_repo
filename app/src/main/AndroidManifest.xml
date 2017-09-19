@@ -68,7 +68,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.ShowDoctorListActivity"
+            android:name=".ui.activities.book_appointment.ShowDoctorListActivity"
             android:label="@string/doctor_connect"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"

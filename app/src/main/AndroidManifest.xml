@@ -68,7 +68,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.book_appointment.ShowDoctorListActivity"
+            android:name=".ui.activities.book_appointment.BookAppointDoctorListBaseActivity"
             android:label="@string/doctor_connect"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
@@ -93,7 +93,7 @@
 
         </activity>
         <activity
-            android:name=".ui.activities.book_appointment.BookAppointment"
+            android:name=".ui.activities.book_appointment.BookAppointmentServices"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_activity"
             android:theme="@style/AppTheme.NoActionBar">

@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,7 +15,9 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
+import com.rescribe.model.login.Year;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.fragments.book_appointment.BookAppointmentDoctorListFragment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 
 import butterknife.BindView;
@@ -23,46 +26,48 @@ import butterknife.ButterKnife;
 /**
  * Created by jeetal on 15/9/17.
  */
-public class ShowDoctorListActivity extends AppCompatActivity implements HelperResponse {
+public class BookAppointDoctorListBaseActivity extends AppCompatActivity implements HelperResponse {
 
-    @BindView(R.id.doctorToolbar)
-    ImageView doctorToolbar;
+    @BindView(R.id.bookAppointmentBackButton)
+    ImageView bookAppointmentBackButton;
     @BindView(R.id.title)
     CustomTextView title;
     @BindView(R.id.locationTextView)
     CustomTextView locationTextView;
-    @BindView(R.id.container)
-    FrameLayout container;
-    @BindView(R.id.emptyListView)
-    RelativeLayout emptyListView;
-    private RecentVisitDoctorFragment mChangeColorFragment;
+
     private DoctorDataHelper mDoctorDataHelper;
+    private Fragment currentlyLoadedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.select_doctors);
+        setContentView(R.layout.activity_book_appoint_doc_base_list);
         ButterKnife.bind(this);
         initialize();
-
     }
 
     private void initialize() {
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+        RecentVisitDoctorFragment recentVisitDoctorFragment = RecentVisitDoctorFragment.newInstance(new Bundle());
+        fragmentTransaction.replace(R.id.viewContainer, recentVisitDoctorFragment);
+        fragmentTransaction.commit();
+        this.currentlyLoadedFragment = recentVisitDoctorFragment;
+
+        fragmentTransaction = supportFragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.nav_view, BookAppointmentDoctorListFragment.createNewFragment());
+        fragmentTransaction.commit();
+
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetDoctorData();
-
     }
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        emptyListView.setVisibility(View.GONE);
-        container.setVisibility(View.VISIBLE);
-        BookAppointmentBaseModel bookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
-        mChangeColorFragment = RecentVisitDoctorFragment.newInstance(bookAppointmentBaseModel.getDoctorServicesModel());
-        FragmentManager supportFragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, mChangeColorFragment);
-        fragmentTransaction.commit();
+        if (currentlyLoadedFragment instanceof RecentVisitDoctorFragment) {
+            RecentVisitDoctorFragment tempFrag = (RecentVisitDoctorFragment) currentlyLoadedFragment;
+            tempFrag.onSuccess(mOldDataTag, customResponse);
+        }
     }
 
     @Override
@@ -77,7 +82,6 @@ public class ShowDoctorListActivity extends AppCompatActivity implements HelperR
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        container.setVisibility(View.GONE);
-        emptyListView.setVisibility(View.VISIBLE);
+
     }
 }

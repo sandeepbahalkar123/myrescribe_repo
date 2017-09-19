@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class FilterForDoctorBookAppointmentFragment extends Fragment {
+public class DrawerForFilterDoctorBookAppointment extends Fragment {
 
     @BindView(R.id.applyButton)
     Button applyButton;
@@ -58,12 +58,12 @@ public class FilterForDoctorBookAppointmentFragment extends Fragment {
     private OnDrawerInteractionListener mListener;
     private View mThumbView;
 
-    public FilterForDoctorBookAppointmentFragment() {
+    public DrawerForFilterDoctorBookAppointment() {
         // Required empty public constructor
     }
 
-    public static FilterForDoctorBookAppointmentFragment newInstance() {
-        FilterForDoctorBookAppointmentFragment fragment = new FilterForDoctorBookAppointmentFragment();
+    public static DrawerForFilterDoctorBookAppointment newInstance() {
+        DrawerForFilterDoctorBookAppointment fragment = new DrawerForFilterDoctorBookAppointment();
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);
         return fragment;

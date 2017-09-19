@@ -23,8 +23,7 @@ import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
-import com.rescribe.ui.activities.book_appointment.BookAppointment;
-import com.rescribe.ui.activities.book_appointment.DoctorListToBookAppointment;
+import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -308,8 +307,8 @@ public class HomePageActivity extends DrawerActivity {
                 } else if (id.equalsIgnoreCase(getString(R.string.post_your_query))) {
 
                 } else if (id.equalsIgnoreCase(getString(R.string.book_appointment))) {
-                     Intent intent = new Intent(mContext, BookAppointment.class);
-                  //  Intent intent = new Intent(mContext, DoctorListToBookAppointment.class);
+                    Intent intent = new Intent(mContext, BookAppointmentServices.class);
+                    //    Intent intent = new Intent(mContext, DoctorListToBookAppointment.class);
                     startActivity(intent);
                 }
 

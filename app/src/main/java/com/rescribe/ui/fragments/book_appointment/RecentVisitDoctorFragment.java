@@ -11,15 +11,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSpecialistBookAppointmentAdapter;
 import com.rescribe.adapters.ShowRecentVisitedDoctorPagerAdapter;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -28,7 +34,7 @@ import droidninja.filepicker.utils.GridSpacingItemDecoration;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener {
+public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse {
     ArrayList<String> arrlist = new ArrayList<String>(5);
     @BindView(R.id.viewpager)
     ViewPager viewpager;
@@ -52,6 +58,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     public RecentVisitDoctorFragment() {
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -70,11 +77,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     private void init(View mRootView) {
-        if(mDoctorServicesModel==null){
+        if (mDoctorServicesModel == null) {
             pickSpeciality.setVisibility(View.GONE);
             doubtMessage.setVisibility(View.GONE);
             emptyListView.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             emptyListView.setVisibility(View.GONE);
             pickSpeciality.setVisibility(View.VISIBLE);
             listView.setVisibility(View.VISIBLE);
@@ -95,7 +102,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             int spacing = 50; // 50px
             boolean includeEdge = true;
             listView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-            mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(),this,mDoctorServicesModel.getDoctorSpecialities());
+            mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, mDoctorServicesModel.getDoctorSpecialities());
             listView.setAdapter(mDoctorConnectSearchAdapter);
         }
     }
@@ -105,16 +112,39 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         super.onDestroyView();
         unbinder.unbind();
     }
-    public static RecentVisitDoctorFragment newInstance(DoctorServicesModel doctorServicesModel) {
+
+    public static RecentVisitDoctorFragment newInstance(Bundle b) {
         RecentVisitDoctorFragment fragment = new RecentVisitDoctorFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(RescribeConstants.DOCTOR_DATA_REQUEST,doctorServicesModel);
+        Bundle args = b;
+        if (args == null) {
+            args = new Bundle();
+        }
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
+
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        CommonMethods.Log("tag", "mOldDataTag :" + mOldDataTag);
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
     }
 }

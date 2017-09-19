@@ -250,6 +250,7 @@
     <string name="availability">Availability</string>
 
     <string name="doctor">Doctor</string>
+    <string name="about_doctor">About Doctor</string>
 
     <!-- Error string -->
 </resources>

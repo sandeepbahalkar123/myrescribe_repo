@@ -70,7 +70,6 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/drIcon"
                         style="@style/drawer_filter_header_icon_layout"
                         android:src="@drawable/select_doctor" />
 
@@ -93,7 +92,8 @@
                     android:layout_height="wrap_content"
                     android:background="@color/grey_300"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -169,7 +169,8 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:paddingBottom="@dimen/dp20"
-                    android:paddingTop="@dimen/dp20">
+                    android:paddingTop="@dimen/dp20"
+                    android:visibility="visible">
 
                     <SeekBar
                         android:id="@+id/clinicFeesSeekBar"
@@ -177,7 +178,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:max="100"
-                        android:thumb="@drawable/small_blue_dot" />
+                        android:progressDrawable="@layout/seekbar_progress_layout"
+                        android:thumb="@drawable/blue_dot" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -220,7 +222,8 @@
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/dp20"
-                    android:paddingTop="@dimen/dp20">
+                    android:paddingTop="@dimen/dp20"
+                    android:visibility="gone">
 
                     <ImageView
                         style="@style/drawer_filter_header_icon_layout"
@@ -314,7 +317,8 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:paddingBottom="@dimen/dp20"
-                    android:paddingTop="@dimen/dp20">
+                    android:paddingTop="@dimen/dp20"
+                    android:visibility="gone">
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/locationContentRecycleView"

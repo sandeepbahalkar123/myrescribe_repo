@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <item
+        android:id="@+id/SecondaryProgress"
+        android:drawable="@drawable/progress_two" />
+
+    <item
+        android:id="@+android:id/progress"
+        android:drawable="@drawable/progress_one" />
+</layer-list>

@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,6 +20,7 @@ import com.rescribe.ui.fragments.RecentVisitDoctorFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by jeetal on 15/9/17.
@@ -35,6 +37,7 @@ public class ShowDoctorListActivity extends AppCompatActivity implements HelperR
     FrameLayout container;
     @BindView(R.id.emptyListView)
     RelativeLayout emptyListView;
+    Intent intent;
     private RecentVisitDoctorFragment mChangeColorFragment;
     private DoctorDataHelper mDoctorDataHelper;
 
@@ -42,6 +45,10 @@ public class ShowDoctorListActivity extends AppCompatActivity implements HelperR
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_doctors);
+        intent = getIntent();
+      /*  if(getIntent()!=null){
+            locationTextView.setText(intent.getStringExtra(getString(R.string.title)));
+        }*/
         ButterKnife.bind(this);
         initialize();
 
@@ -79,5 +86,22 @@ public class ShowDoctorListActivity extends AppCompatActivity implements HelperR
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
         container.setVisibility(View.GONE);
         emptyListView.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick({R.id.doctorToolbar, R.id.title, R.id.locationTextView, R.id.container, R.id.emptyListView})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.doctorToolbar:
+                onBackPressed();
+                break;
+            case R.id.title:
+                break;
+            case R.id.locationTextView:
+                break;
+            case R.id.container:
+                break;
+            case R.id.emptyListView:
+                break;
+        }
     }
 }

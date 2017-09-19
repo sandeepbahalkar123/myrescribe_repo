@@ -192,6 +192,7 @@ public class BookAppointment extends AppCompatActivity implements HelperResponse
     @Override
     public void setOnClickOfServices() {
         Intent intent = new Intent(BookAppointment.this,ShowDoctorListActivity.class);
+        intent.putExtra(getString(R.string.title),locationTextView.getText().toString());
         startActivity(intent);
 
     }

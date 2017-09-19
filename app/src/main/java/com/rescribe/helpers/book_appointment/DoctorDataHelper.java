@@ -3,32 +3,30 @@ package com.rescribe.helpers.book_appointment;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.Request;
 import com.google.gson.Gson;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesModel;
+import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.network.ConnectRequest;
-import com.rescribe.network.ConnectionFactory;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by jeetal on 15/9/17.
+ * Created by jeetal on 19/9/17.
  */
 
-public class ServicesHelper implements ConnectionListener {
+public class DoctorDataHelper implements ConnectionListener {
 
     String TAG = this.getClass().getName();
     Context mContext;
     HelperResponse mHelperResponseManager;
 
-    public ServicesHelper(Context context, HelperResponse servicesActivity) {
+    public DoctorDataHelper(Context context, HelperResponse servicesActivity) {
         this.mContext = context;
         this.mHelperResponseManager = servicesActivity;
     }
@@ -38,7 +36,7 @@ public class ServicesHelper implements ConnectionListener {
 
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == RescribeConstants.TASK_BOOK_APPOINTMENT_SERVICES) {
+                if (mOldDataTag == RescribeConstants.TASK_GET_DOCTOR_DATA) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
@@ -72,26 +70,25 @@ public class ServicesHelper implements ConnectionListener {
 
     }
 
-    public void doGetServices() {
+    public void doGetDoctorData() {
 //        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_BOOK_APPOINTMENT_SERVICES, Request.Method.GET, true);
 //        mConnectionFactory.setHeaderParams();
 //        mConnectionFactory.setUrl(Config.SERVICES_URL);
 //        mConnectionFactory.createConnection(RescribeConstants.TASK_BOOK_APPOINTMENT_SERVICES);
         try {
-            InputStream is = mContext.getAssets().open("services.json");
+            InputStream is = mContext.getAssets().open("doctor_data");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
             String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "doDoctorConnectChat" + json);
+            Log.e(TAG, "doctor_data_book_appointment" + json);
 
-            ServicesModel servicesModel = new Gson().fromJson(json, ServicesModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, servicesModel, RescribeConstants.TASK_BOOK_APPOINTMENT_SERVICES);
+            BookAppointmentBaseModel bookAppointmentBaseModel = new Gson().fromJson(json, BookAppointmentBaseModel.class);
+            onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, RescribeConstants.TASK_GET_DOCTOR_DATA);
 
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 }
-

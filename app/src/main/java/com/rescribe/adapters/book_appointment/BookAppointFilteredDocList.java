@@ -69,10 +69,10 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
         holder.doctorName.setText(doctorObject.getDocName());
         holder.doctorType.setText(doctorObject.getSpeciality());
-        holder.doctorExperience.setText(doctorObject.getExperience());
+        holder.doctorExperience.setText("" + doctorObject.getExperience());
         holder.doctorAddress.setText(doctorObject.getDoctorAddress());
-        holder.doctorFee.setText(mContext.getString(R.string.rupee_symbol) + doctorObject.getAmount());
-        holder.distance.setText(doctorObject.getDistance());
+        holder.doctorFee.setText("" + mContext.getString(R.string.rupee_symbol) + doctorObject.getAmount());
+        holder.distance.setText("" + doctorObject.getDistance());
 
         //-------Load image-------
         RequestOptions requestOptions = new RequestOptions();

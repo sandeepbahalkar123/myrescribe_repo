@@ -103,6 +103,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 if (doctorList.size() == 0) {
                     isDataListViewVisible(false);
                 } else {
+                    isDataListViewVisible(true);
                     mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList);
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                     mDoctorListView.setLayoutManager(layoutManager);

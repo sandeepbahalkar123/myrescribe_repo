@@ -27,7 +27,7 @@ public class DoctorList implements Parcelable {
     private String speciality;
     @SerializedName("experience")
     @Expose
-    private Integer experience;
+    private int experience;
     @SerializedName("doctorAddress")
     @Expose
     private String doctorAddress;
@@ -79,7 +79,7 @@ public class DoctorList implements Parcelable {
             instance.docName = ((String) in.readValue((String.class.getClassLoader())));
             instance.doctorImageUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.speciality = ((String) in.readValue((String.class.getClassLoader())));
-            instance.experience = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.experience = ((int) in.readValue((Integer.class.getClassLoader())));
             instance.doctorAddress = ((String) in.readValue((String.class.getClassLoader())));
             instance.paidStatus = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.amount = ((Integer) in.readValue((Integer.class.getClassLoader())));
@@ -134,11 +134,11 @@ public class DoctorList implements Parcelable {
         this.speciality = speciality;
     }
 
-    public Integer getExperience() {
+    public int getExperience() {
         return experience;
     }
 
-    public void setExperience(Integer experience) {
+    public void setExperience(int experience) {
         this.experience = experience;
     }
 

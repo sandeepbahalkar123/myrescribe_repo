@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -27,7 +28,7 @@ import com.rescribe.helpers.book_appointment.ServicesHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesModel;
- import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
 import java.io.IOException;
@@ -191,8 +192,14 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
 
     @Override
     public void setOnClickOfServices() {
-        Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
-        startActivity(intent);
+
+        if (locationTextView.getText().toString().equals(getString(R.string.location))) {
+            Toast.makeText(mContext, getString(R.string.please_select_location), Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
+            intent.putExtra(getString(R.string.title), locationTextView.getText().toString());
+            startActivity(intent);
+        }
 
     }
 }

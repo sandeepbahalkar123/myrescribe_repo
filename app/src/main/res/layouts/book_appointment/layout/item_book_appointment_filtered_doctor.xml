@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/dp6"
+    android:layout_marginBottom="@dimen/dp4"
     android:layout_marginLeft="@dimen/dp6"
     android:layout_marginRight="@dimen/dp6"
-    android:layout_marginTop="@dimen/dp6"
-    android:background="@color/white"
+    android:layout_marginTop="@dimen/dp4"
+    android:background="@drawable/curve_edge_gray"
     android:clickable="true"
     android:orientation="vertical">
 
@@ -16,7 +16,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@color/white"
+        android:layout_marginBottom="@dimen/dp6"
+        android:layout_marginLeft="@dimen/dp6"
+        android:layout_marginRight="@dimen/dp6"
+        android:layout_marginTop="@dimen/dp6"
         android:orientation="horizontal">
         <!--  ListRow Left sied Thumbnail image -->
 
@@ -110,17 +113,36 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp10"
+                android:background="@drawable/rounded_white_rectangle">
 
-                <android.support.v7.widget.AppCompatButton
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/waitingTime"
                     android:layout_width="@dimen/dp0"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="waiting for 100 mins"
+                    android:textColor="@color/dose_completed"
+                    android:textSize="@dimen/sp12"
+                    android:textStyle="bold" />
 
-                <android.support.v7.widget.AppCompatButton
+                <TextView
+                    android:layout_width="@dimen/dp1"
+                    android:layout_height="wrap_content"
+                    android:background="@color/divider" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/tokenNo"
                     android:layout_width="@dimen/dp0"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="token no. 100 available"
+                    android:textColor="@color/dose_completed"
+                    android:textSize="@dimen/sp12"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
@@ -134,9 +156,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="top"
-                android:text="6:30 pm"
+                android:text="500"
                 android:textAllCaps="false"
                 android:textColor="@color/recentblue"
+                android:textSize="@dimen/sp12"
                 app:customFont="@string/roboto_bold" />
 
             <LinearLayout
@@ -152,19 +175,20 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:paddingTop="@dimen/dp6"
-                    android:src="@drawable/location" />
+                    android:src="@drawable/location_green" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/distance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="2.1 KM"
                     android:textAllCaps="false"
                     android:textColor="@color/dose_completed"
+                    android:textSize="@dimen/sp12"
                     app:customFont="@string/roboto_bold" />
             </LinearLayout>
         </LinearLayout>
-
 
     </LinearLayout>
 
@@ -172,5 +196,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp1"
         android:layout_marginTop="@dimen/dp16"
-        android:background="@color/divider" />
+        android:background="@color/divider"
+        android:visibility="gone" />
 </LinearLayout>

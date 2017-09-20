@@ -256,11 +256,14 @@
 
     <string name="recently_visit_doctor">Recently Visited Doctor</string>
     <string name="clickhere">Still in doubt ?......click here</string>
+
+    <string name="rupee_symbol">\u20B9 &#160;</string>
     <string name="please_select_location">Please select location</string>
     <string name="relevantkeywords">Enter relevant keywords to optimize your doctor search</string>
     <string name="complaint1">Complaint 1:</string>
     <string name="enter_string_here">Enter your complaint here</string>
     <string name="complaint2">Complaint 2:</string>
-
+    <string name="waiting_for">Waiting for </string>
+    <string name="token_no_available">Token No. %d available</string>
     <!-- Error string -->
 </resources>

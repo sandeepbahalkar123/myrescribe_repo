@@ -40,6 +40,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup view, int position) {
         View imageLayout = inflater.inflate(R.layout.recently_visit_doctors_layout, view, false);
         assert imageLayout != null;
+
         final TextView doctorName = (TextView) imageLayout
                 .findViewById(R.id.doctorName);
         final TextView doctorType = (TextView) imageLayout
@@ -56,10 +57,10 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
         doctorName.setText(doctorLists.get(position).getDocName());
         doctorType.setText(doctorLists.get(position).getDegree());
-        doctorExperience.setText(doctorLists.get(position).getExperience());
+        doctorExperience.setText(""+doctorLists.get(position).getExperience());
         doctorAddress.setText(doctorLists.get(position).getDoctorAddress());
-        doctorFees.setText(doctorLists.get(position).getAmount());
-        kilometers.setText(doctorLists.get(position).getDistance());
+        doctorFees.setText(""+doctorLists.get(position).getAmount());
+        kilometers.setText(""+doctorLists.get(position).getDistance());
         view.addView(imageLayout, 0);
 
         return imageLayout;

@@ -16,7 +16,7 @@ public class DoctorServicesModel implements Parcelable, CustomResponse {
 
     @SerializedName("doctorList")
     @Expose
-    private ArrayList<DoctorList> doctorList = null;
+    private ArrayList<DoctorList> doctorList = new ArrayList<>();
     @SerializedName("doctorSpecialities")
     @Expose
     private ArrayList<DoctorSpeciality> doctorSpecialities = null;

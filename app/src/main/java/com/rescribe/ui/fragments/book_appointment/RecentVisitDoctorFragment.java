@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSpecialistBookAppointmentAdapter;
 import com.rescribe.adapters.ShowRecentVisitedDoctorPagerAdapter;
@@ -19,16 +21,15 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
+import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
-
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
-
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
@@ -66,7 +67,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         unbinder = ButterKnife.bind(this, mRootView);
         Bundle arguments = getArguments();
         if (arguments != null) {
-       //     mDoctorServicesModel = getArguments().getParcelable(RescribeConstants.DOCTOR_DATA_REQUEST);
+            //     mDoctorServicesModel = getArguments().getParcelable(RescribeConstants.DOCTOR_DATA_REQUEST);
         }
         return mRootView;
 /*
@@ -74,7 +75,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 */
 
     }
-
 
 
     @Override
@@ -93,9 +93,12 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
-
+        Toast.makeText(getActivity(), "clicked :" + bundleData.getString(getString(R.string.clicked_item_data)), Toast.LENGTH_LONG).show();
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundleData));
     }
 
     @OnClick({R.id.viewpager, R.id.circleIndicator, R.id.pickSpeciality, R.id.listView, R.id.recyclerViewLinearLayout, R.id.doubtMessage, R.id.emptyListView})
@@ -127,7 +130,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        BookAppointmentBaseModel bookAppointmentBaseModel = (BookAppointmentBaseModel)customResponse;
+        BookAppointmentBaseModel bookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
         if (bookAppointmentBaseModel.getDoctorServicesModel() == null) {
             pickSpeciality.setVisibility(View.GONE);
             doubtMessage.setVisibility(View.GONE);

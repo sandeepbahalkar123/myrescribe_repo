@@ -21,7 +21,7 @@ import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +52,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     LinearLayout recyclerViewLinearLayout;
     private View mRootView;
     Unbinder unbinder;
-    private StillInDoubtFragment mStillInDoubtFragment;
+    private ComplaintsFragment mStillInDoubtFragment;
     DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter;
 
 

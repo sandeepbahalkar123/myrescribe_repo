@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 /**
  * Created by jeetal on 19/9/17.
  */
-public class StillInDoubtFragment  extends RecyclerView.Adapter<StillInDoubtFragment.ListViewHolder> {
+public class ComplaintsFragment extends RecyclerView.Adapter<ComplaintsFragment.ListViewHolder> {
 
     private Context mContext;
     private ArrayList<ConnectList> connectLists;
@@ -56,15 +56,15 @@ public class StillInDoubtFragment  extends RecyclerView.Adapter<StillInDoubtFrag
 
 
     @Override
-    public StillInDoubtFragment.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ComplaintsFragment.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.doctor_connect_chats_row_item, parent, false);
 
-        return new StillInDoubtFragment.ListViewHolder(itemView);
+        return new ComplaintsFragment.ListViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final StillInDoubtFragment.ListViewHolder holder, int position) {
+    public void onBindViewHolder(final ComplaintsFragment.ListViewHolder holder, int position) {
         final ConnectList connectList = connectLists.get(position);
         holder.doctorType.setText(connectList.getSpecialization());
 

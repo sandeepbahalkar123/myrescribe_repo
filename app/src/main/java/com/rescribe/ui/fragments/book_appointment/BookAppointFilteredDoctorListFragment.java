@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class BookAppointFilteredDoctorListFragment extends Fragment implements View.OnClickListener, HelperResponse {
+public class BookAppointFilteredDoctorListFragment extends Fragment implements View.OnClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener {
 
 
     @BindView(R.id.listView)
@@ -104,7 +104,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                     isDataListViewVisible(false);
                 } else {
                     isDataListViewVisible(true);
-                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList);
+                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList, this);
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                     mDoctorListView.setLayoutManager(layoutManager);
                     mDoctorListView.setHasFixedSize(true);
@@ -148,5 +148,11 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
             mEmptyListView.setVisibility(View.VISIBLE);
             mDoctorListView.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onClickOfDoctorRowItem(Bundle bundleData) {
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData));
     }
 }

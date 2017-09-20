@@ -15,8 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp10"
-            android:background="@color/Gray"
+            android:background="@drawable/doc_detail_header_bg"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -31,21 +30,22 @@
                     android:layout_height="@dimen/dp120"
                     android:clickable="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/advice" />
+                    android:src="@drawable/layer_12" />
 
-                <TextView
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/docRating"
                     style="@style/Base.TextAppearance.AppCompat.Body2"
                     android:layout_width="@dimen/dp48"
                     android:layout_height="@dimen/dp48"
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="-30dp"
                     android:layout_toRightOf="@+id/profileImage"
-                    android:background="@android:drawable/star_big_off"
+                    android:background="@drawable/star"
                     android:clickable="true"
                     android:gravity="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="11sp"
-                    tools:text="+10" />
+                    android:text="+10"
+                    android:textColor="@android:color/white"
+                    android:textSize="11sp" />
 
             </RelativeLayout>
 
@@ -54,11 +54,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Dr. Sandeep Patil"
+                android:text="Dr. Patil"
                 android:textColor="@color/recentblue"
                 android:textSize="@dimen/sp18"
-                android:textStyle="bold"
-                android:typeface="sans" />
+                app:customFont="@string/roboto_bold" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorSpecialization"
@@ -68,8 +67,8 @@
                 android:gravity="center"
                 android:text="Cardilogist"
                 android:textColor="@color/dose_completed"
-                android:textSize="@dimen/sp16"
-                android:textStyle="bold" />
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_medium" />
 
 
         </LinearLayout>
@@ -77,51 +76,247 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/dp10"
             android:orientation="vertical">
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dp10"
                 android:text="@string/about_doctor"
+                android:textSize="@dimen/sp14"
                 app:customFont="@string/roboto_medium" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/aboutDoctorDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="asdasd\nasda\n\nasdas"
+                android:paddingBottom="@dimen/dp10"
+                android:text="Lorem Lorem ipsum dolor sit amet, consectetur adipiscing
+elit, sed do eiusmod tempor incididunt ut labore et
+dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut
+aliquip ex ea commodo consequat. Duis aute irure
+dolor in reprehenderit in voluptate velit esse cillum
+dolore eu fugiat nulla pariatur. Excepteur sint
+occaecat cupidatat non proident, sunt in culpa qui
+officia deserunt mollit anim id est laborum."
+                android:textSize="@dimen/sp14"
                 app:customFont="@string/roboto_medium" />
 
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/doctorExperience"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/select_doctor"
-                android:drawablePadding="@dimen/dp6"
-                android:gravity="center|left"
-                android:text="asdasd"
-                app:customFont="@string/roboto_medium" />
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dp10">
 
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/doctorFees"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/doc_experience" />
+                </LinearLayout>
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorExperience"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:paddingLeft="@dimen/dp5"
+                    android:text="asdassdfd\ndfsdf\nsdfsfsfsdf"
+                    android:textSize="@dimen/sp14"
+                    app:customFont="@string/roboto_medium" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dp10">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.047"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ruppee" />
+                </LinearLayout>
+
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorFees"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:paddingLeft="@dimen/dp5"
+                    android:text="asdasd"
+                    android:textSize="@dimen/sp14"
+                    app:customFont="@string/roboto_medium" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dp10">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.01"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/hospital_practices" />
+                </LinearLayout>
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorPractices"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:paddingLeft="@dimen/dp5"
+                    android:text="asdhhghgasd\ndsfsd\n"
+                    android:textSize="@dimen/sp14"
+                    app:customFont="@string/roboto_medium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/temp_map"
+                android:paddingBottom="@dimen/dp10"
+                android:visibility="gone"></LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/select_doctor"
-                android:drawablePadding="@dimen/dp6"
-                android:gravity="center|left"
-                android:text="asdasd"
-                app:customFont="@string/roboto_medium" />
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dp10">
 
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/doctorPractices"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.01"
+                    android:gravity="center"
+                    android:src="@drawable/clock" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:paddingLeft="@dimen/dp5"
+                    android:text="@string/open_today"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/sp14"
+                    app:customFont="@string/roboto_medium" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/select_doctor"
-                android:drawablePadding="@dimen/dp6"
-                android:gravity="center|left"
-                android:text="asdasd\nsdf"
-                app:customFont="@string/roboto_medium" />
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dp10">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <!--Not in used, added to maintain gap as per open_today view :START-->
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.01"
+                        android:gravity="center"
+                        android:src="@drawable/clock"
+                        android:visibility="invisible" />
+                    <!--Not in used, added to maintain gap as per open_today view :END-->
+
+                    <LinearLayout
+                        android:layout_width="@dimen/dp0"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/openingTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|left"
+                            android:paddingLeft="@dimen/dp5"
+                            android:text="01:30 pm to 8:30 pm"
+                            android:textAllCaps="true"
+                            android:textSize="@dimen/sp14"
+                            app:customFont="@string/roboto_medium" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp10" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/showAllTimeSlotListView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|left"
+                            android:paddingLeft="@dimen/dp5"
+                            android:text="@string/all_timings"
+                            android:textAllCaps="true"
+                            android:textColor="@color/recentblue"
+                            android:textSize="@dimen/sp14"
+                            app:customFont="@string/roboto_medium" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/allTimingListViewLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/allTimeSlotListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp56"
+                        android:divider="@null"
+                        android:dividerHeight="0dp"
+                        android:paddingBottom="@dimen/dp10"
+                        android:visibility="visible"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/hideAllTimeSlotListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|right"
+                        android:paddingLeft="@dimen/dp5"
+                        android:text="@string/less"
+                        android:textAllCaps="true"
+                        android:textColor="@color/recentblue"
+                        android:textSize="@dimen/sp14"
+                        app:customFont="@string/roboto_medium" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

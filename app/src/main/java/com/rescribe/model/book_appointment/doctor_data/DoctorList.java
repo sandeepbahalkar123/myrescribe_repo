@@ -1,6 +1,7 @@
 
 package com.rescribe.model.book_appointment.doctor_data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Parcel;
@@ -51,7 +52,7 @@ public class DoctorList implements Parcelable {
     private String degree;
     @SerializedName("rating")
     @Expose
-    private Float rating;
+    private double rating;
     @SerializedName("waitingTime")
     @Expose
     private String waitingTime;
@@ -66,7 +67,7 @@ public class DoctorList implements Parcelable {
     private String openToday;
     @SerializedName("availableTimeSlots")
     @Expose
-    private List<String> availableTimeSlots = null;
+    private ArrayList<String> availableTimeSlots = new ArrayList<>();
     public final static Creator<DoctorList> CREATOR = new Creator<DoctorList>() {
 
 
@@ -87,7 +88,7 @@ public class DoctorList implements Parcelable {
             instance.recentlyVisited = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.aboutDoctor = ((String) in.readValue((String.class.getClassLoader())));
             instance.degree = ((String) in.readValue((String.class.getClassLoader())));
-            instance.rating = ((Float) in.readValue((Float.class.getClassLoader())));
+            instance.rating = ((double) in.readValue((Float.class.getClassLoader())));
             instance.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.tokenNo = ((Integer) in.readValue((Integer.class.getClassLoader())));
             in.readList(instance.morePracticePlaces, (String.class.getClassLoader()));
@@ -198,11 +199,11 @@ public class DoctorList implements Parcelable {
         this.degree = degree;
     }
 
-    public Float getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(Float rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
@@ -238,11 +239,11 @@ public class DoctorList implements Parcelable {
         this.openToday = openToday;
     }
 
-    public List<String> getAvailableTimeSlots() {
+    public ArrayList<String> getAvailableTimeSlots() {
         return availableTimeSlots;
     }
 
-    public void setAvailableTimeSlots(List<String> availableTimeSlots) {
+    public void setAvailableTimeSlots(ArrayList<String> availableTimeSlots) {
         this.availableTimeSlots = availableTimeSlots;
     }
 
@@ -271,4 +272,27 @@ public class DoctorList implements Parcelable {
         return 0;
     }
 
+    @Override
+    public String toString() {
+        return "DoctorList{" +
+                "docId=" + docId +
+                ", docName='" + docName + '\'' +
+                ", doctorImageUrl='" + doctorImageUrl + '\'' +
+                ", speciality='" + speciality + '\'' +
+                ", experience=" + experience +
+                ", doctorAddress='" + doctorAddress + '\'' +
+                ", paidStatus=" + paidStatus +
+                ", amount=" + amount +
+                ", distance='" + distance + '\'' +
+                ", recentlyVisited=" + recentlyVisited +
+                ", aboutDoctor='" + aboutDoctor + '\'' +
+                ", degree='" + degree + '\'' +
+                ", rating=" + rating +
+                ", waitingTime='" + waitingTime + '\'' +
+                ", tokenNo=" + tokenNo +
+                ", morePracticePlaces=" + morePracticePlaces +
+                ", openToday='" + openToday + '\'' +
+                ", availableTimeSlots=" + availableTimeSlots +
+                '}';
+    }
 }

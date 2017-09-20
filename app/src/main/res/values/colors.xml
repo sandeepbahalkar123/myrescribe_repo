@@ -32,4 +32,6 @@
     <color name="otp_background_layout">#EDF1F4</color>
     <color name="Gray">#736F6E</color>
     <color name="green_light">#0fd20b</color>
+    <color name="book_appoint_time_slot_item_default">#4285f4</color>
+    <color name="book_appoint_time_slot_item_clicked">#88a0c8</color>
 </resources>

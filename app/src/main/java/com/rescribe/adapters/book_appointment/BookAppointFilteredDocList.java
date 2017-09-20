@@ -73,6 +73,8 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         holder.doctorAddress.setText(doctorObject.getDoctorAddress());
         holder.doctorFee.setText("" + mContext.getString(R.string.rupee_symbol) + doctorObject.getAmount());
         holder.distance.setText("" + doctorObject.getDistance());
+        holder.waitingTime.setText("" + mContext.getString(R.string.waiting_for) + doctorObject.getWaitingTime());
+        holder.tokenNo.setText(String.format(mContext.getString(R.string.token_no_available), doctorObject.getTokenNo()));
 
         //-------Load image-------
         RequestOptions requestOptions = new RequestOptions();
@@ -107,6 +109,10 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         CustomTextView doctorFee;
         @BindView(R.id.distance)
         CustomTextView distance;
+        @BindView(R.id.waitingTime)
+        CustomTextView waitingTime;
+        @BindView(R.id.tokenNo)
+        CustomTextView tokenNo;
 
         @BindView(R.id.imageURL)
         CircularImageView imageURL;

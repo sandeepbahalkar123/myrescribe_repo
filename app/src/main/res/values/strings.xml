@@ -263,7 +263,7 @@
     <string name="complaint1">Complaint 1:</string>
     <string name="enter_string_here">Enter your complaint here</string>
     <string name="complaint2">Complaint 2:</string>
-
-
+    <string name="waiting_for">Waiting for </string>
+    <string name="token_no_available">Token No. %d available</string>
     <!-- Error string -->
 </resources>

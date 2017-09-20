@@ -5,19 +5,15 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
-import com.rescribe.model.login.Year;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.fragments.book_appointment.BookAppointmentDoctorListFragment;
+import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 
 import butterknife.BindView;
@@ -26,7 +22,7 @@ import butterknife.ButterKnife;
 /**
  * Created by jeetal on 15/9/17.
  */
-public class BookAppointDoctorListBaseActivity extends AppCompatActivity implements HelperResponse {
+public class BookAppointDoctorListBaseActivity extends AppCompatActivity implements HelperResponse, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
@@ -36,7 +32,8 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     CustomTextView locationTextView;
 
     private DoctorDataHelper mDoctorDataHelper;
-    private Fragment currentlyLoadedFragment;
+    private Fragment currentlyLoadedFragment; //TODO, fragmentById is not working hence hold this object.
+    private BookAppointmentBaseModel mReceivedBookAppointmentBaseModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +52,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         this.currentlyLoadedFragment = recentVisitDoctorFragment;
 
         fragmentTransaction = supportFragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.nav_view, BookAppointmentDoctorListFragment.createNewFragment());
+        fragmentTransaction.replace(R.id.nav_view, DrawerForFilterDoctorBookAppointment.newInstance());
         fragmentTransaction.commit();
 
         mDoctorDataHelper = new DoctorDataHelper(this, this);
@@ -64,6 +61,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        mReceivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
         if (currentlyLoadedFragment instanceof RecentVisitDoctorFragment) {
             RecentVisitDoctorFragment tempFrag = (RecentVisitDoctorFragment) currentlyLoadedFragment;
             tempFrag.onSuccess(mOldDataTag, customResponse);
@@ -83,5 +81,19 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
+    }
+
+    @Override
+    public void onApply() {
+
+    }
+
+    @Override
+    public void onReset() {
+
+    }
+
+    public BookAppointmentBaseModel getReceivedBookAppointmentBaseModel() {
+        return mReceivedBookAppointmentBaseModel;
     }
 }

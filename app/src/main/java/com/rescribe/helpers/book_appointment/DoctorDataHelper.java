@@ -8,7 +8,6 @@ import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.book_appointment.ServicesModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.util.CommonMethods;
@@ -75,7 +74,7 @@ public class DoctorDataHelper implements ConnectionListener {
 //        mConnectionFactory.setUrl(Config.SERVICES_URL);
 //        mConnectionFactory.createConnection(RescribeConstants.TASK_BOOK_APPOINTMENT_SERVICES);
         try {
-            InputStream is = mContext.getAssets().open("doctor_data");
+            InputStream is = mContext.getAssets().open("doctor_data.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);

@@ -3,8 +3,6 @@ package com.rescribe.ui.fragments.book_appointment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,17 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSpecialistBookAppointmentAdapter;
 import com.rescribe.adapters.ShowRecentVisitedDoctorPagerAdapter;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,7 +32,7 @@ import droidninja.filepicker.utils.GridSpacingItemDecoration;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener {
+public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse {
     ArrayList<String> arrlist = new ArrayList<String>(5);
     @BindView(R.id.viewpager)
     ViewPager viewpager;
@@ -55,7 +53,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private View mRootView;
     Unbinder unbinder;
     private StillInDoubtFragment mStillInDoubtFragment;
-    DoctorServicesModel mDoctorServicesModel = new DoctorServicesModel();
     DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter;
 
 
@@ -69,9 +66,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         unbinder = ButterKnife.bind(this, mRootView);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mDoctorServicesModel = getArguments().getParcelable(RescribeConstants.DOCTOR_DATA_REQUEST);
+       //     mDoctorServicesModel = getArguments().getParcelable(RescribeConstants.DOCTOR_DATA_REQUEST);
         }
-        init(mRootView);
         return mRootView;
 /*
         return inflater.inflate(R.layout.recent_visit_doctor, container, false);
@@ -79,8 +75,60 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     }
 
-    private void init(View mRootView) {
-        if (mDoctorServicesModel == null) {
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+
+    public static RecentVisitDoctorFragment newInstance(Bundle b) {
+        RecentVisitDoctorFragment fragment = new RecentVisitDoctorFragment();
+        Bundle args = b;
+        if (args == null) {
+            args = new Bundle();
+        }
+        fragment.setArguments(args);
+        return fragment;
+    }
+    @Override
+    public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
+
+    }
+
+    @OnClick({R.id.viewpager, R.id.circleIndicator, R.id.pickSpeciality, R.id.listView, R.id.recyclerViewLinearLayout, R.id.doubtMessage, R.id.emptyListView})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.viewpager:
+             /*   mStillInDoubtFragment = new StillInDoubtFragment();
+                FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container, mStillInDoubtFragment);
+                fragmentTransaction.commit();*/
+                break;
+            case R.id.circleIndicator:
+                break;
+            case R.id.pickSpeciality:
+                break;
+            case R.id.listView:
+                break;
+            case R.id.recyclerViewLinearLayout:
+                break;
+            case R.id.doubtMessage:
+
+                break;
+            case R.id.emptyListView:
+                break;
+        }
+
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        BookAppointmentBaseModel bookAppointmentBaseModel = (BookAppointmentBaseModel)customResponse;
+        if (bookAppointmentBaseModel.getDoctorServicesModel() == null) {
             pickSpeciality.setVisibility(View.GONE);
             doubtMessage.setVisibility(View.GONE);
             emptyListView.setVisibility(View.VISIBLE);
@@ -123,7 +171,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
                 }
             }*/
-            viewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), mDoctorServicesModel.getDoctorList()));
+            viewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), bookAppointmentBaseModel.getDoctorServicesModel().getDoctorList()));
             indicator.setViewPager(viewpager);
             listView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
@@ -133,53 +181,23 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             int spacing = 50; // 50px
             boolean includeEdge = true;
             listView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-            mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, mDoctorServicesModel.getDoctorSpecialities());
+            mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
             listView.setAdapter(mDoctorConnectSearchAdapter);
         }
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+    public void onParseError(String mOldDataTag, String errorMessage) {
 
-    public static RecentVisitDoctorFragment newInstance(DoctorServicesModel doctorServicesModel) {
-        RecentVisitDoctorFragment fragment = new RecentVisitDoctorFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(RescribeConstants.DOCTOR_DATA_REQUEST, doctorServicesModel);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
-    public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
 
     }
 
-    @OnClick({R.id.viewpager, R.id.circleIndicator, R.id.pickSpeciality, R.id.listView, R.id.recyclerViewLinearLayout, R.id.doubtMessage, R.id.emptyListView})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.viewpager:
-             /*   mStillInDoubtFragment = new StillInDoubtFragment();
-                FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, mStillInDoubtFragment);
-                fragmentTransaction.commit();*/
-                break;
-            case R.id.circleIndicator:
-                break;
-            case R.id.pickSpeciality:
-                break;
-            case R.id.listView:
-                break;
-            case R.id.recyclerViewLinearLayout:
-                break;
-            case R.id.doubtMessage:
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
-                break;
-            case R.id.emptyListView:
-                break;
-        }
     }
 }

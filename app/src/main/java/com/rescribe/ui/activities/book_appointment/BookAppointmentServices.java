@@ -28,11 +28,10 @@ import com.rescribe.helpers.book_appointment.ServicesHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesModel;
- import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,7 +46,7 @@ import permissions.dispatcher.RuntimePermissions;
  */
 
 @RuntimePermissions
-public class BookAppointment extends AppCompatActivity implements HelperResponse, GoogleApiClient.OnConnectionFailedListener, ServicesAdapter.OnServicesClickListener {
+public class BookAppointmentServices extends AppCompatActivity implements HelperResponse, GoogleApiClient.OnConnectionFailedListener, ServicesAdapter.OnServicesClickListener {
     @BindView(R.id.bookAppointmentToolbar)
     ImageView mBookAppointmentToolbar;
     @BindView(R.id.title)
@@ -66,7 +65,7 @@ public class BookAppointment extends AppCompatActivity implements HelperResponse
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_appointment);
+        setContentView(R.layout.activity_book_appointment_services);
         ButterKnife.bind(this);
         initialize();
     }
@@ -78,7 +77,7 @@ public class BookAppointment extends AppCompatActivity implements HelperResponse
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
-        mContext = BookAppointment.this;
+        mContext = BookAppointmentServices.this;
         mServicesHelper = new ServicesHelper(this, this);
         mServicesHelper.doGetServices();
 
@@ -126,7 +125,7 @@ public class BookAppointment extends AppCompatActivity implements HelperResponse
                 onBackPressed();
                 break;
             case R.id.locationTextView:
-                BookAppointmentPermissionsDispatcher.callPickPlaceWithCheck(this);
+                BookAppointmentServicesPermissionsDispatcher.callPickPlaceWithCheck(this);
                 break;
         }
     }
@@ -134,14 +133,14 @@ public class BookAppointment extends AppCompatActivity implements HelperResponse
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        BookAppointmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        BookAppointmentServicesPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION})
     public void callPickPlace() {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
-            Intent intentPlace = builder.build(BookAppointment.this);
+            Intent intentPlace = builder.build(BookAppointmentServices.this);
             startActivityForResult(intentPlace, PLACE_PICKER_REQUEST);
         } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
@@ -193,12 +192,13 @@ public class BookAppointment extends AppCompatActivity implements HelperResponse
 
     @Override
     public void setOnClickOfServices() {
-        if(locationTextView.getText().toString().equals(getString(R.string.location))){
-            Toast.makeText(mContext,getString(R.string.please_select_location), Toast.LENGTH_SHORT).show();
-        }else{
-        Intent intent = new Intent(BookAppointment.this,ShowDoctorListActivity.class);
-        intent.putExtra(getString(R.string.title),locationTextView.getText().toString());
-        startActivity(intent);
+
+        if (locationTextView.getText().toString().equals(getString(R.string.location))) {
+            Toast.makeText(mContext, getString(R.string.please_select_location), Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
+            intent.putExtra(getString(R.string.title), locationTextView.getText().toString());
+            startActivity(intent);
         }
 
     }

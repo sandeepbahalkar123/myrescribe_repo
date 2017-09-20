@@ -1,4 +1,4 @@
-package com.rescribe.ui.activities;
+package com.rescribe.ui.activities.book_appointment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.fragments.RecentVisitDoctorFragment;
+import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,15 +46,15 @@ public class ShowDoctorListActivity extends AppCompatActivity implements HelperR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_doctors);
         intent = getIntent();
-      /*  if(getIntent()!=null){
-            locationTextView.setText(intent.getStringExtra(getString(R.string.title)));
-        }*/
         ButterKnife.bind(this);
         initialize();
 
     }
 
     private void initialize() {
+        if(getIntent()!=null){
+            locationTextView.setText(intent.getStringExtra(getString(R.string.title)));
+        }
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetDoctorData();
 

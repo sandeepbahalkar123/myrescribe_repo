@@ -14,7 +14,7 @@ import com.rescribe.adapters.DoctorListAdapter;
 import com.rescribe.helpers.doctor.DoctorHelper;
 import com.rescribe.model.doctors.doctor_info.DoctorDetail;
 import com.rescribe.model.login.Year;
-import com.rescribe.ui.activities.DoctorListActivity;
+import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;

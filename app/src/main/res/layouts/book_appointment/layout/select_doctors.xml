@@ -55,7 +55,7 @@
                         android:layout_gravity="center"
                         android:drawablePadding="@dimen/dp4"
                         android:drawableRight="@drawable/down_arrownew"
-                        android:text="@string/select_location"
+                        android:text="@string/location"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp16" />
                 </RelativeLayout>

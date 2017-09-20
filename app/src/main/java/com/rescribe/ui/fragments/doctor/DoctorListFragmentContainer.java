@@ -33,7 +33,7 @@ import com.rescribe.model.doctors.doctor_info.DoctorDetail;
 import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.login.Year;
 import com.rescribe.model.my_records.new_pojo.NewMyRecordDataModel;
-import com.rescribe.ui.activities.DoctorListActivity;
+import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 

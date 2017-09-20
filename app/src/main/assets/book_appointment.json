@@ -16,12 +16,12 @@
         "paidStatus": 1,
         "amount": 500,
         "distance": "2.1 km",
-        "recentlyVisited": true,
+        "recentlyVisited": false,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
         "rating": 4.5,
-        "waitingTime":"1 hour 45 mins",
-        "tokenNo":2,
+        "waitingTime": "1 hour 45 mins",
+        "tokenNo": 2,
         "morePracticePlaces": [
           "Surya Hospital,Pimple Saudagar",
           "Jupitor hospital,Baner"
@@ -53,8 +53,8 @@
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
         "rating": 4.5,
-        "waitingTime":"45 mins",
-        "tokenNo":5,
+        "waitingTime": "45 mins",
+        "tokenNo": 5,
         "morePracticePlaces": [
           "Surya Hospital,Pimple Saudagar",
           "Jupitor hospital,Baner"
@@ -82,12 +82,12 @@
         "paidStatus": 1,
         "amount": 300,
         "distance": "25.7 km",
-        "recentlyVisited": true,
+        "recentlyVisited": false,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
         "rating": 4.5,
-        "waitingTime":"15 mins",
-        "tokenNo":3,
+        "waitingTime": "15 mins",
+        "tokenNo": 3,
         "morePracticePlaces": [
           "Surya Hospital,Pimple Saudagar",
           "Jupitor hospital,Baner"
@@ -119,8 +119,8 @@
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
         "rating": 4.5,
-        "waitingTime":"1 hour 15 mins",
-        "tokenNo":4,
+        "waitingTime": "1 hour 15 mins",
+        "tokenNo": 4,
         "morePracticePlaces": [
           "Surya Hospital,Pimple Saudagar",
           "Jupitor hospital,Baner"
@@ -148,12 +148,12 @@
         "paidStatus": 1,
         "amount": 200,
         "distance": "25.7 km",
-        "recentlyVisited": true,
+        "recentlyVisited": false,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
         "rating": 4.5,
-        "waitingTime":"2 hour 05 mins",
-        "tokenNo":7,
+        "waitingTime": "2 hour 05 mins",
+        "tokenNo": 7,
         "morePracticePlaces": [
           "Surya Hospital,Pimple Saudagar",
           "Jupitor hospital,Baner"
@@ -181,12 +181,12 @@
         "paidStatus": 0,
         "amount": 0,
         "distance": "1.0 km",
-        "recentlyVisited": true,
+        "recentlyVisited": false,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
         "rating": 4.5,
-        "waitingTime":"2 hour 45 mins",
-        "tokenNo":12,
+        "waitingTime": "2 hour 45 mins",
+        "tokenNo": 12,
         "morePracticePlaces": [
           "Surya Hospital,Pimple Saudagar",
           "Jupitor hospital,Baner"
@@ -241,5 +241,4 @@
     ]
   }
 }
-
 

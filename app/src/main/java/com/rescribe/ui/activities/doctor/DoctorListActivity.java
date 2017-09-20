@@ -1,6 +1,5 @@
-package com.rescribe.ui.activities;
+package com.rescribe.ui.activities.doctor;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,7 +8,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.rescribe.R;
@@ -63,7 +61,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.doctor_activity);
+        setContentView(R.layout.global_drawer_layout_container);
         ButterKnife.bind(this);
         mFragmentManager = getSupportFragmentManager();
         loadFragment(DoctorListFragmentContainer.newInstance(), false);
@@ -110,7 +108,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         mDrawer.closeDrawer(GravityCompat.END);
         DoctorFilteredListFragment doctorFilteredListFragment = DoctorFilteredListFragment.newInstance(drFilterRequestModel);
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.doctorViewContainer, doctorFilteredListFragment);
+        fragmentTransaction.add(R.id.viewContainer, doctorFilteredListFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
@@ -268,14 +266,12 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
 
     private void loadFragment(Fragment fragment, boolean requiredBackStack) {
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.doctorViewContainer, fragment);
+        fragmentTransaction.add(R.id.viewContainer, fragment);
         if (requiredBackStack) {
             fragmentTransaction.addToBackStack(null);
         }
         fragmentTransaction.commit();
     }
-
-
 
 
 }

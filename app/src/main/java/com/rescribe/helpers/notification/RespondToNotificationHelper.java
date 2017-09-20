@@ -135,5 +135,4 @@ public class RespondToNotificationHelper implements ConnectionListener {
         mConnectionFactory.createConnection(pos);
     }
 
-
 }

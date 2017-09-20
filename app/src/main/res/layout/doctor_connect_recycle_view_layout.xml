@@ -33,10 +33,10 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
 
     <RelativeLayout
-        android:layout_below="@id/listView"
         android:id="@+id/displayNote"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/listView"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/dp16"

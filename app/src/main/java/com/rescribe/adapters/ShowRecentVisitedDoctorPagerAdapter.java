@@ -12,20 +12,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rescribe.R;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
-    private ArrayList<String> IMAGES;
+    private ArrayList<DoctorList> doctorLists;
     private LayoutInflater inflater;
     private Context context;
 
 
-    public ShowRecentVisitedDoctorPagerAdapter(Context context, ArrayList<String> IMAGES) {
+    public ShowRecentVisitedDoctorPagerAdapter(Context context, ArrayList<DoctorList> doctorLists) {
         this.context = context;
-        this.IMAGES=IMAGES;
+        this.doctorLists=doctorLists;
         inflater = LayoutInflater.from(context);
     }
 
@@ -36,7 +38,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return IMAGES.size();
+        return doctorLists.size();
     }
 
     @Override
@@ -48,7 +50,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.doctorName);
 
 
-        imageView.setText(IMAGES.get(position));
+        imageView.setText(doctorLists.get(position).getDocName());
 
         view.addView(imageLayout, 0);
 

@@ -1,4 +1,4 @@
-package com.rescribe.ui.activities;
+package com.rescribe.ui.activities.book_appointment;
 
 import android.Manifest;
 import android.content.Context;
@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -27,7 +28,7 @@ import com.rescribe.helpers.book_appointment.ServicesHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesModel;
-import com.rescribe.ui.customesViews.CustomTextView;
+ import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
 import java.io.IOException;
@@ -46,7 +47,7 @@ import permissions.dispatcher.RuntimePermissions;
  */
 
 @RuntimePermissions
-public class BookAppointment extends AppCompatActivity implements HelperResponse , GoogleApiClient.OnConnectionFailedListener,ServicesAdapter.OnServicesClickListener {
+public class BookAppointment extends AppCompatActivity implements HelperResponse, GoogleApiClient.OnConnectionFailedListener, ServicesAdapter.OnServicesClickListener {
     @BindView(R.id.bookAppointmentToolbar)
     ImageView mBookAppointmentToolbar;
     @BindView(R.id.title)
@@ -96,7 +97,7 @@ public class BookAppointment extends AppCompatActivity implements HelperResponse
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             listView.setLayoutManager(layoutManager);
             listView.setHasFixedSize(true);
-            mServicesAdapter = new ServicesAdapter(mContext, servicesModel.getServicesData().getServicesList(),this);
+            mServicesAdapter = new ServicesAdapter(mContext, servicesModel.getServicesData().getServicesList(), this);
             listView.setAdapter(mServicesAdapter);
         }
     }
@@ -129,6 +130,7 @@ public class BookAppointment extends AppCompatActivity implements HelperResponse
                 break;
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -191,9 +193,13 @@ public class BookAppointment extends AppCompatActivity implements HelperResponse
 
     @Override
     public void setOnClickOfServices() {
+        if(locationTextView.getText().toString().equals(getString(R.string.location))){
+            Toast.makeText(mContext,getString(R.string.please_select_location), Toast.LENGTH_SHORT).show();
+        }else{
         Intent intent = new Intent(BookAppointment.this,ShowDoctorListActivity.class);
         intent.putExtra(getString(R.string.title),locationTextView.getText().toString());
         startActivity(intent);
+        }
 
     }
 }

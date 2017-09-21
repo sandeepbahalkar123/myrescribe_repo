@@ -2,12 +2,14 @@ package com.rescribe.adapters.book_appointment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -42,7 +44,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListVi
     }
 
     @Override
-    public void onBindViewHolder(ListViewHolder holder, int position) {
+    public void onBindViewHolder(final ListViewHolder holder, int position) {
         String doctorObject = mDataList.get(position);
         holder.timeSlot.setText(doctorObject);
 
@@ -50,6 +52,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListVi
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
+                holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_light_blue));
             }
         });
 
@@ -64,6 +67,8 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListVi
 
         @BindView(R.id.timeSlot)
         CustomTextView timeSlot;
+        @BindView(R.id.mainLayout)
+        LinearLayout mainLayout;
         View view;
 
         ListViewHolder(View view) {

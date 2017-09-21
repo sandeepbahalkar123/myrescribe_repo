@@ -1,8 +1,10 @@
 package com.rescribe.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -118,7 +120,7 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
                 Intent intent = new Intent(mContext, ChatActivity.class);
                 intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
                 intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
-                mContext.startActivity(intent);
+                ((DoctorConnectActivity) mContext).startActivityForResult(intent, 1111);
             }
         });
 

@@ -1,5 +1,6 @@
 package com.rescribe.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
@@ -137,7 +138,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
 
                 intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
                 intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
-                mContext.startActivity(intent);
+                ((DoctorConnectActivity) mContext).startActivityForResult(intent, 1111);
             }
         });
 

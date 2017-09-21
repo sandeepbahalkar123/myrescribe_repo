@@ -58,7 +58,6 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
-
         unbinder = ButterKnife.bind(this, mRootView);
         init();
         return mRootView;

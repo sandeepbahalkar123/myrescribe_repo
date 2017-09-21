@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -29,6 +30,7 @@ import butterknife.ButterKnife;
  */
 public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnectChatAdapter.ListViewHolder> {
 
+    private final AppDBHelper appDBHelper;
     private ColorGenerator mColorGenerator;
     private Context mContext;
     private ArrayList<ChatDoctor> chatLists;
@@ -45,6 +47,10 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         TextView onlineStatusTextView;
         @BindView(R.id.imageOfDoctor)
         ImageView imageOfDoctor;
+        @BindView(R.id.paidStatusTextView)
+        TextView paidStatusTextView;
+        @BindView(R.id.badgeView)
+        TextView badgeView;
         View view;
 
         ListViewHolder(View view) {
@@ -62,6 +68,7 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         mOnline = mContext.getString(R.string.online);
         mOffline = mContext.getString(R.string.offline);
         mIdle = mContext.getString(R.string.idle);
+        appDBHelper = new AppDBHelper(mContext);
     }
 
     @Override
@@ -79,6 +86,7 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         holder.doctorName.setText(doctorConnectChatModel.getDoctorName());
         holder.doctorType.setText(doctorConnectChatModel.getSpecialization());
         holder.onlineStatusTextView.setText(doctorConnectChatModel.getOnlineStatus());
+
         //-----------
         if (doctorConnectChatModel.getOnlineStatus().equalsIgnoreCase(mOnline)) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.green_light));
@@ -92,7 +100,9 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         // Removed Dr. from doctor name to get starting letter of doctorName to set to image icon.
 
         String doctorName = doctorConnectChatModel.getDoctorName();
-        doctorName = doctorName.replace("Dr. ", "");
+        if (doctorName.contains("Dr. ")) {
+            doctorName = doctorName.replace("Dr. ", "");
+        }
 
         if (doctorName != null) {
             int color2 = mColorGenerator.getColor(doctorName);
@@ -114,6 +124,18 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
                 mContext.startActivity(intent);
             }
         });
+
+        holder.paidStatusTextView.setVisibility(View.GONE);
+
+        int count = appDBHelper.unreadMessageCountById(doctorConnectChatModel.getId());
+        doctorConnectChatModel.setUnreadMessages(count);
+
+        if (doctorConnectChatModel.getUnreadMessages() > 0) {
+            holder.badgeView.setVisibility(View.VISIBLE);
+            holder.badgeView.setText(String.valueOf(doctorConnectChatModel.getUnreadMessages()));
+        } else {
+            holder.badgeView.setVisibility(View.GONE);
+        }
 
     }
 

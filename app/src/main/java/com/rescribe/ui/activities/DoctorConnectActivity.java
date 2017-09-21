@@ -1,8 +1,14 @@
 package com.rescribe.ui.activities;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,6 +16,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,9 +25,11 @@ import com.rescribe.R;
 import com.rescribe.helpers.doctor_connect.DoctorConnectSearchHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.model.doctor_connect_search.DoctorConnectSearchBaseModel;
 import com.rescribe.model.doctor_connect_search.SearchDataModel;
+import com.rescribe.services.MQTTService;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.ui.fragments.doctor_connect.DoctorConnectChatFragment;
@@ -43,6 +52,26 @@ import butterknife.OnClick;
  */
 
 public class DoctorConnectActivity extends AppCompatActivity implements DoctorConnectSearchContainerFragment.OnAddFragmentListener, SearchBySpecializationOfDoctorFragment.OnAddFragmentListener, HelperResponse {
+
+    private final static String TAG = "DoctorConnect";
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            boolean delivered = intent.getBooleanExtra(MQTTService.DELIVERED, false);
+            boolean isReceived = intent.getBooleanExtra(MQTTService.RECEIVED, false);
+
+            if (delivered) {
+
+                Log.d(TAG, "Delivery Complete");
+                Log.d(TAG, "MESSAGE_ID" + intent.getStringExtra(MQTTService.MESSAGE_ID));
+
+            } else if (isReceived) {
+                MQTTMessage message = intent.getParcelableExtra(MQTTService.MESSAGE);
+                doctorConnectChatFragment.notifyCount(message);
+            }
+        }
+    };
 
     public static final int PAID = 1;
     public static final int FREE = 0;
@@ -297,5 +326,27 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
 
     public void setmChatDoctors(ArrayList<ChatDoctor> mChatDoctors) {
         this.mChatDoctors = mChatDoctors;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter(
+                MQTTService.NOTIFY));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (Activity.RESULT_OK == resultCode) {
+            ChatDoctor chatDoctor = data.getParcelableExtra(RescribeConstants.CHAT_USERS);
+            doctorConnectChatFragment.addItem(chatDoctor);
+        }
     }
 }

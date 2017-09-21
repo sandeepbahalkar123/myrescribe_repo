@@ -175,7 +175,7 @@ public class MQTTService extends Service {
                                                     messagesTemp.add(messages.get(index));
                                             } else messagesTemp.addAll(messages);
 
-                                            MessageNotification.notify(MQTTService.this, messagesTemp, String.valueOf(messageL.getDocId()), appDBHelper.unreadMessageCountById(messageL.getDocId()), getReplyPendingIntent(messageL), messageL.getDocId());
+                                            MessageNotification.notify(MQTTService.this, messagesTemp, String.valueOf(messageL.getName()), appDBHelper.unreadMessageCountById(messageL.getDocId()), getReplyPendingIntent(messageL), messageL.getDocId());
                                         }
                                         Intent intent = new Intent(NOTIFY);
                                         intent.putExtra(RECEIVED, true);

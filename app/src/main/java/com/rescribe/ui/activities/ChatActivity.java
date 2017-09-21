@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -117,6 +118,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
 
     private ChatHelper chatHelper;
     private boolean isSend = false;
+    private boolean isExistInChat = false;
 
     private static final String TAG = "ChatActivity";
     private ChatAdapter chatAdapter;
@@ -128,11 +130,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
     // load more
     int next = 1;
 
-    // Added
-//    private String doctorName;
-//    private String onlineStatus;
-//    private int doctorId;
-
     private AppDBHelper appDBHelper;
     private int isFirstTime = 0;
     private String patientName;
@@ -140,7 +137,19 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
 
     private ChatDoctor chatList;
 
-//    private ArrayList<MessageList> messageListTemp = new ArrayList<>();
+    @Override
+    public void onBackPressed() {
+        if (isExistInChat) {
+            if (mqttMessage.isEmpty())
+                setResult(Activity.RESULT_CANCELED);
+            else {
+                Intent in = new Intent();
+                in.putExtra(RescribeConstants.CHAT_USERS, chatList);
+                setResult(Activity.RESULT_OK, in);
+            }
+        } else setResult(Activity.RESULT_CANCELED);
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,11 +247,13 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backButton:
-                finish();
+                onBackPressed();
                 break;
             case R.id.attachmentButton:
+
                 break;
             case R.id.cameraButton:
+
                 break;
             case R.id.recorderOrSendButton:
                 if (isSend) {
@@ -399,6 +410,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
 
 //                messageList.addAll(0, messageListTemp);
                 if (next == 1) {
+                    isExistInChat = mqttMessage.isEmpty();
                     chatRecyclerView.scrollToPosition(mqttMessage.size() - 1);
                     chatAdapter.notifyDataSetChanged();
 

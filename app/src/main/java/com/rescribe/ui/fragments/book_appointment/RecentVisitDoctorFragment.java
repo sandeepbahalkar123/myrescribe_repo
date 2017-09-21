@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -29,6 +30,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
@@ -51,7 +54,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     LinearLayout recyclerViewLinearLayout;
     private View mRootView;
     Unbinder unbinder;
-    private ComplaintsFragment mStillInDoubtFragment;
     DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter;
 
 
@@ -63,6 +65,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                              @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.recent_visit_doctor, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
+        hideSoftKeyboard();
         Bundle arguments = getArguments();
         if (arguments != null) {
             //     mDoctorServicesModel = getArguments().getParcelable(RescribeConstants.DOCTOR_DATA_REQUEST);
@@ -196,5 +199,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
+    }
+    public void hideSoftKeyboard() {
+        if(getActivity().getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        }
     }
 }

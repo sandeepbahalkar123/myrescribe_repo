@@ -2,6 +2,7 @@ package com.rescribe.adapters.book_appointment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.DisplayMetrics;
@@ -39,11 +40,14 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
     private int imageSize;
+    private BookAppointFilteredDocList.OnFilterDocListClickListener mOnFilterDocListClickListener;
 
 
-    public BookAppointFilteredDocList(Context mContext, ArrayList<DoctorList> dataList) {
+    public BookAppointFilteredDocList(Context mContext, ArrayList<DoctorList> dataList, BookAppointFilteredDocList.OnFilterDocListClickListener mOnFilterDocListClickListener) {
         this.mDataList = dataList;
         this.mContext = mContext;
+        this.mOnFilterDocListClickListener = mOnFilterDocListClickListener;
+
         setColumnNumber(mContext, 2);
     }
 
@@ -65,7 +69,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        DoctorList doctorObject = mDataList.get(position);
+        final DoctorList doctorObject = mDataList.get(position);
 
         holder.doctorName.setText(doctorObject.getDocName());
         holder.doctorType.setText(doctorObject.getSpeciality());
@@ -87,6 +91,15 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(holder.imageURL);
         //--------------
+
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                mOnFilterDocListClickListener.onClickOfDoctorRowItem(b);
+            }
+        });
 
     }
 
@@ -125,4 +138,9 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             this.view = view;
         }
     }
+
+    public interface OnFilterDocListClickListener {
+        void onClickOfDoctorRowItem(Bundle bundleData);
+    }
+
 }

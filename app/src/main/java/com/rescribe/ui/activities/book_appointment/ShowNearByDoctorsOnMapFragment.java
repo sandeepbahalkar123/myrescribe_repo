@@ -5,12 +5,19 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -50,16 +57,11 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
     private View mRootView;
     public static Bundle args;
     private GoogleMap mMap;
-    private String mLatitude = "18.508920";
-    private String mLongitude = "73.926026";
     Address p1 = null;
     MapFragment mapFragment;
-    Intent intent;
+    BottomSheetDialog dialog;
     BookAppointmentBaseModel receivedBookAppointmentBaseModel;
-    String address = "Hadapsar, Pune";
     ArrayList<DoctorList> doctorLists = new ArrayList<>();
-    BookAppointFilteredDocList mBookAppointFilteredDocListAdapter;
-
 
     public ShowNearByDoctorsOnMapFragment() {
         // Required empty public constructor
@@ -90,6 +92,19 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
 
     private void init() {
 
+    }
+    public void init_modal_bottomsheet() {
+        View modalbottomsheet = getActivity().getLayoutInflater().inflate(R.layout.show_bottom_sheet_on_doctors, null);
+
+        dialog = new BottomSheetDialog(getActivity());
+        dialog.setContentView(modalbottomsheet);
+        dialog.setCanceledOnTouchOutside(true);;
+        dialog.setCancelable(true);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        dialog.show();
+
+       /* btn_cancel = (Button) modalbottomsheet.findViewById(R.id.btn_cancel);
+        btn_cancel.setOnClickListener(this);*/
     }
 
     @Override
@@ -161,14 +176,6 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
                 CommonMethods.showToast(getActivity(), getString(R.string.address_not_found));
         }
 
-        // Add a marker in Sydney and move the camera
-       /* p1 = getLocationFromAddress("Hadapsar,Pune");
-        if (p1 != null) {
-            LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(currentLocation).title(address).icon(getMarkerIcon("#04abdf")));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), 14.0f));
-        } else
-            CommonMethods.showToast(getActivity(), getString(R.string.address_not_found));*/
     }
 
     public Address getLocationFromAddress(String strAddress) {
@@ -208,7 +215,6 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
     @Override
     public View getInfoContents(Marker marker) {
         return null;
-        //  return prepareInfoView(marker);
     }
 
     private View prepareInfoView(Marker marker) {
@@ -223,6 +229,7 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-
+        init_modal_bottomsheet();
     }
+
 }

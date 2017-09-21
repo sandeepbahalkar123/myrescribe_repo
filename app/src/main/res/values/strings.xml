@@ -266,5 +266,8 @@
     <string name="waiting_for">Waiting for </string>
     <string name="token_no_available">Token No. %d available</string>
     <string name="doctor_data">Doctor Data</string>
+    <string name="open_today">Open Today</string>
+    <string name="all_timings">All Timings</string>
+
     <!-- Error string -->
 </resources>

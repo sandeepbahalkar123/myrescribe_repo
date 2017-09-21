@@ -1,24 +1,26 @@
 package com.rescribe.ui.activities.book_appointment;
 
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
-
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.RescribeConstants;
@@ -38,8 +40,13 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     CustomTextView title;
     @BindView(R.id.locationTextView)
     CustomTextView locationTextView;
-
     Intent intent;
+    @BindView(R.id.viewContainer)
+    FrameLayout viewContainer;
+    @BindView(R.id.nav_view)
+    FrameLayout navView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
     private RecentVisitDoctorFragment mChangeColorFragment;
     private DoctorDataHelper mDoctorDataHelper;
     private Fragment currentlyLoadedFragment; //TODO, fragmentById is not working hence hold this object.
@@ -59,7 +66,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             locationTextView.setText(intent.getStringExtra(getString(R.string.title)));
         }
 
-
+      //  searchBarLinearLayout.setVisibility(View.VISIBLE);
         loadFragment(RecentVisitDoctorFragment.newInstance(new Bundle()));
         //------
         FragmentManager supportFragmentManager = getSupportFragmentManager();
@@ -143,4 +150,5 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             this.currentlyLoadedFragment = fragmentToLoad;
         }
     }
+
 }

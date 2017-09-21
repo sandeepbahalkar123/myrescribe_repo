@@ -1,15 +1,20 @@
 package com.rescribe.ui.activities;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,16 +24,20 @@ import android.widget.RelativeLayout;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.adapters.chat.ChatAdapter;
 import com.rescribe.helpers.chat.ChatHelper;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.chat.MessageList;
+import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.history.ChatHistory;
 import com.rescribe.model.chat.history.ChatHistoryModel;
-import com.rescribe.model.doctor_connect.ConnectList;
+import com.rescribe.model.doctor_connect.ChatDoctor;
+import com.rescribe.notification.MessageNotification;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -50,14 +59,14 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
     ImageView profilePhoto;
     @BindView(R.id.receiverName)
     CustomTextView receiverName;
-    @BindView(R.id.onlineStatus)
-    CustomTextView onlineStatus;
+    @BindView(R.id.dateTime)
+    CustomTextView dateTime;
     @BindView(R.id.titleLayout)
     RelativeLayout titleLayout;
     @BindView(R.id.toolbar)
     RelativeLayout toolbar;
     @BindView(R.id.chatList)
-    RecyclerView chatList;
+    RecyclerView chatRecyclerView;
     @BindView(R.id.messageType)
     EditText messageType;
     @BindView(R.id.attachmentButton)
@@ -73,39 +82,65 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
     @BindView(R.id.messageTypeLayout)
     RelativeLayout messageTypeLayout;
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    @BindView(R.id.swipeLayout)
+    SwipeRefreshLayout swipeLayout;
 
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            boolean isFailed = intent.getBooleanExtra(MQTTService.FAILED, false);
 
-            if (!isFailed) {
-                MessageList messageL = intent.getParcelableExtra(MQTTService.MESSAGE);
-                if (messageL.getDocId() == connectList.getId()) {
+            boolean delivered = intent.getBooleanExtra(MQTTService.DELIVERED, false);
+            boolean isReceived = intent.getBooleanExtra(MQTTService.RECEIVED, false);
+
+            if (delivered) {
+
+                messageType.setText("");
+
+                Log.d(TAG, "Delivery Complete");
+                Log.d(TAG + " MESSAGE_ID", intent.getStringExtra(MQTTService.MESSAGE_ID));
+
+            } else if (isReceived) {
+                MQTTMessage message = intent.getParcelableExtra(MQTTService.MESSAGE);
+                if (message.getDocId() == chatList.getId()) {
                     if (chatAdapter != null) {
-                        messageList.add(messageL);
-                        chatAdapter.notifyItemInserted(messageList.size() - 1);
-                        chatList.smoothScrollToPosition(messageList.size() - 1);
+                        mqttMessage.add(message);
+                        chatAdapter.notifyItemInserted(mqttMessage.size() - 1);
+                        chatRecyclerView.smoothScrollToPosition(mqttMessage.size() - 1);
                     }
                 } else {
                     // Other patient message
+
                 }
             }
-
         }
     };
 
     private ChatHelper chatHelper;
     private boolean isSend = false;
-    private Intent serviceIntent;
 
     private static final String TAG = "ChatActivity";
     private ChatAdapter chatAdapter;
-    private ArrayList<MessageList> messageList = new ArrayList<>();
+    private ArrayList<MQTTMessage> mqttMessage = new ArrayList<>();
 
-    private ConnectList connectList;
     private String patId;
-    private TextDrawable mTextDrawable;
+    private TextDrawable doctorTextDrawable;
+
+    // load more
+    int next = 1;
+
+    // Added
+//    private String doctorName;
+//    private String onlineStatus;
+//    private int doctorId;
+
+    private AppDBHelper appDBHelper;
+    private int isFirstTime = 0;
+    private String patientName;
+    private String imageUrl = "";
+
+    private ChatDoctor chatList;
+
+//    private ArrayList<MessageList> messageListTemp = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,41 +148,64 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
 
-        connectList = getIntent().getParcelableExtra(RescribeConstants.DOCTORS_INFO);
+        appDBHelper = new AppDBHelper(this);
 
-        chatHelper = new ChatHelper(this, this);
-        patId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this);
-        chatHelper.getChatHistory(1, connectList.getId(), Integer.parseInt(patId));
+        chatList = getIntent().getParcelableExtra(RescribeConstants.DOCTORS_INFO);
 
-        //------set values----
-        receiverName.setText(connectList.getDoctorName());
-        onlineStatus.setText(connectList.getOnlineStatus());
-        onlineStatus.setTextColor(getIntent().getIntExtra(RescribeConstants.STATUS_COLOR, 0));
-        //--- TODO, PROFILE SHOULD BE HERE, added temperately
-        String patientName = connectList.getDoctorName();
-        patientName = patientName.replace("Dr. ", "");
-        if (patientName != null) {
-            int color2 = ColorGenerator.MATERIAL.getColor(patientName);
-            mTextDrawable = TextDrawable.builder()
+        receiverName.setText(chatList.getDoctorName());
+        String doctorName = chatList.getDoctorName();
+
+        if (doctorName != null) {
+            doctorName = doctorName.replace("Dr. ", "");
+            int color2 = ColorGenerator.MATERIAL.getColor(doctorName);
+            doctorTextDrawable = TextDrawable.builder()
                     .beginConfig()
                     .width(Math.round(getResources().getDimension(R.dimen.dp40)))  // width in px
                     .height(Math.round(getResources().getDimension(R.dimen.dp40))) // height in px
                     .endConfig()
-                    .buildRound(("" + patientName.charAt(0)).toUpperCase(), color2);
-            profilePhoto.setImageDrawable(mTextDrawable);
+                    .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
         }
 
-        // startService
-        // use this to start and trigger a service
-        serviceIntent = new Intent(this, MQTTService.class);
-        // potentially add data to the serviceIntent
-        serviceIntent.putExtra(MQTTService.IS_MESSAGE, false);
-        startService(serviceIntent);
+        if (chatList.getImageUrl() != null) {
+            if (!chatList.getImageUrl().equals("")) {
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.dontAnimate();
+                requestOptions.override(CommonMethods.convertDpToPixel(40), CommonMethods.convertDpToPixel(40));
+                requestOptions.placeholder(doctorTextDrawable);
+                requestOptions.error(doctorTextDrawable);
+
+                Glide.with(ChatActivity.this)
+                        .load(chatList.getImageUrl())
+                        .apply(requestOptions).thumbnail(0.5f)
+                        .into(profilePhoto);
+
+            } else {
+                profilePhoto.setImageDrawable(doctorTextDrawable);
+            }
+        } else {
+            profilePhoto.setImageDrawable(doctorTextDrawable);
+        }
+
+        dateTime.setText(chatList.getOnlineStatus());
+
+        chatHelper = new ChatHelper(this, this);
+        patId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this);
+        patientName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, this);
+        imageUrl = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, this);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        chatList.setLayoutManager(mLayoutManager);
-        chatAdapter = new ChatAdapter(messageList, mTextDrawable);
-        chatList.setAdapter(chatAdapter);
+        chatRecyclerView.setLayoutManager(mLayoutManager);
+        chatAdapter = new ChatAdapter(mqttMessage, doctorTextDrawable);
+        chatRecyclerView.setAdapter(chatAdapter);
+
+        chatHelper.getChatHistory(next, chatList.getId(), Integer.parseInt(patId));
+
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                chatHelper.getChatHistory(next, chatList.getId(), Integer.parseInt(patId));
+            }
+        });
 
         messageType.addTextChangedListener(new TextWatcher() {
             @Override
@@ -171,13 +229,16 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
             public void afterTextChanged(Editable s) {
             }
         });
+
+
+        //----------
     }
 
     @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.recorderOrSendButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backButton:
-                onBackPressed();
+                finish();
                 break;
             case R.id.attachmentButton:
                 break;
@@ -187,40 +248,83 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
                 if (isSend) {
 
                     // SendButton
-
                     String message = messageType.getText().toString();
                     message = message.trim();
                     if (!message.equals("")) {
 
-                        MessageList messageL = new MessageList();
+                        MQTTMessage messageL = new MQTTMessage();
                         messageL.setTopic(MQTTService.DOCTOR_CONNECT);
-                        messageL.setWho(ChatAdapter.SENDER);
+                        messageL.setSender(MQTTService.PATIENT);
                         messageL.setMsg(message);
+                        // hard coded
                         messageL.setMsgId(0);
-                        messageL.setDocId(connectList.getId());
+                        messageL.setDocId(chatList.getId());
                         messageL.setPatId(Integer.parseInt(patId));
 
-                        if (chatAdapter != null) {
-                            messageList.add(messageL);
-                            chatAdapter.notifyItemInserted(messageList.size() - 1);
-                            chatList.smoothScrollToPosition(messageList.size() - 1);
-                        }
+                        messageL.setName(patientName);
+                        messageL.setOnlineStatus(RescribeConstants.ONLINE);
+                        messageL.setImageUrl(imageUrl);
 
-                        /*serviceIntent.putExtra(MQTTService.IS_MESSAGE, true);
-                        serviceIntent.putExtra(MQTTService.MESSAGE, messageL);
-                        startService(serviceIntent);
-
-                        messageType.setText("");*/
-
+                        // send msg by http api
                         chatHelper.sendMsgToPatient(messageL);
 
+                        // send msg by mqtt
+//                        mqttService.passMessage(messageL);
+
+                        if (mqttService.getNetworkStatus()) {
+                            if (chatAdapter != null) {
+                                mqttMessage.add(messageL);
+                                chatAdapter.notifyItemInserted(mqttMessage.size() - 1);
+                                chatRecyclerView.smoothScrollToPosition(mqttMessage.size() - 1);
+                            }
+                        } else
+                            CommonMethods.showToast(ChatActivity.this, getResources().getString(R.string.internet));
                     }
                 } else {
 
-                    // Record Button
+                    // Record Button stuff here
 
                 }
                 break;
+        }
+    }
+
+
+    boolean mBounded;
+    MQTTService mqttService;
+
+    ServiceConnection mConnection = new ServiceConnection() {
+
+        public void onServiceDisconnected(ComponentName name) {
+//            Toast.makeText(ChatActivity.this, "Service is disconnected", Toast.LENGTH_SHORT).show();
+            mBounded = false;
+            mqttService = null;
+        }
+
+        public void onServiceConnected(ComponentName name, IBinder service) {
+//            Toast.makeText(ChatActivity.this, "Service is connected", Toast.LENGTH_SHORT).show();
+            mBounded = true;
+            MQTTService.LocalBinder mLocalBinder = (MQTTService.LocalBinder) service;
+            mqttService = mLocalBinder.getServerInstance();
+
+            // set Current Chat User
+            mqttService.setCurrentChatUser(chatList.getId());
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent mIntent = new Intent(this, MQTTService.class);
+        bindService(mIntent, mConnection, BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mBounded) {
+            unbindService(mConnection);
+            mBounded = false;
         }
     }
 
@@ -229,12 +333,26 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
         super.onResume();
         registerReceiver(receiver, new IntentFilter(
                 MQTTService.NOTIFY));
+
+        if (isFirstTime > 0) {
+            ArrayList<MQTTMessage> unreadMessages = appDBHelper.getUnreadMessagesById(chatList.getId());
+            if (unreadMessages.size() > 0) {
+                mqttMessage.addAll(unreadMessages);
+                chatAdapter.notifyItemRangeInserted(mqttMessage.size() - 1, unreadMessages.size());
+                MessageNotification.cancel(this, chatList.getId());
+                appDBHelper.deleteUnreadMessage(chatList.getId());
+            }
+        }
+
+        isFirstTime += 1;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
+
+        mqttService.setCurrentChatUser(0);
     }
 
     @Override
@@ -246,58 +364,90 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
                 messageType.setText("");
             } else {
                 if (chatAdapter != null) {
-                    messageList.remove(messageList.size() - 1);
-                    chatAdapter.notifyItemRemoved(messageList.size() - 1);
+                    mqttMessage.remove(mqttMessage.size() - 1);
+                    chatAdapter.notifyItemRemoved(mqttMessage.size() - 1);
                 }
                 CommonMethods.showToast(ChatActivity.this, sendMessageModel.getCommon().getStatusMessage());
             }
         } else if (customResponse instanceof ChatHistoryModel) {
             ChatHistoryModel chatHistoryModel = (ChatHistoryModel) customResponse;
             if (chatHistoryModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
-                List<ChatHistory> chatHistory = chatHistoryModel.getHistoryData().getChatHistory();
+                final List<ChatHistory> chatHistory = chatHistoryModel.getHistoryData().getChatHistory();
 
-                ArrayList<MessageList> messageListTemp = new ArrayList<>();
+//                messageListTemp.clear();
 
                 for (ChatHistory chatH : chatHistory) {
-                    MessageList messageL = new MessageList();
+                    MQTTMessage messageL = new MQTTMessage();
                     messageL.setMsgId(chatH.getChatId());
                     messageL.setMsg(chatH.getMsg());
                     messageL.setDocId(chatH.getUser1Id());
                     messageL.setPatId(chatH.getUser2Id());
-                    messageL.setWho(chatH.getSender().equals("user2") ? ChatAdapter.SENDER : ChatAdapter.RECEIVER);
+                    messageL.setSender(chatH.getSender());
+
+                    messageL.setName(chatH.getName());
+                    messageL.setSpecialization(chatH.getSpecialization());
+                    messageL.setOnlineStatus(chatH.getOnlineStatus());
+                    messageL.setAddress(chatH.getAddress());
+                    messageL.setImageUrl(chatH.getImageUrl());
+                    messageL.setPaidStatus(chatH.getPaidStatus());
+
                     String msgTime = CommonMethods.getFormatedDate(chatH.getMsgTime(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss);
                     messageL.setMsgTime(msgTime);
-                    messageListTemp.add(messageL);
+//                    messageListTemp.add(messageL);
+                    mqttMessage.add(0, messageL);
                 }
 
-                messageList.addAll(0, messageListTemp);
-                chatAdapter.notifyDataSetChanged();
-                chatList.scrollToPosition(messageList.size() - 1);
+//                messageList.addAll(0, messageListTemp);
+                if (next == 1) {
+                    chatRecyclerView.scrollToPosition(mqttMessage.size() - 1);
+                    chatAdapter.notifyDataSetChanged();
+
+                    // cancel notification
+                    appDBHelper.deleteUnreadMessage(chatList.getId());
+                    MessageNotification.cancel(this, chatList.getId());
+
+                } else {
+                    chatRecyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Notify adapter with appropriate notify methods
+                            chatAdapter.notifyItemRangeInserted(0, chatHistory.size());
+                        }
+                    });
+                }
+
+                next += 1;
             }
+
+
+            swipeLayout.setRefreshing(false);
         }
     }
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
+        swipeLayout.setRefreshing(false);
         if (chatAdapter != null) {
-            messageList.remove(messageList.size() - 1);
-            chatAdapter.notifyItemRemoved(messageList.size() - 1);
+            mqttMessage.remove(mqttMessage.size() - 1);
+            chatAdapter.notifyItemRemoved(mqttMessage.size() - 1);
         }
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
+        swipeLayout.setRefreshing(false);
         if (chatAdapter != null) {
-            messageList.remove(messageList.size() - 1);
-            chatAdapter.notifyItemRemoved(messageList.size() - 1);
+            mqttMessage.remove(mqttMessage.size() - 1);
+            chatAdapter.notifyItemRemoved(mqttMessage.size() - 1);
         }
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+        swipeLayout.setRefreshing(false);
         if (chatAdapter != null) {
-            messageList.remove(messageList.size() - 1);
-            chatAdapter.notifyItemRemoved(messageList.size() - 1);
+            mqttMessage.remove(mqttMessage.size() - 1);
+            chatAdapter.notifyItemRemoved(mqttMessage.size() - 1);
         }
     }
 }

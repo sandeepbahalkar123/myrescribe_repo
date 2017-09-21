@@ -44,7 +44,7 @@ public class DoctorConnectChatHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == RescribeConstants.TASK_DOCTOR_CONNECT_CHAT) {
+                if (mOldDataTag.equals(RescribeConstants.CHAT_USERS)) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
@@ -78,11 +78,11 @@ public class DoctorConnectChatHelper implements ConnectionListener {
 
     }
 
-    public void doDoctorConnectChat() {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_CONNECT_CHAT, Request.Method.GET, true);
+    public void doDoctorConnectChat(String patientId) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.CHAT_USERS, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.DOCTOR_CHAT_LIST_URL);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_CONNECT_CHAT);
+        mConnectionFactory.setUrl(Config.CHAT_USERS + "?user2id=" + patientId);
+        mConnectionFactory.createConnection(RescribeConstants.CHAT_USERS);
     }
 
 }

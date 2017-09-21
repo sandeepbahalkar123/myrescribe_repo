@@ -15,7 +15,7 @@ public class DoctorConnectDataModel implements Parcelable, CustomResponse {
 
     @SerializedName("doctorList")
     @Expose
-    private ArrayList<ConnectList> connectList = null;
+    private ArrayList<ChatDoctor> chatDoctor = null;
     public final static Creator<DoctorConnectDataModel> CREATOR = new Creator<DoctorConnectDataModel>() {
 
 
@@ -24,7 +24,7 @@ public class DoctorConnectDataModel implements Parcelable, CustomResponse {
         })
         public DoctorConnectDataModel createFromParcel(Parcel in) {
             DoctorConnectDataModel instance = new DoctorConnectDataModel();
-            in.readList(instance.connectList, (ConnectList.class.getClassLoader()));
+            in.readList(instance.chatDoctor, (ChatDoctor.class.getClassLoader()));
             return instance;
         }
 
@@ -34,16 +34,16 @@ public class DoctorConnectDataModel implements Parcelable, CustomResponse {
 
     };
 
-    public ArrayList<ConnectList> getConnectList() {
-        return connectList;
+    public ArrayList<ChatDoctor> getChatDoctor() {
+        return chatDoctor;
     }
 
-    public void setConnectList(ArrayList<ConnectList> connectList) {
-        this.connectList = connectList;
+    public void setChatDoctor(ArrayList<ChatDoctor> chatDoctor) {
+        this.chatDoctor = chatDoctor;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeList(connectList);
+        dest.writeList(chatDoctor);
     }
 
     public int describeContents() {

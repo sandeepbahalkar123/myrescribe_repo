@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
 import com.android.volley.Request;
-import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
@@ -22,8 +21,6 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -64,7 +61,8 @@ public class DoctorHelper implements ConnectionListener {
                         DoctorDataModel doctorDataModel = baseModel.getDoctorDataModel();
                         if (doctorDataModel.getDoctorInfoMonthContainer() != null) {
                             DoctorInfoMonthContainer doctorInfoMonthContainer = doctorDataModel.getDoctorInfoMonthContainer();
-                            yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
+                            if (doctorInfoMonthContainer.getYear() != null)
+                                yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
                         }
                     }
                     mHelperResponseManager.onSuccess(mOldDataTag, baseModel);

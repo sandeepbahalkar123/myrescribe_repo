@@ -18,7 +18,7 @@ import com.rescribe.R;
 import com.rescribe.helpers.doctor_connect.DoctorConnectSearchHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.doctor_connect.ConnectList;
+import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.model.doctor_connect_search.DoctorConnectSearchBaseModel;
 import com.rescribe.model.doctor_connect_search.SearchDataModel;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -43,6 +43,10 @@ import butterknife.OnClick;
  */
 
 public class DoctorConnectActivity extends AppCompatActivity implements DoctorConnectSearchContainerFragment.OnAddFragmentListener, SearchBySpecializationOfDoctorFragment.OnAddFragmentListener, HelperResponse {
+
+    public static final int PAID = 1;
+    public static final int FREE = 0;
+
     @BindView(R.id.backButton)
     ImageView mBackButton;
     @BindView(R.id.tabsDoctorConnect)
@@ -58,14 +62,14 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
     TextView mWhiteUnderLine;
     private static final String SPECIALIZATION_DOCTOR_FRAGMENT = "SpecializationOfDoctorFragment";
     private static final String SPECIALIZATION_DOCTOR_FRAGMENT_BYNAME = "SearchDoctorByNameFragment";
-    private DoctorConnectSearchContainerFragment doctorConnectSearchContainerFragment;
+
+    private DoctorConnectChatFragment doctorConnectChatFragment;
     private SearchBySpecializationOfDoctorFragment searchBySpecializationOfDoctorFragment;
+
     private SearchDoctorByNameFragment searchDoctorByNameFragment;
-    private DoctorConnectSearchHelper doctorConnectSearchHelper;
-    private DoctorConnectSearchBaseModel doctorConnectSearchBaseModel;
     private SearchDataModel searchDataModel;
     private String mFragmentLoaded;
-    private ArrayList<ConnectList> mConnectLists;
+    private ArrayList<ChatDoctor> mChatDoctors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,9 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         mFragmentTitleList[1] = getString(R.string.connect);
         mFragmentTitleList[2] = getString(R.string.search);
 
+        setupViewPager();
+        mTabsDoctorConnect.setupWithViewPager(mDoctorConnectViewpager);
+        initialize();
     }
 
     private void initialize() {
@@ -174,13 +181,13 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
     private void setupViewPager() {
 
         //Api call to get getDoctorSpeciality
-        doctorConnectSearchHelper = new DoctorConnectSearchHelper(this, this);
+        DoctorConnectSearchHelper doctorConnectSearchHelper = new DoctorConnectSearchHelper(this, this);
         doctorConnectSearchHelper.getDoctorSpecialityList();
         //Doctor connect , chat and search fragment loaded here
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        DoctorConnectChatFragment doctorConnectChatFragment = DoctorConnectChatFragment.newInstance();
+        doctorConnectChatFragment = DoctorConnectChatFragment.newInstance();
         DoctorConnectFragment doctorConnectFragment = DoctorConnectFragment.newInstance();
-        doctorConnectSearchContainerFragment = new DoctorConnectSearchContainerFragment();
+        DoctorConnectSearchContainerFragment doctorConnectSearchContainerFragment = new DoctorConnectSearchContainerFragment();
         adapter.addFragment(doctorConnectChatFragment, getString(R.string.chats));
         adapter.addFragment(doctorConnectFragment, getString(R.string.connect));
         adapter.addFragment(doctorConnectSearchContainerFragment, getString(R.string.search));
@@ -199,17 +206,9 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        setupViewPager();
-        mTabsDoctorConnect.setupWithViewPager(mDoctorConnectViewpager);
-        initialize();
-    }
-
-    @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_DOCTOR__FILTER_DOCTOR_SPECIALITY_LIST)) {
-            doctorConnectSearchBaseModel = (DoctorConnectSearchBaseModel) customResponse;
+            DoctorConnectSearchBaseModel doctorConnectSearchBaseModel = (DoctorConnectSearchBaseModel) customResponse;
             searchDataModel = doctorConnectSearchBaseModel.getSearchDataModel();
         }
     }
@@ -230,7 +229,7 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
     }
 
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
@@ -285,18 +284,18 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         if (bundleData != null) {
             mSearchView.setText("" + bundleData.getString(getString(R.string.clicked_item_data)));
         }
-        searchDoctorByNameFragment = SearchDoctorByNameFragment.newInstance(getmConnectLists(), bundleData);
+        searchDoctorByNameFragment = SearchDoctorByNameFragment.newInstance(getmChatDoctors(), bundleData);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, searchDoctorByNameFragment);
         fragmentTransaction.commit();
     }
 
-    public ArrayList<ConnectList> getmConnectLists() {
-        return mConnectLists;
+    public ArrayList<ChatDoctor> getmChatDoctors() {
+        return mChatDoctors;
     }
 
-    public void setmConnectLists(ArrayList<ConnectList> mConnectLists) {
-        this.mConnectLists = mConnectLists;
+    public void setmChatDoctors(ArrayList<ChatDoctor> mChatDoctors) {
+        this.mChatDoctors = mChatDoctors;
     }
 }

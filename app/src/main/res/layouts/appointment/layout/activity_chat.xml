@@ -34,7 +34,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/backButton"
                 android:layout_toRightOf="@+id/backButton"
-                android:src="@drawable/welcome_copy_3" />
+                tools:src="@drawable/welcome_copy_3" />
 
             <RelativeLayout
                 android:id="@+id/titleLayout"
@@ -49,18 +49,18 @@
                     android:id="@+id/receiverName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Rashmi Gangar"
+                    tools:text="Rashmi Gangar"
                     app:customFont="@string/roboto_bold"
                     android:layout_alignParentTop="true"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp18" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/onlineStatus"
+                    android:id="@+id/dateTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:customFont="@string/roboto_medium"
-                    android:text="Last seen today at 10:30 am"
+                    tools:text="Last seen today at 10:30 am"
                     android:layout_alignParentBottom="true"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp12" />

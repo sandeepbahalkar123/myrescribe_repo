@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
+import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.investigation.Images;
 import com.rescribe.model.investigation.InvestigationData;
@@ -23,6 +24,10 @@ import java.util.ArrayList;
 public class AppDBHelper extends SQLiteOpenHelper {
 
     private final String TAG = "Rescribe/AppDBHelper";
+
+    public static final String CHAT_USER_ID = "user_id";
+    public static final String MESSAGE = "message";
+    public static final String MESSAGE_TABLE = "unread_messages";
 
     public static final String INV_ID = "inv_id";
     public static final String INV_NAME = "inv_name";
@@ -386,5 +391,68 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.delete(MY_RECORDS_TABLE, null, null);
     }
 
-    // End MyRecords
+    public boolean deleteUnreadMessage(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(MESSAGE_TABLE, CHAT_USER_ID + "=" + id, null) > 0;
+    }
+
+    public ArrayList<MQTTMessage> insertUnreadMessage(int id, String message) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(CHAT_USER_ID, id);
+        contentValues.put(MESSAGE, message);
+
+        db.insert(MESSAGE_TABLE, null, contentValues);
+
+        return getUnreadMessagesById(id);
+    }
+
+    public int unreadMessageCountById(int id) {
+        // Return Total Count
+        SQLiteDatabase db = getReadableDatabase();
+        String countQuery = "select * from " + MESSAGE_TABLE + " where " + CHAT_USER_ID + " = " + id;
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int cnt = cursor.getCount();
+        cursor.close();
+        return cnt;
+    }
+
+    /*public int unreadMessageCount() {
+        // Return Total Count
+        SQLiteDatabase db = getReadableDatabase();
+        String countQuery = "select * from " + MESSAGE_TABLE;
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int cnt = cursor.getCount();
+        cursor.close();
+        return cnt;
+    }*/
+
+    public ArrayList<MQTTMessage> getUnreadMessagesById(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        String countQuery = "select * from " + MESSAGE_TABLE + " where " + CHAT_USER_ID + " = " + id;
+        Cursor cursor = db.rawQuery(countQuery, null);
+        ArrayList<MQTTMessage> chatDoctors = new ArrayList<>();
+        Gson gson = new Gson();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                String messageJson = cursor.getString(cursor.getColumnIndex(MESSAGE));
+                MQTTMessage MQTTMessage = gson.fromJson(messageJson, MQTTMessage.class);
+                chatDoctors.add(MQTTMessage);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+
+        return chatDoctors;
+    }
+
+    /*public int unreadMessageUsersCount() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + MESSAGE_TABLE + " group by " + CHAT_USER_ID, null);
+        int cnt = cursor.getCount();
+        cursor.close();
+        return cnt;
+    }*/
 }

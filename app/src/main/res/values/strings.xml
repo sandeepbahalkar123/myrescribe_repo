@@ -246,5 +246,9 @@
     <string name="doctor">Doctor</string>
     <string name="recently_visit_doctor">Recently Visited Doctor</string>
     <string name="clickhere">Still in doubt ?......click here</string>
+    <string name="title_activity_vital_graph">Vital Graph</string>
+    <string name="add_tracker">Add Tracker</string>
+    <string name="title_activity_vital_graph_details">Vital Graph Details</string>
+    <string name="title_activity_add_tracker">Add Tracker</string>
     <!-- Error string -->
 </resources>

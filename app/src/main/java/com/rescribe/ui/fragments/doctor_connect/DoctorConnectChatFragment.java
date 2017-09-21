@@ -16,8 +16,9 @@ import com.rescribe.adapters.DoctorConnectChatAdapter;
 import com.rescribe.helpers.doctor_connect.DoctorConnectChatHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.doctor_connect_chat.ChatData;
-import com.rescribe.model.doctor_connect_chat.DoctorConnectChatBaseModel;
+import com.rescribe.model.doctor_connect.RecentChatDoctorData;
+import com.rescribe.model.doctor_connect.RecentChatDoctorModel;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -40,8 +41,8 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     DoctorConnectChatAdapter mDoctorConnectChatAdapter;
     private View mRootView;
     private DoctorConnectChatHelper mDoctorConnectChatHelper;
-    private DoctorConnectChatBaseModel mDoctorConnectChatBaseModel;
-    private ChatData mData = new ChatData();
+    private RecentChatDoctorModel mDoctorConnectChatBaseModel;
+    private RecentChatDoctorData mData = new RecentChatDoctorData();
 
     public static DoctorConnectChatFragment newInstance() {
         DoctorConnectChatFragment fragment = new DoctorConnectChatFragment();
@@ -69,8 +70,9 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     @Override
     public void onResume() {
         super.onResume();
-        if (mData.getChatList() == null) {
-            mDoctorConnectChatHelper.doDoctorConnectChat();
+        if (mData.getChatDoctor() == null) {
+            String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, getContext());
+            mDoctorConnectChatHelper.doDoctorConnectChat(patientId);
         } else {
             setAdapter();
         }
@@ -84,15 +86,15 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_DOCTOR_CONNECT_CHAT)) {
-            mDoctorConnectChatBaseModel = (DoctorConnectChatBaseModel) customResponse;
-            if (mDoctorConnectChatBaseModel.getData() == null) {
+        if (mOldDataTag.equalsIgnoreCase(RescribeConstants.CHAT_USERS)) {
+            mDoctorConnectChatBaseModel = (RecentChatDoctorModel) customResponse;
+            if (mDoctorConnectChatBaseModel.getDoctorConnectDataModel() == null) {
                 emptyListView.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);
             } else {
                 emptyListView.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.VISIBLE);
-                mData = mDoctorConnectChatBaseModel.getData();
+                mData = mDoctorConnectChatBaseModel.getDoctorConnectDataModel();
                 setAdapter();
             }
         }
@@ -117,24 +119,24 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
 
     public void setAdapter() {
         //Added Dr. to doctorName
-        for (int i = 0; i < mData.getChatList().size(); i++) {
-            String doctorName = mData.getChatList().get(i).getDoctorName();
+        for (int i = 0; i < mData.getChatDoctor().size(); i++) {
+            String doctorName = mData.getChatDoctor().get(i).getDoctorName();
             //TODO : Temporary Fix as data from Server is not in Proper format
             if (doctorName.startsWith("DR. ")) {
               String drName =  doctorName.replace("DR. ", "Dr. ");
-                mData.getChatList().get(i).setDoctorName(drName);
+                mData.getChatDoctor().get(i).setDoctorName(drName);
             } else if (doctorName.startsWith("DR.")) {
                 String drName =   doctorName.replace("DR.", "Dr. ");
-                mData.getChatList().get(i).setDoctorName(drName);
+                mData.getChatDoctor().get(i).setDoctorName(drName);
             }  else if (doctorName.startsWith("Dr. ")) {
                 String drName =   doctorName.replace("Dr. ", "Dr. ");
-                mData.getChatList().get(i).setDoctorName(drName);
+                mData.getChatDoctor().get(i).setDoctorName(drName);
             } else {
-                mData.getChatList().get(i).setDoctorName("Dr. " + doctorName);
+                mData.getChatDoctor().get(i).setDoctorName("Dr. " + doctorName);
             }
         }
 
-        mDoctorConnectChatAdapter = new DoctorConnectChatAdapter(getActivity(), mData.getChatList());
+        mDoctorConnectChatAdapter = new DoctorConnectChatAdapter(getActivity(), mData.getChatDoctor());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());

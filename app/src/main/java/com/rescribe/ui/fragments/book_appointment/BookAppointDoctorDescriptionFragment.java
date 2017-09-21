@@ -54,6 +54,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     CustomTextView mShowAllTimeSlotListView;
     @BindView(R.id.allTimingListViewLayout)
     LinearLayout mAllTimingListViewLayout;
+    @BindView(R.id.openingTimeLayout)
+    LinearLayout mOpeningTimeLayout;
     @BindView(R.id.allTimeSlotListView)
     RecyclerView mAllTimeSlotListView;
     @BindView(R.id.hideAllTimeSlotListView)
@@ -114,12 +116,12 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         if (mClickedDoctorObject.getAvailableTimeSlots().size() > 0) {
             mShowAllTimeSlotListView.setVisibility(View.VISIBLE);
 
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+            int spanCount = 5; // 3 columns
+            int spacing = 30; // 50px
+            boolean includeEdge = false;
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), spanCount);
             mAllTimeSlotListView.setLayoutManager(layoutManager);
             mAllTimeSlotListView.setItemAnimator(new DefaultItemAnimator());
-            int spanCount = 3; // 3 columns
-            int spacing = 50; // 50px
-            boolean includeEdge = true;
             mAllTimeSlotListView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
             TimeSlotAdapter t = new TimeSlotAdapter(getActivity(), mClickedDoctorObject.getAvailableTimeSlots());
             mAllTimeSlotListView.setAdapter(t);
@@ -160,15 +162,16 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         switch (view.getId()) {
             case R.id.hideAllTimeSlotListView:
                 mAllTimingListViewLayout.setVisibility(View.GONE);
+                mOpeningTimeLayout.setVisibility(View.VISIBLE);
                 if (mClickedDoctorObject.getAvailableTimeSlots().size() > 0) {
                     mShowAllTimeSlotListView.setVisibility(View.VISIBLE);
                 } else {
-                    mShowAllTimeSlotListView.setVisibility(View.GONE);
+                    mShowAllTimeSlotListView.setVisibility(View.INVISIBLE);
                 }
                 break;
             case R.id.showAllTimeSlotListView:
                 mAllTimingListViewLayout.setVisibility(View.VISIBLE);
-                mShowAllTimeSlotListView.setVisibility(View.GONE);
+                mOpeningTimeLayout.setVisibility(View.GONE);
         }
     }
 }

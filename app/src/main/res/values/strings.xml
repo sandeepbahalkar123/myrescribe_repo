@@ -251,7 +251,7 @@
 
     <string name="doctor">Doctor</string>
 
-    <string name="about_doctor">About Doctor</string>
+    <string name="about_doctor"><u>About Doctor:</u></string>
 
 
     <string name="recently_visit_doctor">Recently Visited Doctor</string>
@@ -266,7 +266,7 @@
     <string name="waiting_for">Waiting for </string>
     <string name="token_no_available">Token No. %d available</string>
     <string name="doctor_data">Doctor Data</string>
-    <string name="open_today">Open Today</string>
+    <string name="open_today"><u>Open Today</u></string>
     <string name="all_timings">All Timings</string>
 
     <!-- Error string -->

@@ -33,4 +33,6 @@
     <color name="Gray">#736F6E</color>
     <color name="green_light">#0fd20b</color>
     <color name="grey_light">#e0e0e0</color>
+    <color name="map_green">#45841c</color>
+
 </resources>

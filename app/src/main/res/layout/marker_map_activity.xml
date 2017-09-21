@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/transparent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+android:background="@drawable/locator"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/layer_13"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/invalid_name"/>
+    <com.rescribe.ui.customesViews.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4.5"
+        android:id="@+id/doctorRating"
+        android:textSize="10sp"
+        app:customFont="@string/roboto_regular"
+        android:textColor="@color/white"
+        />
+    </LinearLayout>
+    <com.rescribe.ui.customesViews.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@id/doctorName"
+        android:textSize="10sp"
+        app:customFont="@string/roboto_bold"
+        android:textColor="@color/map_green"
+        />
+</LinearLayout>

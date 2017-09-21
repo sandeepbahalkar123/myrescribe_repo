@@ -11,25 +11,20 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
-import com.rescribe.adapters.DoctorListAdapter;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
-import com.rescribe.helpers.doctor.DoctorHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
-import com.rescribe.model.doctors.doctor_info.DoctorDetail;
-import com.rescribe.model.login.Year;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
-import com.rescribe.ui.fragments.doctor.DoctorListFragmentContainer;
-import com.rescribe.util.RescribeConstants;
+import com.rescribe.ui.activities.book_appointment.ShowNearByDoctorsOnMapFragment;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
@@ -46,6 +41,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     FloatingActionButton mLocationFab;
     Unbinder unbinder;
     private View mRootView;
+    public static Bundle args;
     BookAppointFilteredDocList mBookAppointFilteredDocListAdapter;
 
     public BookAppointFilteredDoctorListFragment() {
@@ -65,7 +61,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
 
     public static BookAppointFilteredDoctorListFragment newInstance(Bundle b) {
         BookAppointFilteredDoctorListFragment fragment = new BookAppointFilteredDoctorListFragment();
-        Bundle args = b;
+        args = b;
         if (args == null) {
             args = new Bundle();
         }
@@ -149,4 +145,19 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
             mDoctorListView.setVisibility(View.GONE);
         }
     }
+
+    @OnClick({R.id.rightFab, R.id.leftFab})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rightFab:
+
+                break;
+            case R.id.leftFab:
+                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                activity.loadFragment(ShowNearByDoctorsOnMapFragment.newInstance(args));
+                break;
+        }
+    }
+
+
 }

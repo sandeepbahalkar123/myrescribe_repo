@@ -265,5 +265,6 @@
     <string name="complaint2">Complaint 2:</string>
     <string name="waiting_for">Waiting for </string>
     <string name="token_no_available">Token No. %d available</string>
+    <string name="doctor_data">Doctor Data</string>
     <!-- Error string -->
 </resources>

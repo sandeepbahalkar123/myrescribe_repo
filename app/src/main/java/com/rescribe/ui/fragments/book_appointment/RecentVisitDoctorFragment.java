@@ -24,7 +24,6 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
-import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,7 +33,6 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse {
-    ArrayList<String> arrlist = new ArrayList<String>(5);
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.circleIndicator)
@@ -140,10 +138,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             pickSpeciality.setVisibility(View.VISIBLE);
             listView.setVisibility(View.VISIBLE);
             doubtMessage.setVisibility(View.VISIBLE);
-            arrlist.add("Sunita Phadke");
-            arrlist.add("Amruta Nikam");
-            arrlist.add("Gunjan Gangwar");
-            arrlist.add("Tejaswini Patil");
             ViewPager viewpager = (ViewPager) mRootView.findViewById(R.id.viewpager);
             CircleIndicator indicator = (CircleIndicator) mRootView.findViewById(R.id.circleIndicator);
             DoctorServicesModel doctorServicesModel = new DoctorServicesModel();

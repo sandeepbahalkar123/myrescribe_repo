@@ -2,12 +2,8 @@ package com.rescribe.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +13,13 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
-import com.rescribe.model.doctor_connect.ConnectList;
+import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.ChatActivity;
+import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +32,7 @@ import butterknife.ButterKnife;
 public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdapter.ListViewHolder> {
 
     private Context mContext;
-    private ArrayList<ConnectList> connectLists;
+    private ArrayList<ChatDoctor> chatDoctors;
     private ColorGenerator mColorGenerator;
     private String mIdle, mOnline, mOffline;
 
@@ -64,8 +58,8 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
     }
 
 
-    public DoctorConnectAdapter(Context mContext, ArrayList<ConnectList> connectLists) {
-        this.connectLists = connectLists;
+    public DoctorConnectAdapter(Context mContext, ArrayList<ChatDoctor> chatDoctors) {
+        this.chatDoctors = chatDoctors;
         this.mContext = mContext;
         mColorGenerator = ColorGenerator.MATERIAL;
         mOnline = mContext.getString(R.string.online);
@@ -83,25 +77,25 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
 
     @Override
     public void onBindViewHolder(final ListViewHolder holder, int position) {
-        final ConnectList connectList = connectLists.get(position);
-        holder.doctorType.setText(connectList.getSpecialization());
+        final ChatDoctor chatDoctor = chatDoctors.get(position);
+        holder.doctorType.setText(chatDoctor.getSpecialization());
 
         //-----------
-        if (connectList.getOnlineStatus().equalsIgnoreCase(mOnline)) {
+        if (chatDoctor.getOnlineStatus().equalsIgnoreCase(mOnline)) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.green_light));
-        } else if (connectList.getOnlineStatus().equalsIgnoreCase(mIdle)) {
+        } else if (chatDoctor.getOnlineStatus().equalsIgnoreCase(mIdle)) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
-        } else if (connectList.getOnlineStatus().equalsIgnoreCase(mOffline)) {
+        } else if (chatDoctor.getOnlineStatus().equalsIgnoreCase(mOffline)) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.grey_500));
         } else {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
         }
         //-----------
 
-        holder.onlineStatusTextView.setText(connectList.getOnlineStatus());
-        holder.paidStatusTextView.setText(connectList.getPaidStatus());
+        holder.onlineStatusTextView.setText(chatDoctor.getOnlineStatus());
+        holder.paidStatusTextView.setText(chatDoctor.getPaidStatus() == DoctorConnectActivity.PAID ? "Rs 255/-" : "FREE");
 
-        String doctorName = connectList.getDoctorName();
+        String doctorName = chatDoctor.getDoctorName();
         // Removed Dr. from doctor name to get starting letter of doctorName to set to image icon.
         doctorName = doctorName.replace("Dr. ", "");
         if (doctorName != null) {
@@ -116,13 +110,13 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         }
 
 
-        holder.doctorName.setText(connectList.getDoctorName());
+        holder.doctorName.setText(chatDoctor.getDoctorName());
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ChatActivity.class);
-                intent.putExtra(RescribeConstants.DOCTORS_INFO, connectList);
+                intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
                 intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
                 mContext.startActivity(intent);
             }
@@ -132,7 +126,7 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
 
     @Override
     public int getItemCount() {
-        return connectLists.size();
+        return chatDoctors.size();
     }
 
 }

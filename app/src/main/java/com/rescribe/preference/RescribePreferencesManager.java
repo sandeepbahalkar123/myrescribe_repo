@@ -226,5 +226,8 @@ public class RescribePreferencesManager {
         String PASSWORD_GMAIL = "password_gmail";
         String MOBILE_NUMBER_FACEBOOK = "mobile_number_facebook";
         String PASSWORD_FACEBOOK = "password_facebook";
+        String USER_NAME = "user_name";
+        String PROFILE_PHOTO = "profile_photo";
+        String USER_EMAIL = "user_email";
     }
 }

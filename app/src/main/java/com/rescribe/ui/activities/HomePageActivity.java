@@ -293,7 +293,8 @@ public class HomePageActivity extends DrawerActivity {
                     Intent intent = new Intent(mContext, DoctorConnectActivity.class);
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.vital_graph))) {
-
+                    Intent intent = new Intent(mContext, VitalGraphActivity.class);
+                    startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.post_your_query))) {
 
                 } else if (id.equalsIgnoreCase(getString(R.string.book_appointment))) {

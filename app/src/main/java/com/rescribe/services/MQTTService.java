@@ -1,14 +1,20 @@
 package com.rescribe.services;
 
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.RemoteInput;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.rescribe.model.chat.MessageList;
+import com.rescribe.broadcast_receivers.ReplayBroadcastReceiver;
+import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.notification.MessageNotification;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.RescribeConstants;
@@ -24,6 +30,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.util.ArrayList;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -31,6 +39,11 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 
 public class MQTTService extends Service {
+
+    public static final String KEY_REPLY = "key_replay";
+    public static final String REPLY_ACTION = "com.rescribe.REPLY_ACTION";
+
+    private static int currentChatUser;
     private static final String TAG = "MQTTService";
     public static final String MESSAGE = "message";
     public static final String NOTIFY = "com.rescribe";
@@ -41,11 +54,12 @@ public class MQTTService extends Service {
     private static final String TOPIC[] = {"doctorConnect", "online"};
     public static final String DELIVERED = "delivered";
 
-//    public static final String DOCTOR = "user1";
+    //    public static final String DOCTOR = "user1";
     public static final String PATIENT = "user2";
 
     private MqttAsyncClient mqttClient;
-    private static final String BROKER = "tcp://test.mosquitto.org:1883";
+//    private static final String BROKER = "tcp://test.mosquitto.org:1883";
+    private static final String BROKER = "tcp://192.168.0.182:1883";
 
     private InternetState internetState;
     private Gson gson = new Gson();
@@ -53,11 +67,15 @@ public class MQTTService extends Service {
     private Subscription sendStateSubscription;
     private int[] qos;
 
+    private AppDBHelper appDBHelper;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         initRxNetwork();
+
+        appDBHelper = new AppDBHelper(this);
 
         //MQTT client id to use for the device. "" will generate a client id automatically
         MemoryPersistence persistence = new MemoryPersistence();
@@ -109,6 +127,10 @@ public class MQTTService extends Service {
         return mBinder;
     }
 
+    public void setCurrentChatUser(int currentChatUser) {
+        MQTTService.currentChatUser = currentChatUser;
+    }
+
     public class LocalBinder extends Binder {
         public MQTTService getServerInstance() {
             return MQTTService.this;
@@ -130,11 +152,12 @@ public class MQTTService extends Service {
         try {
             mqttClient.setCallback(new MqttCallback() {
                 public void messageArrived(final String topic, final MqttMessage msg) {
-                    Log.d(TAG + "Received:", topic + " " + new String(msg.getPayload()));
+                    String payloadString = new String(msg.getPayload());
+                    Log.d(TAG + "Received:", topic + " " + payloadString);
 
                     try {
                         if (!msg.isDuplicate()) {
-                            MessageList messageL = gson.fromJson(new String(msg.getPayload()), MessageList.class);
+                            MQTTMessage messageL = gson.fromJson(payloadString, MQTTMessage.class);
                             String myid = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, MQTTService.this);
                             String userLogin = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MQTTService.this);
 
@@ -143,17 +166,27 @@ public class MQTTService extends Service {
                                     messageL.setMsgId(msg.getId());
                                     messageL.setTopic(topic);
                                     if (!messageL.getSender().equals(MQTTService.PATIENT)) {
-                                        MessageNotification.notify(MQTTService.this, messageL.getTopic(), messageL.getMsg(), 0, messageL.getMsgId());
+                                        if (currentChatUser != messageL.getDocId()) {
+                                            ArrayList<MQTTMessage> messagesTemp = new ArrayList<>();
+                                            ArrayList<MQTTMessage> messages = appDBHelper.insertUnreadMessage(messageL.getDocId(), payloadString);
+
+                                            if (messages.size() > 6) {
+                                                for (int index = messages.size() - 6; index < messages.size(); index++)
+                                                    messagesTemp.add(messages.get(index));
+                                            } else messagesTemp.addAll(messages);
+
+                                            MessageNotification.notify(MQTTService.this, messagesTemp, String.valueOf(messageL.getDocId()), appDBHelper.unreadMessageCountById(messageL.getDocId()), getReplyPendingIntent(messageL), messageL.getDocId());
+                                        }
                                         Intent intent = new Intent(NOTIFY);
                                         intent.putExtra(RECEIVED, true);
                                         intent.putExtra(MESSAGE, messageL);
                                         sendBroadcast(intent);
-                                    } else Log.d(TAG + " DOCTOR_MES", new String(msg.getPayload()));
-                                } else Log.d(TAG + " OTHERS_MES", new String(msg.getPayload()));
+                                    } else Log.d(TAG + " DOCTOR_MES", payloadString);
+                                } else Log.d(TAG + " OTHERS_MES", payloadString);
                             }
-                        } else Log.d(TAG + " LOGOUT_MES", new String(msg.getPayload()));
+                        } else Log.d(TAG + " LOGOUT_MES", payloadString);
                     } catch (JsonSyntaxException e) {
-                        Log.d(TAG + " MESSAGE", new String(msg.getPayload()));
+                        Log.d(TAG + " MESSAGE", payloadString);
                     }
                 }
 
@@ -217,8 +250,8 @@ public class MQTTService extends Service {
         return internetState.isEnabled;
     }
 
-    public void passMessage(MessageList messageList) {
-        String content = gson.toJson(messageList, MessageList.class);
+    public void passMessage(MQTTMessage MQTTMessage) {
+        String content = gson.toJson(MQTTMessage, MQTTMessage.class);
         try {
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(1);
@@ -253,5 +286,31 @@ public class MQTTService extends Service {
             this.isEnabled = isEnabled;
             this.state = state;
         }
+    }
+// new code
+
+    private PendingIntent getReplyPendingIntent(MQTTMessage MQTTMessage) {
+        Intent intent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            // start a
+            // (i)  broadcast receiver which runs on the UI thread or
+            // (ii) service for a background task to b executed , but for the purpose of this codelab, will be doing a broadcast receiver
+            intent = ReplayBroadcastReceiver.getReplyMessageIntent(this, MQTTMessage);
+            return PendingIntent.getBroadcast(getApplicationContext(), MQTTMessage.getDocId(), intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            // start your activity
+            intent = ReplayBroadcastReceiver.getReplyMessageIntent(this, MQTTMessage);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            return PendingIntent.getActivity(this, MQTTMessage.getDocId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+    }
+
+    public static CharSequence getReplyMessage(Intent intent) {
+        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+        if (remoteInput != null) {
+            return remoteInput.getCharSequence(KEY_REPLY);
+        }
+        return null;
     }
 }

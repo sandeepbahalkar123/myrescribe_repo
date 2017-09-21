@@ -6,7 +6,7 @@ import com.android.volley.Request;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.chat.MessageList;
+import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.chat.MessageRequestModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
@@ -72,7 +72,7 @@ public class ChatHelper implements ConnectionListener {
 
     }
 
-    public void sendMsgToPatient(MessageList messageL){
+    public void sendMsgToPatient(MQTTMessage messageL){
         MessageRequestModel messageRequestModel = new MessageRequestModel();
         messageRequestModel.setMsg(messageL.getMsg());
         // 2017-10-13 12:08:07
@@ -81,7 +81,7 @@ public class ChatHelper implements ConnectionListener {
         messageRequestModel.setUser1id(messageL.getDocId());
         messageRequestModel.setUser2id(messageL.getPatId());
 
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.SEND_MESSAGE, Request.Method.POST, false);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.SEND_MESSAGE, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setPostParams(messageRequestModel);
         mConnectionFactory.setUrl(Config.SEND_MSG_TO_DOCTOR);
@@ -89,7 +89,7 @@ public class ChatHelper implements ConnectionListener {
     }
 
     public void getChatHistory(int pgNmbr, int user1id, int user2id) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.CHAT_HISTORY, Request.Method.GET, false);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.CHAT_HISTORY, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.CHAT_HISTORY + "user1id=" + user1id + "&user2id=" + user2id + "&pgNmbr=" + pgNmbr);
         mConnectionFactory.createConnection(RescribeConstants.CHAT_HISTORY);

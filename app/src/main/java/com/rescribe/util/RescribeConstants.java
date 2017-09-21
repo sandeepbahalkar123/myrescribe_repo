@@ -102,6 +102,7 @@ public class RescribeConstants {
 
     public static final String SEND_MESSAGE = RescribeConstants.BLANK + 28;
     public static final String CHAT_HISTORY = RescribeConstants.BLANK + 29;
+    public static final String CHAT_USERS = RescribeConstants.BLANK + 30;
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
@@ -134,6 +135,8 @@ public class RescribeConstants {
     public static final String SENDERID = "EMROTP";
     public static final String IS_URL = "isUrl";
     public static final String DOCTORS_INFO = "doctor_info";
+
+    public static final String ONLINE = "online";
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 

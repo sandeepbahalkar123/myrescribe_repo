@@ -12,12 +12,12 @@ public class Config {
     public static final String LOGIN_URL = "authApi/authenticate/patientLogin";
     public static final String VERIFY_SIGN_UP_OTP = "authApi/authenticate/verifyPatientOTP";
     public static final String SIGN_UP_URL = "authApi/authenticate/patientSignUp";
-    public static final String DOCTOR_CHAT_LIST_URL = "api/doctors/getChatDoctorList";
+
     public static boolean DEV_BUILD = true;
     //Declared all URL used in app here
 
-    public static String BASE_URL = "http://drrescribe.com:3003/";
-    //  public static String BASE_URL = "http://192.168.0.182:3003/";
+//    public static String BASE_URL = "http://drrescribe.com:3003/";
+      public static String BASE_URL = "http://192.168.0.182:3003/";
 
     public Context mContext;
     //Declared all URL used in app here
@@ -48,6 +48,9 @@ public class Config {
     public static final String SEND_MSG_TO_DOCTOR = "api/chat/sendMsgToDoctor";
     public static final String CHAT_HISTORY = "api/chat/getChatHistory?";
 
+    public static final String DOCTOR_CHAT_LIST_URL = "api/doctors/getChatDoctorList";
+
+    public static final String CHAT_USERS = "api/chat/getChatTabUsers";
 }
 
 

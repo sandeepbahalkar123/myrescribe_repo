@@ -242,5 +242,9 @@
     <string name="not_connected">Not Connected</string>
     <string name="send">Send</string>
     <string name="book_appointment">Book Appointment</string>
+    <string name="title_activity_vital_graph">Vital Graph</string>
+    <string name="add_tracker">Add Tracker</string>
+    <string name="title_activity_vital_graph_details">Vital Graph Details</string>
+    <string name="title_activity_add_tracker">Add Tracker</string>
     <!-- Error string -->
 </resources>

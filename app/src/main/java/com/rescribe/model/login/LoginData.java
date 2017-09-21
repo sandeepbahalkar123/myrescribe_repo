@@ -14,6 +14,18 @@ public class LoginData {
     @SerializedName("patientId")
     @Expose
     private String patientId;
+    @SerializedName("patientName")
+    @Expose
+    private String patientName;
+    @SerializedName("patientImgUrl")
+    @Expose
+    private String patientImgUrl;
+    @SerializedName("mobileNumber")
+    @Expose
+    private String mobileNumber;
+    @SerializedName("patientEmail")
+    @Expose
+    private String patientEmail;
 
     public String getPatientId() {
         return patientId;
@@ -26,5 +38,37 @@ public class LoginData {
     }
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public String getPatientImgUrl() {
+        return patientImgUrl;
+    }
+
+    public void setPatientImgUrl(String patientImgUrl) {
+        this.patientImgUrl = patientImgUrl;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public String getPatientEmail() {
+        return patientEmail;
+    }
+
+    public void setPatientEmail(String patientEmail) {
+        this.patientEmail = patientEmail;
     }
 }

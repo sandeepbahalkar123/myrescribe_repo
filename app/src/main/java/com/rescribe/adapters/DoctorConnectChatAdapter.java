@@ -1,7 +1,7 @@
 package com.rescribe.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +13,12 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
-import com.rescribe.model.doctor_connect_chat.ChatList;
+import com.rescribe.model.doctor_connect.ChatDoctor;
+import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +31,7 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
 
     private ColorGenerator mColorGenerator;
     private Context mContext;
-    private ArrayList<ChatList> chatLists;
+    private ArrayList<ChatDoctor> chatLists;
     private String mIdle, mOnline, mOffline;
 
 
@@ -54,7 +55,7 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
     }
 
 
-    public DoctorConnectChatAdapter(Context mContext, ArrayList<ChatList> chatList) {
+    public DoctorConnectChatAdapter(Context mContext, ArrayList<ChatDoctor> chatList) {
         this.chatLists = chatList;
         this.mContext = mContext;
         mColorGenerator = ColorGenerator.MATERIAL;
@@ -72,8 +73,8 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
     }
 
     @Override
-    public void onBindViewHolder(ListViewHolder holder, int position) {
-        ChatList doctorConnectChatModel = chatLists.get(position);
+    public void onBindViewHolder(final ListViewHolder holder, int position) {
+        final ChatDoctor doctorConnectChatModel = chatLists.get(position);
 
         holder.doctorName.setText(doctorConnectChatModel.getDoctorName());
         holder.doctorType.setText(doctorConnectChatModel.getSpecialization());
@@ -103,6 +104,16 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
                     .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
             holder.imageOfDoctor.setImageDrawable(drawable);
         }
+
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ChatActivity.class);
+                intent.putExtra(RescribeConstants.DOCTORS_INFO, doctorConnectChatModel);
+                intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 

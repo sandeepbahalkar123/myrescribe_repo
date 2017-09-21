@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.rescribe.R;
-import com.rescribe.model.chat.MessageList;
+import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.services.MQTTService;
 
 import java.util.ArrayList;
@@ -21,10 +21,10 @@ import butterknife.ButterKnife;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder> {
 
     private TextDrawable mReceiverTextDrawable;
-    private ArrayList<MessageList> messageList;
+    private ArrayList<MQTTMessage> MQTTMessage;
 
-    public ChatAdapter(ArrayList<MessageList> messageList, TextDrawable mReceiverTextDrawable) {
-        this.messageList = messageList;
+    public ChatAdapter(ArrayList<MQTTMessage> MQTTMessage, TextDrawable mReceiverTextDrawable) {
+        this.MQTTMessage = MQTTMessage;
         this.mReceiverTextDrawable = mReceiverTextDrawable;
     }
 
@@ -38,9 +38,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        MessageList message = messageList.get(position);
+        MQTTMessage message = MQTTMessage.get(position);
 
-        if (messageList.get(position).getSender().equals(MQTTService.PATIENT)) {
+        if (MQTTMessage.get(position).getSender().equals(MQTTService.PATIENT)) {
             holder.receiverLayout.setVisibility(View.GONE);
             holder.senderLayout.setVisibility(View.VISIBLE);
             holder.senderMessage.setText(message.getMsg());
@@ -57,7 +57,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
     @Override
     public int getItemCount() {
-        return messageList.size();
+        return MQTTMessage.size();
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {

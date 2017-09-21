@@ -16,6 +16,8 @@
             android:id="@+id/senderMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/senderProfilePhoto"
+            android:layout_toStartOf="@+id/senderProfilePhoto"
             android:background="@drawable/blue_1"
             android:paddingBottom="@dimen/dp8"
             android:paddingEnd="@dimen/dp16"
@@ -25,18 +27,65 @@
             android:paddingTop="@dimen/dp8"
             android:textColor="@color/white"
             android:textSize="@dimen/sp14"
-            android:layout_toStartOf="@+id/senderProfilePhoto"
             app:customFont="@string/roboto_regular"
-            tools:text="@string/dummy_normal"
-            android:layout_toLeftOf="@+id/senderProfilePhoto" />
+            tools:text="@string/dummy_normal" />
 
         <ImageView
             android:id="@+id/senderProfilePhoto"
             android:layout_width="@dimen/dp40"
             android:layout_height="@dimen/dp40"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/exercise"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:src="@drawable/exercise" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/isSenderPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp68"
+            android:layout_marginStart="@dimen/dp68"
+            android:layout_toLeftOf="@+id/senderProfilePhoto"
+            android:layout_toStartOf="@+id/senderProfilePhoto"
+            app:cardCornerRadius="@dimen/dp10"
+            app:cardElevation="@dimen/dp5"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <droidninja.filepicker.views.SquareRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/senderPhotoThumb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        tools:src="@drawable/coachmark" />
+
+                    <ProgressBar
+                        android:id="@+id/senderProgressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_height="wrap_content" />
+
+                </droidninja.filepicker.views.SquareRelativeLayout>
+
+                <TextView
+                    android:id="@+id/senderMessageWithImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp10"
+                    tools:text="@string/dummy_full" />
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 
@@ -68,6 +117,54 @@
             android:textSize="@dimen/sp14"
             app:customFont="@string/roboto_regular"
             tools:text="Hi Hello" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/isReceiverPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp68"
+            android:layout_marginRight="@dimen/dp68"
+            android:layout_toEndOf="@+id/receiverProfilePhoto"
+            android:layout_toRightOf="@+id/receiverProfilePhoto"
+            app:cardCornerRadius="@dimen/dp10"
+            app:cardElevation="@dimen/dp5"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <droidninja.filepicker.views.SquareRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/receiverPhotoThumb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        tools:src="@drawable/capsule_01" />
+
+                    <ProgressBar
+                        android:id="@+id/receiverProgressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_height="wrap_content" />
+
+                </droidninja.filepicker.views.SquareRelativeLayout>
+
+                <TextView
+                    android:id="@+id/receiverMessageWithImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp10"
+                    android:text="@string/dummy_full" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 

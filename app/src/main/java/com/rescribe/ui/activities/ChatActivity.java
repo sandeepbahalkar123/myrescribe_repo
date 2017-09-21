@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -9,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -51,9 +53,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import droidninja.filepicker.FilePickerBuilder;
+import droidninja.filepicker.FilePickerConst;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class ChatActivity extends AppCompatActivity implements HelperResponse {
 
+    private static final int MAX_ATTACHMENT_COUNT = 10;
     @BindView(R.id.backButton)
     ImageView backButton;
     @BindView(R.id.profilePhoto)
@@ -250,10 +258,10 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
                 onBackPressed();
                 break;
             case R.id.attachmentButton:
-
+                ChatActivityPermissionsDispatcher.onPickDocWithCheck(ChatActivity.this);
                 break;
             case R.id.cameraButton:
-
+                ChatActivityPermissionsDispatcher.onPickPhotoWithCheck(ChatActivity.this);
                 break;
             case R.id.recorderOrSendButton:
                 if (isSend) {
@@ -300,6 +308,57 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
         }
     }
 
+    // File Selecting
+
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    public void onPickPhoto() {
+        FilePickerBuilder.getInstance().setMaxCount(MAX_ATTACHMENT_COUNT)
+                .setSelectedFiles(new ArrayList<String>())
+                .setActivityTheme(R.style.AppTheme)
+                .enableVideoPicker(false)
+                .enableCameraSupport(true)
+                .showGifs(false)
+                .showFolderView(true)
+                .enableOrientation(true)
+                .pickPhoto(this);
+    }
+
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    public void onPickDoc() {
+        String[] documents = {".doc", ".docx", ".odt", ".pdf", ".xls", ".xlsx", ".ods", ".ppt", ".pptx"};
+        FilePickerBuilder.getInstance().setMaxCount(MAX_ATTACHMENT_COUNT)
+                .setSelectedFiles(new ArrayList<String>())
+                .setActivityTheme(R.style.AppTheme)
+                .addFileSupport(documents)
+                .enableDocSupport(false)
+                .enableOrientation(true)
+                .pickFile(this);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        ChatActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
+                if (!data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA).isEmpty()) {
+
+                }
+            } else if (requestCode == FilePickerConst.REQUEST_CODE_DOC) {
+                if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS).isEmpty()) {
+
+                }
+            }
+        }
+    }
+
+    // End File Selecting
 
     boolean mBounded;
     MQTTService mqttService;

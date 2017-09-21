@@ -22,7 +22,7 @@ public class ChatHistory implements Parcelable {
     private String sender;
     @SerializedName("msg")
     @Expose
-    private String msg;
+    private String msg = "";
     @SerializedName("msgTime")
     @Expose
     private String msgTime;
@@ -43,7 +43,7 @@ public class ChatHistory implements Parcelable {
     private int paidStatus;
     @SerializedName("imageUrl")
     @Expose
-    private String imageUrl;
+    private String imageUrl = "";
     @SerializedName("address")
     @Expose
     private String address;

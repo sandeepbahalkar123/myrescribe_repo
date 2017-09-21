@@ -1,23 +1,23 @@
 package com.rescribe.ui.activities.book_appointment;
 
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
-
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
@@ -38,8 +38,14 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     CustomTextView title;
     @BindView(R.id.locationTextView)
     CustomTextView locationTextView;
+    @BindView(R.id.nav_view)
+    FrameLayout mNavView;
 
     Intent intent;
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+
     private RecentVisitDoctorFragment mChangeColorFragment;
     private DoctorDataHelper mDoctorDataHelper;
     private Fragment currentlyLoadedFragment; //TODO, fragmentById is not working hence hold this object.
@@ -59,6 +65,33 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             locationTextView.setText(intent.getStringExtra(getString(R.string.title)));
         }
 
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                //Called when a drawer's position changes.
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                //Called when a drawer has settled in a completely open state.
+                //The drawer is interactive at this point.
+                // If you have 2 drawers (left and right) you can distinguish
+                // them by using id of the drawerView. int id = drawerView.getId();
+                // id will be your layout's id: for example R.id.left_drawer
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                // Called when a drawer has settled in a completely closed state.
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
+            }
+        });
 
         loadFragment(RecentVisitDoctorFragment.newInstance(new Bundle()));
         //------
@@ -66,6 +99,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.nav_view, DrawerForFilterDoctorBookAppointment.newInstance());
         fragmentTransaction.commit();
+
         //------
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetDoctorData();
@@ -143,4 +177,5 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             this.currentlyLoadedFragment = fragmentToLoad;
         }
     }
+
 }

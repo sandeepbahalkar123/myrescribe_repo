@@ -267,5 +267,15 @@
     <string name="token_no_available">Token No. %d available</string>
     <string name="open_today"><u>Open Today</u></string>
     <string name="all_timings">All Timings</string>
+    <string name="distance">Distance</string>
+
     <!-- Error string -->
+    <string name="weekday_sun">Sunday</string>
+    <string name="weekday_mon">Monday</string>
+    <string name="weekday_tues">Tuesday</string>
+    <string name="weekday_wed">Wednesday</string>
+    <string name="weekday_thurs">Thursday</string>
+    <string name="weekday_fri">Friday</string>
+    <string name="weekday_sat">Saturday</string>
+
 </resources>

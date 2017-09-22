@@ -53,6 +53,11 @@ public class MQTTMessage implements Parcelable {
 
     // Added End
 
+    // For File
+    @SerializedName("isFile")
+    @Expose
+    private boolean isFile;
+
     public final static Creator<MQTTMessage> CREATOR = new Creator<MQTTMessage>() {
 
         @SuppressWarnings({
@@ -75,6 +80,8 @@ public class MQTTMessage implements Parcelable {
             instance.onlineStatus = ((String) in.readValue((String.class.getClassLoader())));
             instance.imageUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.address = ((String) in.readValue((String.class.getClassLoader())));
+
+            instance.isFile = ((boolean) in.readValue((boolean.class.getClassLoader())));
 
             return instance;
         }
@@ -189,6 +196,18 @@ public class MQTTMessage implements Parcelable {
         this.name = name;
     }
 
+    public void setPaidStatus(int paidStatus) {
+        this.paidStatus = paidStatus;
+    }
+
+    public boolean isFile() {
+        return isFile;
+    }
+
+    public void setFile(boolean file) {
+        isFile = file;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(msgId);
         dest.writeValue(topic);
@@ -204,6 +223,8 @@ public class MQTTMessage implements Parcelable {
         dest.writeValue(onlineStatus);
         dest.writeValue(imageUrl);
         dest.writeValue(address);
+
+        dest.writeValue(isFile);
     }
 
     public int describeContents() {

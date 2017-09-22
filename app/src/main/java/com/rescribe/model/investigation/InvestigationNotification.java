@@ -12,7 +12,7 @@ public class InvestigationNotification implements Parcelable
 
 @SerializedName("notifications")
 @Expose
-private ArrayList<InvestigationData> notifications = null;
+private ArrayList<InvestigationData> notifications = new ArrayList<>();
 public final static Parcelable.Creator<InvestigationNotification> CREATOR = new Creator<InvestigationNotification>() {
 
 

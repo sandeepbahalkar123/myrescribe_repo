@@ -744,5 +744,9 @@ public class CommonMethods {
             }
         }
     }
+
+    public static String getExtension(String filePath) {
+        return filePath.substring(filePath.lastIndexOf(".") + 1);
+    }
 }
 

@@ -22,6 +22,8 @@ import com.bumptech.glide.request.target.Target;
 import com.rescribe.R;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.services.MQTTService;
+import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 
@@ -30,17 +32,12 @@ import butterknife.ButterKnife;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder> {
 
-    private final RequestOptions requestOptions;
     private TextDrawable mReceiverTextDrawable;
     private ArrayList<MQTTMessage> mqttMessages;
 
     public ChatAdapter(ArrayList<MQTTMessage> mqttMessages, TextDrawable mReceiverTextDrawable) {
         this.mqttMessages = mqttMessages;
         this.mReceiverTextDrawable = mReceiverTextDrawable;
-        requestOptions = new RequestOptions();
-        requestOptions.dontAnimate();
-        requestOptions.override(300, 300);
-        requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
     }
 
     @Override
@@ -58,78 +55,146 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         if (mqttMessages.get(position).getSender().equals(MQTTService.PATIENT)) {
             holder.receiverLayout.setVisibility(View.GONE);
             holder.senderLayout.setVisibility(View.VISIBLE);
-            holder.senderMessage.setText(message.getMsg());
 
             if (message.getImageUrl().isEmpty()) {
-                holder.isSenderPhoto.setVisibility(View.GONE);
+                holder.senderMessage.setText(message.getMsg());
+                holder.senderPhotoLayout.setVisibility(View.GONE);
+                holder.senderFileLayout.setVisibility(View.GONE);
                 holder.senderMessage.setVisibility(View.VISIBLE);
             } else {
+
                 holder.senderMessage.setVisibility(View.GONE);
-                holder.isSenderPhoto.setVisibility(View.VISIBLE);
 
-                holder.senderProgressBar.setVisibility(View.VISIBLE);
-                Glide.with(holder.senderPhotoThumb.getContext())
-                        .load(message.getImageUrl())
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                holder.senderProgressBar.setVisibility(View.GONE);
-                                return false;
-                            }
+                if (message.isFile()) {
+                    holder.senderFileLayout.setVisibility(View.VISIBLE);
+                    holder.senderPhotoLayout.setVisibility(View.GONE);
+                    String extension = CommonMethods.getExtension(message.getImageUrl());
 
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                holder.senderProgressBar.setVisibility(View.GONE);
-                                return false;
-                            }
-                        })
-                        .apply(requestOptions).thumbnail(0.5f)
-                        .into(holder.senderPhotoThumb);
+                    int fontSize = 26;
+                    if (extension.length() > 3 && extension.length() < 5)
+                        fontSize = 20;
+                    else if (extension.length() > 4)
+                        fontSize = 16;
 
-                if (message.getMsg().isEmpty())
-                    holder.senderMessageWithImage.setVisibility(View.GONE);
-                else {
-                    holder.senderMessageWithImage.setVisibility(View.VISIBLE);
-                    holder.senderMessageWithImage.setText(message.getMsg());
+                    holder.senderFileExtension.setText(extension);
+                    TextDrawable fileTextDrawable = TextDrawable.builder()
+                            .beginConfig()
+                            .width(Math.round(holder.senderFileIcon.getResources().getDimension(R.dimen.dp34)))  // width in px
+                            .height(Math.round(holder.senderFileIcon.getResources().getDimension(R.dimen.dp34))) // height in px
+                            .bold()
+                            .fontSize(fontSize)
+                            .toUpperCase()
+                            .endConfig()
+                            .buildRoundRect(extension, holder.senderFileIcon.getResources().getColor(R.color.grey_500), CommonMethods.convertDpToPixel(2));
+                    holder.senderFileIcon.setImageDrawable(fileTextDrawable);
+
+                } else {
+
+                    holder.senderPhotoLayout.setVisibility(View.VISIBLE);
+
+                    holder.senderProgressBar.setVisibility(View.VISIBLE);
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions.dontAnimate();
+                    requestOptions.override(300, 300);
+                    requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+                    Glide.with(holder.senderPhotoThumb.getContext())
+                            .load(message.getImageUrl())
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    holder.senderProgressBar.setVisibility(View.GONE);
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    holder.senderProgressBar.setVisibility(View.GONE);
+                                    return false;
+                                }
+                            })
+                            .apply(requestOptions).thumbnail(0.5f)
+                            .into(holder.senderPhotoThumb);
+
+                    if (message.getMsg().isEmpty())
+                        holder.senderMessageWithImage.setVisibility(View.GONE);
+                    else {
+                        holder.senderMessageWithImage.setVisibility(View.VISIBLE);
+                        holder.senderMessageWithImage.setText(message.getMsg());
+                    }
                 }
             }
 
         } else {
             holder.receiverLayout.setVisibility(View.VISIBLE);
             holder.senderLayout.setVisibility(View.GONE);
-            holder.receiverMessage.setText(message.getMsg());
 
             if (message.getImageUrl().isEmpty()) {
-                holder.isReceiverPhoto.setVisibility(View.GONE);
+                holder.receiverMessage.setText(message.getMsg());
+                holder.receiverPhotoLayout.setVisibility(View.GONE);
+                holder.receiverFileLayout.setVisibility(View.GONE);
                 holder.receiverMessage.setVisibility(View.VISIBLE);
             } else {
-                holder.isReceiverPhoto.setVisibility(View.VISIBLE);
+
                 holder.receiverMessage.setVisibility(View.GONE);
 
-                holder.receiverProgressBar.setVisibility(View.VISIBLE);
-                Glide.with(holder.receiverPhotoThumb.getContext())
-                        .load(message.getImageUrl())
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                holder.receiverProgressBar.setVisibility(View.GONE);
-                                return false;
-                            }
+                if (message.isFile()) {
+                    holder.receiverFileLayout.setVisibility(View.VISIBLE);
+                    holder.receiverPhotoLayout.setVisibility(View.GONE);
 
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                holder.receiverProgressBar.setVisibility(View.GONE);
-                                return false;
-                            }
-                        })
-                        .apply(requestOptions).thumbnail(0.1f)
-                        .into(holder.receiverPhotoThumb);
+                    String extension = CommonMethods.getExtension(message.getImageUrl());
 
-                if (message.getMsg().isEmpty())
-                    holder.receiverMessageWithImage.setVisibility(View.GONE);
-                else {
-                    holder.receiverMessageWithImage.setVisibility(View.VISIBLE);
-                    holder.receiverMessageWithImage.setText(message.getMsg());
+                    int fontSize = 26;
+                    if (extension.length() > 3 && extension.length() < 5)
+                        fontSize = 20;
+                    else if (extension.length() > 4)
+                        fontSize = 16;
+
+                    holder.receiverFileExtension.setText(extension);
+                    TextDrawable fileTextDrawable = TextDrawable.builder()
+                            .beginConfig()
+                            .width(Math.round(holder.senderFileIcon.getResources().getDimension(R.dimen.dp34)))  // width in px
+                            .height(Math.round(holder.senderFileIcon.getResources().getDimension(R.dimen.dp34))) // height in px
+                            .bold()
+                            .fontSize(fontSize)
+                            .toUpperCase()
+                            .endConfig()
+                            .buildRoundRect(CommonMethods.getExtension(message.getImageUrl()), holder.senderFileIcon.getResources().getColor(R.color.grey_500), CommonMethods.convertDpToPixel(3));
+
+                    holder.receiverFileIcon.setImageDrawable(fileTextDrawable);
+
+                } else {
+
+                    holder.receiverPhotoLayout.setVisibility(View.VISIBLE);
+
+                    holder.receiverProgressBar.setVisibility(View.VISIBLE);
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions.dontAnimate();
+                    requestOptions.override(300, 300);
+                    requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+                    Glide.with(holder.receiverPhotoThumb.getContext())
+                            .load(message.getImageUrl())
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    holder.receiverProgressBar.setVisibility(View.GONE);
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    holder.receiverProgressBar.setVisibility(View.GONE);
+                                    return false;
+                                }
+                            })
+                            .apply(requestOptions).thumbnail(0.1f)
+                            .into(holder.receiverPhotoThumb);
+
+                    if (message.getMsg().isEmpty())
+                        holder.receiverMessageWithImage.setVisibility(View.GONE);
+                    else {
+                        holder.receiverMessageWithImage.setVisibility(View.VISIBLE);
+                        holder.receiverMessageWithImage.setText(message.getMsg());
+                    }
                 }
             }
         }
@@ -158,10 +223,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         @BindView(R.id.receiverLayout)
         RelativeLayout receiverLayout;
 
+        // Photo
+
         @BindView(R.id.senderPhotoThumb)
         ImageView senderPhotoThumb;
-        @BindView(R.id.isSenderPhoto)
-        CardView isSenderPhoto;
+        @BindView(R.id.senderPhotoLayout)
+        CardView senderPhotoLayout;
         @BindView(R.id.senderMessageWithImage)
         TextView senderMessageWithImage;
         @BindView(R.id.senderProgressBar)
@@ -169,12 +236,32 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
         @BindView(R.id.receiverPhotoThumb)
         ImageView receiverPhotoThumb;
-        @BindView(R.id.isReceiverPhoto)
-        CardView isReceiverPhoto;
+        @BindView(R.id.receiverPhotoLayout)
+        CardView receiverPhotoLayout;
         @BindView(R.id.receiverMessageWithImage)
         TextView receiverMessageWithImage;
         @BindView(R.id.receiverProgressBar)
         ProgressBar receiverProgressBar;
+
+        // File
+
+        @BindView(R.id.senderFileIcon)
+        ImageView senderFileIcon;
+        @BindView(R.id.senderFileExtension)
+        CustomTextView senderFileExtension;
+        @BindView(R.id.senderFileProgressBar)
+        ProgressBar senderFileProgressBar;
+        @BindView(R.id.senderFileLayout)
+        RelativeLayout senderFileLayout;
+
+        @BindView(R.id.receiverFileIcon)
+        ImageView receiverFileIcon;
+        @BindView(R.id.receiverFileExtension)
+        CustomTextView receiverFileExtension;
+        @BindView(R.id.receiverFileProgressBar)
+        ProgressBar receiverFileProgressBar;
+        @BindView(R.id.receiverFileLayout)
+        RelativeLayout receiverFileLayout;
 
         ListViewHolder(View view) {
             super(view);

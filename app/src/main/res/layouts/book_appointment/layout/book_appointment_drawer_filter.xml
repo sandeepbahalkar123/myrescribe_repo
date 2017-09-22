@@ -180,15 +180,43 @@
                     android:paddingTop="@dimen/dp20"
                     android:visibility="visible">
 
-                    <SeekBar
-                        android:id="@+id/clinicFeesSeekBar"
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        style="@style/drawer_filter_header_layout"
+                        android:gravity="center"
+                        android:text="@string/price_range"
+                        app:customFont="@string/roboto_medium" />
+
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:max="100"
-                        android:progress="0"
-                        android:progressDrawable="@layout/seekbar_style"
-                        android:splitTrack="false"
-                        android:thumb="@drawable/short_rounded_rectangle" />
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/dp10">
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/clinicFeesSeekBarMinValue"
+                            style="@style/drawer_filter_header_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:text="250"
+                            android:textColor="@color/black"
+                            app:customFont="@string/roboto_bold" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/clinicFeesSeekBarMaxValue"
+                            style="@style/drawer_filter_header_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="2500"
+                            android:textColor="@color/black"
+                            app:customFont="@string/roboto_bold" />
+                    </RelativeLayout>
+
+                    <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                        android:id="@+id/clinicFeesSeekBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp40"
+                        android:minHeight="@dimen/dp40"
+                        app:max_value="100" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -227,9 +255,27 @@
                     android:background="@color/otp_background_layout"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingBottom="@dimen/dp20"
-                    android:paddingTop="@dimen/dp20"
+                    android:padding="@dimen/dp10"
                     android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/seekBarValueIndicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/walk" />
+
+                    </LinearLayout>
 
                     <SeekBar
                         android:id="@+id/distanceSeekBar"
@@ -237,6 +283,26 @@
                         android:layout_height="wrap_content"
                         android:max="100"
                         android:thumb="@drawable/walk" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:text="0" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="100" />
+                    </RelativeLayout>
+
+
                 </LinearLayout>
             </LinearLayout>
 

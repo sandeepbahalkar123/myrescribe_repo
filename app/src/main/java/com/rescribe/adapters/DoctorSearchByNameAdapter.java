@@ -1,8 +1,8 @@
 package com.rescribe.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -19,15 +19,13 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
-import com.rescribe.model.doctor_connect.ConnectList;
+import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.ChatActivity;
+import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,8 +37,8 @@ import butterknife.ButterKnife;
 public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearchByNameAdapter.ListViewHolder> implements Filterable {
     private ColorGenerator mColorGenerator;
     private Context mContext;
-    private ArrayList<ConnectList> appointmentsList;
-    private ArrayList<ConnectList> mArrayList;
+    private ArrayList<ChatDoctor> appointmentsList;
+    private ArrayList<ChatDoctor> mArrayList;
     String searchString = "";
     private String mIdle, mOnline, mOffline;
 
@@ -67,7 +65,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
     }
 
 
-    public DoctorSearchByNameAdapter(Context mContext, ArrayList<ConnectList> appointmentsList) {
+    public DoctorSearchByNameAdapter(Context mContext, ArrayList<ChatDoctor> appointmentsList) {
         this.appointmentsList = appointmentsList;
         mArrayList = appointmentsList;
         this.mContext = mContext;
@@ -87,22 +85,22 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
 
     @Override
     public void onBindViewHolder(final DoctorSearchByNameAdapter.ListViewHolder holder, int position) {
-        final ConnectList connectList = appointmentsList.get(position);
-        holder.doctorType.setText(connectList.getSpecialization());
+        final ChatDoctor chatDoctor = appointmentsList.get(position);
+        holder.doctorType.setText(chatDoctor.getSpecialization());
         //-----------
-        if (connectList.getOnlineStatus().equalsIgnoreCase(mOnline)) {
+        if (chatDoctor.getOnlineStatus().equalsIgnoreCase(mOnline)) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.green_light));
-        } else if (connectList.getOnlineStatus().equalsIgnoreCase(mIdle)) {
+        } else if (chatDoctor.getOnlineStatus().equalsIgnoreCase(mIdle)) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
-        } else if (connectList.getOnlineStatus().equalsIgnoreCase(mOffline)) {
+        } else if (chatDoctor.getOnlineStatus().equalsIgnoreCase(mOffline)) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.grey_500));
         } else {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
         }
         //-----------
-        holder.onlineStatusTextView.setText(connectList.getOnlineStatus());
-        holder.paidStatusTextView.setText(connectList.getPaidStatus());
-        String doctorName = connectList.getDoctorName();
+        holder.onlineStatusTextView.setText(chatDoctor.getOnlineStatus());
+        holder.paidStatusTextView.setText(chatDoctor.getPaidStatus() == DoctorConnectActivity.PAID ? "Rs 255/-" : "FREE");
+        String doctorName = chatDoctor.getDoctorName();
         // Removed Dr. from doctor name to get starting letter of doctorName to set to image icon.
         doctorName = doctorName.replace("Dr. ", "");
         if (doctorName != null) {
@@ -119,7 +117,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         SpannableString spannableStringSearch = null;
         if ((searchString != null) && (!searchString.isEmpty())) {
 
-            spannableStringSearch = new SpannableString(connectList.getDoctorName());
+            spannableStringSearch = new SpannableString(chatDoctor.getDoctorName());
 
             spannableStringSearch.setSpan(new ForegroundColorSpan(
                             ContextCompat.getColor(mContext, R.color.tagColor)),
@@ -130,7 +128,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         if (spannableStringSearch != null) {
             holder.doctorName.setText(spannableStringSearch);
         } else {
-            holder.doctorName.setText(connectList.getDoctorName());
+            holder.doctorName.setText(chatDoctor.getDoctorName());
         }
 
         holder.view.setOnClickListener(new View.OnClickListener() {
@@ -138,9 +136,9 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ChatActivity.class);
 
-                intent.putExtra(RescribeConstants.DOCTORS_INFO, connectList);
+                intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
                 intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
-                mContext.startActivity(intent);
+                ((DoctorConnectActivity) mContext).startActivityForResult(intent, 1111);
             }
         });
 
@@ -166,9 +164,9 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
                     appointmentsList = mArrayList;
                 } else {
 
-                    ArrayList<ConnectList> filteredList = new ArrayList<>();
+                    ArrayList<ChatDoctor> filteredList = new ArrayList<>();
 
-                    for (ConnectList doctorConnectModel : mArrayList) {
+                    for (ChatDoctor doctorConnectModel : mArrayList) {
 
                         if (doctorConnectModel.getDoctorName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase())) {
 
@@ -186,7 +184,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                appointmentsList = (ArrayList<ConnectList>) filterResults.values;
+                appointmentsList = (ArrayList<ChatDoctor>) filterResults.values;
                 notifyDataSetChanged();
             }
         };

@@ -52,6 +52,19 @@ public class CommonMethods {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
     }
 
+    // 1ˢᵗ, 2ⁿᵈ, 3ʳᵈ, 4ᵗʰ
+    public static String ordinal(int i) {
+        String[] sufixes = new String[] { "ᵗʰ", "ˢᵗ", "ⁿᵈ", "ʳᵈ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ" };
+        switch (i % 100) {
+            case 11:
+            case 12:
+            case 13:
+                return i + "ᵗʰ";
+            default:
+                return i + sufixes[i % 10];
+
+        }
+    }
 
     public static int getDocumentIconByExtension(String extension) {
         if (extension.contains(".doc") || extension.contains(".odt")) {

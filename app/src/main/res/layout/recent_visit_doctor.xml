@@ -5,26 +5,80 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/searchBarLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/tagColor"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="150dp" />
-
-        <com.rescribe.ui.customesViews.CircleIndicator
-            android:id="@+id/circleIndicator"
+        <com.rescribe.ui.customesViews.EditTextWithDeleteButton
+            android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/dp4"
-            app:ci_animator="@anim/indicator_no_animator"
-            app:ci_drawable="@drawable/white_radius"
-            app:ci_drawable_unselected="@drawable/black_radius" />
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/search"
+            android:drawablePadding="@dimen/dp4"
+            android:focusable="false"
+            android:gravity="center"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp16"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            app:deleteButtonRes="@drawable/close"
+            app:hintText="@string/search" />
 
-    </FrameLayout>
+        <!--  <TextView
+              android:id="@+id/whiteUnderLine"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dp1"
+              android:background="@color/white" />-->
 
-    <include layout="@layout/book_appointment_recyclerview" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/showDoctorsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pickSpeciality"
+        android:layout_marginTop="@dimen/dp16"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/recentDoctorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
+
+            <com.rescribe.ui.customesViews.CircleIndicator
+                android:id="@+id/circleIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="@dimen/dp4"
+                app:ci_animator="@anim/indicator_no_animator"
+                app:ci_drawable="@drawable/white_radius"
+                app:ci_drawable_unselected="@drawable/black_radius" />
+
+        </FrameLayout>
+
+        <include layout="@layout/book_appointment_recyclerview" />
+
+    </LinearLayout>
 </LinearLayout>

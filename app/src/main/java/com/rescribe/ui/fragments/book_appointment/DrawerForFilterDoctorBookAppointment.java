@@ -4,12 +4,15 @@ package com.rescribe.ui.fragments.book_appointment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
+import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 import com.rescribe.R;
 import com.rescribe.ui.customesViews.CustomTextView;
 
@@ -45,8 +50,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
     LinearLayout mGenderContentView;
     @BindView(R.id.clinicFeesHeaderView)
     LinearLayout mClinicFeesHeaderView;
-    @BindView(R.id.clinicFeesSeekBar)
-    SeekBar mClinicFeesSeekBar;
+
     @BindView(R.id.clinicFeesContentView)
     LinearLayout mClinicFeesContentView;
     @BindView(R.id.availabilityHeaderView)
@@ -75,6 +79,8 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
     LinearLayout distanceHeaderView;
     @BindView(R.id.distanceSeekBar)
     SeekBar distanceSeekBar;
+    @BindView(R.id.seekBarValueIndicator)
+    TextView seekBarValueIndicator;
     @BindView(R.id.distanceContentView)
     LinearLayout distanceContentView;
     @BindView(R.id.availSunday)
@@ -91,6 +97,11 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
     CustomTextView mAvailFri;
     @BindView(R.id.availSat)
     CustomTextView mAvailSat;
+
+    //-----
+    @BindView(R.id.clinicFeesSeekBar)
+    CrystalRangeSeekbar mClinicFeesSeekBar;
+
     private OnDrawerInteractionListener mListener;
     private View mThumbView;
 
@@ -128,6 +139,8 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
     }
 
     private void initialize() {
+
+        setRangeSeekbar6();
         mSelectedDays = new HashMap<>();
         //---------
         mSelectedDays.put(getString(R.string.weekday_sun), false);
@@ -141,7 +154,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
 
         mThumbView = LayoutInflater.from(getActivity()).inflate(R.layout.seekbar_progress_thumb_layout, null, false);
 
-        mClinicFeesSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        /*mClinicFeesSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 seekBar.setThumb(getThumb(i));
@@ -156,7 +169,38 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
+        });*/
+        distanceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                Rect tr = distanceSeekBar.getThumb().getBounds();
+
+                seekBarValueIndicator.setX(tr.exactCenterX());
+                seekBarValueIndicator.setText("" + i);
+                if (i == distanceSeekBar.getMax()) {
+                    seekBarValueIndicator.setGravity(Gravity.LEFT);
+                } else {
+                    seekBarValueIndicator.setGravity(Gravity.CENTER);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
         });
+
+        int intrinsicWidth = distanceSeekBar.getThumb().getIntrinsicWidth();
+        ViewGroup.LayoutParams layoutParams = seekBarValueIndicator.getLayoutParams();
+        layoutParams.width = intrinsicWidth;
+        seekBarValueIndicator.setText(distanceSeekBar.getProgress() + "");
+        seekBarValueIndicator.setLayoutParams(layoutParams);
+        seekBarValueIndicator.setGravity(Gravity.CENTER);
     }
 
 
@@ -181,6 +225,31 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+
+    private void setRangeSeekbar6() {
+        // set properties
+        mClinicFeesSeekBar
+                .setCornerRadius(10f)
+                .setBarColor(ContextCompat.getColor(getActivity(), R.color.seek_bar_default))
+                .setBarHighlightColor(ContextCompat.getColor(getActivity(), R.color.seek_bar_progress))
+                .setMinValue(400)
+                .setMaxValue(800)
+                .setLeftThumbDrawable(R.drawable.short_rounded_rectangle)
+                .setLeftThumbHighlightDrawable(R.drawable.short_rounded_rectangle)
+                .setRightThumbDrawable(R.drawable.short_rounded_rectangle)
+                .setRightThumbHighlightDrawable(R.drawable.short_rounded_rectangle)
+                .setDataType(CrystalRangeSeekbar.DataType.INTEGER)
+                .apply();
+
+        // set listener
+        // set listener
+        mClinicFeesSeekBar.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
+            @Override
+            public void valueChanged(Number minValue, Number maxValue) {
+             }
+        });
     }
 
     public interface OnDrawerInteractionListener {

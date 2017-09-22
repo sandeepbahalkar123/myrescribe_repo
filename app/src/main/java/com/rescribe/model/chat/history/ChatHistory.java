@@ -26,6 +26,30 @@ public class ChatHistory implements Parcelable {
     @SerializedName("msgTime")
     @Expose
     private String msgTime;
+
+    // Added
+
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("speciality")
+    @Expose
+    private String specialization;
+    @SerializedName("onlineStatus")
+    @Expose
+    private String onlineStatus;
+    @SerializedName("paidStatus")
+    @Expose
+    private int paidStatus;
+    @SerializedName("imageUrl")
+    @Expose
+    private String imageUrl;
+    @SerializedName("address")
+    @Expose
+    private String address;
+
+    // Added End
+
     public final static Parcelable.Creator<ChatHistory> CREATOR = new Creator<ChatHistory>() {
 
 
@@ -40,6 +64,15 @@ public class ChatHistory implements Parcelable {
             instance.sender = ((String) in.readValue((String.class.getClassLoader())));
             instance.msg = ((String) in.readValue((String.class.getClassLoader())));
             instance.msgTime = ((String) in.readValue((String.class.getClassLoader())));
+
+            instance.paidStatus = ((int) in.readValue((int.class.getClassLoader())));
+
+            instance.name = ((String) in.readValue((String.class.getClassLoader())));
+            instance.specialization = ((String) in.readValue((String.class.getClassLoader())));
+            instance.onlineStatus = ((String) in.readValue((String.class.getClassLoader())));
+            instance.imageUrl = ((String) in.readValue((String.class.getClassLoader())));
+            instance.address = ((String) in.readValue((String.class.getClassLoader())));
+
             return instance;
         }
 
@@ -97,6 +130,58 @@ public class ChatHistory implements Parcelable {
         this.msgTime = msgTime;
     }
 
+    // Added
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public String getOnlineStatus() {
+        return onlineStatus;
+    }
+
+    public void setOnlineStatus(String onlineStatus) {
+        this.onlineStatus = onlineStatus;
+    }
+
+    public int getPaidStatus() {
+        return paidStatus;
+    }
+
+    public void setPaidStatus(int paidStatus) {
+        this.paidStatus = paidStatus;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // End Added
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(chatId);
         dest.writeValue(user1Id);
@@ -104,6 +189,13 @@ public class ChatHistory implements Parcelable {
         dest.writeValue(sender);
         dest.writeValue(msg);
         dest.writeValue(msgTime);
+
+        dest.writeValue(paidStatus);
+        dest.writeValue(name);
+        dest.writeValue(specialization);
+        dest.writeValue(onlineStatus);
+        dest.writeValue(imageUrl);
+        dest.writeValue(address);
     }
 
     public int describeContents() {

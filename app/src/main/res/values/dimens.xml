@@ -37,4 +37,11 @@
     <dimen name="sp17">17sp</dimen>
     <dimen name="dp48">48dp</dimen>
     <dimen name="dp120">120dp</dimen>
+    <dimen name="sp36">36sp</dimen>
+    <dimen name="sp34">34sp</dimen>
+    <dimen name="dp44">44dp</dimen>
+    <dimen name="dp46">46dp</dimen>
+    <dimen name="dp34">34dp</dimen>
+    <dimen name="dp18">18dp</dimen>
+
 </resources>

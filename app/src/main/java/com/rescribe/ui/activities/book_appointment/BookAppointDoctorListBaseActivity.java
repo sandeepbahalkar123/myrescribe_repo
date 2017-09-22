@@ -9,7 +9,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
 import android.view.ViewGroup;
+
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -38,13 +40,14 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     CustomTextView title;
     @BindView(R.id.locationTextView)
     CustomTextView locationTextView;
+
     @BindView(R.id.nav_view)
     FrameLayout mNavView;
 
-    Intent intent;
-
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+
+    Intent intent;
 
     private RecentVisitDoctorFragment mChangeColorFragment;
     private DoctorDataHelper mDoctorDataHelper;
@@ -64,6 +67,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         if (getIntent() != null) {
             locationTextView.setText(intent.getStringExtra(getString(R.string.title)));
         }
+
 
         mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
 
@@ -93,7 +97,8 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             }
         });
 
-        loadFragment(RecentVisitDoctorFragment.newInstance(new Bundle()));
+
+        loadFragment(RecentVisitDoctorFragment.newInstance(new Bundle()), false);
         //------
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
@@ -143,7 +148,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     @Override
     public void onApply() {
-
+        mDrawerLayout.closeDrawers();
     }
 
     @Override
@@ -168,14 +173,22 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         }
     }
 
-    public void loadFragment(Fragment fragmentToLoad) {
+    public void loadFragment(Fragment fragmentToLoad, boolean requiredDrawer) {
         if (fragmentToLoad != null) {
             FragmentManager supportFragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.viewContainer, fragmentToLoad);
             fragmentTransaction.commit();
             this.currentlyLoadedFragment = fragmentToLoad;
+            doOperationOnDrawer(requiredDrawer);
         }
     }
 
+    public void doOperationOnDrawer(boolean flag) {
+        if (flag) { // for open
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        } else {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
+    }
 }

@@ -171,7 +171,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:paddingTop="@dimen/dp6"
-                android:src="@drawable/fav" />
+                android:src="@drawable/fav_red" />
 
             <LinearLayout
                 android:layout_width="match_parent"

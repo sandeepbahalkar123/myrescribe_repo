@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorAccent"
+    android:background="@drawable/group_4_copy"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp10"
 
         android:orientation="horizontal">
         <!--  ListRow Left sied Thumbnail image -->
@@ -35,6 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp6"
             android:layout_toRightOf="@+id/thumbnail"
             android:layout_weight="1"
             android:gravity="center|left"
@@ -42,28 +44,41 @@
 
             <!-- Title Of Song-->
             <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/doctorType"
+                android:id="@+id/doctorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/thumbnail"
                 android:layout_marginTop="1dip"
-                android:text="Cardilogist"
+
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp16"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:customFont="@string/roboto_bold" />
 
             <!-- Artist Name -->
             <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/doctorName"
+                android:id="@+id/doctorType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/doctorType"
                 android:layout_toRightOf="@+id/thumbnail"
-                android:text="Dr. Sandeep Patil"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp18"
+                android:textColor="@color/grey_light"
+                android:textSize="@dimen/sp12"
                 android:textStyle="bold"
-                android:typeface="sans" />
+                android:typeface="sans"
+                app:customFont="@string/roboto_medium" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/doctorExperience"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/doctorType"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:textColor="@color/grey_light"
+                android:textSize="@dimen/sp12"
+                android:textStyle="bold"
+                android:typeface="sans"
+                app:customFont="@string/roboto_medium" />
 
             <!-- Rightend Duration -->
             <com.rescribe.ui.customesViews.CustomTextView
@@ -73,10 +88,10 @@
                 android:layout_below="@id/doctorName"
                 android:layout_toRightOf="@+id/thumbnail"
                 android:gravity="right"
-                android:text="10th July, Aundh, Pune"
-                android:textColor="@color/white"
+                android:textColor="@color/grey_light"
                 android:textSize="@dimen/sp12"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:customFont="@string/roboto_medium" />
         </LinearLayout>
 
         <LinearLayout
@@ -86,13 +101,13 @@
             android:orientation="vertical">
 
             <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/appointmentsTimeStamp"
+                android:id="@+id/doctorFees"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/dp16"
-                android:text="6:30 pm"
                 android:textAllCaps="false"
-                android:textColor="@color/dose_completed"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp16"
                 app:customFont="@string/roboto_bold" />
 
 
@@ -100,47 +115,72 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp4"
-            android:layout_marginTop="@dimen/dp16"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:text="@string/recently_visit_doctor"
-            android:textColor="@color/white" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <ImageView
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:layout_marginBottom="@dimen/dp4"
+                android:layout_marginLeft="@dimen/dp4"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="@dimen/dp4"
+                    android:layout_marginTop="@dimen/dp16"
+                    android:src="@drawable/fav" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp16"
+                    android:background="@drawable/rounded_rectangle_2"
+                    android:gravity="center"
+                    android:text="@string/recently_visit_doctor"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    app:customFont="@string/roboto_medium" />
+            </LinearLayout>
+
+        <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:layout_marginLeft="@dimen/dp4"
-                android:layout_marginRight="@dimen/dp16"
-                android:layout_marginTop="@dimen/dp16"
-                android:text="2.1 Km"
-                android:textColor="@color/white" />
+            android:layout_marginLeft="@dimen/dp4"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:layout_marginLeft="@dimen/dp4"
-                android:layout_marginRight="@dimen/dp16"
-                android:layout_marginTop="@dimen/dp16"
-                android:text="2.1 Km"
-                android:textColor="@color/white" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp30"
+                    android:src="@drawable/location_1" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|right"
+                    android:gravity="center"
+                    android:id="@+id/kilometers"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    app:customFont="@string/roboto_regular" />
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

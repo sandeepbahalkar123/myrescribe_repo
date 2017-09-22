@@ -144,10 +144,7 @@
     <string name="and_sign"><![CDATA[&]]></string>
     <string name="systolic_pressure">Systolic BP</string>
     <string name="diastolic_pressure">Diastolic BP</string>
-
-
     <!--//*** Google Map key-->
-
     <string name="times">times</string>
     <string name="days">days</string>
     <string name="space">\u0020</string>
@@ -155,7 +152,6 @@
     <string name="your_health">Your Own Healthcare Repository</string>
     <string name="using_otp">Using OTP</string>
     <!-- <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>-->
-
     <string name="no_investigation">Investigation not available</string>
     <string name="bill_invoices">Bill Invoices</string>
     <string name="case_encounter">Case Encounter</string>
@@ -173,16 +169,13 @@
     <!-- <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>-->
     <!--Key for Release-->
     <string name="google_maps_key">AIzaSyCO8J2ASZDrJ4ARM1VVnZV7e5EQGryfeEE</string>
-
     <!--Key for Debug-->
-
     <!-- <string name="google_maps_key">AIzaSyBtI5h1jCRJZFXQowkuglxMtNYPURtHX5M</string>-->
     <string name="profile_exists">User\'s profile is already exist!!</string>
     <string name="enter_otp_no">Enter otp received on your mobile no.</string>
     <string name="address_not_found">Address not Found</string>
     <string name="login_with_gmail">Login with gmail</string>
     <string name="login_with_facebook">Login with facebook</string>
-
     <!--sandeep sir account credentials-->
     <string name="facebook_app_id">1351340758298095</string>
     <string name="fb_login_protocol_scheme">fb1351340758298095</string>
@@ -192,7 +185,6 @@
     <string name="gallery">Gallery</string>
     <string name="files">Files</string>
     <string name="doctor_image">Doctor Image</string>
-
     <string name="doctor_connect">Doctor Connect</string>
     <string name="chats">Chats</string>
     <string name="connect">Connect</string>
@@ -220,10 +212,7 @@
     <string name="nephrologist">nephrologist</string>
     <string name="surgeon">surgeon</string>
     <string name="endocrinologist">endocrinologist</string>
-
     <string name="documents_uploaded_successfully">Documents Uploaded Successfully</string>
-
-
     <!-- Error string -->
     <string name="parse_error">parse error</string>
     <string name="no_connection_error">no connection error</string>
@@ -231,32 +220,24 @@
     <string name="server_error">Server Error</string>
     <string name="dr">Dr.</string>
     <string name="clicked_item_data">clicked_item_data</string>
-
     <string name="title_activity_chat">ChatActivity</string>
     <string name="type_a_message">Type a message</string>
     <string name="chat">Chat</string>
     <string name="online">Online</string>
     <string name="offline">Offline</string>
     <string name="idle">Idle</string>
-
     <string name="not_connected">Not Connected</string>
     <string name="send">Send</string>
     <string name="book_appointment">Book Appointment</string>
-
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="clinic_fees">Clinic Fees</string>
     <string name="availability">Availability</string>
-
     <string name="doctor">Doctor</string>
-
     <string name="about_doctor"><u>About Doctor:</u></string>
-
-
     <string name="recently_visit_doctor">Recently Visited Doctor</string>
     <string name="clickhere">Still in doubt ?......click here</string>
-
     <string name="rupee_symbol">\u20B9 &#160;</string>
     <string name="please_select_location">Please select location</string>
     <string name="relevantkeywords">Enter relevant keywords to optimize your doctor search</string>
@@ -265,9 +246,17 @@
     <string name="complaint2">Complaint 2:</string>
     <string name="waiting_for">Waiting for </string>
     <string name="token_no_available">Token No. %d available</string>
+    <string name="doctor_data">Doctor Data</string>
     <string name="open_today"><u>Open Today</u></string>
     <string name="all_timings">All Timings</string>
+
     <string name="distance">Distance</string>
+
+    <string name="title_activity_vital_graph">Vital Graph</string>
+    <string name="add_tracker">Add Tracker</string>
+    <string name="title_activity_vital_graph_details">Vital Graph Details</string>
+    <string name="title_activity_add_tracker">Add Tracker</string>
+
 
     <!-- Error string -->
     <string name="weekday_sun">Sunday</string>
@@ -277,5 +266,6 @@
     <string name="weekday_thurs">Thursday</string>
     <string name="weekday_fri">Friday</string>
     <string name="weekday_sat">Saturday</string>
+    <string name="price_range">Price Range</string>
 
 </resources>

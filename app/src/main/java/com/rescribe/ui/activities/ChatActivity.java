@@ -8,9 +8,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -142,8 +144,10 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
     private int isFirstTime = 0;
     private String patientName;
     private String imageUrl = "";
+    private String fileUrl = "";
 
     private ChatDoctor chatList;
+    private int statusColor;
 
     @Override
     public void onBackPressed() {
@@ -168,6 +172,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
         appDBHelper = new AppDBHelper(this);
 
         chatList = getIntent().getParcelableExtra(RescribeConstants.DOCTORS_INFO);
+        statusColor = getIntent().getIntExtra(RescribeConstants.STATUS_COLOR, ContextCompat.getColor(ChatActivity.this, R.color.green_light));
 
         receiverName.setText(chatList.getDoctorName());
         String doctorName = chatList.getDoctorName();
@@ -204,6 +209,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
         }
 
         dateTime.setText(chatList.getOnlineStatus());
+        dateTime.setTextColor(statusColor);
 
         chatHelper = new ChatHelper(this, this);
         patId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this);
@@ -284,11 +290,15 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
                         messageL.setOnlineStatus(RescribeConstants.ONLINE);
                         messageL.setImageUrl(imageUrl);
 
+                        messageL.setFileUrl(fileUrl);
+                        messageL.setSpecialization("");
+                        messageL.setPaidStatus(chatList.getPaidStatus());
+
                         // send msg by http api
-                        chatHelper.sendMsgToPatient(messageL);
+//                        chatHelper.sendMsgToPatient(messageL);
 
                         // send msg by mqtt
-//                        mqttService.passMessage(messageL);
+                        mqttService.passMessage(messageL);
 
                         if (mqttService.getNetworkStatus()) {
                             if (chatAdapter != null) {
@@ -460,6 +470,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
                     messageL.setAddress(chatH.getAddress());
                     messageL.setImageUrl(chatH.getImageUrl());
                     messageL.setPaidStatus(chatH.getPaidStatus());
+                    messageL.setFileType(chatH.getFileType());
 
                     String msgTime = CommonMethods.getFormatedDate(chatH.getMsgTime(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss);
                     messageL.setMsgTime(msgTime);

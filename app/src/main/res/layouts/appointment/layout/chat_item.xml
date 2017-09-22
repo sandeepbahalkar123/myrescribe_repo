@@ -247,10 +247,12 @@
                 android:layout_toRightOf="@id/receiverFileIcon"
                 android:layout_toStartOf="@+id/receiverFileProgressBar"
                 android:padding="@dimen/dp6"
-                android:textAllCaps="true"
                 android:textColor="@color/white"
                 app:customFont="@string/roboto_medium"
-                tools:text="exl" />
+                android:textSize="@dimen/sp14"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="@string/dummy_normal" />
 
             <ProgressBar
                 android:id="@+id/receiverFileProgressBar"

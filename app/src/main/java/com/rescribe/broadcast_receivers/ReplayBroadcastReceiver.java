@@ -59,6 +59,11 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
             messageL.setImageUrl(imageUrl);
             messageL.setOnlineStatus(RescribeConstants.ONLINE);
 
+            messageL.setFileUrl("");
+            messageL.setSpecialization("");
+            messageL.setPaidStatus(0);
+            messageL.setFileType("");
+
             // send msg by http api
 
             ChatHelper chatHelper = new ChatHelper(context, ReplayBroadcastReceiver.this);

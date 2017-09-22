@@ -36,6 +36,7 @@ import com.rescribe.model.case_details.CaseDetailsModel;
 import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.history.ChatHistoryModel;
 import com.rescribe.model.doctor_connect.DoctorConnectBaseModel;
+import com.rescribe.model.doctor_connect.RecentChatDoctorModel;
 import com.rescribe.model.doctor_connect_chat.DoctorConnectChatBaseModel;
 import com.rescribe.model.doctor_connect_search.DoctorConnectSearchBaseModel;
 import com.rescribe.model.doctors.appointments.DoctorAppointmentModel;
@@ -553,6 +554,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.TASK_DOCTOR_CONNECT: //This is for get archived list
                         DoctorConnectBaseModel doctorConnectBaseModel = new Gson().fromJson(data, DoctorConnectBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, doctorConnectBaseModel, mOldDataTag);
+                        break;
+
+                    case RescribeConstants.CHAT_USERS: //This is for get archived list
+                        RecentChatDoctorModel recentChatDoctorModel = new Gson().fromJson(data, RecentChatDoctorModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, recentChatDoctorModel, mOldDataTag);
                         break;
 
                     case RescribeConstants.SEND_MESSAGE: //This is for get archived list

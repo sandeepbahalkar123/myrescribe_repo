@@ -104,6 +104,7 @@ public class RescribeConstants {
     public static final String CHAT_HISTORY = RescribeConstants.BLANK + 29;
     public static final String TASK_BOOK_APPOINTMENT_SERVICES = RescribeConstants.BLANK + 30;
     public static final String TASK_GET_DOCTOR_DATA = RescribeConstants.BLANK + 31 ;
+    public static final String CHAT_USERS = RescribeConstants.BLANK + 32;
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
@@ -138,6 +139,8 @@ public class RescribeConstants {
     public static final String DOCTORS_INFO = "doctor_info";
     public static final String DOCTOR_DATA_REQUEST = "doctor_request_info";
 
+
+    public static final String ONLINE = "online";
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 

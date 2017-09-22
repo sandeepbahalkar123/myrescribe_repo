@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.rescribe.R;
-import com.rescribe.model.chat.MessageList;
+import com.rescribe.model.chat.MQTTMessage;
+import com.rescribe.services.MQTTService;
 
 import java.util.ArrayList;
 
@@ -19,14 +20,12 @@ import butterknife.ButterKnife;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder> {
 
-    private TextDrawable mTextDrawable;
-    private ArrayList<MessageList> messageList;
-    public static final int SENDER = 0;
-    public static final int RECEIVER = 1;
+    private TextDrawable mReceiverTextDrawable;
+    private ArrayList<MQTTMessage> MQTTMessage;
 
-    public ChatAdapter(ArrayList<MessageList> messageList, TextDrawable mTextDrawable) {
-        this.messageList = messageList;
-        this.mTextDrawable = mTextDrawable;
+    public ChatAdapter(ArrayList<MQTTMessage> MQTTMessage, TextDrawable mReceiverTextDrawable) {
+        this.MQTTMessage = MQTTMessage;
+        this.mReceiverTextDrawable = mReceiverTextDrawable;
     }
 
     @Override
@@ -39,9 +38,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        MessageList message = messageList.get(position);
+        MQTTMessage message = MQTTMessage.get(position);
 
-        if (messageList.get(position).getWho() == SENDER) {
+        if (MQTTMessage.get(position).getSender().equals(MQTTService.PATIENT)) {
             holder.receiverLayout.setVisibility(View.GONE);
             holder.senderLayout.setVisibility(View.VISIBLE);
             holder.senderMessage.setText(message.getMsg());
@@ -50,12 +49,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
             holder.senderLayout.setVisibility(View.GONE);
             holder.receiverMessage.setText(message.getMsg());
         }
-        holder.senderProfilePhoto.setImageDrawable(mTextDrawable);
+
+        //TODO, sendProfiile Image will set, added it for now
+        holder.receiverProfilePhoto.setImageDrawable(mReceiverTextDrawable);
+
     }
 
     @Override
     public int getItemCount() {
-        return messageList.size();
+        return MQTTMessage.size();
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
@@ -78,4 +80,3 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         }
     }
 }
-

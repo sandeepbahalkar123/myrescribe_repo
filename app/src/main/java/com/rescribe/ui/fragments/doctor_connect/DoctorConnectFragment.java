@@ -17,6 +17,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.doctor_connect.DoctorConnectBaseModel;
 import com.rescribe.model.doctor_connect.DoctorConnectDataModel;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -57,7 +58,6 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
-
         unbinder = ButterKnife.bind(this, mRootView);
         init();
         return mRootView;
@@ -65,14 +65,14 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
 
     private void init() {
         mDoctorConnectHelper = new DoctorConnectHelper(getActivity(), this);
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mDoctorConnectDataModel.getConnectList() == null) {
-            mDoctorConnectHelper.doDoctorConnecList();
+        if (mDoctorConnectDataModel.getChatDoctor() == null) {
+            String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, getContext());
+            mDoctorConnectHelper.doDoctorConnecList(patientId);
         }else {
             setAdapter();
         }
@@ -86,23 +86,23 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
 
     public void setAdapter() {
         //Added Dr. to doctorName
-        for (int i = 0; i < mDoctorConnectDataModel.getConnectList().size(); i++) {
-            String doctorName = mDoctorConnectDataModel.getConnectList().get(i).getDoctorName();
+        for (int i = 0; i < mDoctorConnectDataModel.getChatDoctor().size(); i++) {
+            String doctorName = mDoctorConnectDataModel.getChatDoctor().get(i).getDoctorName();
             //TODO : Temporary Fix as data from Server is not in Proper format
             if (doctorName.startsWith("DR. ")) {
                 String drName =  doctorName.replace("DR. ", "Dr. ");
-                mDoctorConnectDataModel.getConnectList().get(i).setDoctorName(drName);
+                mDoctorConnectDataModel.getChatDoctor().get(i).setDoctorName(drName);
             } else if (doctorName.startsWith("DR.")) {
                 String drName =   doctorName.replace("DR.", "Dr. ");
-                mDoctorConnectDataModel.getConnectList().get(i).setDoctorName(drName);
+                mDoctorConnectDataModel.getChatDoctor().get(i).setDoctorName(drName);
             }  else if (doctorName.startsWith("Dr. ")) {
                 String drName =   doctorName.replace("Dr. ", "Dr. ");
-                mDoctorConnectDataModel.getConnectList().get(i).setDoctorName(drName);
+                mDoctorConnectDataModel.getChatDoctor().get(i).setDoctorName(drName);
             } else {
-                mDoctorConnectDataModel.getConnectList().get(i).setDoctorName("Dr. " + doctorName);
+                mDoctorConnectDataModel.getChatDoctor().get(i).setDoctorName("Dr. " + doctorName);
             }
         }
-        doctorConnectAdapter = new DoctorConnectAdapter(getActivity(), mDoctorConnectDataModel.getConnectList());
+        doctorConnectAdapter = new DoctorConnectAdapter(getActivity(), mDoctorConnectDataModel.getChatDoctor());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -118,7 +118,7 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
             doctorConnectBaseModel = (DoctorConnectBaseModel) customResponse;
             mDoctorConnectDataModel = doctorConnectBaseModel.getDoctorConnectDataModel();
             DoctorConnectActivity activity = (DoctorConnectActivity) getActivity();
-            activity.setmConnectLists(mDoctorConnectDataModel.getConnectList());
+            activity.setmChatDoctors(mDoctorConnectDataModel.getChatDoctor());
             setAdapter();
         }
     }

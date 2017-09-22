@@ -22,7 +22,6 @@ import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.services.MQTTService;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.util.CommonMethods;
@@ -66,13 +65,6 @@ public class HomePageActivity extends DrawerActivity {
                 notificationForMedicine();
         }
         drawerConfiguration();
-
-        // start mqtt Service
-        // use this to start and trigger a service
-        Intent serviceIntent = new Intent(this, MQTTService.class);
-        // potentially add data to the serviceIntent
-        serviceIntent.putExtra(MQTTService.IS_MESSAGE, false);
-        startService(serviceIntent);
     }
 
 
@@ -303,7 +295,8 @@ public class HomePageActivity extends DrawerActivity {
                     Intent intent = new Intent(mContext, DoctorConnectActivity.class);
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.vital_graph))) {
-
+                    Intent intent = new Intent(mContext, VitalGraphActivity.class);
+                    startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.post_your_query))) {
 
                 } else if (id.equalsIgnoreCase(getString(R.string.book_appointment))) {

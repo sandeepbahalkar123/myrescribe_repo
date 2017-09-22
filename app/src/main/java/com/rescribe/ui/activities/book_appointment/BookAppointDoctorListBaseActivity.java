@@ -9,22 +9,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.RescribeConstants;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,6 +62,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         }
 
       //  searchBarLinearLayout.setVisibility(View.VISIBLE);
+
         loadFragment(RecentVisitDoctorFragment.newInstance(new Bundle()));
         //------
         FragmentManager supportFragmentManager = getSupportFragmentManager();

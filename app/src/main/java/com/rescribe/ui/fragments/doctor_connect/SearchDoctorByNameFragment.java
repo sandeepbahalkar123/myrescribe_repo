@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSearchByNameAdapter;
-import com.rescribe.model.doctor_connect.ConnectList;
+import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.util.RescribeConstants;
 
@@ -36,7 +36,7 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
     RelativeLayout emptyListView;
     Unbinder unbinder;
     private View mRootView;
-    private ArrayList<ConnectList> mReceivedList;
+    private ArrayList<ChatDoctor> mReceivedList;
     private DoctorSearchByNameAdapter doctorSearchByNameAdapter;
     private String mClickedSpecialityOfDoctor;
 
@@ -44,12 +44,12 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
     public SearchDoctorByNameFragment() {
     }
 
-    public static SearchDoctorByNameFragment newInstance(ArrayList<ConnectList> connectLists, Bundle bundleData) {
+    public static SearchDoctorByNameFragment newInstance(ArrayList<ChatDoctor> chatDoctors, Bundle bundleData) {
         SearchDoctorByNameFragment fragment = new SearchDoctorByNameFragment();
         if (bundleData == null) {
             bundleData = new Bundle();
         }
-        bundleData.putParcelableArrayList(RescribeConstants.CONNECT_REQUEST, connectLists);
+        bundleData.putParcelableArrayList(RescribeConstants.CONNECT_REQUEST, chatDoctors);
         fragment.setArguments(bundleData);
 
         return fragment;
@@ -123,14 +123,14 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
             doctorSearchByNameAdapter.getFilter().filter(searchText);
     }
 
-    private ArrayList<ConnectList> filterDataOnDocSpeciality() {
-        ArrayList<ConnectList> connectLists = this.mReceivedList;
-        ArrayList<ConnectList> dataList = new ArrayList<>();
+    private ArrayList<ChatDoctor> filterDataOnDocSpeciality() {
+        ArrayList<ChatDoctor> chatDoctors = this.mReceivedList;
+        ArrayList<ChatDoctor> dataList = new ArrayList<>();
         if (mClickedSpecialityOfDoctor == null) {
-            return connectLists;
+            return chatDoctors;
         } else {
-            for (ConnectList listObject :
-                    connectLists) {
+            for (ChatDoctor listObject :
+                    chatDoctors) {
                 if (mClickedSpecialityOfDoctor.equalsIgnoreCase(listObject.getSpecialization())) {
                     dataList.add(listObject);
                 }

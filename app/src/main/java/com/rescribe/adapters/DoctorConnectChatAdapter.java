@@ -1,7 +1,7 @@
 package com.rescribe.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +13,13 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
-import com.rescribe.model.doctor_connect_chat.ChatList;
+import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.model.doctor_connect.ChatDoctor;
+import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,9 +30,10 @@ import butterknife.ButterKnife;
  */
 public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnectChatAdapter.ListViewHolder> {
 
+    private final AppDBHelper appDBHelper;
     private ColorGenerator mColorGenerator;
     private Context mContext;
-    private ArrayList<ChatList> chatLists;
+    private ArrayList<ChatDoctor> chatLists;
     private String mIdle, mOnline, mOffline;
 
 
@@ -44,6 +47,10 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         TextView onlineStatusTextView;
         @BindView(R.id.imageOfDoctor)
         ImageView imageOfDoctor;
+        @BindView(R.id.paidStatusTextView)
+        TextView paidStatusTextView;
+        @BindView(R.id.badgeView)
+        TextView badgeView;
         View view;
 
         ListViewHolder(View view) {
@@ -54,13 +61,14 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
     }
 
 
-    public DoctorConnectChatAdapter(Context mContext, ArrayList<ChatList> chatList) {
+    public DoctorConnectChatAdapter(Context mContext, ArrayList<ChatDoctor> chatList) {
         this.chatLists = chatList;
         this.mContext = mContext;
         mColorGenerator = ColorGenerator.MATERIAL;
         mOnline = mContext.getString(R.string.online);
         mOffline = mContext.getString(R.string.offline);
         mIdle = mContext.getString(R.string.idle);
+        appDBHelper = new AppDBHelper(mContext);
     }
 
     @Override
@@ -72,12 +80,13 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
     }
 
     @Override
-    public void onBindViewHolder(ListViewHolder holder, int position) {
-        ChatList doctorConnectChatModel = chatLists.get(position);
+    public void onBindViewHolder(final ListViewHolder holder, int position) {
+        final ChatDoctor doctorConnectChatModel = chatLists.get(position);
 
         holder.doctorName.setText(doctorConnectChatModel.getDoctorName());
         holder.doctorType.setText(doctorConnectChatModel.getSpecialization());
         holder.onlineStatusTextView.setText(doctorConnectChatModel.getOnlineStatus());
+
         //-----------
         if (doctorConnectChatModel.getOnlineStatus().equalsIgnoreCase(mOnline)) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.green_light));
@@ -91,7 +100,9 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         // Removed Dr. from doctor name to get starting letter of doctorName to set to image icon.
 
         String doctorName = doctorConnectChatModel.getDoctorName();
-        doctorName = doctorName.replace("Dr. ", "");
+        if (doctorName.contains("Dr. ")) {
+            doctorName = doctorName.replace("Dr. ", "");
+        }
 
         if (doctorName != null) {
             int color2 = mColorGenerator.getColor(doctorName);
@@ -102,6 +113,28 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
                     .endConfig()
                     .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
             holder.imageOfDoctor.setImageDrawable(drawable);
+        }
+
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ChatActivity.class);
+                intent.putExtra(RescribeConstants.DOCTORS_INFO, doctorConnectChatModel);
+                intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.paidStatusTextView.setVisibility(View.GONE);
+
+        int count = appDBHelper.unreadMessageCountById(doctorConnectChatModel.getId());
+        doctorConnectChatModel.setUnreadMessages(count);
+
+        if (doctorConnectChatModel.getUnreadMessages() > 0) {
+            holder.badgeView.setVisibility(View.VISIBLE);
+            holder.badgeView.setText(String.valueOf(doctorConnectChatModel.getUnreadMessages()));
+        } else {
+            holder.badgeView.setVisibility(View.GONE);
         }
 
     }

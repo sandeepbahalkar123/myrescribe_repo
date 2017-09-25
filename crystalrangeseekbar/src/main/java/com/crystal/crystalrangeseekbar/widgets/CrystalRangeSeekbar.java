@@ -289,6 +289,10 @@ public class CrystalRangeSeekbar extends View {
         return this;
     }
 
+    public Bitmap getLeftThumbBitmap() {
+        return leftThumb;
+    }
+
     public CrystalRangeSeekbar setLeftThumbHighlightDrawable(int resId) {
         setLeftThumbHighlightDrawable(ContextCompat.getDrawable(getContext(), resId));
         return this;
@@ -327,6 +331,11 @@ public class CrystalRangeSeekbar extends View {
     public CrystalRangeSeekbar setRightThumbBitmap(Bitmap bitmap) {
         rightThumb = bitmap;
         return this;
+    }
+
+
+    public Bitmap getRightThumbBitmap() {
+        return rightThumb;
     }
 
     public CrystalRangeSeekbar setRightThumbHighlightDrawable(int resId) {

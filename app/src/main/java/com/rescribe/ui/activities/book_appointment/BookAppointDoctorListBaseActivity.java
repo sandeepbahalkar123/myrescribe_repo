@@ -147,13 +147,15 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     @Override
-    public void onApply() {
+    public void onApply(boolean drawerRequired) {
         mDrawerLayout.closeDrawers();
+        doOperationOnDrawer(drawerRequired);
     }
 
     @Override
-    public void onReset() {
-
+    public void onReset(boolean drawerRequired) {
+        mDrawerLayout.closeDrawers();
+        doOperationOnDrawer(drawerRequired);
     }
 
     public BookAppointmentBaseModel getReceivedBookAppointmentBaseModel() {
@@ -190,5 +192,9 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         } else {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
+    }
+
+    public DrawerLayout getActivityDrawerLayout() {
+        return mDrawerLayout;
     }
 }

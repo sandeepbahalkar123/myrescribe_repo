@@ -64,8 +64,8 @@
         android:layout_alignParentLeft="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/filter"
+        android:src="@drawable/location_based_filter"
         android:visibility="gone"
-        app:backgroundTint="@color/Red" />
+        app:backgroundTint="#00af52" />
 
 </RelativeLayout>

@@ -73,12 +73,12 @@ public class DoctorListToBookAppointment extends AppCompatActivity implements He
     }
 
     @Override
-    public void onApply() {
+    public void onApply(boolean drawerRequired) {
 
     }
 
     @Override
-    public void onReset() {
+    public void onReset(boolean drawerRequired) {
 
     }
 }

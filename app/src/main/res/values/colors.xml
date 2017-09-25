@@ -38,8 +38,10 @@
 
     <color name="grey_light">#e0e0e0</color>
     <color name="map_green">#45841c</color>
+    <color name="gender_drawer">#cacaca</color>
 
     <color name="green_book_appointment">#00B300</color>
+    <color name="distance_seek_bar">#8a8a8a</color>
     <color name="seek_bar_progress">#01aeff</color>
     <color name="seek_bar_default">#4a4a4a</color>
     <color name="book_appoint_time_slot_item_default">#4285f4</color>

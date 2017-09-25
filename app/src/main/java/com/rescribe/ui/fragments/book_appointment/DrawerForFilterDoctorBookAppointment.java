@@ -3,15 +3,18 @@ package com.rescribe.ui.fragments.book_appointment;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,8 +82,8 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
     LinearLayout distanceHeaderView;
     @BindView(R.id.distanceSeekBar)
     SeekBar distanceSeekBar;
-    @BindView(R.id.seekBarValueIndicator)
-    TextView seekBarValueIndicator;
+    @BindView(R.id.distanceSeekBarValueIndicator)
+    CustomTextView mDistanceSeekBarValueIndicator;
     @BindView(R.id.distanceContentView)
     LinearLayout distanceContentView;
     @BindView(R.id.availSunday)
@@ -103,11 +106,12 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
     CrystalRangeSeekbar mClinicFeesSeekBar;
 
     private OnDrawerInteractionListener mListener;
-    private View mThumbView;
 
     //--------
     private String mSelectedGender;
     private HashMap<String, Boolean> mSelectedDays;
+    //--------
+    View mLeftThumbView, mRightThumbView;
     //--------
 
     public DrawerForFilterDoctorBookAppointment() {
@@ -131,16 +135,13 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.book_appointment_drawer_filter, container, false);
-
         unbinder = ButterKnife.bind(this, view);
-
         initialize();
         return view;
     }
 
     private void initialize() {
-
-        setRangeSeekbar6();
+        configureClinicFeesSeekBar();
         mSelectedDays = new HashMap<>();
         //---------
         mSelectedDays.put(getString(R.string.weekday_sun), false);
@@ -151,56 +152,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
         mSelectedDays.put(getString(R.string.weekday_fri), false);
         mSelectedDays.put(getString(R.string.weekday_sat), false);
         //---------
-
-        mThumbView = LayoutInflater.from(getActivity()).inflate(R.layout.seekbar_progress_thumb_layout, null, false);
-
-        /*mClinicFeesSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                seekBar.setThumb(getThumb(i));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });*/
-        distanceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                Rect tr = distanceSeekBar.getThumb().getBounds();
-
-                seekBarValueIndicator.setX(tr.exactCenterX());
-                seekBarValueIndicator.setText("" + i);
-                if (i == distanceSeekBar.getMax()) {
-                    seekBarValueIndicator.setGravity(Gravity.LEFT);
-                } else {
-                    seekBarValueIndicator.setGravity(Gravity.CENTER);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        int intrinsicWidth = distanceSeekBar.getThumb().getIntrinsicWidth();
-        ViewGroup.LayoutParams layoutParams = seekBarValueIndicator.getLayoutParams();
-        layoutParams.width = intrinsicWidth;
-        seekBarValueIndicator.setText(distanceSeekBar.getProgress() + "");
-        seekBarValueIndicator.setLayoutParams(layoutParams);
-        seekBarValueIndicator.setGravity(Gravity.CENTER);
     }
 
 
@@ -227,38 +178,128 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
         mListener = null;
     }
 
+    private void configureClinicFeesSeekBar() {
 
-    private void setRangeSeekbar6() {
+        //---------- Clinic Seek Bar : START ----------
+        mLeftThumbView = LayoutInflater.from(getActivity()).inflate(R.layout.seekbar_progress_thumb_layout, null, false);
+        mRightThumbView = LayoutInflater.from(getActivity()).inflate(R.layout.seekbar_progress_thumb_layout, null, false);
+        mLeftThumbView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        mRightThumbView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
+        //----- Left thumb view------
+        Bitmap leftBitmap = null;
+        if (mLeftThumbView != null) {
+            mLeftThumbView.setDrawingCacheEnabled(true);
+            setThumbValue(mLeftThumbView, "" + 1);
+        }
+        //-----------
+        // ----- Right thumb view------
+        Bitmap rightBitmap = null;
+        if (mRightThumbView != null) {
+            mRightThumbView.setDrawingCacheEnabled(true);
+            setThumbValue(mRightThumbView, "" + 250);
+        }
+        //-----------
+
         // set properties
         mClinicFeesSeekBar
                 .setCornerRadius(10f)
                 .setBarColor(ContextCompat.getColor(getActivity(), R.color.seek_bar_default))
                 .setBarHighlightColor(ContextCompat.getColor(getActivity(), R.color.seek_bar_progress))
-                .setMinValue(400)
-                .setMaxValue(800)
-                .setLeftThumbDrawable(R.drawable.short_rounded_rectangle)
-                .setLeftThumbHighlightDrawable(R.drawable.short_rounded_rectangle)
-                .setRightThumbDrawable(R.drawable.short_rounded_rectangle)
-                .setRightThumbHighlightDrawable(R.drawable.short_rounded_rectangle)
+                .setSteps(1)
+                .setLeftThumbBitmap(leftBitmap)
+                .setLeftThumbHighlightBitmap(leftBitmap)
+                .setRightThumbBitmap(rightBitmap)
+                .setRightThumbHighlightBitmap(rightBitmap)
                 .setDataType(CrystalRangeSeekbar.DataType.INTEGER)
                 .apply();
 
         // set listener
-        // set listener
         mClinicFeesSeekBar.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override
             public void valueChanged(Number minValue, Number maxValue) {
-             }
+
+                if (mLeftThumbView != null) {
+                    Bitmap bitmap = setThumbValue(mLeftThumbView, String.valueOf(minValue));
+                    mClinicFeesSeekBar.setLeftThumbBitmap(bitmap);
+                    mClinicFeesSeekBar.setLeftThumbHighlightBitmap(bitmap);
+                }
+                if (mRightThumbView != null) {
+                    Bitmap bitmap = setThumbValue(mRightThumbView, String.valueOf(maxValue));
+                    mClinicFeesSeekBar.setRightThumbBitmap(bitmap);
+                    mClinicFeesSeekBar.setRightThumbHighlightBitmap(bitmap);
+                }
+            }
         });
+
+        //-------Clinic seek bar : END---------------
+
+        //-------Distance seek bar : END---------------
+
+        distanceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                Rect tr = distanceSeekBar.getThumb().getBounds();
+
+                mDistanceSeekBarValueIndicator.setText("" + i);
+
+                if (String.valueOf(i).length() > 2) {
+                    mDistanceSeekBarValueIndicator.setX(tr.left);
+                } else {
+                    mDistanceSeekBarValueIndicator.setX(tr.exactCenterX());
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        //-------Distance seek bar : END---------------
+
+        // TODO unCOMMENT THIS
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // To set min/max value of thumbs of clinic fees seek bar
+                setThumbValue(mLeftThumbView, "" + 1);
+                setThumbValue(mRightThumbView, "" + 250);
+
+                mClinicFeesSeekBar.setMinValue(1).setMaxValue(250).setMinStartValue(1).setMaxStartValue(250).apply();
+                //--------------
+                // To set min/max value of thumbs of distance fees seek bar
+                Rect tr = distanceSeekBar.getThumb().getBounds();
+                mDistanceSeekBarValueIndicator.setX(tr.exactCenterX());
+                mDistanceSeekBarValueIndicator.setText(distanceSeekBar.getProgress() + "");
+                //------------
+            }
+        }, 200);
     }
 
     public interface OnDrawerInteractionListener {
-        void onApply();
+        void onApply(boolean drawerRequired);
 
-        void onReset();
+        void onReset(boolean drawerRequired);
     }
 
-    @OnClick({R.id.genderHeaderView, R.id.locationHeaderView, R.id.clinicFeesHeaderView, R.id.availabilityHeaderView})
+    @OnClick({R.id.resetButton, R.id.applyButton})
+    public void onButtonClicked(View v) {
+        switch (v.getId()) {
+            case R.id.resetButton:
+                mListener.onReset(true);
+                break;
+            case R.id.applyButton:
+                mListener.onApply(true);
+                break;
+        }
+    }
+
+  /*  @OnClick({R.id.genderHeaderView, R.id.locationHeaderView, R.id.clinicFeesHeaderView, R.id.availabilityHeaderView})
     public void onHeaderViewClicked(LinearLayout layout) {
         switch (layout.getId()) {
             case R.id.genderHeaderView:
@@ -290,35 +331,35 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
                 }
                 break;
         }
-    }
+    }*/
 
 
-    public Drawable getThumb(int progress) {
-        ((TextView) mThumbView.findViewById(R.id.tvProgress)).setText(progress + "");
-        mThumbView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        Bitmap bitmap = Bitmap.createBitmap(mThumbView.getMeasuredWidth(), mThumbView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        mThumbView.layout(0, 0, mThumbView.getMeasuredWidth(), mThumbView.getMeasuredHeight());
-        mThumbView.draw(canvas);
-        return new BitmapDrawable(getResources(), bitmap);
+    public Bitmap setThumbValue(View view, String valueToSet) {
+        TextView tvRightProgressValue = (TextView) view.findViewById(R.id.tvProgress);
+        Bitmap b = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+        view.layout(0, 0, view.getRight(), view.getBottom());
+        view.draw(c);
+        tvRightProgressValue.setText(valueToSet);
+        return b;
     }
 
     @OnClick({R.id.genderMaleLayout, R.id.genderFemaleLayout})
     public void onGenderClicked(View view) {
         switch (view.getId()) {
             case R.id.genderMaleLayout:
+                mSelectedGender = mGenderMaleText.getText().toString();
                 mGenderMaleIcon.setImageResource(R.drawable.icon_male_after_click);
                 mGenderMaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                 mGenderFemaleIcon.setImageResource(R.drawable.icon_female_default);
-                mGenderFemaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.pink_female));
-                mSelectedGender = mGenderMaleText.getText().toString();
+                mGenderFemaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.gender_drawer));
                 break;
             case R.id.genderFemaleLayout:
                 mSelectedGender = mGenderFemaleText.getText().toString();
                 mGenderFemaleIcon.setImageResource(R.drawable.icon_female_after_click);
                 mGenderFemaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.female_select));
                 mGenderMaleIcon.setImageResource(R.drawable.icon_male_default);
-                mGenderMaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+                mGenderMaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.gender_drawer));
                 break;
         }
     }
@@ -430,7 +471,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
 
                 }
                 break;
-
         }
     }
 

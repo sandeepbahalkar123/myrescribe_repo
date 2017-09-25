@@ -5,7 +5,8 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/seekBarLayout"
+        android:layout_width="@dimen/dp35"
         android:layout_height="wrap_content"
         android:background="@drawable/short_rounded_rectangle"
         android:gravity="center"
@@ -15,9 +16,10 @@
             android:id="@+id/tvProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:gravity="center"
+            android:text="10000"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp11" />
 
     </LinearLayout>
 

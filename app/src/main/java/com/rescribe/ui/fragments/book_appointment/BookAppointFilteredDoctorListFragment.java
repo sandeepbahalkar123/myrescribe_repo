@@ -3,6 +3,7 @@ package com.rescribe.ui.fragments.book_appointment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -149,12 +150,14 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
 
     @OnClick({R.id.rightFab, R.id.leftFab})
     public void onViewClicked(View view) {
+        BookAppointDoctorListBaseActivity activity;
         switch (view.getId()) {
             case R.id.rightFab:
-
+                activity = (BookAppointDoctorListBaseActivity) getActivity();
+                activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);
                 break;
             case R.id.leftFab:
-                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                activity = (BookAppointDoctorListBaseActivity) getActivity();
                 activity.loadFragment(ShowNearByDoctorsOnMapFragment.newInstance(args), false);
                 break;
         }

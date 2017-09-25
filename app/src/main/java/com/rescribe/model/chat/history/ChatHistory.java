@@ -10,7 +10,7 @@ public class ChatHistory implements Parcelable {
 
     @SerializedName("chat_id")
     @Expose
-    private int chatId;
+    private String chatId = "";
     @SerializedName("user_1_id")
     @Expose
     private int user1Id;
@@ -62,7 +62,7 @@ public class ChatHistory implements Parcelable {
         })
         public ChatHistory createFromParcel(Parcel in) {
             ChatHistory instance = new ChatHistory();
-            instance.chatId = ((int) in.readValue((int.class.getClassLoader())));
+            instance.chatId = ((String) in.readValue((int.class.getClassLoader())));
             instance.user1Id = ((int) in.readValue((int.class.getClassLoader())));
             instance.user2Id = ((int) in.readValue((int.class.getClassLoader())));
             instance.sender = ((String) in.readValue((String.class.getClassLoader())));
@@ -88,11 +88,11 @@ public class ChatHistory implements Parcelable {
 
     };
 
-    public int getChatId() {
+    public String getChatId() {
         return chatId;
     }
 
-    public void setChatId(int chatId) {
+    public void setChatId(String chatId) {
         this.chatId = chatId;
     }
 

@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.rescribe.helpers.chat.ChatHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
@@ -17,6 +16,8 @@ import com.rescribe.util.RescribeConstants;
 
 import static com.rescribe.services.MQTTService.REPLY_ACTION;
 import static com.rescribe.services.MQTTService.SEND_MESSAGE;
+import static com.rescribe.ui.activities.ChatActivity.CHAT;
+import static com.rescribe.ui.activities.DoctorConnectActivity.FREE;
 
 public class ReplayBroadcastReceiver extends BroadcastReceiver implements HelperResponse {
     public static final String MESSAGE_LIST = "message_list";
@@ -48,8 +49,10 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
             messageL.setTopic(MQTTService.DOCTOR_CONNECT);
             messageL.setSender(MQTTService.PATIENT);
             messageL.setMsg(message.toString());
-            // hard coded
-            messageL.setMsgId(0);
+
+            String generatedId = CHAT + 0 + "_" + System.nanoTime();
+            messageL.setMsgId(generatedId);
+
             messageL.setDocId(recievedMessage.getDocId());
             messageL.setPatId(recievedMessage.getPatId());
 
@@ -62,7 +65,7 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
 
             messageL.setFileUrl("");
             messageL.setSpecialization("");
-            messageL.setPaidStatus(0);
+            messageL.setPaidStatus(FREE);
             messageL.setFileType("");
 
             // send msg by http api

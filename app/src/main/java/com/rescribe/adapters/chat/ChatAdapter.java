@@ -1,6 +1,7 @@
 package com.rescribe.adapters.chat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
@@ -9,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,22 +24,27 @@ import com.bumptech.glide.request.target.Target;
 import com.rescribe.R;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.services.MQTTService;
+import com.rescribe.ui.activities.ZoomImageViewActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.NetworkUtil;
 import com.rescribe.util.RescribeConstants;
 import com.tonyodev.fetch.Fetch;
-import com.tonyodev.fetch.request.Request;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.rescribe.util.RescribeConstants.COMPLETED;
+import static com.rescribe.util.RescribeConstants.FAILED;
+import static com.rescribe.util.RescribeConstants.UPLOADING;
+
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder> {
 
     private final Context context;
     private final Fetch fetch;
+    private final ItemListener itemListener;
     private TextDrawable mReceiverTextDrawable;
     private ArrayList<MQTTMessage> mqttMessages;
 
@@ -48,6 +53,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         this.mReceiverTextDrawable = mReceiverTextDrawable;
         this.context = context;
         fetch = Fetch.newInstance(context);
+
+        try {
+            this.itemListener = ((ItemListener) context);
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement ItemClickListener.");
+        }
     }
 
     @Override
@@ -59,8 +70,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
     }
 
     @Override
-    public void onBindViewHolder(final ListViewHolder holder, int position) {
-        MQTTMessage message = mqttMessages.get(position);
+    public void onBindViewHolder(final ListViewHolder holder, final int position) {
+        final MQTTMessage message = mqttMessages.get(position);
 
         if (mqttMessages.get(position).getSender().equals(MQTTService.PATIENT)) {
             holder.receiverLayout.setVisibility(View.GONE);
@@ -89,6 +100,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
                 if (message.getFileType().equals(RescribeConstants.FILE.DOC)) {
                     holder.senderFileLayout.setVisibility(View.VISIBLE);
+
+                    if (message.getUploadStatus() == RescribeConstants.UPLOADING) {
+                        holder.senderFileProgressLayout.setVisibility(View.VISIBLE);
+                        holder.senderFileUploadStopped.setVisibility(View.GONE);
+                        holder.senderFileUploading.setVisibility(View.VISIBLE);
+                    } else if (message.getUploadStatus() == FAILED) {
+                        holder.senderFileProgressLayout.setVisibility(View.VISIBLE);
+                        holder.senderFileUploadStopped.setVisibility(View.VISIBLE);
+                        holder.senderFileUploading.setVisibility(View.GONE);
+                    } else if (message.getUploadStatus() == RescribeConstants.COMPLETED) {
+                        holder.senderFileProgressLayout.setVisibility(View.GONE);
+                        holder.senderFileUploadStopped.setVisibility(View.GONE);
+                        holder.senderFileUploading.setVisibility(View.GONE);
+                    }
+                    
                     holder.senderPhotoLayout.setVisibility(View.GONE);
                     String extension = CommonMethods.getExtension(message.getFileUrl());
 
@@ -115,28 +141,75 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                     holder.senderPhotoLayout.setVisibility(View.VISIBLE);
                     holder.senderFileLayout.setVisibility(View.GONE);
 
-                    holder.senderPhotoProgressLayout.setVisibility(View.VISIBLE);
+                    if (message.getUploadStatus() == RescribeConstants.UPLOADING) {
+                        holder.senderPhotoProgressLayout.setVisibility(View.VISIBLE);
+                        holder.senderPhotoUploading.setVisibility(View.VISIBLE);
+                        holder.senderPhotoUploadStopped.setVisibility(View.GONE);
+                    } else if (message.getUploadStatus() == FAILED) {
+                        holder.senderPhotoProgressLayout.setVisibility(View.VISIBLE);
+                        holder.senderPhotoUploading.setVisibility(View.GONE);
+                        holder.senderPhotoUploadStopped.setVisibility(View.VISIBLE);
+                    } else if (message.getUploadStatus() == RescribeConstants.COMPLETED) {
+                        holder.senderPhotoProgressLayout.setVisibility(View.GONE);
+                        holder.senderPhotoUploading.setVisibility(View.GONE);
+                        holder.senderPhotoUploadStopped.setVisibility(View.GONE);
+                    }
+                    
                     RequestOptions requestOptions = new RequestOptions();
                     requestOptions.dontAnimate();
                     requestOptions.override(300, 300);
                     requestOptions.placeholder(R.drawable.image_placeholder);
-                    Glide.with(holder.senderPhotoThumb.getContext())
-                            .load(message.getFileUrl())
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    holder.senderPhotoProgressLayout.setVisibility(View.GONE);
-                                    return false;
-                                }
+                    requestOptions.error(R.drawable.image_placeholder);
 
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    holder.senderPhotoProgressLayout.setVisibility(View.GONE);
-                                    return false;
-                                }
-                            })
-                            .apply(requestOptions).thumbnail(0.5f)
-                            .into(holder.senderPhotoThumb);
+                    String filePath = message.getFileUrl().substring(0, 4);
+
+                    final boolean isUrl;
+                    if (filePath.equals("http")) {
+
+                        isUrl = true;
+
+                        Glide.with(holder.senderPhotoThumb.getContext())
+                                .load(message.getFileUrl())
+                                .listener(new RequestListener<Drawable>() {
+                                    @Override
+                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                        holder.senderPhotoProgressLayout.setVisibility(View.GONE);
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                        holder.senderPhotoProgressLayout.setVisibility(View.GONE);
+                                        return false;
+                                    }
+                                })
+                                .apply(requestOptions).thumbnail(0.5f)
+                                .into(holder.senderPhotoThumb);
+                    } else {
+
+                        isUrl = false;
+
+                        Glide.with(holder.senderPhotoThumb.getContext())
+                                .load(new File(message.getFileUrl()))
+                                .apply(requestOptions).thumbnail(0.5f)
+                                .into(holder.senderPhotoThumb);
+                    }
+
+                    holder.senderPhotoLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (message.getUploadStatus() == FAILED) {
+                                itemListener.uploadFile(message);
+                                message.setUploadStatus(UPLOADING);
+                                notifyItemChanged(position);
+                            } else if (message.getUploadStatus() == COMPLETED) {
+                                Intent intent = new Intent(context, ZoomImageViewActivity.class);
+                                intent.putExtra(RescribeConstants.DOCUMENTS, message.getFileUrl());
+                                intent.putExtra(RescribeConstants.IS_URL, isUrl);
+                                context.startActivity(intent);
+                            }
+                        }
+                    });
 
                     if (message.getMsg().isEmpty())
                         holder.senderMessageWithImage.setVisibility(View.GONE);
@@ -174,10 +247,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
                 if (message.getFileType().equals(RescribeConstants.FILE.DOC)) {
 
-//                    fileDownload();
-
                     holder.receiverFileLayout.setVisibility(View.VISIBLE);
                     holder.receiverPhotoLayout.setVisibility(View.GONE);
+
+                    holder.receiverFileProgressLayout.setVisibility(View.VISIBLE);
+                    holder.receiverFileDownloadStopped.setVisibility(View.VISIBLE);
+                    holder.receiverFileDownloading.setVisibility(View.GONE);
 
                     String extension = CommonMethods.getExtension(message.getFileUrl());
 
@@ -206,6 +281,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                     holder.receiverFileLayout.setVisibility(View.GONE);
 
                     holder.receiverPhotoProgressLayout.setVisibility(View.VISIBLE);
+                    holder.receiverPhotoDownloading.setVisibility(View.VISIBLE);
+                    holder.receiverPhotoDownloadStopped.setVisibility(View.GONE);
 
                     RequestOptions requestOptions = new RequestOptions();
                     requestOptions.dontAnimate();
@@ -229,6 +306,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                             .apply(requestOptions).thumbnail(0.1f)
                             .into(holder.receiverPhotoThumb);
 
+                    holder.receiverPhotoLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(context, ZoomImageViewActivity.class);
+                            intent.putExtra(RescribeConstants.DOCUMENTS, message.getFileUrl());
+                            intent.putExtra(RescribeConstants.IS_URL, true);
+                            context.startActivity(intent);
+                        }
+                    });
+
                     if (message.getMsg().isEmpty())
                         holder.receiverMessageWithImage.setVisibility(View.GONE);
                     else {
@@ -244,7 +331,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
     }
 
-    private void fileDownload(String url, String dirPath, String fileName) {
+   /* private void fileDownload(String url, String dirPath, String fileName) {
         if (NetworkUtil.getConnectivityStatusBoolean(context)) {
             Request request = new Request(url, dirPath, fileName);
             long downloadId = fetch.enqueue(request);
@@ -256,7 +343,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
             }
         } else
             CommonMethods.showToast(context, context.getResources().getString(R.string.internet));
-    }
+    }*/
 
     @Override
     public int getItemCount() {
@@ -332,10 +419,24 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
         @BindView(R.id.receiverPhotoProgressLayout)
         RelativeLayout receiverPhotoProgressLayout;
+
+        @BindView(R.id.receiverPhotoDownloading)
+        RelativeLayout receiverPhotoDownloading;
+        @BindView(R.id.receiverPhotoDownloadStopped)
+        RelativeLayout receiverPhotoDownloadStopped;
+
+        @BindView(R.id.senderPhotoUploading)
+        RelativeLayout senderPhotoUploading;
+        @BindView(R.id.senderPhotoUploadStopped)
+        RelativeLayout senderPhotoUploadStopped;
         
         ListViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
+
+    public interface ItemListener {
+        void uploadFile(MQTTMessage mqttMessage);
     }
 }

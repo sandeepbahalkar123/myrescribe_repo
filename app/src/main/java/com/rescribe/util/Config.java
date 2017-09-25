@@ -54,6 +54,8 @@ public class Config {
     public static final String DOCTOR_CHAT_LIST_URL = "api/doctors/getChatDoctorList";
 
     public static final String CHAT_USERS = "api/chat/getChatTabUsers";
+
+    public static final String CHAT_FILE_UPLOAD = "api/upload/chatDoc";
 }
 
 

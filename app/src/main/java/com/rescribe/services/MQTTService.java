@@ -169,7 +169,6 @@ public class MQTTService extends Service {
 
                             if (userLogin.equals(RescribeConstants.YES)) {
                                 if (myid.equals(String.valueOf(messageL.getPatId())) && topic.equals(TOPIC[0])) {
-                                    messageL.setMsgId(msg.getId());
                                     messageL.setTopic(topic);
                                     if (!messageL.getSender().equals(MQTTService.PATIENT)) {
                                         if (currentChatUser != messageL.getDocId()) {

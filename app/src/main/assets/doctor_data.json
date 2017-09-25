@@ -19,7 +19,7 @@
         "recentlyVisited": true,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
-        "rating": 4.5,
+        "rating": 2.5,
         "waitingTime":"1 hour 45 mins",
         "tokenNo":2,
         "morePracticePlaces": [
@@ -52,7 +52,7 @@
         "recentlyVisited": true,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
-        "rating": 4.5,
+        "rating": 3.5,
         "waitingTime":"45 mins",
         "tokenNo":5,
         "morePracticePlaces": [
@@ -85,7 +85,7 @@
         "recentlyVisited": true,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
-        "rating": 4.5,
+        "rating": 4.2,
         "waitingTime":"15 mins",
         "tokenNo":3,
         "morePracticePlaces": [
@@ -118,7 +118,7 @@
         "recentlyVisited": true,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
-        "rating": 4.5,
+        "rating": 4.8,
         "waitingTime":"1 hour 15 mins",
         "tokenNo":4,
         "morePracticePlaces": [
@@ -151,7 +151,7 @@
         "recentlyVisited": true,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
-        "rating": 4.5,
+        "rating": 3,
         "waitingTime":"2 hour 05 mins",
         "tokenNo":7,
         "morePracticePlaces": [
@@ -184,7 +184,7 @@
         "recentlyVisited": true,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
-        "rating": 4.5,
+        "rating": 4,
         "waitingTime":"2 hour 45 mins",
         "tokenNo":12,
         "morePracticePlaces": [
@@ -237,7 +237,42 @@
       {
         "id": 8,
         "speciality": "Gastro"
+      },
+      {
+        "id": 9,
+        "speciality": "Gastro"
+      },
+      {
+        "id": 10,
+        "speciality": "Gastro"
+      },
+      {
+        "id": 11,
+        "speciality": "Gastro"
+      },
+      {
+        "id": 12,
+        "speciality": "Gastro"
+      },
+      {
+        "id": 13,
+        "speciality": "Gastro"
+      },
+      {
+        "id": 14,
+        "speciality": "Gastro"
+      },
+      {
+        "id": 15,
+        "speciality": "Gastro"
+      },
+      {
+        "id": 16,
+        "speciality": "Gastro"
       }
+
+
+
     ]
   }
 }

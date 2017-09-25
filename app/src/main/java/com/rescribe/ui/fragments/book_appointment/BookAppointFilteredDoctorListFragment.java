@@ -18,7 +18,6 @@ import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
-import com.rescribe.ui.activities.book_appointment.ShowNearByDoctorsOnMapFragment;
 
 import java.util.ArrayList;
 

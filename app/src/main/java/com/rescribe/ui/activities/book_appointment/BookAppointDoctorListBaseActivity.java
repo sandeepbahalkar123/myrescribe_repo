@@ -62,8 +62,10 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         }
 
       //  searchBarLinearLayout.setVisibility(View.VISIBLE);
-
-        loadFragment(RecentVisitDoctorFragment.newInstance(new Bundle()));
+        Bundle b = new Bundle();
+        b.putString(getString(R.string.latitude), intent.getStringExtra(getString(R.string.latitude)));
+        b.putString(getString(R.string.longitude), intent.getStringExtra(getString(R.string.longitude)));
+        loadFragment(RecentVisitDoctorFragment.newInstance(b));
         //------
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();

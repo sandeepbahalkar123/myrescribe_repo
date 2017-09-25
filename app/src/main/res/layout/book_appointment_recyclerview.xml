@@ -18,13 +18,23 @@
         android:text="@string/pick_speciality"
         android:textColor="@color/black"
         android:textSize="@dimen/sp16"
-        android:visibility="gone"
+        android:visibility="visible"
         app:customFont="@string/roboto_medium" />
     <LinearLayout
+        android:layout_marginTop="@dimen/dp20"
         android:id="@+id/recyclerViewLinearLayout"
         android:layout_width="match_parent"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/prevBtn"
+            android:padding="@dimen/dp10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:scaleX="-1"
+            android:src="@drawable/right_arrow"
+            android:layout_gravity="center_vertical"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listView"
@@ -32,11 +42,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/pickSpeciality"
         android:divider="@null"
-        android:layout_marginTop="@dimen/dp16"
         android:layout_weight="0.5"
         android:dividerHeight="0dp"
-        android:visibility="visible"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+        android:visibility="visible">
+
+    </android.support.v7.widget.RecyclerView>
+        <ImageView
+            android:padding="@dimen/dp10"
+            android:visibility="gone"
+            android:id="@+id/nextBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/right_arrow"
+            android:layout_gravity="center_vertical"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -57,10 +75,10 @@
             android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/dp6"
+            android:paddingBottom="@dimen/dp10"
             android:paddingLeft="@dimen/dp12"
             android:paddingRight="@dimen/dp12"
-            android:paddingTop="@dimen/dp6"
+            android:paddingTop="@dimen/dp10"
             android:text="@string/clickhere"
             android:textColor="@color/white"
             android:textSize="@dimen/sp12"

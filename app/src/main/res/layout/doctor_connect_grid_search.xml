@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp14"
+            android:textSize="10sp"
             app:customFont="@string/roboto_regular" />
     </LinearLayout>
 </LinearLayout>

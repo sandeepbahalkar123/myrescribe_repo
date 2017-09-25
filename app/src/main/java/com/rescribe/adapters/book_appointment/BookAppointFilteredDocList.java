@@ -3,13 +3,19 @@ package com.rescribe.adapters.book_appointment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.MapsActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
@@ -35,19 +42,21 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppointFilteredDocList.ListViewHolder> {
+public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppointFilteredDocList.ListViewHolder> implements Filterable {
 
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
     private int imageSize;
+    private ArrayList<DoctorList> mArrayList;
     private BookAppointFilteredDocList.OnFilterDocListClickListener mOnFilterDocListClickListener;
+    private String searchString;
 
 
     public BookAppointFilteredDocList(Context mContext, ArrayList<DoctorList> dataList, BookAppointFilteredDocList.OnFilterDocListClickListener mOnFilterDocListClickListener) {
         this.mDataList = dataList;
         this.mContext = mContext;
+        this.mArrayList = dataList;
         this.mOnFilterDocListClickListener = mOnFilterDocListClickListener;
-
         setColumnNumber(mContext, 2);
     }
 
@@ -100,6 +109,22 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 mOnFilterDocListClickListener.onClickOfDoctorRowItem(b);
             }
         });
+        SpannableString spannableStringSearch = null;
+        if ((searchString != null) && (!searchString.isEmpty())) {
+
+            spannableStringSearch = new SpannableString(doctorObject.getDocName());
+
+            spannableStringSearch.setSpan(new ForegroundColorSpan(
+                            ContextCompat.getColor(mContext, R.color.tagColor)),
+                    4, 4 + searchString.length(),//hightlight searchString
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        }
+        if (spannableStringSearch != null) {
+            holder.doctorName.setText(spannableStringSearch);
+        } else {
+            holder.doctorName.setText(doctorObject.getDocName());
+        }
 
     }
 
@@ -141,6 +166,45 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
     public interface OnFilterDocListClickListener {
         void onClickOfDoctorRowItem(Bundle bundleData);
+    }
+    @Override
+    public Filter getFilter() {
+
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+
+                String charString = charSequence.toString();
+                searchString = charString;
+                if (charString.isEmpty()) {
+
+                    mDataList = mArrayList;
+                } else {
+
+                    ArrayList<DoctorList> filteredList = new ArrayList<>();
+
+                    for (DoctorList doctorConnectModel : mArrayList) {
+
+                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase())) {
+
+                            filteredList.add(doctorConnectModel);
+                        }
+                    }
+
+                    mDataList = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mDataList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mDataList = (ArrayList<DoctorList>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
 }

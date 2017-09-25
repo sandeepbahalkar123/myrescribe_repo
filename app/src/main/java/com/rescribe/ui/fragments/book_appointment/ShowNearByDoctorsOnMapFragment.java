@@ -1,51 +1,44 @@
-package com.rescribe.ui.activities.book_appointment;
+package com.rescribe.ui.fragments.book_appointment;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
+import android.support.annotation.Dimension;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rescribe.R;
-import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.ui.activities.MapsActivity;
+import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -62,6 +55,7 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
     BottomSheetDialog dialog;
     BookAppointmentBaseModel receivedBookAppointmentBaseModel;
     ArrayList<DoctorList> doctorLists = new ArrayList<>();
+    float[] distanceResults = new float[1];
 
     public ShowNearByDoctorsOnMapFragment() {
         // Required empty public constructor
@@ -93,19 +87,37 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
     private void init() {
 
     }
-    public void init_modal_bottomsheet() {
-        View modalbottomsheet = getActivity().getLayoutInflater().inflate(R.layout.show_bottom_sheet_on_doctors, null);
 
+    public void init_modal_bottomsheet(final Marker marker) {
+        View modalbottomsheet = getActivity().getLayoutInflater().inflate(R.layout.show_bottom_sheet_on_doctors, null);
+        TextView doctorName = (TextView) modalbottomsheet.findViewById(R.id.doctorName);
+        TextView doctorRating = (TextView) modalbottomsheet.findViewById(R.id.doctorRating);
+        TextView kilometers = (TextView) modalbottomsheet.findViewById(R.id.kilometers);
+        ImageView directions = (ImageView) modalbottomsheet.findViewById(R.id.directions);
+        RatingBar ratingBar = (RatingBar) modalbottomsheet.findViewById(R.id.ratingBar);
+        // TextView doctorName = (TextView)modalbottomsheet.findViewById(R.id.doctorName);
         dialog = new BottomSheetDialog(getActivity());
         dialog.setContentView(modalbottomsheet);
-        dialog.setCanceledOnTouchOutside(true);;
+        dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
+        ratingBar.setRating((float) doctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
+        directions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?saddr=" + args.getString(getString(R.string.latitude)) + "," + args.getString(getString(R.string.longitude)) + "&daddr=" + doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude() + "," + doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude()));
+                startActivity(intent);
+            }
+        });
+        doctorRating.setText("" + doctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
+        doctorName.setText("" + doctorLists.get(Integer.parseInt(marker.getTitle())).getDocName());
         dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         dialog.show();
 
        /* btn_cancel = (Button) modalbottomsheet.findViewById(R.id.btn_cancel);
         btn_cancel.setOnClickListener(this);*/
     }
+
 
     @Override
     public void onClick(View v) {
@@ -146,16 +158,6 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
 
     }
 
-   /* public void isDataListViewVisible(boolean flag) {
-        if (flag) {
-            mEmptyListView.setVisibility(View.GONE);
-            mDoctorListView.setVisibility(View.VISIBLE);
-        } else {
-            mEmptyListView.setVisibility(View.VISIBLE);
-            mDoctorListView.setVisibility(View.GONE);
-        }
-    }*/
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -168,6 +170,8 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
             p1 = getLocationFromAddress(doctorList.getDoctorAddress());
             if (p1 != null) {
                 LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
+                doctorLists.get(index).setLatitude(p1.getLatitude());
+                doctorLists.get(index).setLongitude(p1.getLongitude());
                 Marker marker = mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(getMarkerIcon("#04abdf")));
                 mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(getMarkerIcon("#04abdf")));
                 marker.showInfoWindow();
@@ -221,7 +225,7 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
         View infoView = getActivity().getLayoutInflater().inflate(R.layout.marker_map_activity, null);
         TextView doctorName = (TextView) infoView.findViewById(R.id.doctorName);
         TextView doctorRating = (TextView) infoView.findViewById(R.id.doctorRating);
-        doctorRating.setText("" + doctorLists.get(Integer.parseInt(marker.getTitle())).getExperience());
+        doctorRating.setText("" + doctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
         doctorName.setText("" + doctorLists.get(Integer.parseInt(marker.getTitle())).getDocName());
 
         return infoView;
@@ -229,7 +233,7 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        init_modal_bottomsheet();
+        init_modal_bottomsheet(marker);
     }
 
 }

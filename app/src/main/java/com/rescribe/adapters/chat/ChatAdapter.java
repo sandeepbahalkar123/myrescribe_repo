@@ -1,5 +1,6 @@
 package com.rescribe.adapters.chat;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
@@ -25,7 +26,10 @@ import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.services.MQTTService;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.NetworkUtil;
 import com.rescribe.util.RescribeConstants;
+import com.tonyodev.fetch.Fetch;
+import com.tonyodev.fetch.request.Request;
 
 import java.util.ArrayList;
 
@@ -34,12 +38,16 @@ import butterknife.ButterKnife;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder> {
 
+    private final Context context;
+    private final Fetch fetch;
     private TextDrawable mReceiverTextDrawable;
     private ArrayList<MQTTMessage> mqttMessages;
 
-    public ChatAdapter(ArrayList<MQTTMessage> mqttMessages, TextDrawable mReceiverTextDrawable) {
+    public ChatAdapter(ArrayList<MQTTMessage> mqttMessages, TextDrawable mReceiverTextDrawable, Context context) {
         this.mqttMessages = mqttMessages;
         this.mReceiverTextDrawable = mReceiverTextDrawable;
+        this.context = context;
+        fetch = Fetch.newInstance(context);
     }
 
     @Override
@@ -107,7 +115,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                     holder.senderPhotoLayout.setVisibility(View.VISIBLE);
                     holder.senderFileLayout.setVisibility(View.GONE);
 
-                    holder.senderProgressBar.setVisibility(View.VISIBLE);
+                    holder.senderPhotoProgressLayout.setVisibility(View.VISIBLE);
                     RequestOptions requestOptions = new RequestOptions();
                     requestOptions.dontAnimate();
                     requestOptions.override(300, 300);
@@ -117,13 +125,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                             .listener(new RequestListener<Drawable>() {
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    holder.senderProgressBar.setVisibility(View.GONE);
+                                    holder.senderPhotoProgressLayout.setVisibility(View.GONE);
                                     return false;
                                 }
 
                                 @Override
                                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    holder.senderProgressBar.setVisibility(View.GONE);
+                                    holder.senderPhotoProgressLayout.setVisibility(View.GONE);
                                     return false;
                                 }
                             })
@@ -165,6 +173,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                 holder.receiverMessage.setVisibility(View.GONE);
 
                 if (message.getFileType().equals(RescribeConstants.FILE.DOC)) {
+
+//                    fileDownload();
+
                     holder.receiverFileLayout.setVisibility(View.VISIBLE);
                     holder.receiverPhotoLayout.setVisibility(View.GONE);
 
@@ -194,7 +205,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                     holder.receiverPhotoLayout.setVisibility(View.VISIBLE);
                     holder.receiverFileLayout.setVisibility(View.GONE);
 
-                    holder.receiverProgressBar.setVisibility(View.VISIBLE);
+                    holder.receiverPhotoProgressLayout.setVisibility(View.VISIBLE);
+
                     RequestOptions requestOptions = new RequestOptions();
                     requestOptions.dontAnimate();
                     requestOptions.override(300, 300);
@@ -204,13 +216,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                             .listener(new RequestListener<Drawable>() {
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    holder.receiverProgressBar.setVisibility(View.GONE);
+                                    holder.receiverPhotoProgressLayout.setVisibility(View.GONE);
                                     return false;
                                 }
 
                                 @Override
                                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    holder.receiverProgressBar.setVisibility(View.GONE);
+                                    holder.receiverPhotoProgressLayout.setVisibility(View.GONE);
                                     return false;
                                 }
                             })
@@ -230,6 +242,20 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         //TODO, sendProfiile Image will set, added it for now
         holder.receiverProfilePhoto.setImageDrawable(mReceiverTextDrawable);
 
+    }
+
+    private void fileDownload(String url, String dirPath, String fileName) {
+        if (NetworkUtil.getConnectivityStatusBoolean(context)) {
+            Request request = new Request(url, dirPath, fileName);
+            long downloadId = fetch.enqueue(request);
+
+            if (downloadId != Fetch.ENQUEUE_ERROR_ID) {
+                //Download was successfully queued for download.
+
+
+            }
+        } else
+            CommonMethods.showToast(context, context.getResources().getString(R.string.internet));
     }
 
     @Override
@@ -259,8 +285,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         CardView senderPhotoLayout;
         @BindView(R.id.senderMessageWithImage)
         TextView senderMessageWithImage;
-        @BindView(R.id.senderProgressBar)
-        ProgressBar senderProgressBar;
 
         @BindView(R.id.receiverPhotoThumb)
         ImageView receiverPhotoThumb;
@@ -268,8 +292,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         CardView receiverPhotoLayout;
         @BindView(R.id.receiverMessageWithImage)
         TextView receiverMessageWithImage;
-        @BindView(R.id.receiverProgressBar)
-        ProgressBar receiverProgressBar;
 
         // File
 
@@ -277,8 +299,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         ImageView senderFileIcon;
         @BindView(R.id.senderFileExtension)
         CustomTextView senderFileExtension;
-        @BindView(R.id.senderFileProgressBar)
-        ProgressBar senderFileProgressBar;
+       
         @BindView(R.id.senderFileLayout)
         RelativeLayout senderFileLayout;
 
@@ -286,11 +307,32 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         ImageView receiverFileIcon;
         @BindView(R.id.receiverFileExtension)
         CustomTextView receiverFileExtension;
-        @BindView(R.id.receiverFileProgressBar)
-        ProgressBar receiverFileProgressBar;
+       
         @BindView(R.id.receiverFileLayout)
         RelativeLayout receiverFileLayout;
 
+        @BindView(R.id.receiverFileDownloading)
+        RelativeLayout receiverFileDownloading;
+        @BindView(R.id.receiverFileDownloadStopped)
+        RelativeLayout receiverFileDownloadStopped;
+
+        @BindView(R.id.senderFileUploading)
+        RelativeLayout senderFileUploading;
+        @BindView(R.id.senderFileUploadStopped)
+        RelativeLayout senderFileUploadStopped;
+
+        @BindView(R.id.senderFileProgressLayout)
+        RelativeLayout senderFileProgressLayout;
+
+        @BindView(R.id.senderPhotoProgressLayout)
+        RelativeLayout senderPhotoProgressLayout;
+        
+        @BindView(R.id.receiverFileProgressLayout)
+        RelativeLayout receiverFileProgressLayout;
+
+        @BindView(R.id.receiverPhotoProgressLayout)
+        RelativeLayout receiverPhotoProgressLayout;
+        
         ListViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

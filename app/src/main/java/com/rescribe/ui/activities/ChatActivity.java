@@ -48,6 +48,7 @@ import com.rescribe.services.MQTTService;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+import com.tonyodev.fetch.Fetch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,8 +105,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
             boolean isReceived = intent.getBooleanExtra(MQTTService.RECEIVED, false);
 
             if (delivered) {
-
-                messageType.setText("");
 
                 Log.d(TAG, "Delivery Complete");
                 Log.d(TAG + " MESSAGE_ID", intent.getStringExtra(MQTTService.MESSAGE_ID));
@@ -218,7 +217,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         chatRecyclerView.setLayoutManager(mLayoutManager);
-        chatAdapter = new ChatAdapter(mqttMessage, doctorTextDrawable);
+        chatAdapter = new ChatAdapter(mqttMessage, doctorTextDrawable, ChatActivity.this);
         chatRecyclerView.setAdapter(chatAdapter);
 
         chatHelper.getChatHistory(next, chatList.getId(), Integer.parseInt(patId));
@@ -302,6 +301,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse {
 
                         if (mqttService.getNetworkStatus()) {
                             if (chatAdapter != null) {
+                                messageType.setText("");
                                 mqttMessage.add(messageL);
                                 chatAdapter.notifyItemInserted(mqttMessage.size() - 1);
                                 chatRecyclerView.smoothScrollToPosition(mqttMessage.size() - 1);

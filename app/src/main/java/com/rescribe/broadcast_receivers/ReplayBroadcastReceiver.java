@@ -16,9 +16,10 @@ import com.rescribe.services.MQTTService;
 import com.rescribe.util.RescribeConstants;
 
 import static com.rescribe.services.MQTTService.REPLY_ACTION;
+import static com.rescribe.services.MQTTService.SEND_MESSAGE;
 
 public class ReplayBroadcastReceiver extends BroadcastReceiver implements HelperResponse {
-    private static final String MESSAGE_LIST = "message_list";
+    public static final String MESSAGE_LIST = "message_list";
     private MQTTMessage recievedMessage;
     private Context context;
     private AppDBHelper appDBHelper;
@@ -66,11 +67,16 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
 
             // send msg by http api
 
-            ChatHelper chatHelper = new ChatHelper(context, ReplayBroadcastReceiver.this);
-            chatHelper.sendMsgToPatient(messageL);
+//            ChatHelper chatHelper = new ChatHelper(context, ReplayBroadcastReceiver.this);
+//            chatHelper.sendMsgToPatient(messageL);
 
             // send via mqtt
-//            mqttService.passMessage(messageL);
+            Intent intentService = new Intent(context, MQTTService.class);
+            intentService.putExtra(SEND_MESSAGE, true);
+            intentService.putExtra(MESSAGE_LIST, messageL);
+            context.startService(intentService);
+            MessageNotification.cancel(context, recievedMessage.getDocId());
+            appDBHelper.deleteUnreadMessage(recievedMessage.getDocId());
 
         }
     }

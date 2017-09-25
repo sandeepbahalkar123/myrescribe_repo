@@ -38,10 +38,14 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
+import static com.rescribe.broadcast_receivers.ReplayBroadcastReceiver.MESSAGE_LIST;
+import static com.rescribe.util.Config.BROKER;
+
 public class MQTTService extends Service {
 
     public static final String KEY_REPLY = "key_replay";
     public static final String REPLY_ACTION = "com.rescribe.REPLY_ACTION";
+    public static final String SEND_MESSAGE = "send_message";
 
     private static int currentChatUser;
     private static final String TAG = "MQTTService";
@@ -58,8 +62,6 @@ public class MQTTService extends Service {
     public static final String PATIENT = "user2";
 
     private MqttAsyncClient mqttClient;
-//    private static final String BROKER = "tcp://test.mosquitto.org:1883";
-    private static final String BROKER = "tcp://192.168.0.182:1883";
 
     private InternetState internetState;
     private Gson gson = new Gson();
@@ -139,7 +141,11 @@ public class MQTTService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        if (intent != null) {
+            if (intent.getBooleanExtra(SEND_MESSAGE, false)) {
+                passMessage((MQTTMessage) intent.getParcelableExtra(MESSAGE_LIST));
+            }
+        }
         return START_STICKY;
     }
 
@@ -186,7 +192,7 @@ public class MQTTService extends Service {
                             }
                         } else Log.d(TAG + " LOGOUT_MES", payloadString);
                     } catch (JsonSyntaxException e) {
-                        Log.d(TAG + " MESSAGE", payloadString);
+                        Log.d(TAG + " MESSAGE", "JSON_EXCEPTION" + payloadString);
                     }
                 }
 

@@ -22,6 +22,7 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -76,7 +77,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         return mBinder;
     }
 
-    public void customNotification(List<AppointmentsNotificationData> data, int index) {
+    public void customNotification(ArrayList<AppointmentsNotificationData> data, int index) {
 
         String drName = data.get(index).getDoctorName();
         int subNotificationId = data.get(index).getAptId();
@@ -125,9 +126,9 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
         if (customResponse instanceof AppointmentsNotificationModel) {
             AppointmentsNotificationModel appointmentsNotificationModel = (AppointmentsNotificationModel) customResponse;
-            if (!appointmentsNotificationModel.getData().isEmpty()) {
-                for (int index = 0; index < appointmentsNotificationModel.getData().size(); index++)
-                    customNotification(appointmentsNotificationModel.getData(), index);
+            if (!appointmentsNotificationModel.getData().getAptList().isEmpty()) {
+                for (int index = 0; index < appointmentsNotificationModel.getData().getAptList().size(); index++)
+                    customNotification(appointmentsNotificationModel.getData().getAptList(), index);
             }
         }
 

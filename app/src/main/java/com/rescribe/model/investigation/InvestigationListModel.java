@@ -17,7 +17,7 @@ public class InvestigationListModel implements Parcelable, CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private InvestigationNotification investigationNotification;
+    private InvestigationNotification investigationNotification = new InvestigationNotification();
     public final static Parcelable.Creator<InvestigationListModel> CREATOR = new Creator<InvestigationListModel>() {
 
 

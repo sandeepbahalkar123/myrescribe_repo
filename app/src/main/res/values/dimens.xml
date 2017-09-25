@@ -43,5 +43,6 @@
     <dimen name="dp46">46dp</dimen>
     <dimen name="dp34">34dp</dimen>
     <dimen name="dp18">18dp</dimen>
+    <dimen name="dp68">68dp</dimen>
 
 </resources>

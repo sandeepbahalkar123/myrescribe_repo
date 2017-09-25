@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorConnectAdapter;
 import com.rescribe.helpers.doctor_connect.DoctorConnectHelper;
@@ -21,6 +22,7 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -70,7 +72,7 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     @Override
     public void onResume() {
         super.onResume();
-        if (mDoctorConnectDataModel.getChatDoctor() == null) {
+        if (mDoctorConnectDataModel.getChatDoctor().isEmpty()) {
             String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, getContext());
             mDoctorConnectHelper.doDoctorConnecList(patientId);
         }else {

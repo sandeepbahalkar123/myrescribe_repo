@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AppointmentsNotificationModel implements CustomResponse {
 
     @SerializedName("common")
@@ -15,7 +12,7 @@ public class AppointmentsNotificationModel implements CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private List<AppointmentsNotificationData> data = new ArrayList<>();
+    private AppointmentData data;
 
     public Common getCommon() {
         return common;
@@ -25,11 +22,11 @@ public class AppointmentsNotificationModel implements CustomResponse {
         this.common = common;
     }
 
-    public List<AppointmentsNotificationData> getData() {
+    public AppointmentData getData() {
         return data;
     }
 
-    public void setData(List<AppointmentsNotificationData> data) {
+    public void setData(AppointmentData data) {
         this.data = data;
     }
 

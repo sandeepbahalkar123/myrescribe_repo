@@ -4,19 +4,15 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
-import com.rescribe.model.YearsMonthsDataList;
-
-import java.util.ArrayList;
 
 public class LoginModel implements CustomResponse {
 
     @SerializedName("common")
     @Expose
     private Common common;
-
     @SerializedName("data")
     @Expose
-    private LoginData loginData;
+    private LoginData LoginData;
 
     public Common getCommon() {
         return common;
@@ -27,10 +23,11 @@ public class LoginModel implements CustomResponse {
     }
 
     public LoginData getLoginData() {
-        return loginData;
+        return LoginData;
     }
 
-    public void setLoginData(LoginData loginData) {
-        this.loginData = loginData;
+    public void setLoginData(LoginData LoginData) {
+        this.LoginData = LoginData;
     }
+
 }

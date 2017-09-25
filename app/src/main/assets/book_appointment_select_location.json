@@ -1,0 +1,24 @@
+{
+  "common": {
+    "success": true,
+    "statusCode": 200,
+    "statusMessage": "USER AUTHENTICATED"
+  },
+  "data": {
+    "clinicFeesRange": [
+      250,
+      2500
+    ],
+    "distance": [
+      0,
+      10
+    ],
+    "locationList": [
+      "Baner",
+      "Pimple Saudagar",
+      "SB Road",
+      "Jehangir Hospital",
+      "Erandwane"
+    ]
+  }
+}

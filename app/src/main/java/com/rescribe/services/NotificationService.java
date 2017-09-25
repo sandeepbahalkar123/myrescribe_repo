@@ -109,7 +109,7 @@ public class NotificationService extends Service {
         mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME));
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification build = builder.build();
-        build.flags |= Notification.FLAG_INSISTENT;
+       // build.flags |= Notification.FLAG_INSISTENT;
         notificationmanager.notify(notification_id, build);
 
         stopSelf();

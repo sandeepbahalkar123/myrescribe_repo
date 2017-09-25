@@ -80,7 +80,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter;
     private BookAppointFilteredDocList mBookAppointFilteredDocListAdapter;
     private int currentPage = 0;
-    private  int totalPages ;
+    private int totalPages;
 
     public RecentVisitDoctorFragment() {
 
@@ -104,7 +104,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     private void init(View mRootView) {
         listView.setVisibility(View.VISIBLE);
-      //  mGridViewDoctorSpeciality.setVisibility(View.VISIBLE);
+        //  mGridViewDoctorSpeciality.setVisibility(View.VISIBLE);
         prevBtn.setVisibility(View.GONE);
         prevBtn.setEnabled(false);
         nextBtn.setVisibility(View.VISIBLE);
@@ -174,7 +174,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         bundleData.putString(getString(R.string.longitude), args.getString(getString(R.string.longitude)));
         Toast.makeText(getActivity(), "clicked :" + bundleData.getString(getString(R.string.clicked_item_data)), Toast.LENGTH_LONG).show();
         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundleData));
+        activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundleData), true);
     }
 
     @OnClick({R.id.viewpager, R.id.circleIndicator, R.id.pickSpeciality, R.id.listView, R.id.recyclerViewLinearLayout, R.id.doubtMessage, R.id.emptyListView, R.id.prevBtn, R.id.nextBtn})
@@ -188,8 +188,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 fragmentTransaction.commit();*/
                 break;
             case R.id.prevBtn:
-                currentPage-=1;
-                mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, generatePage(currentPage,bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities()));
+                currentPage -= 1;
+                mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, generatePage(currentPage, bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities()));
                 listView.setAdapter(mDoctorConnectSearchAdapter);
                 toggleButtons(bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
                 // listView.getLayoutManager().scrollToPosition(linearLayoutManager.findLastVisibleItemPosition() + 1);
@@ -202,11 +202,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 break;
             case R.id.doubtMessage:
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                activity.loadFragment(ComplaintsFragment.newInstance(new Bundle()));
+                activity.loadFragment(ComplaintsFragment.newInstance(new Bundle()),false);
                 break;
             case R.id.nextBtn:
-                currentPage+=1;
-                mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, generatePage(currentPage,bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities()));
+                currentPage += 1;
+                mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, generatePage(currentPage, bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities()));
                 listView.setAdapter(mDoctorConnectSearchAdapter);
                 toggleButtons(bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
                 break;
@@ -216,7 +216,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-         bookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
+        bookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
         if (bookAppointmentBaseModel.getDoctorServicesModel() == null) {
             pickSpeciality.setVisibility(View.GONE);
             doubtMessage.setVisibility(View.GONE);
@@ -236,7 +236,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             int spacing = 20; // 50px
             boolean includeEdge = true;
             listView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-            mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, generatePage(currentPage,bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities()));
+            mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, generatePage(currentPage, bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities()));
             // listView.setAdapter(mDoctorConnectSearchAdapter);
             listView.setAdapter(mDoctorConnectSearchAdapter);
             pickSpeciality.setVisibility(View.VISIBLE);
@@ -280,53 +280,47 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }*/
 
 
-        /*
-         * GENERATE A SINGLE PAGE DATA
-         * PASS US THE CURRENT PAGE POSITION THEN WE GENERATE NECEASSARY DATA
-         */
-        public ArrayList<DoctorSpeciality> generatePage(int currentPage,ArrayList<DoctorSpeciality> doctorSpecialities) {
-            int TOTAL_NUM_ITEMS = doctorSpecialities.size();
-           final int ITEMS_PER_PAGE = 9;
-           int ITEMS_REMAINING = TOTAL_NUM_ITEMS % ITEMS_PER_PAGE;
-          int LAST_PAGE = TOTAL_NUM_ITEMS / ITEMS_PER_PAGE;
+    /*
+     * GENERATE A SINGLE PAGE DATA
+     * PASS US THE CURRENT PAGE POSITION THEN WE GENERATE NECEASSARY DATA
+     */
+    public ArrayList<DoctorSpeciality> generatePage(int currentPage, ArrayList<DoctorSpeciality> doctorSpecialities) {
+        int TOTAL_NUM_ITEMS = doctorSpecialities.size();
+        final int ITEMS_PER_PAGE = 9;
+        int ITEMS_REMAINING = TOTAL_NUM_ITEMS % ITEMS_PER_PAGE;
+        int LAST_PAGE = TOTAL_NUM_ITEMS / ITEMS_PER_PAGE;
 
-            int startItem = currentPage * ITEMS_PER_PAGE ;
-            int numOfData = ITEMS_PER_PAGE;
-            ArrayList<DoctorSpeciality> pageData = new ArrayList();
+        int startItem = currentPage * ITEMS_PER_PAGE;
+        int numOfData = ITEMS_PER_PAGE;
+        ArrayList<DoctorSpeciality> pageData = new ArrayList();
 
-          //  doctorSpecialities = activity.getReceivedBookAppointmentBaseModel().getDoctorServicesModel().getDoctorSpecialities();
+        //  doctorSpecialities = activity.getReceivedBookAppointmentBaseModel().getDoctorServicesModel().getDoctorSpecialities();
 
-            if (currentPage == LAST_PAGE && ITEMS_REMAINING > 0) {
-                for (int i = startItem-1; i < startItem + ITEMS_REMAINING; i++) {
-                    pageData.add(doctorSpecialities.get(i));
-                }
-            } else {
-                for (int i = startItem; i < startItem + numOfData; i++) {
-                    pageData.add(doctorSpecialities.get(i));
-                }
+        if (currentPage == LAST_PAGE && ITEMS_REMAINING > 0) {
+            for (int i = startItem - 1; i < startItem + ITEMS_REMAINING; i++) {
+                pageData.add(doctorSpecialities.get(i));
             }
-            return pageData;
+        } else {
+            for (int i = startItem; i < startItem + numOfData; i++) {
+                pageData.add(doctorSpecialities.get(i));
+            }
         }
-    private void toggleButtons(ArrayList<DoctorSpeciality>doctorSpecialities)
-    {
-        totalPages = doctorSpecialities.size()/9;
-        if (currentPage == totalPages)
-        {   nextBtn.setVisibility(View.GONE);
+        return pageData;
+    }
+
+    private void toggleButtons(ArrayList<DoctorSpeciality> doctorSpecialities) {
+        totalPages = doctorSpecialities.size() / 9;
+        if (currentPage == totalPages) {
+            nextBtn.setVisibility(View.GONE);
             prevBtn.setVisibility(View.VISIBLE);
             nextBtn.setEnabled(false);
             prevBtn.setEnabled(true);
-        }
-        else
-        if (currentPage == 0)
-        {
+        } else if (currentPage == 0) {
             prevBtn.setVisibility(View.GONE);
             nextBtn.setVisibility(View.VISIBLE);
             prevBtn.setEnabled(false);
             nextBtn.setEnabled(true);
-        }
-        else
-        if (currentPage >= 1 && currentPage <= 5)
-        {
+        } else if (currentPage >= 1 && currentPage <= 5) {
             nextBtn.setVisibility(View.VISIBLE);
             prevBtn.setVisibility(View.VISIBLE);
             nextBtn.setEnabled(true);

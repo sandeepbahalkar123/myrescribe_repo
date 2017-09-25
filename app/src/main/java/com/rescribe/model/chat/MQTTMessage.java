@@ -6,11 +6,13 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import static com.rescribe.util.RescribeConstants.UPLOADING;
+
 public class MQTTMessage implements Parcelable {
 
     @SerializedName("msgId")
     @Expose
-    private int msgId;
+    private String msgId;
     @SerializedName("topic")
     @Expose
     private String topic;
@@ -29,10 +31,7 @@ public class MQTTMessage implements Parcelable {
     @SerializedName("user1id")
     @Expose
     private int docId;
-
-    // Added
-
-    @SerializedName("name")
+    @SerializedName("senderName")
     @Expose
     private String name;
     @SerializedName("speciality")
@@ -44,12 +43,22 @@ public class MQTTMessage implements Parcelable {
     @SerializedName("paidStatus")
     @Expose
     private int paidStatus;
-    @SerializedName("imageUrl")
+    @SerializedName("senderImgUrl")
     @Expose
-    private String imageUrl;
+    private String imageUrl = "";
+    @SerializedName("fileUrl")
+    @Expose
+    private String fileUrl = "";
+    @SerializedName("fileType")
+    @Expose
+    private String fileType = "";
     @SerializedName("address")
     @Expose
     private String address;
+
+    @SerializedName("uploadStatus")
+    @Expose
+    private int uploadStatus = UPLOADING;
 
     // Added End
 
@@ -60,21 +69,23 @@ public class MQTTMessage implements Parcelable {
         })
         public MQTTMessage createFromParcel(Parcel in) {
             MQTTMessage instance = new MQTTMessage();
-            instance.msgId = ((int) in.readValue((int.class.getClassLoader())));
+            instance.msgId = ((String) in.readValue((int.class.getClassLoader())));
             instance.topic = ((String) in.readValue((String.class.getClassLoader())));
             instance.msg = ((String) in.readValue((String.class.getClassLoader())));
             instance.msgTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.sender = ((String) in.readValue((String.class.getClassLoader())));
-            instance.docId = ((int) in.readValue((int.class.getClassLoader())));
             instance.patId = ((int) in.readValue((int.class.getClassLoader())));
-
-            instance.paidStatus = ((int) in.readValue((int.class.getClassLoader())));
-
+            instance.docId = ((int) in.readValue((int.class.getClassLoader())));
             instance.name = ((String) in.readValue((String.class.getClassLoader())));
             instance.specialization = ((String) in.readValue((String.class.getClassLoader())));
             instance.onlineStatus = ((String) in.readValue((String.class.getClassLoader())));
+            instance.paidStatus = ((int) in.readValue((int.class.getClassLoader())));
             instance.imageUrl = ((String) in.readValue((String.class.getClassLoader())));
+            instance.fileUrl = ((String) in.readValue((String.class.getClassLoader())));
+            instance.fileType = ((String) in.readValue((String.class.getClassLoader())));
             instance.address = ((String) in.readValue((String.class.getClassLoader())));
+
+            instance.uploadStatus = ((int) in.readValue((int.class.getClassLoader())));
 
             return instance;
         }
@@ -85,11 +96,11 @@ public class MQTTMessage implements Parcelable {
 
     };
 
-    public int getMsgId() {
+    public String getMsgId() {
         return msgId;
     }
 
-    public void setMsgId(int msgId) {
+    public void setMsgId(String msgId) {
         this.msgId = msgId;
     }
 
@@ -189,21 +200,52 @@ public class MQTTMessage implements Parcelable {
         this.name = name;
     }
 
+    public void setPaidStatus(int paidStatus) {
+        this.paidStatus = paidStatus;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+    public int getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(int uploadStatus) {
+        this.uploadStatus = uploadStatus;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(msgId);
         dest.writeValue(topic);
         dest.writeValue(msg);
         dest.writeValue(msgTime);
         dest.writeValue(sender);
-        dest.writeValue(docId);
         dest.writeValue(patId);
-
-        dest.writeValue(paidStatus);
+        dest.writeValue(docId);
         dest.writeValue(name);
         dest.writeValue(specialization);
         dest.writeValue(onlineStatus);
+        dest.writeValue(paidStatus);
         dest.writeValue(imageUrl);
+        dest.writeValue(fileUrl);
+        dest.writeValue(fileType);
         dest.writeValue(address);
+
+        dest.writeValue(uploadStatus);
     }
 
     public int describeContents() {

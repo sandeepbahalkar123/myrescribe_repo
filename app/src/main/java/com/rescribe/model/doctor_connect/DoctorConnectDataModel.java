@@ -15,7 +15,7 @@ public class DoctorConnectDataModel implements Parcelable, CustomResponse {
 
     @SerializedName("doctorList")
     @Expose
-    private ArrayList<ChatDoctor> chatDoctor = null;
+    private ArrayList<ChatDoctor> chatDoctor = new ArrayList<>();
     public final static Creator<DoctorConnectDataModel> CREATOR = new Creator<DoctorConnectDataModel>() {
 
 

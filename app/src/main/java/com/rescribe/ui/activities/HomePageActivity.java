@@ -1,10 +1,12 @@
 package com.rescribe.ui.activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -29,14 +31,19 @@ import net.gotev.uploadservice.UploadService;
 
 import java.util.Calendar;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
+
 /**
  * Created by jeetal on 28/6/17.
  */
 
+@RuntimePermissions
 public class HomePageActivity extends DrawerActivity {
 
     private static final long MANAGE_ACCOUNT = 121;
     private static final long ADD_ACCOUNT = 122;
+    private static final String TAG = "HomePage";
     private Context mContext;
     private String mGetMealTime;
     String breakFastTime = "";
@@ -53,6 +60,7 @@ public class HomePageActivity extends DrawerActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContext = HomePageActivity.this;
+        HomePageActivityPermissionsDispatcher.getPermissionWithCheck(HomePageActivity.this);
         appDBHelper = new AppDBHelper(mContext);
 
         String currentDate = CommonMethods.getCurrentDate();
@@ -65,6 +73,16 @@ public class HomePageActivity extends DrawerActivity {
         drawerConfiguration();
     }
 
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void getPermission() {
+        CommonMethods.Log(TAG, "asked permission");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        HomePageActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
 
     private void notificationForMedicine() {
 

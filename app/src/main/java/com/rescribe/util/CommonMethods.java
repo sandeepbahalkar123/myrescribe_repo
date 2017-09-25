@@ -290,18 +290,20 @@ public class CommonMethods {
 
     public static String getFormatedDate(String strDate, String sourceFormate,
                                          String destinyFormate) {
-        SimpleDateFormat df;
-        df = new SimpleDateFormat(sourceFormate, Locale.US);
-        Date date = null;
-        try {
-            date = df.parse(strDate);
+        if (strDate != null) {
+            SimpleDateFormat df;
+            df = new SimpleDateFormat(sourceFormate, Locale.US);
+            Date date = null;
+            try {
+                date = df.parse(strDate);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-        df = new SimpleDateFormat(destinyFormate, Locale.US);
-        return df.format(date);
+            df = new SimpleDateFormat(destinyFormate, Locale.US);
+            return df.format(date);
+        } else return "";
     }
 
     /**
@@ -743,6 +745,10 @@ public class CommonMethods {
                 datePickerDialog.show();
             }
         }
+    }
+
+    public static String getExtension(String filePath) {
+        return filePath.substring(filePath.lastIndexOf(".") + 1);
     }
 }
 

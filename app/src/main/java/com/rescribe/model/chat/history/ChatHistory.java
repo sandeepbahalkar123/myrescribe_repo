@@ -10,7 +10,7 @@ public class ChatHistory implements Parcelable {
 
     @SerializedName("chat_id")
     @Expose
-    private int chatId;
+    private String chatId = "";
     @SerializedName("user_1_id")
     @Expose
     private int user1Id;
@@ -22,7 +22,7 @@ public class ChatHistory implements Parcelable {
     private String sender;
     @SerializedName("msg")
     @Expose
-    private String msg;
+    private String msg = "";
     @SerializedName("msgTime")
     @Expose
     private String msgTime;
@@ -43,10 +43,14 @@ public class ChatHistory implements Parcelable {
     private int paidStatus;
     @SerializedName("imageUrl")
     @Expose
-    private String imageUrl;
+    private String imageUrl = "";
     @SerializedName("address")
     @Expose
     private String address;
+
+    @SerializedName("fileType")
+    @Expose
+    private String fileType;
 
     // Added End
 
@@ -58,7 +62,7 @@ public class ChatHistory implements Parcelable {
         })
         public ChatHistory createFromParcel(Parcel in) {
             ChatHistory instance = new ChatHistory();
-            instance.chatId = ((int) in.readValue((int.class.getClassLoader())));
+            instance.chatId = ((String) in.readValue((int.class.getClassLoader())));
             instance.user1Id = ((int) in.readValue((int.class.getClassLoader())));
             instance.user2Id = ((int) in.readValue((int.class.getClassLoader())));
             instance.sender = ((String) in.readValue((String.class.getClassLoader())));
@@ -73,6 +77,8 @@ public class ChatHistory implements Parcelable {
             instance.imageUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.address = ((String) in.readValue((String.class.getClassLoader())));
 
+            instance.fileType = ((String) in.readValue((String.class.getClassLoader())));
+
             return instance;
         }
 
@@ -82,11 +88,11 @@ public class ChatHistory implements Parcelable {
 
     };
 
-    public int getChatId() {
+    public String getChatId() {
         return chatId;
     }
 
-    public void setChatId(int chatId) {
+    public void setChatId(String chatId) {
         this.chatId = chatId;
     }
 
@@ -180,6 +186,14 @@ public class ChatHistory implements Parcelable {
         this.name = name;
     }
 
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
     // End Added
 
     public void writeToParcel(Parcel dest, int flags) {
@@ -196,10 +210,11 @@ public class ChatHistory implements Parcelable {
         dest.writeValue(onlineStatus);
         dest.writeValue(imageUrl);
         dest.writeValue(address);
+
+        dest.writeValue(fileType);
     }
 
     public int describeContents() {
         return 0;
     }
-
 }

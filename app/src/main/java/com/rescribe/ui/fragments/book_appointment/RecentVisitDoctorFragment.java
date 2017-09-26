@@ -109,7 +109,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     private void init(View mRootView) {
         listView.setVisibility(View.VISIBLE);
-        whiteUnderLine.setVisibility(View.VISIBLE);
+
         //  mGridViewDoctorSpeciality.setVisibility(View.VISIBLE);
         prevBtn.setVisibility(View.GONE);
         prevBtn.setEnabled(false);
@@ -164,7 +164,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
         bundleData.putString(getString(R.string.latitude), args.getString(getString(R.string.latitude)));
         bundleData.putString(getString(R.string.longitude), args.getString(getString(R.string.longitude)));
-        Toast.makeText(getActivity(), "clicked :" + bundleData.getString(getString(R.string.clicked_item_data)), Toast.LENGTH_LONG).show();
         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
         activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundleData), true);
     }
@@ -208,12 +207,15 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+
         bookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
         if (bookAppointmentBaseModel.getDoctorServicesModel() == null) {
             pickSpeciality.setVisibility(View.GONE);
             doubtMessage.setVisibility(View.GONE);
             emptyListView.setVisibility(View.VISIBLE);
         } else {
+            whiteUnderLine.setVisibility(View.VISIBLE);
+            searchView.setVisibility(View.VISIBLE);
             emptyListView.setVisibility(View.GONE);
 
             ViewPager viewpager = (ViewPager) mRootView.findViewById(R.id.viewpager);
@@ -273,6 +275,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @Override
     public void onClickOfDoctorRowItem(Bundle bundleData) {
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
 
     }
 

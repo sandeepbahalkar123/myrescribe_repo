@@ -95,11 +95,39 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
         TextView kilometers = (TextView) modalbottomsheet.findViewById(R.id.kilometers);
         ImageView directions = (ImageView) modalbottomsheet.findViewById(R.id.directions);
         RatingBar ratingBar = (RatingBar) modalbottomsheet.findViewById(R.id.ratingBar);
+        ImageView moreInfo = (ImageView) modalbottomsheet.findViewById(R.id.moreInfo);
+
         // TextView doctorName = (TextView)modalbottomsheet.findViewById(R.id.doctorName);
         dialog = new BottomSheetDialog(getActivity());
         dialog.setContentView(modalbottomsheet);
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
+
+       /* moreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<DoctorList> doctorLists = new ArrayList<>();
+                DoctorList doctorList = new DoctorList();
+                doctorList.setAboutDoctor(doctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
+                doctorList.setAmount(doctorLists.get(Integer.parseInt(marker.getTitle())).getAmount());
+                doctorList.setAvailableTimeSlots(doctorLists.get(Integer.parseInt(marker.getTitle())).getAvailableTimeSlots());
+                doctorList.setDegree(doctorLists.get(Integer.parseInt(marker.getTitle())).getDegree());
+                doctorList.setDistance(doctorLists.get(Integer.parseInt(marker.getTitle())).getDistance());
+                doctorList.setDocId(doctorLists.get(Integer.parseInt(marker.getTitle())).getDocId());
+                doctorList.setDocName(doctorLists.get(Integer.parseInt(marker.getTitle())).getDocName());
+                doctorList.setDoctorAddress(doctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorAddress());
+                doctorList.setDoctorImageUrl(doctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorImageUrl());
+                doctorList.setExperience(doctorLists.get(Integer.parseInt(marker.getTitle())).getExperience());
+                doctorList.setAboutDoctor(doctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
+                doctorList.setAboutDoctor(doctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
+                doctorList.setAboutDoctor(doctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
+
+
+                args.putParcelable(getString(R.string.more_info),doctorList);
+                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(args), false);
+            }
+        });*/
         ratingBar.setRating((float) doctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
         directions.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -111,7 +111,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 morePracticePlaces) {
             builder.append(s + "\n");
         }
-        mDoctorPractices.setText("" + builder.toString());
+        mDoctorPractices.setText(getString(R.string.also_practices) +getString(R.string.space)+ builder.toString());
         mOpeningTime.setText("" + mClickedDoctorObject.getOpenToday());
         if (mClickedDoctorObject.getAvailableTimeSlots().size() > 0) {
             mShowAllTimeSlotListView.setVisibility(View.VISIBLE);

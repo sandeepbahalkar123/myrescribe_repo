@@ -21,6 +21,7 @@
             android:layout_marginLeft="@dimen/dp10"
             android:layout_marginRight="@dimen/dp10"
             android:layout_weight="1"
+            android:visibility="gone"
             android:drawableLeft="@drawable/search"
             android:drawablePadding="@dimen/dp4"
             android:focusable="false"

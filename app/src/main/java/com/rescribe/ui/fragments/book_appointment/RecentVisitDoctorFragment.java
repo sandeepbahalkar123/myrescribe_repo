@@ -133,7 +133,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     recentDoctorLayout.setVisibility(View.GONE);
                     showDoctorsRecyclerView.setVisibility(View.VISIBLE);
                     BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), activity.getReceivedBookAppointmentBaseModel().getDoctorServicesModel().getDoctorList(), RecentVisitDoctorFragment.this);
+                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), activity.getReceivedBookAppointmentBaseModel().getDoctorServicesModel().getDoctorList(), RecentVisitDoctorFragment.this,RecentVisitDoctorFragment.this);
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                     showDoctorsRecyclerView.setLayoutManager(layoutManager);
                     showDoctorsRecyclerView.setHasFixedSize(true);
@@ -202,7 +202,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 break;
             case R.id.doubtMessage:
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                activity.loadFragment(ComplaintsFragment.newInstance(new Bundle()),false);
+                activity.loadFragment(ComplaintsFragment.newInstance(new Bundle()), false);
                 break;
             case R.id.nextBtn:
                 currentPage += 1;
@@ -325,6 +325,16 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             prevBtn.setVisibility(View.VISIBLE);
             nextBtn.setEnabled(true);
             prevBtn.setEnabled(true);
+        }
+    }
+
+    public void isDataListViewVisible(boolean flag) {
+        if (flag) {
+            recentDoctorLayout.setVisibility(View.GONE);
+            showDoctorsRecyclerView.setVisibility(View.VISIBLE);
+        } else {
+            recentDoctorLayout.setVisibility(View.VISIBLE);
+            showDoctorsRecyclerView.setVisibility(View.GONE);
         }
     }
 

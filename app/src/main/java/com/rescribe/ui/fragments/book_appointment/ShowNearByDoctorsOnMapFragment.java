@@ -172,6 +172,10 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
                 LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
                 doctorLists.get(index).setLatitude(p1.getLatitude());
                 doctorLists.get(index).setLongitude(p1.getLongitude());
+              /*  IconGenerator iconFactory = new IconGenerator(this);
+                iconFactory.setStyle(IconGenerator.STYLE_PURPLE);
+                options.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(mLastUpdateTime)));
+                options.anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());*/
                 Marker marker = mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(getMarkerIcon("#04abdf")));
                 mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(getMarkerIcon("#04abdf")));
                 marker.showInfoWindow();

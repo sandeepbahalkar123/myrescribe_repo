@@ -194,16 +194,16 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
 
     @Override
     public void setOnClickOfServices() {
-
+/*
         if (locationTextView.getText().toString().equals(getString(R.string.location))) {
             Toast.makeText(mContext, getString(R.string.please_select_location), Toast.LENGTH_SHORT).show();
-        } else {
+        } else {*/
         Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
         intent.putExtra(getString(R.string.latitude), latitude);
         intent.putExtra(getString(R.string.longitude), longitude);
         intent.putExtra(getString(R.string.title), locationTextView.getText().toString());
         startActivity(intent);
-        }
+     /*   }*/
 
     }
 }

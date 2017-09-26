@@ -3,6 +3,7 @@ package com.rescribe.adapters.book_appointment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -28,6 +29,7 @@ import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.MapsActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.NetworkUtil;
 import com.rescribe.util.RescribeConstants;
@@ -44,6 +46,7 @@ import butterknife.ButterKnife;
 
 public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppointFilteredDocList.ListViewHolder> implements Filterable {
 
+    private Fragment mFragment;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
     private int imageSize;
@@ -52,11 +55,12 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     private String searchString;
 
 
-    public BookAppointFilteredDocList(Context mContext, ArrayList<DoctorList> dataList, BookAppointFilteredDocList.OnFilterDocListClickListener mOnFilterDocListClickListener) {
+    public BookAppointFilteredDocList(Context mContext, ArrayList<DoctorList> dataList, BookAppointFilteredDocList.OnFilterDocListClickListener mOnFilterDocListClickListener, Fragment m) {
         this.mDataList = dataList;
         this.mContext = mContext;
         this.mArrayList = dataList;
         this.mOnFilterDocListClickListener = mOnFilterDocListClickListener;
+        this.mFragment = m;
         setColumnNumber(mContext, 2);
     }
 
@@ -78,6 +82,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
+
         final DoctorList doctorObject = mDataList.get(position);
 
         holder.doctorName.setText(doctorObject.getDocName());
@@ -167,6 +172,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     public interface OnFilterDocListClickListener {
         void onClickOfDoctorRowItem(Bundle bundleData);
     }
+
     @Override
     public Filter getFilter() {
 
@@ -190,19 +196,38 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                             filteredList.add(doctorConnectModel);
                         }
                     }
+                if(filteredList.size()==0){
+                    RecentVisitDoctorFragment temp = (RecentVisitDoctorFragment) mFragment;
+                    temp.isDataListViewVisible(false);
 
+                }else {
                     mDataList = filteredList;
                 }
+                }
+
 
                 FilterResults filterResults = new FilterResults();
+
                 filterResults.values = mDataList;
-                return filterResults;
+
+                return new FilterResults();
+
+
+
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 mDataList = (ArrayList<DoctorList>) filterResults.values;
-                notifyDataSetChanged();
+                RecentVisitDoctorFragment temp = (RecentVisitDoctorFragment) mFragment;
+                temp.isDataListViewVisible(true);
+              /*  if (mDataList.size() == 0) {
+
+                } else {
+                    RecentVisitDoctorFragment temp = (RecentVisitDoctorFragment) mFragment;
+                    temp.isDataListViewVisible(true);*/
+                    notifyDataSetChanged();
+               /* }*/
             }
         };
     }

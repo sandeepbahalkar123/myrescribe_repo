@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -10,62 +11,60 @@
         android:layout_margin="@dimen/dp16"
         android:orientation="vertical">
 
-        <TextView
+        <com.rescribe.ui.customesViews.CustomTextView
             android:textSize="@dimen/sp16"
             android:textColor="@color/tagColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:customFont="@string/roboto_bold"
             android:layout_gravity="center_vertical"
             android:text="@string/relevantkeywords" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <com.rescribe.ui.customesViews.CustomTextView
+          <!--  <com.rescribe.ui.customesViews.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp10"
                 android:layout_weight="1"
+                style="@style/CompalintStyle"
                 android:text="@string/complaint1"
                 android:textColor="@color/tagColor"
                 android:textSize="@dimen/sp16" />
-
+-->
             <EditText
+                style="@style/CompalintStyle"
                 android:id="@+id/editTextComplaint1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:textSize="@dimen/sp16"
-                android:hint="@string/enter_string_here"
+                android:hint="@string/complaint1"
                 android:inputType="text" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/tagColor" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp10"
-                android:layout_weight="1"
-                android:text="@string/complaint2"
-                android:textColor="@color/tagColor"
-                android:textSize="@dimen/sp16" />
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/editTextComplaint2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+              style="@style/CompalintStyle"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
                 android:textSize="@dimen/sp16"
-                android:hint="@string/enter_string_here"
+                android:hint="@string/complaint2"
                 android:inputType="text" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/tagColor" />
         </LinearLayout>
     </LinearLayout>
 

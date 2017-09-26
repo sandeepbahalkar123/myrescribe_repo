@@ -6,6 +6,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rescribe.R;
@@ -53,8 +54,23 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.doctorFees);
         final TextView kilometers = (TextView) imageLayout
                 .findViewById(R.id.kilometers);
+        final ImageView favoriteView = (ImageView) imageLayout
+                .findViewById(R.id.favoriteView);
+        final TextView recentVisitView = (TextView) imageLayout
+                .findViewById(R.id.recentVisitView);
 
 
+        if(!doctorLists.get(position).getRecentlyVisited()){
+            recentVisitView.setVisibility(View.INVISIBLE);
+        }else if(!doctorLists.get(position).getFavourite()){
+            favoriteView.setVisibility(View.INVISIBLE);
+        }else if(!doctorLists.get(position).getRecentlyVisited()&&!doctorLists.get(position).getFavourite()){
+            favoriteView.setVisibility(View.INVISIBLE);
+            recentVisitView.setVisibility(View.INVISIBLE);
+        }else{
+            favoriteView.setVisibility(View.VISIBLE);
+            recentVisitView.setVisibility(View.VISIBLE);
+        }
         doctorName.setText(doctorLists.get(position).getDocName());
         doctorType.setText(doctorLists.get(position).getDegree());
         doctorExperience.setText(""+doctorLists.get(position).getExperience());

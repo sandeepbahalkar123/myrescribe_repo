@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.ServicesList;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 
@@ -53,6 +54,7 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListVi
 
             }
         });
+        holder.serviceIcon.setImageResource(CommonMethods.getServices(servicesList.getServiceName(),mContext));
 
     }
 

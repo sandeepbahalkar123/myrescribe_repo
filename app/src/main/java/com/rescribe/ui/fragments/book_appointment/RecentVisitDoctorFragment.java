@@ -14,10 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rescribe.R;
@@ -75,6 +75,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     ImageView nextBtn;
     @BindView(R.id.listView)
     RecyclerView listView;
+    @BindView(R.id.whiteUnderLine)
+    TextView whiteUnderLine;
     private View mRootView;
     Unbinder unbinder;
     static Bundle args;
@@ -92,7 +94,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.recent_visit_doctor, container, false);
-      //  hideSoftKeyboard();
+        //  hideSoftKeyboard();
         unbinder = ButterKnife.bind(this, mRootView);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
@@ -107,6 +109,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     private void init(View mRootView) {
         listView.setVisibility(View.VISIBLE);
+        whiteUnderLine.setVisibility(View.VISIBLE);
         //  mGridViewDoctorSpeciality.setVisibility(View.VISIBLE);
         prevBtn.setVisibility(View.GONE);
         prevBtn.setEnabled(false);
@@ -222,7 +225,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             listView.setLayoutManager(layoutManager);
             listView.setItemAnimator(new DefaultItemAnimator());
             int spanCount = 3; // 3 columns
-            int spacing = 20; // 50px
+            int spacing = 30; // 50px
             boolean includeEdge = true;
             listView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
             mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, generatePage(currentPage, bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities()));

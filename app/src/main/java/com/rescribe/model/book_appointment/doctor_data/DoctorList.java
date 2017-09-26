@@ -68,6 +68,21 @@ public class DoctorList implements Parcelable {
     @SerializedName("availableTimeSlots")
     @Expose
     private ArrayList<String> availableTimeSlots = new ArrayList<>();
+    @SerializedName("favourite")
+    @Expose
+    private Boolean favourite;
+
+
+    public Boolean getFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(Boolean favourite) {
+        this.favourite = favourite;
+    }
+
+
+
     private Double latitude;
 
     public Double getLatitude() {
@@ -113,6 +128,7 @@ public class DoctorList implements Parcelable {
             instance.tokenNo = ((Integer) in.readValue((Integer.class.getClassLoader())));
             in.readList(instance.morePracticePlaces, (String.class.getClassLoader()));
             instance.openToday = ((String) in.readValue((String.class.getClassLoader())));
+            instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             in.readList(instance.availableTimeSlots, (String.class.getClassLoader()));
             return instance;
         }
@@ -285,6 +301,7 @@ public class DoctorList implements Parcelable {
         dest.writeValue(tokenNo);
         dest.writeList(morePracticePlaces);
         dest.writeValue(openToday);
+        dest.writeValue(favourite);
         dest.writeList(availableTimeSlots);
     }
 
@@ -313,6 +330,7 @@ public class DoctorList implements Parcelable {
                 ", morePracticePlaces=" + morePracticePlaces +
                 ", openToday='" + openToday + '\'' +
                 ", availableTimeSlots=" + availableTimeSlots +
+                ", favourite=" + favourite +
                 '}';
     }
 }

@@ -1,0 +1,35 @@
+{
+  "common": {
+    "success": true,
+    "statusCode": 200,
+    "statusMessage": "USER AUTHENTICATED"
+  },
+  "data": {
+    "vitalList": [
+      {
+        "vitalId": 1,
+        "vitalName": "Blood Pressure",
+        "vitalWeight": "130/88 mm Hg",
+        "vitalDate": "1ˢᵗ Aug’17 "
+      },
+      {
+        "vitalId": 2,
+        "vitalName": "Total Cholesterol",
+        "vitalWeight": "200 mg/dl",
+        "vitalDate": "2ⁿᵈ Aug’17 "
+      },
+      {
+        "vitalId": 3,
+        "vitalName": "Weight",
+        "vitalWeight": "68 Kgs",
+        "vitalDate": "3ʳᵈ Aug’17 "
+      },
+      {
+        "vitalId": 4,
+        "vitalName": "Temperature",
+        "vitalWeight": "103 F",
+        "vitalDate": "4ᵗʰ Aug’17 "
+      }
+    ]
+  }
+}

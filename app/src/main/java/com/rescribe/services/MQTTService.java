@@ -56,7 +56,7 @@ public class MQTTService extends Service {
     public static final String MESSAGE_ID = "message_id";
     public static final String RECEIVED = "delivery";
     public static final String DOCTOR_CONNECT = "doctorConnect";
-    private static final String TOPIC[] = {"doctorConnect", "doctor/online"};
+    private static final String TOPIC[] = {"doctorConnect", "doctor/status"};
     public static final String DELIVERED = "delivered";
 
     //    public static final String DOCTOR = "user1";

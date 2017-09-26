@@ -140,7 +140,11 @@ public class RescribeConstants {
     public static final String DOCTOR_DATA_REQUEST = "doctor_request_info";
 
 
-    public static final String ONLINE = "online";
+    public static class USER_STATUS{
+        public static final String ONLINE = "online";
+        public static final String OFFLINE = "offline";
+        public static final String TYPING = "typing";
+    }
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 

@@ -341,7 +341,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                         messageL.setPatId(Integer.parseInt(patId));
 
                         messageL.setName(patientName);
-                        messageL.setOnlineStatus(RescribeConstants.ONLINE);
+                        messageL.setOnlineStatus(RescribeConstants.USER_STATUS.ONLINE);
                         messageL.setImageUrl(imageUrl);
 
                         messageL.setFileUrl("");
@@ -442,7 +442,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             messageL.setPatId(Integer.parseInt(patId));
 
             messageL.setName(patientName);
-            messageL.setOnlineStatus(RescribeConstants.ONLINE);
+            messageL.setOnlineStatus(RescribeConstants.USER_STATUS.ONLINE);
             messageL.setImageUrl(imageUrl);
 
             messageL.setFileUrl(file);
@@ -479,7 +479,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             messageL.setPatId(Integer.parseInt(patId));
 
             messageL.setName(patientName);
-            messageL.setOnlineStatus(RescribeConstants.ONLINE);
+            messageL.setOnlineStatus(RescribeConstants.USER_STATUS.ONLINE);
             messageL.setImageUrl(imageUrl);
 
             messageL.setFileUrl(file);

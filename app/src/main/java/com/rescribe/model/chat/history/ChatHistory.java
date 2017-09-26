@@ -22,7 +22,7 @@ public class ChatHistory implements Parcelable {
     private String sender;
     @SerializedName("msg")
     @Expose
-    private String msg;
+    private String msg = "";
     @SerializedName("msgTime")
     @Expose
     private String msgTime;
@@ -43,10 +43,14 @@ public class ChatHistory implements Parcelable {
     private int paidStatus;
     @SerializedName("imageUrl")
     @Expose
-    private String imageUrl;
+    private String imageUrl = "";
     @SerializedName("address")
     @Expose
     private String address;
+
+    @SerializedName("fileType")
+    @Expose
+    private String fileType;
 
     // Added End
 
@@ -72,6 +76,8 @@ public class ChatHistory implements Parcelable {
             instance.onlineStatus = ((String) in.readValue((String.class.getClassLoader())));
             instance.imageUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.address = ((String) in.readValue((String.class.getClassLoader())));
+
+            instance.fileType = ((String) in.readValue((String.class.getClassLoader())));
 
             return instance;
         }
@@ -180,6 +186,14 @@ public class ChatHistory implements Parcelable {
         this.name = name;
     }
 
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
     // End Added
 
     public void writeToParcel(Parcel dest, int flags) {
@@ -196,10 +210,11 @@ public class ChatHistory implements Parcelable {
         dest.writeValue(onlineStatus);
         dest.writeValue(imageUrl);
         dest.writeValue(address);
+
+        dest.writeValue(fileType);
     }
 
     public int describeContents() {
         return 0;
     }
-
 }

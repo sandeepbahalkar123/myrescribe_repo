@@ -19,7 +19,6 @@ import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
-import com.rescribe.ui.activities.book_appointment.ShowNearByDoctorsOnMapFragment;
 
 import java.util.ArrayList;
 
@@ -101,7 +100,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                     isDataListViewVisible(false);
                 } else {
                     isDataListViewVisible(true);
-                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList, this);
+                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList, this,this );
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                     mDoctorListView.setLayoutManager(layoutManager);
                     mDoctorListView.setHasFixedSize(true);

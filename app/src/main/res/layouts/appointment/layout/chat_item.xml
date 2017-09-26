@@ -16,6 +16,8 @@
             android:id="@+id/senderMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/senderProfilePhoto"
+            android:layout_toStartOf="@+id/senderProfilePhoto"
             android:background="@drawable/blue_1"
             android:paddingBottom="@dimen/dp8"
             android:paddingEnd="@dimen/dp16"
@@ -25,18 +27,113 @@
             android:paddingTop="@dimen/dp8"
             android:textColor="@color/white"
             android:textSize="@dimen/sp14"
-            android:layout_toStartOf="@+id/senderProfilePhoto"
             app:customFont="@string/roboto_regular"
             tools:text="@string/dummy_normal"
-            android:layout_toLeftOf="@+id/senderProfilePhoto" />
+            tools:visibility="gone" />
 
         <ImageView
             android:id="@+id/senderProfilePhoto"
             android:layout_width="@dimen/dp40"
             android:layout_height="@dimen/dp40"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/exercise"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:src="@drawable/exercise" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/senderPhotoLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp68"
+            android:layout_marginStart="@dimen/dp68"
+            android:layout_toLeftOf="@+id/senderProfilePhoto"
+            android:layout_toStartOf="@+id/senderProfilePhoto"
+            app:cardCornerRadius="@dimen/dp10"
+            app:cardElevation="@dimen/dp5"
+            app:cardUseCompatPadding="true"
+            tools:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <droidninja.filepicker.views.SquareRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/senderPhotoThumb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        tools:src="@drawable/coachmark" />
+
+                    <ProgressBar
+                        android:id="@+id/senderProgressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true" />
+
+                </droidninja.filepicker.views.SquareRelativeLayout>
+
+                <TextView
+                    android:id="@+id/senderMessageWithImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp6"
+                    tools:text="@string/dummy_full" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <RelativeLayout
+            android:id="@+id/senderFileLayout"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp68"
+            android:layout_marginStart="@dimen/dp68"
+            android:layout_toLeftOf="@+id/senderProfilePhoto"
+            android:layout_toStartOf="@+id/senderProfilePhoto"
+            android:background="@drawable/blue_1"
+            android:paddingBottom="@dimen/dp8"
+            android:paddingEnd="@dimen/dp16"
+            android:paddingLeft="@dimen/dp8"
+            android:paddingRight="@dimen/dp16"
+            android:paddingStart="@dimen/dp8"
+            android:paddingTop="@dimen/dp8">
+
+            <ImageView
+                android:id="@+id/senderFileIcon"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
+                android:layout_centerVertical="true"
+                tools:src="@drawable/welcome_copy_3" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/senderFileExtension"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/senderFileIcon"
+                android:layout_toLeftOf="@+id/senderFileProgressBar"
+                android:layout_toRightOf="@id/senderFileIcon"
+                android:layout_toStartOf="@+id/senderFileProgressBar"
+                android:padding="@dimen/dp6"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                app:customFont="@string/roboto_medium"
+                tools:text="exl" />
+
+            <ProgressBar
+                android:id="@+id/senderFileProgressBar"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -67,7 +164,105 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp14"
             app:customFont="@string/roboto_regular"
-            tools:text="Hi Hello" />
+            tools:text="Hi Hello"
+            tools:visibility="gone" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/receiverPhotoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp68"
+            android:layout_marginRight="@dimen/dp68"
+            android:layout_toEndOf="@+id/receiverProfilePhoto"
+            android:layout_toRightOf="@+id/receiverProfilePhoto"
+            app:cardCornerRadius="@dimen/dp10"
+            app:cardElevation="@dimen/dp5"
+            app:cardUseCompatPadding="true"
+            tools:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <droidninja.filepicker.views.SquareRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/receiverPhotoThumb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        tools:src="@drawable/capsule_01" />
+
+                    <ProgressBar
+                        android:id="@+id/receiverProgressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true" />
+
+                </droidninja.filepicker.views.SquareRelativeLayout>
+
+                <TextView
+                    android:id="@+id/receiverMessageWithImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp6"
+                    tools:text="@string/dummy_full" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <RelativeLayout
+            android:id="@+id/receiverFileLayout"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/receiverProfilePhoto"
+            android:layout_toRightOf="@+id/receiverProfilePhoto"
+            android:background="@drawable/lightblue_1_r"
+            android:paddingBottom="@dimen/dp8"
+            android:paddingEnd="@dimen/dp8"
+            android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp8"
+            android:paddingStart="@dimen/dp16"
+            android:paddingTop="@dimen/dp8">
+
+            <ImageView
+                android:id="@+id/receiverFileIcon"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
+                android:layout_centerVertical="true"
+                tools:src="@drawable/welcome_copy_3" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/receiverFileExtension"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/receiverFileIcon"
+                android:layout_toLeftOf="@+id/receiverFileProgressBar"
+                android:layout_toRightOf="@id/receiverFileIcon"
+                android:layout_toStartOf="@+id/receiverFileProgressBar"
+                android:padding="@dimen/dp6"
+                android:textColor="@color/white"
+                app:customFont="@string/roboto_medium"
+                android:textSize="@dimen/sp14"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="@string/dummy_normal" />
+
+            <ProgressBar
+                android:id="@+id/receiverFileProgressBar"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

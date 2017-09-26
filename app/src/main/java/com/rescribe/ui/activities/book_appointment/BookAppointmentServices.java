@@ -61,6 +61,8 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     ServicesHelper mServicesHelper;
     private Context mContext;
     private int PLACE_PICKER_REQUEST = 1;
+    String latitude = "";
+    String longitude = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,8 +156,8 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 Place place = PlacePicker.getPlace(this, data);
                 StringBuilder stBuilder = new StringBuilder();
                 String placename = String.format("%s", place.getName());
-                String latitude = String.valueOf(place.getLatLng().latitude);
-                String longitude = String.valueOf(place.getLatLng().longitude);
+                latitude = String.valueOf(place.getLatLng().latitude);
+                longitude = String.valueOf(place.getLatLng().longitude);
                 String address = String.format("%s", place.getAddress());
                 stBuilder.append("Name: ");
                 stBuilder.append(placename);
@@ -192,14 +194,16 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
 
     @Override
     public void setOnClickOfServices() {
-
-       /* if (locationTextView.getText().toString().equals(getString(R.string.location))) {
+/*
+        if (locationTextView.getText().toString().equals(getString(R.string.location))) {
             Toast.makeText(mContext, getString(R.string.please_select_location), Toast.LENGTH_SHORT).show();
         } else {*/
-            Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
-            intent.putExtra(getString(R.string.title), locationTextView.getText().toString());
-            startActivity(intent);
-      /*  }*/
+        Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
+        intent.putExtra(getString(R.string.latitude), latitude);
+        intent.putExtra(getString(R.string.longitude), longitude);
+        intent.putExtra(getString(R.string.title), locationTextView.getText().toString());
+        startActivity(intent);
+     /*   }*/
 
     }
 }

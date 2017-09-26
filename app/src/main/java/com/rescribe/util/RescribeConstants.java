@@ -184,6 +184,11 @@ public class RescribeConstants {
         public static int THREE_SECONDS = 3000;
     }
 
+    public static class FILE {
+        public static final String IMG = "img";
+        public static final String DOC = "doc";
+        public static final String VID = "vid";
+    }
 
     public class INVESTIGATION_KEYS {
         public static final String INVESTIGATION_DATE = "investigation_date";

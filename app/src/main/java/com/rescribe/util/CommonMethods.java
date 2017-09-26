@@ -290,18 +290,20 @@ public class CommonMethods {
 
     public static String getFormatedDate(String strDate, String sourceFormate,
                                          String destinyFormate) {
-        SimpleDateFormat df;
-        df = new SimpleDateFormat(sourceFormate, Locale.US);
-        Date date = null;
-        try {
-            date = df.parse(strDate);
+        if (strDate != null) {
+            SimpleDateFormat df;
+            df = new SimpleDateFormat(sourceFormate, Locale.US);
+            Date date = null;
+            try {
+                date = df.parse(strDate);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-        df = new SimpleDateFormat(destinyFormate, Locale.US);
-        return df.format(date);
+            df = new SimpleDateFormat(destinyFormate, Locale.US);
+            return df.format(date);
+        } else return "";
     }
 
     /**
@@ -638,6 +640,28 @@ public class CommonMethods {
             abbreviation = R.drawable.surgeon;
         else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.endocrinologist)))
             abbreviation = R.drawable.endocrinologist;
+
+        return abbreviation;
+    }
+
+    public static int getServices(String caseStudyName,Context mContext) {
+
+        // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
+        int abbreviation = R.drawable.gynecologist;
+        if (caseStudyName.equalsIgnoreCase("Doctor"))
+            abbreviation = R.drawable.doctor;
+        else if (caseStudyName.equalsIgnoreCase("Hospitals"))
+            abbreviation = R.drawable.hospital_practices;
+        else if (caseStudyName.equalsIgnoreCase("Laboratories"))
+            abbreviation = R.drawable.laboratories;
+        else if (caseStudyName.equalsIgnoreCase("Pharmacy"))
+            abbreviation = R.drawable.layer_9;
+        else if (caseStudyName.equalsIgnoreCase("Diagnostic Centers"))
+            abbreviation = R.drawable.investigation_servcies;
+        else if (caseStudyName.equalsIgnoreCase("Blood Bank"))
+            abbreviation = R.drawable.bloodbank;
+        else if (caseStudyName.equalsIgnoreCase("Ambulance"))
+            abbreviation = R.drawable.ambulance;
 
         return abbreviation;
     }

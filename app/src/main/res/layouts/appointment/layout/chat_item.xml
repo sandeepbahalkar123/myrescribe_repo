@@ -49,8 +49,8 @@
             android:layout_toStartOf="@+id/senderProfilePhoto"
             app:cardCornerRadius="@dimen/dp10"
             app:cardElevation="@dimen/dp5"
-            app:cardUseCompatPadding="true"
-            tools:visibility="gone">
+            android:visibility="gone"
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -69,11 +69,50 @@
                         android:scaleType="centerCrop"
                         tools:src="@drawable/coachmark" />
 
-                    <ProgressBar
-                        android:id="@+id/senderProgressBar"
+                    <RelativeLayout
+                        android:id="@+id/senderPhotoProgressLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true" />
+                        android:layout_centerInParent="true">
+
+                        <RelativeLayout
+                            android:id="@+id/senderPhotoUploading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <ProgressBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true" />
+
+                            <ImageView
+                                android:layout_width="@dimen/dp30"
+                                android:layout_height="@dimen/dp30"
+                                android:layout_centerInParent="true"
+                                android:padding="@dimen/dp5"
+                                app:srcCompat="@drawable/ic_file_upload_white_24dp" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/senderPhotoUploadStopped"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="@dimen/dp30"
+                                android:layout_height="@dimen/dp30"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/ring"
+                                android:padding="@dimen/dp5"
+                                app:srcCompat="@drawable/ic_file_upload_white_24dp" />
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
 
                 </droidninja.filepicker.views.SquareRelativeLayout>
 
@@ -116,31 +155,76 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/senderFileIcon"
-                android:layout_toLeftOf="@+id/senderFileProgressBar"
+                android:layout_toLeftOf="@+id/senderFileProgressLayout"
                 android:layout_toRightOf="@id/senderFileIcon"
-                android:layout_toStartOf="@+id/senderFileProgressBar"
+                android:layout_toStartOf="@+id/senderFileProgressLayout"
                 android:padding="@dimen/dp6"
-                android:textAllCaps="true"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@color/white"
                 app:customFont="@string/roboto_medium"
                 tools:text="exl" />
 
-            <ProgressBar
-                android:id="@+id/senderFileProgressBar"
-                android:layout_width="@dimen/dp30"
-                android:layout_height="@dimen/dp30"
+            <!--Sender Progress-->
+
+            <RelativeLayout
+                android:id="@+id/senderFileProgressLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true">
+
+                <RelativeLayout
+                    android:id="@+id/senderFileUploading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <ProgressBar
+                        android:layout_width="@dimen/dp30"
+                        android:layout_height="@dimen/dp30"
+                        android:layout_centerInParent="true" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dp30"
+                        android:layout_height="@dimen/dp30"
+                        android:layout_centerInParent="true"
+                        android:padding="@dimen/dp5"
+                        app:srcCompat="@drawable/ic_file_upload_white_24dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/senderFileUploadStopped"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/dp30"
+                        android:layout_height="@dimen/dp30"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ring"
+                        android:padding="@dimen/dp5"
+                        app:srcCompat="@drawable/ic_file_upload_white_24dp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
     </RelativeLayout>
 
+    <!--Receiver-->
+
     <RelativeLayout
         android:id="@+id/receiverLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/receiverProfilePhoto"
@@ -175,10 +259,10 @@
             android:layout_marginRight="@dimen/dp68"
             android:layout_toEndOf="@+id/receiverProfilePhoto"
             android:layout_toRightOf="@+id/receiverProfilePhoto"
+            android:visibility="gone"
             app:cardCornerRadius="@dimen/dp10"
             app:cardElevation="@dimen/dp5"
-            app:cardUseCompatPadding="true"
-            tools:visibility="gone">
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -195,13 +279,52 @@
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
                         android:scaleType="centerCrop"
-                        tools:src="@drawable/capsule_01" />
+                        tools:src="@drawable/blue_dot" />
 
-                    <ProgressBar
-                        android:id="@+id/receiverProgressBar"
+                    <RelativeLayout
+                        android:id="@+id/receiverPhotoProgressLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true" />
+                        android:layout_centerInParent="true">
+
+                        <RelativeLayout
+                            android:id="@+id/receiverPhotoDownloading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <ProgressBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true" />
+
+                            <ImageView
+                                android:layout_width="@dimen/dp30"
+                                android:layout_height="@dimen/dp30"
+                                android:layout_centerInParent="true"
+                                android:padding="@dimen/dp5"
+                                app:srcCompat="@drawable/ic_file_download_white_24dp" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/receiverPhotoDownloadStopped"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="@dimen/dp30"
+                                android:layout_height="@dimen/dp30"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/ring"
+                                android:padding="@dimen/dp5"
+                                app:srcCompat="@drawable/ic_file_download_white_24dp" />
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
 
                 </droidninja.filepicker.views.SquareRelativeLayout>
 
@@ -228,7 +351,8 @@
             android:paddingLeft="@dimen/dp16"
             android:paddingRight="@dimen/dp8"
             android:paddingStart="@dimen/dp16"
-            android:paddingTop="@dimen/dp8">
+            android:paddingTop="@dimen/dp8"
+            tools:visibility="gone">
 
             <ImageView
                 android:id="@+id/receiverFileIcon"
@@ -243,24 +367,65 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/receiverFileIcon"
-                android:layout_toLeftOf="@+id/receiverFileProgressBar"
+                android:layout_toLeftOf="@+id/receiverFileProgressLayout"
                 android:layout_toRightOf="@id/receiverFileIcon"
-                android:layout_toStartOf="@+id/receiverFileProgressBar"
-                android:padding="@dimen/dp6"
-                android:textColor="@color/white"
-                app:customFont="@string/roboto_medium"
-                android:textSize="@dimen/sp14"
+                android:layout_toStartOf="@+id/receiverFileProgressLayout"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:padding="@dimen/dp6"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_medium"
                 tools:text="@string/dummy_normal" />
 
-            <ProgressBar
-                android:id="@+id/receiverFileProgressBar"
-                android:layout_width="@dimen/dp30"
-                android:layout_height="@dimen/dp30"
+            <!--Receiver Progress-->
+
+            <RelativeLayout
+                android:id="@+id/receiverFileProgressLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true">
+
+                <RelativeLayout
+                    android:id="@+id/receiverFileDownloading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <ProgressBar
+                        android:layout_width="@dimen/dp30"
+                        android:layout_height="@dimen/dp30"
+                        android:layout_centerInParent="true" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dp30"
+                        android:layout_height="@dimen/dp30"
+                        android:layout_centerInParent="true"
+                        android:padding="@dimen/dp5"
+                        app:srcCompat="@drawable/ic_file_download_white_24dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/receiverFileDownloadStopped"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/dp30"
+                        android:layout_height="@dimen/dp30"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ring"
+                        android:padding="@dimen/dp5"
+                        app:srcCompat="@drawable/ic_file_download_white_24dp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
 
         </RelativeLayout>
 

@@ -156,7 +156,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
         uploadNotificationConfig.setIconColorForAllStatuses(Color.parseColor("#04abdf"));
         uploadNotificationConfig.setClearOnActionForAllStatuses(true);
 
-        UploadService.UPLOAD_POOL_SIZE = 5;
+        UploadService.UPLOAD_POOL_SIZE = 10;
     }
 
     private void createGroup() {

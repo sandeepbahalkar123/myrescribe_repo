@@ -13,8 +13,8 @@
         "speciality": "General Physician",
         "experience": 10,
         "doctorAddress": "Bandra Kurla Complex,Mumbai",
-        "paidStatus": 1,
         "amount": 500,
+        "favourite": true,
         "distance": "2.1 km",
         "recentlyVisited": true,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
@@ -46,8 +46,8 @@
         "speciality": "General Physician",
         "experience": 5,
         "doctorAddress": "Hadapsar,Pune",
-        "paidStatus": 0,
-        "amount": 0,
+        "amount": 300,
+        "favourite": false,
         "distance": "11 km",
         "recentlyVisited": true,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
@@ -79,10 +79,10 @@
         "speciality": "Neurology",
         "experience": 6,
         "doctorAddress": "Airoli,Mumbai",
-        "paidStatus": 1,
         "amount": 300,
+        "favourite": true,
         "distance": "25.7 km",
-        "recentlyVisited": true,
+        "recentlyVisited": false,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
         "rating": 4.2,
@@ -112,8 +112,8 @@
         "speciality": "Neurology",
         "experience": 6,
         "doctorAddress": "Shivaji Nagar,Pune",
-        "paidStatus": 1,
         "amount": 600,
+        "favourite": false,
         "distance": "25.7 km",
         "recentlyVisited": true,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
@@ -145,10 +145,10 @@
         "speciality": "Gastro",
         "experience": 6,
         "doctorAddress": "Mumbai",
-        "paidStatus": 1,
         "amount": 200,
+        "favourite": true,
         "distance": "25.7 km",
-        "recentlyVisited": true,
+        "recentlyVisited": false,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
         "degree": "MBBS,MD-Medicine,Neurology",
         "rating": 3,
@@ -178,8 +178,8 @@
         "speciality": "Neurology",
         "experience": 6,
         "doctorAddress": "Pune",
-        "paidStatus": 0,
-        "amount": 0,
+        "amount": 500,
+        "favourite": false,
         "distance": "1.0 km",
         "recentlyVisited": true,
         "aboutDoctor": "doctor information about his/her experience/speciality etc",
@@ -208,7 +208,7 @@
     "doctorSpecialities": [
       {
         "id": 1,
-        "speciality": "Obstetrics"
+        "speciality": "Cardiologist"
       },
       {
         "id": 2,
@@ -216,23 +216,23 @@
       },
       {
         "id": 3,
-        "speciality": "Immunology"
+        "speciality": "Physiotherapist"
       },
       {
         "id": 4,
-        "speciality": "Hepatology"
+        "speciality": "Orthopaedic"
       },
       {
         "id": 5,
-        "speciality": "Toxicology"
+        "speciality": "Dentist"
       },
       {
         "id": 6,
-        "speciality": "general physician"
+        "speciality": "Dermatologist"
       },
       {
         "id": 7,
-        "speciality": "Neurology"
+        "speciality": "Endocrinologist"
       },
       {
         "id": 8,
@@ -240,11 +240,11 @@
       },
       {
         "id": 9,
-        "speciality": "Gastro"
+        "speciality": "nephrologist"
       },
       {
         "id": 10,
-        "speciality": "Gastro"
+        "speciality": "Surgeon"
       },
       {
         "id": 11,
@@ -252,23 +252,23 @@
       },
       {
         "id": 12,
-        "speciality": "Gastro"
+        "speciality": "Paediatric"
       },
       {
         "id": 13,
-        "speciality": "Gastro"
+        "speciality": "Dentist"
       },
       {
         "id": 14,
-        "speciality": "Gastro"
+        "speciality": "Psychiatrist"
       },
       {
         "id": 15,
-        "speciality": "Gastro"
+        "speciality": "Oncologist"
       },
       {
         "id": 16,
-        "speciality": "Gastro"
+        "speciality": "Urologist"
       }
 
 

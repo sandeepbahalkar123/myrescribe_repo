@@ -250,5 +250,6 @@
     <string name="add_tracker">Add Tracker</string>
     <string name="title_activity_vital_graph_details">Vital Graph Details</string>
     <string name="title_activity_add_tracker">Add Tracker</string>
+    <string name="paid_doctor_message">We are in the process of payment gateway integration. You will soon be able to chat with your favorite doctors.</string>
     <!-- Error string -->
 </resources>

@@ -1,6 +1,5 @@
 package com.rescribe.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
@@ -23,12 +22,15 @@ import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
 
 /**
  * Created by jeetal on 8/9/17.
@@ -134,11 +136,13 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ChatActivity.class);
-
-                intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
-                intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
-                ((DoctorConnectActivity) mContext).startActivityForResult(intent, 1111);
+                if (chatDoctor.getPaidStatus() != PAID) {
+                    Intent intent = new Intent(mContext, ChatActivity.class);
+                    intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
+                    intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
+                    ((DoctorConnectActivity) mContext).startActivityForResult(intent, 1111);
+                } else
+                    CommonMethods.showInfoDialog(mContext.getResources().getString(R.string.paid_doctor_message), mContext, false);
             }
         });
 

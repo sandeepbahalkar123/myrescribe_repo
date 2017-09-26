@@ -187,6 +187,7 @@ public class RescribeConstants {
         public static final String IMG = "img";
         public static final String DOC = "doc";
         public static final String VID = "vid";
+        public static final String AUD = "aud";
     }
 
     public class INVESTIGATION_KEYS {

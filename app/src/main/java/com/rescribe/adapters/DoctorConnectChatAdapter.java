@@ -17,12 +17,15 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
 
 
 /**
@@ -118,10 +121,13 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ChatActivity.class);
-                intent.putExtra(RescribeConstants.DOCTORS_INFO, doctorConnectChatModel);
-                intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
-                mContext.startActivity(intent);
+                if (doctorConnectChatModel.getPaidStatus() != PAID) {
+                    Intent intent = new Intent(mContext, ChatActivity.class);
+                    intent.putExtra(RescribeConstants.DOCTORS_INFO, doctorConnectChatModel);
+                    intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
+                    mContext.startActivity(intent);
+                } else
+                    CommonMethods.showInfoDialog(mContext.getResources().getString(R.string.paid_doctor_message), mContext, false);
             }
         });
 

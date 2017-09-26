@@ -2,6 +2,7 @@ package com.rescribe.ui.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -175,6 +177,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private String Url;
     private String authorizationString;
     private UploadNotificationConfig uploadNotificationConfig;
+//    private DownloadManager downloadManager;
 
     @Override
     public void onBackPressed() {
@@ -281,7 +284,12 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         });
 
         uploadInit();
+        downloadInit();
         //----------
+    }
+
+    private void downloadInit() {
+
     }
 
     private void uploadInit() {
@@ -325,7 +333,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                         messageL.setTopic(MQTTService.DOCTOR_CONNECT);
                         messageL.setSender(MQTTService.PATIENT);
                         messageL.setMsg(message);
-                        // hard coded
 
                         String generatedId = CHAT + mqttMessage.size() + "_" + System.nanoTime();
 
@@ -722,6 +729,16 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         appDBHelper.insertMessageData(mqttMessage.getMsgId(), RescribeConstants.UPLOADING, new Gson().toJson(mqttMessage));
     }
 
+    // Download File
+
+    @Override
+    public void downloadFile(MQTTMessage mqttMessage) {
+        /*downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        DownloadManager.Request request = new DownloadManager.Request(
+                Uri.parse(mqttMessage.getFileUrl()));
+        long enqueue = downloadManager.enqueue(request);*/
+    }
+
     // Broadcast
 
     private UploadServiceBroadcastReceiver broadcastReceiver = new UploadServiceBroadcastReceiver() {
@@ -735,7 +752,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             if (uploadInfo.getUploadId().length() > CHAT.length()) {
                 String prefix = uploadInfo.getUploadId().substring(0, 4);
                 if (prefix.equals(CHAT)) {
-                    appDBHelper.updateMyRecordsData(uploadInfo.getUploadId(), FAILED);
+                    appDBHelper.updateMessageData(uploadInfo.getUploadId(), FAILED);
 
                     int position = getPositionById(uploadInfo.getUploadId());
 
@@ -749,8 +766,10 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         private int getPositionById(String id) {
             int pos = 0;
             for (int position = mqttMessage.size() - 1; position >= 0; position--) {
-                if (id.equals(mqttMessage.get(position).getMsgId()))
+                if (id.equals(mqttMessage.get(position).getMsgId())) {
                     pos = position;
+                    break;
+                }
             }
             return pos;
         }

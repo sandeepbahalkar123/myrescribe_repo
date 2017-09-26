@@ -196,40 +196,25 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                             filteredList.add(doctorConnectModel);
                         }
                     }
-                if(filteredList.size()==0){
-                    RecentVisitDoctorFragment temp = (RecentVisitDoctorFragment) mFragment;
-                    temp.isDataListViewVisible(false);
-
-                }else {
                     mDataList = filteredList;
                 }
-                }
-
-
                 FilterResults filterResults = new FilterResults();
-
                 filterResults.values = mDataList;
-
-                return new FilterResults();
-
-
-
+                return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 mDataList = (ArrayList<DoctorList>) filterResults.values;
-                RecentVisitDoctorFragment temp = (RecentVisitDoctorFragment) mFragment;
-                temp.isDataListViewVisible(true);
-              /*  if (mDataList.size() == 0) {
-
+                if (mDataList.size() == 0) {
+                    RecentVisitDoctorFragment temp = (RecentVisitDoctorFragment) mFragment;
+                    temp.isDataListViewVisible(true, true);
                 } else {
                     RecentVisitDoctorFragment temp = (RecentVisitDoctorFragment) mFragment;
-                    temp.isDataListViewVisible(true);*/
-                    notifyDataSetChanged();
-               /* }*/
+                    temp.isDataListViewVisible(true, false);
+                }
+                notifyDataSetChanged();
             }
         };
     }
-
 }

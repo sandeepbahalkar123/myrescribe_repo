@@ -26,6 +26,7 @@ import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorSpeciality;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.customesViews.CircleIndicator;
@@ -111,9 +112,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         searchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {
             @Override
             public void onClearButtonClicked() {
-                recentDoctorLayout.setVisibility(View.VISIBLE);
-
-                showDoctorsRecyclerView.setVisibility(View.INVISIBLE);
+                isDataListViewVisible(false, false);
             }
         });
         searchView.addTextChangedListener(new EditTextWithDeleteButton.TextChangedListener() {
@@ -130,22 +129,10 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().trim().length() > 0) {
-                    recentDoctorLayout.setVisibility(View.GONE);
-                    showDoctorsRecyclerView.setVisibility(View.VISIBLE);
-                    BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), activity.getReceivedBookAppointmentBaseModel().getDoctorServicesModel().getDoctorList(), RecentVisitDoctorFragment.this,RecentVisitDoctorFragment.this);
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-                    showDoctorsRecyclerView.setLayoutManager(layoutManager);
-                    showDoctorsRecyclerView.setHasFixedSize(true);
-                    showDoctorsRecyclerView.setAdapter(mBookAppointFilteredDocListAdapter);
                     mBookAppointFilteredDocListAdapter.getFilter().filter(s);
-
                 } else {
-                    recentDoctorLayout.setVisibility(View.VISIBLE);
-
-                    showDoctorsRecyclerView.setVisibility(View.GONE);
+                    isDataListViewVisible(false, false);
                 }
-
             }
         });
 
@@ -242,6 +229,19 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             pickSpeciality.setVisibility(View.VISIBLE);
             doubtMessage.setVisibility(View.VISIBLE);
         }
+
+
+        //---set data ---------
+        isDataListViewVisible(false, false);
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        ArrayList<DoctorList> doctorList = activity.getReceivedBookAppointmentBaseModel().getDoctorServicesModel().getDoctorList();
+        mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList, RecentVisitDoctorFragment.this, RecentVisitDoctorFragment.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        showDoctorsRecyclerView.setLayoutManager(layoutManager);
+        showDoctorsRecyclerView.setHasFixedSize(true);
+        showDoctorsRecyclerView.setAdapter(mBookAppointFilteredDocListAdapter);
+        //------------
+
     }
 
     @Override
@@ -328,11 +328,16 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         }
     }
 
-    public void isDataListViewVisible(boolean flag) {
+    public void isDataListViewVisible(boolean flag, boolean isShowEmptyListView) {
         if (flag) {
             recentDoctorLayout.setVisibility(View.GONE);
             showDoctorsRecyclerView.setVisibility(View.VISIBLE);
+            if (isShowEmptyListView) {
+                emptyListView.setVisibility(View.VISIBLE);
+                showDoctorsRecyclerView.setVisibility(View.GONE);
+            }
         } else {
+            emptyListView.setVisibility(View.GONE);
             recentDoctorLayout.setVisibility(View.VISIBLE);
             showDoctorsRecyclerView.setVisibility(View.GONE);
         }

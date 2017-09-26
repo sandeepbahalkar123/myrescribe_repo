@@ -58,11 +58,8 @@ public class MessageNotification {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
 
-
-//        String summary = totalUnread + " messages from " + totalChatUsers + " doctors";
-
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle()
-                .setBigContentTitle(userName + " (" + unread + " messages)")
+                .setBigContentTitle(title)
                 .setSummaryText("Doctor Message");
 
         for (MQTTMessage message : messageContent)

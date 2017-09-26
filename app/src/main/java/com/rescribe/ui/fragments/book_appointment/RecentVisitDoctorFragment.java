@@ -1,5 +1,6 @@
 package com.rescribe.ui.fragments.book_appointment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -90,9 +91,10 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.recent_visit_doctor, container, false);
-        hideSoftKeyboard();
+      //  hideSoftKeyboard();
         unbinder = ButterKnife.bind(this, mRootView);
-
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
         Bundle arguments = getArguments();
         if (arguments != null) {
             //     mDoctorServicesModel = getArguments().getParcelable(RescribeConstants.DOCTOR_DATA_REQUEST);

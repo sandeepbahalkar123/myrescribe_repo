@@ -16,8 +16,13 @@ public class Config {
     public static boolean DEV_BUILD = true;
     //Declared all URL used in app here
 
- //   public static String BASE_URL = "http://drrescribe.com:3003/";
-    public static String BASE_URL = "http://192.168.0.182:3003/";
+
+//    private static final String BROKER = "tcp://test.mosquitto.org:1883";
+    public static final String BROKER = "tcp://192.168.0.182:1883";
+
+//    public static String BASE_URL = "http://drrescribe.com:3003/";
+      public static String BASE_URL = "http://192.168.0.182:3003/";
+
 
     public Context mContext;
     //Declared all URL used in app here
@@ -51,6 +56,8 @@ public class Config {
     public static final String DOCTOR_CHAT_LIST_URL = "api/doctors/getChatDoctorList";
 
     public static final String CHAT_USERS = "api/chat/getChatTabUsers";
+
+    public static final String CHAT_FILE_UPLOAD = "api/upload/chatDoc";
 }
 
 

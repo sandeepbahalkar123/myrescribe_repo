@@ -298,15 +298,12 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             }
         } else if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
 
-            if (customResponse != null) {
-                NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
-                if (prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification().size() > 0) {
+            NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
+            if (prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification()!= null) {
+
                     mNotificationLayout.setVisibility(View.VISIBLE);
                     mNoDataAvailable.setVisibility(View.GONE);
-                } else {
-                    mNotificationLayout.setVisibility(View.GONE);
-                    mNoDataAvailable.setVisibility(View.VISIBLE);
-                }
+
                 List<NotificationData> notificationData = prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification();
                 String date = CommonMethods.getCurrentDateTime();
                 CommonMethods.Log(TAG, date);
@@ -401,6 +398,9 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
                 mRecyclerView.setAdapter(mAdapter);
                 mProgressDialog.dismiss();
                 CommonMethods.Log("", "" + adapterNotificationParentData);
+            } else {
+                mNotificationLayout.setVisibility(View.GONE);
+                mNoDataAvailable.setVisibility(View.VISIBLE);
             }
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
             NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;

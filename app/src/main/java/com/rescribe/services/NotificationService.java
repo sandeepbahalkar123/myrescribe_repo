@@ -16,6 +16,12 @@ import android.widget.RemoteViews;
 import com.rescribe.R;
 import com.rescribe.broadcast_receivers.ClickOnNotificationReceiver;
 import com.rescribe.broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver;
+import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.helpers.investigation.InvestigationHelper;
+import com.rescribe.helpers.notification.NotificationHelper;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.RescribeConstants;
 
@@ -28,7 +34,7 @@ import com.rescribe.util.RescribeConstants;
  *
  * @author paul.blundell
  */
-public class NotificationService extends Service {
+public class NotificationService extends Service implements HelperResponse {
 
 //    static int mNotificationNoTextField = 0;
 
@@ -37,6 +43,9 @@ public class NotificationService extends Service {
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
     private int notification_id;
+    private AppDBHelper appDBHelper;
+    private NotificationHelper mNotificationHelper;
+    private Intent intent;
 
     @Override
     public void onCreate() {
@@ -44,15 +53,18 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+         this.intent = intent;
         if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this).equals(RescribeConstants.YES)) {
 
             notification_id = intent.getIntExtra(RescribeConstants.NOTIFICATION_ID, 0);
 
             // If this service was started by out DosesAlarmTask intent then we want to show our notification
-            if (intent.getBooleanExtra(INTENT_NOTIFY, false))
-                customNotification(intent);
-            else {
+            if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
+                appDBHelper = new AppDBHelper(this);
+                mNotificationHelper = new NotificationHelper(this);
+                mNotificationHelper.doGetNotificationList();
+                //customNotification(intent);
+            } else {
                 PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, notification_id, intent, flags);
                 AlarmManager aManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 aManager.cancel(mAlarmPendingIntent);
@@ -112,6 +124,33 @@ public class NotificationService extends Service {
        // build.flags |= Notification.FLAG_INSISTENT;
         notificationmanager.notify(notification_id, build);
 
+        stopSelf();
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
+            NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
+            if (prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification() != null) {
+                customNotification(intent);
+            }
+
+        }
+       stopSelf();
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+        stopSelf();
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+        stopSelf();
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
         stopSelf();
     }
 

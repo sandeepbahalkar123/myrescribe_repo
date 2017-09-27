@@ -274,5 +274,8 @@
     <string name="select_days"><u>Select Days</u></string>
     <string name="also_practices">Also practices at</string>
     <string name="more_info">More Info</string>
+    <string name="services">Services</string>
+    <string name="doctorss">Doctors</string>
+    <string name="years_experience">years of experience</string>
 
 </resources>

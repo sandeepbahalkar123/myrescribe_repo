@@ -40,15 +40,11 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     CustomTextView title;
     @BindView(R.id.locationTextView)
     CustomTextView locationTextView;
-
     @BindView(R.id.nav_view)
     FrameLayout mNavView;
-
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-
     Intent intent;
-
     private RecentVisitDoctorFragment mChangeColorFragment;
     private DoctorDataHelper mDoctorDataHelper;
     private Fragment currentlyLoadedFragment; //TODO, fragmentById is not working hence hold this object.
@@ -64,6 +60,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     private void initialize() {
+
         if (getIntent() != null) {
             locationTextView.setText(intent.getStringExtra(getString(R.string.title)));
         }
@@ -106,13 +103,11 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
 
         loadFragment(RecentVisitDoctorFragment.newInstance(new Bundle()), false);
-
         //------
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.nav_view, DrawerForFilterDoctorBookAppointment.newInstance());
         fragmentTransaction.commit();
-
         //------
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetDoctorData();
@@ -129,6 +124,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    title.setText(getString(R.string.doctorss));
                     RecentVisitDoctorFragment tempFrag = (RecentVisitDoctorFragment) currentlyLoadedFragment;
 
                     tempFrag.onSuccess(mOldDataTag, customResponse);

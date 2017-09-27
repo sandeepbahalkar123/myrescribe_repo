@@ -18,11 +18,11 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
     private ArrayList<DoctorList> doctorLists;
     private LayoutInflater inflater;
-    private Context context;
+    private Context mContext;
 
 
     public ShowRecentVisitedDoctorPagerAdapter(Context context, ArrayList<DoctorList> doctorLists) {
-        this.context = context;
+        this.mContext = context;
         this.doctorLists = doctorLists;
         inflater = LayoutInflater.from(context);
     }
@@ -73,7 +73,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         }
         doctorName.setText(doctorLists.get(position).getDocName());
         doctorType.setText(doctorLists.get(position).getDegree());
-        doctorExperience.setText(""+doctorLists.get(position).getExperience());
+        doctorExperience.setText(""+doctorLists.get(position).getExperience()+mContext.getString(R.string.space)+mContext.getString(R.string.years_experience));
         doctorAddress.setText(doctorLists.get(position).getDoctorAddress());
         doctorFees.setText(""+doctorLists.get(position).getAmount());
         kilometers.setText(""+doctorLists.get(position).getDistance());

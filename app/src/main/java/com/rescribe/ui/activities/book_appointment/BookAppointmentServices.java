@@ -69,6 +69,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment_services);
         ButterKnife.bind(this);
+        title.setText(getString(R.string.services));
         initialize();
     }
 

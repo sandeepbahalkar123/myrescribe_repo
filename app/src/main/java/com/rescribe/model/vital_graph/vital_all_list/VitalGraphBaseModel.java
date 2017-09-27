@@ -1,35 +1,36 @@
-package com.rescribe.model.vital_graph;
+package com.rescribe.model.vital_graph.vital_all_list;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 
-public class VitalGraphModel implements Parcelable {
+public class VitalGraphBaseModel implements Parcelable, CustomResponse {
 
     @SerializedName("common")
     @Expose
     private Common common;
     @SerializedName("data")
     @Expose
-    private VitalGraphData data;
-    public final static Parcelable.Creator<VitalGraphModel> CREATOR = new Creator<VitalGraphModel>() {
+    private VitalGraphList data;
+    public final static Parcelable.Creator<VitalGraphBaseModel> CREATOR = new Creator<VitalGraphBaseModel>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public VitalGraphModel createFromParcel(Parcel in) {
-            VitalGraphModel instance = new VitalGraphModel();
+        public VitalGraphBaseModel createFromParcel(Parcel in) {
+            VitalGraphBaseModel instance = new VitalGraphBaseModel();
             instance.common = ((Common) in.readValue((Common.class.getClassLoader())));
-            instance.data = ((VitalGraphData) in.readValue((VitalGraphData.class.getClassLoader())));
+            instance.data = ((VitalGraphList) in.readValue((VitalGraphList.class.getClassLoader())));
             return instance;
         }
 
-        public VitalGraphModel[] newArray(int size) {
-            return (new VitalGraphModel[size]);
+        public VitalGraphBaseModel[] newArray(int size) {
+            return (new VitalGraphBaseModel[size]);
         }
 
     };
@@ -42,11 +43,11 @@ public class VitalGraphModel implements Parcelable {
         this.common = common;
     }
 
-    public VitalGraphData getData() {
+    public VitalGraphList getData() {
         return data;
     }
 
-    public void setData(VitalGraphData data) {
+    public void setData(VitalGraphList data) {
         this.data = data;
     }
 

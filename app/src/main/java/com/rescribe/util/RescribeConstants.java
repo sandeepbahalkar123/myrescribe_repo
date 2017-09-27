@@ -107,6 +107,13 @@ public class RescribeConstants {
     public static final String TASK_GET_BOOK_APPOINT_DRAWER_CONFIG = RescribeConstants.BLANK + 32;
     public static final String CHAT_USERS = RescribeConstants.BLANK + 32;
 
+    //---Vital Graph----
+    public static final String TASK_GET_PATIENT_VITAL_LIST = RescribeConstants.BLANK + 33;
+    public static final String TASK_GET_PATIENT_VITAL_DETAIL = RescribeConstants.BLANK + 34;
+    public static final String TASK_ADD_VITAL_MANUALLY = RescribeConstants.BLANK + 35;
+    public static final String TASK_GET_VITAL_TRACKER_LIST = RescribeConstants.BLANK + 36;
+    //-------
+
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
     public static final String TAKEN_DATE = "takenDate";

@@ -10,9 +10,9 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/dp16"
         android:textColor="@color/black"
         android:textSize="@dimen/sp16"
-        android:padding="@dimen/dp16"
         app:customFont="@string/roboto_bold"
         tools:text="Blood Pressure" />
 

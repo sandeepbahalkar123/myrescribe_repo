@@ -1,86 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout0"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/dp14"
-    android:paddingTop="@dimen/dp8">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/dp14"
-        android:paddingLeft="@dimen/dp20"
-        android:paddingRight="@dimen/dp14"
-        android:paddingStart="@dimen/dp20">
-
-        <ImageView
-            android:id="@+id/ellipse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/dp4"
-            android:src="@drawable/ellipse_3" />
-
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/weight"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp34"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/ellipse"
-            android:layout_toRightOf="@id/ellipse"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/dp10"
-            android:paddingStart="@dimen/dp10"
-            android:textColor="@color/tagColor"
-            android:textSize="@dimen/sp16"
-            app:customFont="@string/roboto_bold"
-            tools:text="130/88 mm Hg" />
-
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/dp46"
-        android:paddingStart="@dimen/dp46"
-        tools:text="23rd  Aug’17 " />
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/graphCard"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp0"
-            android:layout_margin="@dimen/dp16"
-            android:layout_weight="1"
-            app:cardBackgroundColor="@color/tagColor"
-            app:cardCornerRadius="@dimen/dp10">
-
-        </android.support.v7.widget.CardView>
-
         <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/description"
+            android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp0"
-            android:layout_weight="1"
-            android:paddingEnd="@dimen/dp24"
-            android:paddingStart="@dimen/dp24"
-            android:text="@string/dummy_full"
-            android:textSize="@dimen/sp14"
-            app:customFont="@string/roboto_medium" />
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/tagColor"
+            android:gravity="center"
+            android:text="sdsasad"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp18"
+            app:customFont="@string/roboto_bold" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dp40"
+            android:layout_marginLeft="@dimen/dp40"
+            android:layout_marginRight="@dimen/dp40"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/dp10"
+                android:text="@string/enter_date"
+                android:textColor="@color/tagColor"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_medium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/Gray" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/addTrackerDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="@string/enter_date"
+                android:padding="@dimen/dp10"
+                android:textSize="@dimen/sp16"
+                app:customFont="@string/roboto_regular" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/Gray" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/dp10"
+                android:text="@string/enter_reading"
+                android:textColor="@color/tagColor"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_medium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/Gray" />
+
+            <LinearLayout
+                android:id="@+id/bloodPressureReadingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/systolic"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:cursorVisible="true"
+                    android:gravity="center"
+                    android:hint="Systolic"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:padding="@dimen/dp10"
+                    android:textCursorDrawable="@drawable/cursor_black"
+                    android:textSize="@dimen/sp14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="/"
+                    android:textColor="@color/Gray" />
+
+                <EditText
+                    android:id="@+id/dystolic"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:cursorVisible="true"
+                    android:inputType="numberDecimal"
+                    android:gravity="center"
+                    android:hint="Diastolic"
+                    android:imeOptions="actionDone"
+                    android:maxLines="1"
+                    android:padding="@dimen/dp10"
+                    android:textCursorDrawable="@drawable/cursor_black"
+                    android:textSize="@dimen/sp14" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/reading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:gravity="center"
+                android:hint="@string/enter_reading"
+                android:inputType="numberDecimal"
+                android:padding="@dimen/dp10"
+                android:textCursorDrawable="@drawable/cursor_black"
+                android:textSize="@dimen/sp14"
+                android:visibility="visible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/Gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginTop="?attr/actionBarSize">
+
+                <Button
+                    android:id="@+id/addTrackerButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp5"
+                    android:background="@drawable/curve_edges_button"
+                    android:gravity="center"
+                    android:hint="@string/enter_date"
+                    android:text="@string/save"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp14"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
 

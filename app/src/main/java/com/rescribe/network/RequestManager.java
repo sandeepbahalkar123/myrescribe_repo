@@ -59,6 +59,9 @@ import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.model.prescription_response_model.PrescriptionBaseModel;
 import com.rescribe.model.requestmodel.login.LoginRequestModel;
 import com.rescribe.model.response_model_notification.NotificationResponseBaseModel;
+import com.rescribe.model.vital_graph.vital_all_list.VitalGraphBaseModel;
+import com.rescribe.model.vital_graph.vital_description.VitalGraphInfoBaseModel;
+import com.rescribe.model.vital_graph.vital_tracker.VitalGraphTrackerBaseModel;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.Device;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
@@ -76,7 +79,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestManager extends ConnectRequest implements Connector, RequestTimer.RequestTimerListener {
-    private  final String TAG = this.getClass().getName();
+    private final String TAG = this.getClass().getName();
     private static final int CONNECTION_TIME_OUT = 1000 * 60;
     private static final int N0OF_RETRY = 0;
     private AppDBHelper dbHelper;
@@ -574,6 +577,22 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         BookAppointmentBaseModel bookAppointmentBaseModel = new Gson().fromJson(data, BookAppointmentBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, mOldDataTag);
                         break;
+                    case RescribeConstants.TASK_GET_PATIENT_VITAL_LIST: //This is for get vital graph list
+                        VitalGraphBaseModel vitalGraphBaseModel = new Gson().fromJson(data, VitalGraphBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, vitalGraphBaseModel, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_GET_PATIENT_VITAL_DETAIL: //This is for get vital graph details
+                        VitalGraphInfoBaseModel vitalGraphInfoBaseModel = new Gson().fromJson(data, VitalGraphInfoBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, vitalGraphInfoBaseModel, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_GET_VITAL_TRACKER_LIST: //This is for get vital graph tracker list
+                        VitalGraphTrackerBaseModel vitalGraphTrackerBaseModel = new Gson().fromJson(data, VitalGraphTrackerBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, vitalGraphTrackerBaseModel, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_ADD_VITAL_MANUALLY: //This is for get vital graph tracker list
+                        Common c = new Gson().fromJson(data, Common.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, c, mOldDataTag);
+                        break;
 
                     default:
                         //This is for get PDF VisitData
@@ -583,10 +602,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         } else if (mDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER)) {
                             NotificationResponseBaseModel responseLogNotificationModel = new Gson().fromJson(data, NotificationResponseBaseModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
-                        }else if (mDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
+                        } else if (mDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
                             NotificationResponseBaseModel responseLogNotificationModel = new Gson().fromJson(data, NotificationResponseBaseModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
-                        }else if (mDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
+                        } else if (mDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
                             NotificationResponseBaseModel responseLogNotificationModel = new Gson().fromJson(data, NotificationResponseBaseModel.class);
                             this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseLogNotificationModel, mOldDataTag);
                         }

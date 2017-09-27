@@ -1,6 +1,7 @@
 package com.rescribe.adapters.vital_graph;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rescribe.R;
-import com.rescribe.model.vital_graph.VitalList;
+import com.rescribe.model.vital_graph.vital_all_list.VitalGraphData;
 
 import java.util.ArrayList;
 
@@ -19,11 +20,11 @@ import butterknife.ButterKnife;
 
 public class VitalGraphAdapter extends RecyclerView.Adapter<VitalGraphAdapter.FileViewHolder> {
 
-    private final ArrayList<VitalList> vitalGraphs;
+    private final ArrayList<VitalGraphData> vitalGraphs;
     private final Context context;
     private ItemClickListener itemClickListener;
 
-    public VitalGraphAdapter(Context context, ArrayList<VitalList> vitalGraphs) {
+    public VitalGraphAdapter(Context context, ArrayList<VitalGraphData> vitalGraphs) {
         this.context = context;
         this.vitalGraphs = vitalGraphs;
 
@@ -45,11 +46,21 @@ public class VitalGraphAdapter extends RecyclerView.Adapter<VitalGraphAdapter.Fi
     @Override
     public void onBindViewHolder(final VitalGraphAdapter.FileViewHolder holder, final int position) {
 
-        final VitalList vitalGraph = vitalGraphs.get(position);
+        final VitalGraphData vitalGraph = vitalGraphs.get(position);
 
         holder.nameText.setText(vitalGraph.getVitalName());
-        holder.weightText.setText(vitalGraph.getVitalWeight());
-        holder.dateText.setText(vitalGraph.getVitalDate());
+        holder.weightText.setText(vitalGraph.getVitalValue());
+        holder.dateText.setText(String.valueOf(vitalGraph.getVitalDate()));
+
+        if (vitalGraph.getCategory().equalsIgnoreCase(context.getString(R.string.normalRange))) {
+            holder.dateText.setTextColor(ContextCompat.getColor(context, R.color.range_green));
+        } else if (vitalGraph.getCategory().equalsIgnoreCase(context.getString(R.string.moderateRange))) {
+            holder.dateText.setTextColor(ContextCompat.getColor(context, R.color.range_yellow));
+        } else if (vitalGraph.getCategory().equalsIgnoreCase(context.getString(R.string.severeRange))) {
+            holder.dateText.setTextColor(ContextCompat.getColor(context, R.color.Red));
+        } else {
+            holder.dateText.setTextColor(ContextCompat.getColor(context, R.color.Gray));
+        }
 
         if ((getItemCount() - 1) == position) {
             holder.layout1.setVisibility(View.VISIBLE);
@@ -108,7 +119,8 @@ public class VitalGraphAdapter extends RecyclerView.Adapter<VitalGraphAdapter.Fi
     }
 
     public interface ItemClickListener {
-        void onVitalClick(VitalList vitalList);
+        void onVitalClick(VitalGraphData vitalList);
+
         void onAddTrackerClick();
     }
 }

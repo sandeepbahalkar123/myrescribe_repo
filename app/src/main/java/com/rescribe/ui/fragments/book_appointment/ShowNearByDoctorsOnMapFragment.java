@@ -103,7 +103,7 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
 
-    moreInfo.setOnClickListener(new View.OnClickListener() {
+        moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -127,7 +127,7 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
                 doctorList.setMorePracticePlaces(doctorLists.get(Integer.parseInt(marker.getTitle())).getMorePracticePlaces());
                 doctorList.setLongitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
                 doctorList.setLatitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
-                args.putParcelable(getString(R.string.clicked_item_data),doctorList);
+                args.putParcelable(getString(R.string.clicked_item_data), doctorList);
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
                 activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(args), false);
             }

@@ -266,28 +266,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     }
 
-    public void hideSoftKeyboard() {
-        if (getActivity().getCurrentFocus() != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-        }
-    }
-
     @Override
     public void onClickOfDoctorRowItem(Bundle bundleData) {
         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
         activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
-
     }
-
-
-   /* @Override
-    public void onClearButtonClicked() {
-        recentDoctorLayout.setVisibility(View.VISIBLE);
-        showDoctorsRecyclerView.setVisibility(View.GONE);
-
-    }*/
-
 
     /*
      * GENERATE A SINGLE PAGE DATA

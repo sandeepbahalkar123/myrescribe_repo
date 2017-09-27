@@ -44,6 +44,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     private View mRootView;
     public static Bundle args;
     BookAppointFilteredDocList mBookAppointFilteredDocListAdapter;
+    private String mSelectedSpeciality;
+    private ArrayList<DoctorList> mReceivedList;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -71,6 +73,12 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     }
 
     private void init() {
+
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mSelectedSpeciality = arguments.getString(getString(R.string.clicked_item_data));
+        }
+
         mLocationFab.setVisibility(View.VISIBLE);
         mFilterFab.setVisibility(View.VISIBLE);
     }
@@ -101,7 +109,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                     isDataListViewVisible(false);
                 } else {
                     isDataListViewVisible(true);
-                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList, this,this );
+                    mReceivedList = doctorList;
+                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), filterDataOnDocSpeciality(), this, this);
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                     mDoctorListView.setLayoutManager(layoutManager);
                     mDoctorListView.setHasFixedSize(true);
@@ -168,20 +177,21 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
         activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
     }
-  /*  private ArrayList<DoctorList> filterDataOnDocSpeciality() {
-        ArrayList<DoctorList> chatDoctors = this.mReceivedList;
+
+    private ArrayList<DoctorList> filterDataOnDocSpeciality() {
+        ArrayList<DoctorList> doctors = this.mReceivedList;
         ArrayList<DoctorList> dataList = new ArrayList<>();
-        if (mClickedSpecialityOfDoctor == null) {
-            return chatDoctors;
+        if (mSelectedSpeciality == null) {
+            return doctors;
         } else {
             for (DoctorList listObject :
-                    chatDoctors) {
-                if (mClickedSpecialityOfDoctor.equalsIgnoreCase(listObject.getSpecialization())) {
+                    doctors) {
+                if (mSelectedSpeciality.equalsIgnoreCase(listObject.getSpeciality())) {
                     dataList.add(listObject);
                 }
             }
         }
         return dataList;
     }
-*/
+
 }

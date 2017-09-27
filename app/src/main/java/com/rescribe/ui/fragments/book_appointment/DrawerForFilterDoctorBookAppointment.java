@@ -433,46 +433,39 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
                     mSelectedDays.put(getString(R.string.weekday_thurs), false);
                     mAvailThurs.setBackgroundResource(R.drawable.select_days_circle_default);
                     mAvailThurs.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
-
                 } else {
                     mSelectedDays.put(getString(R.string.weekday_thurs), true);
                     mAvailThurs.setBackgroundResource(R.drawable.select_days_circle);
                     mAvailThurs.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
-
                 }
                 break;
             case R.id.availFri:
                 data = mSelectedDays.get(getString(R.string.weekday_fri));
-
                 if (data) {
                     mSelectedDays.put(getString(R.string.weekday_fri), false);
                     mAvailFri.setBackgroundResource(R.drawable.select_days_circle_default);
                     mAvailFri.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
-
                 } else {
                     mSelectedDays.put(getString(R.string.weekday_fri), true);
                     mAvailFri.setBackgroundResource(R.drawable.select_days_circle);
                     mAvailFri.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
-
                 }
                 break;
             case R.id.availSat:
                 data = mSelectedDays.get(getString(R.string.weekday_sat));
-
                 if (data) {
                     mSelectedDays.put(getString(R.string.weekday_sat), false);
                     mAvailSat.setBackgroundResource(R.drawable.select_days_circle_default);
                     mAvailSat.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
-
                 } else {
                     mSelectedDays.put(getString(R.string.weekday_sat), true);
                     mAvailSat.setBackgroundResource(R.drawable.select_days_circle);
                     mAvailSat.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
-
                 }
                 break;
         }
     }
+
 
 
 }

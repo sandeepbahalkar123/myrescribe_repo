@@ -85,7 +85,8 @@ public class EditTextWithDeleteButton extends LinearLayout {
 
             @Override
             public void onClick(View v) {
-                mClearButtonClickedInEditTextListener.onClearButtonClicked();
+                if (mClearButtonClickedInEditTextListener != null)
+                    mClearButtonClickedInEditTextListener.onClearButtonClicked();
                 editText.setText("");
             }
         });
@@ -136,7 +137,7 @@ public class EditTextWithDeleteButton extends LinearLayout {
         editText.setFocusableInTouchMode(true);
         editText.setHintTextColor(getResources().getColor(R.color.white));
         editText.setCompoundDrawablePadding(CommonMethods.convertDpToPixel(6));
-        editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.search,0,0,0);
+        editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.search, 0, 0, 0);
         editText.setBackground(null);
         editText.setTextColor(getResources().getColor(R.color.white));
         editText.setHint(hintText);

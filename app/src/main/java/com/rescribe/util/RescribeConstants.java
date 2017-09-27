@@ -103,7 +103,8 @@ public class RescribeConstants {
     public static final String SEND_MESSAGE = RescribeConstants.BLANK + 28;
     public static final String CHAT_HISTORY = RescribeConstants.BLANK + 29;
     public static final String TASK_BOOK_APPOINTMENT_SERVICES = RescribeConstants.BLANK + 30;
-    public static final String TASK_GET_DOCTOR_DATA = RescribeConstants.BLANK + 31 ;
+    public static final String TASK_GET_DOCTOR_DATA = RescribeConstants.BLANK + 31;
+    public static final String TASK_GET_BOOK_APPOINT_DRAWER_CONFIG = RescribeConstants.BLANK + 32;
     public static final String CHAT_USERS = RescribeConstants.BLANK + 32;
 
     public static final String DATA = "DATA";

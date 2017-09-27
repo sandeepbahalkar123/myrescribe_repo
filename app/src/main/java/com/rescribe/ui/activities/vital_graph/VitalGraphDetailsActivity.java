@@ -1,4 +1,4 @@
-package com.rescribe.ui.activities;
+package com.rescribe.ui.activities.vital_graph;
 
 import android.os.Bundle;
 import android.os.Parcelable;

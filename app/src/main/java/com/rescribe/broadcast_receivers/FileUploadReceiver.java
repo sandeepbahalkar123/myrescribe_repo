@@ -1,5 +1,6 @@
 package com.rescribe.broadcast_receivers;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 
@@ -44,6 +45,9 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
         } else {
             instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.FAILED);
         }
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(uploadInfo.getNotificationID());
         CommonMethods.Log("ImagedUploadIdHome", uploadInfo.getUploadId() + " onError");
     }
 
@@ -72,7 +76,6 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
                     intentService.putExtra(MESSAGE_LIST, mqttMessage);
                     context.startService(intentService);
                 }
-
                 instance.deleteUploadedMessage(uploadInfo.getUploadId());
             } else {
                 instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
@@ -80,6 +83,10 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
         } else {
             instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
         }
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(uploadInfo.getNotificationID());
+
         CommonMethods.Log("ImagedUploadIdHome", uploadInfo.getUploadId() + " onCompleted");
     }
 

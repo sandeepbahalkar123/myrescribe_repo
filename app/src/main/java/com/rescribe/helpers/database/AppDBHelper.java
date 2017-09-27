@@ -24,12 +24,12 @@ import java.util.ArrayList;
 
 public class AppDBHelper extends SQLiteOpenHelper {
 
+    private final String TAG = "Rescribe/AppDBHelper";
+
     private static final String MESSAGE_UPLOAD_ID = "message_upload_id";
     private static final String MESSAGE_STATUS = "message_status";
     private static final String MESSAGE_FILE_DATA = "message_file_data";
     private static final String MY_MESSAGE_TABLE = "my_message_table";
-
-    private final String TAG = "Rescribe/AppDBHelper";
 
     public static final String CHAT_USER_ID = "user_id";
     public static final String MESSAGE = "message";

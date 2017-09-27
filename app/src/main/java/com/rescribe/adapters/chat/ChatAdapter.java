@@ -28,7 +28,6 @@ import com.rescribe.ui.activities.ZoomImageViewActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-import com.tonyodev.fetch.Fetch;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,7 +42,6 @@ import static com.rescribe.util.RescribeConstants.UPLOADING;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder> {
 
     private final Context context;
-    private final Fetch fetch;
     private final ItemListener itemListener;
     private TextDrawable mReceiverTextDrawable;
     private ArrayList<MQTTMessage> mqttMessages;
@@ -52,7 +50,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         this.mqttMessages = mqttMessages;
         this.mReceiverTextDrawable = mReceiverTextDrawable;
         this.context = context;
-        fetch = Fetch.newInstance(context);
 
         try {
             this.itemListener = ((ItemListener) context);
@@ -85,7 +82,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                 requestOptions.placeholder(R.drawable.exercise);
                 Glide.with(holder.senderProfilePhoto.getContext())
                         .load(message.getImageUrl())
-                        .apply(requestOptions).thumbnail(0.5f)
+                        .apply(requestOptions).thumbnail(0.2f)
                         .into(holder.senderProfilePhoto);
             }
 
@@ -183,7 +180,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                                         return false;
                                     }
                                 })
-                                .apply(requestOptions).thumbnail(0.5f)
+                                .apply(requestOptions).thumbnail(0.2f)
                                 .into(holder.senderPhotoThumb);
                     } else {
 
@@ -191,7 +188,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
                         Glide.with(holder.senderPhotoThumb.getContext())
                                 .load(new File(message.getFileUrl()))
-                                .apply(requestOptions).thumbnail(0.5f)
+                                .apply(requestOptions).thumbnail(0.2f)
                                 .into(holder.senderPhotoThumb);
                     }
 
@@ -232,7 +229,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                 requestOptions.placeholder(R.drawable.doctor_speciality);
                 Glide.with(holder.receiverProfilePhoto.getContext())
                         .load(message.getImageUrl())
-                        .apply(requestOptions).thumbnail(0.5f)
+                        .apply(requestOptions).thumbnail(0.2f)
                         .into(holder.receiverProfilePhoto);
             }
 
@@ -271,9 +268,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                             .fontSize(fontSize)
                             .toUpperCase()
                             .endConfig()
-                            .buildRoundRect(CommonMethods.getExtension(message.getImageUrl()), holder.senderFileIcon.getResources().getColor(R.color.grey_500), CommonMethods.convertDpToPixel(3));
+                            .buildRoundRect(extension, holder.senderFileIcon.getResources().getColor(R.color.grey_500), CommonMethods.convertDpToPixel(3));
 
                     holder.receiverFileIcon.setImageDrawable(fileTextDrawable);
+
+                    holder.receiverFileProgressLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            itemListener.downloadFile(message);
+                        }
+                    });
 
                 } else {
 
@@ -288,8 +292,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                     requestOptions.dontAnimate();
                     requestOptions.override(300, 300);
                     requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+                    requestOptions.error(droidninja.filepicker.R.drawable.image_placeholder);
                     Glide.with(holder.receiverPhotoThumb.getContext())
-                            .load(message.getImageUrl())
+                            .load(message.getFileUrl())
                             .listener(new RequestListener<Drawable>() {
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -303,7 +308,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                                     return false;
                                 }
                             })
-                            .apply(requestOptions).thumbnail(0.1f)
+                            .apply(requestOptions).thumbnail(0.2f)
                             .into(holder.receiverPhotoThumb);
 
                     holder.receiverPhotoLayout.setOnClickListener(new View.OnClickListener() {
@@ -438,5 +443,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
     public interface ItemListener {
         void uploadFile(MQTTMessage mqttMessage);
+        void downloadFile(MQTTMessage mqttMessage);
     }
 }

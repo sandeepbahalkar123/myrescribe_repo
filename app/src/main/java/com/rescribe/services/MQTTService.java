@@ -17,6 +17,7 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.notification.MessageNotification;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.rxnetwork.RxNetwork;
 
@@ -55,7 +56,7 @@ public class MQTTService extends Service {
     public static final String MESSAGE_ID = "message_id";
     public static final String RECEIVED = "delivery";
     public static final String DOCTOR_CONNECT = "doctorConnect";
-    private static final String TOPIC[] = {"doctorConnect", "online"};
+    private static final String TOPIC[] = {"doctorConnect", "doctor/online"};
     public static final String DELIVERED = "delivered";
 
     //    public static final String DOCTOR = "user1";
@@ -262,6 +263,7 @@ public class MQTTService extends Service {
             message.setQos(1);
             message.setRetained(true);
             mqttClient.publish(DOCTOR_CONNECT, message);
+            CommonMethods.Log("passMessage: ", content);
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -294,20 +296,20 @@ public class MQTTService extends Service {
     }
 // new code
 
-    private PendingIntent getReplyPendingIntent(MQTTMessage MQTTMessage) {
+    private PendingIntent getReplyPendingIntent(MQTTMessage mqttMessage) {
         Intent intent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             // start a
             // (i)  broadcast receiver which runs on the UI thread or
             // (ii) service for a background task to b executed , but for the purpose of this codelab, will be doing a broadcast receiver
-            intent = ReplayBroadcastReceiver.getReplyMessageIntent(this, MQTTMessage);
-            return PendingIntent.getBroadcast(getApplicationContext(), MQTTMessage.getDocId(), intent,
+            intent = ReplayBroadcastReceiver.getReplyMessageIntent(this, mqttMessage);
+            return PendingIntent.getBroadcast(getApplicationContext(), mqttMessage.getDocId(), intent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
             // start your activity
-            intent = ReplayBroadcastReceiver.getReplyMessageIntent(this, MQTTMessage);
+            intent = ReplayBroadcastReceiver.getReplyMessageIntent(this, mqttMessage);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            return PendingIntent.getActivity(this, MQTTMessage.getDocId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            return PendingIntent.getActivity(this, mqttMessage.getDocId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
 

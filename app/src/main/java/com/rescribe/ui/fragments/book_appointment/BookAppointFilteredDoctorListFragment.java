@@ -18,6 +18,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
+import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 
 import java.util.ArrayList;
@@ -167,6 +168,20 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
         activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
     }
-
-
+  /*  private ArrayList<DoctorList> filterDataOnDocSpeciality() {
+        ArrayList<DoctorList> chatDoctors = this.mReceivedList;
+        ArrayList<DoctorList> dataList = new ArrayList<>();
+        if (mClickedSpecialityOfDoctor == null) {
+            return chatDoctors;
+        } else {
+            for (DoctorList listObject :
+                    chatDoctors) {
+                if (mClickedSpecialityOfDoctor.equalsIgnoreCase(listObject.getSpecialization())) {
+                    dataList.add(listObject);
+                }
+            }
+        }
+        return dataList;
+    }
+*/
 }

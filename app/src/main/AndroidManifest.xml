@@ -238,15 +238,15 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ui.activities.VitalGraphActivity"
+            android:name=".ui.activities.vital_graph.VitalGraphActivity"
             android:label="@string/title_activity_vital_graph"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.VitalGraphDetailsActivity"
+            android:name=".ui.activities.vital_graph.VitalGraphDetailsActivity"
             android:label="@string/title_activity_vital_graph_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.AddTrackerActivity"
+            android:name=".ui.activities.vital_graph.AddTrackerActivity"
             android:label="@string/title_activity_add_tracker"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

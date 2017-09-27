@@ -1,6 +1,5 @@
-package com.rescribe.ui.activities;
+package com.rescribe.ui.activities.vital_graph;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,29 +11,27 @@ import android.view.View;
 
 import com.google.gson.Gson;
 import com.rescribe.R;
-import com.rescribe.adapters.vital_graph.VitalGraphAdapter;
+import com.rescribe.adapters.vital_graph.AddTrackerAdapter;
 import com.rescribe.model.vital_graph.VitalGraphModel;
 import com.rescribe.model.vital_graph.VitalList;
-import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class VitalGraphActivity extends AppCompatActivity implements VitalGraphAdapter.ItemClickListener {
+public class AddTrackerActivity extends AppCompatActivity implements AddTrackerAdapter.ItemClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-
     private ArrayList<VitalList> vitalList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vital_graph);
+        setContentView(R.layout.activity_add_tracker);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -56,27 +53,19 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
         VitalGraphModel vitalGraphModel = gson.fromJson(data, VitalGraphModel.class);
         vitalList.addAll(vitalGraphModel.getData().getVitalList());
 
-        VitalGraphAdapter vitalGraphAdapter = new VitalGraphAdapter(VitalGraphActivity.this, vitalList);
+        AddTrackerAdapter addTrackerAdapter = new AddTrackerAdapter(AddTrackerActivity.this, vitalList);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(VitalGraphActivity.this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(AddTrackerActivity.this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
-        mRecyclerView.setAdapter(vitalGraphAdapter);
+        mRecyclerView.setAdapter(addTrackerAdapter);
     }
 
     @Override
-    public void onVitalClick(VitalList vitalList) {
-        Intent intent = new Intent(VitalGraphActivity.this, VitalGraphDetailsActivity.class);
-        intent.putExtra(RescribeConstants.VITALS_LIST, vitalList);
-        startActivity(intent);
-    }
+    public void onTrackerClick(VitalList vitalList) {
 
-    @Override
-    public void onAddTrackerClick() {
-        Intent intent = new Intent(VitalGraphActivity.this, AddTrackerActivity.class);
-        startActivity(intent);
     }
 }

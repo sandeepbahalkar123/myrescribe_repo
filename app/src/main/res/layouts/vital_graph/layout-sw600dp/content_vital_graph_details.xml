@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.rescribe.ui.activities.VitalGraphDetailsActivity"
+    tools:context="com.rescribe.ui.activities.vital_graph.VitalGraphDetailsActivity"
     tools:showIn="@layout/activity_vital_graph_details">
 
     <LinearLayout
         android:id="@+id/layout0"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingBottom="@dimen/dp14"
         android:paddingTop="@dimen/dp8">
@@ -60,26 +61,34 @@
             android:paddingStart="@dimen/dp46"
             tools:text="23rd  Aug’17 " />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/graphCard"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_margin="@dimen/dp16"
-            app:cardBackgroundColor="@color/tagColor"
-            app:cardCornerRadius="@dimen/dp10">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <android.support.v7.widget.CardView
+                android:id="@+id/graphCard"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp0"
+                android:layout_margin="@dimen/dp16"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/tagColor"
+                app:cardCornerRadius="@dimen/dp10">
 
-        </android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>
 
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/dp24"
-            app:customFont="@string/roboto_medium"
-            android:textSize="@dimen/sp14"
-            android:paddingStart="@dimen/dp24"
-            android:text="@string/dummy_full" />
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp0"
+                android:layout_weight="1"
+                android:paddingEnd="@dimen/dp24"
+                android:paddingStart="@dimen/dp24"
+                android:text="@string/dummy_full"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_medium" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

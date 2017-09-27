@@ -2,7 +2,6 @@ package com.rescribe.ui.activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -44,6 +42,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.chat.SendMessageModel;
+import com.rescribe.model.chat.TypeStatus;
 import com.rescribe.model.chat.history.ChatHistory;
 import com.rescribe.model.chat.history.ChatHistoryModel;
 import com.rescribe.model.doctor_connect.ChatDoctor;
@@ -76,6 +75,7 @@ import droidninja.filepicker.FilePickerConst;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.rescribe.services.MQTTService.PATIENT;
 import static com.rescribe.ui.activities.DoctorConnectActivity.FREE;
 import static com.rescribe.util.RescribeConstants.COMPLETED;
 import static com.rescribe.util.RescribeConstants.FAILED;
@@ -83,6 +83,7 @@ import static com.rescribe.util.RescribeConstants.FILE.DOC;
 import static com.rescribe.util.RescribeConstants.FILE.IMG;
 import static com.rescribe.util.RescribeConstants.SEND_MESSAGE;
 import static com.rescribe.util.RescribeConstants.UPLOADING;
+import static com.rescribe.util.RescribeConstants.USER_STATUS.TYPING;
 
 @RuntimePermissions
 public class ChatActivity extends AppCompatActivity implements HelperResponse, ChatAdapter.ItemListener {
@@ -121,12 +122,38 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     @BindView(R.id.swipeLayout)
     SwipeRefreshLayout swipeLayout;
 
+    // Check Typing
+
+    final int TYPING_TIMEOUT = 3000; // 5 seconds timeout
+    private static final String TYPING_MESSAGE = "typing...";
+    final Handler timeoutHandler = new Handler();
+    private boolean isTyping;
+    final Runnable typingTimeout = new Runnable() {
+        public void run() {
+            isTyping = false;
+            typingStatus();
+        }
+    };
+
+    private void typingStatus() {
+        TypeStatus typeStatus = new TypeStatus();
+        String generatedId = TYPING + mqttMessage.size() + "_" + System.nanoTime();
+        typeStatus.setMsgId(generatedId);
+        typeStatus.setDocId(chatList.getId());
+        typeStatus.setPatId(Integer.parseInt(patId));
+        typeStatus.setSender(PATIENT);
+        typeStatus.setTypeStatus(isTyping);
+        mqttService.typingStatus(typeStatus);
+    }
+
+    // End Check Typing
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
             boolean delivered = intent.getBooleanExtra(MQTTService.DELIVERED, false);
-            boolean isReceived = intent.getBooleanExtra(MQTTService.RECEIVED, false);
+            boolean isReceived = intent.getBooleanExtra(MQTTService.IS_MESSAGE, false);
 
             if (delivered) {
 
@@ -142,7 +169,22 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                         chatRecyclerView.smoothScrollToPosition(mqttMessage.size() - 1);
                     }
                 } else {
-                    // Other patient message
+                    // Other user message
+
+                }
+            } else {
+                // Getting type status
+                TypeStatus typeStatus = intent.getParcelableExtra(MQTTService.MESSAGE);
+                if (typeStatus.getDocId() == chatList.getId()) {
+                    if (typeStatus.isTyping()) {
+                        dateTime.setText(TYPING_MESSAGE);
+                        dateTime.setTextColor(Color.WHITE);
+                    } else {
+                        dateTime.setText(chatList.getOnlineStatus());
+                        dateTime.setTextColor(statusColor);
+                    }
+                } else {
+                    // Other use message
 
                 }
             }
@@ -267,14 +309,28 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() == 0) {
-                    recorderOrSendButton.setImageResource(R.drawable.speak);
-                    cameraButton.setVisibility(View.VISIBLE);
-                    isSend = false;
-                } else {
+                // reset the timeout
+                timeoutHandler.removeCallbacks(typingTimeout);
+                if (messageType.getText().toString().trim().length() > 0) {
                     recorderOrSendButton.setImageResource(R.drawable.send);
                     cameraButton.setVisibility(View.GONE);
                     isSend = true;
+                    // Typing status
+                    // schedule the timeout
+                    timeoutHandler.postDelayed(typingTimeout, TYPING_TIMEOUT);
+                    if (!isTyping) {
+                        isTyping = true;
+                        typingStatus();
+                    }
+                    // End Typing status
+                } else {
+                    recorderOrSendButton.setImageResource(R.drawable.speak);
+                    cameraButton.setVisibility(View.VISIBLE);
+                    isSend = false;
+                    // Typing status
+                    isTyping = false;
+                    typingStatus();
+                    // End typing status
                 }
             }
 
@@ -330,8 +386,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     if (!message.equals("")) {
 
                         MQTTMessage messageL = new MQTTMessage();
-                        messageL.setTopic(MQTTService.DOCTOR_CONNECT);
-                        messageL.setSender(MQTTService.PATIENT);
+                        messageL.setTopic(MQTTService.TOPIC[0]);
+                        messageL.setSender(PATIENT);
                         messageL.setMsg(message);
 
                         String generatedId = CHAT + mqttMessage.size() + "_" + System.nanoTime();
@@ -428,8 +484,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         int startPosition = mqttMessage.size() + 1;
         for (String file : files) {
             MQTTMessage messageL = new MQTTMessage();
-            messageL.setTopic(MQTTService.DOCTOR_CONNECT);
-            messageL.setSender(MQTTService.PATIENT);
+            messageL.setTopic(MQTTService.TOPIC[0]);
+            messageL.setSender(PATIENT);
 
             String fileName = file.substring(file.lastIndexOf("/") + 1);
 
@@ -468,8 +524,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         int startPosition = mqttMessage.size() + 1;
         for (String file : files) {
             MQTTMessage messageL = new MQTTMessage();
-            messageL.setTopic(MQTTService.DOCTOR_CONNECT);
-            messageL.setSender(MQTTService.PATIENT);
+            messageL.setTopic(MQTTService.TOPIC[0]);
+            messageL.setSender(PATIENT);
             messageL.setMsg("");
 
             String generatedId = CHAT + mqttMessage.size() + "_" + System.nanoTime();
@@ -572,6 +628,14 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     @Override
     protected void onPause() {
         super.onPause();
+
+        // Type status
+        // reset the timeout
+        timeoutHandler.removeCallbacks(typingTimeout);
+        isTyping = false;
+        typingStatus();
+        // Type status End
+
         broadcastReceiver.unregister(this);
         unregisterReceiver(receiver);
         mqttService.setCurrentChatUser(0);

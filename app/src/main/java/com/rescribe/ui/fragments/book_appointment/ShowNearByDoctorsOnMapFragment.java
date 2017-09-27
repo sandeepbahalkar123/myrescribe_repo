@@ -103,10 +103,10 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
 
-       /* moreInfo.setOnClickListener(new View.OnClickListener() {
+    moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<DoctorList> doctorLists = new ArrayList<>();
+
                 DoctorList doctorList = new DoctorList();
                 doctorList.setAboutDoctor(doctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
                 doctorList.setAmount(doctorLists.get(Integer.parseInt(marker.getTitle())).getAmount());
@@ -118,16 +118,20 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
                 doctorList.setDoctorAddress(doctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorAddress());
                 doctorList.setDoctorImageUrl(doctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorImageUrl());
                 doctorList.setExperience(doctorLists.get(Integer.parseInt(marker.getTitle())).getExperience());
-                doctorList.setAboutDoctor(doctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
-                doctorList.setAboutDoctor(doctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
-                doctorList.setAboutDoctor(doctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
-
-
-                args.putParcelable(getString(R.string.more_info),doctorList);
+                doctorList.setFavourite(doctorLists.get(Integer.parseInt(marker.getTitle())).getFavourite());
+                doctorList.setWaitingTime(doctorLists.get(Integer.parseInt(marker.getTitle())).getWaitingTime());
+                doctorList.setTokenNo(doctorLists.get(Integer.parseInt(marker.getTitle())).getTokenNo());
+                doctorList.setSpeciality(doctorLists.get(Integer.parseInt(marker.getTitle())).getSpeciality());
+                doctorList.setRecentlyVisited(doctorLists.get(Integer.parseInt(marker.getTitle())).getRecentlyVisited());
+                doctorList.setOpenToday(doctorLists.get(Integer.parseInt(marker.getTitle())).getOpenToday());
+                doctorList.setMorePracticePlaces(doctorLists.get(Integer.parseInt(marker.getTitle())).getMorePracticePlaces());
+                doctorList.setLongitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
+                doctorList.setLatitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
+                args.putParcelable(getString(R.string.clicked_item_data),doctorList);
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
                 activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(args), false);
             }
-        });*/
+        });
         ratingBar.setRating((float) doctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
         directions.setOnClickListener(new View.OnClickListener() {
             @Override

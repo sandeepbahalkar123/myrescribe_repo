@@ -1,7 +1,5 @@
 package com.rescribe.ui.fragments.doctor_connect;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -181,8 +179,18 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     }
 
     public void addItem(ChatDoctor chatDoctor) {
-        chatDoctors.add(0, chatDoctor);
-        mDoctorConnectChatAdapter.notifyDataSetChanged();
+        boolean isThere = false;
+        for (int index = 0; index < chatDoctors.size(); index++) {
+            if (chatDoctors.get(index).getId() == chatDoctor.getId()) {
+                isThere = true;
+                break;
+            }
+        }
+
+        if (!isThere) {
+            chatDoctors.add(0, chatDoctor);
+            mDoctorConnectChatAdapter.notifyDataSetChanged();
+        }
     }
 }
 

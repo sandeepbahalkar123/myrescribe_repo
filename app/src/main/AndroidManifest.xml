@@ -61,9 +61,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+
             android:name=".ui.activities.book_appointment.BookAppointDoctorListBaseActivity"
             android:label="@string/doctor_connect"
+
             android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -140,6 +143,11 @@
             android:name=".broadcast_receivers.ReplayBroadcastReceiver"
             android:enabled="true"
             android:exported="false" />
+
+        <receiver
+            android:name=".broadcast_receivers.FileDownloadReceiver"
+            android:enabled="true"
+            android:exported="false"/>
 
         <activity
             android:name=".ui.activities.NotificationActivity"
@@ -248,7 +256,8 @@
         <activity
             android:name=".ui.activities.AddTrackerActivity"
             android:label="@string/title_activity_add_tracker"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

@@ -311,7 +311,7 @@ public class DoctorList implements Parcelable {
 
     @Override
     public String toString() {
-        return "DoctorList{" +
+        return "DoctorData{" +
                 "docId=" + docId +
                 ", docName='" + docName + '\'' +
                 ", doctorImageUrl='" + doctorImageUrl + '\'' +

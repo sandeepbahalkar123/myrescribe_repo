@@ -112,6 +112,7 @@ public class RescribeConstants {
     public static final String TASK_GET_PATIENT_VITAL_DETAIL = RescribeConstants.BLANK + 34;
     public static final String TASK_ADD_VITAL_MANUALLY = RescribeConstants.BLANK + 35;
     public static final String TASK_GET_VITAL_TRACKER_LIST = RescribeConstants.BLANK + 36;
+    public static final String TASK_DASHBOARD_API = RescribeConstants.BLANK + 37;
     //-------
 
     public static final String DATA = "DATA";

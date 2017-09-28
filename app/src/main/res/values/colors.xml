@@ -23,6 +23,9 @@
     <color name="divider">#265e5e5e</color>
     <color name="vitals_name">#737373</color>
     <color name="login_bg_color">#54d8c8</color>
+    <color name="greyish">#4f4f4f</color>
+
+
     <color name="dose_completed">#666666</color>
     <color name="background_grey">#EDEDED</color>
     <color name="accent">#FF4081</color>

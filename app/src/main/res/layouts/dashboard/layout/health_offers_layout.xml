@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/layer_16"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,10 +16,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:layout_weight="1"
+                app:customFont="@string/roboto_medium"
                 android:layout_marginLeft="@dimen/dp6"
-                android:text="Health Blog"/>
+                android:text="Health Offers"/>
             <com.rescribe.ui.customesViews.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -33,9 +34,9 @@
                 />
         </LinearLayout>
         <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="@dimen/dp16"
-            android:layout_marginBottom="@dimen/dp16"
-            android:id="@+id/listView"
+            android:layout_marginTop="@dimen/dp8"
+            android:layout_marginBottom="@dimen/dp8"
+            android:id="@+id/healthOfferslistView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@null"

@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.ReviewList;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -22,46 +24,51 @@ import butterknife.ButterKnife;
 
 public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.ListViewHolder> {
 
+
     private Fragment mFragment;
     private Context mContext;
-    private ArrayList<ReviewList> mDataList;
+    Integer[] imageId = {
+            R.drawable.diabetes_and_weightloss,
+            R.drawable.preventing_treating,
+            R.drawable.myths_about_cancer,
+            R.drawable.tips_to_getting_sound_sleep,
 
-    public HealthBlogAdapter(Context mContext, ArrayList<ReviewList> dataList) {
-        this.mDataList = dataList;
+
+    };
+
+
+    public HealthBlogAdapter(Context mContext) {
+        // this.mDataList = dataList;
         this.mContext = mContext;
 
 
     }
 
     @Override
-    public HealthBlogAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_doctor_reviews_layout, parent, false);
+                .inflate(R.layout.healthblog_item_dashboard, parent, false);
 
-        return new HealthBlogAdapter.ListViewHolder(itemView);
+        return new ListViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(HealthBlogAdapter.ListViewHolder holder, int position) {
+    public void onBindViewHolder(ListViewHolder holder, int position) {
 
-        final ReviewList doctorObject = mDataList.get(position);
+      holder.diabetes.setImageResource(imageId[position]);
 
 
-        holder.reviewName.setText(doctorObject.getUserName());
-        holder.review.setText(doctorObject.getUserMessage());
 
     }
 
     @Override
     public int getItemCount() {
-        return mDataList.size();
+        return 4;
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.reviewName)
-        CustomTextView reviewName;
-        @BindView(R.id.review)
-        CustomTextView review;
+        @BindView(R.id.diabetes)
+        ImageView diabetes;
 
         View view;
 

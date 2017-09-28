@@ -1,11 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="150dp"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/dp16"
-    android:layout_marginLeft="@dimen/dp16"
-    android:layout_marginRight="@dimen/dp16"
-    android:layout_marginTop="@dimen/dp16"
+    android:layout_marginBottom="@dimen/dp8"
+    android:layout_marginLeft="@dimen/dp4"
+    android:layout_marginRight="@dimen/dp4"
+    android:layout_marginTop="@dimen/dp8"
     android:background="@color/transparent"
     android:orientation="vertical">
 
@@ -23,12 +23,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:background="@drawable/vitals_curve_white_bg"
+                android:background="@drawable/edge_white"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/fess"
+                    android:id="@+id/fees"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -42,7 +42,7 @@
                     app:customFont="@string/roboto_bold" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/amount"
+                    android:id="@+id/discountAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -54,20 +54,21 @@
                     app:customFont="@string/roboto_medium" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/percent"
-                    android:layout_width="match_parent"
+                    android:id="@+id/percentOff"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:drawablePadding="@dimen/dp4"
                     android:drawableRight="@drawable/down"
                     android:gravity="center_vertical"
-                    android:paddingTop="24dp"
+
                     android:text="1799%"
                     android:textColor="@color/green_percent"
                     android:textSize="14sp"
                     app:customFont="@string/roboto_bold" />
 
                 <ImageView
+                    android:id="@+id/saleImageView"
                     android:layout_marginTop="@dimen/dp16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -89,7 +90,6 @@
             android:id="@+id/bpMinLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/vitals_curve_white_bg"
             android:gravity="center"
             android:orientation="vertical">
 

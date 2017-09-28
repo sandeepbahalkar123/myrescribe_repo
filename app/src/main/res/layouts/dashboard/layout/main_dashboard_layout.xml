@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="?android:actionBarSize"
     android:orientation="vertical">
 
     <android.support.v4.widget.NestedScrollView
@@ -18,6 +19,9 @@
             <include layout="@layout/doctor_options" />
 
             <include layout="@layout/investigations_vital_layout" />
+
+            <include layout="@layout/health_offers_layout" />
+
             <include layout="@layout/health_blog_layout" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

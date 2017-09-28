@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_height="wrap_content">
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="250dp"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:layout_marginBottom="@dimen/dp10"
             android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp10"
-                android:layout_marginTop="@dimen/dp10"
                 android:orientation="horizontal">
 
                 <com.rescribe.ui.customesViews.CustomTextView
@@ -27,6 +36,7 @@
                     android:layout_weight="1"
                     android:text="My Appointments"
                     android:textSize="12sp"
+                    android:textColor="@color/greyish"
                     app:customFont="@string/roboto_regular" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
@@ -93,7 +103,7 @@
                         android:layout_alignTop="@+id/thumbnail"
                         android:layout_marginTop="1dip"
                         android:text="Cardilogist"
-                        android:textColor="@color/dose_completed"
+                        android:textColor="@color/greyish"
                         android:textSize="@dimen/sp11"
                         app:customFont="@string/roboto_medium" />
 
@@ -105,7 +115,7 @@
                         android:layout_toRightOf="@+id/thumbnail"
                         android:gravity="right"
                         android:text="10 years of experience "
-                        android:textColor="@color/dose_completed"
+                        android:textColor="@color/greyish"
                         android:textSize="@dimen/sp11"
                         app:customFont="@string/roboto_medium" />
                     <!-- Rightend Duration -->
@@ -116,29 +126,33 @@
                         android:layout_below="@id/doctorName"
                         android:layout_toRightOf="@+id/thumbnail"
                         android:gravity="right"
+                        android:paddingBottom="@dimen/dp20"
                         android:text="Aundh, Pune"
-                        android:textColor="@color/dose_completed"
+                        android:textColor="@color/greyish"
                         android:textSize="@dimen/sp11"
                         app:customFont="@string/roboto_medium" />
                 </LinearLayout>
             </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
-
         <LinearLayout
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
-            android:layout_marginRight="@dimen/dp10"
-            android:layout_marginTop="@dimen/dp40">
+            android:layout_marginRight="@dimen/dp10">
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/recentVisit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:background="@drawable/recently_visited_doctor_bg" />
+                android:gravity="center"
+                android:padding="6dp"
+                android:background="@drawable/visited_dr" />
         </LinearLayout>
+
     </FrameLayout>
 
 </LinearLayout>

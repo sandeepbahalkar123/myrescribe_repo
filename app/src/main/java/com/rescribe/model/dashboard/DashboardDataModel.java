@@ -1,7 +1,7 @@
 
 package com.rescribe.model.dashboard;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -10,22 +10,22 @@ public class DashboardDataModel {
 
     @SerializedName("servicesList")
     @Expose
-    private List<String> servicesList = null;
+    private ArrayList<String> servicesList = null;
     @SerializedName("doctorList")
     @Expose
-    private List<DoctorData> doctorList = null;
+    private ArrayList<DoctorData> doctorList = null;
     @SerializedName("pendingInvestigationList")
     @Expose
-    private List<PendingInvestigationData> pendingInvestigationList = null;
+    private ArrayList<PendingInvestigationData> pendingInvestigationList = null;
     @SerializedName("latestVitalReading")
     @Expose
     private LatestVitalReading latestVitalReading;
     @SerializedName("healthOffersList")
     @Expose
-    private List<HealthOffersData> healthOffersList = null;
+    private ArrayList<HealthOffersData> healthOffersList = null;
     @SerializedName("healthBlogList")
     @Expose
-    private List<HealthBlogData> healthBlogList = null;
+    private ArrayList<HealthBlogData> healthBlogList = null;
     @SerializedName("tipOfTheDayImageUrl")
     @Expose
     private String tipOfTheDayImageUrl;
@@ -33,27 +33,27 @@ public class DashboardDataModel {
     @Expose
     private String jokeOfTheDayImageUrl;
 
-    public List<String> getServicesList() {
+    public ArrayList<String> getServicesList() {
         return servicesList;
     }
 
-    public void setServicesList(List<String> servicesList) {
+    public void setServicesList(ArrayList<String> servicesList) {
         this.servicesList = servicesList;
     }
 
-    public List<DoctorData> getDoctorList() {
+    public ArrayList<DoctorData> getDoctorList() {
         return doctorList;
     }
 
-    public void setDoctorList(List<DoctorData> doctorList) {
+    public void setDoctorList(ArrayList<DoctorData> doctorList) {
         this.doctorList = doctorList;
     }
 
-    public List<PendingInvestigationData> getPendingInvestigationList() {
+    public ArrayList<PendingInvestigationData> getPendingInvestigationList() {
         return pendingInvestigationList;
     }
 
-    public void setPendingInvestigationList(List<PendingInvestigationData> pendingInvestigationList) {
+    public void setPendingInvestigationList(ArrayList<PendingInvestigationData> pendingInvestigationList) {
         this.pendingInvestigationList = pendingInvestigationList;
     }
 
@@ -65,19 +65,19 @@ public class DashboardDataModel {
         this.latestVitalReading = latestVitalReading;
     }
 
-    public List<HealthOffersData> getHealthOffersList() {
+    public ArrayList<HealthOffersData> getHealthOffersList() {
         return healthOffersList;
     }
 
-    public void setHealthOffersList(List<HealthOffersData> healthOffersList) {
+    public void setHealthOffersList(ArrayList<HealthOffersData> healthOffersList) {
         this.healthOffersList = healthOffersList;
     }
 
-    public List<HealthBlogData> getHealthBlogList() {
+    public ArrayList<HealthBlogData> getHealthBlogList() {
         return healthBlogList;
     }
 
-    public void setHealthBlogList(List<HealthBlogData> healthBlogList) {
+    public void setHealthBlogList(ArrayList<HealthBlogData> healthBlogList) {
         this.healthBlogList = healthBlogList;
     }
 

@@ -100,7 +100,7 @@ public class DashboardHelper implements ConnectionListener {
             is.read(buffer);
             is.close();
             String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "doctor_data_book_appointment" + json);
+            Log.e(TAG, "dashboard" + json);
 
             DashboardBaseModel model = new Gson().fromJson(json, DashboardBaseModel.class);
             onResponse(ConnectionListener.RESPONSE_OK, model, RescribeConstants.TASK_DASHBOARD_API);

@@ -8,6 +8,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,8 +19,16 @@ import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 import com.heinrichreimersoftware.materialdrawer.theme.DrawerTheme;
 import com.rescribe.R;
+import com.rescribe.adapters.dashboard.DoctorsDashBoardAdapter;
+import com.rescribe.adapters.dashboard.HealthBlogAdapter;
+import com.rescribe.adapters.dashboard.HealthOffersAdapter;
+import com.rescribe.adapters.dashboard.MenuDashBoardAdapter;
+import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.database.MyRecordsData;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.dashboard.DashboardBaseModel;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
@@ -34,6 +44,8 @@ import net.gotev.uploadservice.UploadService;
 
 import java.util.Calendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -42,11 +54,19 @@ import permissions.dispatcher.RuntimePermissions;
  */
 
 @RuntimePermissions
-public class HomePageActivity extends DrawerActivity {
+public class HomePageActivity extends DrawerActivity implements HelperResponse {
 
     private static final long MANAGE_ACCOUNT = 121;
     private static final long ADD_ACCOUNT = 122;
     private static final String TAG = "HomePage";
+    @BindView(R.id.menuListView)
+    RecyclerView menuListView;
+    @BindView(R.id.doctorListView)
+    RecyclerView doctorListView;
+    @BindView(R.id.healthBlogListView)
+    RecyclerView healthBlogListView;
+    @BindView(R.id.healthOfferslistView)
+    RecyclerView healthOfferslistView;
     private Context mContext;
     private String mGetMealTime;
     String breakFastTime = "";
@@ -55,13 +75,21 @@ public class HomePageActivity extends DrawerActivity {
     String snacksTime = "";
     private Toolbar toolbar;
     private AppDBHelper appDBHelper;
+    private DashboardHelper dashboardHelper;
+    private MenuDashBoardAdapter menuDashBoardAdapter;
+    private DoctorsDashBoardAdapter doctorsDashBoardAdapter;
+    private HealthOffersAdapter mHealthOffersAdapter;
+    private HealthBlogAdapter mHealthBlogAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_drawer_new);
+        ButterKnife.bind(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        dashboardHelper = new DashboardHelper(this, this);
+        dashboardHelper.doGetDashboard();
         mContext = HomePageActivity.this;
         HomePageActivityPermissionsDispatcher.getPermissionWithCheck(HomePageActivity.this);
         appDBHelper = new AppDBHelper(mContext);
@@ -390,5 +418,49 @@ public class HomePageActivity extends DrawerActivity {
 //                CommonMethods.showToast(mContext, "Welcome " + newProfile.getName());
             }
         });
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        DashboardBaseModel dashboardBaseModel = (DashboardBaseModel) customResponse;
+        menuDashBoardAdapter = new MenuDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getServicesList());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        menuListView.setLayoutManager(layoutManager);
+        menuListView.setHasFixedSize(true);
+        menuListView.setAdapter(menuDashBoardAdapter);
+
+        doctorsDashBoardAdapter = new DoctorsDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getDoctorList());
+        LinearLayoutManager doctorListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        doctorListView.setLayoutManager(doctorListViewlayoutManager);
+        doctorListView.setHasFixedSize(true);
+        doctorListView.setAdapter(doctorsDashBoardAdapter);
+
+        mHealthOffersAdapter = new HealthOffersAdapter(this, dashboardBaseModel.getDashboardDataModel().getHealthOffersList());
+        LinearLayoutManager  healthOfferslistViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        healthOfferslistView.setLayoutManager(healthOfferslistViewlayoutManager);
+        healthOfferslistView.setHasFixedSize(true);
+        healthOfferslistView.setAdapter(mHealthOffersAdapter);
+
+        mHealthBlogAdapter = new HealthBlogAdapter(this);
+        LinearLayoutManager healthBlogListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        healthBlogListView.setLayoutManager(healthBlogListViewlayoutManager);
+        healthBlogListView.setHasFixedSize(true);
+        healthBlogListView.setAdapter(mHealthBlogAdapter);
+
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
     }
 }

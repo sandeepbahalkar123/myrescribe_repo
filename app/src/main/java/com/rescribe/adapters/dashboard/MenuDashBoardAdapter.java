@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.ReviewList;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 
@@ -26,9 +27,9 @@ public class MenuDashBoardAdapter extends RecyclerView.Adapter<MenuDashBoardAdap
 
     private Fragment mFragment;
     private Context mContext;
-    private ArrayList<ReviewList> mDataList;
+    private ArrayList<String> mDataList;
 
-    public MenuDashBoardAdapter(Context mContext, ArrayList<ReviewList> dataList) {
+    public MenuDashBoardAdapter(Context mContext, ArrayList<String> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
 
@@ -46,8 +47,8 @@ public class MenuDashBoardAdapter extends RecyclerView.Adapter<MenuDashBoardAdap
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
 
-        final ReviewList doctorObject = mDataList.get(position);
-
+        holder.menuName.setText(mDataList.get(position));
+        holder.menuImage.setImageResource(CommonMethods.getServiceListItems(mDataList.get(position)));
 
     }
 

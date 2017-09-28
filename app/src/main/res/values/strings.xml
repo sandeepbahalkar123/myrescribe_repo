@@ -257,7 +257,6 @@
     <string name="distance">Distance</string>
     <string name="distance_in_km"><u>Distance in KM</u></string>
 
-    <string name="title_activity_vital_graph">Vital Graph</string>
     <string name="add_tracker">Add Tracker</string>
     <string name="title_activity_vital_graph_details">Vital Graph Details</string>
     <string name="title_activity_add_tracker">Add Tracker</string>
@@ -276,6 +275,7 @@
     <string name="select_days"><u>Select Days</u></string>
     <string name="also_practices">Also practices at</string>
     <string name="more_info">More Info</string>
+
     <string name="services">Services</string>
     <string name="doctorss">Doctors</string>
     <string name="years_experience">years of experience</string>
@@ -284,5 +284,11 @@
     <string name="rupees">Rs.</string>
     <string name="slash">/</string>
     <string name="session">session</string>
+
+    <string name="enter_reading">Enter Reading</string>
+    <string name="err_reading_date">Reading date should not be greater than current date.</string>
+    <string name="enter_systolic">Enter Systolic</string>
+    <string name="enter_diastolic">Enter Diastolic</string>
+
 
 </resources>

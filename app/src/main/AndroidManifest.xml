@@ -242,7 +242,7 @@
 
         <activity
             android:name=".ui.activities.vital_graph.VitalGraphActivity"
-            android:label="@string/title_activity_vital_graph"
+            android:label="@string/vital_graph"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.vital_graph.VitalGraphDetailsActivity"

@@ -49,12 +49,12 @@ public class CommonMethods {
     private DatePickerDialogListener mDatePickerDialogListener;
 
     public static void showToast(Context context, String error) {
-        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, error, Toast.LENGTH_LONG).show();
     }
 
     // 1ˢᵗ, 2ⁿᵈ, 3ʳᵈ, 4ᵗʰ
     public static String ordinal(int i) {
-        String[] sufixes = new String[] { "ᵗʰ", "ˢᵗ", "ⁿᵈ", "ʳᵈ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ" };
+        String[] sufixes = new String[]{"ᵗʰ", "ˢᵗ", "ⁿᵈ", "ʳᵈ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ"};
         switch (i % 100) {
             case 11:
             case 12:
@@ -600,7 +600,8 @@ public class CommonMethods {
 
         return abbreviation;
     }
-    public static int getDoctorSpecialistIcons(String caseStudyName,Context mContext) {
+
+    public static int getDoctorSpecialistIcons(String caseStudyName, Context mContext) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.gynecologist;
@@ -644,7 +645,7 @@ public class CommonMethods {
         return abbreviation;
     }
 
-    public static int getServices(String caseStudyName,Context mContext) {
+    public static int getServices(String caseStudyName, Context mContext) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.gynecologist;
@@ -722,51 +723,29 @@ public class CommonMethods {
         return a;
     }
 
-    public void datePickerDialog(Context context, DatePickerDialogListener datePickerDialogListener, Date dateToSet, final Boolean isFromDateClicked, final Date date) {
+    public void datePickerDialog(Context context, DatePickerDialogListener datePickerDialogListener, Date dateToSet) {
         // Get Current Date
         final Calendar c = Calendar.getInstance();
+
         if (dateToSet != null) {
             c.setTime(dateToSet);
         }
+
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
         mDatePickerDialogListener = datePickerDialogListener;
-
         DatePickerDialog datePickerDialog = new DatePickerDialog(context,
                 new DatePickerDialog.OnDateSetListener() {
-
-
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-
-                        if (isFromDateClicked) {
-                            mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                        } else {
-                            mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                        }
-
-
+                        mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
                     }
                 }, mYear, mMonth, mDay);
-        if (isFromDateClicked) {
-            datePickerDialog.getDatePicker().setCalendarViewShown(false);
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-            datePickerDialog.show();
-        } else {
-            if (date != null) {
-                datePickerDialog.getDatePicker().setCalendarViewShown(false);
-                datePickerDialog.getDatePicker().setMinDate(date.getTime());
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-                datePickerDialog.show();
-            } else {
-                datePickerDialog.getDatePicker().setCalendarViewShown(false);
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-                datePickerDialog.show();
-            }
-        }
+
+        datePickerDialog.show();
     }
 
     public static String getExtension(String filePath) {

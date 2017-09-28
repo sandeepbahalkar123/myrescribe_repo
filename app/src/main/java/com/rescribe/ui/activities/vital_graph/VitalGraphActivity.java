@@ -9,12 +9,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.RelativeLayout;
 
-import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.adapters.vital_graph.VitalGraphAdapter;
-import com.rescribe.model.vital_graph.VitalGraphModel;
-import com.rescribe.model.vital_graph.VitalList;
+import com.rescribe.helpers.vital_graph_helper.VitalGraphHelper;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.vital_graph.vital_all_list.VitalGraphBaseModel;
+import com.rescribe.model.vital_graph.vital_all_list.VitalGraphData;
+import com.rescribe.model.vital_graph.vital_all_list.VitalGraphList;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -22,14 +26,18 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class VitalGraphActivity extends AppCompatActivity implements VitalGraphAdapter.ItemClickListener {
+public class VitalGraphActivity extends AppCompatActivity implements VitalGraphAdapter.ItemClickListener, HelperResponse {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.listView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.emptyListView)
+    RelativeLayout mEmptyListView;
 
-    private ArrayList<VitalList> vitalList = new ArrayList<>();
+    private VitalGraphHelper mVitalGraphHelper;
+    private VitalGraphBaseModel mReceivedVitalGraphBaseModel;
+    private ArrayList<VitalGraphData> mReceivedList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,27 +59,16 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
     }
 
     private void init() {
-        String data = "{ \"common\": { \"success\": true, \"statusCode\": 200, \"statusMessage\": \"USER AUTHENTICATED\" }, \"data\": { \"vitalList\": [ { \"vitalId\": 1, \"vitalName\": \"Blood Pressure\", \"vitalWeight\": \"130/88 mm Hg\", \"vitalDate\": \"1ˢᵗ Aug’17 \" }, { \"vitalId\": 2, \"vitalName\": \"Total Cholesterol\", \"vitalWeight\": \"200 mg/dl\", \"vitalDate\": \"2ⁿᵈ Aug’17 \" }, { \"vitalId\": 3, \"vitalName\": \"Weight\", \"vitalWeight\": \"68 Kgs\", \"vitalDate\": \"3ʳᵈ Aug’17 \" }, { \"vitalId\": 4, \"vitalName\": \"Temperature\", \"vitalWeight\": \"103 F\", \"vitalDate\": \"4ᵗʰ Aug’17 \" } ] } }";
-        Gson gson = new Gson();
-        VitalGraphModel vitalGraphModel = gson.fromJson(data, VitalGraphModel.class);
-        vitalList.addAll(vitalGraphModel.getData().getVitalList());
 
-        VitalGraphAdapter vitalGraphAdapter = new VitalGraphAdapter(VitalGraphActivity.this, vitalList);
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(VitalGraphActivity.this);
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
-        mRecyclerView.setAdapter(vitalGraphAdapter);
+        mVitalGraphHelper = new VitalGraphHelper(this, this);
+        mVitalGraphHelper.doGetPatientVitalList();
     }
 
+
     @Override
-    public void onVitalClick(VitalList vitalList) {
+    public void onVitalClick(VitalGraphData vitalList) {
         Intent intent = new Intent(VitalGraphActivity.this, VitalGraphDetailsActivity.class);
-        intent.putExtra(RescribeConstants.VITALS_LIST, vitalList);
+        intent.putExtra(getString(R.string.vital_graph), vitalList);
         startActivity(intent);
     }
 
@@ -79,5 +76,70 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
     public void onAddTrackerClick() {
         Intent intent = new Intent(VitalGraphActivity.this, AddTrackerActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+
+        switch (mOldDataTag) {
+            case RescribeConstants.TASK_GET_PATIENT_VITAL_LIST:
+                mReceivedVitalGraphBaseModel = (VitalGraphBaseModel) customResponse;
+                setDoctorListAdapter(mReceivedVitalGraphBaseModel);
+                break;
+        }
+
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    public void isDataListViewVisible(boolean flag) {
+        if (flag) {
+            mEmptyListView.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        } else {
+            mEmptyListView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        }
+    }
+
+
+    private void setDoctorListAdapter(VitalGraphBaseModel receivedBookAppointmentBaseModel) {
+        if (receivedBookAppointmentBaseModel == null) {
+            isDataListViewVisible(false);
+        } else {
+            VitalGraphList data = receivedBookAppointmentBaseModel.getData();
+            if (data == null) {
+                isDataListViewVisible(false);
+            } else {
+                ArrayList<VitalGraphData> graphList = data.getVitalList();
+                if (graphList.size() == 0) {
+                    isDataListViewVisible(false);
+                } else {
+                    isDataListViewVisible(true);
+                    mReceivedList = graphList;
+                    VitalGraphAdapter vitalGraphAdapter = new VitalGraphAdapter(this, mReceivedList);
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(VitalGraphActivity.this);
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+                    mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                            DividerItemDecoration.VERTICAL);
+                    mRecyclerView.addItemDecoration(dividerItemDecoration);
+                    mRecyclerView.setAdapter(vitalGraphAdapter);
+                }
+            }
+        }
     }
 }

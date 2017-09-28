@@ -1,0 +1,52 @@
+{
+  "common": {
+    "success": true,
+    "statusCode": 200,
+    "statusMessage": "USER AUTHENTICATED"
+  },
+  "data": {
+    "doAndDonts": "In a small village, a little boy lived with his father and mother. He was the only son.The parents of the little boy were very depressed due to his bad temper. The boy used to get angry very soon and taunt others with his words. His bad temper made him use words that hurt others.",
+    "vitalDetail": [
+      {
+        "vitalValue": "85/50 mm Hg",
+        "creation_date": "2017-09-28T07:30:04.000Z",
+        "selfTrackerFlag": "true"
+      },
+      {
+        "vitalValue": "119/70 mm Hg",
+        "creation_date": "2017-09-27T13:49:39.000Z",
+        "selfTrackerFlag": "false"
+      },
+      {
+        "vitalValue": "400/350 mm Hg",
+        "creation_date": "2017-09-27T11:40:13.000Z",
+        "selfTrackerFlag": "true"
+      },
+      {
+        "vitalValue": "82/30 mm Hg",
+        "creation_date": "2017-09-27T10:54:13.000Z",
+        "selfTrackerFlag": "true"
+      },
+      {
+        "vitalValue": "70/170 mm Hg",
+        "creation_date": "2017-09-27T10:54:13.000Z",
+        "selfTrackerFlag": "true"
+      },
+      {
+        "vitalValue": "444/200 mm Hg",
+        "creation_date": "2017-09-25T10:54:13.000Z",
+        "selfTrackerFlag": "true"
+      },
+      {
+        "vitalValue": "510/137 mm Hg",
+        "creation_date": "2017-06-15T11:21:52.000Z",
+        "selfTrackerFlag": "false"
+      },
+      {
+        "vitalValue": "505/55 mm Hg",
+        "creation_date": "2017-06-09T00:00:00.000Z",
+        "selfTrackerFlag": "false"
+      }
+    ]
+  }
+}

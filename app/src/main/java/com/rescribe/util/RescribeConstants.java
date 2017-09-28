@@ -171,6 +171,7 @@ public class RescribeConstants {
     public static class DATE_PATTERN {
         public static String YYYY_MM_DD_hh_mm_a = "yyyy-MM-dd hh:mm a";
         public static String DD_MM = "dd/MM";
+        public static String DD_MMM = "dd MMM";
         public static final String UTC_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
         public final static String YYYY_MM_DD = "yyyy-MM-dd";
         public final static String DD_MM_YYYY = "dd-MM-yyyy";

@@ -103,11 +103,14 @@ dependencies {
     compile 'io.reactivex:rxjava:1.3.1'
     compile 'com.flipboard:bottomsheet-core:1.5.3'
     compile 'com.flipboard:bottomsheet-commons:1.5.3'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
     compile project(':crystalrangeseekbar')
+
 }
 //apply plugin: 'com.google.gms.google-services'
 

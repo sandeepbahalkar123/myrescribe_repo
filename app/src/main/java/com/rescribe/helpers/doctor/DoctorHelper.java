@@ -165,7 +165,7 @@ public class DoctorHelper implements ConnectionListener {
         return map;
     }
 
-    //-- Sort date in descending order, copied from SRDaoImplManager.java
+    //-- Sort date in descending order
     private class DateWiseComparator implements Comparator<String> {
 
         public int compare(String m1, String m2) {

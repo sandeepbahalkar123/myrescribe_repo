@@ -3,6 +3,7 @@ package com.rescribe.adapters.vital_graph;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,13 @@ import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphData;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,17 +55,16 @@ public class VitalGraphAdapter extends RecyclerView.Adapter<VitalGraphAdapter.Fi
         final VitalGraphData vitalGraph = vitalGraphs.get(position);
 
         holder.nameText.setText(vitalGraph.getVitalName());
-        holder.weightText.setText(vitalGraph.getVitalValue());
-        holder.dateText.setText(String.valueOf(vitalGraph.getVitalDate()));
+        holder.weightText.setText(vitalGraph.getVitalValue() + " " + vitalGraph.getVitalUnit());
 
         if (vitalGraph.getCategory().equalsIgnoreCase(context.getString(R.string.normalRange))) {
-            holder.dateText.setTextColor(ContextCompat.getColor(context, R.color.range_green));
+            holder.weightText.setTextColor(ContextCompat.getColor(context, R.color.range_green));
         } else if (vitalGraph.getCategory().equalsIgnoreCase(context.getString(R.string.moderateRange))) {
-            holder.dateText.setTextColor(ContextCompat.getColor(context, R.color.range_yellow));
+            holder.weightText.setTextColor(ContextCompat.getColor(context, R.color.range_yellow));
         } else if (vitalGraph.getCategory().equalsIgnoreCase(context.getString(R.string.severeRange))) {
-            holder.dateText.setTextColor(ContextCompat.getColor(context, R.color.Red));
+            holder.weightText.setTextColor(ContextCompat.getColor(context, R.color.Red));
         } else {
-            holder.dateText.setTextColor(ContextCompat.getColor(context, R.color.Gray));
+            holder.weightText.setTextColor(ContextCompat.getColor(context, R.color.Gray));
         }
 
         if ((getItemCount() - 1) == position) {
@@ -83,6 +88,21 @@ public class VitalGraphAdapter extends RecyclerView.Adapter<VitalGraphAdapter.Fi
                 itemClickListener.onAddTrackerClick();
             }
         });
+
+        if (vitalGraph.getVitalDate() != null) {
+            Date timeStamp = CommonMethods.convertStringToDate(vitalGraph.getVitalDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(timeStamp);
+            String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup>" + " "+ new SimpleDateFormat("MMM yy").format(cal.getTime());
+            //------
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                holder.dateText.setText(Html.fromHtml(toDisplay, Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                holder.dateText.setText(Html.fromHtml(toDisplay));
+            }
+        }else{
+            holder.dateText.setText("");
+        }
 
     }
 

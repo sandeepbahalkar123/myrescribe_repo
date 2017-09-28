@@ -14,6 +14,7 @@
     <color name="view_detail_color">#737373</color>
     <color name="Red">#FF0000</color>
     <color name="tagColor">#04abdf</color>
+    <color name="tans_tagColor">#6004abdf</color>
     <color name="statusbar">#0077a7</color>
     <color name="white">#ffffff</color>
     <color name="colorPrimary">#3F51B5</color>

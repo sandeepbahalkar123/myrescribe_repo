@@ -1,14 +1,17 @@
 package com.rescribe.helpers.vital_graph_helper;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
+import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.chat.MessageRequestModel;
+import com.rescribe.model.vital_graph.vital_description.VitalGraphInfoBaseModel;
 import com.rescribe.model.vital_graph.vital_tracker.VitalGraphAddNewTrackerRequestModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
@@ -16,6 +19,11 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  * Created by jeetal on 5/9/17.
@@ -82,11 +90,36 @@ public class VitalGraphHelper implements ConnectionListener {
     }
 
     public void doGetPatientVitalDetail(String vitalName) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_PATIENT_VITAL_DETAIL, Request.Method.GET, true);
+       ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_PATIENT_VITAL_DETAIL, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
-        mConnectionFactory.setUrl(Config.TASK_GET_PATIENT_VITAL_DETAIL + "?patientId=" + id + "&vitalName=" + vitalName);
+        if (vitalName.contains(" ")) {
+            try {
+                mConnectionFactory.setUrl(Config.TASK_GET_PATIENT_VITAL_DETAIL + "?patientId=" + id + "&vitalName=" + URLEncoder.encode(vitalName, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                mConnectionFactory.setUrl(Config.TASK_GET_PATIENT_VITAL_DETAIL + "?patientId=" + id + "&vitalName=" + vitalName);
+            }
+        } else {
+            mConnectionFactory.setUrl(Config.TASK_GET_PATIENT_VITAL_DETAIL + "?patientId=" + id + "&vitalName=" + vitalName);
+        }
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_PATIENT_VITAL_DETAIL);
+
+        /*try {
+            InputStream is = mContext.getAssets().open("test_temp.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+            Log.e(TAG, "test_temp" + json);
+
+            VitalGraphInfoBaseModel bookAppointmentBaseModel = new Gson().fromJson(json, VitalGraphInfoBaseModel.class);
+            onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, RescribeConstants.TASK_GET_PATIENT_VITAL_DETAIL);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }*/
     }
 
     public void doGetPatientVitalTrackerList() {

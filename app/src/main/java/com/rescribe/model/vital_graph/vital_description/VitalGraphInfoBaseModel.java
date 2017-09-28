@@ -42,7 +42,7 @@ public class VitalGraphInfoBaseModel implements CustomResponse {
         private String description;
         @SerializedName("vitalDetail")
         @Expose
-        private ArrayList<VitalGraphDetails> vitalGraphDetailList;
+        private ArrayList<VitalGraphDetails> vitalGraphDetailList = new ArrayList<>();
 
         public String getDescription() {
             return description;

@@ -15,7 +15,7 @@ public class VitalGraphDetails implements CustomResponse {
     private String vitalValue;
     @SerializedName("creation_date")
     @Expose
-    private String creation_date;
+    private String creationDate;
     @SerializedName("selfTrackerFlag")
     @Expose
     private String selfTrackerFlag;
@@ -28,12 +28,18 @@ public class VitalGraphDetails implements CustomResponse {
         this.vitalValue = vitalValue;
     }
 
-    public String getCreation_date() {
-        return creation_date;
+    public String getCreationDate() {
+
+        if (creationDate != null) {
+            if (creationDate.contains("T")) {
+                creationDate = CommonMethods.formatDateTime(creationDate, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
+            }
+        }
+        return creationDate;
     }
 
-    public void setCreation_date(String creation_date) {
-        this.creation_date = creation_date;
+    public void setCreationDate(String creation_date) {
+        this.creationDate = creation_date;
     }
 
     public String getSelfTrackerFlag() {

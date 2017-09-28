@@ -191,9 +191,13 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 //--------
                 mGraphCard.getAxisLeft().setGridColor(Color.TRANSPARENT);
                 mGraphCard.getXAxis().setGridColor(Color.TRANSPARENT);
-                mGraphCard.getAxisLeft().setGridColor(Color.TRANSPARENT); // left y-axis
+                mGraphCard.getAxisRight().setGridColor(Color.TRANSPARENT); // left y-axis
                 //--------
                 mGraphCard.getDescription().setEnabled(false);
+                //---------
+                mGraphCard.setScrollContainer(true);
+                mGraphCard.setHorizontalScrollBarEnabled(true);
+                mGraphCard.setScaleXEnabled(true);
                 //---------
                 IAxisValueFormatter formatter = new IAxisValueFormatter() {
 
@@ -285,9 +289,14 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 mGraphCard.getAxisRight().setTextColor(Color.TRANSPARENT);
                 //--------
                 mGraphCard.getAxisLeft().setGridColor(Color.TRANSPARENT);
+                mGraphCard.getAxisRight().setGridColor(Color.TRANSPARENT);
                 mGraphCard.getXAxis().setGridColor(Color.TRANSPARENT);
                 //--------
                 mGraphCard.getDescription().setEnabled(false);
+                //---------
+                mGraphCard.setScrollContainer(true);
+                mGraphCard.setHorizontalScrollBarEnabled(true);
+                mGraphCard.setScaleXEnabled(true);
                 //---------
                 IAxisValueFormatter formatter = new IAxisValueFormatter() {
 

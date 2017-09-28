@@ -18,6 +18,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -290,6 +291,12 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         chatRecyclerView.setLayoutManager(mLayoutManager);
+
+        // off recyclerView Animation
+        RecyclerView.ItemAnimator animator = chatRecyclerView.getItemAnimator();
+        if (animator instanceof SimpleItemAnimator)
+            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+
         chatAdapter = new ChatAdapter(mqttMessage, doctorTextDrawable, ChatActivity.this);
         chatRecyclerView.setAdapter(chatAdapter);
 
@@ -711,7 +718,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             final int startPosition = mqttMessage.size() + 1;
             int addedCount = 0;
 
-            MQTTData messageData = appDBHelper.getMessageData();
+            MQTTData messageData = appDBHelper.getMessageUpload();
             ArrayList<MQTTMessage> mqttMessList = messageData.getMqttMessages();
 
             for (MQTTMessage mqttMess : mqttMessList) {
@@ -790,7 +797,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             e.printStackTrace();
         }
 
-        appDBHelper.insertMessageData(mqttMessage.getMsgId(), RescribeConstants.UPLOADING, new Gson().toJson(mqttMessage));
+        appDBHelper.insertMessageUpload(mqttMessage.getMsgId(), RescribeConstants.UPLOADING, new Gson().toJson(mqttMessage));
     }
 
     // Download File
@@ -816,7 +823,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             if (uploadInfo.getUploadId().length() > CHAT.length()) {
                 String prefix = uploadInfo.getUploadId().substring(0, 4);
                 if (prefix.equals(CHAT)) {
-                    appDBHelper.updateMessageData(uploadInfo.getUploadId(), FAILED);
+                    appDBHelper.updateMessageUpload(uploadInfo.getUploadId(), FAILED);
 
                     int position = getPositionById(uploadInfo.getUploadId());
 

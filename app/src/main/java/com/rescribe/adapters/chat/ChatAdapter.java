@@ -133,6 +133,19 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                             .buildRoundRect(extension, holder.senderFileIcon.getResources().getColor(R.color.grey_500), CommonMethods.convertDpToPixel(2));
                     holder.senderFileIcon.setImageDrawable(fileTextDrawable);
 
+                    holder.senderFileProgressLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (message.getUploadStatus() == FAILED) {
+                                itemListener.uploadFile(message);
+                                message.setUploadStatus(UPLOADING);
+                                notifyItemChanged(position);
+                            } else if (message.getUploadStatus() == COMPLETED) {
+                                // do file open stuff here
+                            }
+                        }
+                    });
+
                 } else {
 
                     holder.senderPhotoLayout.setVisibility(View.VISIBLE);

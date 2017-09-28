@@ -106,6 +106,9 @@ public class RescribeConstants {
     public static final String TASK_GET_DOCTOR_DATA = RescribeConstants.BLANK + 31 ;
     public static final String CHAT_USERS = RescribeConstants.BLANK + 32;
 
+    public static final String ACTIVE_STATUS = RescribeConstants.BLANK + 33;
+    public static final String LOGOUT = RescribeConstants.BLANK + 34;
+
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
     public static final String TAKEN_DATE = "takenDate";

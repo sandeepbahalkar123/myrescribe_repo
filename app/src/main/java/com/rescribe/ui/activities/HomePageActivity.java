@@ -19,7 +19,11 @@ import com.heinrichreimersoftware.materialdrawer.theme.DrawerTheme;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.database.MyRecordsData;
+import com.rescribe.helpers.login.LoginHelper;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.investigation.Image;
+import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
@@ -34,12 +38,14 @@ import java.util.Calendar;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
+
 /**
  * Created by jeetal on 28/6/17.
  */
 
 @RuntimePermissions
-public class HomePageActivity extends DrawerActivity {
+public class HomePageActivity extends DrawerActivity implements HelperResponse {
 
     private static final long MANAGE_ACCOUNT = 121;
     private static final long ADD_ACCOUNT = 122;
@@ -52,6 +58,8 @@ public class HomePageActivity extends DrawerActivity {
     String snacksTime = "";
     private Toolbar toolbar;
     private AppDBHelper appDBHelper;
+    private String patientId;
+    private LoginHelper loginHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +70,12 @@ public class HomePageActivity extends DrawerActivity {
         mContext = HomePageActivity.this;
         HomePageActivityPermissionsDispatcher.getPermissionWithCheck(HomePageActivity.this);
         appDBHelper = new AppDBHelper(mContext);
+
+        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        loginHelper = new LoginHelper(mContext, HomePageActivity.this);
+        ActiveRequest activeRequest = new ActiveRequest();
+        activeRequest.setId(Integer.parseInt(patientId));
+        loginHelper.doActiveStatus(activeRequest);
 
         String currentDate = CommonMethods.getCurrentDate();
         String pastDate = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.NOTIFY_DATE, mContext);
@@ -306,7 +320,9 @@ public class HomePageActivity extends DrawerActivity {
                     }
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.logout))) {
-                    logout();
+                    ActiveRequest activeRequest = new ActiveRequest();
+                    activeRequest.setId(Integer.parseInt(patientId));
+                    loginHelper.doLogout(activeRequest);
                 } else if (id.equalsIgnoreCase(getString(R.string.doctor_connect))) {
                     Intent intent = new Intent(mContext, DoctorConnectActivity.class);
                     startActivity(intent);
@@ -386,5 +402,29 @@ public class HomePageActivity extends DrawerActivity {
 //                CommonMethods.showToast(mContext, "Welcome " + newProfile.getName());
             }
         });
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if (mOldDataTag.equals(RescribeConstants.LOGOUT))
+            logout();
+        else if (mOldDataTag.equals(ACTIVE_STATUS))
+            CommonMethods.Log(ACTIVE_STATUS, "active");
+
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
     }
 }

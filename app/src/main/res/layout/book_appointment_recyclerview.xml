@@ -19,6 +19,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/sp16"
         android:visibility="visible"
+        android:layout_marginBottom="@dimen/dp10"
         app:customFont="@string/roboto_medium" />
 
     <LinearLayout
@@ -36,7 +37,7 @@
             android:padding="@dimen/dp10"
             android:scaleX="-1"
             android:src="@drawable/right_arrow"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/listView"
@@ -57,7 +58,7 @@
             android:layout_gravity="center_vertical"
             android:padding="@dimen/dp10"
             android:src="@drawable/right_arrow"
-            android:visibility="gone" />
+            android:visibility="visible" />
     </LinearLayout>
 
     <RelativeLayout

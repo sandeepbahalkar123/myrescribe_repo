@@ -16,7 +16,7 @@ public class BookAppointFilterBaseModel implements CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private ServicesData servicesData;
+    private FilterConfigData filterConfigData;
 
     public Common getCommon() {
         return common;
@@ -26,46 +26,46 @@ public class BookAppointFilterBaseModel implements CustomResponse {
         this.common = common;
     }
 
-    public ServicesData getServicesData() {
-        return servicesData;
+    public FilterConfigData getFilterConfigData() {
+        return filterConfigData;
     }
 
-    public void setServicesData(ServicesData servicesData) {
-        this.servicesData = servicesData;
+    public void setFilterConfigData(FilterConfigData filterConfigData) {
+        this.filterConfigData = filterConfigData;
     }
 
     public class FilterConfigData {
         @SerializedName("clinicFeesRange")
         @Expose
-        private String[] clinicFeesRange;
+        private ArrayList<String> clinicFeesRange;
         @SerializedName("distance")
         @Expose
-        private String[] distanceRange;
+        private ArrayList<String> distanceRange;
         @SerializedName("locationList")
         @Expose
-        private String[] locationList;
+        private ArrayList<String> locationList;
 
-        public String[] getClinicFeesRange() {
+        public ArrayList<String> getClinicFeesRange() {
             return clinicFeesRange;
         }
 
-        public void setClinicFeesRange(String[] clinicFeesRange) {
+        public void setClinicFeesRange(ArrayList<String> clinicFeesRange) {
             this.clinicFeesRange = clinicFeesRange;
         }
 
-        public String[] getDistanceRange() {
+        public ArrayList<String> getDistanceRange() {
             return distanceRange;
         }
 
-        public void setDistanceRange(String[] distanceRange) {
+        public void setDistanceRange(ArrayList<String> distanceRange) {
             this.distanceRange = distanceRange;
         }
 
-        public String[] getLocationList() {
+        public ArrayList<String> getLocationList() {
             return locationList;
         }
 
-        public void setLocationList(String[] locationList) {
+        public void setLocationList(ArrayList<String> locationList) {
             this.locationList = locationList;
         }
     }

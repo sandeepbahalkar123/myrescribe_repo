@@ -1,0 +1,40 @@
+{
+  "common": {
+    "success": true,
+    "statusCode": 200,
+    "statusMessage": "USER AUTHENTICATED"
+  },
+  "data": {
+    "complaintList": [
+      {
+        "id": 1,
+        "complaint": "Select"
+      },
+      {
+        "id": 2,
+        "complaint": "Stomach pain"
+      },
+      {
+        "id": 3,
+        "complaint": "Hand pain"
+      },
+      {
+        "id": 4,
+        "complaint": "Headache"
+      },
+      {
+        "id": 5,
+        "complaint": "Leg pain"
+      },
+      {
+        "id": 6,
+        "complaint": "Fever"
+      },
+      {
+        "id": 7,
+        "complaint": "Others"
+      }
+    ]
+  }
+}
+

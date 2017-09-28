@@ -50,7 +50,8 @@ android {
                             'src/main/res/layouts/appointment',
                             'src/main/res/layouts/my_records',
                             'src/main/res/layouts/vital_graph',
-                            'src/main/res/layouts/book_appointment'
+                            'src/main/res/layouts/book_appointment',
+                            'src/main/res/layouts/dashboard'
                     ]
         }
     }

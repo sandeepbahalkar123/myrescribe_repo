@@ -92,11 +92,6 @@
 
         </activity>
         <activity
-            android:name=".ui.activities.book_appointment.DoctorListToBookAppointment"
-            android:configChanges="orientation|keyboard|screenSize"
-            android:label="@string/doctor_activity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ui.activities.DoctorConnectActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_connect"

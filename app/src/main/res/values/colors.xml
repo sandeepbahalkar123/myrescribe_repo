@@ -32,7 +32,7 @@
     <color name="otp_background_layout">#edf1f4</color>
     <color name="Gray">#736F6E</color>
     <color name="green_light">#0fd20b</color>
-
+    <color name="green_percent">#008418</color>
     <color name="pink_female">#df04a9</color>
     <color name="female_select">#3f0631</color>
 
@@ -46,5 +46,6 @@
     <color name="seek_bar_default">#4a4a4a</color>
     <color name="book_appoint_time_slot_item_default">#4285f4</color>
     <color name="book_appoint_time_slot_item_clicked">#88a0c8</color>
-
+    <color name="grey_hint_color">#4cffffff</color>
+    <color name="menu_doctor_color">#08459b</color>
 </resources>

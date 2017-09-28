@@ -3,6 +3,8 @@ package com.rescribe.adapters;
 import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +78,9 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         doctorExperience.setText(""+doctorLists.get(position).getExperience()+mContext.getString(R.string.space)+mContext.getString(R.string.years_experience));
         doctorAddress.setText(doctorLists.get(position).getDoctorAddress());
         doctorFees.setText(""+doctorLists.get(position).getAmount());
-        kilometers.setText(""+doctorLists.get(position).getDistance());
+        SpannableString content = new SpannableString(""+doctorLists.get(position).getDistance());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        kilometers.setText(content);
         view.addView(imageLayout, 0);
 
         return imageLayout;

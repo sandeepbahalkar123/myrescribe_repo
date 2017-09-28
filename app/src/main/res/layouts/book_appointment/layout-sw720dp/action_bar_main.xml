@@ -62,6 +62,17 @@
                             android:text="@string/location"
                             android:textColor="@color/white"
                             android:textSize="@dimen/sp16" />
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/showlocation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            android:text="@string/location"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp16" />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>

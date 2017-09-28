@@ -264,7 +264,7 @@ public class HomePageActivity extends DrawerActivity {
                         .setTextPrimary(getString(R.string.post_your_query))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_post_your_query)),
                 new DrawerItem()
-                        .setTextPrimary(getString(R.string.book_appointment))
+                        .setTextPrimary(getString(R.string.services))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_post_your_query)),
                 new DrawerItem()
                         .setTextPrimary(getString(R.string.logout))
@@ -318,7 +318,7 @@ public class HomePageActivity extends DrawerActivity {
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.post_your_query))) {
 
-                } else if (id.equalsIgnoreCase(getString(R.string.book_appointment))) {
+                } else if (id.equalsIgnoreCase(getString(R.string.services))) {
                     Intent intent = new Intent(mContext, BookAppointmentServices.class);
                     //    Intent intent = new Intent(mContext, DoctorListToBookAppointment.class);
                     startActivity(intent);

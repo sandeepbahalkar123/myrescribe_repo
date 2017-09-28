@@ -1,21 +1,27 @@
 package com.rescribe.ui.fragments.book_appointment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.TimeSlotAdapter;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -61,8 +67,12 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     @BindView(R.id.hideAllTimeSlotListView)
     CustomTextView mHideAllTimeSlotListView;
     Unbinder unbinder;
+    @BindView(R.id.locationImage)
+    ImageView locationImage;
     private View mRootView;
+    private int imageSize;
     private DoctorList mClickedDoctorObject;
+    public static Bundle args;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -80,7 +90,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
     public static BookAppointDoctorDescriptionFragment newInstance(Bundle b) {
         BookAppointDoctorDescriptionFragment fragment = new BookAppointDoctorDescriptionFragment();
-        Bundle args = b;
+        args = b;
         if (args == null) {
             args = new Bundle();
         }
@@ -89,7 +99,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     }
 
     private void init() {
-
+        setColumnNumber(getActivity(),2);
+        BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
         Bundle arguments = getArguments();
         if (arguments != null) {
             mClickedDoctorObject = (DoctorList) arguments.getParcelable(getString(R.string.clicked_item_data));
@@ -97,21 +108,29 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             setDataInViews();
         }
     }
+    private void setColumnNumber(Context context, int columnNum) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        int widthPixels = metrics.widthPixels;
+        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+    }
 
     private void setDataInViews() {
         mDocRating.setText("" + mClickedDoctorObject.getRating());
         mDoctorName.setText("" + mClickedDoctorObject.getDocName());
         mDoctorSpecialization.setText("" + mClickedDoctorObject.getSpeciality());
         mAboutDoctorDescription.setText("" + mClickedDoctorObject.getAboutDoctor());
-        mDoctorExperience.setText("" + mClickedDoctorObject.getExperience());
-        mDoctorFees.setText("" + mClickedDoctorObject.getAmount());
+        mDoctorExperience.setText("" + mClickedDoctorObject.getExperience() + getString(R.string.space) + getString(R.string.years_experience));
+        mDoctorFees.setText(getString(R.string.fee) + getString(R.string.space) + getString(R.string.rupees) + mClickedDoctorObject.getAmount() + getString(R.string.space) + getString(R.string.slash) + getString(R.string.space) + getString(R.string.session));
         List<String> morePracticePlaces = mClickedDoctorObject.getMorePracticePlaces();
         StringBuilder builder = new StringBuilder();
         for (String s :
                 morePracticePlaces) {
-            builder.append(s + "\n");
+            builder.append(s + "/");
         }
-        mDoctorPractices.setText(getString(R.string.also_practices) +getString(R.string.space)+ builder.toString());
+
+        mDoctorPractices.setText(getString(R.string.also_practices) + getString(R.string.space) + builder.toString() + "Aundh");
         mOpeningTime.setText("" + mClickedDoctorObject.getOpenToday());
         if (mClickedDoctorObject.getAvailableTimeSlots().size() > 0) {
             mShowAllTimeSlotListView.setVisibility(View.VISIBLE);
@@ -126,6 +145,15 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             TimeSlotAdapter t = new TimeSlotAdapter(getActivity(), mClickedDoctorObject.getAvailableTimeSlots());
             mAllTimeSlotListView.setAdapter(t);
         }
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.override(imageSize, imageSize);
+        //requestOptions.placeholder(R.drawable.layer_12);
+
+        Glide.with(getActivity())
+                .load("https://maps.googleapis.com/maps/api/staticmap?center="+mClickedDoctorObject.getDoctorAddress()+"&markers=color:blue%7Clabel:C%7Cpune&zoom=12&size=600x400")
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(locationImage);
 
 
     }
@@ -156,7 +184,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         unbinder.unbind();
     }
 
-    @OnClick({R.id.showAllTimeSlotListView, R.id.hideAllTimeSlotListView})
+    @OnClick({R.id.showAllTimeSlotListView, R.id.hideAllTimeSlotListView,R.id.locationImage})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -172,6 +200,12 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             case R.id.showAllTimeSlotListView:
                 mAllTimingListViewLayout.setVisibility(View.VISIBLE);
                 mOpeningTimeLayout.setVisibility(View.GONE);
+            case R.id.locationImage:
+                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                Bundle bundle = new Bundle();
+                bundle.putString(getString(R.string.toolbarTitle),args.getString(getString(R.string.toolbarTitle)));
+                bundle.putString(getString(R.string.address),mClickedDoctorObject.getDoctorAddress());
+                activity.loadFragment(ShowLocationOfDoctorOnMap.newInstance(bundle), false);
         }
     }
 }

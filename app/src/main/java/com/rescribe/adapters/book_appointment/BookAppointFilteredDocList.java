@@ -1,15 +1,14 @@
 package com.rescribe.adapters.book_appointment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,49 +17,43 @@ import android.view.WindowManager;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.doctor_connect.ChatDoctor;
-import com.rescribe.model.doctors.appointments.AptList;
-import com.rescribe.ui.activities.MapsActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.NetworkUtil;
-import com.rescribe.util.RescribeConstants;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppointFilteredDocList.ListViewHolder> implements Filterable {
 
+
     private Fragment mFragment;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
     private int imageSize;
     private ArrayList<DoctorList> mArrayList;
-    private BookAppointFilteredDocList.OnFilterDocListClickListener mOnFilterDocListClickListener;
+    private OnFilterDocListClickListener mOnFilterDocListClickListener;
     private String searchString;
+    private ColorGenerator mColorGenerator;
 
 
-    public BookAppointFilteredDocList(Context mContext, ArrayList<DoctorList> dataList, BookAppointFilteredDocList.OnFilterDocListClickListener mOnFilterDocListClickListener, Fragment m) {
+    public BookAppointFilteredDocList(Context mContext, ArrayList<DoctorList> dataList, OnFilterDocListClickListener mOnFilterDocListClickListener, Fragment m) {
         this.mDataList = dataList;
         this.mContext = mContext;
         this.mArrayList = dataList;
         this.mOnFilterDocListClickListener = mOnFilterDocListClickListener;
         this.mFragment = m;
+        mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
     }
 
@@ -87,24 +80,46 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
         holder.doctorName.setText(doctorObject.getDocName());
         holder.doctorType.setText(doctorObject.getSpeciality());
-        holder.doctorExperience.setText("" + doctorObject.getExperience());
+        if (doctorObject.getFavourite()) {
+           // holder.favoriteView.setImageResource();
+        }
+        holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
         holder.doctorAddress.setText(doctorObject.getDoctorAddress());
         holder.doctorFee.setText("" + mContext.getString(R.string.rupee_symbol) + doctorObject.getAmount());
-        holder.distance.setText("" + doctorObject.getDistance());
-        holder.waitingTime.setText("" + mContext.getString(R.string.waiting_for) + doctorObject.getWaitingTime());
-        holder.tokenNo.setText(String.format(mContext.getString(R.string.token_no_available), doctorObject.getTokenNo()));
+        SpannableString content = new SpannableString(doctorObject.getDistance());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        holder.distance.setText(content);
+        holder.waitingTime.setText("" + mContext.getString(R.string.waiting_for) + mContext.getString(R.string.space) + doctorObject.getWaitingTime());
+        holder.tokenNo.setText(mContext.getString(R.string.token_no_available));
 
         //-------Load image-------
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.dontAnimate();
-        requestOptions.override(imageSize, imageSize);
-        requestOptions.placeholder(R.drawable.layer_12);
+        if (doctorObject.getDoctorImageUrl().equals("")) {
+            String doctorName = doctorObject.getDocName();
+            if (doctorName.contains("Dr. ")) {
+                doctorName = doctorName.replace("Dr. ", "");
+            }
 
-        Glide.with(mContext)
-                .load(doctorObject.getDoctorImageUrl())
-                .apply(requestOptions).thumbnail(0.5f)
-                .into(holder.imageURL);
-        //--------------
+            int color2 = mColorGenerator.getColor(doctorName);
+            TextDrawable drawable = TextDrawable.builder()
+                    .beginConfig()
+                    .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                    .endConfig()
+                    .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
+            holder.imageURL.setImageDrawable(drawable);
+
+        } else {
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.dontAnimate();
+            requestOptions.override(imageSize, imageSize);
+            requestOptions.placeholder(R.drawable.layer_12);
+
+            Glide.with(mContext)
+                    .load(doctorObject.getDoctorImageUrl())
+                    .apply(requestOptions).thumbnail(0.5f)
+                    .into(holder.imageURL);
+            //--------------
+        }
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +171,8 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         CustomTextView waitingTime;
         @BindView(R.id.tokenNo)
         CustomTextView tokenNo;
-
+        @BindView(R.id.favoriteView)
+        ImageView favoriteView;
         @BindView(R.id.imageURL)
         CircularImageView imageURL;
 

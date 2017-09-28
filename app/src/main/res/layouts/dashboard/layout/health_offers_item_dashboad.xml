@@ -1,0 +1,107 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dp16"
+    android:layout_marginLeft="@dimen/dp16"
+    android:layout_marginRight="@dimen/dp16"
+    android:layout_marginTop="@dimen/dp16"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/showVitalUnitNameIconLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/vitals_curve_white_bg"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/fess"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:drawableLeft="@drawable/ruppee_dashboard"
+                    android:drawablePadding="@dimen/dp4"
+                    android:gravity="center_vertical"
+                    android:paddingTop="24dp"
+                    android:text="1799"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:customFont="@string/roboto_bold" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:drawableLeft="@drawable/ruppee_blue"
+                    android:text="1583"
+                    android:textColor="@color/tagColor"
+                    android:textSize="18sp"
+                    app:customFont="@string/roboto_medium" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/percent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:drawablePadding="@dimen/dp4"
+                    android:drawableRight="@drawable/down"
+                    android:gravity="center_vertical"
+                    android:paddingTop="24dp"
+                    android:text="1799%"
+                    android:textColor="@color/green_percent"
+                    android:textSize="14sp"
+                    app:customFont="@string/roboto_bold" />
+
+                <ImageView
+                    android:layout_marginTop="@dimen/dp16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/metro_logo" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/vitalImageDialog"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal"
+                android:padding="@dimen/dp20"
+                android:src="@drawable/sale" />
+
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:id="@+id/bpMinLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/vitals_curve_white_bg"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp16"
+                android:orientation="vertical">
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

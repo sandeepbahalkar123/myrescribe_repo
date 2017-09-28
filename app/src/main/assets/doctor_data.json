@@ -10,7 +10,7 @@
         "docId": 4,
         "docName": "Dr. Himanshu Pahariya",
         "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "speciality": "General Physician",
+        "speciality": "Gastro",
         "experience": 10,
         "doctorAddress": "Bandra Kurla Complex,Mumbai",
         "amount": 500,
@@ -37,13 +37,28 @@
           "18.20",
           "19.30",
           "20.00"
+        ],
+        "totalReview": 3,
+        "reviewList": [
+          {
+            "userName": "Sandeep",
+            "userMessage": "This is very good doctor"
+          },
+          {
+            "userName": "Sudhir",
+            "userMessage": "This is very good doctor"
+          },
+          {
+            "userName": "Rohit",
+            "userMessage": "This is very good doctor"
+          }
         ]
       },
       {
         "docId": 5,
         "docName": "DR. SUNEETA PHADKE",
         "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "speciality": "General Physician",
+        "speciality": "Gastro",
         "experience": 5,
         "doctorAddress": "Hadapsar,Pune",
         "amount": 300,
@@ -55,6 +70,7 @@
         "rating": 3.5,
         "waitingTime":"45 mins",
         "tokenNo":5,
+
         "morePracticePlaces": [
           "Surya Hospital,Pimple Saudagar",
           "Jupitor hospital,Baner"
@@ -70,13 +86,28 @@
           "18.20",
           "19.30",
           "20.00"
+        ],
+        "totalReview": 3,
+        "reviewList": [
+          {
+            "userName": "Sandeep",
+            "userMessage": "This is very good doctor"
+          },
+          {
+            "userName": "Sudhir",
+            "userMessage": "This is very good doctor"
+          },
+          {
+            "userName": "Rohit",
+            "userMessage": "This is very good doctor"
+          }
         ]
       },
       {
         "docId": 6,
         "docName": "DR. AVINASH KULKARNI",
         "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "speciality": "Neurology",
+        "speciality": "Orthopaedic",
         "experience": 6,
         "doctorAddress": "Airoli,Mumbai",
         "amount": 300,
@@ -103,13 +134,28 @@
           "18.20",
           "19.30",
           "20.00"
+        ],
+        "totalReview": 3,
+        "reviewList": [
+          {
+            "userName": "Sandeep",
+            "userMessage": "This is very good doctor"
+          },
+          {
+            "userName": "Sudhir",
+            "userMessage": "This is very good doctor"
+          },
+          {
+            "userName": "Rohit",
+            "userMessage": "This is very good doctor"
+          }
         ]
       },
       {
         "docId": 7,
         "docName": "DR. Amruta Nikam",
         "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "speciality": "Neurology",
+        "speciality": "Dentist",
         "experience": 6,
         "doctorAddress": "Shivaji Nagar,Pune",
         "amount": 600,
@@ -136,12 +182,27 @@
           "18.20",
           "19.30",
           "20.00"
+        ],
+        "totalReview": 3,
+        "reviewList": [
+          {
+            "userName": "Sandeep",
+            "userMessage": "This is very good doctor"
+          },
+          {
+            "userName": "Sudhir",
+            "userMessage": "This is very good doctor"
+          },
+          {
+            "userName": "Rohit",
+            "userMessage": "This is very good doctor"
+          }
         ]
       },
       {
         "docId": 8,
         "docName": "Dr. Parag Khare",
-        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
+        "doctorImageUrl": "",
         "speciality": "Gastro",
         "experience": 6,
         "doctorAddress": "Mumbai",
@@ -169,13 +230,28 @@
           "18.20",
           "19.30",
           "20.00"
+        ],
+        "totalReview": 3,
+        "reviewList": [
+          {
+            "userName": "Sandeep",
+            "userMessage": "This is very good doctor"
+          },
+          {
+            "userName": "Sudhir",
+            "userMessage": "This is very good doctor"
+          },
+          {
+            "userName": "Rohit",
+            "userMessage": "This is very good doctor"
+          }
         ]
       },
       {
         "docId": 9,
         "docName": "Dr. Hemant Pahariya",
-        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "speciality": "Neurology",
+        "doctorImageUrl": "",
+        "speciality": "Gynecologist",
         "experience": 6,
         "doctorAddress": "Pune",
         "amount": 500,
@@ -202,6 +278,21 @@
           "18.20",
           "19.30",
           "20.00"
+        ],
+        "totalReview": 3,
+        "reviewList": [
+          {
+            "userName": "Sandeep",
+            "userMessage": "This is very good doctor"
+          },
+          {
+            "userName": "Sudhir",
+            "userMessage": "This is very good doctor"
+          },
+          {
+            "userName": "Rohit",
+            "userMessage": "This is very good doctor"
+          }
         ]
       }
     ],
@@ -269,6 +360,10 @@
       {
         "id": 16,
         "speciality": "Urologist"
+      },
+      {
+        "id": 17,
+        "speciality": "Physician"
       }
 
 

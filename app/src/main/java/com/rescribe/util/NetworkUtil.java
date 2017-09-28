@@ -5,8 +5,13 @@ package com.rescribe.util;
  */
 
 import android.content.Context;
+import android.content.Intent;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.Settings;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 public class NetworkUtil {
 
@@ -78,5 +83,15 @@ public class NetworkUtil {
             status = "Not connected to Internet";
         }
         return status;
+    }
+    public static void isGPSEnable(Context context){
+        LocationManager service = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+        boolean enabled = service
+                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (!enabled) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            context.startActivity(intent);
+        }
+
     }
 }

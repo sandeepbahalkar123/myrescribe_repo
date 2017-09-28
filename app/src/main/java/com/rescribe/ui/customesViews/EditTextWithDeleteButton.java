@@ -135,7 +135,7 @@ public class EditTextWithDeleteButton extends LinearLayout {
         editText.setGravity(Gravity.LEFT);
         editText.setFocusable(false);
         editText.setFocusableInTouchMode(true);
-        editText.setHintTextColor(getResources().getColor(R.color.white));
+        editText.setHintTextColor(getResources().getColor(R.color.grey_hint_color));
         editText.setCompoundDrawablePadding(CommonMethods.convertDpToPixel(6));
         editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.search, 0, 0, 0);
         editText.setBackground(null);

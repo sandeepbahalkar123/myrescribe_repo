@@ -2,6 +2,7 @@ package com.rescribe.ui.fragments.book_appointment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -33,6 +34,7 @@ import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActi
 import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -85,6 +87,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private BookAppointFilteredDocList mBookAppointFilteredDocListAdapter;
     private int currentPage = 0;
     private int totalPages;
+    CustomResponse customResponse;
 
     public RecentVisitDoctorFragment() {
 
@@ -108,12 +111,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     private void init(View mRootView) {
-        listView.setVisibility(View.VISIBLE);
+        BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss),true);
 
-        //  mGridViewDoctorSpeciality.setVisibility(View.VISIBLE);
-        prevBtn.setVisibility(View.GONE);
-        prevBtn.setEnabled(false);
-        nextBtn.setVisibility(View.VISIBLE);
         searchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {
             @Override
             public void onClearButtonClicked() {
@@ -144,11 +143,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+
 
     public static RecentVisitDoctorFragment newInstance(Bundle b) {
         RecentVisitDoctorFragment fragment = new RecentVisitDoctorFragment();
@@ -205,19 +200,34 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     }
 
-    @Override
-    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
 
-        bookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse c) {
+        this.customResponse = c;
+
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        bookAppointmentBaseModel = activity.getReceivedBookAppointmentBaseModel();
+        setDoctorListAdapter(bookAppointmentBaseModel);
+    }
+
+    private void setDoctorListAdapter(BookAppointmentBaseModel bookAppointmentBaseModel) {
         if (bookAppointmentBaseModel.getDoctorServicesModel() == null) {
             pickSpeciality.setVisibility(View.GONE);
             doubtMessage.setVisibility(View.GONE);
             emptyListView.setVisibility(View.VISIBLE);
         } else {
+            listView.setVisibility(View.VISIBLE);
+            prevBtn.setVisibility(View.GONE);
+            prevBtn.setEnabled(false);
+            nextBtn.setVisibility(View.VISIBLE);
             whiteUnderLine.setVisibility(View.VISIBLE);
             searchView.setVisibility(View.VISIBLE);
             emptyListView.setVisibility(View.GONE);
-
             ViewPager viewpager = (ViewPager) mRootView.findViewById(R.id.viewpager);
             CircleIndicator indicator = (CircleIndicator) mRootView.findViewById(R.id.circleIndicator);
             viewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), bookAppointmentBaseModel.getDoctorServicesModel().getDoctorList()));
@@ -235,21 +245,21 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             listView.setAdapter(mDoctorConnectSearchAdapter);
             pickSpeciality.setVisibility(View.VISIBLE);
             doubtMessage.setVisibility(View.VISIBLE);
+            isDataListViewVisible(false, false);
+            BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+            ArrayList<DoctorList> doctorList = activity.getReceivedBookAppointmentBaseModel().getDoctorServicesModel().getDoctorList();
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList, RecentVisitDoctorFragment.this, RecentVisitDoctorFragment.this);
+            LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            showDoctorsRecyclerView.setLayoutManager(linearlayoutManager);
+            showDoctorsRecyclerView.setHasFixedSize(true);
+            showDoctorsRecyclerView.setAdapter(mBookAppointFilteredDocListAdapter);
         }
 
 
         //---set data ---------
-        isDataListViewVisible(false, false);
-        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        ArrayList<DoctorList> doctorList = activity.getReceivedBookAppointmentBaseModel().getDoctorServicesModel().getDoctorList();
-        mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList, RecentVisitDoctorFragment.this, RecentVisitDoctorFragment.this);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        showDoctorsRecyclerView.setLayoutManager(layoutManager);
-        showDoctorsRecyclerView.setHasFixedSize(true);
-        showDoctorsRecyclerView.setAdapter(mBookAppointFilteredDocListAdapter);
-        //------------
 
     }
+
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {

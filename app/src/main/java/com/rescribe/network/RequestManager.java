@@ -31,7 +31,9 @@ import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.Connector;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
+import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
+import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
 import com.rescribe.model.case_details.CaseDetailsModel;
 import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.history.ChatHistoryModel;
@@ -573,6 +575,14 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.TASK_GET_DOCTOR_DATA: //This is for get archived list
                         BookAppointmentBaseModel bookAppointmentBaseModel = new Gson().fromJson(data, BookAppointmentBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_GET_COMPLAINTS: //This is for get archived list
+                        ComplaintsBaseModel complaintsBaseModel = new Gson().fromJson(data, ComplaintsBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, complaintsBaseModel, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG: //This is for get archived list
+                        BookAppointFilterBaseModel bookAppointFilterBaseModel = new Gson().fromJson(data, BookAppointFilterBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, bookAppointFilterBaseModel, mOldDataTag);
                         break;
 
                     default:

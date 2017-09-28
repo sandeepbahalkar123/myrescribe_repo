@@ -13,10 +13,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,6 +30,11 @@ import android.widget.TextView;
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 import com.rescribe.R;
+import com.rescribe.adapters.book_appointment.FilterSelectLocationsAdapter;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.HashMap;
@@ -37,7 +44,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class DrawerForFilterDoctorBookAppointment extends Fragment {
+public class DrawerForFilterDoctorBookAppointment extends Fragment implements HelperResponse {
 
     @BindView(R.id.applyButton)
     Button applyButton;
@@ -104,6 +111,8 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
     //-----
     @BindView(R.id.clinicFeesSeekBar)
     CrystalRangeSeekbar mClinicFeesSeekBar;
+    DoctorDataHelper doctorDataHelper;
+    BookAppointFilterBaseModel bookAppointFilterBaseModel;
 
     private OnDrawerInteractionListener mListener;
 
@@ -112,6 +121,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
     private HashMap<String, Boolean> mSelectedDays;
     //--------
     View mLeftThumbView, mRightThumbView;
+    private FilterSelectLocationsAdapter mFilterSelectLocationsAdapter;
     //--------
 
     public DrawerForFilterDoctorBookAppointment() {
@@ -141,6 +151,8 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
     }
 
     private void initialize() {
+        doctorDataHelper = new DoctorDataHelper(getActivity(), this);
+        doctorDataHelper.doGetDrawerFilterConfigurationData();
         configureClinicFeesSeekBar();
         mSelectedDays = new HashMap<>();
         //---------
@@ -152,6 +164,14 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
         mSelectedDays.put(getString(R.string.weekday_fri), false);
         mSelectedDays.put(getString(R.string.weekday_sat), false);
         //---------
+        mLocationContentRecycleView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mLocationContentRecycleView.setNestedScrollingEnabled(true);
+                return true;
+            }
+
+        });
     }
 
 
@@ -260,13 +280,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
 
             }
         });
-        //-------Distance seek bar : END---------------
-
-        // TODO unCOMMENT THIS
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // To set min/max value of thumbs of clinic fees seek bar
                 setThumbValue(mLeftThumbView, "" + 1);
                 setThumbValue(mRightThumbView, "" + 250);
 
@@ -276,9 +289,37 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
                 Rect tr = distanceSeekBar.getThumb().getBounds();
                 mDistanceSeekBarValueIndicator.setX(tr.exactCenterX());
                 mDistanceSeekBarValueIndicator.setText(distanceSeekBar.getProgress() + "");
-                //------------
+
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if (customResponse != null) {
+            bookAppointFilterBaseModel = (BookAppointFilterBaseModel) customResponse;
+            if (bookAppointFilterBaseModel.getFilterConfigData() != null) {
+                mFilterSelectLocationsAdapter = new FilterSelectLocationsAdapter(getActivity(), bookAppointFilterBaseModel.getFilterConfigData().getLocationList());
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                mLocationContentRecycleView.setLayoutManager(layoutManager);
+                mLocationContentRecycleView.setHasFixedSize(true);
+                mLocationContentRecycleView.setAdapter(mFilterSelectLocationsAdapter);
             }
-        }, 200);
+
+        }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
     }
 
     public interface OnDrawerInteractionListener {
@@ -465,7 +506,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment {
                 break;
         }
     }
-
 
 
 }

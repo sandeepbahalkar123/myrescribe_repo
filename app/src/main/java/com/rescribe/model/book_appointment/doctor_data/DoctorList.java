@@ -71,7 +71,12 @@ public class DoctorList implements Parcelable {
     @SerializedName("favourite")
     @Expose
     private Boolean favourite;
-
+    @SerializedName("totalReview")
+    @Expose
+    private Integer totalReview;
+    @SerializedName("reviewList")
+    @Expose
+    private ArrayList<ReviewList> reviewList = null;
 
     public Boolean getFavourite() {
         return favourite;
@@ -130,6 +135,8 @@ public class DoctorList implements Parcelable {
             instance.openToday = ((String) in.readValue((String.class.getClassLoader())));
             instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             in.readList(instance.availableTimeSlots, (String.class.getClassLoader()));
+            instance.totalReview = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
             return instance;
         }
 
@@ -281,6 +288,20 @@ public class DoctorList implements Parcelable {
 
     public void setAvailableTimeSlots(ArrayList<String> availableTimeSlots) {
         this.availableTimeSlots = availableTimeSlots;
+    }public Integer getTotalReview() {
+        return totalReview;
+    }
+
+    public void setTotalReview(Integer totalReview) {
+        this.totalReview = totalReview;
+    }
+
+    public ArrayList<ReviewList> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(ArrayList<ReviewList> reviewList) {
+        this.reviewList = reviewList;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
@@ -303,6 +324,8 @@ public class DoctorList implements Parcelable {
         dest.writeValue(openToday);
         dest.writeValue(favourite);
         dest.writeList(availableTimeSlots);
+        dest.writeValue(totalReview);
+        dest.writeList(reviewList);
     }
 
     public int describeContents() {

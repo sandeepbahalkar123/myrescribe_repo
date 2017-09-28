@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +32,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.NetworkUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -128,7 +131,15 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 onBackPressed();
                 break;
             case R.id.locationTextView:
-                BookAppointmentServicesPermissionsDispatcher.callPickPlaceWithCheck(this);
+                LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+                boolean enabled = service
+                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
+                if (!enabled) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }else {
+                    BookAppointmentServicesPermissionsDispatcher.callPickPlaceWithCheck(this);
+                }
                 break;
         }
     }
@@ -196,15 +207,15 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     @Override
     public void setOnClickOfServices() {
 
-        if (locationTextView.getText().toString().equals(getString(R.string.location))) {
+      /*  if (locationTextView.getText().toString().equals(getString(R.string.location))) {
             Toast.makeText(mContext, getString(R.string.please_select_location), Toast.LENGTH_SHORT).show();
-        } else {
+        } else {*/
         Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
         intent.putExtra(getString(R.string.latitude), latitude);
         intent.putExtra(getString(R.string.longitude), longitude);
         intent.putExtra(getString(R.string.title), locationTextView.getText().toString());
         startActivity(intent);
-       }
+      /* }*/
 
     }
 }

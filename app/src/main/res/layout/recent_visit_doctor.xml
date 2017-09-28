@@ -29,7 +29,6 @@
             android:inputType="text"
             android:textColor="@color/white"
             android:textSize="@dimen/sp16"
-            android:windowSoftInputMode="stateAlwaysHidden"
             app:deleteButtonRes="@drawable/close"
             app:hintText="@string/search" />
 
@@ -98,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_marginBottom="@dimen/dp4"
+                android:layout_marginBottom="@dimen/dp8"
                 app:ci_animator="@anim/indicator_no_animator"
                 app:ci_drawable="@drawable/white_radius"
                 app:ci_drawable_unselected="@drawable/black_radius" />

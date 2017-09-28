@@ -8,6 +8,7 @@ import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
 import com.rescribe.network.ConnectRequest;
@@ -38,6 +39,10 @@ public class DoctorDataHelper implements ConnectionListener {
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag == RescribeConstants.TASK_GET_DOCTOR_DATA) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                }else if (mOldDataTag == RescribeConstants.TASK_GET_COMPLAINTS){
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                }else if (mOldDataTag == RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG){
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
@@ -103,6 +108,24 @@ public class DoctorDataHelper implements ConnectionListener {
 
             BookAppointFilterBaseModel bookAppointmentBaseModel = new Gson().fromJson(json, BookAppointFilterBaseModel.class);
             onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void doGetComplaintsList() {
+        try {
+            InputStream is = mContext.getAssets().open("complaint_list");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+            Log.e(TAG, "complaint_list" + json);
+
+            ComplaintsBaseModel complaintsBaseModel = new Gson().fromJson(json, ComplaintsBaseModel.class);
+            onResponse(ConnectionListener.RESPONSE_OK, complaintsBaseModel, RescribeConstants.TASK_GET_COMPLAINTS);
 
         } catch (IOException ex) {
             ex.printStackTrace();

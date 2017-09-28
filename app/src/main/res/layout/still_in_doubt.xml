@@ -23,49 +23,63 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-          <!--  <com.rescribe.ui.customesViews.CustomTextView
+           <com.rescribe.ui.customesViews.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp10"
+                android:text="@string/complaint1"
+               app:customFont="@string/roboto_bold"
+                android:textColor="@color/tagColor"
+                android:textSize="@dimen/sp16" />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerComplaint1"
+                android:layout_marginLeft="@dimen/dp4"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/sp16"
+               />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:id="@+id/showEditText"
+            android:orientation="horizontal">
+
+            <com.rescribe.ui.customesViews.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp10"
-                android:layout_weight="1"
-                style="@style/CompalintStyle"
+                android:visibility="invisible"
                 android:text="@string/complaint1"
                 android:textColor="@color/tagColor"
                 android:textSize="@dimen/sp16" />
--->
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
             <EditText
                 style="@style/CompalintStyle"
                 android:id="@+id/editTextComplaint1"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
                 android:textSize="@dimen/sp16"
-                android:hint="@string/complaint1"
+                android:gravity="center_vertical"
+                android:hint="Enter your complaint here"
                 android:inputType="text" />
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp1"
-                android:background="@color/tagColor" />
+                android:layout_height="1dp"
+                android:background="@color/tagColor"
+                />
+</LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editTextComplaint2"
-              style="@style/CompalintStyle"
-                android:layout_gravity="center_vertical"
-                android:textSize="@dimen/sp16"
-                android:hint="@string/complaint2"
-                android:inputType="text" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp1"
-                android:background="@color/tagColor" />
-        </LinearLayout>
     </LinearLayout>
 
     <Button
@@ -76,6 +90,7 @@
         android:gravity="center"
         android:padding="@dimen/dp10"
         android:text="@string/ok"
+        android:id="@+id/okButton"
         android:textSize="16sp"
         android:textColor="@color/white" />
 </LinearLayout>

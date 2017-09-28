@@ -73,7 +73,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     }
 
     private void init() {
-
+        BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.clicked_item_data)),true);
         Bundle arguments = getArguments();
         if (arguments != null) {
             mSelectedSpeciality = arguments.getString(getString(R.string.clicked_item_data));
@@ -97,7 +97,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     }
 
     private void setDoctorListAdapter(BookAppointmentBaseModel receivedBookAppointmentBaseModel) {
-        if (receivedBookAppointmentBaseModel == null) {
+        if (receivedBookAppointmentBaseModel== null) {
             isDataListViewVisible(false);
         } else {
             DoctorServicesModel doctorServicesModel = receivedBookAppointmentBaseModel.getDoctorServicesModel();
@@ -110,11 +110,17 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 } else {
                     isDataListViewVisible(true);
                     mReceivedList = doctorList;
-                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), filterDataOnDocSpeciality(), this, this);
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-                    mDoctorListView.setLayoutManager(layoutManager);
-                    mDoctorListView.setHasFixedSize(true);
-                    mDoctorListView.setAdapter(mBookAppointFilteredDocListAdapter);
+                    if(filterDataOnDocSpeciality().size()==0){
+                        isDataListViewVisible(false);
+                        mLocationFab.setVisibility(View.GONE);
+                        mFilterFab.setVisibility(View.GONE);
+                    }else {
+                        mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), filterDataOnDocSpeciality(), this, this);
+                        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                        mDoctorListView.setLayoutManager(layoutManager);
+                        mDoctorListView.setHasFixedSize(true);
+                        mDoctorListView.setAdapter(mBookAppointFilteredDocListAdapter);
+                    }
                 }
             }
         }
@@ -174,6 +180,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
 
     @Override
     public void onClickOfDoctorRowItem(Bundle bundleData) {
+        bundleData.putString(getString(R.string.toolbarTitle),args.getString(getString(R.string.clicked_item_data)));
         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
         activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
     }

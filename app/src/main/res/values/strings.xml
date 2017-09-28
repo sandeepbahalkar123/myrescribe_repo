@@ -35,6 +35,8 @@
     <string name="dinner">Dinner</string>
     <string name="smallcasedinner">dinner</string>
     <string name="smallcaselunch">lunch</string>
+    <string name="openingbrace">(</string>
+    <string name="closeingbrace">)</string>
     <string name="smallcasesnacks">snacks</string>
     <string name="smallcasebreakfast">breakfast</string>
     <string name="mdinner">DINNER</string>
@@ -247,7 +249,7 @@
     <string name="enter_string_here">Enter your complaint here</string>
     <string name="complaint2">Complaint 2:</string>
     <string name="waiting_for">Waiting for </string>
-    <string name="token_no_available">Token No. %d available</string>
+    <string name="token_no_available">Token No. available</string>
     <string name="doctor_data">Doctor Data</string>
     <string name="open_today"><u>Open Today</u></string>
     <string name="all_timings">All Timings</string>
@@ -277,5 +279,10 @@
     <string name="services">Services</string>
     <string name="doctorss">Doctors</string>
     <string name="years_experience">years of experience</string>
+    <string name="toolbarTitle">title</string>
+    <string name="fee">Fee</string>
+    <string name="rupees">Rs.</string>
+    <string name="slash">/</string>
+    <string name="session">session</string>
 
 </resources>

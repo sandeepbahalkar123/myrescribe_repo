@@ -50,6 +50,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="12dp"
               />
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/doctorReviews"
+                android:layout_marginBottom="@dimen/dp6"
+                android:textColor="@color/map_green"
+                android:textSize="@dimen/sp16"
+                app:customFont="@string/roboto_regular" />
         </LinearLayout>
     </LinearLayout>
 

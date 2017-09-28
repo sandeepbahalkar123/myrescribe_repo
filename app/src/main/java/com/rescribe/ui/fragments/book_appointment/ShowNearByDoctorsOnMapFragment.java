@@ -56,6 +56,7 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
     BookAppointmentBaseModel receivedBookAppointmentBaseModel;
     ArrayList<DoctorList> doctorLists = new ArrayList<>();
     float[] distanceResults = new float[1];
+    private BookAppointDoctorListBaseActivity activity;
 
     public ShowNearByDoctorsOnMapFragment() {
         // Required empty public constructor
@@ -85,7 +86,7 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
     }
 
     private void init() {
-
+        BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.clicked_item_data)), false);
     }
 
     public void init_modal_bottomsheet(final Marker marker) {
@@ -93,6 +94,7 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
         TextView doctorName = (TextView) modalbottomsheet.findViewById(R.id.doctorName);
         TextView doctorRating = (TextView) modalbottomsheet.findViewById(R.id.doctorRating);
         TextView kilometers = (TextView) modalbottomsheet.findViewById(R.id.kilometers);
+        TextView doctorReviews = (TextView) modalbottomsheet.findViewById(R.id.doctorReviews);
         ImageView directions = (ImageView) modalbottomsheet.findViewById(R.id.directions);
         RatingBar ratingBar = (RatingBar) modalbottomsheet.findViewById(R.id.ratingBar);
         ImageView moreInfo = (ImageView) modalbottomsheet.findViewById(R.id.moreInfo);
@@ -103,7 +105,7 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
 
-    moreInfo.setOnClickListener(new View.OnClickListener() {
+        moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -127,7 +129,10 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
                 doctorList.setMorePracticePlaces(doctorLists.get(Integer.parseInt(marker.getTitle())).getMorePracticePlaces());
                 doctorList.setLongitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
                 doctorList.setLatitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
-                args.putParcelable(getString(R.string.clicked_item_data),doctorList);
+                doctorList.setTotalReview(doctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview());
+                doctorList.setReviewList(doctorLists.get(Integer.parseInt(marker.getTitle())).getReviewList());
+
+                args.putParcelable(getString(R.string.clicked_item_data), doctorList);
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
                 activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(args), false);
             }
@@ -139,6 +144,18 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                         Uri.parse("http://maps.google.com/maps?saddr=" + args.getString(getString(R.string.latitude)) + "," + args.getString(getString(R.string.longitude)) + "&daddr=" + doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude() + "," + doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude()));
                 startActivity(intent);
+            }
+        });
+        doctorReviews.setText(getString(R.string.openingbrace) + doctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview() + getString(R.string.closeingbrace));
+        doctorReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(getString(R.string.doctor_data), activity.getReceivedBookAppointmentBaseModel());
+                activity.loadFragment(ShowReviewsOnDoctorFragment.newInstance(bundle), false);
+                dialog.setCancelable(true);
             }
         });
         doctorRating.setText("" + doctorLists.get(Integer.parseInt(marker.getTitle())).getRating());

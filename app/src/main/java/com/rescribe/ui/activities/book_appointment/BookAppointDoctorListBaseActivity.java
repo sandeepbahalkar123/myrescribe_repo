@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
@@ -36,19 +37,20 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
-    @BindView(R.id.title)
-    CustomTextView title;
-    @BindView(R.id.locationTextView)
-    CustomTextView locationTextView;
+
+    static CustomTextView title;
+    static CustomTextView locationTextView;
+    static CustomTextView showlocation;
     @BindView(R.id.nav_view)
     FrameLayout mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-    Intent intent;
+    static Intent intent;
     private RecentVisitDoctorFragment mChangeColorFragment;
     private DoctorDataHelper mDoctorDataHelper;
     private Fragment currentlyLoadedFragment; //TODO, fragmentById is not working hence hold this object.
     private BookAppointmentBaseModel mReceivedBookAppointmentBaseModel;
+    private static String location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,19 +62,24 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     private void initialize() {
-
+        title = (CustomTextView) findViewById(R.id.title);
+        locationTextView = (CustomTextView) findViewById(R.id.locationTextView);
+        locationTextView.setVisibility(View.GONE);
+        showlocation = (CustomTextView) findViewById(R.id.showlocation);
         if (getIntent() != null) {
-            locationTextView.setText(intent.getStringExtra(getString(R.string.title)));
+            location = intent.getStringExtra(getString(R.string.title));
+
         }
+        mDoctorDataHelper = new DoctorDataHelper(this, this);
+        mDoctorDataHelper.doGetDoctorData();
 
-
-      //  searchBarLinearLayout.setVisibility(View.VISIBLE);
-        Bundle b = new Bundle();
+        //  searchBarLinearLayout.setVisibility(View.VISIBLE);
+        /*Bundle b = new Bundle();
         b.putString(getString(R.string.latitude), intent.getStringExtra(getString(R.string.latitude)));
         b.putString(getString(R.string.longitude), intent.getStringExtra(getString(R.string.longitude)));
         loadFragment(RecentVisitDoctorFragment.newInstance(b),false);
 
-
+*/
         mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
 
             @Override
@@ -102,15 +109,14 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         });
 
 
-        loadFragment(RecentVisitDoctorFragment.newInstance(new Bundle()), false);
+        //  loadFragment(RecentVisitDoctorFragment.newInstance(new Bundle()), false);
         //------
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.nav_view, DrawerForFilterDoctorBookAppointment.newInstance());
         fragmentTransaction.commit();
         //------
-        mDoctorDataHelper = new DoctorDataHelper(this, this);
-        mDoctorDataHelper.doGetDoctorData();
+
     }
 
     @Override
@@ -118,19 +124,11 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     public void onSuccess(final String mOldDataTag, final CustomResponse customResponse) {
         mReceivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
-
-        if (currentlyLoadedFragment instanceof RecentVisitDoctorFragment) {
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    title.setText(getString(R.string.doctorss));
-                    RecentVisitDoctorFragment tempFrag = (RecentVisitDoctorFragment) currentlyLoadedFragment;
-
-                    tempFrag.onSuccess(mOldDataTag, customResponse);
-
-                }
-            }, RescribeConstants.TIME_STAMPS.ONE_SECONDS);
+        if (mReceivedBookAppointmentBaseModel.getDoctorServicesModel() != null) {
+            Bundle b = new Bundle();
+            b.putString(getString(R.string.latitude), intent.getStringExtra(getString(R.string.latitude)));
+            b.putString(getString(R.string.longitude), intent.getStringExtra(getString(R.string.longitude)));
+            loadFragment(RecentVisitDoctorFragment.newInstance(b), false);
 
         }
     }
@@ -184,6 +182,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             FragmentManager supportFragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.viewContainer, fragmentToLoad);
+            fragmentTransaction.addToBackStack("");
             fragmentTransaction.commit();
             this.currentlyLoadedFragment = fragmentToLoad;
             doOperationOnDrawer(requiredDrawer);
@@ -200,5 +199,19 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     public DrawerLayout getActivityDrawerLayout() {
         return mDrawerLayout;
+    }
+
+    public static void setToolBarTitle(String toolbartitle, boolean isLocationVisible) {
+       title.setText(toolbartitle);
+        if (isLocationVisible) {
+            locationTextView.setVisibility(View.VISIBLE);
+            locationTextView.setText(location);
+            showlocation.setVisibility(View.GONE);
+        } else {
+            locationTextView.setVisibility(View.GONE);
+            showlocation.setVisibility(View.VISIBLE);
+            showlocation.setText(location);
+
+        }
     }
 }

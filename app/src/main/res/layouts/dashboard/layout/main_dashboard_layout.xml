@@ -17,9 +17,9 @@
 
             <include layout="@layout/doctor_options" />
 
-            <include layout="@layout/investigations_vital_layout" />
-
             <include layout="@layout/health_offers_layout" />
+
+            <include layout="@layout/investigations_vital_layout" />
 
             <include layout="@layout/health_blog_layout" />
             <ImageView

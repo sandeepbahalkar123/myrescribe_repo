@@ -1,50 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/layer_16"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/layer_16">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <LinearLayout
-            android:paddingTop="@dimen/dp16"
-            android:paddingLeft="@dimen/dp4"
-            android:layout_marginLeft="@dimen/dp6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginLeft="@dimen/dp6"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dp4"
+            android:paddingTop="@dimen/dp5">
+
             <com.rescribe.ui.customesViews.CustomTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp6"
+                android:layout_weight="1"
+                android:text="Health Offers"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:layout_weight="1"
-                app:customFont="@string/roboto_medium"
-                android:layout_marginLeft="@dimen/dp6"
-                android:text="Health Offers"/>
+                app:customFont="@string/roboto_medium" />
+
             <com.rescribe.ui.customesViews.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/tagColor"
-                android:textSize="12sp"
+                android:layout_marginRight="@dimen/dp10"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:layout_marginRight="@dimen/dp10"
                 android:text="VIEW ALL"
-                app:customFont="@string/roboto_medium"
-                />
+                android:textColor="@color/tagColor"
+                android:textSize="12sp"
+                app:customFont="@string/roboto_medium" />
         </LinearLayout>
+
         <android.support.v7.widget.RecyclerView
-            android:layout_marginBottom="@dimen/dp8"
-            android:paddingLeft="@dimen/dp10"
-            android:layout_marginLeft="@dimen/dp6"
             android:id="@+id/healthOfferslistView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp6"
             android:divider="@null"
             android:dividerHeight="0dp"
+            android:paddingLeft="@dimen/dp10"
             android:visibility="visible"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
     </LinearLayout>

@@ -28,26 +28,26 @@
                 android:orientation="horizontal">
 
                 <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorCategoryVisit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingBottom="@dimen/dp8"
                     android:paddingLeft="@dimen/dp2"
                     android:paddingTop="@dimen/dp8"
-                    android:id="@+id/doctorCategoryVisit"
                     android:text="My Appointments"
                     android:textColor="@color/greyish"
                     android:textSize="12sp"
                     app:customFont="@string/roboto_regular" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/feesToPaidVisit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ruppee_dashboard"
                     android:drawablePadding="@dimen/dp2"
                     android:gravity="right"
                     android:text="500"
-                    android:id="@+id/feesToPaidVisit"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     app:customFont="@string/roboto_bold" />
@@ -70,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center|top"
                     android:layout_marginRight="@dimen/dp5"
                     android:padding="3dip">
 
@@ -78,7 +78,6 @@
                         android:id="@+id/imageURL"
                         android:layout_width="@dimen/dp50"
                         android:layout_height="@dimen/dp50"
-                        android:layout_gravity="center"
                         android:src="@drawable/layer_12" />
                 </LinearLayout>
 

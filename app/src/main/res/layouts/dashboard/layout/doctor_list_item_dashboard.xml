@@ -19,7 +19,8 @@
             android:layout_marginBottom="@dimen/dp10"
             android:background="@drawable/white_round_rect"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/dp10">
+            android:paddingLeft="@dimen/dp10"
+            android:paddingRight="@dimen/dp10">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,8 +42,6 @@
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp10"
-                    android:layout_marginRight="@dimen/dp10"
                     android:drawableLeft="@drawable/ruppee_dashboard"
                     android:drawablePadding="@dimen/dp2"
                     android:gravity="right"
@@ -51,6 +50,13 @@
                     android:textSize="12sp"
                     app:customFont="@string/roboto_bold" />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:src="@drawable/fav_red" />
 
             <LinearLayout
                 android:layout_width="match_parent"

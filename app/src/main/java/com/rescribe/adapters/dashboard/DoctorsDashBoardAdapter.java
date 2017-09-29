@@ -47,6 +47,7 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
 
 
     }
+
     private void setColumnNumber(Context context, int columnNum) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
@@ -67,7 +68,7 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
     public void onBindViewHolder(ListViewHolder holder, int position) {
 
         final DoctorData doctorObject = mDataList.get(position);
-        if(doctorObject.getDoctorImageUrl().equals("")) {
+        if (doctorObject.getDoctorImageUrl().equals("")) {
             String doctorName = doctorObject.getDocName();
             if (doctorName.contains("Dr. ")) {
                 doctorName = doctorName.replace("Dr. ", "");
@@ -83,7 +84,7 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
                         .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
                 holder.imageURL.setImageDrawable(drawable);
             }
-        }else{
+        } else {
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
             requestOptions.override(imageSize, imageSize);

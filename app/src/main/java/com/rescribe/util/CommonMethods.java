@@ -412,7 +412,7 @@ public class CommonMethods {
 
     public static Drawable getMedicalTypeIcon(String medicineTypeName, Context context) {
 
-        Drawable abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);
+        Drawable abbreviation = ContextCompat.getDrawable(context,R.drawable.tablet_02);
         if (medicineTypeName.equalsIgnoreCase("syrup"))
             abbreviation = ContextCompat.getDrawable(context, R.drawable.syrup_01);
         else if (medicineTypeName.equalsIgnoreCase("Tablet"))

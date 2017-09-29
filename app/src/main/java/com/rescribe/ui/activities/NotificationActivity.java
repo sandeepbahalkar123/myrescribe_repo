@@ -289,7 +289,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             String[] count = position.split("_");
             String counter = count[1];
             if (responseLogNotificationModel.getCommon().isSuccess()) {
-                CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
+               // CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
                 mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(true);
                 mTodayDataList.get(Integer.parseInt(counter)).setTabWebService(false);
                 mView.findViewById(R.id.selectViewTab).setEnabled(false);
@@ -406,7 +406,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
             //onclick of NotificationActivity checkbox of header layout
             if (responseLogNotificationModel.getCommon().isSuccess()) {
-                CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
+            //    CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
                 mHeaderLayoutParent.removeView(mHeaderLayout);
             }
             //handled click from NotificationAdapter checkbox in header layout

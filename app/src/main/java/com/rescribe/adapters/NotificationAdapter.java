@@ -472,7 +472,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
              String[] count = position.split("_");
              String counter = count[1];
              if (responseLogNotificationModel.getCommon().isSuccess()) {
-                 CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
+                // CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
                  if (mSlotType.equals(BREAK_FAST)) {
                      mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabSelected(true);
                      mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabWebService(false);
@@ -522,7 +522,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
              String[] count = position.split("_");
              String counter = count[1];
              if (responseLogNotificationModel.getCommon().isSuccess()) {
-                 CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
+               //  CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
                  if (mSlotTypeForHeader.equals(DINNER)) {
                      mDataSet.get(Integer.parseInt(counter)).setDinnerThere(false);
                      mparentHeader.removeView(mViewForHeader);

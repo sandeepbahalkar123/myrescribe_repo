@@ -9,7 +9,7 @@ import com.rescribe.interfaces.CustomResponse;
 
 public class NotificationPrescriptionModel implements CustomResponse{
 
-@SerializedName("presriptionNotification")
+@SerializedName("prescriptionNotification")
 @Expose
 private List<NotificationData> presriptionNotification = null;
 

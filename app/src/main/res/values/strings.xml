@@ -289,6 +289,7 @@
     <string name="err_reading_date">Reading date should not be greater than current date.</string>
     <string name="enter_systolic">Enter Systolic</string>
     <string name="enter_diastolic">Enter Diastolic</string>
+    <string name="settings">Settings</string>
 
 
 </resources>

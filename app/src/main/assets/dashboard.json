@@ -26,7 +26,7 @@
         "doctorAddress": "Hadapsar, Pune",
         "amount": 500,
         "recentlyVisited": true,
-        "favourite": false,
+        "favourite": true,
         "degree": "MBBS,MD-Medicine,Neurology"
       },
       {

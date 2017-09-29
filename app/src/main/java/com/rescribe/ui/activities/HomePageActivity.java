@@ -25,11 +25,11 @@ import com.rescribe.adapters.dashboard.HealthOffersAdapter;
 import com.rescribe.adapters.dashboard.MenuDashBoardAdapter;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
-import com.rescribe.helpers.database.MyRecordsData;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.dashboard.DashboardBaseModel;
-import com.rescribe.model.investigation.Image;
+import com.rescribe.helpers.login.LoginHelper;
+import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
@@ -39,15 +39,15 @@ import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import net.gotev.uploadservice.UploadService;
-
 import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
+
+import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
+import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
 /**
  * Created by jeetal on 28/6/17.
@@ -80,6 +80,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
     private DoctorsDashBoardAdapter doctorsDashBoardAdapter;
     private HealthOffersAdapter mHealthOffersAdapter;
     private HealthBlogAdapter mHealthBlogAdapter;
+    private String patientId;
+    private LoginHelper loginHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +96,12 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
         mContext = HomePageActivity.this;
         HomePageActivityPermissionsDispatcher.getPermissionWithCheck(HomePageActivity.this);
         appDBHelper = new AppDBHelper(mContext);
+
+        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        loginHelper = new LoginHelper(mContext, HomePageActivity.this);
+        ActiveRequest activeRequest = new ActiveRequest();
+        activeRequest.setId(Integer.parseInt(patientId));
+        loginHelper.doActiveStatus(activeRequest);
 
         String currentDate = CommonMethods.getCurrentDate();
         String pastDate = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.NOTIFY_DATE, mContext);
@@ -334,8 +343,15 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                         intent.putExtra(RescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
                     }
                     startActivity(intent);
+
                 } */else if (id.equalsIgnoreCase(getString(R.string.logout))) {
                     logout();
+
+                } else if (id.equalsIgnoreCase(getString(R.string.logout))) {
+                    ActiveRequest activeRequest = new ActiveRequest();
+                    activeRequest.setId(Integer.parseInt(patientId));
+                    loginHelper.doLogout(activeRequest);
+
                 } else if (id.equalsIgnoreCase(getString(R.string.doctor_connect))) {
                     Intent intent = new Intent(mContext, DoctorConnectActivity.class);
                     startActivity(intent);
@@ -420,6 +436,37 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+
+     if(mOldDataTag==TASK_DASHBOARD_API) {
+         DashboardBaseModel dashboardBaseModel = (DashboardBaseModel) customResponse;
+         menuDashBoardAdapter = new MenuDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getServicesList());
+         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+         menuListView.setLayoutManager(layoutManager);
+         menuListView.setHasFixedSize(true);
+         menuListView.setAdapter(menuDashBoardAdapter);
+         doctorsDashBoardAdapter = new DoctorsDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getDoctorList());
+         LinearLayoutManager doctorListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+         doctorListView.setLayoutManager(doctorListViewlayoutManager);
+         doctorListView.setHasFixedSize(true);
+         doctorListView.setAdapter(doctorsDashBoardAdapter);
+         mHealthOffersAdapter = new HealthOffersAdapter(this, dashboardBaseModel.getDashboardDataModel().getHealthOffersList());
+         LinearLayoutManager healthOfferslistViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+         healthOfferslistView.setLayoutManager(healthOfferslistViewlayoutManager);
+         healthOfferslistView.setHasFixedSize(true);
+         healthOfferslistView.setAdapter(mHealthOffersAdapter);
+
+         mHealthBlogAdapter = new HealthBlogAdapter(this,dashboardBaseModel.getDashboardDataModel().getHealthBlogList());
+         LinearLayoutManager healthBlogListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+         healthBlogListView.setLayoutManager(healthBlogListViewlayoutManager);
+         healthBlogListView.setHasFixedSize(true);
+         healthBlogListView.setAdapter(mHealthBlogAdapter);
+
+         if (mOldDataTag.equals(RescribeConstants.LOGOUT))
+             logout();
+         else if (mOldDataTag.equals(ACTIVE_STATUS))
+             CommonMethods.Log(ACTIVE_STATUS, "active");
+     }
+
         DashboardBaseModel dashboardBaseModel = (DashboardBaseModel) customResponse;
         menuDashBoardAdapter = new MenuDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getServicesList());
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -442,6 +489,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
         healthBlogListView.setLayoutManager(healthBlogListViewlayoutManager);
         healthBlogListView.setHasFixedSize(true);
         healthBlogListView.setAdapter(mHealthBlogAdapter);
+
 
     }
 

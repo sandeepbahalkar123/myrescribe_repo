@@ -96,7 +96,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
         opdId = getIntent().getIntExtra(RescribeConstants.OPD_ID, 0);
 
         visitDate = getIntent().getStringExtra(RescribeConstants.VISIT_DATE);
-        visitDate = CommonMethods.getFormatedDate(visitDate, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+        visitDate = CommonMethods.getFormattedDate(visitDate, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
 
         docId = getIntent().getIntExtra(RescribeConstants.DOCTORS_ID, 0);
 

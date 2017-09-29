@@ -42,7 +42,7 @@ public class AppointmentAlarmTask implements Runnable {
 
     private Calendar getCalendar(String time) {
 
-        time = CommonMethods.getFormatedDate(time, "hh:mm a", "HH:mm");
+        time = CommonMethods.getFormattedDate(time, "hh:mm a", "HH:mm");
 
         String[] hour = time.split(":");
         String[] minute = hour[1].split(" ");

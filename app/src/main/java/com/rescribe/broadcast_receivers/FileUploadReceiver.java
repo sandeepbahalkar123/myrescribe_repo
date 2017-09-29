@@ -38,7 +38,7 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
         if (uploadInfo.getUploadId().length() > CHAT.length()) {
             String prefix = uploadInfo.getUploadId().substring(0, 4);
             if (prefix.equals(CHAT)) {
-                instance.updateMessageData(uploadInfo.getUploadId(), RescribeConstants.FAILED);
+                instance.updateMessageUpload(uploadInfo.getUploadId(), RescribeConstants.FAILED);
             } else {
                 instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.FAILED);
             }
@@ -60,7 +60,7 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
             String prefix = uploadInfo.getUploadId().substring(0, 4);
             if (prefix.equals(CHAT)) {
 
-                MQTTMessage mqttMessage = instance.getMessageDataById(uploadInfo.getUploadId());
+                MQTTMessage mqttMessage = instance.getMessageUploadById(uploadInfo.getUploadId());
 
                 String response = serverResponse.getBodyAsString();
                 ChatFileUploadModel chatFileUploadModel = gson.fromJson(response, ChatFileUploadModel.class);
@@ -76,7 +76,7 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
                     intentService.putExtra(MESSAGE_LIST, mqttMessage);
                     context.startService(intentService);
                 }
-                instance.deleteUploadedMessage(uploadInfo.getUploadId());
+                instance.updateMessageUpload(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
             } else {
                 instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
             }

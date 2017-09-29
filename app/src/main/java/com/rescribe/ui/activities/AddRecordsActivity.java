@@ -46,7 +46,6 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import droidninja.filepicker.FilePickerConst;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -368,7 +367,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                         visitDate.setOpdId(0);
                         spinnerList.add(visitDate);
                         for (VisitDate date : doctorSpinnerAdapter.getDoctor(position).getDates()) {
-                            String formatedDate = CommonMethods.getFormatedDate(date.getOpdDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY);
+                            String formatedDate = CommonMethods.getFormattedDate(date.getOpdDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY);
 
                             VisitDate visitD = new VisitDate();
                             visitD.setOpdDate(formatedDate);

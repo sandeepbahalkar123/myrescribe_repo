@@ -7,7 +7,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.rescribe.R;
@@ -23,7 +22,6 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -81,8 +79,8 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
         String drName = data.get(index).getDoctorName();
         int subNotificationId = data.get(index).getAptId();
-        String date = CommonMethods.getFormatedDate(data.get(index).getAptDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY);
-        String time = CommonMethods.getFormatedDate(data.get(index).getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a);
+        String date = CommonMethods.getFormattedDate(data.get(index).getAptDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY);
+        String time = CommonMethods.getFormattedDate(data.get(index).getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a);
         String message = "You have an appointment with " + drName + " on " + date + " at " + time.toLowerCase() + ".";
 
         // Using RemoteViews to bind custom layouts into Notification

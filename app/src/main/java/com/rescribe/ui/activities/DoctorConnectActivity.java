@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -45,7 +44,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import permissions.dispatcher.RuntimePermissions;
 
 
 /**
@@ -60,7 +58,7 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         public void onReceive(Context context, Intent intent) {
 
             boolean delivered = intent.getBooleanExtra(MQTTService.DELIVERED, false);
-            boolean isReceived = intent.getBooleanExtra(MQTTService.RECEIVED, false);
+            boolean isReceived = intent.getBooleanExtra(MQTTService.IS_MESSAGE, false);
 
             if (delivered) {
 

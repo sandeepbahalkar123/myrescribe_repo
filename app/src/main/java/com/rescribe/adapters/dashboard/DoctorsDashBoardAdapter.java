@@ -109,6 +109,11 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         }else{
             holder.recentVisit.setVisibility(View.GONE);
         }
+        if(doctorObject.getFavourite()){
+            holder.recentVisit.setVisibility(View.VISIBLE);
+        }else{
+            holder.recentVisit.setVisibility(View.GONE);
+        }
     }
 
     @Override

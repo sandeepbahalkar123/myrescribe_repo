@@ -6,8 +6,8 @@
   },
   "data": {
     "clinicFeesRange": [
-      250,
-      2500
+      50,
+      250
     ],
     "distance": [
       0,
@@ -20,7 +20,7 @@
       "Jehangir Hospital",
       "Erandwane",
       "ShivajiNagar",
-      "Erandwane",
+      "Erandwane"
     ]
   }
 }

@@ -76,7 +76,6 @@
                         android:src="@drawable/gender" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
-                        android:id="@+id/drNameTextView"
                         style="@style/drawer_filter_header_layout"
                         android:text="@string/gender"
                         app:customFont="@string/roboto_medium" />
@@ -300,6 +299,7 @@
                                 android:id="@+id/distanceSeekBar"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:background="@null"
                                 android:max="100"
                                 android:progressDrawable="@color/transparent"
                                 android:thumb="@drawable/walk" />
@@ -323,19 +323,23 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/distanceSeekBarMinValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_marginLeft="@dimen/dp6"
-                            android:text="0" />
+                            android:text="0"
+                            app:fontName="@string/roboto_regular" />
 
-                        <TextView
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/distanceSeekBarMaxValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="@dimen/dp6"
-                            android:text="100" />
+                            android:text="100"
+                            app:fontName="@string/roboto_regular" />
                     </RelativeLayout>
 
 

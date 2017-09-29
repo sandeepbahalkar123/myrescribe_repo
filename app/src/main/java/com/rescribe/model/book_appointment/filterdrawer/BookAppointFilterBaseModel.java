@@ -37,13 +37,13 @@ public class BookAppointFilterBaseModel implements CustomResponse {
     public class FilterConfigData {
         @SerializedName("clinicFeesRange")
         @Expose
-        private ArrayList<String> clinicFeesRange;
+        private ArrayList<String> clinicFeesRange = new ArrayList<>();
         @SerializedName("distance")
         @Expose
-        private ArrayList<String> distanceRange;
+        private ArrayList<String> distanceRange = new ArrayList<>();
         @SerializedName("locationList")
         @Expose
-        private ArrayList<String> locationList;
+        private ArrayList<String> locationList = new ArrayList<>();
 
         public ArrayList<String> getClinicFeesRange() {
             return clinicFeesRange;

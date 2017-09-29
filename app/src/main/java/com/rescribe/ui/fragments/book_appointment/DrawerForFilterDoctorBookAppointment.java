@@ -3,20 +3,13 @@ package com.rescribe.ui.fragments.book_appointment;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,6 +30,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -88,7 +82,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     @BindView(R.id.distanceHeaderView)
     LinearLayout distanceHeaderView;
     @BindView(R.id.distanceSeekBar)
-    SeekBar distanceSeekBar;
+    SeekBar mDistanceSeekBar;
     @BindView(R.id.distanceSeekBarValueIndicator)
     CustomTextView mDistanceSeekBarValueIndicator;
     @BindView(R.id.distanceContentView)
@@ -113,6 +107,17 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     CrystalRangeSeekbar mClinicFeesSeekBar;
     DoctorDataHelper doctorDataHelper;
     BookAppointFilterBaseModel bookAppointFilterBaseModel;
+    @BindView(R.id.clinicFeesSeekBarMinValue)
+    CustomTextView mClinicFeesSeekBarMinValue;
+    @BindView(R.id.clinicFeesSeekBarMaxValue)
+    CustomTextView mClinicFeesSeekBarMaxValue;
+
+    @BindView(R.id.distanceSeekBarMinValue)
+    CustomTextView mDistanceSeekBarMinValue;
+    @BindView(R.id.distanceSeekBarMaxValue)
+    CustomTextView mDistanceSeekBarMaxValue;
+    @BindView(R.id.mainParentLayout)
+    LinearLayout mainParentLayout;
 
     private OnDrawerInteractionListener mListener;
 
@@ -151,9 +156,12 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     }
 
     private void initialize() {
+
+        configureClinicFeesSeekBar();
+
         doctorDataHelper = new DoctorDataHelper(getActivity(), this);
         doctorDataHelper.doGetDrawerFilterConfigurationData();
-        configureClinicFeesSeekBar();
+
         mSelectedDays = new HashMap<>();
         //---------
         mSelectedDays.put(getString(R.string.weekday_sun), false);
@@ -164,13 +172,28 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         mSelectedDays.put(getString(R.string.weekday_fri), false);
         mSelectedDays.put(getString(R.string.weekday_sat), false);
         //---------
-        mLocationContentRecycleView.setOnTouchListener(new View.OnTouchListener() {
+
+        mLocationContentRecycleView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mLocationContentRecycleView.setNestedScrollingEnabled(true);
-                return true;
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                int action = e.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_MOVE:
+                        rv.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+                }
+                return false;
             }
 
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
         });
     }
 
@@ -256,10 +279,10 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
 
         //-------Distance seek bar : END---------------
 
-        distanceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mDistanceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                Rect tr = distanceSeekBar.getThumb().getBounds();
+                Rect tr = mDistanceSeekBar.getThumb().getBounds();
 
                 mDistanceSeekBarValueIndicator.setText("" + i);
 
@@ -280,15 +303,12 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
 
             }
         });
-                setThumbValue(mLeftThumbView, "" + 1);
-                setThumbValue(mRightThumbView, "" + 250);
 
-                mClinicFeesSeekBar.setMinValue(1).setMaxValue(250).setMinStartValue(1).setMaxStartValue(250).apply();
-                //--------------
-                // To set min/max value of thumbs of distance fees seek bar
-                Rect tr = distanceSeekBar.getThumb().getBounds();
-                mDistanceSeekBarValueIndicator.setX(tr.exactCenterX());
-                mDistanceSeekBarValueIndicator.setText(distanceSeekBar.getProgress() + "");
+        //--------------
+        // To set min/max value of thumbs of distance fees seek bar
+        Rect tr = mDistanceSeekBar.getThumb().getBounds();
+        mDistanceSeekBarValueIndicator.setX(tr.exactCenterX());
+        mDistanceSeekBarValueIndicator.setText(mDistanceSeekBar.getProgress() + "");
 
     }
 
@@ -296,14 +316,38 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (customResponse != null) {
             bookAppointFilterBaseModel = (BookAppointFilterBaseModel) customResponse;
-            if (bookAppointFilterBaseModel.getFilterConfigData() != null) {
-                mFilterSelectLocationsAdapter = new FilterSelectLocationsAdapter(getActivity(), bookAppointFilterBaseModel.getFilterConfigData().getLocationList());
+            BookAppointFilterBaseModel.FilterConfigData filterConfigData = bookAppointFilterBaseModel.getFilterConfigData();
+            if (filterConfigData != null) {
+                mFilterSelectLocationsAdapter = new FilterSelectLocationsAdapter(getActivity(), filterConfigData.getLocationList());
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 mLocationContentRecycleView.setLayoutManager(layoutManager);
                 mLocationContentRecycleView.setHasFixedSize(true);
                 mLocationContentRecycleView.setAdapter(mFilterSelectLocationsAdapter);
-            }
 
+                //------
+                ArrayList<String> clinicFeesRange = filterConfigData.getClinicFeesRange();
+                if (clinicFeesRange.size() > 0) {
+                    String min = clinicFeesRange.get(0);
+                    String max = clinicFeesRange.get(clinicFeesRange.size() - 1);
+                    mClinicFeesSeekBarMinValue.setText("" + min);
+                    mClinicFeesSeekBarMaxValue.setText("" + max);
+                    setThumbValue(mLeftThumbView, "" + min);
+                    setThumbValue(mRightThumbView, "" + max);
+                    mClinicFeesSeekBar.setMinValue(Float.parseFloat(min)).setMaxValue(Float.parseFloat(max)).setMinStartValue(Float.parseFloat(min)).setMaxStartValue(Float.parseFloat(max)).apply();
+
+                }
+                //------
+                ArrayList<String> distanceFeesRange = filterConfigData.getDistanceRange();
+                if (distanceFeesRange.size() > 0) {
+                    String min = distanceFeesRange.get(0);
+                    String max = distanceFeesRange.get(distanceFeesRange.size() - 1);
+                    mDistanceSeekBarMinValue.setText("" + min);
+                    mDistanceSeekBarMaxValue.setText("" + max);
+                    mDistanceSeekBar.setProgress(Integer.parseInt(min));
+                    mDistanceSeekBar.setMax(Integer.parseInt(max));
+                }
+                //------
+            }
         }
     }
 

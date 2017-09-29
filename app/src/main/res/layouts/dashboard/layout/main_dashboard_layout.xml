@@ -2,8 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="?android:actionBarSize"
     android:orientation="vertical">
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tagColor"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_marginTop="@dimen/dp6"
+            android:layout_marginBottom="@dimen/dp6"
+            android:src="@drawable/rescribe_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -23,6 +38,14 @@
             <include layout="@layout/health_offers_layout" />
 
             <include layout="@layout/health_blog_layout" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:src="@drawable/tip_of_the_day"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:src="@drawable/joke_of_the_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

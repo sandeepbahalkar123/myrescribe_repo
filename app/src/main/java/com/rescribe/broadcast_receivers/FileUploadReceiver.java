@@ -76,7 +76,7 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
                     intentService.putExtra(MESSAGE_LIST, mqttMessage);
                     context.startService(intentService);
                 }
-                instance.deleteUploadedMessage(uploadInfo.getUploadId());
+                instance.updateMessageUpload(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
             } else {
                 instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
             }

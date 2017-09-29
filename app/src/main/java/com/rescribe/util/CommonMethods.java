@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -54,7 +55,7 @@ public class CommonMethods {
 
     // 1ˢᵗ, 2ⁿᵈ, 3ʳᵈ, 4ᵗʰ
     public static String ordinal(int i) {
-        String[] sufixes = new String[] { "ᵗʰ", "ˢᵗ", "ⁿᵈ", "ʳᵈ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ" };
+        String[] sufixes = new String[]{"ᵗʰ", "ˢᵗ", "ⁿᵈ", "ʳᵈ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ"};
         switch (i % 100) {
             case 11:
             case 12:
@@ -288,11 +289,13 @@ public class CommonMethods {
     }
 
 
-    public static String getFormatedDate(String strDate, String sourceFormate,
-                                         String destinyFormate) {
-        if (strDate != null) {
+    public static String getFormattedDate(String strDate, String sourceFormat,
+                                          String destinyFormat) {
+
+        if (!strDate.equals("")) {
+
             SimpleDateFormat df;
-            df = new SimpleDateFormat(sourceFormate, Locale.US);
+            df = new SimpleDateFormat(sourceFormat, Locale.US);
             Date date = null;
             try {
                 date = df.parse(strDate);
@@ -301,7 +304,7 @@ public class CommonMethods {
                 e.printStackTrace();
             }
 
-            df = new SimpleDateFormat(destinyFormate, Locale.US);
+            df = new SimpleDateFormat(destinyFormat, Locale.US);
             return df.format(date);
         } else return "";
     }
@@ -600,7 +603,8 @@ public class CommonMethods {
 
         return abbreviation;
     }
-    public static int getDoctorSpecialistIcons(String caseStudyName,Context mContext) {
+
+    public static int getDoctorSpecialistIcons(String caseStudyName, Context mContext) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.gynecologist;
@@ -749,6 +753,19 @@ public class CommonMethods {
 
     public static String getExtension(String filePath) {
         return filePath.substring(filePath.lastIndexOf(".") + 1);
+    }
+
+    public static String getFileNameFromPath(String filePath) {
+        return filePath.substring(filePath.lastIndexOf("/") + 1);
+    }
+
+    public static String getFilePath(String filePath) {
+        return filePath.substring(0, filePath.lastIndexOf("/") + 1);
+    }
+
+    public static float spToPx(int sp, Context context) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp,
+                context.getResources().getDisplayMetrics());
     }
 }
 

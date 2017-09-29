@@ -251,5 +251,7 @@
     <string name="title_activity_vital_graph_details">Vital Graph Details</string>
     <string name="title_activity_add_tracker">Add Tracker</string>
     <string name="paid_doctor_message">We are in the process of payment gateway integration. You will soon be able to chat with your favorite doctors.</string>
+    <string name="doc_viewer_not_found">Document viewer not found.</string>
+    <string name="timing"><![CDATA[< slide to cancel]]></string>
     <!-- Error string -->
 </resources>

@@ -49,7 +49,7 @@ public class MQTTService extends Service {
     public static final String REPLY_ACTION = "com.rescribe.REPLY_ACTION";
     public static final String SEND_MESSAGE = "send_message";
 
-    private static int currentChatUser;
+    private static int currentChatUser = 0;
     private static final String TAG = "MQTTService";
     public static final String MESSAGE = "message";
     public static final String NOTIFY = "com.rescribe";
@@ -291,6 +291,9 @@ public class MQTTService extends Service {
 
     public void typingStatus(TypeStatus typeStatus) {
         try {
+            // 2017-10-13 13:08:07
+            String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss);
+            typeStatus.setMsgTime(msgTime);
             String content = gson.toJson(typeStatus, TypeStatus.class);
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(1);
@@ -307,9 +310,12 @@ public class MQTTService extends Service {
         }
     }
 
-    public void passMessage(MQTTMessage MQTTMessage) {
+    public void passMessage(MQTTMessage mqttMessage) {
         try {
-            String content = gson.toJson(MQTTMessage, MQTTMessage.class);
+            // 2017-10-13 13:08:07
+            String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss);
+            mqttMessage.setMsgTime(msgTime);
+            String content = gson.toJson(mqttMessage, MQTTMessage.class);
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(1);
             message.setRetained(true);

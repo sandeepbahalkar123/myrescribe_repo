@@ -123,9 +123,12 @@ public class RescribeConstants {
     public static final String GMAIL_LOGIN = "gmail_login";
     public static final String FACEBOOK_LOGIN = "facebook_login";
     public static final String CHAT_REQUEST = "chat_request";
+
     public static final int UPLOADING = 1;
+    public static final int DOWNLOADING = 1;
     public static final int FAILED = 0;
     public static final int COMPLETED = 3;
+
     public static final String SEARCH__REQUEST = "search_request";
     public static final String CONNECT_REQUEST = "connect_request";
     public static final String UPLOADING_STATUS = "uploading_status";

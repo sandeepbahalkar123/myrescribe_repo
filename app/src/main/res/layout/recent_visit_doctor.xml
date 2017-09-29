@@ -21,14 +21,15 @@
             android:layout_marginLeft="@dimen/dp10"
             android:layout_marginRight="@dimen/dp10"
             android:layout_weight="1"
-            android:visibility="gone"
             android:drawableLeft="@drawable/search"
             android:drawablePadding="@dimen/dp4"
             android:focusable="false"
+            android:focusableInTouchMode="true"
             android:gravity="center"
             android:inputType="text"
             android:textColor="@color/white"
             android:textSize="@dimen/sp16"
+            android:visibility="gone"
             app:deleteButtonRes="@drawable/close"
             app:hintText="@string/search" />
 

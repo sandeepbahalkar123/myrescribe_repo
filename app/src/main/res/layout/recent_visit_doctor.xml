@@ -26,6 +26,7 @@
             android:focusable="false"
             android:focusableInTouchMode="true"
             android:gravity="center"
+            android:imeOptions="actionSearch"
             android:inputType="text"
             android:textColor="@color/white"
             android:textSize="@dimen/sp16"
@@ -105,7 +106,10 @@
 
         </FrameLayout>
 
-        <include layout="@layout/book_appointment_recyclerview" />
+        <include
+            layout="@layout/book_appointment_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 </LinearLayout>

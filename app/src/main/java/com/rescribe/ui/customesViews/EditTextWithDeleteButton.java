@@ -8,11 +8,14 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.util.CommonMethods;
@@ -22,6 +25,7 @@ public class EditTextWithDeleteButton extends LinearLayout {
     protected EditText editText;
     protected ImageButton clearTextButton;
     private OnClearButtonClickedInEditTextListener mClearButtonClickedInEditTextListener;
+    private OnKeyboardDoneKeyPressedInEditTextListener mOnKeyboardKeyPressedInEditTextListener;
 
     public interface TextChangedListener extends TextWatcher {
     }
@@ -47,7 +51,7 @@ public class EditTextWithDeleteButton extends LinearLayout {
         initViews(context, attrs);
     }
 
-    private void initViews(Context context, AttributeSet attrs) {
+    private void initViews(final Context context, AttributeSet attrs) {
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
                 R.styleable.EditTextWithDeleteButton, 0, 0);
         String hintText;
@@ -90,6 +94,18 @@ public class EditTextWithDeleteButton extends LinearLayout {
                 editText.setText("");
             }
         });
+
+        editText.setOnEditorActionListener(
+                new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        // Identifier of the action. This will be either the identifier you supplied,
+                        // or EditorInfo.IME_NULL if being called due to the enter key being pressed.
+                        mOnKeyboardKeyPressedInEditTextListener.onKeyPressed(actionId,event);
+                        // Return true if you have consumed the action, else false.
+                        return true;
+                    }
+                });
     }
 
     public TextWatcher txtEntered() {
@@ -170,7 +186,15 @@ public class EditTextWithDeleteButton extends LinearLayout {
         void onClearButtonClicked();
     }
 
+    public interface OnKeyboardDoneKeyPressedInEditTextListener {
+        void onKeyPressed(int actionId,KeyEvent event);
+    }
+
     public void addClearTextButtonListener(OnClearButtonClickedInEditTextListener onClearButtonClickedInEditTextListener) {
         this.mClearButtonClickedInEditTextListener = onClearButtonClickedInEditTextListener;
+    }
+
+    public void addKeyboardDoneKeyPressedInEditTextListener(OnKeyboardDoneKeyPressedInEditTextListener mOnKeyboardClickedInEditTextListener) {
+        this.mOnKeyboardKeyPressedInEditTextListener = mOnKeyboardClickedInEditTextListener;
     }
 }

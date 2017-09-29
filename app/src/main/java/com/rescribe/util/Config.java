@@ -14,7 +14,13 @@ public class Config {
     public static final String SIGN_UP_URL = "authApi/authenticate/patientSignUp";
     public static boolean DEV_BUILD = true;
     //Declared all URL used in app here
+
     //    private static final String BROKER = "tcp://test.mosquitto.org:1883";
+
+
+
+//    public static final String BROKER = "tcp://ec2-13-126-175-156.ap-south-1.compute.amazonaws.com:1883";
+
     public static final String BROKER = "tcp://192.168.0.182:1883";
 
     //   public static String BASE_URL = "http://drrescribe.com:3003/";

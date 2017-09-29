@@ -20,6 +20,7 @@
         android:visibility="visible">
 
         <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/clickHere"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -69,8 +70,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="@dimen/dp5"
-                android:paddingTop="@dimen/dp5"
                 android:paddingRight="@dimen/dp5"
+                android:paddingTop="@dimen/dp5"
                 android:scaleX="-1"
                 android:src="@drawable/right_arrow"
                 android:visibility="visible" />

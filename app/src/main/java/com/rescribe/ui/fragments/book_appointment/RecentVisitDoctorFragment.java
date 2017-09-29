@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Html;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,6 +85,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     RecyclerView listView;
     @BindView(R.id.whiteUnderLine)
     TextView whiteUnderLine;
+    @BindView(R.id.clickHere)
+    CustomTextView mClickHere;
     private View mRootView;
     Unbinder unbinder;
     static Bundle args;
@@ -116,6 +119,14 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     private void init(View mRootView) {
+        //----------
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            mClickHere.setText(Html.fromHtml(getString(R.string.clickhere), Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            mClickHere.setText(Html.fromHtml(getString(R.string.clickhere)));
+        }
+        //----------
+
         BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss), true);
 
         searchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {

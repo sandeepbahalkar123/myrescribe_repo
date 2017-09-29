@@ -21,7 +21,7 @@
                 android:id="@+id/showVitalUnitNameIconLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/edge_white"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
@@ -90,9 +90,9 @@
             <ImageView
                 android:id="@+id/vitalImageDialog"
                 android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
-                android:padding="@dimen/dp16"
+                android:padding="@dimen/dp10"
                 android:src="@drawable/sale" />
 
         </FrameLayout>

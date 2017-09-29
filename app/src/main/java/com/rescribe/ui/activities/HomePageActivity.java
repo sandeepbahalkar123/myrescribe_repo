@@ -25,10 +25,10 @@ import com.rescribe.adapters.dashboard.HealthOffersAdapter;
 import com.rescribe.adapters.dashboard.MenuDashBoardAdapter;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.dashboard.DashboardBaseModel;
-import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
@@ -39,8 +39,11 @@ import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import net.gotev.uploadservice.UploadService;
+
 import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import permissions.dispatcher.NeedsPermission;
@@ -344,7 +347,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                     }
                     startActivity(intent);
 
-                } */else if (id.equalsIgnoreCase(getString(R.string.logout))) {
+                } */ else if (id.equalsIgnoreCase(getString(R.string.logout))) {
                     logout();
 
                 } else if (id.equalsIgnoreCase(getString(R.string.logout))) {
@@ -360,7 +363,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.settings))) {
 
-                }else if (id.equalsIgnoreCase(getString(R.string.services))) {
+                } else if (id.equalsIgnoreCase(getString(R.string.services))) {
                     Intent intent = new Intent(mContext, BookAppointmentServices.class);
                     //    Intent intent = new Intent(mContext, DoctorListToBookAppointment.class);
                     startActivity(intent);
@@ -375,8 +378,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                 .setId(1)
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
-                .setName(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME,mContext))
-                .setDescription(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_EMAIL,mContext))
+                .setName(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext))
+                .setDescription(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_EMAIL, mContext))
         );
 
         addProfile(new DrawerProfile()
@@ -437,60 +440,33 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
 
-     if(mOldDataTag==TASK_DASHBOARD_API) {
-         DashboardBaseModel dashboardBaseModel = (DashboardBaseModel) customResponse;
-         menuDashBoardAdapter = new MenuDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getServicesList());
-         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-         menuListView.setLayoutManager(layoutManager);
-         menuListView.setHasFixedSize(true);
-         menuListView.setAdapter(menuDashBoardAdapter);
-         doctorsDashBoardAdapter = new DoctorsDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getDoctorList());
-         LinearLayoutManager doctorListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-         doctorListView.setLayoutManager(doctorListViewlayoutManager);
-         doctorListView.setHasFixedSize(true);
-         doctorListView.setAdapter(doctorsDashBoardAdapter);
-         mHealthOffersAdapter = new HealthOffersAdapter(this, dashboardBaseModel.getDashboardDataModel().getHealthOffersList());
-         LinearLayoutManager healthOfferslistViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-         healthOfferslistView.setLayoutManager(healthOfferslistViewlayoutManager);
-         healthOfferslistView.setHasFixedSize(true);
-         healthOfferslistView.setAdapter(mHealthOffersAdapter);
+        if (mOldDataTag.equalsIgnoreCase(TASK_DASHBOARD_API)) {
+            DashboardBaseModel dashboardBaseModel = (DashboardBaseModel) customResponse;
+            menuDashBoardAdapter = new MenuDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getServicesList());
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            menuListView.setLayoutManager(layoutManager);
+            menuListView.setHasFixedSize(true);
+            menuListView.setAdapter(menuDashBoardAdapter);
+            doctorsDashBoardAdapter = new DoctorsDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getDoctorList());
+            LinearLayoutManager doctorListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            doctorListView.setLayoutManager(doctorListViewlayoutManager);
+            doctorListView.setHasFixedSize(true);
+            doctorListView.setAdapter(doctorsDashBoardAdapter);
+            mHealthOffersAdapter = new HealthOffersAdapter(this, dashboardBaseModel.getDashboardDataModel().getHealthOffersList());
+            LinearLayoutManager healthOfferslistViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            healthOfferslistView.setLayoutManager(healthOfferslistViewlayoutManager);
+            healthOfferslistView.setHasFixedSize(true);
+            healthOfferslistView.setAdapter(mHealthOffersAdapter);
 
-         mHealthBlogAdapter = new HealthBlogAdapter(this,dashboardBaseModel.getDashboardDataModel().getHealthBlogList());
-         LinearLayoutManager healthBlogListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-         healthBlogListView.setLayoutManager(healthBlogListViewlayoutManager);
-         healthBlogListView.setHasFixedSize(true);
-         healthBlogListView.setAdapter(mHealthBlogAdapter);
-
-         if (mOldDataTag.equals(RescribeConstants.LOGOUT))
-             logout();
-         else if (mOldDataTag.equals(ACTIVE_STATUS))
-             CommonMethods.Log(ACTIVE_STATUS, "active");
-     }
-
-        DashboardBaseModel dashboardBaseModel = (DashboardBaseModel) customResponse;
-        menuDashBoardAdapter = new MenuDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getServicesList());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        menuListView.setLayoutManager(layoutManager);
-        menuListView.setHasFixedSize(true);
-        menuListView.setAdapter(menuDashBoardAdapter);
-        doctorsDashBoardAdapter = new DoctorsDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getDoctorList());
-        LinearLayoutManager doctorListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        doctorListView.setLayoutManager(doctorListViewlayoutManager);
-        doctorListView.setHasFixedSize(true);
-        doctorListView.setAdapter(doctorsDashBoardAdapter);
-        mHealthOffersAdapter = new HealthOffersAdapter(this, dashboardBaseModel.getDashboardDataModel().getHealthOffersList());
-        LinearLayoutManager  healthOfferslistViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        healthOfferslistView.setLayoutManager(healthOfferslistViewlayoutManager);
-        healthOfferslistView.setHasFixedSize(true);
-        healthOfferslistView.setAdapter(mHealthOffersAdapter);
-
-        mHealthBlogAdapter = new HealthBlogAdapter(this,dashboardBaseModel.getDashboardDataModel().getHealthBlogList());
-        LinearLayoutManager healthBlogListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        healthBlogListView.setLayoutManager(healthBlogListViewlayoutManager);
-        healthBlogListView.setHasFixedSize(true);
-        healthBlogListView.setAdapter(mHealthBlogAdapter);
-
-
+            mHealthBlogAdapter = new HealthBlogAdapter(this, dashboardBaseModel.getDashboardDataModel().getHealthBlogList());
+            LinearLayoutManager healthBlogListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            healthBlogListView.setLayoutManager(healthBlogListViewlayoutManager);
+            healthBlogListView.setHasFixedSize(true);
+            healthBlogListView.setAdapter(mHealthBlogAdapter);
+        } else if (mOldDataTag.equals(RescribeConstants.LOGOUT))
+            logout();
+        else if (mOldDataTag.equals(ACTIVE_STATUS))
+            CommonMethods.Log(ACTIVE_STATUS, "active");
     }
 
     @Override

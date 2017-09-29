@@ -30,8 +30,9 @@ public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.Li
     Integer[] imageId = {
             R.drawable.diabetes_and_weightloss,
             R.drawable.preventing_treating,
-            R.drawable.myths_about_cancer,
             R.drawable.tips_to_getting_sound_sleep,
+            R.drawable.myths_about_cancer
+
 
 
     };

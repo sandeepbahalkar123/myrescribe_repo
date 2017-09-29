@@ -58,7 +58,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_gravity="center"
                             android:drawablePadding="@dimen/dp4"
-                            android:drawableRight="@drawable/down_arrownew"
+                            android:drawableRight="@drawable/location_icon"
                             android:text="@string/location"
                             android:textColor="@color/white"
                             android:textSize="@dimen/sp16" />

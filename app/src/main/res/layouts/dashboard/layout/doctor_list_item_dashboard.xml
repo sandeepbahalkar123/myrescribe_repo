@@ -16,7 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp10"
+            android:layout_marginBottom="@dimen/dp6"
             android:background="@drawable/white_round_rect"
             android:orientation="vertical"
             android:paddingLeft="@dimen/dp10"
@@ -34,6 +34,7 @@
                     android:paddingBottom="@dimen/dp8"
                     android:paddingLeft="@dimen/dp2"
                     android:paddingTop="@dimen/dp8"
+                    android:id="@+id/doctorCategoryVisit"
                     android:text="My Appointments"
                     android:textColor="@color/greyish"
                     android:textSize="12sp"
@@ -46,6 +47,7 @@
                     android:drawablePadding="@dimen/dp2"
                     android:gravity="right"
                     android:text="500"
+                    android:id="@+id/feesToPaidVisit"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     app:customFont="@string/roboto_bold" />

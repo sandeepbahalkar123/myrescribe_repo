@@ -145,6 +145,12 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         } else {
             holder.doctorName.setText(doctorObject.getDocName());
         }
+        if(doctorObject.getFavourite()){
+            holder.favoriteView.setVisibility(View.VISIBLE);
+        }else{
+            holder.favoriteView.setVisibility(View.INVISIBLE);
+
+        }
 
     }
 

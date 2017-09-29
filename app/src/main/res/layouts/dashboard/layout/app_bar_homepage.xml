@@ -21,6 +21,8 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <ImageView
+                android:paddingTop="@dimen/dp4"
+                android:paddingBottom="@dimen/dp4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/rescribe_logo"

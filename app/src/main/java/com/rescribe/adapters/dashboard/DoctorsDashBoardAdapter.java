@@ -32,7 +32,10 @@ import butterknife.ButterKnife;
 
 public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoardAdapter.ListViewHolder> {
 
-
+    @BindView(R.id.doctorAddress)
+    CustomTextView doctorAddress;
+    @BindView(R.id.recentVisit)
+    CustomTextView recentVisit;
     private Fragment mFragment;
     private Context mContext;
     private int imageSize;
@@ -99,6 +102,18 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         holder.doctorType.setText(doctorObject.getDegree());
         holder.doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
         holder.doctorAddress.setText(doctorObject.getDoctorAddress());
+        holder.doctorCategory.setText(doctorObject.getCategoryName());
+        holder.feesToPaid.setText(doctorObject.getAmount());
+        if(doctorObject.getRecentlyVisited()){
+            holder.recentVisit.setVisibility(View.VISIBLE);
+        }else{
+            holder.recentVisit.setVisibility(View.GONE);
+        }
+        if(doctorObject.getFavourite()){
+            holder.recentVisit.setVisibility(View.VISIBLE);
+        }else{
+            holder.recentVisit.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -121,6 +136,10 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         CustomTextView doctorAddress;
         @BindView(R.id.recentVisit)
         CustomTextView recentVisit;
+        @BindView(R.id.doctorCategoryVisit)
+        CustomTextView doctorCategory;
+        @BindView(R.id.feesToPaidVisit)
+        CustomTextView feesToPaid;
 
         View view;
 

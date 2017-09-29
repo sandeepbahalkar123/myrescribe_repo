@@ -145,14 +145,11 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             TimeSlotAdapter t = new TimeSlotAdapter(getActivity(), mClickedDoctorObject.getAvailableTimeSlots());
             mAllTimeSlotListView.setAdapter(t);
         }
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.dontAnimate();
-        requestOptions.override(imageSize, imageSize);
+
         //requestOptions.placeholder(R.drawable.layer_12);
 
         Glide.with(getActivity())
-                .load("https://maps.googleapis.com/maps/api/staticmap?center="+mClickedDoctorObject.getDoctorAddress()+"&markers=color:blue%7Clabel:C%7Cpune&zoom=12&size=600x400")
-                .apply(requestOptions).thumbnail(0.5f)
+                .load("https://maps.googleapis.com/maps/api/staticmap?center="+mClickedDoctorObject.getDoctorAddress()+"&markers=color:blue%7Clabel:C%7C"+mClickedDoctorObject.getDoctorAddress()+"&zoom=12&size=640x420")
                 .into(locationImage);
 
 

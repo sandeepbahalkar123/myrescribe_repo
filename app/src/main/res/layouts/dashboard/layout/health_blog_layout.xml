@@ -5,10 +5,14 @@
     android:background="@drawable/bg"
     android:layout_height="match_parent">
     <LinearLayout
+        android:layout_marginBottom="@dimen/dp10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
+            android:paddingTop="@dimen/dp16"
+            android:paddingLeft="@dimen/dp4"
+            android:layout_marginLeft="@dimen/dp6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -16,25 +20,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:layout_weight="1"
+            app:customFont="@string/roboto_medium"
             android:layout_marginLeft="@dimen/dp6"
             android:text="Health Blog"/>
             <com.rescribe.ui.customesViews.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/tagColor"
-                android:textSize="16sp"
+                android:textSize="12sp"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:layout_marginRight="@dimen/dp10"
-                android:text="View All"
-                app:customFont="@string/roboto_regular"
+                android:text="VIEW ALL"
+                app:customFont="@string/roboto_medium"
                 />
         </LinearLayout>
         <android.support.v7.widget.RecyclerView
             android:layout_marginTop="@dimen/dp16"
             android:layout_marginBottom="@dimen/dp16"
+            android:layout_marginLeft="@dimen/dp50"
             android:id="@+id/healthBlogListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

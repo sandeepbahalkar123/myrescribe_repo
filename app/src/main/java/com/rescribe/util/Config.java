@@ -12,17 +12,12 @@ public class Config {
     public static final String LOGIN_URL = "authApi/authenticate/patientLogin";
     public static final String VERIFY_SIGN_UP_OTP = "authApi/authenticate/verifyPatientOTP";
     public static final String SIGN_UP_URL = "authApi/authenticate/patientSignUp";
-
     public static boolean DEV_BUILD = true;
     //Declared all URL used in app here
-
-
     //    private static final String BROKER = "tcp://test.mosquitto.org:1883";
     public static final String BROKER = "tcp://192.168.0.182:1883";
-
-       public static String BASE_URL = "http://drrescribe.com:3003/";
-    //public static String BASE_URL = "http://192.168.0.182:3003/";
-
+     //  public static String BASE_URL = "http://drrescribe.com:3003/";
+    public static String BASE_URL = "http://192.168.0.182:3003/";
 
     public Context mContext;
     //Declared all URL used in app here

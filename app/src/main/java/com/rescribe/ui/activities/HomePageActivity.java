@@ -361,8 +361,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                 .setId(1)
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
-                .setName("Mr.Avinash Deshpande")
-                .setDescription("avinash_deshpande@gmail.com")
+                .setName(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME,mContext))
+                .setDescription(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_EMAIL,mContext))
         );
 
         addProfile(new DrawerProfile()
@@ -428,13 +428,11 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
         menuListView.setLayoutManager(layoutManager);
         menuListView.setHasFixedSize(true);
         menuListView.setAdapter(menuDashBoardAdapter);
-
         doctorsDashBoardAdapter = new DoctorsDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getDoctorList());
         LinearLayoutManager doctorListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         doctorListView.setLayoutManager(doctorListViewlayoutManager);
         doctorListView.setHasFixedSize(true);
         doctorListView.setAdapter(doctorsDashBoardAdapter);
-
         mHealthOffersAdapter = new HealthOffersAdapter(this, dashboardBaseModel.getDashboardDataModel().getHealthOffersList());
         LinearLayoutManager  healthOfferslistViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         healthOfferslistView.setLayoutManager(healthOfferslistViewlayoutManager);

@@ -18,9 +18,9 @@ public class Config {
     public static final String BROKER = "tcp://192.168.0.182:1883";
 
     //   public static String BASE_URL = "http://drrescribe.com:3003/";
-    public static String BASE_URL = "http://192.168.0.182:3003/";
+   // public static String BASE_URL = "http://192.168.0.182:3003/";
 
-     //  public static String BASE_URL = "http://drrescribe.com:3003/";
+     public static String BASE_URL = "http://drrescribe.com:3003/";
 
     public Context mContext;
     //Declared all URL used in app here
@@ -57,6 +57,7 @@ public class Config {
 
     public static final String CHAT_FILE_UPLOAD = "api/upload/chatDoc";
 
+
     //----- vital graph-------------
     public static final String TASK_GET_PATIENT_VITAL_LIST = "api/patient/getPatientVitalList";
     public static final String TASK_GET_PATIENT_VITAL_DETAIL = "api/patient/getPatientVitalDetail";
@@ -64,6 +65,9 @@ public class Config {
     public static final String TASK_GET_PATIENT_VITAL_TRACKER_LIST = "api/patient/getVitalTrackerList";
 
     //----- vital graph-------------
+    public static final String LOGOUT = "api/patient/logPatientSignOut";
+    public static final String ACTIVE = "api/patient/logPatientActivity";
+
 }
 
 

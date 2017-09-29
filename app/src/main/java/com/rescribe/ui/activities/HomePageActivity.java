@@ -269,7 +269,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
 
         addItems(new DrawerItem()
                         .setTextPrimary(getString(R.string.services))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_post_your_query)),
+                        .setImage(ContextCompat.getDrawable(this, R.drawable.services)),
                 new DrawerItem()
                         .setTextPrimary(getString(R.string.going_medication))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_prescription)),

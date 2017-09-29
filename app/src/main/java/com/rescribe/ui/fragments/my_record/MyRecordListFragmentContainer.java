@@ -318,6 +318,15 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             mYearSpinnerView.setVisibility(View.VISIBLE);
             mTabLayout.setVisibility(View.VISIBLE);
         }
+
+        if (mTabLayout != null){
+            if (mTabLayout.getTabCount() > 5){
+                mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            }else {
+                mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+                mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+            }
+        }
     }
 
     @Override

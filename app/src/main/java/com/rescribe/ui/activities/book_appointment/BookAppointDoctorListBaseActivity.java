@@ -26,6 +26,8 @@ import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppoi
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.RescribeConstants;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -51,6 +53,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     private Fragment currentlyLoadedFragment; //TODO, fragmentById is not working hence hold this object.
     private BookAppointmentBaseModel mReceivedBookAppointmentBaseModel;
     private static String location;
+    private FragmentManager mSupportFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +71,6 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         showlocation = (CustomTextView) findViewById(R.id.showlocation);
         if (getIntent() != null) {
             location = intent.getStringExtra(getString(R.string.title));
-
         }
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetDoctorData();
@@ -129,7 +131,6 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             b.putString(getString(R.string.latitude), intent.getStringExtra(getString(R.string.latitude)));
             b.putString(getString(R.string.longitude), intent.getStringExtra(getString(R.string.longitude)));
             loadFragment(RecentVisitDoctorFragment.newInstance(b), false);
-
         }
     }
 
@@ -177,10 +178,20 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        int backStackEntryCount = mSupportFragmentManager.getBackStackEntryCount();
+        if (backStackEntryCount == 1) {
+            finish();
+        }else{
+            super.onBackPressed();
+        }
+    }
+
     public void loadFragment(Fragment fragmentToLoad, boolean requiredDrawer) {
         if (fragmentToLoad != null) {
-            FragmentManager supportFragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+            mSupportFragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = mSupportFragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.viewContainer, fragmentToLoad);
             fragmentTransaction.addToBackStack("");
             fragmentTransaction.commit();
@@ -202,7 +213,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     public static void setToolBarTitle(String toolbartitle, boolean isLocationVisible) {
-       title.setText(toolbartitle);
+        title.setText(toolbartitle);
         if (isLocationVisible) {
             locationTextView.setVisibility(View.VISIBLE);
             locationTextView.setText(location);

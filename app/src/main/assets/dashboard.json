@@ -10,10 +10,10 @@
       "Dr. Conenct",
       "My Records",
       "Pharmacy",
-      "Diagnostic Center",
       "Hospital",
       "Blood Bank",
-      "Ambulance"
+      "Ambulance",
+      "Diagnostic Center"
     ],
     "doctorList": [
       {

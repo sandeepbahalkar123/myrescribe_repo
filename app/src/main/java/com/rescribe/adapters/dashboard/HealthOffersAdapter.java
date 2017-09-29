@@ -1,6 +1,7 @@
 package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RemoteViews;
 
 import com.rescribe.R;
 import com.rescribe.model.dashboard.HealthOffersData;
@@ -30,6 +32,7 @@ public class HealthOffersAdapter extends RecyclerView.Adapter<HealthOffersAdapte
     private Fragment mFragment;
     private Context mContext;
     private ArrayList<HealthOffersData> mDataList;
+    private RemoteViews remoteviews;
 
     public HealthOffersAdapter(Context mContext, ArrayList<HealthOffersData> dataList) {
         this.mDataList = dataList;
@@ -51,8 +54,9 @@ public class HealthOffersAdapter extends RecyclerView.Adapter<HealthOffersAdapte
 
         final HealthOffersData doctorObject = mDataList.get(position);
 
-
         holder.fees.setText(doctorObject.getActualPrice());
+        holder.fees.setPaintFlags(holder.fees.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
         holder.discountAmount.setText(doctorObject.getDiscountedPrice());
         holder.percentOff.setText(doctorObject.getDiscountPercentage() + "%");
         holder.saleImage.setImageResource(CommonMethods.getDiagnosticCentreImages(doctorObject.getDiagnosticCentreName()));

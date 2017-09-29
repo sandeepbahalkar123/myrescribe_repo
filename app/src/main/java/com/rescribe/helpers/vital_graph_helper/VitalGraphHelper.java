@@ -105,21 +105,6 @@ public class VitalGraphHelper implements ConnectionListener {
         }
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_PATIENT_VITAL_DETAIL);
 
-        /*try {
-            InputStream is = mContext.getAssets().open("test_temp.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "test_temp" + json);
-
-            VitalGraphInfoBaseModel bookAppointmentBaseModel = new Gson().fromJson(json, VitalGraphInfoBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, RescribeConstants.TASK_GET_PATIENT_VITAL_DETAIL);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
     }
 
     public void doGetPatientVitalTrackerList() {

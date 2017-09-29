@@ -14,7 +14,7 @@ public class DoctorFilteredInfoAndCaseDetails implements CustomResponse {
 
     @SerializedName("cases")
     @Expose
-    private HashMap<String, String[]> caseDetailList;
+    private HashMap<String, String[]> caseDetailList =new HashMap<>();
 
 
     private boolean isCaseDetailHeader = false;

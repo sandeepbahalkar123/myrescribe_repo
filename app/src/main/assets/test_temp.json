@@ -5,47 +5,167 @@
     "statusMessage": "USER AUTHENTICATED"
   },
   "data": {
-    "doAndDonts": "In a small village, a little boy lived with his father and mother. He was the only son.The parents of the little boy were very depressed due to his bad temper. The boy used to get angry very soon and taunt others with his words. His bad temper made him use words that hurt others.",
-    "vitalDetail": [
+    "docVisits": [
       {
-        "vitalValue": "85/50 mm Hg",
-        "creation_date": "2017-09-28T07:30:04.000Z",
-        "selfTrackerFlag": "true"
+        "doc": {
+          "doc_id": 8,
+          "doctor_name": "Dr. Parag Khare",
+          "OPDDate": "2017-06-07T11:02:19.000Z",
+          "Opdid": 10626,
+          "doctor_spaciality": "general physician",
+          "doctor_address": "Hadapsar, Pune",
+          "doctor_image_path": "http:\/\/192.168.0.182\/medsonit-be\/assets\/doc_profile\/DR-avatar.png"
+        }
       },
       {
-        "vitalValue": "119/70 mm Hg",
-        "creation_date": "2017-09-27T13:49:39.000Z",
-        "selfTrackerFlag": "false"
+        "doc": {
+          "doc_id": 8,
+          "doctor_name": "Dr. Parag Khare",
+          "OPDDate": "2017-06-08T09:51:37.000Z",
+          "Opdid": 10642,
+          "doctor_spaciality": "general physician",
+          "doctor_address": "Hadapsar, Pune",
+          "doctor_image_path": "http:\/\/192.168.0.182\/medsonit-be\/assets\/doc_profile\/DR-avatar.png"
+        }
       },
       {
-        "vitalValue": "400/350 mm Hg",
-        "creation_date": "2017-09-27T11:40:13.000Z",
-        "selfTrackerFlag": "true"
+        "doc": {
+          "doc_id": 10,
+          "doctor_name": "Dr. Shalu Gupta",
+          "OPDDate": "2017-06-09T00:00:00.000Z",
+          "Opdid": 10667,
+          "doctor_spaciality": "general physician",
+          "doctor_address": "Hadapsar, Pune",
+          "doctor_image_path": "http:\/\/192.168.0.182\/medsonit-be\/assets\/doc_profile\/DR-avatar.png"
+        },
+        "cases": {
+          "complaints": [
+            "H\/O FALL,KNEE PAIN",
+            "Giddiness"
+          ]
+        }
       },
       {
-        "vitalValue": "82/30 mm Hg",
-        "creation_date": "2017-09-27T10:54:13.000Z",
-        "selfTrackerFlag": "true"
+        "doc": {
+          "doc_id": 8,
+          "doctor_name": "Dr. Parag Khare",
+          "OPDDate": "2017-06-12T00:00:00.000Z",
+          "Opdid": 10669,
+          "doctor_spaciality": "general physician",
+          "doctor_address": "Hadapsar, Pune",
+          "doctor_image_path": "http:\/\/192.168.0.182\/medsonit-be\/assets\/doc_profile\/DR-avatar.png"
+        }
       },
       {
-        "vitalValue": "70/170 mm Hg",
-        "creation_date": "2017-09-27T10:54:13.000Z",
-        "selfTrackerFlag": "true"
+        "doc": {
+          "doc_id": 8,
+          "doctor_name": "Dr. Parag Khare",
+          "OPDDate": "2017-06-13T10:22:51.000Z",
+          "Opdid": 10679,
+          "doctor_spaciality": "general physician",
+          "doctor_address": "Hadapsar, Pune",
+          "doctor_image_path": "http:\/\/192.168.0.182\/medsonit-be\/assets\/doc_profile\/DR-avatar.png"
+        },
+        "cases": {
+          "complaints": [
+            "Giddiness"
+          ]
+        }
       },
       {
-        "vitalValue": "444/200 mm Hg",
-        "creation_date": "2017-09-25T10:54:13.000Z",
-        "selfTrackerFlag": "true"
+        "doc": {
+          "doc_id": 10,
+          "doctor_name": "Dr. Shalu Gupta",
+          "OPDDate": "2017-06-15T11:21:52.000Z",
+          "Opdid": 10738,
+          "doctor_spaciality": "general physician",
+          "doctor_address": "Hadapsar, Pune",
+          "doctor_image_path": "http:\/\/192.168.0.182\/medsonit-be\/assets\/doc_profile\/DR-avatar.png"
+        },
+        "cases": {
+          "complaints": [
+            "giddiness",
+            "Vertigo, Anaemia - 10.5%",
+            "Giddiness"
+          ]
+        }
       },
       {
-        "vitalValue": "510/137 mm Hg",
-        "creation_date": "2017-06-15T11:21:52.000Z",
-        "selfTrackerFlag": "false"
+        "doc": {
+          "doc_id": 6,
+          "doctor_name": "DR. AVINASH KULKARNI",
+          "OPDDate": "2017-06-19T13:41:32.000Z",
+          "Opdid": 10755,
+          "doctor_spaciality": "general physician",
+          "doctor_address": "Pune",
+          "doctor_image_path": "http:\/\/192.168.0.182\/medsonit-be\/assets\/doc_profile\/DR-avatar.png"
+        },
+        "cases": {
+          "complaints": [
+            "Giddiness",
+            "abdominal pain-lower abdominal pain"
+          ]
+        }
       },
       {
-        "vitalValue": "505/55 mm Hg",
-        "creation_date": "2017-06-09T00:00:00.000Z",
-        "selfTrackerFlag": "false"
+        "doc": {
+          "doc_id": 6,
+          "doctor_name": "DR. AVINASH KULKARNI",
+          "OPDDate": "2017-06-21T13:12:15.000Z",
+          "Opdid": 10773,
+          "doctor_spaciality": "general physician",
+          "doctor_address": "Pune",
+          "doctor_image_path": "http:\/\/192.168.0.182\/medsonit-be\/assets\/doc_profile\/DR-avatar.png"
+        }
+      },
+      {
+        "doc": {
+          "doc_id": 6,
+          "doctor_name": "DR. AVINASH KULKARNI",
+          "OPDDate": "2017-06-22T09:53:30.000Z",
+          "Opdid": 10778,
+          "doctor_spaciality": "general physician",
+          "doctor_address": "Pune",
+          "doctor_image_path": "http:\/\/192.168.0.182\/medsonit-be\/assets\/doc_profile\/DR-avatar.png"
+        }
+      },
+      {
+        "doc": {
+          "doc_id": 10,
+          "doctor_name": "Dr. Shalu Gupta",
+          "OPDDate": "2017-06-23T07:18:36.000Z",
+          "Opdid": 10787,
+          "doctor_spaciality": "general physician",
+          "doctor_address": "Hadapsar, Pune",
+          "doctor_image_path": "http:\/\/192.168.0.182\/medsonit-be\/assets\/doc_profile\/DR-avatar.png"
+        },
+        "cases": {
+          "complaints": [
+            "Giddiness"
+          ]
+        }
+      },
+      {
+        "doc": {
+          "doc_id": 10,
+          "doctor_name": "Dr. Shalu Gupta",
+          "OPDDate": "2016-07-27T07:49:33.000Z",
+          "Opdid": 11076,
+          "doctor_spaciality": "general physician",
+          "doctor_address": "Hadapsar, Pune",
+          "doctor_image_path": "http:\/\/192.168.0.182\/medsonit-be\/assets\/doc_profile\/DR-avatar.png"
+        }
+      },
+      {
+        "doc": {
+          "doc_id": 10,
+          "doctor_name": "Dr. Shalu Gupta",
+          "OPDDate": "2017-09-27T13:49:39.000Z",
+          "Opdid": 11333,
+          "doctor_spaciality": "general physician",
+          "doctor_address": "Hadapsar, Pune",
+          "doctor_image_path": "http:\/\/192.168.0.182\/medsonit-be\/assets\/doc_profile\/DR-avatar.png"
+        }
       }
     ]
   }

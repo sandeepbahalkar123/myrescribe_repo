@@ -63,12 +63,11 @@
         <activity
 
             android:name=".ui.activities.book_appointment.BookAppointDoctorListBaseActivity"
-            android:label="@string/doctor_connect"
-
             android:configChanges="keyboardHidden|orientation|screenSize"
-
+            android:label="@string/doctor_connect"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activities.PreferencesActivity"
             android:configChanges="orientation|keyboard|screenSize"
@@ -142,7 +141,7 @@
         <receiver
             android:name=".broadcast_receivers.FileDownloadReceiver"
             android:enabled="true"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity
             android:name=".ui.activities.NotificationActivity"

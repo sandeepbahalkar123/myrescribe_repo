@@ -11,10 +11,13 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,6 +30,7 @@ import com.rescribe.adapters.ShowRecentVisitedDoctorPagerAdapter;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.Common;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorSpeciality;
@@ -34,6 +38,7 @@ import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActi
 import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -111,12 +116,24 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     private void init(View mRootView) {
-        BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss),true);
+        BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss), true);
 
         searchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {
             @Override
             public void onClearButtonClicked() {
                 isDataListViewVisible(false, false);
+            }
+        });
+
+        searchView.addKeyboardDoneKeyPressedInEditTextListener(new EditTextWithDeleteButton.OnKeyboardDoneKeyPressedInEditTextListener() {
+            @Override
+            public void onKeyPressed(int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH
+                        || actionId == EditorInfo.IME_ACTION_DONE
+                        || event.getAction() == KeyEvent.ACTION_DOWN
+                        && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    CommonMethods.hideKeyboard(getActivity());
+                }
             }
         });
         searchView.addTextChangedListener(new EditTextWithDeleteButton.TextChangedListener() {
@@ -141,8 +158,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         });
 
     }
-
-
 
 
     public static RecentVisitDoctorFragment newInstance(Bundle b) {
@@ -207,6 +222,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
 
     }
+
     @Override
     public void onResume() {
         super.onResume();

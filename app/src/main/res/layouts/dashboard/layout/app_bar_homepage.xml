@@ -14,15 +14,26 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:visibility="visible"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/rescribe_logo"
+                tools:ignore="VectorDrawableCompat" />
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/main_dashboard_layout" />
+    <include
+        layout="@layout/main_dashboard_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize" />
 
     <!--  <android.support.design.widget.FloatingActionButton
           android:id="@+id/fab"

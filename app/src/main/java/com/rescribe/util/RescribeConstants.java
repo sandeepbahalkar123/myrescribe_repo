@@ -106,6 +106,9 @@ public class RescribeConstants {
     public static final String TASK_GET_DOCTOR_DATA = RescribeConstants.BLANK + 31 ;
     public static final String CHAT_USERS = RescribeConstants.BLANK + 32;
 
+    public static final String ACTIVE_STATUS = RescribeConstants.BLANK + 33;
+    public static final String LOGOUT = RescribeConstants.BLANK + 34;
+
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
     public static final String TAKEN_DATE = "takenDate";
@@ -120,9 +123,12 @@ public class RescribeConstants {
     public static final String GMAIL_LOGIN = "gmail_login";
     public static final String FACEBOOK_LOGIN = "facebook_login";
     public static final String CHAT_REQUEST = "chat_request";
+
     public static final int UPLOADING = 1;
+    public static final int DOWNLOADING = 1;
     public static final int FAILED = 0;
     public static final int COMPLETED = 3;
+
     public static final String SEARCH__REQUEST = "search_request";
     public static final String CONNECT_REQUEST = "connect_request";
     public static final String UPLOADING_STATUS = "uploading_status";
@@ -140,7 +146,11 @@ public class RescribeConstants {
     public static final String DOCTOR_DATA_REQUEST = "doctor_request_info";
 
 
-    public static final String ONLINE = "online";
+    public static class USER_STATUS{
+        public static final String ONLINE = "online";
+        public static final String OFFLINE = "offline";
+        public static final String TYPING = "typing";
+    }
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 

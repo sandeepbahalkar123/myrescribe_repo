@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import static com.rescribe.util.RescribeConstants.FAILED;
 import static com.rescribe.util.RescribeConstants.UPLOADING;
 
 public class MQTTMessage implements Parcelable {
@@ -52,13 +53,14 @@ public class MQTTMessage implements Parcelable {
     @SerializedName("fileType")
     @Expose
     private String fileType = "";
-    @SerializedName("address")
-    @Expose
-    private String address;
 
     @SerializedName("uploadStatus")
     @Expose
     private int uploadStatus = UPLOADING;
+
+    @SerializedName("downloadStatus")
+    @Expose
+    private int downloadStatus = FAILED;
 
     // Added End
 
@@ -83,9 +85,9 @@ public class MQTTMessage implements Parcelable {
             instance.imageUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.fileUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.fileType = ((String) in.readValue((String.class.getClassLoader())));
-            instance.address = ((String) in.readValue((String.class.getClassLoader())));
 
             instance.uploadStatus = ((int) in.readValue((int.class.getClassLoader())));
+            instance.downloadStatus = ((int) in.readValue((int.class.getClassLoader())));
 
             return instance;
         }
@@ -184,14 +186,6 @@ public class MQTTMessage implements Parcelable {
         this.imageUrl = imageUrl;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getName() {
         return name;
     }
@@ -228,6 +222,14 @@ public class MQTTMessage implements Parcelable {
         this.uploadStatus = uploadStatus;
     }
 
+    public int getDownloadStatus() {
+        return downloadStatus;
+    }
+
+    public void setDownloadStatus(int downloadStatus) {
+        this.downloadStatus = downloadStatus;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(msgId);
         dest.writeValue(topic);
@@ -243,9 +245,9 @@ public class MQTTMessage implements Parcelable {
         dest.writeValue(imageUrl);
         dest.writeValue(fileUrl);
         dest.writeValue(fileType);
-        dest.writeValue(address);
 
         dest.writeValue(uploadStatus);
+        dest.writeValue(downloadStatus);
     }
 
     public int describeContents() {

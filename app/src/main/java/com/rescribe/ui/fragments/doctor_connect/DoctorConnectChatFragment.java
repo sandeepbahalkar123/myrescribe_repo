@@ -170,8 +170,7 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
                 chatDoctor.setUnreadMessages(1);
                 chatDoctor.setPaidStatus(message.getPaidStatus());
                 chatDoctor.setSpecialization(message.getSpecialization());
-                chatDoctor.setAddress(message.getAddress());
-                chatDoctor.setOnlineStatus(RescribeConstants.ONLINE);
+                chatDoctor.setOnlineStatus(RescribeConstants.USER_STATUS.ONLINE);
                 chatDoctors.add(0, chatDoctor);
                 mDoctorConnectChatAdapter.notifyDataSetChanged();
             }

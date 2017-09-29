@@ -46,7 +46,7 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
             this.context = context;
 
             MQTTMessage messageL = new MQTTMessage();
-            messageL.setTopic(MQTTService.DOCTOR_CONNECT);
+            messageL.setTopic(MQTTService.TOPIC[0]);
             messageL.setSender(MQTTService.PATIENT);
             messageL.setMsg(message.toString());
 
@@ -61,7 +61,7 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
 
             messageL.setName(patientName);
             messageL.setImageUrl(imageUrl);
-            messageL.setOnlineStatus(RescribeConstants.ONLINE);
+            messageL.setOnlineStatus(RescribeConstants.USER_STATUS.ONLINE);
 
             messageL.setFileUrl("");
             messageL.setSpecialization("");

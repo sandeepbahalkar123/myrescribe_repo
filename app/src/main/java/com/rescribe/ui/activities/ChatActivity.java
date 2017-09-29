@@ -3,23 +3,33 @@ package com.rescribe.ui.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -44,6 +54,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.chat.SendMessageModel;
+import com.rescribe.model.chat.TypeStatus;
 import com.rescribe.model.chat.history.ChatHistory;
 import com.rescribe.model.chat.history.ChatHistoryModel;
 import com.rescribe.model.doctor_connect.ChatDoctor;
@@ -54,6 +65,7 @@ import com.rescribe.singleton.Device;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
+import com.rescribe.util.NetworkUtil;
 import com.rescribe.util.RescribeConstants;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
@@ -63,8 +75,16 @@ import net.gotev.uploadservice.UploadNotificationConfig;
 import net.gotev.uploadservice.UploadService;
 import net.gotev.uploadservice.UploadServiceBroadcastReceiver;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,22 +93,56 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
+import ng.max.slideview.SlideView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE;
+import static com.rescribe.services.MQTTService.NOTIFY;
+import static com.rescribe.services.MQTTService.PATIENT;
 import static com.rescribe.ui.activities.DoctorConnectActivity.FREE;
 import static com.rescribe.util.RescribeConstants.COMPLETED;
 import static com.rescribe.util.RescribeConstants.FAILED;
+import static com.rescribe.util.RescribeConstants.FILE.AUD;
 import static com.rescribe.util.RescribeConstants.FILE.DOC;
 import static com.rescribe.util.RescribeConstants.FILE.IMG;
 import static com.rescribe.util.RescribeConstants.SEND_MESSAGE;
 import static com.rescribe.util.RescribeConstants.UPLOADING;
+import static com.rescribe.util.RescribeConstants.USER_STATUS.TYPING;
 
 @RuntimePermissions
 public class ChatActivity extends AppCompatActivity implements HelperResponse, ChatAdapter.ItemListener {
 
+    // Audio
+
+    private static final String LOG_TAG = "AudioRecordTest";
+    private static String mFileName = null;
+    private MediaRecorder mRecorder = null;
+    private MediaPlayer mPlayer = null;
+    private ImageView audioIcon;
+    private boolean isPlaying = false;
+
+    // Audio End
+
     private static final int MAX_ATTACHMENT_COUNT = 10;
     public static final String CHAT = "chat";
+
+    private static final String RESCRIBE_FILES = "/Rescribe/Files/";
+    private static final String RESCRIBE_PHOTOS = "/Rescribe/Photos/";
+    private static final String RESCRIBE_AUDIO = "/Rescribe/Audios/";
+
+    private static final String RESCRIBE_UPLOAD_FILES = "/Rescribe/SentFiles/";
+    private static final String RESCRIBE_UPLOAD_PHOTOS = "/Rescribe/SentPhotos/";
+    private static final String RESCRIBE_UPLOAD_AUDIO = "/Rescribe/SentAudios/";
+
+    private String filesFolder;
+    private String photosFolder;
+    private String audioFolder;
+
+    private String filesUploadFolder;
+    private String photosUploadFolder;
+    private String audioUploadFolder;
+
     @BindView(R.id.backButton)
     ImageView backButton;
     @BindView(R.id.profilePhoto)
@@ -113,41 +167,112 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     LinearLayout buttonLayout;
     @BindView(R.id.messageTypeSubLayout)
     RelativeLayout messageTypeSubLayout;
-    @BindView(R.id.recorderOrSendButton)
-    ImageView recorderOrSendButton;
+    @BindView(R.id.sendButton)
+    ImageView sendButton;
     @BindView(R.id.messageTypeLayout)
     RelativeLayout messageTypeLayout;
 
     @BindView(R.id.swipeLayout)
     SwipeRefreshLayout swipeLayout;
 
+    @BindView(R.id.audioSlider)
+    SlideView audioSlider;
+
+    // Check Typing
+
+    final int TYPING_TIMEOUT = 3000; // 5 seconds timeout
+    private static final String TYPING_MESSAGE = "typing...";
+    final Handler timeoutHandler = new Handler();
+    private boolean isTyping;
+
+    final Runnable typingTimeout = new Runnable() {
+        public void run() {
+            isTyping = false;
+            typingStatus();
+        }
+    };
+
+    private void typingStatus() {
+        TypeStatus typeStatus = new TypeStatus();
+        String generatedId = TYPING + mqttMessage.size() + "_" + System.nanoTime();
+        typeStatus.setMsgId(generatedId);
+        typeStatus.setDocId(chatList.getId());
+        typeStatus.setPatId(Integer.parseInt(patId));
+        typeStatus.setSender(PATIENT);
+        typeStatus.setTypeStatus(isTyping);
+        if (mqttService != null)
+            mqttService.typingStatus(typeStatus);
+    }
+
+    // End Check Typing
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(NOTIFY)) {
+                boolean delivered = intent.getBooleanExtra(MQTTService.DELIVERED, false);
+                boolean isReceived = intent.getBooleanExtra(MQTTService.IS_MESSAGE, false);
 
-            boolean delivered = intent.getBooleanExtra(MQTTService.DELIVERED, false);
-            boolean isReceived = intent.getBooleanExtra(MQTTService.RECEIVED, false);
+                if (delivered) {
 
-            if (delivered) {
+                    Log.d(TAG, "Delivery Complete");
+                    Log.d(TAG + " MESSAGE_ID", intent.getStringExtra(MQTTService.MESSAGE_ID));
 
-                Log.d(TAG, "Delivery Complete");
-                Log.d(TAG + " MESSAGE_ID", intent.getStringExtra(MQTTService.MESSAGE_ID));
+                } else if (isReceived) {
+                    MQTTMessage message = intent.getParcelableExtra(MQTTService.MESSAGE);
+                    if (message.getDocId() == chatList.getId()) {
+                        if (chatAdapter != null) {
+                            mqttMessage.add(message);
+                            chatAdapter.notifyItemInserted(mqttMessage.size() - 1);
+                            chatRecyclerView.smoothScrollToPosition(mqttMessage.size() - 1);
+                        }
+                    } else {
+                        // Other user message
 
-            } else if (isReceived) {
-                MQTTMessage message = intent.getParcelableExtra(MQTTService.MESSAGE);
-                if (message.getDocId() == chatList.getId()) {
-                    if (chatAdapter != null) {
-                        mqttMessage.add(message);
-                        chatAdapter.notifyItemInserted(mqttMessage.size() - 1);
-                        chatRecyclerView.smoothScrollToPosition(mqttMessage.size() - 1);
                     }
                 } else {
-                    // Other patient message
+                    // Getting type status
+                    TypeStatus typeStatus = intent.getParcelableExtra(MQTTService.MESSAGE);
+                    if (typeStatus.getDocId() == chatList.getId()) {
+                        if (typeStatus.isTyping()) {
+                            dateTime.setText(TYPING_MESSAGE);
+                            dateTime.setTextColor(Color.WHITE);
+                        } else {
+                            dateTime.setText(chatList.getOnlineStatus());
+                            dateTime.setTextColor(statusColor);
+                        }
+                    } else {
+                        // Other use message
 
+                    }
                 }
+            } else if (intent.getAction().equals(ACTION_DOWNLOAD_COMPLETE)) {
+                checkDownloaded();
             }
         }
     };
+
+    void checkDownloaded() {
+        DownloadManager.Query query = new DownloadManager.Query();
+        query.setFilterByStatus(DownloadManager.STATUS_SUCCESSFUL);
+        Cursor c = downloadManager.query(query);
+
+        if (c.moveToFirst()) {
+            do {
+                String fileUri = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+                String fileName = c.getString(c.getColumnIndex(DownloadManager.COLUMN_TITLE));
+                for (int index = mqttMessage.size() - 1; index >= 0; index--) {
+                    if (mqttMessage.get(index).getMsg().equals(fileName)) {
+                        mqttMessage.get(index).setDownloadStatus(COMPLETED);
+                        mqttMessage.get(index).setFileUrl(fileUri);
+                        chatAdapter.notifyItemChanged(index);
+                        break;
+                    }
+                    Log.i(TAG, "downloaded file " + fileUri);
+                }
+            } while (c.moveToNext());
+        }
+    }
 
     private ChatHelper chatHelper;
     private boolean isSend = false;
@@ -177,7 +302,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private String Url;
     private String authorizationString;
     private UploadNotificationConfig uploadNotificationConfig;
-//    private DownloadManager downloadManager;
+
+    private DownloadManager downloadManager;
 
     @Override
     public void onBackPressed() {
@@ -200,6 +326,9 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         ButterKnife.bind(this);
 
         appDBHelper = new AppDBHelper(this);
+        swipeLayout.setRefreshing(true);
+
+        downloadInit();
 
         chatList = getIntent().getParcelableExtra(RescribeConstants.DOCTORS_INFO);
         statusColor = getIntent().getIntExtra(RescribeConstants.STATUS_COLOR, ContextCompat.getColor(ChatActivity.this, R.color.green_light));
@@ -248,6 +377,12 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         chatRecyclerView.setLayoutManager(mLayoutManager);
+
+        // off recyclerView Animation
+        RecyclerView.ItemAnimator animator = chatRecyclerView.getItemAnimator();
+        if (animator instanceof SimpleItemAnimator)
+            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+
         chatAdapter = new ChatAdapter(mqttMessage, doctorTextDrawable, ChatActivity.this);
         chatRecyclerView.setAdapter(chatAdapter);
 
@@ -267,14 +402,30 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() == 0) {
-                    recorderOrSendButton.setImageResource(R.drawable.speak);
-                    cameraButton.setVisibility(View.VISIBLE);
-                    isSend = false;
-                } else {
-                    recorderOrSendButton.setImageResource(R.drawable.send);
+                // reset the timeout
+                timeoutHandler.removeCallbacks(typingTimeout);
+                if (messageType.getText().toString().trim().length() > 0) {
+
+                    audioSlider.setVisibility(View.INVISIBLE);
+                    sendButton.setVisibility(View.VISIBLE);
                     cameraButton.setVisibility(View.GONE);
-                    isSend = true;
+                    // Typing status
+                    // schedule the timeout
+                    timeoutHandler.postDelayed(typingTimeout, TYPING_TIMEOUT);
+                    if (!isTyping) {
+                        isTyping = true;
+                        typingStatus();
+                    }
+                    // End Typing status
+                } else {
+
+                    audioSlider.setVisibility(View.VISIBLE);
+                    sendButton.setVisibility(View.INVISIBLE);
+                    cameraButton.setVisibility(View.VISIBLE);
+                    // Typing status
+                    isTyping = false;
+                    typingStatus();
+                    // End typing status
                 }
             }
 
@@ -284,32 +435,229 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         });
 
         uploadInit();
-        downloadInit();
+        audioSliderInit();
         //----------
     }
 
-    private void downloadInit() {
+    // Audio Code
+
+    private void audioSliderInit() {
+        // Get Audio Permission
+
+        // Record to the external cache directory for visibility
+        mFileName = audioUploadFolder;
+
+        ChatActivityPermissionsDispatcher.getAudioPermissionWithCheck(ChatActivity.this);
+
+        audioSlider.getTextView().setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mic_red_24dp, 0, 0, 0);
+        audioSlider.getTextView().setCompoundDrawablePadding(CommonMethods.convertDpToPixel(5));
+        audioSlider.setOnSlideCompleteListener(new SlideView.OnSlideCompleteListener() {
+            @Override
+            public void onSlideComplete(SlideView slideView) {
+                messageTypeSubLayout.setVisibility(View.VISIBLE);
+                Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(100);
+                cntr_aCounter.cancel();
+                stopRecording(false);
+                File file = new File(mFileName);
+                boolean deleted = file.delete();
+                mFileName = audioUploadFolder;
+
+            }
+        });
+
+        audioSlider.setOnActionDownListener(new SlideView.OnActionDownListener() {
+            @Override
+            public void OnActionDown(SlideView slideView) {
+                Log.d("Start", "Track");
+                messageTypeSubLayout.setVisibility(View.INVISIBLE);
+
+                mFileName += "Aud_" + System.nanoTime() + ".mp3";
+                cntr_aCounter.start();
+                startRecording();
+            }
+        });
+
+        audioSlider.setOnActionUpListener(new SlideView.OnActionUpListener() {
+            @Override
+            public void OnActionUp(SlideView slideView) {
+                Log.d("Stop", "Track");
+                messageTypeSubLayout.setVisibility(View.VISIBLE);
+                cntr_aCounter.cancel();
+                stopRecording(audioCounter > 2);
+            }
+        });
+    }
+
+    @NeedsPermission(Manifest.permission.RECORD_AUDIO)
+    void getAudioPermission() {
+        CommonMethods.Log(TAG, "asked permission");
+    }
+
+    private void startPlaying(String path) {
+        mPlayer = new MediaPlayer();
+        try {
+            audioIcon.setImageResource(R.drawable.ic_stop_white_24dp);
+            mPlayer.setDataSource(path);
+            mPlayer.prepare();
+            mPlayer.start();
+            isPlaying = true;
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
+        }
+
+        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                audioIcon.setImageResource(R.drawable.ic_play_arrow_white_24dp);
+                isPlaying = false;
+            }
+        });
+    }
+
+    private void stopPlaying() {
+        audioIcon.setImageResource(R.drawable.ic_play_arrow_white_24dp);
+        try {
+            mPlayer.release();
+            mPlayer = null;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            isPlaying = false;
+        }
 
     }
 
+    private int audioCounter = 0;
+    CountDownTimer cntr_aCounter = new CountDownTimer(60_000, 1_000) {
+        public void onTick(long millisUntilFinished) {
+            // recodeing code
+            NumberFormat f = new DecimalFormat("00");
+            String time = "00:" + f.format(audioCounter) + "  " + getResources().getString(R.string.timing);
+            audioSlider.getTextView().setText(time);
+            audioCounter += 1;
+        }
+
+        public void onFinish() {
+            //finish action
+            try {
+                stopRecording(true);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private void startRecording() {
+        mRecorder = new MediaRecorder();
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mRecorder.setOutputFile(mFileName);
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        try {
+            mRecorder.prepare();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
+        }
+
+        try {
+            mRecorder.start();
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "prepare() start");
+        }
+
+    }
+
+    private void stopRecording(boolean isSend) {
+        CommonMethods.Log("isCanceled Recording : " + audioCounter, String.valueOf(isSend));
+        audioCounter = 0;
+        try {
+            mRecorder.stop();
+            mRecorder.release();
+        } catch (RuntimeException ex) {
+            //Ignore
+        }
+        mRecorder = null;
+
+        if (isSend) {
+            ArrayList<String> audioFile = new ArrayList<String>();
+            audioFile.add(mFileName);
+            uploadFiles(audioFile, AUD);
+            mFileName = audioUploadFolder;
+        }
+    }
+
+    // End Audio Code
+
+    private void downloadInit() {
+        downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+
+        File sdCard = Environment.getExternalStorageDirectory();
+        filesFolder = sdCard.getAbsolutePath() + RESCRIBE_FILES;
+        photosFolder = sdCard.getAbsolutePath() + RESCRIBE_PHOTOS;
+        audioFolder = sdCard.getAbsolutePath() + RESCRIBE_AUDIO;
+
+        File dirFilesFolder = new File(filesFolder);
+        if (!dirFilesFolder.exists()) {
+            if (dirFilesFolder.mkdirs()) {
+                Log.i(TAG, filesFolder + " Directory Created");
+            }
+        }
+        File dirPhotosFolder = new File(photosFolder);
+        if (!dirPhotosFolder.exists()) {
+            if (dirPhotosFolder.mkdirs()) {
+                Log.i(TAG, photosFolder + " Directory Created");
+            }
+        }
+        File dirAudioFolder = new File(audioFolder);
+        if (!dirAudioFolder.exists()) {
+            if (dirAudioFolder.mkdirs()) {
+                Log.i(TAG, audioFolder + " Directory Created");
+            }
+        }
+    }
+
     private void uploadInit() {
+
+        File sdCard = Environment.getExternalStorageDirectory();
+        filesUploadFolder = sdCard.getAbsolutePath() + RESCRIBE_UPLOAD_FILES;
+        photosUploadFolder = sdCard.getAbsolutePath() + RESCRIBE_UPLOAD_PHOTOS;
+        audioUploadFolder = sdCard.getAbsolutePath() + RESCRIBE_UPLOAD_AUDIO;
+
+        File dirFilesFolder = new File(filesUploadFolder);
+        if (!dirFilesFolder.exists()) {
+            if (dirFilesFolder.mkdirs()) {
+                Log.i(TAG, filesUploadFolder + " Directory Created");
+            }
+        }
+        File dirPhotosFolder = new File(photosUploadFolder);
+        if (!dirPhotosFolder.exists()) {
+            if (dirPhotosFolder.mkdirs()) {
+                Log.i(TAG, photosUploadFolder + " Directory Created");
+            }
+        }
+        File dirAudioFolder = new File(audioUploadFolder);
+        if (!dirAudioFolder.exists()) {
+            if (dirAudioFolder.mkdirs()) {
+                Log.i(TAG, audioUploadFolder + " Directory Created");
+            }
+        }
+
         // Uploading
-
         device = Device.getInstance(ChatActivity.this);
-
         Url = Config.BASE_URL + Config.CHAT_FILE_UPLOAD;
-
         authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, ChatActivity.this);
-
         uploadNotificationConfig = new UploadNotificationConfig();
         uploadNotificationConfig.setTitleForAllStatuses("File Uploading");
         uploadNotificationConfig.setIconColorForAllStatuses(Color.parseColor("#04abdf"));
         uploadNotificationConfig.setClearOnActionForAllStatuses(true);
-
         UploadService.UPLOAD_POOL_SIZE = 10;
     }
 
-    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.recorderOrSendButton})
+    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.sendButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backButton:
@@ -321,54 +669,46 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             case R.id.cameraButton:
                 ChatActivityPermissionsDispatcher.onPickPhotoWithCheck(ChatActivity.this);
                 break;
-            case R.id.recorderOrSendButton:
-                if (isSend) {
+            case R.id.sendButton:
+                // SendButton
+                String message = messageType.getText().toString();
+                message = message.trim();
+                if (!message.equals("")) {
 
-                    // SendButton
-                    String message = messageType.getText().toString();
-                    message = message.trim();
-                    if (!message.equals("")) {
+                    MQTTMessage messageL = new MQTTMessage();
+                    messageL.setTopic(MQTTService.TOPIC[0]);
+                    messageL.setSender(PATIENT);
+                    messageL.setMsg(message);
 
-                        MQTTMessage messageL = new MQTTMessage();
-                        messageL.setTopic(MQTTService.DOCTOR_CONNECT);
-                        messageL.setSender(MQTTService.PATIENT);
-                        messageL.setMsg(message);
+                    String generatedId = CHAT + mqttMessage.size() + "_" + System.nanoTime();
 
-                        String generatedId = CHAT + mqttMessage.size() + "_" + System.nanoTime();
+                    messageL.setMsgId(generatedId);
+                    messageL.setDocId(chatList.getId());
+                    messageL.setPatId(Integer.parseInt(patId));
 
-                        messageL.setMsgId(generatedId);
-                        messageL.setDocId(chatList.getId());
-                        messageL.setPatId(Integer.parseInt(patId));
+                    messageL.setName(patientName);
+                    messageL.setOnlineStatus(RescribeConstants.USER_STATUS.ONLINE);
+                    messageL.setImageUrl(imageUrl);
 
-                        messageL.setName(patientName);
-                        messageL.setOnlineStatus(RescribeConstants.ONLINE);
-                        messageL.setImageUrl(imageUrl);
+                    messageL.setFileUrl("");
+                    messageL.setFileType("");
+                    messageL.setSpecialization("");
+                    messageL.setPaidStatus(FREE);
 
-                        messageL.setFileUrl("");
-                        messageL.setFileType("");
-                        messageL.setSpecialization("");
-                        messageL.setPaidStatus(FREE);
-
-                        // send msg by http api
+                    // send msg by http api
 //                        chatHelper.sendMsgToPatient(messageL);
 
-                        // send msg by mqtt
-                        mqttService.passMessage(messageL);
-
-                        if (mqttService.getNetworkStatus()) {
-                            if (chatAdapter != null) {
-                                messageType.setText("");
-                                mqttMessage.add(messageL);
-                                chatAdapter.notifyItemInserted(mqttMessage.size() - 1);
-                                chatRecyclerView.smoothScrollToPosition(mqttMessage.size() - 1);
-                            }
-                        } else
-                            CommonMethods.showToast(ChatActivity.this, getResources().getString(R.string.internet));
-                    }
-                } else {
-
-                    // Record Button stuff here
-
+                    // send msg by mqtt
+                    if (NetworkUtil.getConnectivityStatusBoolean(ChatActivity.this)) {
+                        if (chatAdapter != null) {
+                            mqttService.passMessage(messageL);
+                            messageType.setText("");
+                            mqttMessage.add(messageL);
+                            chatAdapter.notifyItemInserted(mqttMessage.size() - 1);
+                            chatRecyclerView.smoothScrollToPosition(mqttMessage.size() - 1);
+                        }
+                    } else
+                        CommonMethods.showToast(ChatActivity.this, getResources().getString(R.string.internet));
                 }
                 break;
         }
@@ -418,20 +758,23 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 }
             } else if (requestCode == FilePickerConst.REQUEST_CODE_DOC) {
                 if (!data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS).isEmpty()) {
-                    uploadFiles(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
+                    uploadFiles(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS), RescribeConstants.FILE.DOC);
                 }
             }
         }
     }
 
-    private void uploadFiles(ArrayList<String> files) {
+    private void uploadFiles(ArrayList<String> files, String fileType) {
         int startPosition = mqttMessage.size() + 1;
         for (String file : files) {
-            MQTTMessage messageL = new MQTTMessage();
-            messageL.setTopic(MQTTService.DOCTOR_CONNECT);
-            messageL.setSender(MQTTService.PATIENT);
 
-            String fileName = file.substring(file.lastIndexOf("/") + 1);
+            String fileForUpload = copyFile(CommonMethods.getFilePath(file), CommonMethods.getFileNameFromPath(file), filesUploadFolder);
+
+            MQTTMessage messageL = new MQTTMessage();
+            messageL.setTopic(MQTTService.TOPIC[0]);
+            messageL.setSender(PATIENT);
+
+            String fileName = fileForUpload.substring(fileForUpload.lastIndexOf("/") + 1);
 
             messageL.setMsg(fileName);
 
@@ -442,11 +785,11 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             messageL.setPatId(Integer.parseInt(patId));
 
             messageL.setName(patientName);
-            messageL.setOnlineStatus(RescribeConstants.ONLINE);
+            messageL.setOnlineStatus(RescribeConstants.USER_STATUS.ONLINE);
             messageL.setImageUrl(imageUrl);
 
-            messageL.setFileUrl(file);
-            messageL.setFileType(DOC);
+            messageL.setFileUrl(fileForUpload);
+            messageL.setFileType(fileType);
             messageL.setSpecialization("");
             messageL.setPaidStatus(FREE);
 
@@ -467,9 +810,12 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private void uploadPhotos(ArrayList<String> files) {
         int startPosition = mqttMessage.size() + 1;
         for (String file : files) {
+
+            String fileForUpload = copyFile(CommonMethods.getFilePath(file), CommonMethods.getFileNameFromPath(file), photosUploadFolder);
+
             MQTTMessage messageL = new MQTTMessage();
-            messageL.setTopic(MQTTService.DOCTOR_CONNECT);
-            messageL.setSender(MQTTService.PATIENT);
+            messageL.setTopic(MQTTService.TOPIC[0]);
+            messageL.setSender(PATIENT);
             messageL.setMsg("");
 
             String generatedId = CHAT + mqttMessage.size() + "_" + System.nanoTime();
@@ -479,10 +825,10 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             messageL.setPatId(Integer.parseInt(patId));
 
             messageL.setName(patientName);
-            messageL.setOnlineStatus(RescribeConstants.ONLINE);
+            messageL.setOnlineStatus(RescribeConstants.USER_STATUS.ONLINE);
             messageL.setImageUrl(imageUrl);
 
-            messageL.setFileUrl(file);
+            messageL.setFileUrl(fileForUpload);
             messageL.setFileType(IMG);
             messageL.setSpecialization("");
             messageL.setPaidStatus(FREE);
@@ -547,6 +893,24 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             unbindService(mConnection);
             mBounded = false;
         }
+
+        if (mRecorder != null) {
+            try {
+                mRecorder.release();
+            } catch (Exception e) {
+                // ignore
+            }
+            mRecorder = null;
+        }
+
+        if (mPlayer != null) {
+            try {
+                mPlayer.release();
+            } catch (Exception e) {
+                // ignore
+            }
+            mPlayer = null;
+        }
     }
 
     @Override
@@ -555,6 +919,9 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         broadcastReceiver.register(this);
         registerReceiver(receiver, new IntentFilter(
                 MQTTService.NOTIFY));
+
+        registerReceiver(receiver, new IntentFilter(
+                ACTION_DOWNLOAD_COMPLETE));
 
         if (isFirstTime > 0) {
             ArrayList<MQTTMessage> unreadMessages = appDBHelper.getUnreadMessagesById(chatList.getId());
@@ -572,9 +939,18 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     @Override
     protected void onPause() {
         super.onPause();
+
+        // Type status
+        // reset the timeout
+        timeoutHandler.removeCallbacks(typingTimeout);
+        isTyping = false;
+        typingStatus();
+        // Type status End
+
         broadcastReceiver.unregister(this);
         unregisterReceiver(receiver);
-        mqttService.setCurrentChatUser(0);
+        if (mqttService != null)
+            mqttService.setCurrentChatUser(0);
     }
 
     @Override
@@ -596,7 +972,9 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             if (chatHistoryModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
                 final List<ChatHistory> chatHistory = chatHistoryModel.getHistoryData().getChatHistory();
 
-//                messageListTemp.clear();
+                DownloadManager.Query query = new DownloadManager.Query();
+                query.setFilterByStatus(DownloadManager.STATUS_SUCCESSFUL);
+                Cursor cu = downloadManager.query(query);
 
                 for (ChatHistory chatH : chatHistory) {
                     MQTTMessage messageL = new MQTTMessage();
@@ -609,16 +987,44 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     messageL.setName(chatH.getName());
                     messageL.setSpecialization(chatH.getSpecialization());
                     messageL.setOnlineStatus(chatH.getOnlineStatus());
-                    messageL.setAddress(chatH.getAddress());
                     messageL.setImageUrl(chatH.getImageUrl());
                     messageL.setPaidStatus(chatH.getPaidStatus());
                     messageL.setFileType(chatH.getFileType());
+                    messageL.setFileUrl(chatH.getFileUrl());
+
                     messageL.setUploadStatus(COMPLETED);
 
-                    String msgTime = CommonMethods.getFormatedDate(chatH.getMsgTime(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss);
+                    if (chatH.getSender().equals(PATIENT)) {
+                        if (chatH.getFileType().equals(AUD)) {
+                            messageL.setFileUrl(audioUploadFolder + chatH.getMsg());
+                        } else if (chatH.getFileType().equals(DOC)) {
+                            messageL.setFileUrl(filesUploadFolder + chatH.getMsg());
+                        }
+                    }
+
+                    // Check Download
+                    if (chatH.getFileType().equals(DOC) || chatH.getFileType().equals(AUD)) {
+                        if (cu.moveToFirst()) {
+                            do {
+                                String fileUri = cu.getString(cu.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+                                String fileName = cu.getString(cu.getColumnIndex(DownloadManager.COLUMN_TITLE));
+                                if (messageL.getMsg().equals(fileName)) {
+                                    messageL.setDownloadStatus(COMPLETED);
+                                    messageL.setFileUrl(fileUri);
+                                }
+                            } while (cu.moveToNext());
+                        }
+                    }
+                    // End
+
+                    String msgTime = "";
+                    if (chatH.getMsgTime() != null)
+                        msgTime = CommonMethods.getFormattedDate(chatH.getMsgTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss);
                     messageL.setMsgTime(msgTime);
                     mqttMessage.add(0, messageL);
                 }
+
+                cu.close();
 
                 if (next == 1) {
                     isExistInChat = mqttMessage.isEmpty();
@@ -642,16 +1048,14 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 next += 1;
             }
 
-            swipeLayout.setRefreshing(false);
-
             final int startPosition = mqttMessage.size() + 1;
             int addedCount = 0;
 
-            MQTTData messageData = appDBHelper.getMessageData();
+            MQTTData messageData = appDBHelper.getMessageUpload();
             ArrayList<MQTTMessage> mqttMessList = messageData.getMqttMessages();
 
             for (MQTTMessage mqttMess : mqttMessList) {
-                if (chatList.getId() == mqttMess.getDocId()) {
+                if (chatList.getId() == mqttMess.getPatId()) { // Change
                     mqttMessage.add(mqttMess);
                     addedCount += 1;
                 }
@@ -666,6 +1070,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     }
                 }, 200);
             }
+
+            swipeLayout.setRefreshing(false);
         }
     }
 
@@ -726,17 +1132,138 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             e.printStackTrace();
         }
 
-        appDBHelper.insertMessageData(mqttMessage.getMsgId(), RescribeConstants.UPLOADING, new Gson().toJson(mqttMessage));
+        appDBHelper.insertMessageUpload(mqttMessage.getMsgId(), RescribeConstants.UPLOADING, new Gson().toJson(mqttMessage));
     }
 
     // Download File
 
     @Override
-    public void downloadFile(MQTTMessage mqttMessage) {
-        /*downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(
-                Uri.parse(mqttMessage.getFileUrl()));
-        long enqueue = downloadManager.enqueue(request);*/
+    public long downloadFile(MQTTMessage mqttMessage) {
+        long downloadReference;
+
+        // For Test Big File Download
+//        mqttMessage.setFileUrl("https://dl.google.com/dl/android/studio/ide-zips/2.3.3.0/android-studio-ide-162.4069837-linux.zip");
+
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(mqttMessage.getFileUrl()));
+
+        //Setting title of request
+        request.setTitle(mqttMessage.getMsg());
+
+        //Setting description of request
+        request.setDescription("Rescribe File Downloading");
+
+        request.allowScanningByMediaScanner();
+
+        //Set the local destination for the downloaded file to a path
+        //within the application's external files directory
+
+        request.setDestinationInExternalPublicDir(RESCRIBE_FILES, CommonMethods.getFileNameFromPath(mqttMessage.getFileUrl()));
+
+        // Keep notification after complete
+//        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+        //Enqueue download and save into referenceId
+        downloadReference = downloadManager.enqueue(request);
+
+        return downloadReference;
+    }
+
+    @Override
+    public void openFile(MQTTMessage message, ImageView senderFileIcon) {
+
+        Uri uriTemp = Uri.parse(message.getFileUrl());
+
+        if (message.getFileType().equals(DOC)) {
+
+            File file;
+            if (uriTemp.toString().contains("file://"))
+                file = new File(uriTemp.getPath());
+            else file = new File(uriTemp.toString());
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            Uri uri = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".droidninja.filepicker.provider", file);
+            } else {
+                uri = Uri.fromFile(createImageFile(uriTemp));
+            }
+
+            // Check what kind of file you are trying to open, by comparing the uri with extensions.
+            // When the if condition is matched, plugin sets the correct intent (mime) type,
+            // so Android knew what application to use to open the file
+            if (uri.toString().contains(".doc") || uri.toString().contains(".docx")) {
+                // Word document
+                intent.setDataAndType(uri, "application/msword");
+            } else if (uri.toString().contains(".pdf")) {
+                // PDF file
+                intent.setDataAndType(uri, "application/pdf");
+            } else if (uri.toString().contains(".ppt") || uri.toString().contains(".pptx")) {
+                // Powerpoint file
+                intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+            } else if (uri.toString().contains(".xls") || uri.toString().contains(".xlsx")) {
+                // Excel file
+                intent.setDataAndType(uri, "application/vnd.ms-excel");
+            } else if (uri.toString().contains(".zip") || uri.toString().contains(".rar")) {
+                // WAV audio file
+                intent.setDataAndType(uri, "application/x-wav");
+            } else if (uri.toString().contains(".rtf")) {
+                // RTF file
+                intent.setDataAndType(uri, "application/rtf");
+            } else if (uri.toString().contains(".wav") || uri.toString().contains(".mp3")) {
+                // WAV audio file
+                intent.setDataAndType(uri, "audio/x-wav");
+            } else if (uri.toString().contains(".gif")) {
+                // GIF file
+                intent.setDataAndType(uri, "image/gif");
+            } else if (uri.toString().contains(".jpg") || uri.toString().contains(".jpeg") || uri.toString().contains(".png")) {
+                // JPG file
+                intent.setDataAndType(uri, "image/jpeg");
+            } else if (uri.toString().contains(".txt")) {
+                // Text file
+                intent.setDataAndType(uri, "text/plain");
+            } else if (uri.toString().contains(".3gp") || uri.toString().contains(".mpg") || uri.toString().contains(".mpeg") || uri.toString().contains(".mpe") || uri.toString().contains(".mp4") || uri.toString().contains(".avi")) {
+                // Video files
+                intent.setDataAndType(uri, "video/*");
+            } else {
+                //if you want you can also define the intent type for any other file
+
+                //additionally use else clause below, to manage other unknown extensions
+                //in this case, Android will show all applications installed on the device
+                //so you can choose which application to use
+                intent.setDataAndType(uri, "*/*");
+            }
+
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                CommonMethods.showToast(ChatActivity.this, getResources().getString(R.string.doc_viewer_not_found));
+            }
+        } else if (message.getFileType().equals(AUD)) {
+
+            if (this.audioIcon != null) {
+                this.audioIcon.setImageResource(R.drawable.ic_play_arrow_white_24dp);
+                senderFileIcon.setImageResource(R.drawable.ic_stop_white_24dp);
+            } else {
+                senderFileIcon.setImageResource(R.drawable.ic_stop_white_24dp);
+            }
+
+            this.audioIcon = senderFileIcon;
+
+            if (!isPlaying)
+                startPlaying(message.getFileUrl());
+            else {
+                stopPlaying();
+                startPlaying(message.getFileUrl());
+            }
+        }
+    }
+
+    private File createImageFile(Uri uriTemp) {
+        return new File(filesFolder, CommonMethods.getFileNameFromPath(uriTemp.toString()));
     }
 
     // Broadcast
@@ -752,7 +1279,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             if (uploadInfo.getUploadId().length() > CHAT.length()) {
                 String prefix = uploadInfo.getUploadId().substring(0, 4);
                 if (prefix.equals(CHAT)) {
-                    appDBHelper.updateMessageData(uploadInfo.getUploadId(), FAILED);
+                    appDBHelper.updateMessageUpload(uploadInfo.getUploadId(), FAILED);
 
                     int position = getPositionById(uploadInfo.getUploadId());
 
@@ -794,4 +1321,28 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         public void onCancelled(Context context, UploadInfo uploadInfo) {
         }
     };
+
+    private String copyFile(String inputPath, String inputFile, String outputPath) {
+        InputStream in;
+        OutputStream out;
+        try {
+            in = new FileInputStream(inputPath + inputFile);
+            out = new FileOutputStream(outputPath + inputFile);
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+
+            // write the output file (You have now copied the file)
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            Log.e("tag", e.getMessage());
+        }
+        return outputPath + inputFile;
+    }
 }

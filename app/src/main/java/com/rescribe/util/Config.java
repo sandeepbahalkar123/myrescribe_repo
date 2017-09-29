@@ -58,6 +58,9 @@ public class Config {
     public static final String CHAT_USERS = "api/chat/getChatTabUsers";
 
     public static final String CHAT_FILE_UPLOAD = "api/upload/chatDoc";
+
+    public static final String LOGOUT = "api/patient/logPatientSignOut";
+    public static final String ACTIVE = "api/patient/logPatientActivity";
 }
 
 

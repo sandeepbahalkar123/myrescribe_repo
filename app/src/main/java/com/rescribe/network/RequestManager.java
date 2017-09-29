@@ -48,6 +48,7 @@ import com.rescribe.model.filter.FilterDoctorSpecialityListModel;
 import com.rescribe.model.investigation.InvestigationListModel;
 import com.rescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
 import com.rescribe.model.investigation.uploaded.InvestigationUploadFromUploadedModel;
+import com.rescribe.model.login.ActiveStatusModel;
 import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.login.LoginWithOtp;
 import com.rescribe.model.login.SignUpModel;
@@ -573,6 +574,16 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.TASK_GET_DOCTOR_DATA: //This is for get archived list
                         BookAppointmentBaseModel bookAppointmentBaseModel = new Gson().fromJson(data, BookAppointmentBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, mOldDataTag);
+                        break;
+
+                    case RescribeConstants.ACTIVE_STATUS: //This is for get archived list
+                        ActiveStatusModel activeStatusModel = new Gson().fromJson(data, ActiveStatusModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, activeStatusModel, mOldDataTag);
+                        break;
+
+                    case RescribeConstants.LOGOUT: //This is for get archived list
+                        ActiveStatusModel activeStatusLogout = new Gson().fromJson(data, ActiveStatusModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, activeStatusLogout, mOldDataTag);
                         break;
 
                     default:

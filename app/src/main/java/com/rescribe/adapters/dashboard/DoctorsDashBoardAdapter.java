@@ -4,15 +4,22 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.dashboard.DoctorData;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 
@@ -28,13 +35,24 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
 
     private Fragment mFragment;
     private Context mContext;
+    private int imageSize;
+    private ColorGenerator mColorGenerator;
     private ArrayList<DoctorData> mDataList;
 
     public DoctorsDashBoardAdapter(Context mContext, ArrayList<DoctorData> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
+        mColorGenerator = ColorGenerator.MATERIAL;
+        setColumnNumber(mContext, 2);
 
 
+    }
+    private void setColumnNumber(Context context, int columnNum) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        int widthPixels = metrics.widthPixels;
+        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     @Override
@@ -49,6 +67,33 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
     public void onBindViewHolder(ListViewHolder holder, int position) {
 
         final DoctorData doctorObject = mDataList.get(position);
+        if(doctorObject.getDoctorImageUrl().equals("")) {
+            String doctorName = doctorObject.getDocName();
+            if (doctorName.contains("Dr. ")) {
+                doctorName = doctorName.replace("Dr. ", "");
+            }
+
+            if (doctorName != null) {
+                int color2 = mColorGenerator.getColor(doctorName);
+                TextDrawable drawable = TextDrawable.builder()
+                        .beginConfig()
+                        .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                        .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                        .endConfig()
+                        .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
+                holder.imageURL.setImageDrawable(drawable);
+            }
+        }else{
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.dontAnimate();
+            requestOptions.override(imageSize, imageSize);
+            requestOptions.placeholder(R.drawable.layer_12);
+
+            Glide.with(mContext)
+                    .load(doctorObject.getDoctorImageUrl())
+                    .apply(requestOptions).thumbnail(0.5f)
+                    .into(holder.imageURL);
+        }
         holder.doctorName.setText(doctorObject.getDocName());
         holder.doctorType.setText(doctorObject.getDegree());
         holder.doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));

@@ -5,7 +5,6 @@
     android:layout_marginBottom="@dimen/dp8"
     android:layout_marginLeft="@dimen/dp4"
     android:layout_marginRight="@dimen/dp4"
-    android:layout_marginTop="@dimen/dp8"
     android:background="@color/transparent"
     android:orientation="vertical">
 
@@ -19,11 +18,11 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:background="@drawable/edge_white"
                 android:id="@+id/showVitalUnitNameIconLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:background="@drawable/edge_white"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -35,7 +34,7 @@
                     android:drawableLeft="@drawable/ruppee_dashboard"
                     android:drawablePadding="@dimen/dp4"
                     android:gravity="center_vertical"
-                    android:paddingTop="24dp"
+                    android:paddingTop="18dp"
                     android:text="1799"
                     android:textColor="@color/black"
                     android:textSize="14sp"
@@ -58,11 +57,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:drawablePadding="@dimen/dp4"
                     android:drawableRight="@drawable/down"
-                    android:gravity="center_vertical"
-
                     android:text="1799%"
+                    android:gravity="bottom"
                     android:textColor="@color/green_percent"
                     android:textSize="14sp"
                     app:customFont="@string/roboto_bold" />
@@ -70,6 +67,7 @@
                 <ImageView
                     android:id="@+id/saleImageView"
                     android:layout_marginTop="@dimen/dp16"
+                    android:background="@color/grey_hint_color"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:src="@drawable/metro_logo" />

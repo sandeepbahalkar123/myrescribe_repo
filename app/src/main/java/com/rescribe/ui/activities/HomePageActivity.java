@@ -268,8 +268,14 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
         );
 
         addItems(new DrawerItem()
+                        .setTextPrimary(getString(R.string.services))
+                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_post_your_query)),
+                new DrawerItem()
                         .setTextPrimary(getString(R.string.going_medication))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_prescription)),
+                new DrawerItem()
+                        .setTextPrimary(getString(R.string.appointments))
+                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_appointments)),
                 new DrawerItem()
                         .setTextPrimary(getString(R.string.doctor_details))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_doctor_visit)),
@@ -277,23 +283,15 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                         .setTextPrimary(getString(R.string.investigation))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_investigations)),*/
                 new DrawerItem()
-                        .setTextPrimary(getString(R.string.appointments))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_appointments)),
-                new DrawerItem()
-                        .setTextPrimary(getString(R.string.my_records))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_my_records)),
-                new DrawerItem()
-                        .setTextPrimary(getString(R.string.doctor_connect))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_doctor_connect)),
-                new DrawerItem()
                         .setTextPrimary(getString(R.string.vital_graph))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_vital_graph)),
+               /* new DrawerItem()
+                        .setTextPrimary(getString(R.string.my_records))
+                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_my_records)),*/
                 new DrawerItem()
-                        .setTextPrimary(getString(R.string.post_your_query))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_post_your_query)),
-                new DrawerItem()
-                        .setTextPrimary(getString(R.string.services))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_post_your_query)),
+                        .setTextPrimary(getString(R.string.settings))
+                        .setImage(ContextCompat.getDrawable(this, R.drawable.setting)),
+
                 new DrawerItem()
                         .setTextPrimary(getString(R.string.logout))
                         .setImage(ContextCompat.getDrawable(this, R.drawable.menu_logout))
@@ -316,7 +314,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                 } /*else if (id.equalsIgnoreCase(getString(R.string.investigation))) {
                     Intent intent = new Intent(mContext, InvestigationActivity.class);
                     startActivity(intent);
-                }*/ else if (id.equalsIgnoreCase(getString(R.string.my_records))) {
+                }*//* else if (id.equalsIgnoreCase(getString(R.string.my_records))) {
                     MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
                     int completeCount = 0;
                     for (Image image : myRecordsData.getImageArrayList()) {
@@ -336,7 +334,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                         intent.putExtra(RescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
                     }
                     startActivity(intent);
-                } else if (id.equalsIgnoreCase(getString(R.string.logout))) {
+                } */else if (id.equalsIgnoreCase(getString(R.string.logout))) {
                     logout();
                 } else if (id.equalsIgnoreCase(getString(R.string.doctor_connect))) {
                     Intent intent = new Intent(mContext, DoctorConnectActivity.class);
@@ -344,9 +342,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                 } else if (id.equalsIgnoreCase(getString(R.string.vital_graph))) {
                     Intent intent = new Intent(mContext, VitalGraphActivity.class);
                     startActivity(intent);
-                } else if (id.equalsIgnoreCase(getString(R.string.post_your_query))) {
+                } else if (id.equalsIgnoreCase(getString(R.string.settings))) {
 
-                } else if (id.equalsIgnoreCase(getString(R.string.services))) {
+                }else if (id.equalsIgnoreCase(getString(R.string.services))) {
                     Intent intent = new Intent(mContext, BookAppointmentServices.class);
                     //    Intent intent = new Intent(mContext, DoctorListToBookAppointment.class);
                     startActivity(intent);
@@ -361,8 +359,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                 .setId(1)
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
-                .setName("Mr.Avinash Deshpande")
-                .setDescription("avinash_deshpande@gmail.com")
+                .setName(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME,mContext))
+                .setDescription(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_EMAIL,mContext))
         );
 
         addProfile(new DrawerProfile()
@@ -428,13 +426,11 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
         menuListView.setLayoutManager(layoutManager);
         menuListView.setHasFixedSize(true);
         menuListView.setAdapter(menuDashBoardAdapter);
-
         doctorsDashBoardAdapter = new DoctorsDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getDoctorList());
         LinearLayoutManager doctorListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         doctorListView.setLayoutManager(doctorListViewlayoutManager);
         doctorListView.setHasFixedSize(true);
         doctorListView.setAdapter(doctorsDashBoardAdapter);
-
         mHealthOffersAdapter = new HealthOffersAdapter(this, dashboardBaseModel.getDashboardDataModel().getHealthOffersList());
         LinearLayoutManager  healthOfferslistViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         healthOfferslistView.setLayoutManager(healthOfferslistViewlayoutManager);

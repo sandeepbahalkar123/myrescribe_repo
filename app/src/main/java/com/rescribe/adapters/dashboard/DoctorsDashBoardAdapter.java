@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -104,15 +105,15 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         holder.doctorAddress.setText(doctorObject.getDoctorAddress());
         holder.doctorCategory.setText(doctorObject.getCategoryName());
         holder.feesToPaid.setText(doctorObject.getAmount());
-        if(doctorObject.getRecentlyVisited()){
+        if (doctorObject.getRecentlyVisited()) {
             holder.recentVisit.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.recentVisit.setVisibility(View.GONE);
         }
-        if(doctorObject.getFavourite()){
-            holder.recentVisit.setVisibility(View.VISIBLE);
-        }else{
-            holder.recentVisit.setVisibility(View.GONE);
+        if (doctorObject.getFavourite()) {
+            holder.favorite.setVisibility(View.VISIBLE);
+        } else {
+            holder.favorite.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -122,6 +123,8 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.favorite)
+        ImageView favorite;
         @BindView(R.id.imageURL)
         CircularImageView imageURL;
         @BindView(R.id.thumbnail)

@@ -1,7 +1,6 @@
-package com.rescribe.adapters;
+package com.rescribe.adapters.book_appointment;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +28,7 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListVi
     private ArrayList<ServicesList> servicesLists;
     OnServicesClickListener onServicesClickListener;
 
-    public ServicesAdapter(Context mContext, ArrayList<ServicesList> ServicesList,OnServicesClickListener onServicesClickListener) {
+    public ServicesAdapter(Context mContext, ArrayList<ServicesList> ServicesList, OnServicesClickListener onServicesClickListener) {
         this.onServicesClickListener = onServicesClickListener;
         this.servicesLists = ServicesList;
         this.mContext = mContext;
@@ -45,16 +44,15 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListVi
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        ServicesList servicesList = servicesLists.get(position);
+        final ServicesList servicesList = servicesLists.get(position);
         holder.serviceNameTextView.setText(servicesList.getServiceName());
         holder.recyclerViewClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onServicesClickListener.setOnClickOfServices();
-
+                onServicesClickListener.setOnClickOfServices(servicesList);
             }
         });
-        holder.serviceIcon.setImageResource(CommonMethods.getServices(servicesList.getServiceName(),mContext));
+        holder.serviceIcon.setImageResource(CommonMethods.getServices(servicesList.getServiceName(), mContext));
 
     }
 
@@ -81,7 +79,7 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListVi
     }
 
     public interface OnServicesClickListener {
-        void setOnClickOfServices();
+        void setOnClickOfServices(ServicesList servicesObject);
     }
 
 }

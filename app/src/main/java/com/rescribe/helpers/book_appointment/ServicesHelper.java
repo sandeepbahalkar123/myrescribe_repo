@@ -3,7 +3,6 @@ package com.rescribe.helpers.book_appointment;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.Request;
 import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
@@ -11,9 +10,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesModel;
 import com.rescribe.network.ConnectRequest;
-import com.rescribe.network.ConnectionFactory;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
 import java.io.IOException;
@@ -77,7 +74,7 @@ public class ServicesHelper implements ConnectionListener {
 //        mConnectionFactory.setUrl(Config.SERVICES_URL);
 //        mConnectionFactory.createConnection(RescribeConstants.TASK_BOOK_APPOINTMENT_SERVICES);
         try {
-            InputStream is = mContext.getAssets().open("services.json");
+            InputStream is = mContext.getAssets().open("book_appointment_services.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);

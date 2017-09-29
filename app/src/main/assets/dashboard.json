@@ -116,22 +116,22 @@
       {
         "id": 1,
         "healthBlogName": "Diabetes & Weight Loss",
-        "healthBlogImgUrl": ""
+        "healthBlogImgUrl": "http://blogs.scorgtechnologies.com/weight-loss-in-diabetes/"
       },
       {
         "id": 2,
         "healthBlogName": "Preventing & Treating Muscle Cramps",
-        "healthBlogImgUrl": ""
+        "healthBlogImgUrl": "http://blogs.scorgtechnologies.com/preventing-treating-muscle-cramps/"
       },
       {
         "id": 3,
         "healthBlogName": "Tips to getting sound sleep",
-        "healthBlogImgUrl": ""
+        "healthBlogImgUrl": "http://blogs.scorgtechnologies.com/tips-for-getting-a-sound-sleep/"
       },
       {
         "id": 4,
         "healthBlogName": "Myths about Cancer - Time to know the truth",
-        "healthBlogImgUrl": ""
+        "healthBlogImgUrl": "http://blogs.scorgtechnologies.com/five-myths-about-cancer/"
       }
     ],
     "tipOfTheDayImageUrl": "",

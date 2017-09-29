@@ -1,6 +1,7 @@
 package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,9 @@ import android.widget.ImageView;
 
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.ReviewList;
+import com.rescribe.model.dashboard.HealthBlogData;
+import com.rescribe.ui.activities.HomePageActivity;
+import com.rescribe.ui.activities.WebViewActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
@@ -25,6 +29,7 @@ import butterknife.ButterKnife;
 public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.ListViewHolder> {
 
 
+    private ArrayList<HealthBlogData> mHealthBlogList;
     private Fragment mFragment;
     private Context mContext;
     Integer[] imageId = {
@@ -32,16 +37,11 @@ public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.Li
             R.drawable.preventing_treating,
             R.drawable.myths_about_cancer,
             R.drawable.tips_to_getting_sound_sleep,
-
-
     };
 
-
-    public HealthBlogAdapter(Context mContext) {
-        // this.mDataList = dataList;
+    public HealthBlogAdapter(Context mContext, ArrayList<HealthBlogData> healthBlogList) {
         this.mContext = mContext;
-
-
+        this.mHealthBlogList = healthBlogList;
     }
 
     @Override
@@ -55,9 +55,18 @@ public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.Li
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
 
-      holder.diabetes.setImageResource(imageId[position]);
+        final HealthBlogData healthBlogData = mHealthBlogList.get(position);
+        holder.diabetes.setImageResource(imageId[position]);
 
-
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, WebViewActivity.class);
+                intent.putExtra(mContext.getString(R.string.title_activity_selected_docs), healthBlogData.getHealthBlogImgUrl());
+                intent.putExtra(mContext.getString(R.string.title), healthBlogData.getHealthBlogName());
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 

@@ -437,7 +437,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
         healthOfferslistView.setHasFixedSize(true);
         healthOfferslistView.setAdapter(mHealthOffersAdapter);
 
-        mHealthBlogAdapter = new HealthBlogAdapter(this);
+        mHealthBlogAdapter = new HealthBlogAdapter(this,dashboardBaseModel.getDashboardDataModel().getHealthBlogList());
         LinearLayoutManager healthBlogListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         healthBlogListView.setLayoutManager(healthBlogListViewlayoutManager);
         healthBlogListView.setHasFixedSize(true);

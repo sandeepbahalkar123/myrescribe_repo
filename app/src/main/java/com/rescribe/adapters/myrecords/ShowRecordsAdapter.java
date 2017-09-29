@@ -74,11 +74,12 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
                 String tag = "" + urlString;
                 String fileExtension = tag.substring(tag.lastIndexOf("."));
 
-                if (fileExtension.contains(".doc") || fileExtension.contains(".odt") || fileExtension.contains(".ppt") || fileExtension.contains(".odp") || fileExtension.contains(".xls") || fileExtension.contains(".ods") || fileExtension.contains(".pdf")){
+                if (fileExtension.contains(".doc") || fileExtension.contains(".odt") || fileExtension.contains(".ppt") || fileExtension.contains(".odp") || fileExtension.contains(".xls") || fileExtension.contains(".ods") || fileExtension.contains(".pdf")) {
                     Intent intent = new Intent(context, WebViewActivity.class);
                     intent.putExtra(context.getString(R.string.title_activity_selected_docs), urlString);
+                    intent.putExtra(context.getString(R.string.file_extension), fileExtension);
                     context.startActivity(intent);
-                }else {
+                } else {
                     // do stuff here
                     Intent intent = new Intent(context, ZoomImageViewActivity.class);
                     intent.putExtra(RescribeConstants.DOCUMENTS, urlString);

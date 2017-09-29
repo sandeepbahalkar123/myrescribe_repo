@@ -11,6 +11,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -30,6 +31,8 @@ public class WebViewActivity extends AppCompatActivity {
     WebView mWebViewObject;
     @BindView(R.id.backButton)
     AppCompatImageView backButton;
+    @BindView(R.id.webViewTitle)
+    TextView mWebViewTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +42,14 @@ public class WebViewActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         String url = getIntent().getStringExtra(getString(R.string.title_activity_selected_docs));
+        String extension = getIntent().getStringExtra(getString(R.string.file_extension));
+        String tempTitle = getIntent().getStringExtra(getString(R.string.title));
+        if (!(RescribeConstants.BLANK.equalsIgnoreCase(tempTitle) || tempTitle == null))
+            mWebViewTitle.setText("" + tempTitle);
         // Hardcoded
 //        String url = "http://che.org.il/wp-content/uploads/2016/12/pdf-sample.pdf";
 
-        loadWebViewData(url);
+        loadWebViewData(url, extension);
     }
 
     @OnClick(R.id.backButton)
@@ -50,7 +57,7 @@ public class WebViewActivity extends AppCompatActivity {
         onBackPressed();
     }
 
-    private void loadWebViewData(String url) {
+    private void loadWebViewData(String url, String extension) {
         if (url != null) {
             mWebViewObject.setVisibility(View.VISIBLE);
 
@@ -72,8 +79,11 @@ public class WebViewActivity extends AppCompatActivity {
                 public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 }
             });
-
-            mWebViewObject.loadUrl("http://docs.google.com/gview?embedded=true&url=" + url);
+            if (RescribeConstants.BLANK.equalsIgnoreCase(extension) || extension == null)
+                mWebViewObject.loadUrl(url);
+            else {
+                mWebViewObject.loadUrl("http://docs.google.com/gview?embedded=true&url=" + url);
+            }
         }
     }
 }

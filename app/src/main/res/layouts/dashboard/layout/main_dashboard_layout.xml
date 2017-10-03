@@ -25,10 +25,12 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:src="@drawable/tip_of_the_day"
+                android:adjustViewBounds="true"
                 android:layout_height="wrap_content" />
             <ImageView
                 android:src="@drawable/joke_of_the_day"
                 android:layout_width="match_parent"
+                android:adjustViewBounds="true"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

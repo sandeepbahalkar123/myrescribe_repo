@@ -60,8 +60,7 @@ public class HealthOffersAdapter extends RecyclerView.Adapter<HealthOffersAdapte
         holder.discountAmount.setText(doctorObject.getDiscountedPrice());
         holder.percentOff.setText(doctorObject.getDiscountPercentage() + "%");
         holder.saleImage.setImageResource(CommonMethods.getDiagnosticCentreImages(doctorObject.getDiagnosticCentreName()));
-
-    }
+     }
 
     @Override
     public int getItemCount() {

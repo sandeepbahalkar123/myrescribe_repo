@@ -199,10 +199,10 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:adjustViewBounds="true"
                     android:id="@+id/locationImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
                     android:visibility="visible"></ImageView>
 
                 <LinearLayout
@@ -286,6 +286,7 @@
                                 android:textColor="@color/recentblue"
                                 android:textSize="@dimen/sp14"
                                 app:customFont="@string/roboto_medium" />
+
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/dp10" />
@@ -320,6 +321,7 @@
                             android:textColor="@color/recentblue"
                             android:textSize="@dimen/sp14"
                             app:customFont="@string/roboto_medium" />
+
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp10" />

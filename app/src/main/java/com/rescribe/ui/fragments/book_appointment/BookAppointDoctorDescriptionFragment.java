@@ -99,7 +99,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     }
 
     private void init() {
-        setColumnNumber(getActivity(),2);
+        setColumnNumber(getActivity(), 2);
         BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -108,6 +108,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             setDataInViews();
         }
     }
+
     private void setColumnNumber(Context context, int columnNum) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
@@ -149,7 +150,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         //requestOptions.placeholder(R.drawable.layer_12);
 
         Glide.with(getActivity())
-                .load("https://maps.googleapis.com/maps/api/staticmap?center="+mClickedDoctorObject.getDoctorAddress()+"&markers=color:blue%7Clabel:C%7C"+mClickedDoctorObject.getDoctorAddress()+"&zoom=12&size=640x420")
+                .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mClickedDoctorObject.getDoctorAddress() + "&markers=color:blue%7Clabel:C%7C" + mClickedDoctorObject.getDoctorAddress() + "&zoom=12&size=640x420")
                 .into(locationImage);
 
 
@@ -181,7 +182,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         unbinder.unbind();
     }
 
-    @OnClick({R.id.showAllTimeSlotListView, R.id.hideAllTimeSlotListView,R.id.locationImage})
+    @OnClick({R.id.showAllTimeSlotListView, R.id.hideAllTimeSlotListView, R.id.locationImage})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -197,12 +198,14 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             case R.id.showAllTimeSlotListView:
                 mAllTimingListViewLayout.setVisibility(View.VISIBLE);
                 mOpeningTimeLayout.setVisibility(View.GONE);
+                break;
             case R.id.locationImage:
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
                 Bundle bundle = new Bundle();
-                bundle.putString(getString(R.string.toolbarTitle),args.getString(getString(R.string.toolbarTitle)));
-                bundle.putString(getString(R.string.address),mClickedDoctorObject.getDoctorAddress());
+                bundle.putString(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
+                bundle.putString(getString(R.string.address), mClickedDoctorObject.getDoctorAddress());
                 activity.loadFragment(ShowLocationOfDoctorOnMap.newInstance(bundle), false);
+                break;
         }
     }
 }

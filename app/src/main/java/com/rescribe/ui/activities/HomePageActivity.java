@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -23,12 +24,16 @@ import com.rescribe.adapters.dashboard.DoctorsDashBoardAdapter;
 import com.rescribe.adapters.dashboard.HealthBlogAdapter;
 import com.rescribe.adapters.dashboard.HealthOffersAdapter;
 import com.rescribe.adapters.dashboard.MenuDashBoardAdapter;
+import com.rescribe.adapters.dashboard.TipAndJokeAdapter;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.dashboard.DashboardBaseModel;
+import com.rescribe.model.dashboard.DashboardDataModel;
+import com.rescribe.model.dashboard.LatestVitalReading;
+import com.rescribe.model.dashboard.PendingInvestigationData;
 import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
@@ -37,12 +42,16 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import net.gotev.uploadservice.UploadService;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,8 +77,18 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
     RecyclerView doctorListView;
     @BindView(R.id.healthBlogListView)
     RecyclerView healthBlogListView;
+    @BindView(R.id.listView)
+    RecyclerView mTipAndJokeListView;
     @BindView(R.id.healthOfferslistView)
     RecyclerView healthOfferslistView;
+    @BindView(R.id.pendingInvestigationItemFirst)
+    CustomTextView mPendingInvestigationItemFirst;
+    @BindView(R.id.pendingInvestigationItemSecond)
+    CustomTextView mPendingInvestigationItemSecond;
+    @BindView(R.id.latestReadingVitalName)
+    CustomTextView mLatestReadingVitalName;
+    @BindView(R.id.latestReadingVitalDate)
+    CustomTextView mLatestReadingVitalDate;
     private Context mContext;
     private String mGetMealTime;
     String breakFastTime = "";
@@ -83,6 +102,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
     private DoctorsDashBoardAdapter doctorsDashBoardAdapter;
     private HealthOffersAdapter mHealthOffersAdapter;
     private HealthBlogAdapter mHealthBlogAdapter;
+    private TipAndJokeAdapter mTipAndJokeAdapter;
     private String patientId;
     private LoginHelper loginHelper;
 
@@ -441,27 +461,63 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equalsIgnoreCase(TASK_DASHBOARD_API)) {
             DashboardBaseModel dashboardBaseModel = (DashboardBaseModel) customResponse;
-            menuDashBoardAdapter = new MenuDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getServicesList());
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-            menuListView.setLayoutManager(layoutManager);
-            menuListView.setHasFixedSize(true);
-            menuListView.setAdapter(menuDashBoardAdapter);
-            doctorsDashBoardAdapter = new DoctorsDashBoardAdapter(this, dashboardBaseModel.getDashboardDataModel().getDoctorList());
-            LinearLayoutManager doctorListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-            doctorListView.setLayoutManager(doctorListViewlayoutManager);
-            doctorListView.setHasFixedSize(true);
-            doctorListView.setAdapter(doctorsDashBoardAdapter);
-            mHealthOffersAdapter = new HealthOffersAdapter(this, dashboardBaseModel.getDashboardDataModel().getHealthOffersList());
-            LinearLayoutManager healthOfferslistViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-            healthOfferslistView.setLayoutManager(healthOfferslistViewlayoutManager);
-            healthOfferslistView.setHasFixedSize(true);
-            healthOfferslistView.setAdapter(mHealthOffersAdapter);
+            DashboardDataModel dashboardDataModel = dashboardBaseModel.getDashboardDataModel();
 
-            mHealthBlogAdapter = new HealthBlogAdapter(this, dashboardBaseModel.getDashboardDataModel().getHealthBlogList());
-            LinearLayoutManager healthBlogListViewlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-            healthBlogListView.setLayoutManager(healthBlogListViewlayoutManager);
-            healthBlogListView.setHasFixedSize(true);
-            healthBlogListView.setAdapter(mHealthBlogAdapter);
+            if (dashboardDataModel != null) {
+
+                //----------
+                menuDashBoardAdapter = new MenuDashBoardAdapter(this, dashboardDataModel.getServicesList());
+                menuListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+                menuListView.setHasFixedSize(true);
+                menuListView.setAdapter(menuDashBoardAdapter);
+
+                //----------
+                doctorsDashBoardAdapter = new DoctorsDashBoardAdapter(this, dashboardDataModel.getDoctorList());
+                doctorListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+                doctorListView.setHasFixedSize(true);
+                doctorListView.setAdapter(doctorsDashBoardAdapter);
+                //----------
+                mHealthOffersAdapter = new HealthOffersAdapter(this, dashboardDataModel.getHealthOffersList());
+                healthOfferslistView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+                healthOfferslistView.setHasFixedSize(true);
+                healthOfferslistView.setAdapter(mHealthOffersAdapter);
+                //----------
+                mHealthBlogAdapter = new HealthBlogAdapter(this, dashboardDataModel.getHealthBlogList());
+                healthBlogListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+                healthBlogListView.setHasFixedSize(true);
+                healthBlogListView.setAdapter(mHealthBlogAdapter);
+                //----------
+                mTipAndJokeAdapter = new TipAndJokeAdapter(this, dashboardDataModel.getTipAndJokDataList());
+                mTipAndJokeListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+                mTipAndJokeListView.setHasFixedSize(true);
+                mTipAndJokeListView.setAdapter(mTipAndJokeAdapter);
+                //------------
+                LatestVitalReading latestVitalReading = dashboardDataModel.getLatestVitalReading();
+                if (latestVitalReading != null) {
+                    mLatestReadingVitalName.setText(latestVitalReading.getVitalName() + "-" + latestVitalReading.getVitalValue() + latestVitalReading.getUnit());
+                    //------------
+                    if (latestVitalReading.getDate() != null) {
+                        Date timeStamp = CommonMethods.convertStringToDate(latestVitalReading.getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(timeStamp);
+                        String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + "" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup>" + " " + new SimpleDateFormat("MMM yy").format(cal.getTime());
+                        //------
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                            mLatestReadingVitalDate.setText(Html.fromHtml(toDisplay, Html.FROM_HTML_MODE_LEGACY));
+                        } else {
+                            mLatestReadingVitalDate.setText(Html.fromHtml(toDisplay));
+                        }
+                    }
+                }
+                //------------
+                ArrayList<PendingInvestigationData> pendingInvestigationList = dashboardDataModel.getPendingInvestigationList();
+                if (pendingInvestigationList.size() > 2) {
+                    mPendingInvestigationItemFirst.setText(""+pendingInvestigationList.get(0).getSpeciality());
+                    mPendingInvestigationItemSecond.setText(""+pendingInvestigationList.get(1).getSpeciality());
+                }
+                //------------
+            }
+
         } else if (mOldDataTag.equals(RescribeConstants.LOGOUT))
             logout();
         else if (mOldDataTag.equals(ACTIVE_STATUS))

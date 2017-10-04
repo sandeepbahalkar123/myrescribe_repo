@@ -11,11 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.rescribe.R;
-import com.rescribe.model.book_appointment.doctor_data.ReviewList;
 import com.rescribe.model.dashboard.HealthBlogData;
-import com.rescribe.ui.activities.HomePageActivity;
+import com.rescribe.model.dashboard.TipAndJokData;
 import com.rescribe.ui.activities.WebViewActivity;
-import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
 
@@ -26,29 +24,25 @@ import butterknife.ButterKnife;
  * Created by jeetal on 28/9/17.
  */
 
-public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.ListViewHolder> {
+public class TipAndJokeAdapter extends RecyclerView.Adapter<TipAndJokeAdapter.ListViewHolder> {
 
 
-    private ArrayList<HealthBlogData> mHealthBlogList;
-    private Fragment mFragment;
+    private ArrayList<TipAndJokData> mTipAndJokDataList;
     private Context mContext;
     Integer[] imageId = {
-            R.drawable.diabetes_and_weightloss,
-            R.drawable.preventing_treating,
-            R.drawable.tips_to_getting_sound_sleep,
-            R.drawable.myths_about_cancer
-
+            R.drawable.tip_of_the_day,
+            R.drawable.joke_of_the_day
     };
 
-    public HealthBlogAdapter(Context mContext, ArrayList<HealthBlogData> healthBlogList) {
+    public TipAndJokeAdapter(Context mContext, ArrayList<TipAndJokData> list) {
         this.mContext = mContext;
-        this.mHealthBlogList = healthBlogList;
+        this.mTipAndJokDataList = list;
     }
 
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.healthblog_item_dashboard, parent, false);
+                .inflate(R.layout.tip_and_joke_item_dashboard, parent, false);
 
         return new ListViewHolder(itemView);
     }
@@ -56,16 +50,14 @@ public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.Li
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
 
-        final HealthBlogData healthBlogData = mHealthBlogList.get(position);
-        holder.diabetes.setImageResource(imageId[position]);
+        TipAndJokData tipAndJokData = mTipAndJokDataList.get(position);
+
+        holder.image.setImageResource(imageId[position]);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, WebViewActivity.class);
-                intent.putExtra(mContext.getString(R.string.title_activity_selected_docs), healthBlogData.getHealthBlogImgUrl());
-                intent.putExtra(mContext.getString(R.string.title), healthBlogData.getHealthBlogName());
-                mContext.startActivity(intent);
+
             }
         });
 
@@ -73,12 +65,12 @@ public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.Li
 
     @Override
     public int getItemCount() {
-        return mHealthBlogList.size();
+        return mTipAndJokDataList.size();
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.diabetes)
-        ImageView diabetes;
+        @BindView(R.id.image)
+        ImageView image;
 
         View view;
 
@@ -89,7 +81,4 @@ public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.Li
         }
     }
 
-    public interface OnFilterDocListClickListener {
-        void onClickOfDoctorRowItem(Bundle bundleData);
-    }
 }

@@ -11,27 +11,42 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp10"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <include layout="@layout/menu_options" />
 
-            <include layout="@layout/doctor_options" />
+            <include
+                layout="@layout/doctor_options"
+                android:visibility="visible" />
 
-            <include layout="@layout/health_offers_layout" />
-
-            <include layout="@layout/investigations_vital_layout" />
-
-            <include layout="@layout/health_blog_layout" />
-            <ImageView
+            <include
+                layout="@layout/health_offers_layout"
                 android:layout_width="match_parent"
-                android:src="@drawable/tip_of_the_day"
-                android:adjustViewBounds="true"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:src="@drawable/joke_of_the_day"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dp10"
+                android:visibility="visible" />
+
+            <include
+                layout="@layout/investigations_vital_layout"
                 android:layout_width="match_parent"
-                android:adjustViewBounds="true"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dp10" />
+
+            <include
+                layout="@layout/health_blog_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dp10"
+                android:visibility="visible" />
+
+            <include
+                layout="@layout/global_recycle_view_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dp10" />
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

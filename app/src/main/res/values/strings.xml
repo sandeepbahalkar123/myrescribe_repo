@@ -297,6 +297,8 @@
     <string name="enter_diastolic">Enter Diastolic</string>
     <string name="settings">Settings</string>
     <string name="file_extension">file_extension</string>
+    <string name="location_address">Location address</string>
+    <string name="doctorId">DoctorId</string>
 
 
 </resources>

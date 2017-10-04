@@ -66,6 +66,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     private int PLACE_PICKER_REQUEST = 1;
     String latitude = "";
     String longitude = "";
+    String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +171,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 String placename = String.format("%s", place.getName());
                 latitude = String.valueOf(place.getLatLng().latitude);
                 longitude = String.valueOf(place.getLatLng().longitude);
-                String address = String.format("%s", place.getAddress());
+                address = String.format("%s", place.getAddress());
                 stBuilder.append("Name: ");
                 stBuilder.append(placename);
                 stBuilder.append("\n");
@@ -214,6 +215,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
             // TODO, THIS IS ADDED FOR NOW, OPEN ONLY IF clicked value == DOCTOR
             if (servicesObject.getServiceName().equalsIgnoreCase(getString(R.string.doctor))) {
                 Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
+                intent.putExtra(getString(R.string.location_address),address);
                 intent.putExtra(getString(R.string.latitude), latitude);
                 intent.putExtra(getString(R.string.longitude), longitude);
                 intent.putExtra(getString(R.string.title), locationTextView.getText().toString());

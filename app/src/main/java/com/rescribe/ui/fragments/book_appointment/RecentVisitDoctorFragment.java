@@ -1,10 +1,12 @@
 package com.rescribe.ui.fragments.book_appointment;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,12 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSpecialistBookAppointmentAdapter;
@@ -31,7 +31,6 @@ import com.rescribe.adapters.ShowRecentVisitedDoctorPagerAdapter;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.Common;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorSpeciality;
@@ -40,7 +39,6 @@ import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -50,7 +48,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
@@ -87,6 +84,10 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     TextView whiteUnderLine;
     @BindView(R.id.clickHere)
     CustomTextView mClickHere;
+    @BindView(R.id.rightFab)
+    FloatingActionButton rightFab;
+    @BindView(R.id.leftFab)
+    FloatingActionButton leftFab;
     private View mRootView;
     Unbinder unbinder;
     static Bundle args;
@@ -120,7 +121,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     private void init(View mRootView) {
         //----------
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             mClickHere.setText(Html.fromHtml(getString(R.string.clickhere), Html.FROM_HTML_MODE_LEGACY));
         } else {
             mClickHere.setText(Html.fromHtml(getString(R.string.clickhere)));
@@ -189,7 +190,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundleData), true);
     }
 
-    @OnClick({R.id.viewpager, R.id.circleIndicator, R.id.pickSpeciality, R.id.listView, R.id.recyclerViewLinearLayout, R.id.doubtMessage, R.id.emptyListView, R.id.prevBtn, R.id.nextBtn})
+    @OnClick({R.id.viewpager, R.id.circleIndicator, R.id.pickSpeciality, R.id.listView, R.id.recyclerViewLinearLayout, R.id.doubtMessage, R.id.emptyListView, R.id.prevBtn, R.id.nextBtn,R.id.rightFab,R.id.leftFab})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.viewpager:
@@ -213,14 +214,25 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             case R.id.recyclerViewLinearLayout:
                 break;
             case R.id.doubtMessage:
+                Bundle bundleData = new Bundle();
+                bundleData.putString(getString(R.string.latitude), args.getString(getString(R.string.latitude)));
+                bundleData.putString(getString(R.string.longitude), args.getString(getString(R.string.longitude)));
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                activity.loadFragment(ComplaintsFragment.newInstance(new Bundle()), false);
+                activity.loadFragment(ComplaintsFragment.newInstance(bundleData), false);
                 break;
             case R.id.nextBtn:
                 currentPage += 1;
                 mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, generatePage(currentPage, bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities()));
                 listView.setAdapter(mDoctorConnectSearchAdapter);
                 toggleButtons(bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
+                break;
+            case R.id.rightFab:
+                activity = (BookAppointDoctorListBaseActivity) getActivity();
+                activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);
+                break;
+            case R.id.leftFab:
+                activity = (BookAppointDoctorListBaseActivity) getActivity();
+                activity.loadFragment(ShowNearByDoctorsOnMapFragment.newInstance(args), false);
                 break;
         }
 
@@ -360,17 +372,28 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     public void isDataListViewVisible(boolean flag, boolean isShowEmptyListView) {
         if (flag) {
             recentDoctorLayout.setVisibility(View.GONE);
+            leftFab.setVisibility(View.VISIBLE);
+            rightFab.setVisibility(View.VISIBLE);
             showDoctorsRecyclerView.setVisibility(View.VISIBLE);
             if (isShowEmptyListView) {
+                leftFab.setVisibility(View.GONE);
+                rightFab.setVisibility(View.GONE);
                 emptyListView.setVisibility(View.VISIBLE);
                 showDoctorsRecyclerView.setVisibility(View.GONE);
             }
         } else {
+            leftFab.setVisibility(View.GONE);
+            rightFab.setVisibility(View.GONE);
             emptyListView.setVisibility(View.GONE);
             recentDoctorLayout.setVisibility(View.VISIBLE);
             showDoctorsRecyclerView.setVisibility(View.GONE);
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }
 

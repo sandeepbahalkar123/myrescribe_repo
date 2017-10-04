@@ -34,7 +34,7 @@ public class StartUpBootReceiver extends BroadcastReceiver {
             context.startService(serviceIntent);
 
             if(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, context).equals(RescribeConstants.YES))
-            notificationForMedicine(context);
+                notificationForMedicine(context);
         }
     }
 

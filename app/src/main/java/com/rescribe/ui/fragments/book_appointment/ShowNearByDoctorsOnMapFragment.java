@@ -129,15 +129,14 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
                 doctorList.setMorePracticePlaces(doctorLists.get(Integer.parseInt(marker.getTitle())).getMorePracticePlaces());
                 doctorList.setLongitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
                 doctorList.setLatitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
-                doctorList.setTotalReview(doctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview());
-                doctorList.setReviewList(doctorLists.get(Integer.parseInt(marker.getTitle())).getReviewList());
-
+             doctorList.setTotalReview(doctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview());
+             /*   doctorList.setReviewList(doctorLists.get(Integer.parseInt(marker.getTitle())).getReviewList());*/
                 args.putParcelable(getString(R.string.clicked_item_data), doctorList);
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
                 activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(args), false);
             }
         });
-        ratingBar.setRating((float) doctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
+        ratingBar.setRating(Float.parseFloat(doctorLists.get(Integer.parseInt(marker.getTitle())).getRating()));
         directions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,16 +145,17 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
                 startActivity(intent);
             }
         });
-        doctorReviews.setText(getString(R.string.openingbrace) + doctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview() + getString(R.string.closeingbrace));
+       doctorReviews.setText(getString(R.string.openingbrace) + doctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview() + getString(R.string.closeingbrace));
         doctorReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                dialog.setCancelable(true);
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
                 Bundle bundle = new Bundle();
+                bundle.putString(getString(R.string.doctorId), String.valueOf(doctorLists.get(Integer.parseInt(marker.getTitle())).getDocId ()));
                 bundle.putParcelable(getString(R.string.doctor_data), activity.getReceivedBookAppointmentBaseModel());
                 activity.loadFragment(ShowReviewsOnDoctorFragment.newInstance(bundle), false);
-                dialog.setCancelable(true);
+
             }
         });
         doctorRating.setText("" + doctorLists.get(Integer.parseInt(marker.getTitle())).getRating());

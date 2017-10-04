@@ -74,6 +74,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.activities.book_appointment.MapActivityShowDoctorLocation"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/log_in"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
 
             android:name=".ui.activities.book_appointment.BookAppointDoctorListBaseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

@@ -2,6 +2,7 @@ package com.rescribe.ui.fragments.book_appointment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,8 +12,12 @@ import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.ShowReviewsAdapter;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
-import com.rescribe.model.book_appointment.doctor_data.ReviewList;
+import com.rescribe.model.book_appointment.reviews.ReviewList;
+import com.rescribe.model.book_appointment.reviews.ReviewListBaseModel;
 
 import java.util.ArrayList;
 
@@ -24,7 +29,7 @@ import butterknife.Unbinder;
  * Created by jeetal on 28/9/17.
  */
 
-public class ShowReviewsOnDoctorFragment extends Fragment {
+public class ShowReviewsOnDoctorFragment extends Fragment implements HelperResponse {
 
     private static final String DATA = "DATA";
     @BindView(R.id.listView)
@@ -35,7 +40,9 @@ public class ShowReviewsOnDoctorFragment extends Fragment {
     private static Bundle args;
     private View mRootView;
     ShowReviewsAdapter showReviewsAdapter;
-    private static BookAppointmentBaseModel bookAppointmentBaseModel;
+    private static ReviewListBaseModel mReviewListBaseModel;
+    private DoctorDataHelper doctorDataHelper;
+    private DividerItemDecoration mDividerItemDecoration;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -64,25 +71,8 @@ public class ShowReviewsOnDoctorFragment extends Fragment {
     }
 
     private void init() {
-        bookAppointmentBaseModel = args.getParcelable(getString(R.string.doctor_data));
-        listView.setVisibility(View.VISIBLE);
-
-        ArrayList<ReviewList> reviewLists= new ArrayList<>();
-
-        for(int i= 0; i<bookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().size();i++) {
-            ReviewList reviewList = new ReviewList();
-            for(int j = 0 ;j<bookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getReviewList().size();j++) {
-
-                reviewList.setUserMessage(bookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getReviewList().get(j).getUserMessage());
-                reviewList.setUserName(bookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getReviewList().get(j).getUserName());
-            }
-            reviewLists.add(reviewList);
-        }
-        showReviewsAdapter = new ShowReviewsAdapter(getActivity(), reviewLists);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        listView.setLayoutManager(layoutManager);
-        listView.setHasFixedSize(true);
-        listView.setAdapter(showReviewsAdapter);
+        doctorDataHelper = new DoctorDataHelper(getActivity(),this);
+        doctorDataHelper.doGetReviewsList(args.getString(getString(R.string.doctorId)));
     }
 
     @Override
@@ -95,5 +85,42 @@ public class ShowReviewsOnDoctorFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if(customResponse!=null);
+        mReviewListBaseModel = (ReviewListBaseModel) customResponse;
+        setAdapter();
+
+    }
+
+    private void setAdapter() {
+        listView.setVisibility(View.VISIBLE);
+        showReviewsAdapter = new ShowReviewsAdapter(getActivity(), mReviewListBaseModel.getReviewList().getReviews().getReviews());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        listView.setLayoutManager(layoutManager);
+        listView.setHasFixedSize(true);
+        mDividerItemDecoration = new DividerItemDecoration(
+                listView.getContext(),
+                layoutManager.getOrientation()
+        );
+        listView.addItemDecoration(mDividerItemDecoration);
+        listView.setAdapter(showReviewsAdapter);
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
     }
 }

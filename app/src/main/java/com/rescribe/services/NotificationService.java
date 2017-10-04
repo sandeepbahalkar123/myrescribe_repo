@@ -23,7 +23,10 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
+import java.util.Calendar;
 
 
 /**
@@ -46,7 +49,9 @@ public class NotificationService extends Service implements HelperResponse {
     private AppDBHelper appDBHelper;
     private NotificationHelper mNotificationHelper;
     private Intent intent;
-
+    Calendar c = Calendar.getInstance();
+    int hour24 = c.get(Calendar.HOUR_OF_DAY);
+    int Min = c.get(Calendar.MINUTE);
     @Override
     public void onCreate() {
     }
@@ -132,11 +137,30 @@ public class NotificationService extends Service implements HelperResponse {
         if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
             NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
             if (prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification() != null) {
-                customNotification(intent);
+                String slot = CommonMethods.getMealTime(hour24,Min,this);
+                if(slot.equals(getString(R.string.break_fast))){
+                  if(intent.getStringExtra(RescribeConstants.MEDICINE_SLOT).equals(getString(R.string.breakfast_medication))){
+                      customNotification(intent);
+                  }
+              }else if(slot.equals(getString(R.string.mlunch))){
+                  if(intent.getStringExtra(RescribeConstants.MEDICINE_SLOT).equals(getString(R.string.lunch_medication))){
+                      customNotification(intent);
+                  }
+                }else if(slot.equals(getString(R.string.msnacks))){
+                  if(intent.getStringExtra(RescribeConstants.MEDICINE_SLOT).equals(getString(R.string.snacks_medication))){
+                      customNotification(intent);
+                  }
+              }else if(slot.equals(getString(R.string.mdinner))){
+                  if(intent.getStringExtra(RescribeConstants.MEDICINE_SLOT).equals(getString(R.string.dinner_medication))){
+                      customNotification(intent);
+                  }
+              }
+
+
+
             }
 
         }
-       stopSelf();
     }
 
     @Override

@@ -39,7 +39,6 @@
 -dontnote org.apache.http.**
 -dontwarn org.apache.http.**
 
-
 -keep public class com.google.android.gms.* { public *; }
 -dontwarn com.google.android.gms.**
 
@@ -151,3 +150,13 @@
 }
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
+
+#NoSuchFieldException: producerIndex link:https://github.com/ReactiveX/RxJava/issues/3552
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+    long producerIndex;
+    long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    long producerNode;
+    long consumerNode;
+}

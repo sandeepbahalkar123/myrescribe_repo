@@ -85,6 +85,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
     private HealthBlogAdapter mHealthBlogAdapter;
     private String patientId;
     private LoginHelper loginHelper;
+    Calendar c = Calendar.getInstance();
+    int hour24 = c.get(Calendar.HOUR_OF_DAY);
+    int Min = c.get(Calendar.MINUTE);
 
 
     @Override
@@ -128,6 +131,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
     }
 
     private void notificationForMedicine() {
+
 
         String currentDate = CommonMethods.getCurrentDate();
         RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.NOTIFY_DATE, currentDate, mContext);
@@ -178,9 +182,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
 
 //        //noinspection SimplifiableIfStatement
         if (id == R.id.notification) {
-            Calendar c = Calendar.getInstance();
-            int hour24 = c.get(Calendar.HOUR_OF_DAY);
-            int Min = c.get(Calendar.MINUTE);
+
             mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
             if (mGetMealTime.equals(getString(R.string.break_fast))) {
                 Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);

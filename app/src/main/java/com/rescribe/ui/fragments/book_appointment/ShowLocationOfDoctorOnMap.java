@@ -43,11 +43,8 @@ public class ShowLocationOfDoctorOnMap extends Fragment implements OnMapReadyCal
     private GoogleMap mMap;
     Address p1 = null;
     MapFragment mapFragment;
-    BottomSheetDialog dialog;
     String address;
-    BookAppointmentBaseModel receivedBookAppointmentBaseModel;
-    ArrayList<DoctorList> doctorLists = new ArrayList<>();
-    float[] distanceResults = new float[1];
+
 
     public ShowLocationOfDoctorOnMap() {
         // Required empty public constructor
@@ -61,7 +58,12 @@ public class ShowLocationOfDoctorOnMap extends Fragment implements OnMapReadyCal
         fragment.setArguments(args);
         return fragment;
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
+        //  setDoctorListAdapter();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,7 +72,7 @@ public class ShowLocationOfDoctorOnMap extends Fragment implements OnMapReadyCal
         unbinder = ButterKnife.bind(this, mRootView);
         mapFragment = (MapFragment) getActivity().getFragmentManager()
                 .findFragmentById(R.id.mapView);
-        mapFragment.getMapAsync(this);
+
         init();
         return mRootView;
     }
@@ -119,6 +121,7 @@ public class ShowLocationOfDoctorOnMap extends Fragment implements OnMapReadyCal
     }
 
     private void init() {
+        mapFragment.getMapAsync(this);
         BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)),false);
     }
 }

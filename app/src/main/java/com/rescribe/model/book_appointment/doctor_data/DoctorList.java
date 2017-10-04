@@ -28,13 +28,10 @@ public class DoctorList implements Parcelable {
     private String speciality;
     @SerializedName("experience")
     @Expose
-    private int experience;
+    private Integer experience;
     @SerializedName("doctorAddress")
     @Expose
     private String doctorAddress;
-    @SerializedName("paidStatus")
-    @Expose
-    private Integer paidStatus;
     @SerializedName("amount")
     @Expose
     private Integer amount;
@@ -52,7 +49,7 @@ public class DoctorList implements Parcelable {
     private String degree;
     @SerializedName("rating")
     @Expose
-    private double rating;
+    private String rating;
     @SerializedName("waitingTime")
     @Expose
     private String waitingTime;
@@ -74,9 +71,10 @@ public class DoctorList implements Parcelable {
     @SerializedName("totalReview")
     @Expose
     private Integer totalReview;
-    @SerializedName("reviewList")
+
+    /*  @SerializedName("reviewList")
     @Expose
-    private ArrayList<ReviewList> reviewList = null;
+    private ArrayList<ReviewList> reviewList = null;*/
 
     public Boolean getFavourite() {
         return favourite;
@@ -85,8 +83,6 @@ public class DoctorList implements Parcelable {
     public void setFavourite(Boolean favourite) {
         this.favourite = favourite;
     }
-
-
 
     private Double latitude;
 
@@ -120,15 +116,14 @@ public class DoctorList implements Parcelable {
             instance.docName = ((String) in.readValue((String.class.getClassLoader())));
             instance.doctorImageUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.speciality = ((String) in.readValue((String.class.getClassLoader())));
-            instance.experience = ((int) in.readValue((Integer.class.getClassLoader())));
+            instance.experience = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.doctorAddress = ((String) in.readValue((String.class.getClassLoader())));
-            instance.paidStatus = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.amount = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.distance = ((String) in.readValue((String.class.getClassLoader())));
             instance.recentlyVisited = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.aboutDoctor = ((String) in.readValue((String.class.getClassLoader())));
             instance.degree = ((String) in.readValue((String.class.getClassLoader())));
-            instance.rating = ((double) in.readValue((Float.class.getClassLoader())));
+            instance.rating = ((String) in.readValue((String.class.getClassLoader())));
             instance.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.tokenNo = ((Integer) in.readValue((Integer.class.getClassLoader())));
             in.readList(instance.morePracticePlaces, (String.class.getClassLoader()));
@@ -136,7 +131,7 @@ public class DoctorList implements Parcelable {
             instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             in.readList(instance.availableTimeSlots, (String.class.getClassLoader()));
             instance.totalReview = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
+            //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
             return instance;
         }
 
@@ -178,11 +173,11 @@ public class DoctorList implements Parcelable {
         this.speciality = speciality;
     }
 
-    public int getExperience() {
+    public Integer getExperience() {
         return experience;
     }
 
-    public void setExperience(int experience) {
+    public void setExperience(Integer experience) {
         this.experience = experience;
     }
 
@@ -192,14 +187,6 @@ public class DoctorList implements Parcelable {
 
     public void setDoctorAddress(String doctorAddress) {
         this.doctorAddress = doctorAddress;
-    }
-
-    public Integer getPaidStatus() {
-        return paidStatus;
-    }
-
-    public void setPaidStatus(Integer paidStatus) {
-        this.paidStatus = paidStatus;
     }
 
     public Integer getAmount() {
@@ -242,11 +229,11 @@ public class DoctorList implements Parcelable {
         this.degree = degree;
     }
 
-    public double getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
@@ -288,7 +275,9 @@ public class DoctorList implements Parcelable {
 
     public void setAvailableTimeSlots(ArrayList<String> availableTimeSlots) {
         this.availableTimeSlots = availableTimeSlots;
-    }public Integer getTotalReview() {
+    }
+
+    public Integer getTotalReview() {
         return totalReview;
     }
 
@@ -296,13 +285,13 @@ public class DoctorList implements Parcelable {
         this.totalReview = totalReview;
     }
 
-    public ArrayList<ReviewList> getReviewList() {
+   /* public ArrayList<ReviewList> getReviewList() {
         return reviewList;
     }
 
     public void setReviewList(ArrayList<ReviewList> reviewList) {
         this.reviewList = reviewList;
-    }
+    }*/
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(docId);
@@ -311,7 +300,6 @@ public class DoctorList implements Parcelable {
         dest.writeValue(speciality);
         dest.writeValue(experience);
         dest.writeValue(doctorAddress);
-        dest.writeValue(paidStatus);
         dest.writeValue(amount);
         dest.writeValue(distance);
         dest.writeValue(recentlyVisited);
@@ -324,8 +312,8 @@ public class DoctorList implements Parcelable {
         dest.writeValue(openToday);
         dest.writeValue(favourite);
         dest.writeList(availableTimeSlots);
-        dest.writeValue(totalReview);
-        dest.writeList(reviewList);
+       /* dest.writeValue(totalReview);
+        dest.writeList(reviewList);*/
     }
 
     public int describeContents() {
@@ -341,7 +329,6 @@ public class DoctorList implements Parcelable {
                 ", speciality='" + speciality + '\'' +
                 ", experience=" + experience +
                 ", doctorAddress='" + doctorAddress + '\'' +
-                ", paidStatus=" + paidStatus +
                 ", amount=" + amount +
                 ", distance='" + distance + '\'' +
                 ", recentlyVisited=" + recentlyVisited +

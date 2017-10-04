@@ -71,17 +71,11 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         showlocation = (CustomTextView) findViewById(R.id.showlocation);
         if (getIntent() != null) {
             location = intent.getStringExtra(getString(R.string.title));
+
         }
         mDoctorDataHelper = new DoctorDataHelper(this, this);
-        mDoctorDataHelper.doGetDoctorData();
+       mDoctorDataHelper.doGetDoctorData(/*"Pune","Kothrud"*//*location,intent.getStringExtra(getString(R.string.location_address))*/);
 
-        //  searchBarLinearLayout.setVisibility(View.VISIBLE);
-        /*Bundle b = new Bundle();
-        b.putString(getString(R.string.latitude), intent.getStringExtra(getString(R.string.latitude)));
-        b.putString(getString(R.string.longitude), intent.getStringExtra(getString(R.string.longitude)));
-        loadFragment(RecentVisitDoctorFragment.newInstance(b),false);
-
-*/
         mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
 
             @Override
@@ -174,6 +168,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             case R.id.title:
                 break;
             case R.id.locationTextView:
+
                 break;
         }
     }

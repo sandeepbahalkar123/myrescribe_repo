@@ -11,11 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.rescribe.R;
-import com.rescribe.model.book_appointment.doctor_data.ReviewList;
 import com.rescribe.model.dashboard.HealthBlogData;
-import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.WebViewActivity;
-import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
 

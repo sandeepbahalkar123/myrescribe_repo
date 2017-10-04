@@ -35,7 +35,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.appointment_map_activity);
         intent = getIntent();
         address = intent.getStringExtra(getString(R.string.address));
 

@@ -8,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.book_appointment.doctor_data.ReviewList;
+import com.rescribe.model.book_appointment.reviews.Review;
 import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
@@ -27,9 +25,9 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
 
     private Fragment mFragment;
     private Context mContext;
-    private ArrayList<ReviewList> mDataList;
+    private ArrayList<Review> mDataList;
 
-    public ShowReviewsAdapter(Context mContext, ArrayList<ReviewList> dataList) {
+    public ShowReviewsAdapter(Context mContext, ArrayList<Review> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
 
@@ -47,11 +45,11 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
 
-        final ReviewList doctorObject = mDataList.get(position);
+        final Review doctorObject = mDataList.get(position);
 
 
-        holder.reviewName.setText(doctorObject.getUserName());
-        holder.review.setText(doctorObject.getUserMessage());
+        holder.reviewName.setText(doctorObject.getRevierName());
+        holder.review.setText(doctorObject.getReviewCommment());
 
     }
 

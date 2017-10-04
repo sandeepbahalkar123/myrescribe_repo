@@ -19,6 +19,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.complaints.ComplaintList;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
+import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 
 import java.util.ArrayList;
 
@@ -43,12 +44,20 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
     Unbinder unbinder;
     @BindView(R.id.okButton)
     Button okButton;
+    @BindView(R.id.spinnerComplaint2)
+    Spinner spinnerComplaint2;
+    @BindView(R.id.editTextComplaint2)
+    EditText editTextComplaint2;
+    @BindView(R.id.showEditText2)
+    LinearLayout showEditText2;
     private View mRootView;
     DoctorDataHelper doctorDataHelper;
     private ArrayList<ComplaintList> mArrayId;
     private ComplaintsSpinnerAdapter mComplaintsSpinnerAdapter;
     private ComplaintsBaseModel mComplaintsBaseModel;
-    String selectId;
+    String selectIdComplaint1;
+    String selectIdComplaint2;
+    private static Bundle args;
 
 
     /**
@@ -62,7 +71,7 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
     @SuppressWarnings("unused")
     public static ComplaintsFragment newInstance(Bundle data) {
         ComplaintsFragment fragment = new ComplaintsFragment();
-        Bundle args = new Bundle();
+        args = data;
         // args.putString(DATA, data);
         fragment.setArguments(args);
         return fragment;
@@ -91,8 +100,10 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
 
     private void setComplaintSpinnerListAdapter() {
         spinnerComplaint1.setOnItemSelectedListener(this);
+        spinnerComplaint2.setOnItemSelectedListener(this);
         mComplaintsSpinnerAdapter = new ComplaintsSpinnerAdapter(getActivity(), mComplaintsBaseModel.getComplaintsModel().getComplaintList());
         spinnerComplaint1.setAdapter(mComplaintsSpinnerAdapter);
+        spinnerComplaint2.setAdapter(mComplaintsSpinnerAdapter);
     }
 
 
@@ -127,7 +138,7 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
         unbinder.unbind();
     }
 
-    @OnClick({R.id.editTextComplaint1, R.id.showEditText,R.id.okButton})
+    @OnClick({R.id.editTextComplaint1, R.id.showEditText, R.id.okButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.editTextComplaint1:
@@ -135,11 +146,25 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
             case R.id.showEditText:
                 break;
             case R.id.okButton:
-                if(editTextComplaint1.getText().toString().equals("")){
-                    Toast.makeText(getActivity(), "Please enter valid option", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(getActivity(), "Complaint posted successfully", Toast.LENGTH_SHORT).show();
+                if (showEditText2.getVisibility() == View.GONE && showEditText.getVisibility() == View.GONE) {
+                    if (selectIdComplaint1.equals("Select") && selectIdComplaint2.equals("Select")) {
+                        Toast.makeText(getActivity(), "Please select valid option", Toast.LENGTH_SHORT).show();
+
+                    }else{
+                        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                        activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(args), true);
+
+                    }
+                } else if (showEditText2.getVisibility() == View.VISIBLE && showEditText.getVisibility() == View.VISIBLE) {
+                    if (editTextComplaint1.getText().toString().equals("")&& editTextComplaint2.getText().toString().equals("")) {
+                        Toast.makeText(getActivity(), "Please enter text", Toast.LENGTH_SHORT).show();
+                    }else{
+                        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                        activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(args), true);
+
+                    }
                 }
+
                 break;
         }
     }
@@ -148,11 +173,19 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.spinnerComplaint1) {
             int selected = (int) parent.getItemAtPosition(position);
-            selectId = mComplaintsBaseModel.getComplaintsModel().getComplaintList().get(selected).getComplaint();
-            if (selectId.equals("Others")) {
+            selectIdComplaint1 = mComplaintsBaseModel.getComplaintsModel().getComplaintList().get(selected).getComplaint();
+            if (selectIdComplaint1.equals("Others")) {
                 showEditText.setVisibility(View.VISIBLE);
             } else {
                 showEditText.setVisibility(View.GONE);
+            }
+        } else if (parent.getId() == R.id.spinnerComplaint2) {
+            int selected = (int) parent.getItemAtPosition(position);
+            selectIdComplaint2 = mComplaintsBaseModel.getComplaintsModel().getComplaintList().get(selected).getComplaint();
+            if (selectIdComplaint2.equals("Others")) {
+                showEditText2.setVisibility(View.VISIBLE);
+            } else {
+                showEditText2.setVisibility(View.GONE);
             }
         }
     }

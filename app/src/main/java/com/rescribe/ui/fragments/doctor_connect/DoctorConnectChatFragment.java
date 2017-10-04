@@ -45,7 +45,6 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     private View mRootView;
     private DoctorConnectChatHelper mDoctorConnectChatHelper;
     private RecentChatDoctorModel mDoctorConnectChatBaseModel;
-    //    private RecentChatDoctorData mData = new RecentChatDoctorData();
     private ArrayList<ChatDoctor> chatDoctors = new ArrayList<>();
     private String patientId;
 
@@ -97,8 +96,13 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
                 emptyListView.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);
             } else {
-                emptyListView.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.VISIBLE);
+                if (mDoctorConnectChatBaseModel.getDoctorConnectDataModel().getChatDoctor().isEmpty()) {
+                    emptyListView.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                } else {
+                    emptyListView.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
                 chatDoctors.addAll(mDoctorConnectChatBaseModel.getDoctorConnectDataModel().getChatDoctor());
                 setAdapter();
             }
@@ -107,12 +111,15 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
+        emptyListView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
         CommonMethods.showToast(getActivity(), errorMessage);
-
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
+        emptyListView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
         CommonMethods.showToast(getActivity(), serverErrorMessage);
     }
 
@@ -173,6 +180,11 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
                 chatDoctor.setOnlineStatus(RescribeConstants.USER_STATUS.ONLINE);
                 chatDoctors.add(0, chatDoctor);
                 mDoctorConnectChatAdapter.notifyDataSetChanged();
+
+                if (!chatDoctors.isEmpty()){
+                    emptyListView.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
             }
         }
     }

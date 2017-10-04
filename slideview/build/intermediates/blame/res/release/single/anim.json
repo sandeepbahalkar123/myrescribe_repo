@@ -1,11 +1,27 @@
 [
     {
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_fade_in.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/anim/abc_fade_in.xml"
+    },
+    {
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_slide_out_top.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/anim/abc_slide_out_top.xml"
+    },
+    {
         "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_slide_in_bottom.xml",
         "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/anim/abc_slide_in_bottom.xml"
     },
     {
         "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_popup_enter.xml",
         "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/anim/abc_popup_enter.xml"
+    },
+    {
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_fade_out.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/anim/abc_fade_out.xml"
+    },
+    {
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_grow_fade_in_from_bottom.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/anim/abc_grow_fade_in_from_bottom.xml"
     },
     {
         "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_popup_exit.xml",
@@ -20,8 +36,28 @@
         "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/anim/abc_fade_in.xml"
     },
     {
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_slide_out_bottom.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/anim/abc_slide_out_bottom.xml"
+    },
+    {
         "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_slide_out_bottom.xml",
         "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/anim/abc_slide_out_bottom.xml"
+    },
+    {
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_popup_enter.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/anim/abc_popup_enter.xml"
+    },
+    {
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_popup_exit.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/anim/abc_popup_exit.xml"
+    },
+    {
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_shrink_fade_out_from_bottom.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/anim/abc_shrink_fade_out_from_bottom.xml"
+    },
+    {
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_slide_in_bottom.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/anim/abc_slide_in_bottom.xml"
     },
     {
         "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_shrink_fade_out_from_bottom.xml",
@@ -34,6 +70,10 @@
     {
         "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_grow_fade_in_from_bottom.xml",
         "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/anim/abc_grow_fade_in_from_bottom.xml"
+    },
+    {
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_slide_in_top.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/anim/abc_slide_in_top.xml"
     },
     {
         "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/slideview/build/intermediates/res/merged/release/anim/abc_fade_out.xml",

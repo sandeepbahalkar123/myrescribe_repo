@@ -18,6 +18,8 @@ import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.chat.TypeStatus;
 import com.rescribe.notification.MessageNotification;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.ChatActivity;
+import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.rxnetwork.RxNetwork;
@@ -27,6 +29,7 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -52,7 +55,7 @@ public class MQTTService extends Service {
     private static int currentChatUser = 0;
     private static final String TAG = "MQTTService";
     public static final String MESSAGE = "message";
-    public static final String NOTIFY = "com.rescribe";
+    public static final String NOTIFY = "com.rescribe.NOTIFY";
     public static final String IS_MESSAGE = "is_message";
     public static final String MESSAGE_ID = "message_id";
     public static final String[] TOPIC = {"doctorConnect", "doctor/status"};
@@ -63,13 +66,13 @@ public class MQTTService extends Service {
 
     private MqttAsyncClient mqttClient;
 
-    private InternetState internetState;
     private Gson gson = new Gson();
 
     private Subscription sendStateSubscription;
     private int[] qos;
 
     private AppDBHelper appDBHelper;
+    private MqttConnectOptions connOpts;
 
     @Override
     public void onCreate() {
@@ -106,7 +109,6 @@ public class MQTTService extends Service {
                             @Override
                             public void call(InternetState internetState) {
                                 // do stuff here for UI
-                                MQTTService.this.internetState = internetState;
                                 try {
                                     if (internetState.isEnabled) {
                                         if (!mqttClient.isConnected()) {
@@ -172,7 +174,17 @@ public class MQTTService extends Service {
             qos[index] = 1;
 
         try {
-            mqttClient.setCallback(new MqttCallback() {
+            mqttClient.setCallback(new MqttCallbackExtended() {
+                @Override
+                public void connectComplete(boolean reconnect, String serverURI) {
+                    CommonMethods.Log("MqttCallbackExtended", String.valueOf(reconnect));
+                    try {
+                        mqttClient.subscribe(TOPIC, qos);
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 public void messageArrived(final String topic, final MqttMessage msg) {
                     String payloadString = new String(msg.getPayload());
                     Log.d(TAG + "Received:", topic + " " + payloadString);
@@ -244,22 +256,21 @@ public class MQTTService extends Service {
                 }
             });
 
-            MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(false);
+            connOpts.setAutomaticReconnect(true);
+//            connOpts.setWill(TOPIC[0], "Message Reached".getBytes(), 1, true);
+//            connOpts.setWill(TOPIC[1], "TypeStatus Reached".getBytes(), 1, true);
+//            connOpts.setKeepAliveInterval(120);
 //            connOpts.setUserName("ganesh");
 //            String password = "windows10";
 //            connOpts.setPassword(password.toCharArray());
 
 
-            IMqttActionListener mqttConnect = new IMqttActionListener() {
+            final IMqttActionListener mqttConnect = new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.d(TAG, "Connected");
-                    try {
-                        mqttClient.subscribe(TOPIC, qos);
-                    } catch (MqttException e) {
-                        e.printStackTrace();
-                    }
                 }
 
                 @Override
@@ -283,10 +294,6 @@ public class MQTTService extends Service {
             Log.e(TAG + "excep ", "" + me);
             me.printStackTrace();
         }
-    }
-
-    public boolean getNetworkStatus() {
-        return internetState.isEnabled;
     }
 
     public void typingStatus(TypeStatus typeStatus) {
@@ -337,11 +344,11 @@ public class MQTTService extends Service {
         if (mqttClient.isConnected()) {
             try {
                 mqttClient.disconnect();
+                CommonMethods.Log(TAG, "disconnect");
             } catch (MqttException e) {
                 e.printStackTrace();
             }
-        } else Log.d(TAG, "Not Connected 1");
-
+        } else CommonMethods.Log(TAG, "Not Connected 1");
         sendStateSubscription.unsubscribe();
         sendStateSubscription = null;
     }
@@ -369,8 +376,10 @@ private static class InternetState {
             return PendingIntent.getBroadcast(getApplicationContext(), mqttMessage.getDocId(), intent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
-            // start your activity
-            intent = ReplayBroadcastReceiver.getReplyMessageIntent(this, mqttMessage);
+            // start your activity for Android M and below
+            intent = new Intent(MQTTService.this, ChatActivity.class);
+            intent.setAction(REPLY_ACTION);
+            intent.putExtra(MESSAGE_LIST, mqttMessage);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             return PendingIntent.getActivity(this, mqttMessage.getDocId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }

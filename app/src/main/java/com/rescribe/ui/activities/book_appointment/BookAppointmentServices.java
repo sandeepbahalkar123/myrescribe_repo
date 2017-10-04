@@ -216,7 +216,8 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
                 intent.putExtra(getString(R.string.latitude), latitude);
                 intent.putExtra(getString(R.string.longitude), longitude);
-                intent.putExtra(getString(R.string.title), locationTextView.getText().toString());
+                intent.putExtra(getString(R.string.location), locationTextView.getText().toString());
+                intent.putExtra(getString(R.string.clicked_item_data), servicesObject.getServiceName());
                 startActivity(intent);
             }
         }

@@ -200,17 +200,15 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             case R.id.showAllTimeSlotListView:
                 mAllTimingListViewLayout.setVisibility(View.VISIBLE);
                 mOpeningTimeLayout.setVisibility(View.GONE);
+                break;
             case R.id.locationImage:
                 Intent intent = new Intent(getActivity(),MapActivityShowDoctorLocation.class);
                 intent.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
                 intent.putExtra(getString(R.string.address), mClickedDoctorObject.getDoctorAddress());
                  startActivity(intent);
 
-               /* BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                Bundle bundle = new Bundle();
-                bundle.putString(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
-                bundle.putString(getString(R.string.address), mClickedDoctorObject.getDoctorAddress());
-                activity.loadFragment(ShowLocationOfDoctorOnMap.newInstance(bundle), false);*/
+                break;
+
         }
     }
 }

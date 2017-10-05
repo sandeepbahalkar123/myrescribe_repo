@@ -10,28 +10,26 @@ public class DashboardDataModel {
 
     @SerializedName("servicesList")
     @Expose
-    private ArrayList<String> servicesList = null;
+    private ArrayList<String> servicesList = new ArrayList<>();
     @SerializedName("doctorList")
     @Expose
-    private ArrayList<DoctorData> doctorList = null;
+    private ArrayList<DoctorData> doctorList = new ArrayList<>();
     @SerializedName("pendingInvestigationList")
     @Expose
-    private ArrayList<PendingInvestigationData> pendingInvestigationList = null;
+    private ArrayList<PendingInvestigationData> pendingInvestigationList = new ArrayList<>();
     @SerializedName("latestVitalReading")
     @Expose
     private LatestVitalReading latestVitalReading;
     @SerializedName("healthOffersList")
     @Expose
-    private ArrayList<HealthOffersData> healthOffersList = null;
+    private ArrayList<HealthOffersData> healthOffersList = new ArrayList<>();
     @SerializedName("healthBlogList")
     @Expose
-    private ArrayList<HealthBlogData> healthBlogList = null;
-    @SerializedName("tipOfTheDayImageUrl")
+    private ArrayList<HealthBlogData> healthBlogList= new ArrayList<>();
+
+    @SerializedName("tipAndJokeOfTheDayList")
     @Expose
-    private String tipOfTheDayImageUrl;
-    @SerializedName("jokeOfTheDayImageUrl")
-    @Expose
-    private String jokeOfTheDayImageUrl;
+    private ArrayList<TipAndJokData> tipAndJokDataList= new ArrayList<>();;
 
     public ArrayList<String> getServicesList() {
         return servicesList;
@@ -81,20 +79,11 @@ public class DashboardDataModel {
         this.healthBlogList = healthBlogList;
     }
 
-    public String getTipOfTheDayImageUrl() {
-        return tipOfTheDayImageUrl;
+    public ArrayList<TipAndJokData> getTipAndJokDataList() {
+        return tipAndJokDataList;
     }
 
-    public void setTipOfTheDayImageUrl(String tipOfTheDayImageUrl) {
-        this.tipOfTheDayImageUrl = tipOfTheDayImageUrl;
+    public void setTipAndJokDataList(ArrayList<TipAndJokData> tipAndJokDataList) {
+        this.tipAndJokDataList = tipAndJokDataList;
     }
-
-    public String getJokeOfTheDayImageUrl() {
-        return jokeOfTheDayImageUrl;
-    }
-
-    public void setJokeOfTheDayImageUrl(String jokeOfTheDayImageUrl) {
-        this.jokeOfTheDayImageUrl = jokeOfTheDayImageUrl;
-    }
-
 }

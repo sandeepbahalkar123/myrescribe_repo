@@ -21,6 +21,12 @@ public class HealthOffersData {
     @SerializedName("discountPercentage")
     @Expose
     private String discountPercentage;
+    @SerializedName("centerType")
+    @Expose
+    private String centerType;
+    @SerializedName("imgUrl")
+    @Expose
+    private String imgUrl;
 
     public Integer getId() {
         return id;
@@ -62,4 +68,19 @@ public class HealthOffersData {
         this.discountPercentage = discountPercentage;
     }
 
+    public String getCenterType() {
+        return centerType;
+    }
+
+    public void setCenterType(String centerType) {
+        this.centerType = centerType;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 }

@@ -28,10 +28,13 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
+import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -156,22 +159,12 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     }
 
     private void initialize() {
+        mSelectedDays = new HashMap<>();
 
-        configureClinicFeesSeekBar();
+        configureDrawerFieldsData();
 
         doctorDataHelper = new DoctorDataHelper(getActivity(), this);
         doctorDataHelper.doGetDrawerFilterConfigurationData();
-
-        mSelectedDays = new HashMap<>();
-        //---------
-        mSelectedDays.put(getString(R.string.weekday_sun), false);
-        mSelectedDays.put(getString(R.string.weekday_mon), false);
-        mSelectedDays.put(getString(R.string.weekday_tues), false);
-        mSelectedDays.put(getString(R.string.weekday_wed), false);
-        mSelectedDays.put(getString(R.string.weekday_thurs), false);
-        mSelectedDays.put(getString(R.string.weekday_fri), false);
-        mSelectedDays.put(getString(R.string.weekday_sat), false);
-        //---------
 
         mLocationContentRecycleView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
@@ -221,7 +214,19 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         mListener = null;
     }
 
-    private void configureClinicFeesSeekBar() {
+    private void configureDrawerFieldsData() {
+
+        mSelectedGender = "";
+        //---------
+        mSelectedDays.put(getString(R.string.weekday_sun), false);
+        mSelectedDays.put(getString(R.string.weekday_mon), false);
+        mSelectedDays.put(getString(R.string.weekday_tues), false);
+        mSelectedDays.put(getString(R.string.weekday_wed), false);
+        mSelectedDays.put(getString(R.string.weekday_thurs), false);
+        mSelectedDays.put(getString(R.string.weekday_fri), false);
+        mSelectedDays.put(getString(R.string.weekday_sat), false);
+        //---------
+
 
         //---------- Clinic Seek Bar : START ----------
         mLeftThumbView = LayoutInflater.from(getActivity()).inflate(R.layout.seekbar_progress_thumb_layout, null, false);
@@ -310,14 +315,43 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         mDistanceSeekBarValueIndicator.setX(tr.exactCenterX());
         mDistanceSeekBarValueIndicator.setText(mDistanceSeekBar.getProgress() + "");
 
+        //-----------------
+        mGenderMaleIcon.setImageResource(R.drawable.icon_male_default);
+        mGenderMaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.gender_drawer));
+        mGenderFemaleIcon.setImageResource(R.drawable.icon_female_default);
+        mGenderFemaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.gender_drawer));
+        //-----------------
+        mAvailSunday.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailSunday.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        mAvailMonday.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailMonday.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        mAvailTues.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailTues.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        mAvailWed.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailWed.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        mAvailThurs.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailThurs.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        mAvailFri.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailFri.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        mAvailSat.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailSat.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        //-----------------
     }
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (customResponse != null) {
             bookAppointFilterBaseModel = (BookAppointFilterBaseModel) customResponse;
+            setDataInDrawerFields();
+        }
+    }
+
+    private void setDataInDrawerFields() {
+        if (bookAppointFilterBaseModel != null) {
             BookAppointFilterBaseModel.FilterConfigData filterConfigData = bookAppointFilterBaseModel.getFilterConfigData();
+
             if (filterConfigData != null) {
+                //--------
                 mFilterSelectLocationsAdapter = new FilterSelectLocationsAdapter(getActivity(), filterConfigData.getLocationList());
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 mLocationContentRecycleView.setLayoutManager(layoutManager);
@@ -334,7 +368,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                     setThumbValue(mLeftThumbView, "" + min);
                     setThumbValue(mRightThumbView, "" + max);
                     mClinicFeesSeekBar.setMinValue(Float.parseFloat(min)).setMaxValue(Float.parseFloat(max)).setMinStartValue(Float.parseFloat(min)).setMaxStartValue(Float.parseFloat(max)).apply();
-
                 }
                 //------
                 ArrayList<String> distanceFeesRange = filterConfigData.getDistanceRange();
@@ -349,6 +382,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                 //------
             }
         }
+
     }
 
     @Override
@@ -367,7 +401,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     }
 
     public interface OnDrawerInteractionListener {
-        void onApply(boolean drawerRequired);
+        void onApply(Bundle b, boolean drawerRequired);
 
         void onReset(boolean drawerRequired);
     }
@@ -376,10 +410,30 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     public void onButtonClicked(View v) {
         switch (v.getId()) {
             case R.id.resetButton:
+                configureDrawerFieldsData();
+                setDataInDrawerFields();
                 mListener.onReset(true);
                 break;
             case R.id.applyButton:
-                mListener.onApply(true);
+                BookAppointFilterRequestModel bookAppointFilterRequestModel = new BookAppointFilterRequestModel();
+                bookAppointFilterRequestModel.setGender(mSelectedGender);
+                bookAppointFilterRequestModel.setClinicFeesRange(new String[]{"" + mClinicFeesSeekBar.getSelectedMinValue(), "" + mClinicFeesSeekBar.getSelectedMaxValue()});
+                bookAppointFilterRequestModel.setDistance(new String[]{"" + mDistanceSeekBar.getProgress(), "" + mDistanceSeekBar.getProgress()});
+
+                //------
+                ArrayList<String> temp = new ArrayList<>();
+                Iterator it = mSelectedDays.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry) it.next();
+                    if ((boolean) pair.getValue()) {
+                        temp.add((String) pair.getKey());
+                    }
+                }
+                bookAppointFilterRequestModel.setAvailability(temp.toArray(new String[temp.size()]));
+                //------
+                Bundle b = new Bundle();
+                b.putParcelable(getString(R.string.filter), bookAppointFilterRequestModel);
+                mListener.onApply(b, true);
                 break;
         }
     }
@@ -550,6 +604,4 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                 break;
         }
     }
-
-
 }

@@ -58,7 +58,7 @@ public class DoctorList implements Parcelable {
     private Integer tokenNo;
     @SerializedName("morePracticePlaces")
     @Expose
-    private List<String> morePracticePlaces = null;
+    private ArrayList<String> morePracticePlaces = null;
     @SerializedName("openToday")
     @Expose
     private String openToday;
@@ -253,11 +253,11 @@ public class DoctorList implements Parcelable {
         this.tokenNo = tokenNo;
     }
 
-    public List<String> getMorePracticePlaces() {
+    public ArrayList<String> getMorePracticePlaces() {
         return morePracticePlaces;
     }
 
-    public void setMorePracticePlaces(List<String> morePracticePlaces) {
+    public void setMorePracticePlaces(ArrayList<String> morePracticePlaces) {
         this.morePracticePlaces = morePracticePlaces;
     }
 

@@ -418,20 +418,28 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 String readingData = reading.getText().toString();
                 String systolicData = systolic.getText().toString();
                 String dystolicData = dystolic.getText().toString();
+                boolean isError = false;
                 if (date.trim().length() == 0) {
                     CommonMethods.showToast(VitalGraphDetailsActivity.this, getString(R.string.enter_date));
+                    isError = true;
                 } else if (date.trim().length() != 0) {
                     Date enteredDate = CommonMethods.convertStringToDate(mSelectedTrackerDateToSend, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
                     if (enteredDate.getTime() > currentDate.getTime()) {
+                        isError = true;
                         CommonMethods.showToast(VitalGraphDetailsActivity.this, getString(R.string.err_reading_date));
                     }
                 } else if (readingData.trim().length() == 0 && reading.getVisibility() == View.VISIBLE) {
+                    isError = true;
                     CommonMethods.showToast(VitalGraphDetailsActivity.this, getString(R.string.enter_reading));
                 } else if (bloodPressureReadingLayout.getVisibility() == View.VISIBLE && systolicData.trim().length() == 0) {
+                    isError = true;
                     CommonMethods.showToast(VitalGraphDetailsActivity.this, getString(R.string.enter_systolic));
                 } else if (bloodPressureReadingLayout.getVisibility() == View.VISIBLE && dystolicData.trim().length() == 0) {
+                    isError = true;
                     CommonMethods.showToast(VitalGraphDetailsActivity.this, getString(R.string.enter_diastolic));
-                } else {
+                }
+
+                if (!isError) {
                     VitalGraphAddNewTrackerRequestModel model = new VitalGraphAddNewTrackerRequestModel();
 
                     model.setCheckDate(mSelectedTrackerDateToSend);

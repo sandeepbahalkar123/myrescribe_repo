@@ -67,6 +67,12 @@
 -keep class droidninja.filepicker.**
 -dontwarn droidninja.filepicker.**
 
+-keep class com.crystal.**
+-dontwarn com.crystal.**
+
+-keep class ng.max.slideview.**
+-dontwarn ng.max.slideview.**
+
 -dontwarn org.apache.commons.**
 -keep class org.apache.http.** { *; }
 -dontwarn org.apache.http.**

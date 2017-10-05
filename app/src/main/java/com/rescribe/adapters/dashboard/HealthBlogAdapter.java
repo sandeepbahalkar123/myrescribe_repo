@@ -70,7 +70,7 @@ public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.Li
 
     @Override
     public int getItemCount() {
-        return 4;
+        return mHealthBlogList.size();
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {

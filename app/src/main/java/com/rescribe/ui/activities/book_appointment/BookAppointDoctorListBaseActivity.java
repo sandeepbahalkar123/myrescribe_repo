@@ -1,8 +1,12 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,26 +20,41 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
 /**
  * Created by jeetal on 15/9/17.
  */
-public class BookAppointDoctorListBaseActivity extends AppCompatActivity implements HelperResponse, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
+@RuntimePermissions
+public class BookAppointDoctorListBaseActivity extends AppCompatActivity implements HelperResponse, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener, GoogleApiClient.OnConnectionFailedListener {
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
@@ -47,34 +66,40 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     FrameLayout mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-    static Intent intent;
-    private RecentVisitDoctorFragment mChangeColorFragment;
     private DoctorDataHelper mDoctorDataHelper;
-    private Fragment currentlyLoadedFragment; //TODO, fragmentById is not working hence hold this object.
+    private Fragment mCurrentlyLoadedFragment; //TODO, fragmentById is not working hence hold this object.
     private BookAppointmentBaseModel mReceivedBookAppointmentBaseModel;
-    private static String location;
+    private String location;
     private FragmentManager mSupportFragmentManager;
+    private Fragment mDrawerLoadedFragment;
+    private int PLACE_PICKER_REQUEST = 1;
+    // String latitude = "";
+    //String longitude = "";
+    LatLng mUserSelectedLocationLatLng;
+    private boolean isLocationChange = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        intent = getIntent();
+
         setContentView(R.layout.activity_book_appoint_doc_base_list);
         ButterKnife.bind(this);
         initialize();
+
     }
 
     private void initialize() {
+        new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .build();
+        //--------
         title = (CustomTextView) findViewById(R.id.title);
         locationTextView = (CustomTextView) findViewById(R.id.locationTextView);
         locationTextView.setVisibility(View.GONE);
         showlocation = (CustomTextView) findViewById(R.id.showlocation);
-        if (getIntent() != null) {
-            location = intent.getStringExtra(getString(R.string.title));
-
-        }
-        mDoctorDataHelper = new DoctorDataHelper(this, this);
-       mDoctorDataHelper.doGetDoctorData(/*"Pune","Kothrud"*//*location,intent.getStringExtra(getString(R.string.location_address))*/);
 
         mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
 
@@ -104,27 +129,36 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             }
         });
 
-
-        //  loadFragment(RecentVisitDoctorFragment.newInstance(new Bundle()), false);
+        //------
+        Intent intent = getIntent();
+        String title = "";
+        if (intent != null) {
+            location = intent.getStringExtra(getString(R.string.location));
+            locationTextView.setText(location);
+            title = intent.getStringExtra(getString(R.string.clicked_item_data));
+            mUserSelectedLocationLatLng = new LatLng(Double.parseDouble(intent.getStringExtra(getString(R.string.latitude))), Double.parseDouble(intent.getStringExtra(getString(R.string.longitude))));
+        }
         //------
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.nav_view, DrawerForFilterDoctorBookAppointment.newInstance());
+        mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
+        fragmentTransaction.replace(R.id.nav_view, mDrawerLoadedFragment);
         fragmentTransaction.commit();
         //------
-
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.title), title);
+        mCurrentlyLoadedFragment = RecentVisitDoctorFragment.newInstance(bundle);
+        //------
+        mDoctorDataHelper = new DoctorDataHelper(this, this);
+        mDoctorDataHelper.doGetDoctorData();
     }
 
     @Override
-
-
     public void onSuccess(final String mOldDataTag, final CustomResponse customResponse) {
         mReceivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
         if (mReceivedBookAppointmentBaseModel.getDoctorServicesModel() != null) {
-            Bundle b = new Bundle();
-            b.putString(getString(R.string.latitude), intent.getStringExtra(getString(R.string.latitude)));
-            b.putString(getString(R.string.longitude), intent.getStringExtra(getString(R.string.longitude)));
-            loadFragment(RecentVisitDoctorFragment.newInstance(b), false);
+            if (!isLocationChange)
+                loadFragment(mCurrentlyLoadedFragment, false);
         }
     }
 
@@ -144,15 +178,27 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     @Override
-    public void onApply(boolean drawerRequired) {
+    public void onApply(Bundle b, boolean drawerRequired) {
         mDrawerLayout.closeDrawers();
         doOperationOnDrawer(drawerRequired);
+        if (mCurrentlyLoadedFragment instanceof BookAppointFilteredDoctorListFragment) {
+            BookAppointFilteredDoctorListFragment d = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
+            if (mDrawerLoadedFragment instanceof DrawerForFilterDoctorBookAppointment) {
+                d.onApplyClicked(b);
+            }
+        }
     }
 
     @Override
     public void onReset(boolean drawerRequired) {
         mDrawerLayout.closeDrawers();
         doOperationOnDrawer(drawerRequired);
+        if (mCurrentlyLoadedFragment instanceof BookAppointFilteredDoctorListFragment) {
+            BookAppointFilteredDoctorListFragment d = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
+            if (mDrawerLoadedFragment instanceof DrawerForFilterDoctorBookAppointment) {
+                d.onResetClicked();
+            }
+        }
     }
 
     public BookAppointmentBaseModel getReceivedBookAppointmentBaseModel() {
@@ -169,7 +215,68 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                 break;
             case R.id.locationTextView:
 
+                BookAppointDoctorListBaseActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
+
                 break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        BookAppointDoctorListBaseActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION})
+    public void callPickPlace() {
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            Intent intentPlace = builder.build(BookAppointDoctorListBaseActivity.this);
+            startActivityForResult(intentPlace, PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(this, data);
+                StringBuilder stBuilder = new StringBuilder();
+                String placename = String.format("%s", place.getName());
+                mUserSelectedLocationLatLng = place.getLatLng();
+                String latitude = String.valueOf(place.getLatLng().latitude);
+                String longitude = String.valueOf(place.getLatLng().longitude);
+                String address = String.format("%s", place.getAddress());
+                stBuilder.append("Name: ");
+                stBuilder.append(placename);
+                stBuilder.append("\n");
+                stBuilder.append("Latitude: ");
+                stBuilder.append(latitude);
+                stBuilder.append("\n");
+                stBuilder.append("Logitude: ");
+                stBuilder.append(longitude);
+                stBuilder.append("\n");
+                stBuilder.append("Address: ");
+                stBuilder.append(address);
+                Geocoder gcd = new Geocoder(this, Locale.getDefault());
+                List<Address> addresses = null;
+                try {
+                    addresses = gcd.getFromLocation(place.getLatLng().latitude, place.getLatLng().longitude, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (addresses != null && addresses.size() > 0) {
+                    String locality = addresses.get(0).getLocality();
+                    //start from here
+                    locationTextView.setText(locality);
+                    isLocationChange = true;
+                    mDoctorDataHelper.doGetDoctorData();
+
+                }
+                CommonMethods.Log("Address: ", stBuilder.toString());
+            }
         }
     }
 
@@ -178,8 +285,10 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         int backStackEntryCount = mSupportFragmentManager.getBackStackEntryCount();
         if (backStackEntryCount == 1) {
             finish();
-        }else{
+        } else {
             super.onBackPressed();
+            Fragment id = mSupportFragmentManager.findFragmentById(R.id.viewContainer);
+            mCurrentlyLoadedFragment = id;
         }
     }
 
@@ -189,8 +298,8 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             FragmentTransaction fragmentTransaction = mSupportFragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.viewContainer, fragmentToLoad);
             fragmentTransaction.addToBackStack("");
-            fragmentTransaction.commit();
-            this.currentlyLoadedFragment = fragmentToLoad;
+            fragmentTransaction.commitAllowingStateLoss();
+            this.mCurrentlyLoadedFragment = fragmentToLoad;
             doOperationOnDrawer(requiredDrawer);
         }
     }
@@ -211,13 +320,26 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         title.setText(toolbartitle);
         if (isLocationVisible) {
             locationTextView.setVisibility(View.VISIBLE);
-            locationTextView.setText(location);
             showlocation.setVisibility(View.GONE);
         } else {
             locationTextView.setVisibility(View.GONE);
             showlocation.setVisibility(View.VISIBLE);
-            showlocation.setText(location);
-
+            showlocation.setText(locationTextView.getText().toString());
         }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    public interface OnActivityDrawerListener {
+        void onApplyClicked(Bundle data);
+
+        void onResetClicked();
+    }
+
+    public LatLng getUserSelectedLocationLatLng() {
+        return mUserSelectedLocationLatLng;
     }
 }

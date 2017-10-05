@@ -198,6 +198,7 @@
                         app:customFont="@string/roboto_medium" />
                 </LinearLayout>
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -210,6 +211,7 @@
                         android:adjustViewBounds="true"
                         android:visibility="visible"></ImageView>
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"

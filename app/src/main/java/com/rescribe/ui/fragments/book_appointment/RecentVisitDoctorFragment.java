@@ -90,7 +90,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     FloatingActionButton leftFab;
     private View mRootView;
     Unbinder unbinder;
-    static Bundle args;
     BookAppointmentBaseModel bookAppointmentBaseModel;
     DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter;
     private BookAppointFilteredDocList mBookAppointFilteredDocListAdapter;
@@ -110,10 +109,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         unbinder = ButterKnife.bind(this, mRootView);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            //     mDoctorServicesModel = getArguments().getParcelable(RescribeConstants.DOCTOR_DATA_REQUEST);
-        }
+
         init(mRootView);
         return mRootView;
 
@@ -127,9 +123,10 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             mClickHere.setText(Html.fromHtml(getString(R.string.clickhere)));
         }
         //----------
-
-        BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss), true);
-
+        if (getArguments() != null) {
+            BookAppointDoctorListBaseActivity.setToolBarTitle(getArguments().getString(getString(R.string.title)), true);
+        }
+        //-----------
         searchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {
             @Override
             public void onClearButtonClicked() {
@@ -174,7 +171,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     public static RecentVisitDoctorFragment newInstance(Bundle b) {
         RecentVisitDoctorFragment fragment = new RecentVisitDoctorFragment();
-        args = b;
+        Bundle args = b;
         if (args == null) {
             args = new Bundle();
         }
@@ -184,8 +181,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @Override
     public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
-        bundleData.putString(getString(R.string.latitude), args.getString(getString(R.string.latitude)));
-        bundleData.putString(getString(R.string.longitude), args.getString(getString(R.string.longitude)));
         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
         activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundleData), true);
     }
@@ -214,11 +209,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             case R.id.recyclerViewLinearLayout:
                 break;
             case R.id.doubtMessage:
-                Bundle bundleData = new Bundle();
-                bundleData.putString(getString(R.string.latitude), args.getString(getString(R.string.latitude)));
-                bundleData.putString(getString(R.string.longitude), args.getString(getString(R.string.longitude)));
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                activity.loadFragment(ComplaintsFragment.newInstance(bundleData), false);
+                activity.loadFragment(ComplaintsFragment.newInstance(new Bundle()), false);
                 break;
             case R.id.nextBtn:
                 currentPage += 1;
@@ -231,8 +223,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);
                 break;
             case R.id.leftFab:
-                activity = (BookAppointDoctorListBaseActivity) getActivity();
-                activity.loadFragment(ShowNearByDoctorsOnMapFragment.newInstance(args), false);
+              /*  activity = (BookAppointDoctorListBaseActivity) getActivity();
+                activity.loadFragment(ShowNearByDoctorsOnMapFragment.newInstance(new Bundle()), false);*/
                 break;
         }
 

@@ -116,8 +116,8 @@ public class NotificationService extends Service implements HelperResponse {
                 .setAutoCancel(true)
                 // Set RemoteViews into Notification
                 .setContent(mRemoteViews)
-                .setVibrate(new long[]{1000, 1000,1000})
-                .setSound(ringtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
+                //.setVibrate(new long[]{1000, 1000,1000})
+                //.setSound(ringtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
                 //   .setPriority(NotificationCompat.PRIORITY_HIGH) //must give priority to High, Max which will considered as heads-up notification
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
 

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Dimension;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +56,6 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
     BottomSheetDialog dialog;
     BookAppointmentBaseModel receivedBookAppointmentBaseModel;
     ArrayList<DoctorList> doctorLists = new ArrayList<>();
-    float[] distanceResults = new float[1];
-    private BookAppointDoctorListBaseActivity activity;
 
     public ShowNearByDoctorsOnMapFragment() {
         // Required empty public constructor
@@ -140,8 +139,10 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
         directions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                LatLng userSelectedLocationLatLng = activity.getUserSelectedLocationLatLng();
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?saddr=" + args.getString(getString(R.string.latitude)) + "," + args.getString(getString(R.string.longitude)) + "&daddr=" + doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude() + "," + doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude()));
+                        Uri.parse("http://maps.google.com/maps?saddr=" + userSelectedLocationLatLng.latitude + "," + userSelectedLocationLatLng.longitude + "&daddr=" + doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude() + "," + doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude()));
                 startActivity(intent);
             }
         });

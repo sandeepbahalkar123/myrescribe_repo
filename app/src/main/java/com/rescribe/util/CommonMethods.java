@@ -410,55 +410,6 @@ public class CommonMethods {
         return time;
     }
 
-    public static Drawable getMedicalTypeIcon(String medicineTypeName, Context context) {
-
-        Drawable abbreviation = ContextCompat.getDrawable(context,R.drawable.tablet_02);
-        if (medicineTypeName.equalsIgnoreCase("syrup"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.syrup_01);
-        else if (medicineTypeName.equalsIgnoreCase("Tablet"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.tablet_02);
-        else if (medicineTypeName.equalsIgnoreCase("Capsule"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.capsule_01);
-        else if (medicineTypeName.equalsIgnoreCase("injection"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.injection_01);
-        else if (medicineTypeName.equalsIgnoreCase("insulin"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.insulin_01);
-        else if (medicineTypeName.equalsIgnoreCase("Inhaler"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.inhaler_01);
-        else if (medicineTypeName.equalsIgnoreCase("liquid"))
-            abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight); // not found
-        else if (medicineTypeName.equalsIgnoreCase("tan"))
-            abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);// not found
-        else if (medicineTypeName.equalsIgnoreCase("cream"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.cream_01);
-        else if (medicineTypeName.equalsIgnoreCase("jelly"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.jelly_02);
-        else if (medicineTypeName.equalsIgnoreCase("local application"))
-            abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);// not found
-        else if (medicineTypeName.equalsIgnoreCase("ointment"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.ointment_01);
-        else if (medicineTypeName.equalsIgnoreCase("lotion"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.lotion_01);
-        else if (medicineTypeName.equalsIgnoreCase("drops"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.drop_01);
-        else if (medicineTypeName.equalsIgnoreCase("eye drops"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.eye_drops_02);
-        else if (medicineTypeName.equalsIgnoreCase("nasal drops"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.nasal_drop_01_01);
-        else if (medicineTypeName.equalsIgnoreCase("nasal spray"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.nasal_spray_01);
-        else if (medicineTypeName.equalsIgnoreCase("ointment/powder"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.ointment_powder_01);
-        else if (medicineTypeName.equalsIgnoreCase("respules"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.respules_01);
-        else if (medicineTypeName.equalsIgnoreCase("rotacaps"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.rotacaps_01);
-        else if (medicineTypeName.equalsIgnoreCase("sachet"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.sachet_01);
-
-        return abbreviation;
-    }
-
     // Return medicine Icon's
 
     public static Drawable getMedicineTypeImage(String medicineTypeName, Context context) {
@@ -485,7 +436,7 @@ public class CommonMethods {
         else if (medicineTypeName.equalsIgnoreCase("jelly"))
             abbreviation = ContextCompat.getDrawable(context, R.drawable.jelly);
         else if (medicineTypeName.equalsIgnoreCase("local application"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.tablet);// not found
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.jelly);// not found
         else if (medicineTypeName.equalsIgnoreCase("ointment"))
             abbreviation = ContextCompat.getDrawable(context, R.drawable.ointment);
         else if (medicineTypeName.equalsIgnoreCase("lotion"))

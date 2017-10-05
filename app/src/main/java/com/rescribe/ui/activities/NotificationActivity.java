@@ -261,7 +261,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
             setDose(tabCountTextView, mTodayDataList.get(i).getQuantity(), mTodayDataList.get(i));
             tabNameTextView.setText(mTodayDataList.get(i).getMedicineName());
-            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(mTodayDataList.get(i).getMedicineTypeName(), mContext));
+            tabTypeView.setImageDrawable(CommonMethods.getMedicineTypeImage(mTodayDataList.get(i).getMedicineTypeName(), mContext));
             parent.addView(view);
 
 

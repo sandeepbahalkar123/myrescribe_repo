@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -27,19 +26,16 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.ServicesAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
-import com.rescribe.helpers.book_appointment.ServicesHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesList;
 import com.rescribe.model.book_appointment.ServicesModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -63,13 +59,13 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     @BindView(R.id.emptyListView)
     RelativeLayout emptyListView;
     ServicesAdapter mServicesAdapter;
-    ServicesHelper mServicesHelper;
     private Context mContext;
     private int PLACE_PICKER_REQUEST = 1;
     String latitude = "";
     String longitude = "";
     String address;
     DoctorDataHelper doctorDataHelper;
+    private DoctorDataHelper mDoctorDataHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +84,8 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 .enableAutoManage(this, this)
                 .build();
         mContext = BookAppointmentServices.this;
-        mServicesHelper = new ServicesHelper(this, this);
-        mServicesHelper.doGetServices();
+        mDoctorDataHelper = new DoctorDataHelper(this, this);
+        mDoctorDataHelper.doGetServices();
 
 
     }

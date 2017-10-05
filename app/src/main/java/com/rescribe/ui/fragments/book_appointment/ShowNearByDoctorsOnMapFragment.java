@@ -1,28 +1,30 @@
 package com.rescribe.ui.fragments.book_appointment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Dimension;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -44,7 +46,7 @@ import butterknife.Unbinder;
 /**
  * Created by jeetal on 20/9/17.
  */
-public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnClickListener, HelperResponse, OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.InfoWindowAdapter {
+public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnClickListener, HelperResponse, OnMapReadyCallback, GoogleMap.OnMarkerClickListener/*, GoogleMap.OnInfoWindowClickListener, GoogleMap.InfoWindowAdapter*/ {
 
     Unbinder unbinder;
     private View mRootView;
@@ -211,23 +213,26 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setOnInfoWindowClickListener(this);
-        mMap.setInfoWindowAdapter(this);
+        mMap.setOnMarkerClickListener(this);
+       /* mMap.setOnInfoWindowClickListener(this);
+        mMap.setInfoWindowAdapter(this);*/
         doctorLists = receivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList();
         for (int index = 0; index < doctorLists.size(); index++) {
             DoctorList doctorList = doctorLists.get(index);
             p1 = getLocationFromAddress(doctorList.getDoctorAddress());
             if (p1 != null) {
                 LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
-                doctorLists.get(index).setLatitude(p1.getLatitude());
-                doctorLists.get(index).setLongitude(p1.getLongitude());
-              /*  IconGenerator iconFactory = new IconGenerator(this);
-                iconFactory.setStyle(IconGenerator.STYLE_PURPLE);
-                options.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(mLastUpdateTime)));
-                options.anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());*/
-                Marker marker = mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(getMarkerIcon("#04abdf")));
-                mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(getMarkerIcon("#04abdf")));
-                marker.showInfoWindow();
+                doctorList.setLatitude(p1.getLatitude());
+                doctorList.setLongitude(p1.getLongitude());
+
+                View itemView = getActivity().getLayoutInflater().inflate(R.layout.custom_marker_map, null);
+                TextView ratingText = (TextView) itemView.findViewById(R.id.ratingText);
+                TextView doctorNameText = (TextView) itemView.findViewById(R.id.doctorNameText);
+                ratingText.setText(String.valueOf(doctorList.getRating()));
+                doctorNameText.setText(doctorList.getDocName());
+
+                mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getContext(), itemView))));
+//                marker.showInfoWindow();
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), 14.0f));
             } else
                 CommonMethods.showToast(getActivity(), getString(R.string.address_not_found));
@@ -258,7 +263,33 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
         return location;
     }
 
-    public BitmapDescriptor getMarkerIcon(String color) {
+    public static Bitmap createDrawableFromView(Context context, View view) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay()
+                .getMetrics(displayMetrics);
+        view.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT));
+        view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        view.layout(0, 0, displayMetrics.widthPixels,
+                displayMetrics.heightPixels);
+
+        view.buildDrawingCache(true);
+        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(),
+                view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        view.buildDrawingCache(false);
+
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        init_modal_bottomsheet(marker);
+        return true;
+    }
+
+    /*public BitmapDescriptor getMarkerIcon(String color) {
         float[] hsv = new float[3];
         Color.colorToHSV(Color.parseColor(color), hsv);
         return BitmapDescriptorFactory.defaultMarker(hsv[0]);
@@ -275,7 +306,7 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
     }
 
     private View prepareInfoView(Marker marker) {
-        View infoView = getActivity().getLayoutInflater().inflate(R.layout.marker_map_activity, null);
+        View infoView = getActivity().getLayoutInflater().inflate(R.layout.custom_marker_map, null);
         TextView doctorName = (TextView) infoView.findViewById(R.id.doctorName);
         TextView doctorRating = (TextView) infoView.findViewById(R.id.doctorRating);
         doctorRating.setText("" + doctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
@@ -287,6 +318,6 @@ public class ShowNearByDoctorsOnMapFragment extends Fragment implements View.OnC
     @Override
     public void onInfoWindowClick(Marker marker) {
         init_modal_bottomsheet(marker);
-    }
+    }*/
 
 }

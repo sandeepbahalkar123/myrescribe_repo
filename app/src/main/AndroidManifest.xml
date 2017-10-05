@@ -151,13 +151,6 @@
             android:enabled="true"
             android:exported="false" />
 
-
-        <receiver
-            android:name=".broadcast_receivers.FileDownloadReceiver"
-            android:enabled="true"
-            android:exported="false" />
-
-
         <activity
             android:name=".ui.activities.NotificationActivity"
             android:configChanges="orientation|keyboard|screenSize"
@@ -244,7 +237,8 @@
                 <action android:name="net.gotev.uploadservice.broadcast.status" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".broadcast_receivers.OtpReader">
+        <receiver android:name=".broadcast_receivers.OtpReader"
+            android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>

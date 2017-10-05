@@ -26,10 +26,10 @@ public class ChatDoctor implements Parcelable, CustomResponse {
     @SerializedName("paidStatus")
     @Expose
     private int paidStatus;
-    @SerializedName("imageUrl")
+    @SerializedName("doctorImageUrl")
     @Expose
     private String imageUrl;
-    @SerializedName("address")
+    @SerializedName("doctorAddress")
     @Expose
     private String address;
 

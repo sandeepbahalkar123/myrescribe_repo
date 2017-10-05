@@ -58,7 +58,7 @@ public class DoctorList implements Parcelable {
     private Integer tokenNo;
     @SerializedName("morePracticePlaces")
     @Expose
-    private ArrayList<String> morePracticePlaces = null;
+    private ArrayList<String> morePracticePlaces = new ArrayList<>();
     @SerializedName("openToday")
     @Expose
     private String openToday;
@@ -312,8 +312,8 @@ public class DoctorList implements Parcelable {
         dest.writeValue(openToday);
         dest.writeValue(favourite);
         dest.writeList(availableTimeSlots);
-       /* dest.writeValue(totalReview);
-        dest.writeList(reviewList);*/
+       dest.writeValue(totalReview);
+       /*  dest.writeList(reviewList);*/
     }
 
     public int describeContents() {

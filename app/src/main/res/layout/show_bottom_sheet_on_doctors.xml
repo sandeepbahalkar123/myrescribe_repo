@@ -57,7 +57,7 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/doctorReviews"
                 android:layout_marginBottom="@dimen/dp6"
-                android:textColor="@color/map_green"
+                android:textColor="@color/black"
                 android:textSize="@dimen/sp16"
                 app:customFont="@string/roboto_regular" />
         </LinearLayout>

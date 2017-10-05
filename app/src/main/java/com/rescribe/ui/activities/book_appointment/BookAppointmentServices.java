@@ -26,6 +26,7 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.ServicesAdapter;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
@@ -35,6 +36,7 @@ import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -67,6 +69,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     String latitude = "";
     String longitude = "";
     String address;
+    DoctorDataHelper doctorDataHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,17 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         mServicesHelper.doGetServices();
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+        if(userSelectedLocationInfo.get(getString(R.string.location))==null) {
+            locationTextView.setText(getString(R.string.location));
+        }else{
+            locationTextView.setText("" + userSelectedLocationInfo.get(getString(R.string.location)));
+        }
     }
 
     @Override
@@ -192,6 +206,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 }
                 if (addresses != null && addresses.size() > 0) {
                     String locality = addresses.get(0).getLocality();
+                    DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality);
                     locationTextView.setText(locality);
                 }
                 CommonMethods.Log("Address: ", stBuilder.toString());
@@ -215,7 +230,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
             // TODO, THIS IS ADDED FOR NOW, OPEN ONLY IF clicked value == DOCTOR
             if (servicesObject.getServiceName().equalsIgnoreCase(getString(R.string.doctor))) {
                 Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
-                intent.putExtra(getString(R.string.location_address),address);
+                intent.putExtra(getString(R.string.location_address), address);
                 intent.putExtra(getString(R.string.latitude), latitude);
                 intent.putExtra(getString(R.string.longitude), longitude);
                 intent.putExtra(getString(R.string.location), locationTextView.getText().toString());

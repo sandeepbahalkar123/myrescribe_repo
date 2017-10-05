@@ -14,7 +14,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -26,16 +25,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rescribe.R;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.fragments.book_appointment.BookAppointDoctorDescriptionFragment;
-import com.rescribe.ui.fragments.book_appointment.ShowReviewsOnDoctorFragment;
 import com.rescribe.util.CommonMethods;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -55,12 +52,10 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
     CustomTextView showlocation;
     private GoogleMap mMap;
     Address p1 = null;
-    MapFragment mapFragment;
     BottomSheetDialog dialog;
-    Bundle mBundle = new Bundle();
-    BookAppointmentBaseModel receivedBookAppointmentBaseModel;
     ArrayList<DoctorList> doctorLists;
     private Intent intent;
+    HashMap<String, String> userSelectedLocationInfo;
     private Context mContext;
 
     @Override
@@ -68,7 +63,12 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         ButterKnife.bind(this);
+        init();
+    }
+
+    private void init() {
         intent = getIntent();
+        userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         mContext = MapActivityPlotNearByDoctor.this;
         doctorLists = this.getIntent().getParcelableArrayListExtra(getString(R.string.doctor_data));
         bookAppointmentBackButton.setOnClickListener(new View.OnClickListener() {
@@ -79,23 +79,13 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         });
         title.setText(intent.getStringExtra(getString(R.string.toolbarTitle)));
         showlocation.setVisibility(View.VISIBLE);
+        showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         locationTextView.setVisibility(View.GONE);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
 
 
     public void init_modal_bottomsheet(final Marker marker) {
@@ -149,10 +139,9 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         directions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BookAppointDoctorListBaseActivity activity = new BookAppointDoctorListBaseActivity();
-                LatLng userSelectedLocationLatLng = activity.getUserSelectedLocationLatLng();
+
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?saddr=" + userSelectedLocationLatLng.latitude + "," + userSelectedLocationLatLng.longitude + "&daddr=" + doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude() + "," + doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude()));
+                        Uri.parse("http://maps.google.com/maps?saddr=" + userSelectedLocationInfo.get(getString(R.string.latitude)) + "," +userSelectedLocationInfo.get(getString(R.string.longitude)) + "&daddr=" + doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude() + "," + doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude()));
                 startActivity(intent);
             }
         });
@@ -160,12 +149,10 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         doctorReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* dialog.setCancelable(true);
-                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                Bundle bundle = new Bundle();
-                bundle.putString(getString(R.string.doctorId), String.valueOf(doctorLists.get(Integer.parseInt(marker.getTitle())).getDocId ()));
-                bundle.putParcelable(getString(R.string.doctor_data), activity.getReceivedBookAppointmentBaseModel());
-                activity.loadFragment(ShowReviewsOnDoctorFragment.newInstance(bundle), false);*/
+                dialog.setCancelable(true);
+                Intent intent = new Intent(MapActivityPlotNearByDoctor.this,ShowReviewListActivity.class);
+                intent.putExtra(getString(R.string.doctorId), String.valueOf(doctorLists.get(Integer.parseInt(marker.getTitle())).getDocId ()));
+                startActivity(intent);
 
             }
         });
@@ -183,7 +170,6 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         mMap = googleMap;
         mMap.setOnInfoWindowClickListener(this);
         mMap.setInfoWindowAdapter(this);
-        doctorLists = receivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList();
         for (int index = 0; index < doctorLists.size(); index++) {
             DoctorList doctorList = doctorLists.get(index);
             p1 = getLocationFromAddress(doctorList.getDoctorAddress());

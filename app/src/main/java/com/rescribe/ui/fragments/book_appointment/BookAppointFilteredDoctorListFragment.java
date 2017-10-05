@@ -13,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
@@ -27,6 +29,7 @@ import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +54,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     private String mSelectedSpeciality;
     BookAppointmentBaseModel receivedBookAppointmentBaseModel;
     private ArrayList<DoctorList> mReceivedList;
+    private static Bundle args;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -69,7 +73,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
 
     public static BookAppointFilteredDoctorListFragment newInstance(Bundle b) {
         BookAppointFilteredDoctorListFragment fragment = new BookAppointFilteredDoctorListFragment();
-        Bundle args = b;
+        args = b;
         if (args == null) {
             args = new Bundle();
         }
@@ -177,10 +181,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 break;
             case R.id.leftFab:
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
+                intent.putExtra(getString(R.string.toolbarTitle),args.getString(getString(R.string.clicked_item_data)));
                 intent.putParcelableArrayListExtra(getString(R.string.doctor_data),receivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList());
                 startActivity(intent);
-                /*activity = (BookAppointDoctorListBaseActivity) getActivity();
-                activity.loadFragment(ShowNearByDoctorsOnMapFragment.newInstance(new Bundle()), false);*/
                 break;
         }
     }

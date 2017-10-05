@@ -199,6 +199,11 @@
             android:label="@string/title_activity_selected_docs"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.activities.book_appointment.ShowReviewListActivity"
+            android:configChanges="orientation|keyboard|screenSize"
+            android:label="@string/title_activity_selected_docs"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.activities.book_appointment.MapActivityPlotNearByDoctor"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_selected_docs"

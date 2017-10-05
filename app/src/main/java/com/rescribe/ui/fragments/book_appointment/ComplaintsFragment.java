@@ -87,6 +87,7 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
     }
 
     private void init() {
+        BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss),false);
         doctorDataHelper = new DoctorDataHelper(getActivity(), this);
         doctorDataHelper.doGetComplaintsList();
 

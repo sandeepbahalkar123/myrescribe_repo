@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,11 +13,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import android.view.ViewGroup;
-
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -38,9 +34,9 @@ import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListF
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.RescribeConstants;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -58,7 +54,6 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
-
     static CustomTextView title;
     static CustomTextView locationTextView;
     static CustomTextView showlocation;
@@ -69,19 +64,14 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     private DoctorDataHelper mDoctorDataHelper;
     private Fragment mCurrentlyLoadedFragment; //TODO, fragmentById is not working hence hold this object.
     private BookAppointmentBaseModel mReceivedBookAppointmentBaseModel;
-    private String location;
     private FragmentManager mSupportFragmentManager;
     private Fragment mDrawerLoadedFragment;
     private int PLACE_PICKER_REQUEST = 1;
-    // String latitude = "";
-    //String longitude = "";
-    LatLng mUserSelectedLocationLatLng;
     private boolean isLocationChange = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_book_appoint_doc_base_list);
         ButterKnife.bind(this);
         initialize();
@@ -133,10 +123,10 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         Intent intent = getIntent();
         String title = "";
         if (intent != null) {
-            location = intent.getStringExtra(getString(R.string.location));
-            locationTextView.setText(location);
+            HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+            locationTextView.setText(""+userSelectedLocationInfo.get(getString(R.string.location)));
+          //  locationTextView.setText(mDoctorDataHelper.getmGetUserSelectedlocation());
             title = intent.getStringExtra(getString(R.string.clicked_item_data));
-            mUserSelectedLocationLatLng = new LatLng(Double.parseDouble(intent.getStringExtra(getString(R.string.latitude))), Double.parseDouble(intent.getStringExtra(getString(R.string.longitude))));
         }
         //------
         FragmentManager supportFragmentManager = getSupportFragmentManager();
@@ -144,11 +134,9 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
         fragmentTransaction.replace(R.id.nav_view, mDrawerLoadedFragment);
         fragmentTransaction.commit();
-        //------
         Bundle bundle = new Bundle();
         bundle.putString(getString(R.string.title), title);
         mCurrentlyLoadedFragment = RecentVisitDoctorFragment.newInstance(bundle);
-        //------
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetDoctorData();
     }
@@ -214,9 +202,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             case R.id.title:
                 break;
             case R.id.locationTextView:
-
                 BookAppointDoctorListBaseActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
-
                 break;
         }
     }
@@ -245,7 +231,6 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                 Place place = PlacePicker.getPlace(this, data);
                 StringBuilder stBuilder = new StringBuilder();
                 String placename = String.format("%s", place.getName());
-                mUserSelectedLocationLatLng = place.getLatLng();
                 String latitude = String.valueOf(place.getLatLng().latitude);
                 String longitude = String.valueOf(place.getLatLng().longitude);
                 String address = String.format("%s", place.getAddress());
@@ -270,7 +255,11 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                 if (addresses != null && addresses.size() > 0) {
                     String locality = addresses.get(0).getLocality();
                     //start from here
+                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), locality);
                     locationTextView.setText(locality);
+                  //  mDoctorDataHelper.setmGetUserSelectedlocation(locality);
+                  //  locationTextView.setText(mDoctorDataHelper.getmGetUserSelectedlocation());
+                   // locationTextView.setText(locality);
                     isLocationChange = true;
                     mDoctorDataHelper.doGetDoctorData();
 
@@ -328,6 +317,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         }
     }
 
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
@@ -339,7 +329,5 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         void onResetClicked();
     }
 
-    public LatLng getUserSelectedLocationLatLng() {
-        return mUserSelectedLocationLatLng;
-    }
+
 }

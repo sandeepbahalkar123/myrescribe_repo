@@ -133,7 +133,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             builder.append(s + "/");
         }
 
-        mDoctorPractices.setText(getString(R.string.also_practices) + getString(R.string.space) + builder.toString() + "Aundh");
+        mDoctorPractices.setText(getString(R.string.also_practices) + getString(R.string.space) + builder.toString());
         mOpeningTime.setText("" + mClickedDoctorObject.getOpenToday());
         if (mClickedDoctorObject.getAvailableTimeSlots().size() > 0) {
             mShowAllTimeSlotListView.setVisibility(View.VISIBLE);
@@ -202,10 +202,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 mOpeningTimeLayout.setVisibility(View.GONE);
                 break;
             case R.id.locationImage:
-                Intent intent = new Intent(getActivity(),MapActivityShowDoctorLocation.class);
+                Intent intent = new Intent(getActivity(), MapActivityShowDoctorLocation.class);
                 intent.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
                 intent.putExtra(getString(R.string.address), mClickedDoctorObject.getDoctorAddress());
-                 startActivity(intent);
+                startActivity(intent);
 
                 break;
 

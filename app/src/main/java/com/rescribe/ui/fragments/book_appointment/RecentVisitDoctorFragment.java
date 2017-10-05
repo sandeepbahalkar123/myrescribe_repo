@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSpecialistBookAppointmentAdapter;
 import com.rescribe.adapters.ShowRecentVisitedDoctorPagerAdapter;
@@ -185,7 +186,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundleData), true);
     }
 
-    @OnClick({R.id.viewpager, R.id.circleIndicator, R.id.pickSpeciality, R.id.listView, R.id.recyclerViewLinearLayout, R.id.doubtMessage, R.id.emptyListView, R.id.prevBtn, R.id.nextBtn,R.id.rightFab,R.id.leftFab})
+    @OnClick({R.id.viewpager, R.id.circleIndicator, R.id.pickSpeciality, R.id.listView, R.id.recyclerViewLinearLayout, R.id.doubtMessage, R.id.emptyListView, R.id.prevBtn, R.id.nextBtn, R.id.rightFab, R.id.leftFab})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.viewpager:
@@ -367,6 +368,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             leftFab.setVisibility(View.VISIBLE);
             rightFab.setVisibility(View.VISIBLE);
             showDoctorsRecyclerView.setVisibility(View.VISIBLE);
+            emptyListView.setVisibility(View.GONE);
+
             if (isShowEmptyListView) {
                 leftFab.setVisibility(View.GONE);
                 rightFab.setVisibility(View.GONE);
@@ -380,6 +383,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             recentDoctorLayout.setVisibility(View.VISIBLE);
             showDoctorsRecyclerView.setVisibility(View.GONE);
         }
+
     }
 
     @Override

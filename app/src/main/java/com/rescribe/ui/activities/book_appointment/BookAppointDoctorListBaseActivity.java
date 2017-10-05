@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -89,6 +90,10 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     private void initialize() {
+
+        //----------------
+        mDrawerLayout.setFocusableInTouchMode(false);
+        //----------------
         new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -282,14 +287,20 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     @Override
     public void onBackPressed() {
-        int backStackEntryCount = mSupportFragmentManager.getBackStackEntryCount();
-        if (backStackEntryCount == 1) {
-            finish();
+
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+            mDrawerLayout.closeDrawer(GravityCompat.END);
         } else {
-            super.onBackPressed();
-            Fragment id = mSupportFragmentManager.findFragmentById(R.id.viewContainer);
-            mCurrentlyLoadedFragment = id;
+            int backStackEntryCount = mSupportFragmentManager.getBackStackEntryCount();
+            if (backStackEntryCount == 1) {
+                finish();
+            } else {
+                super.onBackPressed();
+                Fragment id = mSupportFragmentManager.findFragmentById(R.id.viewContainer);
+                mCurrentlyLoadedFragment = id;
+            }
         }
+
     }
 
     public void loadFragment(Fragment fragmentToLoad, boolean requiredDrawer) {

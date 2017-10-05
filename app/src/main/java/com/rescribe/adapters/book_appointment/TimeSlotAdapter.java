@@ -28,6 +28,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListVi
 
     private Context mContext;
     private ArrayList<String> mDataList;
+    private String mSelectedTimeSlot;
 
     public TimeSlotAdapter(Context mContext, ArrayList<String> dataList) {
         this.mDataList = dataList;
@@ -51,10 +52,26 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListVi
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle b = new Bundle();
-                holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_light_blue));
+                String tag = (String) v.getTag();
+                if (tag.equalsIgnoreCase(mSelectedTimeSlot)) {
+                    mSelectedTimeSlot = "";
+                    holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
+                } else {
+                    mSelectedTimeSlot = tag;
+                    holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_light_blue));
+                    notifyDataSetChanged();
+                }
             }
         });
+
+        if (doctorObject.equalsIgnoreCase(mSelectedTimeSlot)) {
+            mSelectedTimeSlot = doctorObject;
+            holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_light_blue));
+        } else {
+            holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
+        }
+
+        holder.view.setTag(doctorObject);
 
     }
 

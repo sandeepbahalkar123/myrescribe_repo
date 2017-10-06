@@ -413,7 +413,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
             case R.id.resetButton:
                 configureDrawerFieldsData();
                 setDataInDrawerFields();
-                mListener.onReset(true);
+                //mListener.onReset(true);
                 break;
             case R.id.applyButton:
                 BookAppointFilterRequestModel bookAppointFilterRequestModel = new BookAppointFilterRequestModel();

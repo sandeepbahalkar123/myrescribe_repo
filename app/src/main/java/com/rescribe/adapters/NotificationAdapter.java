@@ -426,7 +426,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
             tabCountTextView.setText(mMedicationListAdapter.get(i).getQuantity());
-            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(mMedicationListAdapter.get(i).getMedicineTypeName(), mContext));
+            tabTypeView.setImageDrawable(CommonMethods.getMedicineTypeImage(mMedicationListAdapter.get(i).getMedicineTypeName(), mContext));
             tabNameTextView.setText(mMedicationListAdapter.get(i).getMedicineName());
             selectViewTab.setEnabled(mMedicationListAdapter.get(i).isTabWebService());
             final int finalI = i;

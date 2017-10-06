@@ -54,6 +54,11 @@ public class MapActivityShowDoctorLocation extends AppCompatActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         ButterKnife.bind(this);
+        init();
+
+    }
+
+    private void init() {
         intent = getIntent();
         bookAppointmentBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,19 +68,8 @@ public class MapActivityShowDoctorLocation extends AppCompatActivity implements 
         });
         title.setText(intent.getStringExtra(getString(R.string.toolbarTitle)));
         showlocation.setVisibility(View.VISIBLE);
+        showlocation.setText(getIntent().getStringExtra(getString(R.string.location)));
         locationTextView.setVisibility(View.GONE);
-        /*Toolbar toolbar = (Toolbar)findViewById(R.id.mapToolbar);
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(intent.getStringExtra(getString(R.string.title)));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });*/
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);

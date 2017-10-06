@@ -1,7 +1,10 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -9,12 +12,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.FragmentActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -26,16 +30,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rescribe.R;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.fragments.book_appointment.BookAppointDoctorDescriptionFragment;
-import com.rescribe.ui.fragments.book_appointment.ShowReviewsOnDoctorFragment;
 import com.rescribe.util.CommonMethods;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -43,7 +45,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 4/10/17.
  */
 
-public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.InfoWindowAdapter {
+public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener{
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
@@ -55,12 +57,10 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
     CustomTextView showlocation;
     private GoogleMap mMap;
     Address p1 = null;
-    MapFragment mapFragment;
     BottomSheetDialog dialog;
-    Bundle mBundle = new Bundle();
-    BookAppointmentBaseModel receivedBookAppointmentBaseModel;
     ArrayList<DoctorList> doctorLists;
     private Intent intent;
+    HashMap<String, String> userSelectedLocationInfo;
     private Context mContext;
 
     @Override
@@ -68,7 +68,12 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         ButterKnife.bind(this);
+        init();
+    }
+
+    private void init() {
         intent = getIntent();
+        userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         mContext = MapActivityPlotNearByDoctor.this;
         doctorLists = this.getIntent().getParcelableArrayListExtra(getString(R.string.doctor_data));
         bookAppointmentBackButton.setOnClickListener(new View.OnClickListener() {
@@ -79,23 +84,13 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         });
         title.setText(intent.getStringExtra(getString(R.string.toolbarTitle)));
         showlocation.setVisibility(View.VISIBLE);
+        showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         locationTextView.setVisibility(View.GONE);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
 
 
     public void init_modal_bottomsheet(final Marker marker) {
@@ -139,6 +134,10 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 doctorList.setLongitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
                 doctorList.setLatitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
                 doctorList.setTotalReview(doctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview());
+                Intent intent = new Intent(MapActivityPlotNearByDoctor.this,ShowMoreInfoBaseActivity.class);
+                intent.putExtra(getString(R.string.toolbarTitle),title.getText().toString());
+                intent.putExtra(getString(R.string.doctor_data),doctorList);
+                startActivity(intent);
              /*   doctorList.setReviewList(doctorLists.get(Integer.parseInt(marker.getTitle())).getReviewList());*/
                /* args.putParcelable(getString(R.string.clicked_item_data), doctorList);
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
@@ -149,10 +148,9 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         directions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BookAppointDoctorListBaseActivity activity = new BookAppointDoctorListBaseActivity();
-                LatLng userSelectedLocationLatLng = activity.getUserSelectedLocationLatLng();
+
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?saddr=" + userSelectedLocationLatLng.latitude + "," + userSelectedLocationLatLng.longitude + "&daddr=" + doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude() + "," + doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude()));
+                        Uri.parse("http://maps.google.com/maps?saddr=" + userSelectedLocationInfo.get(getString(R.string.latitude)) + "," +userSelectedLocationInfo.get(getString(R.string.longitude)) + "&daddr=" + doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude() + "," + doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude()));
                 startActivity(intent);
             }
         });
@@ -160,12 +158,10 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         doctorReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* dialog.setCancelable(true);
-                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                Bundle bundle = new Bundle();
-                bundle.putString(getString(R.string.doctorId), String.valueOf(doctorLists.get(Integer.parseInt(marker.getTitle())).getDocId ()));
-                bundle.putParcelable(getString(R.string.doctor_data), activity.getReceivedBookAppointmentBaseModel());
-                activity.loadFragment(ShowReviewsOnDoctorFragment.newInstance(bundle), false);*/
+                dialog.setCancelable(true);
+                Intent intent = new Intent(MapActivityPlotNearByDoctor.this,ShowReviewListActivity.class);
+                intent.putExtra(getString(R.string.doctorId), String.valueOf(doctorLists.get(Integer.parseInt(marker.getTitle())).getDocId ()));
+                startActivity(intent);
 
             }
         });
@@ -181,26 +177,29 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setOnInfoWindowClickListener(this);
-        mMap.setInfoWindowAdapter(this);
-        doctorLists = receivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList();
+        mMap.setOnMarkerClickListener(this);
+       /* mMap.setOnInfoWindowClickListener(this);
+        mMap.setInfoWindowAdapter(this);*/
+
         for (int index = 0; index < doctorLists.size(); index++) {
             DoctorList doctorList = doctorLists.get(index);
             p1 = getLocationFromAddress(doctorList.getDoctorAddress());
             if (p1 != null) {
                 LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
-                doctorLists.get(index).setLatitude(p1.getLatitude());
-                doctorLists.get(index).setLongitude(p1.getLongitude());
-              /*  IconGenerator iconFactory = new IconGenerator(this);
-                iconFactory.setStyle(IconGenerator.STYLE_PURPLE);
-                options.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(mLastUpdateTime)));
-                options.anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());*/
-                Marker marker = mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(getMarkerIcon("#04abdf")));
-                mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(getMarkerIcon("#04abdf")));
-                marker.showInfoWindow();
+                doctorList.setLatitude(p1.getLatitude());
+                doctorList.setLongitude(p1.getLongitude());
+
+                View itemView = getLayoutInflater().inflate(R.layout.custom_marker_map, null);
+                TextView ratingText = (TextView) itemView.findViewById(R.id.ratingText);
+                TextView doctorNameText = (TextView) itemView.findViewById(R.id.doctorNameText);
+                ratingText.setText(String.valueOf(doctorList.getRating()));
+                doctorNameText.setText(doctorList.getDocName());
+
+                mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(MapActivityPlotNearByDoctor.this, itemView))));
+//                marker.showInfoWindow();
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), 14.0f));
             } else
-                CommonMethods.showToast(this, getString(R.string.address_not_found));
+                CommonMethods.showToast(MapActivityPlotNearByDoctor.this, getString(R.string.address_not_found));
         }
 
     }
@@ -227,14 +226,39 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
 
         return location;
     }
+    public static Bitmap createDrawableFromView(Context context, View view) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay()
+                .getMetrics(displayMetrics);
+        view.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT));
+        view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        view.layout(0, 0, displayMetrics.widthPixels,
+                displayMetrics.heightPixels);
 
-    public BitmapDescriptor getMarkerIcon(String color) {
-        float[] hsv = new float[3];
-        Color.colorToHSV(Color.parseColor(color), hsv);
-        return BitmapDescriptorFactory.defaultMarker(hsv[0]);
+        view.buildDrawingCache(true);
+        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(),
+                view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        view.buildDrawingCache(false);
+
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
     }
 
     @Override
+    public boolean onMarkerClick(Marker marker) {
+        init_modal_bottomsheet(marker);
+        return true;
+    }
+
+   /* public BitmapDescriptor getMarkerIcon(String color) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(Color.parseColor(color), hsv);
+        return BitmapDescriptorFactory.defaultMarker(hsv[0]);
+    }*/
+
+    /*@Override
     public View getInfoWindow(Marker marker) {
         return prepareInfoView(marker);
     }
@@ -245,7 +269,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
     }
 
     private View prepareInfoView(Marker marker) {
-        View infoView = getLayoutInflater().inflate(R.layout.marker_map_activity, null);
+        View infoView = getLayoutInflater().inflate(R.layout.custom_marker_map, null);
         TextView doctorName = (TextView) infoView.findViewById(R.id.doctorName);
         TextView doctorRating = (TextView) infoView.findViewById(R.id.doctorRating);
         doctorRating.setText("" + doctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
@@ -257,7 +281,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
     @Override
     public void onInfoWindowClick(Marker marker) {
         init_modal_bottomsheet(marker);
-    }
+    }*/
 
 
 }

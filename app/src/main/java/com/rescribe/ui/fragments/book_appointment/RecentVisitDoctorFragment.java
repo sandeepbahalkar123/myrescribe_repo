@@ -306,6 +306,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @Override
     public void onClickOfDoctorRowItem(Bundle bundleData) {
+        DoctorList doctorList = (DoctorList) bundleData.getParcelable(getString(R.string.clicked_item_data));
+        bundleData.putString(getString(R.string.toolbarTitle), doctorList.getSpeciality());
         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
         activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
     }

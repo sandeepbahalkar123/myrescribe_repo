@@ -261,7 +261,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
 
             setDose(tabCountTextView, mTodayDataList.get(i).getQuantity(), mTodayDataList.get(i));
             tabNameTextView.setText(mTodayDataList.get(i).getMedicineName());
-            tabTypeView.setImageDrawable(CommonMethods.getMedicalTypeIcon(mTodayDataList.get(i).getMedicineTypeName(), mContext));
+            tabTypeView.setImageDrawable(CommonMethods.getMedicineTypeImage(mTodayDataList.get(i).getMedicineTypeName(), mContext));
             parent.addView(view);
 
 
@@ -299,7 +299,7 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         } else if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
 
             NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
-            if (prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification()!= null) {
+            if (prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification().size()!= 0) {
 
                     mNotificationLayout.setVisibility(View.VISIBLE);
                     mNoDataAvailable.setVisibility(View.GONE);

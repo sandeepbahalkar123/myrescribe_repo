@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.TimeSlotAdapter;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
@@ -28,6 +29,7 @@ import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -132,8 +134,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 morePracticePlaces) {
             builder.append(s + "/");
         }
-
-        mDoctorPractices.setText(getString(R.string.also_practices) + getString(R.string.space) + builder.toString());
+      String showMorePlaces = getString(R.string.also_practices) + getString(R.string.space) + builder.toString();
+        mDoctorPractices.setText(showMorePlaces.substring(0, showMorePlaces.length() - 1));
         mOpeningTime.setText("" + mClickedDoctorObject.getOpenToday());
         if (mClickedDoctorObject.getAvailableTimeSlots().size() > 0) {
             mShowAllTimeSlotListView.setVisibility(View.VISIBLE);
@@ -152,7 +154,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         //requestOptions.placeholder(R.drawable.layer_12);
 
         Glide.with(getActivity())
-                .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mClickedDoctorObject.getDoctorAddress() + "&markers=color:blue%7Clabel:C%7C" + mClickedDoctorObject.getDoctorAddress() + "&zoom=12&size=640x250")
+                .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mClickedDoctorObject.getDoctorAddress() + "&markers=color:red%7Clabel:C%7C" + mClickedDoctorObject.getDoctorAddress() + "&zoom=12&size=640x250")
                 .into(locationImage);
 
 
@@ -202,11 +204,12 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 mOpeningTimeLayout.setVisibility(View.GONE);
                 break;
             case R.id.locationImage:
-                Intent intent = new Intent(getActivity(), MapActivityShowDoctorLocation.class);
+                HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+                Intent intent = new Intent(getActivity(),MapActivityShowDoctorLocation.class);
                 intent.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
+                intent.putExtra(getString(R.string.location),userSelectedLocationInfo.get(getString(R.string.location)));
                 intent.putExtra(getString(R.string.address), mClickedDoctorObject.getDoctorAddress());
                 startActivity(intent);
-
                 break;
 
         }

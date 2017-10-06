@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import com.rescribe.R;
 import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +24,7 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.List
 
     private Context mContext;
     private ArrayList<String> mDataList;
+    private HashSet<String> mSelectedLocation = new HashSet<>();
 
     public LocationsAdapter(Context mContext, ArrayList<String> dataList) {
         this.mDataList = dataList;
@@ -41,7 +44,18 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.List
     public void onBindViewHolder(final ListViewHolder holder, int position) {
         String doctorObject = mDataList.get(position);
         holder.locationName.setText(doctorObject);
+        holder.locationName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    mSelectedLocation.add(buttonView.getText().toString());
+                } else {
+                    mSelectedLocation.remove(buttonView.getText().toString());
+                }
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -60,5 +74,9 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.List
             ButterKnife.bind(this, view);
             this.view = view;
         }
+    }
+
+    public HashSet<String> getSelectedLocation() {
+        return mSelectedLocation;
     }
 }

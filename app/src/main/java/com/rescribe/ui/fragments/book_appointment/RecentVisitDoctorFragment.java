@@ -343,12 +343,12 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private void toggleButtons(ArrayList<DoctorSpeciality> doctorSpecialities) {
         totalPages = doctorSpecialities.size() / 9;
         if (currentPage == totalPages) {
-            nextBtn.setVisibility(View.GONE);
+            nextBtn.setVisibility(View.INVISIBLE);
             prevBtn.setVisibility(View.VISIBLE);
             nextBtn.setEnabled(false);
             prevBtn.setEnabled(true);
         } else if (currentPage == 0) {
-            prevBtn.setVisibility(View.GONE);
+            prevBtn.setVisibility(View.INVISIBLE);
             nextBtn.setVisibility(View.VISIBLE);
             prevBtn.setEnabled(false);
             nextBtn.setEnabled(true);

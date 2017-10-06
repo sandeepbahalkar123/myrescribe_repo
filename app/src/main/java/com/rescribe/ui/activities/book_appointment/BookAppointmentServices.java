@@ -63,7 +63,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     RelativeLayout emptyListView;
     ServicesAdapter mServicesAdapter;
     private Context mContext;
-    private int PLACE_PICKER_REQUEST = 1;
+    private int PLACE_PICKER_REQUEST = 10;
     String latitude = "";
     String longitude = "";
     String address;

@@ -1,10 +1,11 @@
 package com.rescribe.util;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentSender;
 import android.os.Bundle;
-
+import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -17,12 +18,22 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
-
 /**
  * Created by sangcomz on 2015-08-25.
  */
 public class GoogleSettingsApi implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-    public GoogleSettingsApi(final Context context){
+
+    private static final String TAG = "SettingsApi";
+    LocationSettings locationSettings;
+
+    public GoogleSettingsApi(final Context context) {
+
+        try {
+            this.locationSettings = ((LocationSettings) context);
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement LocationSettings.");
+        }
+
         GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -51,6 +62,7 @@ public class GoogleSettingsApi implements GoogleApiClient.ConnectionCallbacks, G
                         // All location settings are satisfied. The client can initialize location
                         // requests here.
                         System.out.println("SUCCESS");
+                        locationSettings.gpsStatus();
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         // Location settings are not satisfied. But could be fixed by showing the user
@@ -64,12 +76,16 @@ public class GoogleSettingsApi implements GoogleApiClient.ConnectionCallbacks, G
                                     1);
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.
+                            System.out.println("Ignore");
                         }
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                         System.out.println("SETTINGS_CHANGE_UNAVAILABLE");
                         // Location settings are not satisfied. However, we have no way to fix the
                         // settings so we won't show the dialog.
+                        break;
+                    default:
+                        System.out.println("Default");
                         break;
                 }
             }
@@ -78,16 +94,20 @@ public class GoogleSettingsApi implements GoogleApiClient.ConnectionCallbacks, G
 
     @Override
     public void onConnected(Bundle bundle) {
-
+        Log.d(TAG, "Connected");
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.d(TAG, "ConnectionSuspended");
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG, "ConnectionFailed");
+    }
 
+    public interface LocationSettings {
+        void gpsStatus();
     }
 }

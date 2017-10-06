@@ -62,7 +62,7 @@ public class ShowReviewListActivity extends AppCompatActivity implements HelperR
                 onBackPressed();
             }
         });
-        title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
+        title.setText(getString(R.string.reviews));
         showlocation.setVisibility(View.VISIBLE);
         showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         locationTextView.setVisibility(View.GONE);

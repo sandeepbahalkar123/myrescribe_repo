@@ -83,7 +83,11 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
 
     private void init(Bundle args) {
         if (args != null) {
-            BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.clicked_item_data)), true);
+            if(args.getString(getString(R.string.clicked_item_data)).equals("")){
+                BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss),true);
+            }else {
+                BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.clicked_item_data)), true);
+            }
             mSelectedSpeciality = args.getString(getString(R.string.clicked_item_data));
         }
 

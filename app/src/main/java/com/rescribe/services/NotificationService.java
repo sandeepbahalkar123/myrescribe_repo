@@ -21,12 +21,18 @@ import com.rescribe.helpers.investigation.InvestigationHelper;
 import com.rescribe.helpers.notification.NotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.notification.Medication;
+import com.rescribe.model.notification.NotificationData;
 import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
+import static com.facebook.login.widget.ProfilePictureView.TAG;
 
 
 /**
@@ -52,13 +58,14 @@ public class NotificationService extends Service implements HelperResponse {
     Calendar c = Calendar.getInstance();
     int hour24 = c.get(Calendar.HOUR_OF_DAY);
     int Min = c.get(Calendar.MINUTE);
+
     @Override
     public void onCreate() {
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-         this.intent = intent;
+        this.intent = intent;
         if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this).equals(RescribeConstants.YES)) {
 
             notification_id = intent.getIntExtra(RescribeConstants.NOTIFICATION_ID, 0);
@@ -126,7 +133,7 @@ public class NotificationService extends Service implements HelperResponse {
         mRemoteViews.setTextViewText(R.id.timeText, intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME));
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification build = builder.build();
-       // build.flags |= Notification.FLAG_INSISTENT;
+        // build.flags |= Notification.FLAG_INSISTENT;
         notificationmanager.notify(notification_id, build);
 
         stopSelf();
@@ -136,30 +143,50 @@ public class NotificationService extends Service implements HelperResponse {
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
             NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
-            if (prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification() != null) {
-                String slot = CommonMethods.getMealTime(hour24,Min,this);
-                if(slot.equals(getString(R.string.break_fast))){
-                  if(intent.getStringExtra(RescribeConstants.MEDICINE_SLOT).equals(getString(R.string.breakfast_medication))){
-                      customNotification(intent);
-                  }
-              }else if(slot.equals(getString(R.string.mlunch))){
-                  if(intent.getStringExtra(RescribeConstants.MEDICINE_SLOT).equals(getString(R.string.lunch_medication))){
-                      customNotification(intent);
-                  }
-                }else if(slot.equals(getString(R.string.msnacks))){
-                  if(intent.getStringExtra(RescribeConstants.MEDICINE_SLOT).equals(getString(R.string.snacks_medication))){
-                      customNotification(intent);
-                  }
-              }else if(slot.equals(getString(R.string.mdinner))){
-                  if(intent.getStringExtra(RescribeConstants.MEDICINE_SLOT).equals(getString(R.string.dinner_medication))){
-                      customNotification(intent);
-                  }
-              }
-
-
-
+            if (prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification().size() != 0) {
+                List<Medication> notificationDataList = null;
+                NotificationData notificationDataForHeader = new NotificationData();
+                List<NotificationData> notificationListForHeader = new ArrayList<>();
+                List<NotificationData> notificationData = prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification();
+                String date = CommonMethods.getCurrentDateTime();
+                CommonMethods.Log(TAG, date);
+                //Current date and slot data is sorted to show in header of UI
+                for (int k = 0; k < notificationData.size(); k++) {
+                    if (notificationData.get(k).getPrescriptionDate().equals(CommonMethods.getCurrentDateTime())) {
+                        String prescriptionDate = notificationData.get(k).getPrescriptionDate();
+                        notificationDataList = notificationData.get(k).getMedication();
+                        notificationDataForHeader.setMedication(notificationDataList);
+                        notificationDataForHeader.setPrescriptionDate(prescriptionDate);
+                        notificationListForHeader.add(notificationDataForHeader);
+                    }
+                }
+                String slot = CommonMethods.getMealTime(hour24, Min, this);
+                if (slot.equals(getString(R.string.break_fast))) {
+                    for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
+                        if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("breakfastAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("breakfastBefore")) {
+                            customNotification(intent);
+                        }
+                    }
+                } else if (slot.equals(getString(R.string.mlunch))) {
+                    for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
+                        if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("lunchAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("lunchBefore")) {
+                            customNotification(intent);
+                        }
+                    }
+                } else if (slot.equals(getString(R.string.msnacks))) {
+                    for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
+                        if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("snacksAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("snacksBefore")) {
+                            customNotification(intent);
+                        }
+                    }
+                } else if (slot.equals(getString(R.string.mdinner))) {
+                    for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
+                        if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("dinnerAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("dinnerBefore")) {
+                            customNotification(intent);
+                        }
+                    }
+                }
             }
-
         }
     }
 

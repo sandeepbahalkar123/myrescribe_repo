@@ -127,7 +127,7 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
                 break;
             case RescribeConstants.TASK_ADD_VITAL_MANUALLY:
                 Common common = (Common) customResponse;
-                CommonMethods.showToast(this, "" + common.getStatusMessage());
+                CommonMethods.showToast(this, "" + "Vital added successfully.");
                 break;
         }
 

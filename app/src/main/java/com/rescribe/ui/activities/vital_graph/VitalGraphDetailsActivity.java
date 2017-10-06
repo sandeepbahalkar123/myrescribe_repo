@@ -138,7 +138,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 break;
             case RescribeConstants.TASK_ADD_VITAL_MANUALLY:
                 Common common = (Common) customResponse;
-                CommonMethods.showToast(this, "" + common.getStatusMessage());
+                CommonMethods.showToast(this, "" + "Vital added successfully.");
                 mVitalGraphHelper.doGetPatientVitalDetail(mClickedVitalGraphData.getVitalName());
                 break;
         }

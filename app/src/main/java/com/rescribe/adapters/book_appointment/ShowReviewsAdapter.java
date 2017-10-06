@@ -7,10 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.reviews.Review;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -46,10 +49,12 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
     public void onBindViewHolder(ListViewHolder holder, int position) {
 
         final Review doctorObject = mDataList.get(position);
-
-
         holder.reviewName.setText(doctorObject.getRevierName());
         holder.review.setText(doctorObject.getReviewCommment());
+        holder.reviewDate.setText(CommonMethods.getFormattedDate(doctorObject.getReviewDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN,RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+        if(!doctorObject.getRating().equals("NA")) {
+            holder.ratingBar.setRating(Float.parseFloat(doctorObject.getRating()));
+        }
 
     }
 
@@ -63,6 +68,10 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
         CustomTextView reviewName;
         @BindView(R.id.review)
         CustomTextView review;
+        @BindView(R.id.reviewDate)
+        CustomTextView reviewDate;
+        @BindView(R.id.ratingBar)
+        RatingBar ratingBar;
 
         View view;
 

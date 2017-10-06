@@ -50,7 +50,7 @@ import permissions.dispatcher.RuntimePermissions;
  */
 
 @RuntimePermissions
-public class BookAppointmentServices extends AppCompatActivity implements HelperResponse, GoogleApiClient.OnConnectionFailedListener, ServicesAdapter.OnServicesClickListener {
+public class BookAppointmentServices extends AppCompatActivity implements HelperResponse, GoogleApiClient.OnConnectionFailedListener, ServicesAdapter.OnServicesClickListener,GoogleSettingsApi.LocationSettings{
     @BindView(R.id.bookAppointmentToolbar)
     ImageView mBookAppointmentToolbar;
     @BindView(R.id.title)
@@ -75,7 +75,6 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment_services);
         ButterKnife.bind(this);
-       // new GoogleSettingsApi(mContext);
         title.setText(getString(R.string.services));
         initialize();
     }
@@ -93,6 +92,33 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
 
 
     }
+    public void getAddress(double lat, double lng) {
+        Geocoder geocoder = new Geocoder(BookAppointmentServices.this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+
+            if (!addresses.isEmpty()) {
+                Address obj = addresses.get(0);
+
+                System.out.println("obj.getThoroughfare()" + obj.getThoroughfare());
+                System.out.println("obj.getSubLocality()" + obj.getSubLocality());
+                System.out.println("obj.getSubAdminArea()" + obj.getSubAdminArea());
+                System.out.println("obj.getLocality()" + obj.getLocality());
+                System.out.println("obj.getAdminArea()" + obj.getAdminArea());
+                System.out.println("obj.getCountryName()" + obj.getCountryName());
+
+                Log.d("AREA", getArea(obj));
+            }else {
+                Toast.makeText(this, "Address not found.", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     @Override
     protected void onResume() {
@@ -146,15 +172,15 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 onBackPressed();
                 break;
             case R.id.locationTextView:
-                LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+              /* LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
                 boolean enabled = service
                         .isProviderEnabled(LocationManager.GPS_PROVIDER);
                 if (!enabled) {
                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivity(intent);
-                } else {
-                    BookAppointmentServicesPermissionsDispatcher.callPickPlaceWithCheck(this);
-                }
+                } */
+                   new GoogleSettingsApi(this);
+
                 break;
         }
     }
@@ -205,7 +231,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                     e.printStackTrace();
                 }
                 if (addresses != null && addresses.size() > 0) {
-                    String locality = addresses.get(0).getLocality();
+                    String locality = getArea(addresses.get(0));
                     DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality);
                     locationTextView.setText(locality);
                 }
@@ -255,4 +281,8 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         }
     }
 
+    @Override
+    public void gpsStatus() {
+        BookAppointmentServicesPermissionsDispatcher.callPickPlaceWithCheck(this);
+    }
 }

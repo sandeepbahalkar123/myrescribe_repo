@@ -134,6 +134,10 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 doctorList.setLongitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
                 doctorList.setLatitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
                 doctorList.setTotalReview(doctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview());
+                Intent intent = new Intent(MapActivityPlotNearByDoctor.this,ShowMoreInfoBaseActivity.class);
+                intent.putExtra(getString(R.string.toolbarTitle),title.getText().toString());
+                intent.putExtra(getString(R.string.doctor_data),doctorList);
+                startActivity(intent);
              /*   doctorList.setReviewList(doctorLists.get(Integer.parseInt(marker.getTitle())).getReviewList());*/
                /* args.putParcelable(getString(R.string.clicked_item_data), doctorList);
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();

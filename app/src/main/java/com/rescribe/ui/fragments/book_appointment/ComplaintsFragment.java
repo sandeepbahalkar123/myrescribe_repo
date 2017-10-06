@@ -153,6 +153,7 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
 
                     }else{
                         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                        args.putString(getString(R.string.clicked_item_data),"");
                         activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(args), true);
 
                     }
@@ -161,6 +162,7 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
                         Toast.makeText(getActivity(), "Please enter text", Toast.LENGTH_SHORT).show();
                     }else{
                         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                        args.putString(getString(R.string.clicked_item_data),"");
                         activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(args), true);
 
                     }

@@ -29,9 +29,8 @@ public class Config {
 
     //    public static final String BROKER = "tcp://ec2-13-126-175-156.ap-south-1.compute.amazonaws.com:1883";
 
-    public static String BASE_URL = "http://drrescribe.com:3003/";
-    // public static String BASE_URL = "http://192.168.0.182:3003/";
-    public static final String SET_FAVOURITE_URL = "api/doctors/setFavoriteDoctor";
+    // public static String BASE_URL = "http://drrescribe.com:3003/";
+    public static String BASE_URL = "http://192.168.0.182:3003/";
     // public static String BASE_URL = "http://drrescribe.com:3003/";
     public Context mContext;
     //Declared all URL used in app here
@@ -68,6 +67,7 @@ public class Config {
 
     public static final String CHAT_FILE_UPLOAD = "api/upload/chatDoc";
 
+    public static final String SET_FAVOURITE_URL = "api/doctors/setFavoriteDoctor";
 
     //----- vital graph-------------
     public static final String TASK_GET_PATIENT_VITAL_LIST = "api/patient/getPatientVitalList";

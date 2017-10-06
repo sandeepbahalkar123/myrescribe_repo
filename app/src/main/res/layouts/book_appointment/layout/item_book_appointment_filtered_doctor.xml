@@ -24,6 +24,7 @@
         <!--  ListRow Left sied Thumbnail image -->
 
         <LinearLayout
+            android:id="@+id/dataLayout"
             android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"

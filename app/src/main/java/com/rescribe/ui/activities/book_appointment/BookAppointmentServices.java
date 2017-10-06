@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -32,6 +33,8 @@ import com.rescribe.model.book_appointment.ServicesList;
 import com.rescribe.model.book_appointment.ServicesModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.GoogleSettingsApi;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -72,6 +75,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment_services);
         ButterKnife.bind(this);
+       // new GoogleSettingsApi(mContext);
         title.setText(getString(R.string.services));
         initialize();
     }
@@ -211,6 +215,21 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         }
     }
 
+    private String getArea(Address obj) {
+        if (obj.getThoroughfare() != null)
+            return obj.getThoroughfare();
+        else if (obj.getSubLocality() != null)
+            return obj.getSubLocality();
+        else if (obj.getSubAdminArea() != null)
+            return obj.getSubAdminArea();
+        else if (obj.getLocality() != null)
+            return obj.getLocality();
+        else if (obj.getAdminArea() != null)
+            return obj.getAdminArea();
+        else
+            return obj.getCountryName();
+    }
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
@@ -235,4 +254,5 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
             }
         }
     }
+
 }

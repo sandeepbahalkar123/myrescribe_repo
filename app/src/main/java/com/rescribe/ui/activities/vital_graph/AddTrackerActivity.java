@@ -30,6 +30,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.DatePickerDialogListener;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.Common;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphBaseModel;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphData;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphList;
@@ -129,8 +130,8 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
                 setTrackerListAdapter(temp);
                 break;
             case RescribeConstants.TASK_ADD_VITAL_MANUALLY:
-                Common common = (Common) customResponse;
-                CommonMethods.showToast(this, "" + "Vital added successfully.");
+                CommonBaseModelContainer common = (CommonBaseModelContainer) customResponse;
+                CommonMethods.showToast(this, "" + common.getCommonRespose().getStatusMessage());
                 break;
         }
 

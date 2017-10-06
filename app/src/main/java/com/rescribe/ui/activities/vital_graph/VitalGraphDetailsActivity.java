@@ -28,6 +28,7 @@ import com.rescribe.helpers.vital_graph_helper.VitalGraphHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.Common;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphData;
 import com.rescribe.model.vital_graph.vital_description.VitalGraphDetails;
 import com.rescribe.model.vital_graph.vital_description.VitalGraphInfoBaseModel;
@@ -137,8 +138,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 }
                 break;
             case RescribeConstants.TASK_ADD_VITAL_MANUALLY:
-                Common common = (Common) customResponse;
-                CommonMethods.showToast(this, "" + "Vital added successfully.");
+                CommonBaseModelContainer common = (CommonBaseModelContainer) customResponse;
+                CommonMethods.showToast(this, "" + common.getCommonRespose().getStatusMessage());
                 mVitalGraphHelper.doGetPatientVitalDetail(mClickedVitalGraphData.getVitalName());
                 break;
         }

@@ -31,6 +31,7 @@ import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.Connector;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
@@ -602,7 +603,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, vitalGraphTrackerBaseModel, mOldDataTag);
                         break;
                     case RescribeConstants.TASK_ADD_VITAL_MANUALLY: //This is for get vital graph tracker list
-                        Common c = new Gson().fromJson(data, Common.class);
+                        CommonBaseModelContainer c = new Gson().fromJson(data, CommonBaseModelContainer.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, c, mOldDataTag);
                         break;
 

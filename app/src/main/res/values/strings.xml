@@ -304,7 +304,10 @@
     <string name="pending_investigations">Pending Investigations</string>
     <string name="latestvitalreading">Latest Vital Reading</string>
     <string name="doctor_data_for_map">map data</string>
-    <string name="reviews">Reviews</string>
+
+    <string name="do_operation">do_operation</string>
+    <string name="favorite">Favorite</string>
+     <string name="reviews">Reviews</string>
 
 
 </resources>

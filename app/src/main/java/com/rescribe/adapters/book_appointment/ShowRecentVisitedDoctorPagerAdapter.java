@@ -1,4 +1,4 @@
-package com.rescribe.adapters;
+package com.rescribe.adapters.book_appointment;
 
 import android.content.Context;
 import android.os.Parcelable;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.ui.customesViews.CircularImageView;
 
 import java.util.ArrayList;
 
@@ -60,8 +61,8 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.favoriteView);
         final TextView recentVisitView = (TextView) imageLayout
                 .findViewById(R.id.recentVisitView);
-
-
+        final CircularImageView imageURL = (CircularImageView) imageLayout
+                .findViewById(R.id.imageURL);
         if(!doctorLists.get(position).getRecentlyVisited()){
             recentVisitView.setVisibility(View.INVISIBLE);
         }else if(!doctorLists.get(position).getFavourite()){

@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
@@ -81,7 +82,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         holder.doctorName.setText(doctorObject.getDocName());
         holder.doctorType.setText(doctorObject.getSpeciality());
         if (doctorObject.getFavourite()) {
-           // holder.favoriteView.setImageResource();
+            // holder.favoriteView.setImageResource();
         }
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
         holder.doctorAddress.setText(doctorObject.getDoctorAddress());
@@ -121,11 +122,13 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             //--------------
         }
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
+        holder.dataLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.doctor_details));
+
                 mOnFilterDocListClickListener.onClickOfDoctorRowItem(b);
             }
         });
@@ -139,19 +142,28 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                     4, 4 + searchString.length(),//hightlight searchString
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        }
-        if (spannableStringSearch != null) {
+        }        if (spannableStringSearch != null) {
             holder.doctorName.setText(spannableStringSearch);
         } else {
             holder.doctorName.setText(doctorObject.getDocName());
         }
-        if(doctorObject.getFavourite()){
-            holder.favoriteView.setVisibility(View.VISIBLE);
-        }else{
-            holder.favoriteView.setVisibility(View.INVISIBLE);
 
+        if (doctorObject.getFavourite()) {
+            holder.favoriteView.setVisibility(View.VISIBLE);
+        } else {
+            holder.favoriteView.setVisibility(View.INVISIBLE);
         }
 
+
+        holder.favoriteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.favorite));
+                mOnFilterDocListClickListener.onClickOfDoctorRowItem(b);
+            }
+        });
     }
 
     @Override
@@ -181,6 +193,8 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         ImageView favoriteView;
         @BindView(R.id.imageURL)
         CircularImageView imageURL;
+        @BindView(R.id.dataLayout)
+        LinearLayout dataLayout;
 
         View view;
 

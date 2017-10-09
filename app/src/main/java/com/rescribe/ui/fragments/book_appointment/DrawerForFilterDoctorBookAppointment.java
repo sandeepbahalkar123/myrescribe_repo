@@ -33,6 +33,7 @@ import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -412,7 +413,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
             case R.id.resetButton:
                 configureDrawerFieldsData();
                 setDataInDrawerFields();
-                mListener.onReset(true);
+                //mListener.onReset(true);
                 break;
             case R.id.applyButton:
                 BookAppointFilterRequestModel bookAppointFilterRequestModel = new BookAppointFilterRequestModel();
@@ -430,6 +431,8 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                     }
                 }
                 bookAppointFilterRequestModel.setAvailability(temp.toArray(new String[temp.size()]));
+                //------
+                bookAppointFilterRequestModel.setLocationList(mFilterSelectLocationsAdapter.getSelectedLocation().toArray(new String[temp.size()]));
                 //------
                 Bundle b = new Bundle();
                 b.putParcelable(getString(R.string.filter), bookAppointFilterRequestModel);

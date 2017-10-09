@@ -46,39 +46,8 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/showDoctorsRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/pickSpeciality"
-        android:layout_marginTop="@dimen/dp16"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    </android.support.v7.widget.RecyclerView>
-
-    <RelativeLayout
-        android:id="@+id/emptyListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/no_records_found"
-            android:gravity="center"
-            android:orientation="vertical" />
-    </RelativeLayout>
-
     <LinearLayout
+
         android:id="@+id/recentDoctorLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -110,28 +79,16 @@
             layout="@layout/book_appointment_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/rightFab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/filter"
-            android:visibility="gone"
-            app:backgroundTint="@color/Red" />
+    </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/leftFab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/location_based_filter"
-            android:visibility="gone"
-            app:backgroundTint="#00af52" />
+    <LinearLayout
+        android:id="@+id/filterListLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/global_recycle_view_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 </LinearLayout>

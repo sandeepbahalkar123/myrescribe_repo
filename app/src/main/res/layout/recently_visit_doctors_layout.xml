@@ -28,7 +28,7 @@
                 android:layout_height="@dimen/dp50"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dp16"
-                android:src="@drawable/layer_12" />
+                />
 
         </LinearLayout>
 

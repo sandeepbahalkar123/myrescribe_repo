@@ -28,6 +28,7 @@ import com.rescribe.helpers.vital_graph_helper.VitalGraphHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.Common;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphData;
 import com.rescribe.model.vital_graph.vital_description.VitalGraphDetails;
 import com.rescribe.model.vital_graph.vital_description.VitalGraphInfoBaseModel;
@@ -137,8 +138,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 }
                 break;
             case RescribeConstants.TASK_ADD_VITAL_MANUALLY:
-                Common common = (Common) customResponse;
-                CommonMethods.showToast(this, "" + "Vital added successfully.");
+                CommonBaseModelContainer common = (CommonBaseModelContainer) customResponse;
+                CommonMethods.showToast(this, "" + common.getCommonRespose().getStatusMessage());
                 mVitalGraphHelper.doGetPatientVitalDetail(mClickedVitalGraphData.getVitalName());
                 break;
         }
@@ -166,7 +167,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 tempLabels.add(formattedDate);
                 tempLabelsArrayList.add(formattedDate);
                 //----
-                tempEntries.add(new Entry(i, Float.parseFloat(data.getVitalValue())));
+                if (!(RescribeConstants.BLANK.equalsIgnoreCase(data.getVitalValue())))
+                    tempEntries.add(new Entry(i, Float.parseFloat(data.getVitalValue())));
             }
 
             if (tempEntries.size() > 0) {
@@ -353,7 +355,10 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
 
     @OnClick(R.id.addNewTracker)
-    //-- Add Tracker copied from addTrackerActivity.java
+    /**
+     *  Add Tracker copied from addTrackerActivity.java
+     *  In chang over here, also replace with addTrackerActivity.Java
+     */
     public void openAddTrackerDialog() {
         final View modalbottomsheet = getLayoutInflater().inflate(R.layout.add_new_tracker_dialog, null);
         final CustomTextView addTrackerDate = (CustomTextView) modalbottomsheet.findViewById(R.id.addTrackerDate);
@@ -442,7 +447,10 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 if (!isError) {
                     VitalGraphAddNewTrackerRequestModel model = new VitalGraphAddNewTrackerRequestModel();
 
-                    model.setCheckDate(mSelectedTrackerDateToSend);
+                    //-----
+                    DateFormat writeFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.HH_mm_ss);
+                    model.setCheckDate(mSelectedTrackerDateToSend + " " + writeFormat.format(new Date()));
+                    //-----
                     model.setVitalName(mClickedVitalGraphData.getVitalName());
                     if (bloodPressureReadingLayout.getVisibility() == View.VISIBLE) {
                         model.setVitalValue(systolic.getText().toString() + "/" + dystolic.getText().toString());

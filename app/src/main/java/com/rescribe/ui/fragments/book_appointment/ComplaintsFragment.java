@@ -164,7 +164,6 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
                         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
                         args.putString(getString(R.string.clicked_item_data),"");
                         activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(args), true);
-
                     }
                 }
 

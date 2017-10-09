@@ -110,7 +110,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         unbinder = ButterKnife.bind(this, mRootView);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-
         init(mRootView);
         return mRootView;
 
@@ -166,6 +165,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 }
             }
         });
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        bookAppointmentBaseModel = activity.getReceivedBookAppointmentBaseModel();
+        setDoctorListAdapter(bookAppointmentBaseModel);
+        toggleButtons(bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
+
 
     }
 
@@ -242,9 +246,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @Override
     public void onResume() {
         super.onResume();
-        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        bookAppointmentBaseModel = activity.getReceivedBookAppointmentBaseModel();
-        setDoctorListAdapter(bookAppointmentBaseModel);
+
     }
 
     private void setDoctorListAdapter(BookAppointmentBaseModel bookAppointmentBaseModel) {
@@ -254,9 +256,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             emptyListView.setVisibility(View.VISIBLE);
         } else {
             listView.setVisibility(View.VISIBLE);
-            prevBtn.setVisibility(View.GONE);
-            prevBtn.setEnabled(false);
-            nextBtn.setVisibility(View.VISIBLE);
+          /*  prevBtn.setVisibility(View.INVISIBLE);
+            prevBtn.setEnabled(false);*/
             whiteUnderLine.setVisibility(View.VISIBLE);
             searchView.setVisibility(View.VISIBLE);
             emptyListView.setVisibility(View.GONE);

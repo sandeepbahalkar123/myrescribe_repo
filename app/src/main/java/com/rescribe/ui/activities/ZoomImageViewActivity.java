@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.ui.customesViews.zoomview.ZoomageView;
@@ -33,6 +34,8 @@ public class ZoomImageViewActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         RequestOptions requestOptions = new RequestOptions();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
         requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
         requestOptions.error(droidninja.filepicker.R.drawable.image_placeholder);
 

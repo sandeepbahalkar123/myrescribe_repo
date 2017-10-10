@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.doctors.doctor_info.DoctorDetail;
@@ -145,6 +146,8 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
         requestOptions.override(imageSize, imageSize);
         requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
 

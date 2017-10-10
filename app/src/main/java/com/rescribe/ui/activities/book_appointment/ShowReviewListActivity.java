@@ -63,8 +63,7 @@ public class ShowReviewListActivity extends AppCompatActivity implements HelperR
             }
         });
         title.setText(getString(R.string.reviews));
-        showlocation.setVisibility(View.VISIBLE);
-        showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
+        showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
         doctorDataHelper = new DoctorDataHelper(this, this);
         doctorDataHelper.doGetReviewsList(getIntent().getStringExtra(getString(R.string.doctorId)));

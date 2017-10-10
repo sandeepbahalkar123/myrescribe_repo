@@ -43,6 +43,7 @@ import android.widget.RelativeLayout;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.rescribe.R;
@@ -382,6 +383,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             if (!chatList.getImageUrl().equals("")) {
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
+                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.skipMemoryCache(true);
                 requestOptions.override(CommonMethods.convertDpToPixel(40), CommonMethods.convertDpToPixel(40));
                 requestOptions.placeholder(mReceiverDrawable);
                 requestOptions.error(mReceiverDrawable);

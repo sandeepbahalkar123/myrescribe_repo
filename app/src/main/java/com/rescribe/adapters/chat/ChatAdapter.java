@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestListener;
@@ -82,6 +83,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
                 requestOptions.override(100, 100);
+                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.skipMemoryCache(true);
                 requestOptions.transform(new CircleCrop(holder.senderProfilePhoto.getContext()));
                 requestOptions.placeholder(mSelfTextDrawable);
                 Glide.with(holder.senderProfilePhoto.getContext())
@@ -221,6 +224,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
                         RequestOptions requestOptions = new RequestOptions();
                         requestOptions.dontAnimate();
+                        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                        requestOptions.skipMemoryCache(true);
                         requestOptions.override(300, 300);
                         requestOptions.placeholder(R.drawable.image_placeholder);
                         requestOptions.error(R.drawable.image_placeholder);
@@ -292,6 +297,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
             if (!message.getImageUrl().equals("")) {
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
+                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.skipMemoryCache(true);
                 requestOptions.override(100, 100);
                 requestOptions.transform(new CircleCrop(holder.receiverProfilePhoto.getContext()));
                 requestOptions.placeholder(mReceiverTextDrawable);
@@ -425,6 +432,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
                         RequestOptions requestOptions = new RequestOptions();
                         requestOptions.dontAnimate();
+                        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                        requestOptions.skipMemoryCache(true);
                         requestOptions.override(300, 300);
                         requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
                         requestOptions.error(droidninja.filepicker.R.drawable.image_placeholder);

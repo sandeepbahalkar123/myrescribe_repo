@@ -258,13 +258,10 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                     e.printStackTrace();
                 }
                 if (addresses != null && addresses.size() > 0) {
-                    String locality = addresses.get(0).getLocality();
-                    //start from here
-                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), locality);
-                    locationTextView.setText(locality);
-                  //  mDoctorDataHelper.setmGetUserSelectedlocation(locality);
-                  //  locationTextView.setText(mDoctorDataHelper.getmGetUserSelectedlocation());
-                   // locationTextView.setText(locality);
+                    String locality = getArea(addresses.get(0));
+                    String city = addresses.get(0).getLocality();
+                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), locality+getString(R.string.comma)+city);
+                    locationTextView.setText(locality+getString(R.string.comma)+city);
                     isLocationChange = true;
                     mDoctorDataHelper.doGetDoctorData();
 
@@ -273,7 +270,20 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             }
         }
     }
-
+    private String getArea(Address obj) {
+        if (obj.getThoroughfare() != null)
+            return obj.getThoroughfare();
+        else if (obj.getSubLocality() != null)
+            return obj.getSubLocality();
+        else if (obj.getSubAdminArea() != null)
+            return obj.getSubAdminArea();
+        else if (obj.getLocality() != null)
+            return obj.getLocality();
+        else if (obj.getAdminArea() != null)
+            return obj.getAdminArea();
+        else
+            return obj.getCountryName();
+    }
     @Override
     public void onBackPressed() {
 

@@ -308,6 +308,7 @@
     <string name="do_operation">do_operation</string>
     <string name="favorite">Favorite</string>
      <string name="reviews">Reviews</string>
+    <string name="comma">,</string>
 
 
 </resources>

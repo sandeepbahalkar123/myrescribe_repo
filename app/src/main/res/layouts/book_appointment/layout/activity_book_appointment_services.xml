@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -55,7 +55,8 @@
                         android:drawableRight="@drawable/location_icon"
                         android:text="@string/location"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/sp16" />
+                        android:textSize="@dimen/sp12"
+                        app:customFont="@string/roboto_bold" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>

@@ -198,6 +198,7 @@
                         app:customFont="@string/roboto_medium" />
                 </LinearLayout>
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -206,10 +207,11 @@
                     <ImageView
                         android:id="@+id/locationImage"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
                         android:visibility="visible"></ImageView>
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -245,66 +247,11 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/openingTimeLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <!--Not in used, added to maintain gap as per open_today view :START-->
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.01"
-                            android:gravity="center"
-                            android:src="@drawable/clock"
-                            android:visibility="invisible" />
-                        <!--Not in used, added to maintain gap as per open_today view :END-->
-
-                        <LinearLayout
-                            android:layout_width="@dimen/dp0"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <com.rescribe.ui.customesViews.CustomTextView
-                                android:id="@+id/openingTime"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/dp5"
-                                android:text="01:30 pm to 8:30 pm"
-                                android:textAllCaps="true"
-                                android:textSize="@dimen/sp14"
-                                app:customFont="@string/roboto_medium" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/dp10" />
-
-                            <com.rescribe.ui.customesViews.CustomTextView
-                                android:id="@+id/showAllTimeSlotListView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/dp5"
-                                android:text="@string/all_timings"
-                                android:textAllCaps="true"
-                                android:textColor="@color/recentblue"
-                                android:textSize="@dimen/sp14"
-                                app:customFont="@string/roboto_medium" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/dp10" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:id="@+id/allTimingListViewLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/allTimeSlotListView"
@@ -315,18 +262,6 @@
                             android:paddingBottom="@dimen/dp2"
                             android:visibility="visible"
                             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-                        <com.rescribe.ui.customesViews.CustomTextView
-                            android:id="@+id/hideAllTimeSlotListView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center|right"
-                            android:paddingLeft="@dimen/dp5"
-                            android:text="@string/less"
-                            android:textAllCaps="true"
-                            android:textColor="@color/recentblue"
-                            android:textSize="@dimen/sp14"
-                            app:customFont="@string/roboto_medium" />
 
                         <View
                             android:layout_width="match_parent"

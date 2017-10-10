@@ -144,6 +144,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(args), false);*/
             }
         });
+
         ratingBar.setRating(Float.parseFloat(doctorLists.get(Integer.parseInt(marker.getTitle())).getRating()));
         directions.setOnClickListener(new View.OnClickListener() {
             @Override

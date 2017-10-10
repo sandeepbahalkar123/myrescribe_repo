@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.dashboard.DoctorData;
@@ -92,6 +93,8 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
             requestOptions.override(imageSize, imageSize);
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
             requestOptions.placeholder(R.drawable.layer_12);
 
             Glide.with(mContext)

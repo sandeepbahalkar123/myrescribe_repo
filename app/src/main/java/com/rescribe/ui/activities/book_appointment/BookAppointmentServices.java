@@ -172,13 +172,6 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 onBackPressed();
                 break;
             case R.id.locationTextView:
-              /* LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
-                boolean enabled = service
-                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
-                if (!enabled) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intent);
-                } */
                    new GoogleSettingsApi(this);
 
                 break;
@@ -232,8 +225,9 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 }
                 if (addresses != null && addresses.size() > 0) {
                     String locality = getArea(addresses.get(0));
-                    DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality);
-                    locationTextView.setText(locality);
+                    String city = addresses.get(0).getLocality();
+                    DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality+getString(R.string.comma)+city);
+                    locationTextView.setText(locality+getString(R.string.comma)+city);
                 }
                 CommonMethods.Log("Address: ", stBuilder.toString());
 

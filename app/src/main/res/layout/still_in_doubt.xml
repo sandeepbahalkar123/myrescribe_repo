@@ -70,7 +70,7 @@
                     style="@style/CompalintStyle"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
-                    android:hint="Enter your complaint here"
+                    android:hint="Enter your complaint 1 here"
                     android:inputType="text"
                     android:textSize="@dimen/sp16" />
 
@@ -133,7 +133,7 @@
                     style="@style/CompalintStyle"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
-                    android:hint="Enter your complaint here"
+                    android:hint="Enter your complaint 2 here"
                     android:inputType="text"
                     android:textSize="@dimen/sp16" />
 

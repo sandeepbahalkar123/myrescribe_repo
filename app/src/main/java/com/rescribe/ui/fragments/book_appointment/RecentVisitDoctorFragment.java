@@ -52,6 +52,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener {
+
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.circleIndicator)
@@ -195,11 +196,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.viewpager:
-             /*   mStillInDoubtFragment = new StillInDoubtFragment();
-                FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, mStillInDoubtFragment);
-                fragmentTransaction.commit();*/
                 break;
             case R.id.prevBtn:
                 currentPage -= 1;

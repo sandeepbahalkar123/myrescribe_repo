@@ -1,11 +1,13 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -14,30 +16,34 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
-import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -45,7 +51,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 4/10/17.
  */
 
-public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener{
+public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
@@ -53,15 +59,26 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
     CustomTextView title;
     @BindView(R.id.locationTextView)
     CustomTextView locationTextView;
+    @BindView(R.id.showDocDetailBottomSheet)
+    LinearLayout mShowDocDetailBottomSheet;
     @BindView(R.id.showlocation)
     CustomTextView showlocation;
     private GoogleMap mMap;
     Address p1 = null;
-    BottomSheetDialog dialog;
     ArrayList<DoctorList> doctorLists;
     private Intent intent;
     HashMap<String, String> userSelectedLocationInfo;
     private Context mContext;
+
+    //----------
+    TextView doctorName;
+    TextView doctorRating;
+    TextView kilometers;
+    TextView doctorReviews;
+    ImageView directions;
+    RatingBar ratingBar;
+    ImageView moreInfo;
+    //----------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +107,19 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        initializeMarkerBottomSheetViews();
     }
 
-
+/*
     public void init_modal_bottomsheet(final Marker marker) {
+
+        CommonMethods.showToast(this, "clicked");
+        if (dialog != null) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }
         View modalbottomsheet = getLayoutInflater().inflate(R.layout.show_bottom_sheet_on_doctors, null);
         TextView doctorName = (TextView) modalbottomsheet.findViewById(R.id.doctorName);
         TextView doctorRating = (TextView) modalbottomsheet.findViewById(R.id.doctorRating);
@@ -105,9 +131,18 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
 
         // TextView doctorName = (TextView)modalbottomsheet.findViewById(R.id.doctorName);
         dialog = new BottomSheetDialog(this);
+
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                CommonMethods.showToast(MapActivityPlotNearByDoctor.this, "clicked cancel");
+
+            }
+        });
         dialog.setContentView(modalbottomsheet);
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.setCancelable(true);
+
+        //dialog.setCanceledOnTouchOutside(true);
+        // dialog.setCancelable(true);
 
         moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,14 +169,14 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 doctorList.setLongitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
                 doctorList.setLatitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
                 doctorList.setTotalReview(doctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview());
-                Intent intent = new Intent(MapActivityPlotNearByDoctor.this,ShowMoreInfoBaseActivity.class);
-                intent.putExtra(getString(R.string.toolbarTitle),title.getText().toString());
-                intent.putExtra(getString(R.string.doctor_data),doctorList);
+                Intent intent = new Intent(MapActivityPlotNearByDoctor.this, ShowMoreInfoBaseActivity.class);
+                intent.putExtra(getString(R.string.toolbarTitle), title.getText().toString());
+                intent.putExtra(getString(R.string.doctor_data), doctorList);
                 startActivity(intent);
-             /*   doctorList.setReviewList(doctorLists.get(Integer.parseInt(marker.getTitle())).getReviewList());*/
-               /* args.putParcelable(getString(R.string.clicked_item_data), doctorList);
+             *//*   doctorList.setReviewList(doctorLists.get(Integer.parseInt(marker.getTitle())).getReviewList());*//*
+               *//* args.putParcelable(getString(R.string.clicked_item_data), doctorList);
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(args), false);*/
+                activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(args), false);*//*
             }
         });
         ratingBar.setRating(Float.parseFloat(doctorLists.get(Integer.parseInt(marker.getTitle())).getRating()));
@@ -150,7 +185,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
             public void onClick(View v) {
 
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?saddr=" + userSelectedLocationInfo.get(getString(R.string.latitude)) + "," +userSelectedLocationInfo.get(getString(R.string.longitude)) + "&daddr=" + doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude() + "," + doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude()));
+                        Uri.parse("http://maps.google.com/maps?saddr=" + userSelectedLocationInfo.get(getString(R.string.latitude)) + "," + userSelectedLocationInfo.get(getString(R.string.longitude)) + "&daddr=" + doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude() + "," + doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude()));
                 startActivity(intent);
             }
         });
@@ -159,8 +194,8 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
             @Override
             public void onClick(View v) {
                 dialog.setCancelable(true);
-                Intent intent = new Intent(MapActivityPlotNearByDoctor.this,ShowReviewListActivity.class);
-                intent.putExtra(getString(R.string.doctorId), String.valueOf(doctorLists.get(Integer.parseInt(marker.getTitle())).getDocId ()));
+                Intent intent = new Intent(MapActivityPlotNearByDoctor.this, ShowReviewListActivity.class);
+                intent.putExtra(getString(R.string.doctorId), String.valueOf(doctorLists.get(Integer.parseInt(marker.getTitle())).getDocId()));
                 startActivity(intent);
 
             }
@@ -170,9 +205,10 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         dialog.show();
 
-       /* btn_cancel = (Button) modalbottomsheet.findViewById(R.id.btn_cancel);
-        btn_cancel.setOnClickListener(this);*/
-    }
+       *//* btn_cancel = (Button) modalbottomsheet.findViewById(R.id.btn_cancel);
+        btn_cancel.setOnClickListener(this);*//*
+    }*/
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -226,6 +262,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
 
         return location;
     }
+
     public static Bitmap createDrawableFromView(Context context, View view) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay()
@@ -248,11 +285,99 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        if (mShowDocDetailBottomSheet.getVisibility() == View.GONE) {
+            mShowDocDetailBottomSheet.setVisibility(View.VISIBLE);
+            Animation slideUpAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
+                    R.anim.slide_up_animation);
+            mShowDocDetailBottomSheet.startAnimation(slideUpAnimation);
+        }
         init_modal_bottomsheet(marker);
+
         return true;
     }
 
-   /* public BitmapDescriptor getMarkerIcon(String color) {
+    private void initializeMarkerBottomSheetViews() {
+        doctorName = (TextView) findViewById(R.id.doctorName);
+        doctorRating = (TextView) findViewById(R.id.doctorRating);
+        kilometers = (TextView) findViewById(R.id.kilometers);
+        doctorReviews = (TextView) findViewById(R.id.doctorReviews);
+        directions = (ImageView) findViewById(R.id.directions);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        moreInfo = (ImageView) findViewById(R.id.moreInfo);
+    }
+
+    public void init_modal_bottomsheet(final Marker marker) {
+
+        moreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DoctorList doctorList = new DoctorList();
+                doctorList.setAboutDoctor(doctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
+                doctorList.setAmount(doctorLists.get(Integer.parseInt(marker.getTitle())).getAmount());
+                doctorList.setAvailableTimeSlots(doctorLists.get(Integer.parseInt(marker.getTitle())).getAvailableTimeSlots());
+                doctorList.setDegree(doctorLists.get(Integer.parseInt(marker.getTitle())).getDegree());
+                doctorList.setDistance(doctorLists.get(Integer.parseInt(marker.getTitle())).getDistance());
+                doctorList.setDocId(doctorLists.get(Integer.parseInt(marker.getTitle())).getDocId());
+                doctorList.setDocName(doctorLists.get(Integer.parseInt(marker.getTitle())).getDocName());
+                doctorList.setDoctorAddress(doctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorAddress());
+                doctorList.setDoctorImageUrl(doctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorImageUrl());
+                doctorList.setExperience(doctorLists.get(Integer.parseInt(marker.getTitle())).getExperience());
+                doctorList.setFavourite(doctorLists.get(Integer.parseInt(marker.getTitle())).getFavourite());
+                doctorList.setWaitingTime(doctorLists.get(Integer.parseInt(marker.getTitle())).getWaitingTime());
+                doctorList.setTokenNo(doctorLists.get(Integer.parseInt(marker.getTitle())).getTokenNo());
+                doctorList.setSpeciality(doctorLists.get(Integer.parseInt(marker.getTitle())).getSpeciality());
+                doctorList.setRecentlyVisited(doctorLists.get(Integer.parseInt(marker.getTitle())).getRecentlyVisited());
+                doctorList.setOpenToday(doctorLists.get(Integer.parseInt(marker.getTitle())).getOpenToday());
+                doctorList.setMorePracticePlaces(doctorLists.get(Integer.parseInt(marker.getTitle())).getMorePracticePlaces());
+                doctorList.setLongitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
+                doctorList.setLatitude(doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
+                doctorList.setTotalReview(doctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview());
+                Intent intent = new Intent(MapActivityPlotNearByDoctor.this, ShowMoreInfoBaseActivity.class);
+                intent.putExtra(getString(R.string.toolbarTitle), title.getText().toString());
+                intent.putExtra(getString(R.string.doctor_data), doctorList);
+                startActivity(intent);
+             /*   doctorList.setReviewList(doctorLists.get(Integer.parseInt(marker.getTitle())).getReviewList());*/
+               /* args.putParcelable(getString(R.string.clicked_item_data), doctorList);
+                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(args), false);*/
+            }
+        });
+        ratingBar.setRating(Float.parseFloat(doctorLists.get(Integer.parseInt(marker.getTitle())).getRating()));
+        directions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?saddr=" + userSelectedLocationInfo.get(getString(R.string.latitude)) + "," + userSelectedLocationInfo.get(getString(R.string.longitude)) + "&daddr=" + doctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude() + "," + doctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude()));
+                startActivity(intent);
+            }
+        });
+        doctorReviews.setText(getString(R.string.openingbrace) + doctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview() + getString(R.string.closeingbrace));
+        doctorReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapActivityPlotNearByDoctor.this, ShowReviewListActivity.class);
+                intent.putExtra(getString(R.string.doctorId), String.valueOf(doctorLists.get(Integer.parseInt(marker.getTitle())).getDocId()));
+                startActivity(intent);
+
+            }
+        });
+        doctorRating.setText("" + doctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
+        doctorName.setText("" + doctorLists.get(Integer.parseInt(marker.getTitle())).getDocName());
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mShowDocDetailBottomSheet.getVisibility() == View.VISIBLE) {
+            mShowDocDetailBottomSheet.setVisibility(View.GONE);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    /* public BitmapDescriptor getMarkerIcon(String color) {
         float[] hsv = new float[3];
         Color.colorToHSV(Color.parseColor(color), hsv);
         return BitmapDescriptorFactory.defaultMarker(hsv[0]);

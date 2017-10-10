@@ -49,7 +49,7 @@ public class AppointmentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.global_recycle_view_list, container, false);
+        mRootView = inflater.inflate(R.layout.globle_recycle_viewlist, container, false);
 
         mParentActivity = (AppointmentActivity) getActivity();
 

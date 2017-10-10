@@ -1,103 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/transparent"
         android:orientation="vertical">
 
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/doctorName"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="@dimen/dp6"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp16"
-            android:gravity="center_vertical"
-            android:text="Dr. Dinesh Ahir"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp16"
-            app:customFont="@string/roboto_bold" />
-
         <LinearLayout
-            android:layout_width="wrap_content"
+
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp10"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
+            android:background="@color/white"
+            android:orientation="vertical">
 
             <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/doctorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp16"
-                android:text="4.5"
-                android:layout_gravity="center_vertical"
-                android:id="@+id/doctorRating"
-                android:layout_marginBottom="@dimen/dp6"
-                android:textColor="@color/map_green"
-                android:textSize="@dimen/sp16"
-                app:customFont="@string/roboto_regular" />
-            <RatingBar
-                android:id="@+id/ratingBar"
-                style="@style/customRatingBar"
-                android:rating="3"
-                android:layout_marginLeft="@dimen/dp10"
-                android:layout_width="wrap_content"
-                android:layout_height="12dp"
-              />
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp16"
-                android:layout_gravity="center_vertical"
-                android:id="@+id/doctorReviews"
-                android:layout_marginBottom="@dimen/dp6"
+                android:layout_marginTop="@dimen/dp6"
+                android:gravity="center_vertical"
+                android:text="Dr. Dinesh Ahir"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp16"
-                app:customFont="@string/roboto_regular" />
+                app:customFont="@string/roboto_bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/dp10"
+                android:orientation="horizontal">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/dp6"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:text="4.5"
+                    android:textColor="@color/map_green"
+                    android:textSize="@dimen/sp16"
+                    app:customFont="@string/roboto_regular" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="@style/customRatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:rating="3" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorReviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/dp6"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp16"
+                    app:customFont="@string/roboto_regular" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_light"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/dp16"
+            android:paddingTop="@dimen/dp16">
+
+            <ImageView
+                android:id="@+id/moreInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="@dimen/dp4"
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_marginTop="@dimen/dp4"
+                android:src="@drawable/more_info" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/directions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginBottom="@dimen/dp4"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp4"
+                    android:src="@drawable/directions" />
+            </RelativeLayout>
+
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:paddingTop="@dimen/dp16"
-        android:paddingBottom="@dimen/dp16"
-        android:layout_height="wrap_content"
-        android:background="@color/grey_light"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/moreInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="@dimen/dp4"
-            android:layout_marginLeft="@dimen/dp16"
-            android:layout_marginTop="@dimen/dp4"
-            android:src="@drawable/more_info" />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/directions"
-                android:layout_marginRight="@dimen/dp16"
-               android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:layout_marginBottom="@dimen/dp4"
-                android:layout_marginTop="@dimen/dp4"
-                android:src="@drawable/directions" />
-        </RelativeLayout>
-
-    </LinearLayout>
 </LinearLayout>

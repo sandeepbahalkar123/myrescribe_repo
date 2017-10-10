@@ -62,7 +62,7 @@
         </LinearLayout>
 
         <include
-            layout="@layout/global_recycle_view_list"
+            layout="@layout/globle_recycle_viewlist"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </android.support.design.widget.AppBarLayout>

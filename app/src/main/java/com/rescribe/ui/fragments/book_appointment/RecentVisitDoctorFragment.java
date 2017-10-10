@@ -1,6 +1,7 @@
 package com.rescribe.ui.fragments.book_appointment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,6 +37,7 @@ import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorSpeciality;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
+import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
@@ -99,6 +101,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private int currentPage = 0;
     private int totalPages;
     CustomResponse customResponse;
+    private String mReceivedToolBarTitle;
 
     public RecentVisitDoctorFragment() {
 
@@ -127,7 +130,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         }
         //----------
         if (getArguments() != null) {
-            BookAppointDoctorListBaseActivity.setToolBarTitle(getArguments().getString(getString(R.string.title)), true);
+            mReceivedToolBarTitle = getArguments().getString(getString(R.string.title));
+            BookAppointDoctorListBaseActivity.setToolBarTitle(mReceivedToolBarTitle, true);
         }
         //-----------
         searchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {
@@ -220,6 +224,10 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);
                 break;
             case R.id.leftFab:
+                Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
+                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), bookAppointmentBaseModel.getDoctorServicesModel().getDoctorList());
+                intent.putExtra(getString(R.string.toolbarTitle), mReceivedToolBarTitle);
+                startActivity(intent);
               /*  activity = (BookAppointDoctorListBaseActivity) getActivity();
                 activity.loadFragment(ShowNearByDoctorsOnMapFragment.newInstance(new Bundle()), false);*/
                 break;
@@ -307,7 +315,9 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @Override
     public void onClickOfDoctorRowItem(Bundle bundleData) {
         DoctorList doctorList = (DoctorList) bundleData.getParcelable(getString(R.string.clicked_item_data));
-        bundleData.putString(getString(R.string.toolbarTitle), doctorList.getSpeciality());
+        //TODO: This is done as per requirement, need to set "DOCTOR" as toolbarHeader instead respective doc speciality.
+        bundleData.putString(getString(R.string.toolbarTitle), getString(R.string.doctor));//doctorList.getSpeciality()
+
         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
         activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
     }

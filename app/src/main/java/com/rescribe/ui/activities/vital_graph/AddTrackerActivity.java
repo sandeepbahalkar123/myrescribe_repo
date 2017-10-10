@@ -132,6 +132,7 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
             case RescribeConstants.TASK_ADD_VITAL_MANUALLY:
                 CommonBaseModelContainer common = (CommonBaseModelContainer) customResponse;
                 CommonMethods.showToast(this, "" + common.getCommonRespose().getStatusMessage());
+                finish();
                 break;
         }
 

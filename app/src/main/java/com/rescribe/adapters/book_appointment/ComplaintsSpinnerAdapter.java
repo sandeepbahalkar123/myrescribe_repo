@@ -18,17 +18,17 @@ import java.util.ArrayList;
  */
 public class ComplaintsSpinnerAdapter extends BaseAdapter {
     Context mContext;
-    private ArrayList<ComplaintList> complaintLists;
+    private ArrayList<ComplaintList> mComplaintLists;
 
 
     public ComplaintsSpinnerAdapter(Context context, ArrayList<ComplaintList> items) {
         this.mContext = context;
-        this.complaintLists = items;
+        this.mComplaintLists = items;
     }
 
     @Override
     public int getCount() {
-        return complaintLists.size();
+        return mComplaintLists.size();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ComplaintsSpinnerAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         View view = convertView;
-        ComplaintList complaintList = complaintLists.get(position);
+        ComplaintList complaintList = mComplaintLists.get(position);
 
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);

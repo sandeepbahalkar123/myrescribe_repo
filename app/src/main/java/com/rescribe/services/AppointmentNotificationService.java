@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.widget.RemoteViews;
@@ -110,6 +111,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
                 .setAutoCancel(true)
                 // Set RemoteViews into Notification
                 .setContent(mRemoteViews)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) //This sets the sound to play
                 .setStyle(new android.support.v7.app.NotificationCompat.DecoratedCustomViewStyle());
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.appointment));

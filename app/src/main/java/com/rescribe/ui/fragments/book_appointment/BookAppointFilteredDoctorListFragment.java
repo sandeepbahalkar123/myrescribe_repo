@@ -2,7 +2,6 @@ package com.rescribe.ui.fragments.book_appointment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
@@ -24,14 +22,12 @@ import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
-import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,7 +64,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.global_recycle_view_list, container, false);
+        mRootView = inflater.inflate(R.layout.filtered_doc_viewlist_with_bottom_fab_margin, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
 
         init(getArguments());
@@ -87,8 +83,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
 
     private void init(Bundle args) {
         if (args != null) {
-
             mSelectedSpeciality = args.getString(getString(R.string.clicked_item_data));
+            BookAppointDoctorListBaseActivity.setToolBarTitle(mSelectedSpeciality, true);
         }
 
         mLocationFab.setVisibility(View.VISIBLE);
@@ -198,8 +194,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
             case R.id.leftFab:
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intent.putParcelableArrayListExtra(getString(R.string.doctor_data), receivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList());
-                intent.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.clicked_item_data)));
-                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), receivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList());
+                intent.putExtra(getString(R.string.toolbarTitle), mSelectedSpeciality);
                 startActivity(intent);
                 break;
         }

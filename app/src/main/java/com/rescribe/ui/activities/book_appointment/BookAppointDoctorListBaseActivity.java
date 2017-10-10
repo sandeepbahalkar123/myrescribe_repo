@@ -130,7 +130,6 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         if (intent != null) {
             HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
             locationTextView.setText(""+userSelectedLocationInfo.get(getString(R.string.location)));
-          //  locationTextView.setText(mDoctorDataHelper.getmGetUserSelectedlocation());
             title = intent.getStringExtra(getString(R.string.clicked_item_data));
         }
         //------

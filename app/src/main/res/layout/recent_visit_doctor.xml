@@ -87,7 +87,7 @@
         android:layout_height="match_parent">
 
         <include
-            layout="@layout/global_recycle_view_list"
+            layout="@layout/filtered_doc_viewlist_with_bottom_fab_margin"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

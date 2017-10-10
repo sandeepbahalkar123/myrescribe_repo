@@ -2,7 +2,6 @@ package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -38,9 +37,8 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
     CustomTextView doctorAddress;
     @BindView(R.id.recentVisit)
     CustomTextView recentVisit;
-    private Fragment mFragment;
     private Context mContext;
-    private int imageSize;
+    private int mImageSize;
     private ColorGenerator mColorGenerator;
     private ArrayList<DoctorData> mDataList;
 
@@ -49,8 +47,6 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         this.mContext = mContext;
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
-
-
     }
 
     private void setColumnNumber(Context context, int columnNum) {
@@ -58,7 +54,7 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         int widthPixels = metrics.widthPixels;
-        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     @Override
@@ -92,7 +88,7 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         } else {
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
-            requestOptions.override(imageSize, imageSize);
+            requestOptions.override(mImageSize, mImageSize);
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
             requestOptions.placeholder(R.drawable.layer_12);
@@ -154,9 +150,5 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
             ButterKnife.bind(this, view);
             this.view = view;
         }
-    }
-
-    public interface OnFilterDocListClickListener {
-        void onClickOfDoctorRowItem(Bundle bundleData);
     }
 }

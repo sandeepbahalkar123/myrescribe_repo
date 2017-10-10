@@ -15,11 +15,7 @@ import com.rescribe.adapters.book_appointment.ShowReviewsAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
-import com.rescribe.model.book_appointment.reviews.ReviewList;
 import com.rescribe.model.book_appointment.reviews.ReviewListBaseModel;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,7 +60,7 @@ public class ShowReviewsOnDoctorFragment extends Fragment implements HelperRespo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.global_recycle_view_list, container, false);
+        mRootView = inflater.inflate(R.layout.globle_recycle_viewlist, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         init();
         return mRootView;

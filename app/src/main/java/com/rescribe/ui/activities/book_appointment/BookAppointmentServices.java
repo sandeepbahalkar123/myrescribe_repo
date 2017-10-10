@@ -76,6 +76,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         setContentView(R.layout.activity_book_appointment_services);
         ButterKnife.bind(this);
         title.setText(getString(R.string.services));
+        locationTextView.setText(getString(R.string.location));
         initialize();
     }
 
@@ -126,7 +127,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         if(userSelectedLocationInfo.get(getString(R.string.location))==null) {
             locationTextView.setText(getString(R.string.location));
-        }else{
+        }else {
             locationTextView.setText("" + userSelectedLocationInfo.get(getString(R.string.location)));
         }
     }

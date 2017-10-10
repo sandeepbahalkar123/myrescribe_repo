@@ -26,14 +26,12 @@ import butterknife.ButterKnife;
 
 public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.ListViewHolder> {
 
-    private Fragment mFragment;
     private Context mContext;
     private ArrayList<Review> mDataList;
 
     public ShowReviewsAdapter(Context mContext, ArrayList<Review> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
-
 
     }
 
@@ -60,7 +58,6 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
         if(!doctorObject.getRating().equals("NA")) {
             holder.ratingBar.setRating(Float.parseFloat(doctorObject.getRating()));
         }
-
     }
 
     @Override
@@ -86,9 +83,4 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
             this.view = view;
         }
     }
-
-    public interface OnFilterDocListClickListener {
-        void onClickOfDoctorRowItem(Bundle bundleData);
-    }
-
 }

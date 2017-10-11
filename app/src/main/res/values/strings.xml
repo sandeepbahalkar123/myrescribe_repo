@@ -23,6 +23,7 @@
     <string name="enter_full_name">Name</string>
     <string name="enter_email_id">Email ID</string>
     <string name="cancel">Cancel</string>
+    <string name="snooze">Snooze</string>
     <string name="action_settings">Settings</string>
     <string name="internet">Please check your Internet Connection</string>
     <string name="timeout">Timeout error</string>
@@ -307,7 +308,8 @@
 
     <string name="do_operation">do_operation</string>
     <string name="favorite">Favorite</string>
-     <string name="reviews">Reviews</string>
+    <string name="reviews">Reviews</string>
+    <string name="snooze_interval">Select snooze interval</string>
 
 
 </resources>

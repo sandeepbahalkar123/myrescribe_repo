@@ -34,7 +34,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
         <activity
@@ -259,7 +259,8 @@
                 <action android:name="net.gotev.uploadservice.broadcast.status" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".broadcast_receivers.OtpReader"
+        <receiver
+            android:name=".broadcast_receivers.OtpReader"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
@@ -283,6 +284,12 @@
             android:label="@string/title_activity_add_tracker"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".ui.activities.AppointmentAlarmNotify"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="user"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"></activity>
     </application>
 
 </manifest>

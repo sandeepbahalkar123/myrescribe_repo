@@ -36,6 +36,7 @@ import static com.facebook.login.widget.ProfilePictureView.TAG;
 
 
 /**
+ * PRESCRIPTIONS NOTIFICATION SERVICE
  * This service is started when an Alarm has been raised
  * <p>
  * We pop a notification into the status bar for the user to click on

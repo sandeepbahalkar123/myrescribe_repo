@@ -369,10 +369,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                     }
                     startActivity(intent);
 
-                } */ else if (id.equalsIgnoreCase(getString(R.string.logout))) {
+                }  else if (id.equalsIgnoreCase(getString(R.string.logout))) {
                     logout();
 
-                } else if (id.equalsIgnoreCase(getString(R.string.logout))) {
+                }*/ else if (id.equalsIgnoreCase(getString(R.string.logout))) {
                     ActiveRequest activeRequest = new ActiveRequest();
                     activeRequest.setId(Integer.parseInt(patientId));
                     loginHelper.doLogout(activeRequest);
@@ -385,6 +385,14 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.settings))) {
 
+                    //TODO : added for testing purpose, remove it
+                    //----------
+                    Intent popup = new Intent(getApplicationContext(), AppointmentAlarmNotify.class);
+                    popup.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, "message");
+                    popup.putExtra(RescribeConstants.APPOINTMENT_TIME, "notifyTime");
+                    popup.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                    startActivity(popup);
+                    //----------
                 } else if (id.equalsIgnoreCase(getString(R.string.services))) {
                     Intent intent = new Intent(mContext, BookAppointmentServices.class);
                     //    Intent intent = new Intent(mContext, DoctorListToBookAppointment.class);
@@ -514,8 +522,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                 //------------
                 ArrayList<PendingInvestigationData> pendingInvestigationList = dashboardDataModel.getPendingInvestigationList();
                 if (pendingInvestigationList.size() > 2) {
-                    mPendingInvestigationItemFirst.setText(""+pendingInvestigationList.get(0).getSpeciality());
-                    mPendingInvestigationItemSecond.setText(""+pendingInvestigationList.get(1).getSpeciality());
+                    mPendingInvestigationItemFirst.setText("" + pendingInvestigationList.get(0).getSpeciality());
+                    mPendingInvestigationItemSecond.setText("" + pendingInvestigationList.get(1).getSpeciality());
                 }
                 //------------
             }

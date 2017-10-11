@@ -151,17 +151,4 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         return view.equals(object);
     }
 
-    @Override
-    public void restoreState(Parcelable state, ClassLoader loader) {
-    }
-
-    @Override
-    public Parcelable saveState() {
-        return null;
-    }
-
-    @Override
-    public float getPageWidth(int position) {
-        return 0.9f;
-    }
 }

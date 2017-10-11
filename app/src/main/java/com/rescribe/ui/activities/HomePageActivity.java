@@ -3,6 +3,7 @@ package com.rescribe.ui.activities;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -112,7 +113,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
     Calendar c = Calendar.getInstance();
     int hour24 = c.get(Calendar.HOUR_OF_DAY);
     int Min = c.get(Calendar.MINUTE);
-    public ViewPager mViewPager;
     private ShowDoctorViewPagerAdapter mShowDoctorViewPagerAdapter;
     private ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter;
 
@@ -122,7 +122,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_drawer_new);
         ButterKnife.bind(this);
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         dashboardHelper = new DashboardHelper(this, this);
@@ -485,40 +484,27 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
 
                 // Disable clip to padding
                 viewPagerDoctorItem.setClipToPadding(false);
-                // set padding manually, the more you set the padding the more you see of prev & next page
-                viewPagerDoctorItem.setPadding(70, 0, 45, 0);
-                // sets a margin b/w individual pages to ensure that there is a gap b/w them
-//                viewPagerDoctorItem.setPageMargin(20);
+
+                int pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
+                viewPagerDoctorItem.setPadding(pager_padding, 0, pager_padding, 0);
+                int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
+                viewPagerDoctorItem.setPageMargin(pager_margin);
+
                 mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, dashboardDataModel.getDoctorList());
                 viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
                 viewpager.setOffscreenPageLimit(10);
 
+                final int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
+                final int scrollPixels = widthPixels * mShowDoctorViewPagerAdapter.getCount();
+                final int exactScroll = scrollPixels - widthPixels;
+                int itemWidth = (widthPixels - (pager_padding * 2)) + pager_margin;
+                final int scrollWidth = itemWidth * (mShowDoctorViewPagerAdapter.getCount() - 1);
+
                 viewPagerDoctorItem.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                        viewpager.getChildAt(position).setScrollX(viewPagerDoctorItem.getChildAt(position).getScrollX());
-
-                        if (mShowBackgroundViewPagerAdapter.getCount() == (position + 2)) {
-                            viewpager.setScrollX(viewPagerDoctorItem.getScrollX() + Math.round(viewPagerDoctorItem.getScrollX() * .32f));
-                        } else {
-                            viewpager.setScrollX(viewPagerDoctorItem.getScrollX() + Math.round(viewPagerDoctorItem.getScrollX() * .25f));
-                        }
-
-                        Log.d("Position", position + "");
-
-                        /*
-                        int parentScrollSize = viewpager.getScrollBarSize();
-                        int childScrollSize = viewPagerDoctorItem.getScrollBarSize();
-
-                        int percentP = (parentScrollSize / childScrollSize);
-                        int percentC = (childScrollSize / parentScrollSize);
-
-                        if (mShowBackgroundViewPagerAdapter.getCount() == (position + 1)) {
-                            viewpager.setScrollX(Math.round(viewPagerDoctorItem.getScrollX() * 1.5f));
-                        } else {
-                            viewpager.setScrollX(Math.round(viewPagerDoctorItem.getScrollX() * 1.24f));
-                        }*/
-
+                        float ans = (float) (exactScroll * viewPagerDoctorItem.getScrollX()) / scrollWidth;
+                        viewpager.setScrollX((int) ans);
                     }
 
                     @Override

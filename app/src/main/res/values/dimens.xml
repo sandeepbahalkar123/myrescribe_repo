@@ -48,4 +48,7 @@
     <dimen name="dp68">68dp</dimen>
     <dimen name="dp36">36dp</dimen>
 
+    <dimen name="pager_padding">38dp</dimen>
+    <dimen name="pager_margin">8dp</dimen>
+
 </resources>

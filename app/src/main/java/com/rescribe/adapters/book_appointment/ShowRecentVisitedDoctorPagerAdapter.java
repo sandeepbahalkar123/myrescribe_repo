@@ -152,16 +152,4 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         return null;
     }
 
-
-   /* public void addItem() {
-        mSize++;
-        notifyDataSetChanged();
-    }
-
-    public void removeItem() {
-        mSize--;
-        mSize = mSize < 0 ? 0 : mSize;
-
-        notifyDataSetChanged();
-    }*/
 }

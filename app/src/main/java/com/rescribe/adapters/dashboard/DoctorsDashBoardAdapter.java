@@ -60,7 +60,7 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.doctor_list_item_dashboard, parent, false);
+                .inflate(R.layout.overlapping_recycler_view, parent, false);
 
         return new ListViewHolder(itemView);
     }

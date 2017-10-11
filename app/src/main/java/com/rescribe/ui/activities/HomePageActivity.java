@@ -8,10 +8,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,6 +26,8 @@ import com.rescribe.adapters.dashboard.DoctorsDashBoardAdapter;
 import com.rescribe.adapters.dashboard.HealthBlogAdapter;
 import com.rescribe.adapters.dashboard.HealthOffersAdapter;
 import com.rescribe.adapters.dashboard.MenuDashBoardAdapter;
+import com.rescribe.adapters.dashboard.ShowBackgroundViewPagerAdapter;
+import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
 import com.rescribe.adapters.dashboard.TipAndJokeAdapter;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -71,10 +75,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
     private static final long MANAGE_ACCOUNT = 121;
     private static final long ADD_ACCOUNT = 122;
     private static final String TAG = "HomePage";
-    @BindView(R.id.menuListView)
-    RecyclerView menuListView;
-    @BindView(R.id.doctorListView)
-    RecyclerView doctorListView;
+    @BindView(R.id.viewpager)
+    ViewPager viewpager;
+    @BindView(R.id.viewPagerDoctorItem)
+    ViewPager viewPagerDoctorItem;
     @BindView(R.id.healthBlogListView)
     RecyclerView healthBlogListView;
     @BindView(R.id.listView)
@@ -108,6 +112,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
     Calendar c = Calendar.getInstance();
     int hour24 = c.get(Calendar.HOUR_OF_DAY);
     int Min = c.get(Calendar.MINUTE);
+    public ViewPager mViewPager;
+    private ShowDoctorViewPagerAdapter mShowDoctorViewPagerAdapter;
+    private ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter;
 
 
     @Override
@@ -115,6 +122,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_drawer_new);
         ButterKnife.bind(this);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         dashboardHelper = new DashboardHelper(this, this);
@@ -468,16 +476,66 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
             if (dashboardDataModel != null) {
 
                 //----------
-                menuDashBoardAdapter = new MenuDashBoardAdapter(this, dashboardDataModel.getServicesList());
+                /*menuDashBoardAdapter = new MenuDashBoardAdapter(this, dashboardDataModel.getServicesList());
                 menuListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
                 menuListView.setHasFixedSize(true);
-                menuListView.setAdapter(menuDashBoardAdapter);
+                menuListView.setAdapter(menuDashBoardAdapter);*/
+                mShowDoctorViewPagerAdapter = new ShowDoctorViewPagerAdapter(this, dashboardDataModel.getDoctorList());
+                viewPagerDoctorItem.setAdapter(mShowDoctorViewPagerAdapter);
 
+                // Disable clip to padding
+                viewPagerDoctorItem.setClipToPadding(false);
+                // set padding manually, the more you set the padding the more you see of prev & next page
+                viewPagerDoctorItem.setPadding(70, 0, 45, 0);
+                // sets a margin b/w individual pages to ensure that there is a gap b/w them
+//                viewPagerDoctorItem.setPageMargin(20);
+                mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, dashboardDataModel.getDoctorList());
+                viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
+                viewpager.setOffscreenPageLimit(10);
+
+                viewPagerDoctorItem.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//                        viewpager.getChildAt(position).setScrollX(viewPagerDoctorItem.getChildAt(position).getScrollX());
+
+                        if (mShowBackgroundViewPagerAdapter.getCount() == (position + 2)) {
+                            viewpager.setScrollX(viewPagerDoctorItem.getScrollX() + Math.round(viewPagerDoctorItem.getScrollX() * .32f));
+                        } else {
+                            viewpager.setScrollX(viewPagerDoctorItem.getScrollX() + Math.round(viewPagerDoctorItem.getScrollX() * .25f));
+                        }
+
+                        Log.d("Position", position + "");
+
+                        /*
+                        int parentScrollSize = viewpager.getScrollBarSize();
+                        int childScrollSize = viewPagerDoctorItem.getScrollBarSize();
+
+                        int percentP = (parentScrollSize / childScrollSize);
+                        int percentC = (childScrollSize / parentScrollSize);
+
+                        if (mShowBackgroundViewPagerAdapter.getCount() == (position + 1)) {
+                            viewpager.setScrollX(Math.round(viewPagerDoctorItem.getScrollX() * 1.5f));
+                        } else {
+                            viewpager.setScrollX(Math.round(viewPagerDoctorItem.getScrollX() * 1.24f));
+                        }*/
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int position) {
+//                        viewpager.setCurrentItem(position, true);
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                });
                 //----------
-                doctorsDashBoardAdapter = new DoctorsDashBoardAdapter(this, dashboardDataModel.getDoctorList());
+              /*  doctorsDashBoardAdapter = new DoctorsDashBoardAdapter(this, dashboardDataModel.getDoctorList());
                 doctorListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
                 doctorListView.setHasFixedSize(true);
-                doctorListView.setAdapter(doctorsDashBoardAdapter);
+                doctorListView.setAdapter(doctorsDashBoardAdapter);*/
                 //----------
                 mHealthOffersAdapter = new HealthOffersAdapter(this, dashboardDataModel.getHealthOffersList());
                 healthOfferslistView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -514,8 +572,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                 //------------
                 ArrayList<PendingInvestigationData> pendingInvestigationList = dashboardDataModel.getPendingInvestigationList();
                 if (pendingInvestigationList.size() > 2) {
-                    mPendingInvestigationItemFirst.setText(""+pendingInvestigationList.get(0).getSpeciality());
-                    mPendingInvestigationItemSecond.setText(""+pendingInvestigationList.get(1).getSpeciality());
+                    mPendingInvestigationItemFirst.setText("" + pendingInvestigationList.get(0).getSpeciality());
+                    mPendingInvestigationItemSecond.setText("" + pendingInvestigationList.get(1).getSpeciality());
                 }
                 //------------
             }

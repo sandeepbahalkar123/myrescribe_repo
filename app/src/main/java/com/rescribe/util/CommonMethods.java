@@ -38,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 public class CommonMethods {
@@ -195,6 +196,27 @@ public class CommonMethods {
         Date date = new Date(cal.getTimeInMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat(inFormat, Locale.US);
         return dateFormat.format(date);
+    }
+
+    public static int getAge(int year, int month, int day) {
+
+        GregorianCalendar cal = new GregorianCalendar();
+        int y, m, d, noofyears;
+
+        y = cal.get(Calendar.YEAR);// current year ,
+        m = cal.get(Calendar.MONTH);// current month
+        d = cal.get(Calendar.DAY_OF_MONTH);//current day
+        cal.set(year, month, day);// here ur date
+        noofyears = y - cal.get(Calendar.YEAR);
+        if ((m < cal.get(Calendar.MONTH))
+                || ((m == cal.get(Calendar.MONTH)) && (d < cal
+                .get(Calendar.DAY_OF_MONTH)))) {
+            --noofyears;
+        }
+        if (noofyears < 0)
+            throw new IllegalArgumentException("age < 0");
+        System.out.println(noofyears);
+        return noofyears;
     }
 
     public static String getDayFromDate(String dateFormat, String date) {

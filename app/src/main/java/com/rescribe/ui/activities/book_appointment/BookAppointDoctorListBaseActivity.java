@@ -305,7 +305,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                     }
                     //-------
                     //DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), placename + ", " + city);
-                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), locality + ", " + city);
+                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), placename + ", " + city);
                     // setSelectedLocationText(locality + ", " + city);
                     //-------
                     HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
@@ -321,7 +321,6 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             }
         }
     }
-
     private String getArea(Address obj) {
 
         /*if (obj.getThoroughfare() != null)

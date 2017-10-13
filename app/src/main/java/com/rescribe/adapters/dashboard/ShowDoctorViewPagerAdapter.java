@@ -63,7 +63,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup view, int position) {
-        View imageLayout = mInflater.inflate(R.layout.doctor_list_item_dashboard, view, false);
+        View imageLayout = mInflater.inflate(R.layout.doctor_details_view_item, view, false);
         assert imageLayout != null;
 
 
@@ -73,16 +73,21 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.doctorType);
         final CustomTextView doctorExperience = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorExperience);
+        final CustomTextView doctorRating = (CustomTextView) imageLayout
+                .findViewById(R.id.doctorRating);
         final CustomTextView doctorAddress = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorAddress);
+
         final CustomTextView feesToPaid = (CustomTextView) imageLayout
                 .findViewById(R.id.feesToPaidVisit);
         final CustomTextView doctorCategory = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorCategoryVisit);
         final ImageView favorite = (ImageView) imageLayout
                 .findViewById(R.id.favorite);
-        final CustomTextView recentVisit = (CustomTextView) imageLayout
-                .findViewById(R.id.recentVisit);
+        final ImageView bookAppointmentButton = (ImageView) imageLayout
+                .findViewById(R.id.bookAppointmentButton);
+       final CustomTextView doctorAppointmentDate = (CustomTextView) imageLayout
+                .findViewById(R.id.doctorAppointmentDate);
         final CircularImageView imageURL = (CircularImageView) imageLayout
                 .findViewById(R.id.imageURL);
         final LinearLayout thumbnail = (LinearLayout) imageLayout
@@ -123,16 +128,33 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
         doctorAddress.setText(doctorObject.getDoctorAddress());
         doctorCategory.setText(doctorObject.getCategoryName());
-        feesToPaid.setText(doctorObject.getAmount());
-        if (doctorObject.getRecentlyVisited()) {
+        doctorRating.setText(doctorObject.getRating());
+        SpannableString content = new SpannableString("Oct 18,2017");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        doctorAppointmentDate.setText(content);
+
+        if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
+            bookAppointmentButton.setVisibility(View.INVISIBLE);
+            doctorAppointmentDate.setVisibility(View.VISIBLE);
+        }else{
+          bookAppointmentButton.setVisibility(View.VISIBLE);
+           doctorAppointmentDate.setVisibility(View.INVISIBLE);
+        }
+      /*  if (doctorObject.getRecentlyVisited()) {
             recentVisit.setVisibility(View.VISIBLE);
         } else {
             recentVisit.setVisibility(View.GONE);
-        }
+        }*/
         if (doctorObject.getFavourite()) {
             favorite.setVisibility(View.VISIBLE);
         } else {
-            favorite.setVisibility(View.INVISIBLE);
+            favorite.setVisibility(View.GONE);
+        }
+        if(doctorObject.getAmount().equals("")){
+            feesToPaid.setVisibility(View.GONE);
+        }else{
+            feesToPaid.setVisibility(View.VISIBLE);
+            feesToPaid.setText(doctorObject.getAmount());
         }
         view.addView(imageLayout, 0);
 

@@ -165,6 +165,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/dp16"
                 android:gravity="center"
+                android:visibility="invisible"
                 android:layout_marginTop="@dimen/dp30"
                 android:orientation="vertical">
 

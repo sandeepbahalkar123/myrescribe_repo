@@ -1,8 +1,9 @@
 package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,10 +34,6 @@ import butterknife.ButterKnife;
 
 public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoardAdapter.ListViewHolder> {
 
-    @BindView(R.id.doctorAddress)
-    CustomTextView doctorAddress;
-    @BindView(R.id.recentVisit)
-    CustomTextView recentVisit;
     private Context mContext;
     private int mImageSize;
     private ColorGenerator mColorGenerator;
@@ -60,7 +57,7 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.overlapping_recycler_view, parent, false);
+                .inflate(R.layout.doctor_details_view_item, parent, false);
 
         return new ListViewHolder(itemView);
     }
@@ -104,7 +101,11 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         holder.doctorAddress.setText(doctorObject.getDoctorAddress());
         holder.doctorCategory.setText(doctorObject.getCategoryName());
         holder.feesToPaid.setText(doctorObject.getAmount());
-        if (doctorObject.getRecentlyVisited()) {
+        SpannableString content = new SpannableString("");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        holder.doctorAppointmentDate.setText(content);
+
+       /* if (doctorObject.getRecentlyVisited()) {
             holder.recentVisit.setVisibility(View.VISIBLE);
         } else {
             holder.recentVisit.setVisibility(View.GONE);
@@ -113,7 +114,7 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
             holder.favorite.setVisibility(View.VISIBLE);
         } else {
             holder.favorite.setVisibility(View.INVISIBLE);
-        }
+        }*/
     }
 
     @Override
@@ -122,8 +123,10 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
+        /*@BindView(R.id.recentVisit)
+        CustomTextView recentVisit;
         @BindView(R.id.favorite)
-        ImageView favorite;
+        ImageView favorite;*/
         @BindView(R.id.imageURL)
         CircularImageView imageURL;
         @BindView(R.id.thumbnail)
@@ -136,12 +139,14 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         CustomTextView doctorExperience;
         @BindView(R.id.doctorAddress)
         CustomTextView doctorAddress;
-        @BindView(R.id.recentVisit)
-        CustomTextView recentVisit;
         @BindView(R.id.doctorCategoryVisit)
         CustomTextView doctorCategory;
         @BindView(R.id.feesToPaidVisit)
         CustomTextView feesToPaid;
+        @BindView(R.id.bookAppointmentButton)
+        ImageView bookAppointmentButton;
+        @BindView(R.id.doctorAppointmentDate)
+        CustomTextView doctorAppointmentDate;
 
         View view;
 

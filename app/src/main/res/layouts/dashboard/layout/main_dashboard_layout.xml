@@ -1,51 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.v4.widget.NestedScrollView
+    <FrameLayout
+        android:id="@+id/sliderView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="300dp">
 
-        <LinearLayout
+        <com.rescribe.ui.customesViews.NonSwipeableViewPager
+            android:id="@+id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp10"
-            android:background="@color/white"
-            android:orientation="vertical">
+            android:layout_height="220dp" />
 
-            <include
-                layout="@layout/doctor_options"
-                android:visibility="visible" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPagerDoctorItem"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/dp16"
+            android:visibility="visible" />
+    </FrameLayout>
 
-            <include
-                layout="@layout/health_offers_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp10"
-                android:visibility="visible" />
+    <View
+        android:id="@+id/dividerView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/sliderView"
+        android:background="@color/divider" />
 
-            <include
-                layout="@layout/investigations_vital_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp10" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/menuOptionsListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/doctorOptionsView"
+        android:layout_below="@+id/dividerView"
+        android:dividerHeight="1dp">
 
-            <include
-                layout="@layout/health_blog_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp10"
-                android:visibility="visible" />
+    </android.support.v7.widget.RecyclerView>
 
-            <include
-                layout="@layout/globle_recycle_viewlist"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp10" />
+    <LinearLayout
+        android:id="@+id/doctorOptionsView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#2a2a2a"
+        android:orientation="vertical">
 
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+        <include layout="@layout/doctor_options" />
 
-</LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/menuIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp10"
+        android:paddingEnd="@dimen/dp12"
+        android:paddingLeft="@dimen/dp12"
+        android:paddingRight="@dimen/dp12"
+        android:paddingStart="@dimen/dp12"
+        android:paddingTop="@dimen/dp10"
+        android:src="@drawable/menu_button_3_x" />
+
+</RelativeLayout>

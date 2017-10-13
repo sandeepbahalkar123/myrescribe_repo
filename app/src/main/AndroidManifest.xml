@@ -63,6 +63,10 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.activities.find_doctors.FindDoctorsActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.activities.PhoneNoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/phone_no_activity"
@@ -81,6 +85,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.book_appointment.ShowMoreInfoBaseActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/log_in"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.health_repository.HealthRepository"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/log_in"
             android:screenOrientation="portrait"

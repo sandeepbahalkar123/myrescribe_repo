@@ -181,6 +181,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:visibility="invisible"
                     android:id="@+id/gMapLocationView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -195,6 +196,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="2.1 KM"
+                    android:visibility="invisible"
                     android:textAllCaps="false"
                     android:textColor="@color/dose_completed"
                     android:textSize="@dimen/sp11"

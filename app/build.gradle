@@ -51,7 +51,10 @@ android {
                             'src/main/res/layouts/my_records',
                             'src/main/res/layouts/vital_graph',
                             'src/main/res/layouts/book_appointment',
-                            'src/main/res/layouts/dashboard'
+                            'src/main/res/layouts/dashboard',
+                            'src/main/res/layouts/find_doctors',
+                            'src/main/res/layouts/health_repository'
+
                     ]
         }
     }

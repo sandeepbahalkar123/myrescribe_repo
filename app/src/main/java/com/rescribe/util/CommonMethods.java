@@ -627,7 +627,7 @@ public class CommonMethods {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.gynecologist;
-        if (caseStudyName.equalsIgnoreCase("Doctor"))
+        if (caseStudyName.equalsIgnoreCase("Doctors"))
             abbreviation = R.drawable.doctor;
         else if (caseStudyName.equalsIgnoreCase("Hospitals"))
             abbreviation = R.drawable.hospital_practices;

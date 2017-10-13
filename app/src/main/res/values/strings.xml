@@ -194,7 +194,7 @@
     <string name="doctor_activity">Doctor Activity</string>
     <string name="pick_speciality">Pick Speciality</string>
     <string name="details_note"><![CDATA[Your details will remain 100% private & secure. If you think you have medical emergency, contact your doctor immediately.]]></string>
-    <string name="vital_graph">Vital Graph</string>
+    <string name="vital_graph">Vital Graphs</string>
     <string name="post_your_query">Post Your Query</string>
     <string name="cardiologist">cardiologist</string>
     <string name="ophthalmologist">ophthalmologist</string>
@@ -309,6 +309,17 @@
     <string name="favorite">Favorite</string>
      <string name="reviews">Reviews</string>
     <string name="comma">,</string>
+    <string name="alerts">Alerts</string>
+    <string name="profile">Profile</string>
+    <string name="support">Support</string>
+    <string name="find_doctors">Find Doctors</string>
+    <string name="on_going_treatment">On Going Treatment</string>
+    <string name="health_repository">Health Repository</string>
+    <string name="health_offers">Health Offers</string>
+    <string name="health_education">Health Education</string>
+    <string name="consult_online">Consult Online</string>
+    <string name="doctor_visit">Doctor Visits</string>
+    <string name="saved_articles">Saved Articles</string>
 
 
 </resources>

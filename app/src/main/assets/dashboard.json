@@ -27,11 +27,12 @@
         "amount": 500,
         "recentlyVisited": true,
         "favourite": false,
-        "degree": "MBBS,MD-Medicine,Neurology"
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "rating": "4.2"
       },
       {
         "docId": 5,
-        "categoryName": "Sponsored",
+        "categoryName": "Sponsored Doctor",
         "docName": "Dr. Suresh Shah",
         "doctorImageUrl": "",
         "speciality": "Dermatology",
@@ -40,11 +41,12 @@
         "amount": 200,
         "recentlyVisited": false,
         "favourite": true,
-        "degree": "MBBS, MD - Dermatology"
+        "degree": "MBBS, MD - Dermatology",
+        "rating": "3.2"
       },
       {
         "docId": 6,
-        "categoryName": "Recently Visited",
+        "categoryName": "Recently Visited Doctor",
         "docName": "Dr. Kishor Kulkarni",
         "doctorImageUrl": "",
         "speciality": "Cardiology",
@@ -53,7 +55,8 @@
         "amount": 300,
         "recentlyVisited": true,
         "favourite": true,
-        "degree": "MBBS, MD-Medicine, Cardiology"
+        "degree": "MBBS, MD-Medicine, Cardiology",
+        "rating": "4.8"
       }
     ],
     "pendingInvestigationList": [

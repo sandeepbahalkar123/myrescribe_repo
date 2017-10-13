@@ -264,7 +264,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         } else {
 
             // TODO, THIS IS ADDED FOR NOW, OPEN ONLY IF clicked value == DOCTOR
-            if (servicesObject.getServiceName().equalsIgnoreCase(getString(R.string.doctor))) {
+            if (servicesObject.getServiceName().equalsIgnoreCase(getString(R.string.doctorss))) {
                 Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
                 intent.putExtra(getString(R.string.location_address), address);
                 intent.putExtra(getString(R.string.latitude), latitude);

@@ -35,7 +35,12 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
     private Context mContext;
     private int mImageSize;
     private ColorGenerator mColorGenerator;
+    Integer[] mImageId = {
+            R.drawable.background_dashboard1,
+            R.drawable.background_dashboard2,
+            R.drawable.background_dashboard3
 
+    };
 
     public ShowBackgroundViewPagerAdapter(Context context, ArrayList<DoctorData> doctorLists) {
         this.mContext = context;
@@ -60,6 +65,9 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
         View imageLayout = mInflater.inflate(R.layout.background_item, view, false);
         assert imageLayout != null;
 
+        final ImageView dashboardBackgroundLayout = (ImageView) imageLayout
+                .findViewById(R.id.dashboardBackgroundLayout);
+        dashboardBackgroundLayout.setImageResource(mImageId[position]);
 
        /* final CustomTextView doctorNameTextView = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorName);

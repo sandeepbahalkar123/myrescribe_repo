@@ -83,10 +83,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
 
     private void init(Bundle args) {
         if (args != null) {
-            //---------
             mSelectedSpeciality = args.getString(getString(R.string.clicked_item_data));
             BookAppointDoctorListBaseActivity.setToolBarTitle(mSelectedSpeciality, true);
-            //---------
         }
 
         mLocationFab.setVisibility(View.VISIBLE);
@@ -105,6 +103,11 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
         receivedBookAppointmentBaseModel = activity.getReceivedBookAppointmentBaseModel();
         setDoctorListAdapter(receivedBookAppointmentBaseModel);
+        if (args.getString(getString(R.string.clicked_item_data)).equals("")) {
+            BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss), true);
+        } else {
+            BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.clicked_item_data)), true);
+        }
     }
 
     private void setDoctorListAdapter(BookAppointmentBaseModel receivedBookAppointmentBaseModel) {

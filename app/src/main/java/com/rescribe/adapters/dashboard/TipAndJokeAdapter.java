@@ -26,7 +26,6 @@ import butterknife.ButterKnife;
 
 public class TipAndJokeAdapter extends RecyclerView.Adapter<TipAndJokeAdapter.ListViewHolder> {
 
-
     private ArrayList<TipAndJokData> mTipAndJokDataList;
     private Context mContext;
     Integer[] imageId = {
@@ -80,5 +79,4 @@ public class TipAndJokeAdapter extends RecyclerView.Adapter<TipAndJokeAdapter.Li
             this.view = view;
         }
     }
-
 }

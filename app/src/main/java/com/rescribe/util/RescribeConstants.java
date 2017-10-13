@@ -207,6 +207,7 @@ public class RescribeConstants {
         public static int ONE_SECONDS = 1000;
         public static int TWO_SECONDS = 2000;
         public static int THREE_SECONDS = 3000;
+        public static int FIVE_FIFTY = 500;
     }
 
     public static class FILE {

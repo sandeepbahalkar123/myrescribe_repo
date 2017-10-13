@@ -28,11 +28,8 @@ import butterknife.ButterKnife;
 
 public class HealthOffersAdapter extends RecyclerView.Adapter<HealthOffersAdapter.ListViewHolder> {
 
-
-    private Fragment mFragment;
     private Context mContext;
     private ArrayList<HealthOffersData> mDataList;
-    private RemoteViews remoteviews;
 
     public HealthOffersAdapter(Context mContext, ArrayList<HealthOffersData> dataList) {
         this.mDataList = dataList;
@@ -51,12 +48,10 @@ public class HealthOffersAdapter extends RecyclerView.Adapter<HealthOffersAdapte
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-
         final HealthOffersData doctorObject = mDataList.get(position);
 
         holder.fees.setText(doctorObject.getActualPrice());
         holder.fees.setPaintFlags(holder.fees.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
         holder.discountAmount.setText(doctorObject.getDiscountedPrice());
         holder.percentOff.setText(doctorObject.getDiscountPercentage() + "%");
         holder.saleImage.setImageResource(CommonMethods.getDiagnosticCentreImages(doctorObject.getDiagnosticCentreName()));
@@ -90,9 +85,5 @@ public class HealthOffersAdapter extends RecyclerView.Adapter<HealthOffersAdapte
             ButterKnife.bind(this, view);
             this.view = view;
         }
-    }
-
-    public interface OnFilterDocListClickListener {
-        void onClickOfDoctorRowItem(Bundle bundleData);
     }
 }

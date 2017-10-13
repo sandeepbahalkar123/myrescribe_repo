@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -39,6 +38,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -50,7 +50,7 @@ import permissions.dispatcher.RuntimePermissions;
  */
 
 @RuntimePermissions
-public class BookAppointmentServices extends AppCompatActivity implements HelperResponse, GoogleApiClient.OnConnectionFailedListener, ServicesAdapter.OnServicesClickListener,GoogleSettingsApi.LocationSettings{
+public class BookAppointmentServices extends AppCompatActivity implements HelperResponse, GoogleApiClient.OnConnectionFailedListener, ServicesAdapter.OnServicesClickListener, GoogleSettingsApi.LocationSettings {
     @BindView(R.id.bookAppointmentToolbar)
     ImageView mBookAppointmentToolbar;
     @BindView(R.id.title)
@@ -67,7 +67,6 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     String latitude = "";
     String longitude = "";
     String address;
-    DoctorDataHelper doctorDataHelper;
     private DoctorDataHelper mDoctorDataHelper;
 
     @Override
@@ -76,6 +75,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         setContentView(R.layout.activity_book_appointment_services);
         ButterKnife.bind(this);
         title.setText(getString(R.string.services));
+        locationTextView.setText(getString(R.string.location));
         initialize();
     }
 
@@ -92,6 +92,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
 
 
     }
+
     public void getAddress(double lat, double lng) {
         Geocoder geocoder = new Geocoder(BookAppointmentServices.this, Locale.getDefault());
         try {
@@ -108,7 +109,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 System.out.println("obj.getCountryName()" + obj.getCountryName());
 
                 Log.d("AREA", getArea(obj));
-            }else {
+            } else {
                 Toast.makeText(this, "Address not found.", Toast.LENGTH_SHORT).show();
             }
 
@@ -124,9 +125,9 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     protected void onResume() {
         super.onResume();
         HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-        if(userSelectedLocationInfo.get(getString(R.string.location))==null) {
+        if (userSelectedLocationInfo.get(getString(R.string.location)) == null) {
             locationTextView.setText(getString(R.string.location));
-        }else{
+        } else {
             locationTextView.setText("" + userSelectedLocationInfo.get(getString(R.string.location)));
         }
     }
@@ -172,14 +173,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 onBackPressed();
                 break;
             case R.id.locationTextView:
-              /* LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
-                boolean enabled = service
-                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
-                if (!enabled) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intent);
-                } */
-                   new GoogleSettingsApi(this);
+                new GoogleSettingsApi(this);
 
                 break;
         }
@@ -230,21 +224,39 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 if (addresses != null && addresses.size() > 0) {
+                    //-------
+
                     String locality = getArea(addresses.get(0));
-                    DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality);
-                    locationTextView.setText(locality);
+                    String city = addresses.get(0).getLocality();
+
+                    Address address = addresses.get(0);
+                    String addressLine = address.getAddressLine(1);
+                    String addressLineArray[] = addressLine.split(",");
+                    addressLine = addressLineArray[addressLineArray.length - 1];
+
+                    if (placename.toLowerCase().contains(addressLine)) {
+                        locality = addressLine;
+                    } else if (addressLine.toLowerCase().contains(placename)) {
+                        locality = placename;
+                    }
+                    //-------
+                    DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), placename + ", " + city);
+                    // DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality + ", " + city);
+                    locationTextView.setText(locality + ", " + city);
                 }
                 CommonMethods.Log("Address: ", stBuilder.toString());
-
             }
         }
     }
 
     private String getArea(Address obj) {
-        if (obj.getThoroughfare() != null)
+
+        /*if (obj.getThoroughfare() != null)
             return obj.getThoroughfare();
-        else if (obj.getSubLocality() != null)
+        else */
+        if (obj.getSubLocality() != null)
             return obj.getSubLocality();
         else if (obj.getSubAdminArea() != null)
             return obj.getSubAdminArea();

@@ -290,6 +290,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="user"
             android:theme="@android:style/Theme.Holo.Light.Dialog"></activity>
+
+        <service
+            android:name="com.rescribe.services.SnoozeAlarmPrescriptionService"
+            android:exported="false" />
+
+        <receiver android:name="com.rescribe.broadcast_receivers.SnoozeAlarmNotificationReceiver" />
     </application>
 
 </manifest>

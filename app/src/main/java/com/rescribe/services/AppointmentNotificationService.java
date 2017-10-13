@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.widget.RemoteViews;
@@ -18,6 +19,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.notification.AppointmentsNotificationData;
 import com.rescribe.model.notification.AppointmentsNotificationModel;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.AppointmentAlarmNotify;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -110,6 +112,8 @@ public class AppointmentNotificationService extends Service implements HelperRes
                 .setAutoCancel(true)
                 // Set RemoteViews into Notification
                 .setContent(mRemoteViews)
+                .setVibrate(new long[]{1000, 1000, 1000})
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) //This sets the sound to play
                 .setStyle(new android.support.v7.app.NotificationCompat.DecoratedCustomViewStyle());
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.appointment));
@@ -117,6 +121,18 @@ public class AppointmentNotificationService extends Service implements HelperRes
         mRemoteViews.setTextViewText(R.id.timeText, notifyTime);
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationmanager.notify(subNotificationId, builder.build());
+
+        //-----Open Alarm dialog based on config setting-----
+        //----------
+        Intent popup = new Intent(getApplicationContext(), AppointmentAlarmNotify.class);
+        popup.putExtra(RescribeConstants.MEDICINE_SLOT, time);
+        popup.putExtra(RescribeConstants.NOTIFICATION_TIME, time);
+        popup.putExtra(RescribeConstants.NOTIFICATION_ID, "" + subNotificationId);
+        popup.putExtra(RescribeConstants.TITLE, message);
+        popup.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        startActivity(popup);
+        //----------
+        //----------
     }
 
     @Override

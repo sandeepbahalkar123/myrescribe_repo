@@ -34,7 +34,6 @@ import butterknife.Unbinder;
 
 public class ComplaintsFragment extends Fragment implements HelperResponse, AdapterView.OnItemSelectedListener {
 
-    private static final String DATA = "DATA";
     @BindView(R.id.spinnerComplaint1)
     Spinner spinnerComplaint1;
     @BindView(R.id.editTextComplaint1)
@@ -52,7 +51,6 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
     LinearLayout showEditText2;
     private View mRootView;
     DoctorDataHelper doctorDataHelper;
-    private ArrayList<ComplaintList> mArrayId;
     private ComplaintsSpinnerAdapter mComplaintsSpinnerAdapter;
     private ComplaintsBaseModel mComplaintsBaseModel;
     String selectIdComplaint1;
@@ -87,7 +85,7 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
     }
 
     private void init() {
-        BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss),false);
+        BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss),true);
         doctorDataHelper = new DoctorDataHelper(getActivity(), this);
         doctorDataHelper.doGetComplaintsList();
 
@@ -164,7 +162,6 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
                         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
                         args.putString(getString(R.string.clicked_item_data),"");
                         activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(args), true);
-
                     }
                 }
 

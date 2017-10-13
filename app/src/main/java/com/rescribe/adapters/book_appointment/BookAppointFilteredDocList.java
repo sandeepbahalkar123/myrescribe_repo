@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
@@ -41,10 +42,10 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     private Fragment mFragment;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
-    private int imageSize;
+    private int mImageSize;
     private ArrayList<DoctorList> mArrayList;
     private OnFilterDocListClickListener mOnFilterDocListClickListener;
-    private String searchString;
+    private String mSearchString;
     private ColorGenerator mColorGenerator;
 
 
@@ -63,7 +64,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         int widthPixels = metrics.widthPixels;
-        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     @Override
@@ -76,22 +77,18 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-
         final DoctorList doctorObject = mDataList.get(position);
 
+        holder.waitingTime.setText("" + mContext.getString(R.string.waiting_for) + mContext.getString(R.string.space) + doctorObject.getWaitingTime());
+        holder.tokenNo.setText(mContext.getString(R.string.token_no_available));
         holder.doctorName.setText(doctorObject.getDocName());
         holder.doctorType.setText(doctorObject.getSpeciality());
-        if (doctorObject.getFavourite()) {
-            // holder.favoriteView.setImageResource();
-        }
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
         holder.doctorAddress.setText(doctorObject.getDoctorAddress());
         holder.doctorFee.setText("" + mContext.getString(R.string.rupee_symbol) + doctorObject.getAmount());
         SpannableString content = new SpannableString(doctorObject.getDistance());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         holder.distance.setText(content);
-        holder.waitingTime.setText("" + mContext.getString(R.string.waiting_for) + mContext.getString(R.string.space) + doctorObject.getWaitingTime());
-        holder.tokenNo.setText(mContext.getString(R.string.token_no_available));
 
         //-------Load image-------
         if (doctorObject.getDoctorImageUrl().equals("")) {
@@ -107,12 +104,14 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                     .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
                     .endConfig()
                     .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-            holder.imageURL.setImageDrawable(drawable);
+                     holder.imageURL.setImageDrawable(drawable);
 
         } else {
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
-            requestOptions.override(imageSize, imageSize);
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
+            requestOptions.override(mImageSize, mImageSize);
             requestOptions.placeholder(R.drawable.layer_12);
 
             Glide.with(mContext)
@@ -133,13 +132,13 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             }
         });
         SpannableString spannableStringSearch = null;
-        if ((searchString != null) && (!searchString.isEmpty())) {
+        if ((mSearchString != null) && (!mSearchString.isEmpty())) {
 
             spannableStringSearch = new SpannableString(doctorObject.getDocName());
 
             spannableStringSearch.setSpan(new ForegroundColorSpan(
                             ContextCompat.getColor(mContext, R.color.tagColor)),
-                    4, 4 + searchString.length(),//hightlight searchString
+                    4, 4 + mSearchString.length(),//hightlight mSearchString
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         }        if (spannableStringSearch != null) {
@@ -217,7 +216,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             protected FilterResults performFiltering(CharSequence charSequence) {
 
                 String charString = charSequence.toString();
-                searchString = charString;
+                mSearchString = charString;
                 if (charString.isEmpty()) {
 
                     mDataList = mArrayList;

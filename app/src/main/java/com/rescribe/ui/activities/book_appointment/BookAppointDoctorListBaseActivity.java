@@ -53,6 +53,7 @@ import permissions.dispatcher.RuntimePermissions;
 @RuntimePermissions
 public class BookAppointDoctorListBaseActivity extends AppCompatActivity implements HelperResponse, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener, GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String TAG = "BookAppointDoctorListBaseActivity";
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
     static CustomTextView title;
@@ -68,7 +69,13 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     private FragmentManager mSupportFragmentManager;
     private Fragment mDrawerLoadedFragment;
     private int PLACE_PICKER_REQUEST = 1;
-    private boolean isLocationChange = false;
+    private boolean isLocationChange = true;
+
+    //-----
+    String latitude = "";
+    String longitude = "";
+    String address;
+    //-----
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,12 +132,13 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         });
 
         //------
+        String locationReceived = "";
         Intent intent = getIntent();
         String title = "";
         if (intent != null) {
             HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-            locationTextView.setText(""+userSelectedLocationInfo.get(getString(R.string.location)));
-          //  locationTextView.setText(mDoctorDataHelper.getmGetUserSelectedlocation());
+            locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
+            locationTextView.setText("" + locationReceived);
             title = intent.getStringExtra(getString(R.string.clicked_item_data));
         }
         //------
@@ -143,14 +151,21 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         bundle.putString(getString(R.string.title), title);
         mCurrentlyLoadedFragment = RecentVisitDoctorFragment.newInstance(bundle);
         mDoctorDataHelper = new DoctorDataHelper(this, this);
-        mDoctorDataHelper.doGetDoctorData();
+        //----split based on location------
+        String[] split = locationReceived.split(",");
+        if (split.length == 2) {
+            mDoctorDataHelper.doGetDoctorData(split[1], split[0]);
+        } else {
+            mDoctorDataHelper.doGetDoctorData("", "");
+        }
+        //----------
     }
 
     @Override
     public void onSuccess(final String mOldDataTag, final CustomResponse customResponse) {
         mReceivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
         if (mReceivedBookAppointmentBaseModel.getDoctorServicesModel() != null) {
-            if (!isLocationChange)
+            if (isLocationChange)
                 loadFragment(mCurrentlyLoadedFragment, false);
         }
     }
@@ -229,6 +244,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         }
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
@@ -236,9 +252,9 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                 Place place = PlacePicker.getPlace(this, data);
                 StringBuilder stBuilder = new StringBuilder();
                 String placename = String.format("%s", place.getName());
-                String latitude = String.valueOf(place.getLatLng().latitude);
-                String longitude = String.valueOf(place.getLatLng().longitude);
-                String address = String.format("%s", place.getAddress());
+                latitude = String.valueOf(place.getLatLng().latitude);
+                longitude = String.valueOf(place.getLatLng().longitude);
+                address = String.format("%s", place.getAddress());
                 stBuilder.append("Name: ");
                 stBuilder.append(placename);
                 stBuilder.append("\n");
@@ -257,22 +273,52 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if (addresses != null && addresses.size() > 0) {
-                    String locality = addresses.get(0).getLocality();
-                    //start from here
-                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), locality);
-                    locationTextView.setText(locality);
-                  //  mDoctorDataHelper.setmGetUserSelectedlocation(locality);
-                  //  locationTextView.setText(mDoctorDataHelper.getmGetUserSelectedlocation());
-                   // locationTextView.setText(locality);
-                    isLocationChange = true;
-                    mDoctorDataHelper.doGetDoctorData();
 
+                if (addresses != null && addresses.size() > 0) {
+                    //-------
+
+                    String locality = getArea(addresses.get(0));
+                    String city = addresses.get(0).getLocality();
+
+                    Address address = addresses.get(0);
+                    String addressLine = address.getAddressLine(1);
+                    String addressLineArray[] = addressLine.split(",");
+                    addressLine = addressLineArray[addressLineArray.length - 1];
+
+                    if (placename.toLowerCase().contains(addressLine)) {
+                        locality = addressLine;
+                    } else if (addressLine.toLowerCase().contains(placename)) {
+                        locality = placename;
+                    }
+                    //-------
+                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), placename + ", " + city);
+                    // DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality + ", " + city);
+                    locationTextView.setText(locality + ", " + city);
+                    isLocationChange = true;
+                    mDoctorDataHelper.doGetDoctorData(city, locality);
                 }
                 CommonMethods.Log("Address: ", stBuilder.toString());
             }
         }
     }
+
+    private String getArea(Address obj) {
+
+        /*if (obj.getThoroughfare() != null)
+            return obj.getThoroughfare();
+        else */
+        if (obj.getSubLocality() != null)
+            return obj.getSubLocality();
+        else if (obj.getSubAdminArea() != null)
+            return obj.getSubAdminArea();
+        else if (obj.getLocality() != null)
+            return obj.getLocality();
+        else if (obj.getAdminArea() != null)
+            return obj.getAdminArea();
+        else
+            return obj.getCountryName();
+    }
+
 
     @Override
     public void onBackPressed() {

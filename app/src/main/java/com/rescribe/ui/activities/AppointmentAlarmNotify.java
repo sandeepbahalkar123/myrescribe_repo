@@ -1,13 +1,18 @@
 package com.rescribe.ui.activities;
 
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,10 +24,17 @@ import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.adapters.SnoozeAlarmTimeSlotAdapter;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +46,10 @@ public class AppointmentAlarmNotify extends Activity {
 
     @BindView(R.id.messageTitle)
     TextView mMessageTitle;
+    @BindView(R.id.showMedicineName)
+    TextView mShowMedicineName;
+    @BindView(R.id.timeText)
+    TextView mTimeText;
     @BindView(R.id.dialogMessageText)
     TextView mDialogMessageText;
     @BindView(R.id.dialogButtonSetSnooze)
@@ -55,6 +71,10 @@ public class AppointmentAlarmNotify extends Activity {
 
     private ArrayList<String> mTimeSlots;
     private SnoozeAlarmTimeSlotAdapter mSnoozeAlarmTimeSlotAdapter;
+    private String mNotificationTime, mTitle, mMedicinSlot;
+    private String mNotificationID;
+    private MediaPlayer mMediaPlayer;
+    private Vibrator mVibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +86,20 @@ public class AppointmentAlarmNotify extends Activity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            mDialogMessageText.setText("" + intent.getStringExtra(RescribeConstants.APPOINTMENT_MESSAGE));
-            mMessageTitle.setText("" + intent.getStringExtra(RescribeConstants.APPOINTMENT_TIME));
+            mNotificationID = intent.getStringExtra(RescribeConstants.NOTIFICATION_ID);
+            mTitle = intent.getStringExtra(RescribeConstants.TITLE);
+            mNotificationTime = intent.getStringExtra(RescribeConstants.NOTIFICATION_TIME);
+            mMedicinSlot = intent.getStringExtra(RescribeConstants.MEDICINE_SLOT);
+            mDialogMessageText.setText("" + mTitle);
+            mTimeText.setText("" + mNotificationTime);
+            mShowMedicineName.setText("" + mMedicinSlot);
         }
 
         //----Play sound
-        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), notification);
-        mp.start();
+        mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        mMediaPlayer = MediaPlayer.create(getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM));
+        mMediaPlayer.start();
+        mVibrator.vibrate(mMediaPlayer.getDuration());
         mMainNotificationInfoLayout.setVisibility(View.VISIBLE);
         mMainSetSnoozeTimeLayout.setVisibility(View.GONE);
 
@@ -94,19 +120,36 @@ public class AppointmentAlarmNotify extends Activity {
 
     private void definedTimeSlots() {
         mTimeSlots = new ArrayList<>();
-        mTimeSlots.add("15 minutes");
-        mTimeSlots.add("30 minutes");
-        mTimeSlots.add("45 minutes");
-        mTimeSlots.add("60 minutes");
+        mTimeSlots.add("3");
+        mTimeSlots.add("30");
+        mTimeSlots.add("45");
+        mTimeSlots.add("60");
     }
 
     @OnClick({R.id.dialogButtonSetSnooze, R.id.snoozeDialogButtonCancel, R.id.dialogButtonOK, R.id.snoozeDialogButtonOK})
     public void onClick(View view) {
+        mMediaPlayer.stop();
+        mVibrator.cancel();
 
         switch (view.getId()) {
 
             case R.id.snoozeDialogButtonCancel:
             case R.id.dialogButtonOK:
+                mMediaPlayer.stop();
+                mVibrator.cancel();
+                SharedPreferences sharedPreference = RescribePreferencesManager.getSharedPreference(this);
+                Map<String, ?> keys = sharedPreference.getAll();
+                for (Map.Entry<String, ?> entry : keys.entrySet()) {
+                    String key = entry.getKey();
+                    //  if (key.startsWith(getString(R.string.snooze_interval)) && !(key.endsWith("null"))) {
+                    if (key.startsWith(getString(R.string.snooze_interval))) {
+                        String value = entry.getValue().toString();
+                        String keyData = getString(R.string.snooze_interval) + "|" + mNotificationID + "|" + mTitle + "|" + mNotificationTime + "|" + mMedicinSlot;
+                        if (key.equalsIgnoreCase(keyData)) {
+                            RescribePreferencesManager.removeSharedPrefKey(this, keyData);
+                        }
+                    }
+                }
                 finish();
                 break;
             case R.id.dialogButtonSetSnooze:     // for snooze
@@ -116,9 +159,18 @@ public class AppointmentAlarmNotify extends Activity {
                 break;
             case R.id.snoozeDialogButtonOK:
                 String selectedTimeSlot = mSnoozeAlarmTimeSlotAdapter.getSelectedTimeSlot();
+                if (!RescribeConstants.BLANK.equalsIgnoreCase(selectedTimeSlot)) {
+                    SimpleDateFormat df = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.HH_mm_ss);
+                    Date currentDate = new Date();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(currentDate);
+                    cal.add(Calendar.MINUTE, Integer.parseInt(selectedTimeSlot));
+                    String newTime = df.format(cal.getTime());
 
-
-                CommonMethods.showToast(this, selectedTimeSlot);
+                    String key = getString(R.string.snooze_interval) + "|" + mNotificationID + "|" + mTitle + "|" + mNotificationTime + "|" + mMedicinSlot;
+                    RescribePreferencesManager.putString(key, newTime, this);
+                    finish();
+                }
 
                 break;
         }

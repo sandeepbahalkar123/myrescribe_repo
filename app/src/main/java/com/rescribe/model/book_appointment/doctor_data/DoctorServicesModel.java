@@ -14,12 +14,12 @@ import com.rescribe.interfaces.CustomResponse;
 
 public class DoctorServicesModel implements Parcelable, CustomResponse {
 
-    @SerializedName("doctorList")
+    @SerializedName("docDetails")
     @Expose
     private ArrayList<DoctorList> doctorList = new ArrayList<>();
     @SerializedName("doctorSpecialities")
     @Expose
-    private ArrayList<DoctorSpeciality> doctorSpecialities = null;
+    private ArrayList<String> doctorSpecialities = new ArrayList<>();
     public final static Creator<DoctorServicesModel> CREATOR = new Creator<DoctorServicesModel>() {
 
 
@@ -29,7 +29,7 @@ public class DoctorServicesModel implements Parcelable, CustomResponse {
         public DoctorServicesModel createFromParcel(Parcel in) {
             DoctorServicesModel instance = new DoctorServicesModel();
             in.readList(instance.doctorList, (DoctorList.class.getClassLoader()));
-            in.readList(instance.doctorSpecialities, (DoctorSpeciality.class.getClassLoader()));
+            in.readList(instance.doctorSpecialities, (String.class.getClassLoader()));
             return instance;
         }
 
@@ -48,11 +48,15 @@ public class DoctorServicesModel implements Parcelable, CustomResponse {
     }
 
     public ArrayList<DoctorSpeciality> getDoctorSpecialities() {
-        return doctorSpecialities;
-    }
-
-    public void setDoctorSpecialities(ArrayList<DoctorSpeciality> doctorSpecialities) {
-        this.doctorSpecialities = doctorSpecialities;
+        ArrayList<DoctorSpeciality> temp = new ArrayList<>();
+        ArrayList<String> doctorSpecialities = this.doctorSpecialities;
+        for (int i = 0; i < doctorSpecialities.size(); i++) {
+            DoctorSpeciality object = new DoctorSpeciality();
+            object.setId(i);
+            object.setSpeciality(doctorSpecialities.get(i));
+            temp.add(object);
+        }
+        return temp;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
@@ -63,5 +67,6 @@ public class DoctorServicesModel implements Parcelable, CustomResponse {
     public int describeContents() {
         return 0;
     }
+
 
 }

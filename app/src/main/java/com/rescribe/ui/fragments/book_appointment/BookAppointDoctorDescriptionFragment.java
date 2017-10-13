@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -58,18 +59,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     CustomTextView mDoctorFees;
     @BindView(R.id.doctorPractices)
     CustomTextView mDoctorPractices;
-    @BindView(R.id.openingTime)
-    CustomTextView mOpeningTime;
-    @BindView(R.id.showAllTimeSlotListView)
-    CustomTextView mShowAllTimeSlotListView;
     @BindView(R.id.allTimingListViewLayout)
     LinearLayout mAllTimingListViewLayout;
-    @BindView(R.id.openingTimeLayout)
-    LinearLayout mOpeningTimeLayout;
     @BindView(R.id.allTimeSlotListView)
     RecyclerView mAllTimeSlotListView;
-    @BindView(R.id.hideAllTimeSlotListView)
-    CustomTextView mHideAllTimeSlotListView;
     Unbinder unbinder;
     @BindView(R.id.locationImage)
     ImageView locationImage;
@@ -134,13 +127,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 morePracticePlaces) {
             builder.append(s + "/");
         }
-      String showMorePlaces = getString(R.string.also_practices) + getString(R.string.space) + builder.toString();
+        String showMorePlaces = getString(R.string.also_practices) + getString(R.string.space) + builder.toString();
         mDoctorPractices.setText(showMorePlaces.substring(0, showMorePlaces.length() - 1));
-        mOpeningTime.setText("" + mClickedDoctorObject.getOpenToday());
         if (mClickedDoctorObject.getAvailableTimeSlots().size() > 0) {
-            mShowAllTimeSlotListView.setVisibility(View.VISIBLE);
-
-            int spanCount = 5; // 3 columns
+            int spanCount = 2; // 3 columns
             int spacing = 30; // 50px
             boolean includeEdge = false;
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), spanCount);
@@ -186,28 +176,15 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         unbinder.unbind();
     }
 
-    @OnClick({R.id.showAllTimeSlotListView, R.id.hideAllTimeSlotListView, R.id.locationImage})
+    @OnClick({R.id.locationImage})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
-            case R.id.hideAllTimeSlotListView:
-                mAllTimingListViewLayout.setVisibility(View.GONE);
-                mOpeningTimeLayout.setVisibility(View.VISIBLE);
-                if (mClickedDoctorObject.getAvailableTimeSlots().size() > 0) {
-                    mShowAllTimeSlotListView.setVisibility(View.VISIBLE);
-                } else {
-                    mShowAllTimeSlotListView.setVisibility(View.INVISIBLE);
-                }
-                break;
-            case R.id.showAllTimeSlotListView:
-                mAllTimingListViewLayout.setVisibility(View.VISIBLE);
-                mOpeningTimeLayout.setVisibility(View.GONE);
-                break;
             case R.id.locationImage:
                 HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-                Intent intent = new Intent(getActivity(),MapActivityShowDoctorLocation.class);
+                Intent intent = new Intent(getActivity(), MapActivityShowDoctorLocation.class);
                 intent.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
-                intent.putExtra(getString(R.string.location),userSelectedLocationInfo.get(getString(R.string.location)));
+                intent.putExtra(getString(R.string.location), userSelectedLocationInfo.get(getString(R.string.location)));
                 intent.putExtra(getString(R.string.address), mClickedDoctorObject.getDoctorAddress());
                 startActivity(intent);
                 break;

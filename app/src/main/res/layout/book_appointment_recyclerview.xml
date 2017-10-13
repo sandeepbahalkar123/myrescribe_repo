@@ -69,12 +69,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:paddingLeft="@dimen/dp5"
-                android:paddingRight="@dimen/dp5"
-                android:paddingTop="@dimen/dp5"
+                android:padding="@dimen/dp8"
                 android:scaleX="-1"
                 android:src="@drawable/right_arrow"
-                android:visibility="visible" />
+                android:visibility="invisible" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/bookAppointSpecialityListView"
@@ -93,9 +91,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:padding="@dimen/dp5"
+                android:padding="@dimen/dp8"
                 android:src="@drawable/right_arrow"
-                android:visibility="visible" />
+                android:visibility="invisible" />
         </LinearLayout>
     </LinearLayout>
 

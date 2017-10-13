@@ -26,14 +26,12 @@ import butterknife.ButterKnife;
 
 public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.ListViewHolder> {
 
-    private Fragment mFragment;
     private Context mContext;
     private ArrayList<Review> mDataList;
 
     public ShowReviewsAdapter(Context mContext, ArrayList<Review> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
-
 
     }
 
@@ -50,12 +48,16 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
 
         final Review doctorObject = mDataList.get(position);
         holder.reviewName.setText(doctorObject.getRevierName());
-        holder.review.setText(doctorObject.getReviewCommment());
+        if(doctorObject.getReviewCommment().equals("")){
+            holder.review.setVisibility(View.GONE);
+        }else {
+            holder.review.setText(doctorObject.getReviewCommment());
+            holder.review.setVisibility(View.VISIBLE);
+        }
         holder.reviewDate.setText(CommonMethods.getFormattedDate(doctorObject.getReviewDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN,RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
         if(!doctorObject.getRating().equals("NA")) {
             holder.ratingBar.setRating(Float.parseFloat(doctorObject.getRating()));
         }
-
     }
 
     @Override
@@ -81,9 +83,4 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
             this.view = view;
         }
     }
-
-    public interface OnFilterDocListClickListener {
-        void onClickOfDoctorRowItem(Bundle bundleData);
-    }
-
 }

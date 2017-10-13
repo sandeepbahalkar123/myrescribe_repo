@@ -26,15 +26,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSpecialistBookAppointmentAdapter;
-import com.rescribe.adapters.ShowRecentVisitedDoctorPagerAdapter;
+import com.rescribe.adapters.book_appointment.ShowRecentVisitedDoctorPagerAdapter;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorSpeciality;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
@@ -55,6 +55,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener {
+
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.circleIndicator)
@@ -115,7 +116,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         unbinder = ButterKnife.bind(this, mRootView);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-
         init(mRootView);
         return mRootView;
 
@@ -172,6 +172,10 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 }
             }
         });
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        bookAppointmentBaseModel = activity.getReceivedBookAppointmentBaseModel();
+        setDoctorListAdapter(bookAppointmentBaseModel);
+        toggleButtons(bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
 
     }
 
@@ -196,11 +200,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.viewpager:
-             /*   mStillInDoubtFragment = new StillInDoubtFragment();
-                FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, mStillInDoubtFragment);
-                fragmentTransaction.commit();*/
                 break;
             case R.id.prevBtn:
                 currentPage -= 1;
@@ -239,24 +238,30 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse c) {
         this.customResponse = c;
-
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        bookAppointmentBaseModel = activity.getReceivedBookAppointmentBaseModel();
-        setDoctorListAdapter(bookAppointmentBaseModel);
+        CommonMethods.Log("REcenet", "onresume");
     }
 
+
     private void setDoctorListAdapter(BookAppointmentBaseModel bookAppointmentBaseModel) {
-        if (bookAppointmentBaseModel.getDoctorServicesModel() == null) {
+        DoctorServicesModel doctorServicesModel = bookAppointmentBaseModel.getDoctorServicesModel();
+
+        if (doctorServicesModel.getDoctorSpecialities().size() == 0 || doctorServicesModel.getDoctorList().size() == 0) {
             pickSpeciality.setVisibility(View.GONE);
             doubtMessage.setVisibility(View.GONE);
             mSpecialityEmptyListView.setVisibility(View.VISIBLE);
+            prevBtn.setVisibility(View.INVISIBLE);
+            nextBtn.setVisibility(View.INVISIBLE);
+            mBookAppointSpecialityListView.setVisibility(View.GONE);
         } else {
+            recyclerViewLinearLayout.setVisibility(View.VISIBLE);
+            mBookAppointSpecialityListView.setVisibility(View.VISIBLE);
+          /*  prevBtn.setVisibility(View.INVISIBLE);
+            prevBtn.setEnabled(false);*/
             mBookAppointSpecialityListView.setVisibility(View.VISIBLE);
             prevBtn.setVisibility(View.GONE);
             prevBtn.setEnabled(false);
@@ -290,10 +295,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             showDoctorsRecyclerView.setHasFixedSize(true);
             showDoctorsRecyclerView.setAdapter(mBookAppointFilteredDocListAdapter);
         }
-
-
         //---set data ---------
-
     }
 
 
@@ -339,7 +341,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         //  doctorSpecialities = activity.getReceivedBookAppointmentBaseModel().getDoctorServicesModel().getDoctorSpecialities();
 
         if (currentPage == LAST_PAGE && ITEMS_REMAINING > 0) {
-            for (int i = startItem - 1; i < startItem + ITEMS_REMAINING; i++) {
+            for (int i = startItem; i < startItem + ITEMS_REMAINING; i++) {
+                //for (int i = startItem - 1; i < startItem + ITEMS_REMAINING; i++) { // TODO : need to fix??
                 pageData.add(doctorSpecialities.get(i));
             }
         } else {
@@ -354,7 +357,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         totalPages = doctorSpecialities.size() / 9;
         if (currentPage == totalPages) {
             nextBtn.setVisibility(View.INVISIBLE);
-            prevBtn.setVisibility(View.VISIBLE);
+            prevBtn.setVisibility(View.INVISIBLE);
             nextBtn.setEnabled(false);
             prevBtn.setEnabled(true);
         } else if (currentPage == 0) {

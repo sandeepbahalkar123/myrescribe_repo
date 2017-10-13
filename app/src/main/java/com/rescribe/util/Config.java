@@ -22,7 +22,6 @@ public class Config {
     //---------------------
     // public static String BASE_URL = "http://drrescribe.com:3003/";
     public static String BASE_URL = "http://192.168.0.182:3003/";
-    // public static String BASE_URL = "http://drrescribe.com:3003/";
 
     //---------------------
     public Context mContext;
@@ -61,6 +60,7 @@ public class Config {
     public static final String CHAT_FILE_UPLOAD = "api/upload/chatDoc";
 
     public static final String SET_FAVOURITE_URL = "api/doctors/setFavoriteDoctor";
+    public static final String GET_COMPLAINTS_LIST = "api/doctors/getComplaintList";
 
     //----- vital graph-------------
     public static final String TASK_GET_PATIENT_VITAL_LIST = "api/patient/getPatientVitalList";

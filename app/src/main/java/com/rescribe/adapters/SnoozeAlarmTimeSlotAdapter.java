@@ -39,7 +39,7 @@ public class SnoozeAlarmTimeSlotAdapter extends RecyclerView.Adapter<SnoozeAlarm
     @Override
     public void onBindViewHolder(final ListViewHolder holder, int position) {
         String doctorObject = mDataList.get(position);
-        holder.timeSlot.setText(doctorObject);
+        holder.timeSlot.setText(doctorObject + " minutes");
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

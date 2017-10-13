@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
@@ -25,6 +26,7 @@ import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.NotificationData;
 import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.AppointmentAlarmNotify;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -114,7 +116,10 @@ public class NotificationService extends Service implements HelperResponse {
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
 
+
         RingtoneManager ringtoneManager = new RingtoneManager(this.getApplicationContext());
+
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         android.support.v4.app.NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 // Set Icon
                 .setSmallIcon(R.drawable.logosmall)
@@ -124,10 +129,12 @@ public class NotificationService extends Service implements HelperResponse {
                 .setAutoCancel(true)
                 // Set RemoteViews into Notification
                 .setContent(mRemoteViews)
-                //.setVibrate(new long[]{1000, 1000,1000})
+                .setSound(soundUri) //This sets the sound to play
+                .setVibrate(new long[]{1000, 1000, 1000})
                 //.setSound(ringtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
                 //   .setPriority(NotificationCompat.PRIORITY_HIGH) //must give priority to High, Max which will considered as heads-up notification
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
+
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, intentData.getStringExtra(RescribeConstants.MEDICINE_SLOT));
         mRemoteViews.setTextViewText(R.id.questionText, getText(R.string.taken_medicine));
@@ -136,6 +143,18 @@ public class NotificationService extends Service implements HelperResponse {
         Notification build = builder.build();
         // build.flags |= Notification.FLAG_INSISTENT;
         notificationmanager.notify(notification_id, build);
+
+        //-----Open Alarm dialog based on config setting-----
+        //----------
+        Intent popup = new Intent(getApplicationContext(), AppointmentAlarmNotify.class);
+        popup.putExtra(RescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(RescribeConstants.MEDICINE_SLOT));
+        popup.putExtra(RescribeConstants.NOTIFICATION_TIME, intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME));
+        popup.putExtra(RescribeConstants.NOTIFICATION_ID, "" + notification_id);
+        popup.putExtra(RescribeConstants.TITLE, getText(R.string.taken_medicine));
+        popup.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        startActivity(popup);
+        //----------
+        //----------
 
         stopSelf();
     }

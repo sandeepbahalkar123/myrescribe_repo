@@ -15,6 +15,7 @@ import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.adapters.SingleVisitAdapter;
@@ -79,13 +80,15 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
 
     private void initialize() {
         mIntent = getIntent();
-        setColumnNumber(this,2);
+        setColumnNumber(this, 2);
         if (getIntent().getExtras() != null) {
             mDoctorName.setText(mIntent.getStringExtra(getString(R.string.name)));
             mDoctorSpecialization.setText(mIntent.getStringExtra(getString(R.string.specialization)));
             mDoctor_address.setText(mIntent.getStringExtra(getString(R.string.address)));
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
             requestOptions.override(imageSize, imageSize);
             requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
 
@@ -107,6 +110,8 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         //---
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
         requestOptions.override(imageSize, imageSize);
         requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
 
@@ -115,12 +120,8 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(mDoctorImg);
 
-        //--
-
-
         mSingleVisitDetailHelper = new SingleVisitDetailHelper(this, this);
         mSingleVisitDetailHelper.doGetOneDayVisit(mIntent.getStringExtra(getString(R.string.opd_id)));
-
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.visit_details));
         mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));

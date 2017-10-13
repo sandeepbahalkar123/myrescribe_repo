@@ -60,8 +60,9 @@
                             android:drawablePadding="@dimen/dp4"
                             android:drawableRight="@drawable/location_icon"
                             android:text="@string/location"
+                            app:customFont="@string/roboto_bold"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/sp16" />
+                            android:textSize="@dimen/sp12" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/showlocation"
@@ -71,7 +72,8 @@
                             android:layout_alignParentRight="true"
                             android:layout_gravity="center"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/sp16"
+                            app:customFont="@string/roboto_bold"
+                            android:textSize="@dimen/sp12"
                             android:visibility="gone" />
                     </RelativeLayout>
                 </LinearLayout>

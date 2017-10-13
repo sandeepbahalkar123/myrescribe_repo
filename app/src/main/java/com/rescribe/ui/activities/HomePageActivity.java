@@ -25,6 +25,7 @@ import com.rescribe.adapters.dashboard.HealthBlogAdapter;
 import com.rescribe.adapters.dashboard.HealthOffersAdapter;
 import com.rescribe.adapters.dashboard.MenuDashBoardAdapter;
 import com.rescribe.adapters.dashboard.TipAndJokeAdapter;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.login.LoginHelper;
@@ -394,6 +395,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse {
                     startActivity(popup);
                     //----------
                 } else if (id.equalsIgnoreCase(getString(R.string.services))) {
+                    DoctorDataHelper.getUserSelectedLocationInfo().clear();
                     Intent intent = new Intent(mContext, BookAppointmentServices.class);
                     //    Intent intent = new Intent(mContext, DoctorListToBookAppointment.class);
                     startActivity(intent);

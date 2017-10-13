@@ -40,7 +40,7 @@ import butterknife.Unbinder;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
 
-public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse {
+public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse,BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
 
 
     @BindView(R.id.profileImage)
@@ -190,5 +190,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 break;
 
         }
+    }
+
+    @Override
+    public void updateViewData() {
+
     }
 }

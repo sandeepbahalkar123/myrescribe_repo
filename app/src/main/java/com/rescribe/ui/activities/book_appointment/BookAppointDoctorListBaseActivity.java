@@ -31,6 +31,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.fragments.book_appointment.BookAppointDoctorDescriptionFragment;
 import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
@@ -69,7 +70,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     private FragmentManager mSupportFragmentManager;
     private Fragment mDrawerLoadedFragment;
     private int PLACE_PICKER_REQUEST = 1;
-    private boolean isLocationChange = true;
+    private boolean isLocationChange = false;
 
     //-----
     String latitude = "";
@@ -165,8 +166,20 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     public void onSuccess(final String mOldDataTag, final CustomResponse customResponse) {
         mReceivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
         if (mReceivedBookAppointmentBaseModel.getDoctorServicesModel() != null) {
-            if (isLocationChange)
+            if (isLocationChange) {
+                if (mCurrentlyLoadedFragment instanceof BookAppointFilteredDoctorListFragment) {
+                    BookAppointFilteredDoctorListFragment d = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
+                    d.updateViewData();
+                } else if (mCurrentlyLoadedFragment instanceof BookAppointDoctorDescriptionFragment) {
+                    BookAppointDoctorDescriptionFragment d = (BookAppointDoctorDescriptionFragment) mCurrentlyLoadedFragment;
+                    d.updateViewData();
+                } else if (mCurrentlyLoadedFragment instanceof RecentVisitDoctorFragment) {
+                    RecentVisitDoctorFragment d = (RecentVisitDoctorFragment) mCurrentlyLoadedFragment;
+                    d.updateViewData();
+                }
+            } else {
                 loadFragment(mCurrentlyLoadedFragment, false);
+            }
         }
     }
 
@@ -291,11 +304,18 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                         locality = placename;
                     }
                     //-------
-                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), placename + ", " + city);
-                    // DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality + ", " + city);
-                    locationTextView.setText(locality + ", " + city);
-                    isLocationChange = true;
-                    mDoctorDataHelper.doGetDoctorData(city, locality);
+                    //DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), placename + ", " + city);
+                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), locality + ", " + city);
+                    // setSelectedLocationText(locality + ", " + city);
+                    //-------
+                    HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+                    String s = userSelectedLocationInfo.get(getString(R.string.location));
+                    if (s != null) {
+                        isLocationChange = true;
+                        String[] split = s.split(",");
+                        mDoctorDataHelper.doGetDoctorData(city, split[0]);
+                    }
+
                 }
                 CommonMethods.Log("Address: ", stBuilder.toString());
             }
@@ -374,6 +394,10 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         }
     }
 
+    public static void setSelectedLocationText(String locationText) {
+        locationTextView.setText("" + locationText);
+    }
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -384,6 +408,10 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         void onApplyClicked(Bundle data);
 
         void onResetClicked();
+    }
+
+    public interface AddUpdateViewDataListener {
+        void updateViewData();
     }
 
 

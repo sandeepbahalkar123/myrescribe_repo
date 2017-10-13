@@ -28,6 +28,7 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +36,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class BookAppointFilteredDoctorListFragment extends Fragment implements View.OnClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener, BookAppointDoctorListBaseActivity.OnActivityDrawerListener {
+public class BookAppointFilteredDoctorListFragment extends Fragment implements View.OnClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener, BookAppointDoctorListBaseActivity.OnActivityDrawerListener, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
 
 
     @BindView(R.id.listView)
@@ -100,14 +101,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     @Override
     public void onResume() {
         super.onResume();
-        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        receivedBookAppointmentBaseModel = activity.getReceivedBookAppointmentBaseModel();
-        setDoctorListAdapter(receivedBookAppointmentBaseModel);
-        if (args.getString(getString(R.string.clicked_item_data)).equals("")) {
-            BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss), true);
-        } else {
-            BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.clicked_item_data)), true);
-        }
+        updateViewData();
     }
 
     private void setDoctorListAdapter(BookAppointmentBaseModel receivedBookAppointmentBaseModel) {
@@ -240,5 +234,23 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     @Override
     public void onResetClicked() {
 
+    }
+
+    @Override
+    public void updateViewData() {
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        receivedBookAppointmentBaseModel = activity.getReceivedBookAppointmentBaseModel();
+        setDoctorListAdapter(receivedBookAppointmentBaseModel);
+        if (args.getString(getString(R.string.clicked_item_data)).equals("")) {
+            BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss), true);
+        } else {
+            BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.clicked_item_data)), true);
+        }
+
+        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+        String s = userSelectedLocationInfo.get(getString(R.string.location));
+        if (s != null) {
+            BookAppointDoctorListBaseActivity.setSelectedLocationText(s);
+        }
     }
 }

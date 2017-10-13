@@ -313,6 +313,7 @@
 
     <string name="reviews">Reviews</string>
     <string name="alarm">Alarm</string>
+    <string name="book_appoint_complaint_same_err">Both complaints should not be same.</string>
 
 
 </resources>

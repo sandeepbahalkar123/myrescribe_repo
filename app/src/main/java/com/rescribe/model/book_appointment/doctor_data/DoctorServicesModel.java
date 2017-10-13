@@ -43,6 +43,17 @@ public class DoctorServicesModel implements Parcelable, CustomResponse {
         return doctorList;
     }
 
+    public ArrayList<DoctorList> getRecentlyVisitedAndFavoriteDoctorList() {
+        ArrayList<DoctorList> temp = new ArrayList<>();
+        for (DoctorList docObject :
+                doctorList) {
+            if (docObject.getRecentlyVisited() || docObject.getFavourite()) {
+                temp.add(docObject);
+            }
+        }
+        return temp;
+    }
+
     public void setDoctorList(ArrayList<DoctorList> doctorList) {
         this.doctorList = doctorList;
     }

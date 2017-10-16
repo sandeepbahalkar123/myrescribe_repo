@@ -12,6 +12,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.rescribe.R;
+import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
+import com.rescribe.model.book_appointment.filterdrawer.LocationList;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,11 +29,11 @@ public class FilterSelectLocationsAdapter extends RecyclerView.Adapter<FilterSel
 
     private Fragment mFragment;
     private Context mContext;
-    private ArrayList<String> mDataList;
+    private ArrayList<LocationList> mDataList;
     // private HashSet<String> mSelectedLocation = new HashSet<>();
     private SparseBooleanArray mSelectedLocation = new SparseBooleanArray();
 
-    public FilterSelectLocationsAdapter(Context mContext, ArrayList<String> dataList) {
+    public FilterSelectLocationsAdapter(Context mContext, ArrayList<LocationList> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
 
@@ -49,7 +51,7 @@ public class FilterSelectLocationsAdapter extends RecyclerView.Adapter<FilterSel
     @Override
     public void onBindViewHolder(ListViewHolder holder, final int position) {
 
-        holder.locationName.setText(mDataList.get(position));
+        holder.locationName.setText(mDataList.get(position).getAreaName());
 
         holder.locationName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -91,7 +93,7 @@ public class FilterSelectLocationsAdapter extends RecyclerView.Adapter<FilterSel
             int i1 = mSelectedLocation.keyAt(i);
             boolean b = mSelectedLocation.get(i1);
             if (b)
-                temp.add(mDataList.get(i1));
+                temp.add(mDataList.get(i1).getAreaName());
         }
         return temp;
     }

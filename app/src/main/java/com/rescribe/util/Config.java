@@ -20,7 +20,7 @@ public class Config {
     public static final String BROKER = "tcp://192.168.0.182:1883";
 
     //---------------------
-    // public static String BASE_URL = "http://drrescribe.com:3003/";
+    //  public static String BASE_URL = "http://drrescribe.com:3003/";
     public static String BASE_URL = "http://192.168.0.182:3003/";
 
     //---------------------
@@ -60,16 +60,18 @@ public class Config {
     public static final String CHAT_FILE_UPLOAD = "api/upload/chatDoc";
 
     public static final String SET_FAVOURITE_URL = "api/doctors/setFavoriteDoctor";
+    public static final String GET_COMPLAINTS_LIST = "api/doctors/getComplaintList";
 
     //----- vital graph-------------
     public static final String TASK_GET_PATIENT_VITAL_LIST = "api/patient/getPatientVitalList";
     public static final String TASK_GET_PATIENT_VITAL_DETAIL = "api/patient/getPatientVitalDetail";
     public static final String TASK_PATIENT_ADD_VITAL_MANUALLY = "api/patient/addVitalsManually";
     public static final String TASK_GET_PATIENT_VITAL_TRACKER_LIST = "api/patient/getVitalTrackerList";
-
+    public static final String GET_BOOK_APPOINTMENT_FILTER_APPOINTMENT_DATA = "api/doctors/getDocFilterCriteriaByCity";
     //----- vital graph-------------
     public static final String LOGOUT = "api/patient/logPatientSignOut";
     public static final String ACTIVE = "api/patient/logPatientActivity";
+
 
 }
 

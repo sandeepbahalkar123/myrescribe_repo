@@ -85,7 +85,7 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
     }
 
     private void init() {
-        BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss),true);
+        BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss), true);
         doctorDataHelper = new DoctorDataHelper(getActivity(), this);
         doctorDataHelper.doGetComplaintsList();
 
@@ -149,18 +149,21 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
                     if (selectIdComplaint1.equals("Select") && selectIdComplaint2.equals("Select")) {
                         Toast.makeText(getActivity(), "Please select valid option", Toast.LENGTH_SHORT).show();
 
-                    }else{
+                    } else if (selectIdComplaint1.equalsIgnoreCase(selectIdComplaint2)) {
+                        Toast.makeText(getActivity(), getString(R.string.book_appoint_complaint_same_err), Toast.LENGTH_SHORT).show();
+
+                    } else {
                         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                        args.putString(getString(R.string.clicked_item_data),"");
+                        args.putString(getString(R.string.clicked_item_data), "");
                         activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(args), true);
 
                     }
                 } else if (showEditText2.getVisibility() == View.VISIBLE && showEditText.getVisibility() == View.VISIBLE) {
-                    if (editTextComplaint1.getText().toString().equals("")&& editTextComplaint2.getText().toString().equals("")) {
+                    if (editTextComplaint1.getText().toString().equals("") && editTextComplaint2.getText().toString().equals("")) {
                         Toast.makeText(getActivity(), "Please enter text", Toast.LENGTH_SHORT).show();
-                    }else{
+                    } else {
                         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                        args.putString(getString(R.string.clicked_item_data),"");
+                        args.putString(getString(R.string.clicked_item_data), "");
                         activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(args), true);
                     }
                 }

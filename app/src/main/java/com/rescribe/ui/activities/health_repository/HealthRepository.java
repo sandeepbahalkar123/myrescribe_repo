@@ -47,7 +47,7 @@ public class HealthRepository extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getString(R.string.health_repository));
+        getSupportActionBar().setTitle(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

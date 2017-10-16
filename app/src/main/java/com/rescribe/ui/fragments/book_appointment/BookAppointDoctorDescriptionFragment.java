@@ -40,7 +40,7 @@ import butterknife.Unbinder;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
 
-public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse {
+public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
 
 
     @BindView(R.id.profileImage)
@@ -142,10 +142,11 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         }
 
         //requestOptions.placeholder(R.drawable.layer_12);
-
-        Glide.with(getActivity())
-                .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mClickedDoctorObject.getDoctorAddress() + "&markers=color:red%7Clabel:C%7C" + mClickedDoctorObject.getDoctorAddress() + "&zoom=12&size=640x250")
-                .into(locationImage);
+        if (!mClickedDoctorObject.getDoctorAddress().isEmpty()) {
+            Glide.with(getActivity())
+                    .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mClickedDoctorObject.getDoctorAddress() + "&markers=color:red%7Clabel:C%7C" + mClickedDoctorObject.getDoctorAddress() + "&zoom=12&size=640x250")
+                    .into(locationImage);
+        }
 
 
     }
@@ -190,5 +191,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 break;
 
         }
+    }
+
+    @Override
+    public void updateViewData() {
+
     }
 }

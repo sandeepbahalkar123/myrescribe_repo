@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp16"
+                android:src="@drawable/ic_arrow_back_white_24dp"
+                tools:ignore="VectorDrawableCompat" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:text="@string/doctor_connect"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp16"
+                android:visibility="visible"
+                app:customFont="@string/roboto_bold" />
+
+        </LinearLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <RadioGroup
+        android:id="@+id/radioSex"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:gravity="center|left"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:text="@string/notification" />
+
+        <RadioButton
+            android:id="@+id/radioAlarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/alarm" />
+
+    </RadioGroup>
+
+</android.support.design.widget.CoordinatorLayout>

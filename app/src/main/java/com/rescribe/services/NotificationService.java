@@ -26,6 +26,7 @@ import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.NotificationData;
 import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.AppointmentAlarmNotify;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -37,6 +38,7 @@ import static com.facebook.login.widget.ProfilePictureView.TAG;
 
 
 /**
+ * PRESCRIPTIONS NOTIFICATION SERVICE
  * This service is started when an Alarm has been raised
  * <p>
  * We pop a notification into the status bar for the user to click on
@@ -128,7 +130,7 @@ public class NotificationService extends Service implements HelperResponse {
                 // Set RemoteViews into Notification
                 .setContent(mRemoteViews)
                 .setSound(soundUri) //This sets the sound to play
-                //.setVibrate(new long[]{1000, 1000,1000})
+                .setVibrate(new long[]{1000, 1000, 1000})
                 //.setSound(ringtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
                 //   .setPriority(NotificationCompat.PRIORITY_HIGH) //must give priority to High, Max which will considered as heads-up notification
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
@@ -141,6 +143,18 @@ public class NotificationService extends Service implements HelperResponse {
         Notification build = builder.build();
         // build.flags |= Notification.FLAG_INSISTENT;
         notificationmanager.notify(notification_id, build);
+
+        //-----Open Alarm dialog based on config setting-----
+        //----------
+       /* Intent popup = new Intent(getApplicationContext(), AppointmentAlarmNotify.class);
+        popup.putExtra(RescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(RescribeConstants.MEDICINE_SLOT));
+        popup.putExtra(RescribeConstants.NOTIFICATION_TIME, intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME));
+        popup.putExtra(RescribeConstants.NOTIFICATION_ID, "" + notification_id);
+        popup.putExtra(RescribeConstants.TITLE, getText(R.string.taken_medicine));
+        popup.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        startActivity(popup);*/
+        //----------
+        //----------
 
         stopSelf();
     }
@@ -168,24 +182,28 @@ public class NotificationService extends Service implements HelperResponse {
                 }
                 String slot = CommonMethods.getMealTime(hour24, Min, this);
                 if (slot.equals(getString(R.string.break_fast))) {
+                    if(notificationDataForHeader.getMedication()!=null)
                     for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
                         if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("breakfastAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("breakfastBefore")) {
                             customNotification(intent);
                         }
                     }
                 } else if (slot.equals(getString(R.string.mlunch))) {
+                    if(notificationDataForHeader.getMedication()!=null)
                     for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
                         if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("lunchAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("lunchBefore")) {
                             customNotification(intent);
                         }
                     }
                 } else if (slot.equals(getString(R.string.msnacks))) {
+                    if(notificationDataForHeader.getMedication()!=null)
                     for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
                         if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("snacksAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("snacksBefore")) {
                             customNotification(intent);
                         }
                     }
                 } else if (slot.equals(getString(R.string.mdinner))) {
+                    if(notificationDataForHeader.getMedication()!=null)
                     for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
                         if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("dinnerAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("dinnerBefore")) {
                             customNotification(intent);

@@ -37,8 +37,8 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
     private ColorGenerator mColorGenerator;
     Integer[] mImageId = {
             R.drawable.background_dashboard1,
-            R.drawable.background_dashboard2,
-            R.drawable.background_dashboard3
+            R.drawable.background_dashboard3,
+            R.drawable.background_dashboard1
 
     };
 

@@ -34,7 +34,7 @@ public class FindDoctorsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getString(R.string.find_doctors));
+        getSupportActionBar().setTitle(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

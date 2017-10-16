@@ -8,6 +8,7 @@ import com.rescribe.model.Common;
 import com.rescribe.model.book_appointment.ServicesData;
 
 import java.util.ArrayList;
+import java.util.ArrayList;
 
 public class BookAppointFilterBaseModel implements CustomResponse {
 
@@ -37,37 +38,28 @@ public class BookAppointFilterBaseModel implements CustomResponse {
     public class FilterConfigData {
         @SerializedName("clinicFeesRange")
         @Expose
-        private ArrayList<String> clinicFeesRange = new ArrayList<>();
-        @SerializedName("distance")
-        @Expose
-        private ArrayList<String> distanceRange = new ArrayList<>();
+        private ArrayList<Integer> clinicFeesRange = null;
         @SerializedName("locationList")
         @Expose
-        private ArrayList<String> locationList = new ArrayList<>();
+        private ArrayList<LocationList> locationList = null;
 
-        public ArrayList<String> getClinicFeesRange() {
+        public ArrayList<Integer> getClinicFeesRange() {
             return clinicFeesRange;
         }
 
-        public void setClinicFeesRange(ArrayList<String> clinicFeesRange) {
+        public void setClinicFeesRange(ArrayList<Integer> clinicFeesRange) {
             this.clinicFeesRange = clinicFeesRange;
         }
 
-        public ArrayList<String> getDistanceRange() {
-            return distanceRange;
-        }
-
-        public void setDistanceRange(ArrayList<String> distanceRange) {
-            this.distanceRange = distanceRange;
-        }
-
-        public ArrayList<String> getLocationList() {
+        public ArrayList<LocationList> getLocationList() {
             return locationList;
         }
 
-        public void setLocationList(ArrayList<String> locationList) {
+        public void setLocationList(ArrayList<LocationList> locationList) {
             this.locationList = locationList;
         }
+
     }
+
 }
 

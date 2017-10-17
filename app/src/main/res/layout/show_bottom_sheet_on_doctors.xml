@@ -57,7 +57,7 @@
                     android:layout_height="12dp"
                     android:stepSize="0.5"
                     android:layout_marginLeft="@dimen/dp10"
-                    android:rating="3.5" />
+                    tools:rating="3.5" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/doctorReviews"

@@ -10,6 +10,7 @@
         android:background="@drawable/rounded_rectangle_3"
         android:orientation="vertical">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

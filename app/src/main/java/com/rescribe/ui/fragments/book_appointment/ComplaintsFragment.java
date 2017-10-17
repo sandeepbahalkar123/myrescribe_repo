@@ -20,8 +20,10 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.complaints.ComplaintList;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +58,7 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
     String selectIdComplaint1;
     String selectIdComplaint2;
     private static Bundle args;
+    private String locationReceived = "";
 
 
     /**
@@ -108,10 +111,12 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (customResponse != null) {
-            mComplaintsBaseModel = (ComplaintsBaseModel) customResponse;
-            setComplaintSpinnerListAdapter();
+        if(mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_COMPLAINTS)) {
+            if (customResponse != null) {
+                mComplaintsBaseModel = (ComplaintsBaseModel) customResponse;
+                setComplaintSpinnerListAdapter();
 
+            }
         }
 
     }
@@ -153,9 +158,14 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
                         Toast.makeText(getActivity(), getString(R.string.book_appoint_complaint_same_err), Toast.LENGTH_SHORT).show();
 
                     } else {
-                        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+                        locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
+                        String[] split = locationReceived.split(",");
+                        doctorDataHelper.doGetDoctorListByComplaint(split[1].trim(),split[0].trim(),selectIdComplaint1,selectIdComplaint2);
+
+                       /* BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
                         args.putString(getString(R.string.clicked_item_data), "");
-                        activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(args), true);
+                        activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(args), true);*/
 
                     }
                 } else if (showEditText2.getVisibility() == View.VISIBLE && showEditText.getVisibility() == View.VISIBLE) {

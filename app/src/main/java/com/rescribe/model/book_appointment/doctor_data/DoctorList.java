@@ -7,7 +7,6 @@ import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
@@ -65,9 +64,9 @@ public class DoctorList implements Parcelable {
     @SerializedName("tokenNo")
     @Expose
     private String tokenNo;
-    @SerializedName("morePracticePlaces")
+    @SerializedName("PracticePlaceInfos")
     @Expose
-    private ArrayList<DoctorList.PracticePlaceInfo> morePracticePlaces = new ArrayList<>();
+    private ArrayList<PracticePlaceInfo> PracticePlaceInfos = new ArrayList<>();
     @SerializedName("openToday")
     @Expose
     private boolean openToday;
@@ -107,7 +106,7 @@ public class DoctorList implements Parcelable {
             instance.rating = ((String) in.readValue((String.class.getClassLoader())));
             instance.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.tokenNo = ((String) in.readValue((String.class.getClassLoader())));
-            in.readList(instance.morePracticePlaces, (DoctorList.PracticePlaceInfo.class.getClassLoader()));
+            in.readList(instance.PracticePlaceInfos, (PracticePlaceInfo.class.getClassLoader()));
             instance.openToday = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             in.readList(instance.availableTimeSlots, (String.class.getClassLoader()));
@@ -294,22 +293,22 @@ public class DoctorList implements Parcelable {
     }*/
 
 
-    public ArrayList<String> getMorePracticePlaces() {
+    public ArrayList<String> getPracticePlaceInfos() {
         ArrayList<String> temp = new ArrayList<>();
         for (PracticePlaceInfo data :
-                morePracticePlaces) {
+                PracticePlaceInfos) {
             temp.add(data.toString());
         }
         return temp;
     }
 
-    public void setMorePracticePlaces(ArrayList<String> morePracticePlaces) {
+    public void setPracticePlaceInfos(ArrayList<String> PracticePlaceInfos) {
         ArrayList<PracticePlaceInfo> d = new ArrayList<>();
         for (String data :
-                morePracticePlaces) {
+                PracticePlaceInfos) {
             d.add(new PracticePlaceInfo(data, "", ""));
         }
-        this.morePracticePlaces = d;
+        this.PracticePlaceInfos = d;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
@@ -329,7 +328,7 @@ public class DoctorList implements Parcelable {
         dest.writeValue(rating);
         dest.writeValue(waitingTime);
         dest.writeValue(tokenNo);
-        dest.writeList(morePracticePlaces);
+        dest.writeList(PracticePlaceInfos);
         dest.writeValue(openToday);
         dest.writeValue(favourite);
         dest.writeList(availableTimeSlots);
@@ -363,7 +362,7 @@ public class DoctorList implements Parcelable {
                 ", rating='" + rating + '\'' +
                 ", waitingTime='" + waitingTime + '\'' +
                 ", tokenNo=" + tokenNo +
-                ", morePracticePlaces=" + morePracticePlaces +
+                ", PracticePlaceInfos=" + PracticePlaceInfos +
                 ", openToday='" + openToday + '\'' +
                 ", availableTimeSlots=" + availableTimeSlots +
                 ", favourite=" + favourite +
@@ -374,50 +373,6 @@ public class DoctorList implements Parcelable {
     }
 */
 
-    public class PracticePlaceInfo {
-        @SerializedName("location_name")
-        @Expose
-        private String locationName = "";
-        @SerializedName("city_name")
-        @Expose
-        private String cityName = "";
-        @SerializedName("area_name")
-        @Expose
-        private String areaName = "";
 
-        public PracticePlaceInfo(String locationName, String cityName, String areaName) {
-            this.locationName = locationName;
-            this.cityName = cityName;
-            this.areaName = areaName;
-        }
 
-        public String getLocationName() {
-            return locationName;
-        }
-
-        public void setLocationName(String locationName) {
-            this.locationName = locationName;
-        }
-
-        public String getCityName() {
-            return cityName;
-        }
-
-        public void setCityName(String cityName) {
-            this.cityName = cityName;
-        }
-
-        public String getAreaName() {
-            return areaName;
-        }
-
-        public void setAreaName(String areaName) {
-            this.areaName = areaName;
-        }
-
-        @Override
-        public String toString() {
-            return locationName + ", " + areaName + ", " + cityName;
-        }
     }
-}

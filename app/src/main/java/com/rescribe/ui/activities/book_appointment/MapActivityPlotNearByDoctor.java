@@ -227,7 +227,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 doctorList.setSpeciality(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getSpeciality());
                 doctorList.setRecentlyVisited(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRecentlyVisited());
                 doctorList.setOpenToday(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getOpenToday());
-                doctorList.setMorePracticePlaces(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getMorePracticePlaces());
+                doctorList.setPracticePlaceInfos(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getPracticePlaceInfos());
                 doctorList.setLongitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
                 doctorList.setLatitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
                 doctorList.setTotalReview(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview());
@@ -237,7 +237,13 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 startActivity(intent);
             }
         });
-        mRatingBar.setRating(Float.parseFloat(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating()));
+        try {
+            mDoctorRating.setText("" + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
+            mRatingBar.setRating(Float.parseFloat(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating()));
+
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        }
         mDirections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,7 +263,6 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
 
             }
         });
-        mDoctorRating.setText("" + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
         mDoctorName.setText("" + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocName());
 
     }

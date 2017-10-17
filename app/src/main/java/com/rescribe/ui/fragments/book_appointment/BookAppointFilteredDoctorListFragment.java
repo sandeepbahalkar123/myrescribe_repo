@@ -83,6 +83,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     }
 
     private void init(Bundle args) {
+        mDoctorListView.setNestedScrollingEnabled(false);
         if (args != null) {
             mSelectedSpeciality = args.getString(getString(R.string.clicked_item_data));
             BookAppointDoctorListBaseActivity.setToolBarTitle(mSelectedSpeciality, true);

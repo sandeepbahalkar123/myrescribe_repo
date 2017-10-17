@@ -121,6 +121,8 @@ public class RescribeConstants {
     public static final String LOGOUT = RescribeConstants.BLANK + 41;
     public static final String TASK_GET_REVIEW_LIST = RescribeConstants.BLANK + 42;
     public static final String TASK_SET_FAVOURITE_DOCTOR = RescribeConstants.BLANK + 43;
+    public static final String TASK_GET_DOCTOR_LIST_BY_COMPLAINT = RescribeConstants.BLANK + 44;
+
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
@@ -157,7 +159,6 @@ public class RescribeConstants {
     public static final String IS_URL = "isUrl";
     public static final String DOCTORS_INFO = "doctor_info";
     public static final String DOCTOR_DATA_REQUEST = "doctor_request_info";
-
 
 
     public static class USER_STATUS{

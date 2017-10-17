@@ -121,7 +121,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         mAboutDoctorDescription.setText("" + mClickedDoctorObject.getAboutDoctor());
         mDoctorExperience.setText("" + mClickedDoctorObject.getExperience() + getString(R.string.space) + getString(R.string.years_experience));
         mDoctorFees.setText(getString(R.string.fee) + getString(R.string.space) + getString(R.string.rupees) + mClickedDoctorObject.getAmount() + getString(R.string.space) + getString(R.string.slash) + getString(R.string.space) + getString(R.string.session));
-        List<String> morePracticePlaces = mClickedDoctorObject.getMorePracticePlaces();
+        List<String> morePracticePlaces = mClickedDoctorObject.getPracticePlaceInfos();
         StringBuilder builder = new StringBuilder();
         for (String s :
                 morePracticePlaces) {

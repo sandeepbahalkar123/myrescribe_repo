@@ -18,6 +18,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
@@ -39,6 +40,36 @@ import butterknife.ButterKnife;
 public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppointFilteredDocList.ListViewHolder> implements Filterable {
 
 
+    @BindView(R.id.blueLine)
+    ImageView blueLine;
+    @BindView(R.id.doctorCategoryType)
+    CustomTextView doctorCategoryType;
+    @BindView(R.id.doctorFee)
+    CustomTextView doctorFee;
+    @BindView(R.id.imageURL)
+    CircularImageView imageURL;
+    @BindView(R.id.thumbnail)
+    LinearLayout thumbnail;
+
+    @BindView(R.id.doctorName)
+    CustomTextView doctorName;
+
+    @BindView(R.id.doctorExperience)
+    CustomTextView doctorExperience;
+    @BindView(R.id.doctorAddress)
+    CustomTextView doctorAddress;
+    @BindView(R.id.dataLayout)
+    LinearLayout dataLayout;
+    @BindView(R.id.favoriteView)
+    ImageView favoriteView;
+    @BindView(R.id.gMapLocationView)
+    ImageView gMapLocationView;
+    @BindView(R.id.distance)
+    CustomTextView distance;
+    @BindView(R.id.doctorRating)
+    CustomTextView doctorRating;
+    @BindView(R.id.ratingBar)
+    RatingBar ratingBar;
     private Fragment mFragment;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
@@ -70,7 +101,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_book_appointment_filtered_doctor, parent, false);
+                .inflate(R.layout.item_book_appointment_doctor_list, parent, false);
 
         return new ListViewHolder(itemView);
     }
@@ -79,13 +110,24 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     public void onBindViewHolder(ListViewHolder holder, int position) {
         final DoctorList doctorObject = mDataList.get(position);
 
-        holder.waitingTime.setText("" + mContext.getString(R.string.waiting_for) + mContext.getString(R.string.space) + doctorObject.getWaitingTime());
-        holder.tokenNo.setText(mContext.getString(R.string.token_no_available));
+        // holder.waitingTime.setText("" + mContext.getString(R.string.waiting_for) + mContext.getString(R.string.space) + doctorObject.getWaitingTime());
+        //holder.tokenNo.setText(mContext.getString(R.string.token_no_available));
         holder.doctorName.setText(doctorObject.getDocName());
-        holder.doctorType.setText(doctorObject.getSpeciality());
+        holder.aboutDoctor.setText(doctorObject.getDegree());
+        if(doctorObject.getRating().equals("NA")){
+            holder.doctorRating.setVisibility(View.INVISIBLE);
+            holder.ratingBar.setVisibility(View.INVISIBLE);
+        }else{
+            holder.doctorRating.setVisibility(View.VISIBLE);
+            holder.ratingBar.setVisibility(View.VISIBLE);
+            holder.doctorRating.setText(""+doctorObject.getRating());
+            holder.ratingBar.setRating(Float.parseFloat(doctorObject.getRating()));
+        }
+
+
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
         holder.doctorAddress.setText(doctorObject.getDoctorAddress());
-        holder.doctorFee.setText("" + mContext.getString(R.string.rupee_symbol) + doctorObject.getAmount());
+        holder.doctorFee.setText("" + doctorObject.getAmount());
         SpannableString content = new SpannableString(doctorObject.getDistance());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         holder.distance.setText(content);
@@ -104,7 +146,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                     .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
                     .endConfig()
                     .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-                     holder.imageURL.setImageDrawable(drawable);
+            holder.imageURL.setImageDrawable(drawable);
 
         } else {
             RequestOptions requestOptions = new RequestOptions();
@@ -141,16 +183,17 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                     4, 4 + mSearchString.length(),//hightlight mSearchString
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        }        if (spannableStringSearch != null) {
+        }
+        if (spannableStringSearch != null) {
             holder.doctorName.setText(spannableStringSearch);
         } else {
             holder.doctorName.setText(doctorObject.getDocName());
         }
 
         if (doctorObject.getFavourite()) {
-            holder.favoriteView.setVisibility(View.VISIBLE);
+            holder.favoriteView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.result_heart_fav));
         } else {
-            holder.favoriteView.setVisibility(View.INVISIBLE);
+            holder.favoriteView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.result_line_heart_fav));
         }
 
 
@@ -174,8 +217,6 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
         @BindView(R.id.doctorName)
         CustomTextView doctorName;
-        @BindView(R.id.doctorType)
-        CustomTextView doctorType;
         @BindView(R.id.doctorExperience)
         CustomTextView doctorExperience;
         @BindView(R.id.doctorAddress)
@@ -184,10 +225,18 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         CustomTextView doctorFee;
         @BindView(R.id.distance)
         CustomTextView distance;
-        @BindView(R.id.waitingTime)
-        CustomTextView waitingTime;
-        @BindView(R.id.tokenNo)
-        CustomTextView tokenNo;
+        @BindView(R.id.doctorRating)
+        CustomTextView doctorRating;
+        @BindView(R.id.ratingBar)
+        RatingBar ratingBar;
+        @BindView(R.id.aboutDoctor)
+        CustomTextView aboutDoctor;
+        @BindView(R.id.clinicName)
+        CustomTextView clinicName;
+        /*  @BindView(R.id.waitingTime)
+          CustomTextView waitingTime;
+          @BindView(R.id.tokenNo)
+          CustomTextView tokenNo;*/
         @BindView(R.id.favoriteView)
         ImageView favoriteView;
         @BindView(R.id.imageURL)

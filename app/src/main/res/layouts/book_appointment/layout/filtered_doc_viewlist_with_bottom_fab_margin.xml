@@ -1,19 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ececec"
     android:orientation="vertical"
+    android:background="@color/divider"
     tools:ignore="MissingTranslation">
 
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:visibility="visible"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="85dp"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
     <RelativeLayout
         android:id="@+id/emptyListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
@@ -26,6 +49,7 @@
             android:background="@drawable/no_records_found"
             android:gravity="center"
             android:orientation="vertical" />
+
     </RelativeLayout>
     <!--  <ImageView
           android:id="@+id/emptyListView"
@@ -56,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="bottom|left"
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_marginLeft="@dimen/fab_margin"
         android:layout_marginTop="@dimen/dp5"
@@ -64,15 +88,4 @@
         android:visibility="visible"
         app:backgroundTint="#00af52" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/leftFab"
-        android:background="@color/white"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:visibility="visible"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
-
-</RelativeLayout>
+</FrameLayout>

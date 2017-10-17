@@ -582,6 +582,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         BookAppointmentBaseModel bookAppointmentBaseModel = new Gson().fromJson(data, BookAppointmentBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, mOldDataTag);
                         break;
+                    case RescribeConstants.TASK_GET_DOCTOR_LIST_BY_COMPLAINT://get doctor data by location
+                        BookAppointmentBaseModel bookAppointmentBaseModelForComplaint = new Gson().fromJson(data, BookAppointmentBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModelForComplaint, mOldDataTag);
+                        break;
                     case RescribeConstants.TASK_GET_COMPLAINTS: //This is for get archived list
                         ComplaintsBaseModel complaintsBaseModel = new Gson().fromJson(data, ComplaintsBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, complaintsBaseModel, mOldDataTag);

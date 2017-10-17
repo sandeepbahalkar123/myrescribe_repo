@@ -53,5 +53,6 @@
     <dimen name="dp11">11dp</dimen>
     <dimen name="dp9">9dp</dimen>
     <dimen name="dp3">3dp</dimen>
+    <dimen name="sp13">13sp</dimen>
 
 </resources>

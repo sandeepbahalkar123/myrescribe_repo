@@ -50,7 +50,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     CustomTextView titleTextView;
     @BindView(R.id.resetButton)
     Button resetButton;
-
     Unbinder unbinder;
     @BindView(R.id.genderHeaderView)
     LinearLayout mGenderHeaderView;
@@ -58,7 +57,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     LinearLayout mGenderContentView;
     @BindView(R.id.clinicFeesHeaderView)
     LinearLayout mClinicFeesHeaderView;
-
     @BindView(R.id.clinicFeesContentView)
     LinearLayout mClinicFeesContentView;
     @BindView(R.id.availabilityHeaderView)
@@ -105,7 +103,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     CustomTextView mAvailFri;
     @BindView(R.id.availSat)
     CustomTextView mAvailSat;
-
     //-----
     @BindView(R.id.clinicFeesSeekBar)
     CrystalRangeSeekbar mClinicFeesSeekBar;

@@ -57,7 +57,78 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
 
+                <LinearLayout
+                    android:id="@+id/sortingHeaderView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp40"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/drawer_filter_header_icon_layout"
+                        android:layout_gravity="center"
+                        android:src="@drawable/sorting_icon" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        style="@style/drawer_filter_header_layout"
+                        android:text="@string/sorting"
+                        app:customFont="@string/roboto_medium" />
+
+                    <ImageView
+                        style="@style/drawer_filter_header_direction_icon_layout"
+                        android:src="@drawable/down_arrow"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/chooseOptionToSort"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp40"
+                    android:background="@color/otp_background_layout"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            style="@style/drawer_filter_header_layout"
+                            android:text="@string/sort"
+                            android:layout_marginStart="@dimen/dp8"
+                            android:layout_marginLeft="@dimen/dp8"
+                            android:textSize="@dimen/sp14"
+                            android:textColor="@color/tagColor"
+                            app:customFont="@string/roboto_regular" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="0.5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            style="@style/drawer_filter_header_layout"
+                            android:text="@string/choose_one_option"
+                            android:drawablePadding="@dimen/dp16"
+                            android:drawableRight="@drawable/sorting_arrow"
+                            android:gravity="right|end|center_vertical"
+                            android:textColor="@color/gender_drawer"
+                            app:customFont="@string/roboto_regular" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

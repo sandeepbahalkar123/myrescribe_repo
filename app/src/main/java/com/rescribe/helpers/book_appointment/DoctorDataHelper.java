@@ -11,13 +11,9 @@ import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesModel;
-import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.complaints.request_complaints.DoctorListByComplaintModel;
-import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestDoctorListBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestFavouriteDoctorModel;
-import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
-import com.rescribe.model.book_appointment.filterdrawer.request_model.RequestToGetFilterDataModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -137,12 +133,9 @@ public class DoctorDataHelper implements ConnectionListener {
             ex.printStackTrace();
         }*/
 
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG, Request.Method.POST, true);
-        RequestToGetFilterDataModel requestToGetFilterDataModel = new RequestToGetFilterDataModel();
-        requestToGetFilterDataModel.setCityName(cityName);
-        mConnectionFactory.setPostParams(requestToGetFilterDataModel);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.GET_BOOK_APPOINTMENT_FILTER_APPOINTMENT_DATA);
+        mConnectionFactory.setUrl(Config.GET_BOOK_APPOINTMENT_FILTER_APPOINTMENT_DATA+cityName);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG);
     }
 

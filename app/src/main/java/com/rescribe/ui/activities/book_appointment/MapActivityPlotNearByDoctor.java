@@ -116,7 +116,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         mMap.setOnMapClickListener(this);
         for (int index = 0; index < mDoctorLists.size(); index++) {
             DoctorList doctorList = mDoctorLists.get(index);
-            p1 = getLocationFromAddress(doctorList.getDoctorAddress());
+            p1 = getLocationFromAddress(doctorList.getDoctorAddress().get(0));
             if (p1 != null) {
                 LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
                 doctorList.setLatitude(p1.getLatitude());

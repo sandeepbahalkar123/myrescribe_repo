@@ -297,11 +297,16 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
                 if (addresses != null && addresses.size() > 0) {
                     //-------
-
-                    String locality = getArea(addresses.get(0));
+                    String locality = "";
+                    //-------
+                    if (placename.contains(" ")) {
+                        locality = getArea(addresses.get(0));
+                    } else {
+                        locality = placename;
+                    }
                     String city = addresses.get(0).getLocality();
 
-                    Address address = addresses.get(0);
+                   /* Address address = addresses.get(0);
                     String addressLine = address.getAddressLine(1);
                     String addressLineArray[] = addressLine.split(",");
                     addressLine = addressLineArray[addressLineArray.length - 1];
@@ -310,11 +315,11 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                         locality = addressLine;
                     } else if (addressLine.toLowerCase().contains(placename)) {
                         locality = placename;
-                    }
+                    }*/
                     //-------
                     //DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), placename + ", " + city);
-                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), placename + ", " + city);
-                    // setSelectedLocationText(locality + ", " + city);
+                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), locality + ", " + city);
+                    setSelectedLocationText(locality + ", " + city);
                     //-------
                     HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
                     String s = userSelectedLocationInfo.get(getString(R.string.location));
@@ -331,10 +336,9 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
     private String getArea(Address obj) {
 
-        /*if (obj.getThoroughfare() != null)
+        if (obj.getThoroughfare() != null)
             return obj.getThoroughfare();
-        else */
-        if (obj.getSubLocality() != null)
+        else if (obj.getSubLocality() != null)
             return obj.getSubLocality();
         else if (obj.getSubAdminArea() != null)
             return obj.getSubAdminArea();

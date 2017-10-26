@@ -36,8 +36,6 @@ public class FilterSelectLocationsAdapter extends RecyclerView.Adapter<FilterSel
     public FilterSelectLocationsAdapter(Context mContext, ArrayList<LocationList> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
-
-
     }
 
     @Override

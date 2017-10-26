@@ -35,6 +35,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.doctor_data.DoctorListByClinic;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorSpeciality;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
@@ -199,23 +200,23 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         switch (view.getId()) {
             case R.id.viewpager:
                 break;
-            case R.id.prevBtn:
+           /* case R.id.prevBtn:
                 currentPage -= 1;
                 mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, generatePage(currentPage, bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities()));
                 mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
                 toggleButtons(bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
                 // listView.getLayoutManager().scrollToPosition(linearLayoutManager.findLastVisibleItemPosition() + 1);
-                break;
+                break;*/
             case R.id.doubtMessage:
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
                 activity.loadFragment(ComplaintsFragment.newInstance(new Bundle()), false);
                 break;
-            case R.id.nextBtn:
+           /* case R.id.nextBtn:
                 currentPage += 1;
                 mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, generatePage(currentPage, bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities()));
                 mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
                 toggleButtons(bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
-                break;
+                break;*/
             case R.id.rightFab:
                 activity = (BookAppointDoctorListBaseActivity) getActivity();
                 activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);
@@ -264,7 +265,40 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             //----- to set doc data list, invisible by default -----
             isDataListViewVisible(false, false);
             ArrayList<DoctorList> doctorList = doctorServicesModel.getDoctorList();
+            ArrayList<DoctorListByClinic> doctorListByClinics = new ArrayList<>();
             if (doctorList.size() > 0) {
+                /* for(int i =0;i<doctorList.size();i++){
+                     if(doctorList.get(i).getClinicName().size()==1){
+
+                     }else if(doctorList.get(i).getClinicName().size()>1){
+                         for(int j = 0;j<doctorList.get(i).getClinicName().size();j++){
+                             DoctorListByClinic doctorListByClinic = new DoctorListByClinic();
+                             doctorListByClinic.setDocId(doctorList.get(i).getDocId());
+                             doctorListByClinic.setDocName(doctorList.get(i).getDocName());
+                             doctorListByClinic.setDoctorImageUrl(doctorList.get(i).getDoctorImageUrl());
+                             doctorListByClinic.setExperience(doctorList.get(i).getExperience());
+                             doctorListByClinic.setSpeciality(doctorList.get(i).getSpeciality());
+                             doctorListByClinic.setAmount(doctorList.get(i).getAmount());
+                             doctorListByClinic.setDistance(doctorList.get(i).getDistance());
+                             doctorListByClinic.setRecentlyVisited(doctorList.get(i).getRecentlyVisited());
+                             doctorListByClinic.setFavourite(doctorList.get(i).getFavourite());
+                             doctorListByClinic.setAboutDoctor(doctorList.get(i).getAboutDoctor());
+                             doctorListByClinic.setDegree(doctorList.get(i).getDegree());
+                             doctorListByClinic.setWaitingTime(doctorList.get(i).getWaitingTime());
+                             doctorListByClinic.setRating(doctorList.get(i).getRating());
+                             doctorListByClinic.setTokenNo(doctorList.get(i).getTokenNo());
+                             doctorListByClinic.setMorePracticePlaces(doctorList.get(i).getPracticePlaceInfos());
+                             doctorListByClinic.setOpenTimeSlots(doctorList.get(i).getAvailableTimeSlots());
+                             doctorListByClinic.setOpenToday(doctorList.get(i).getOpenToday());
+                             doctorListByClinic.setReviewCount(doctorList.get(i).getTotalReview());
+                             doctorListByClinic.setClinicName(doctorList.get(i).getClinicName().get(j));
+                             doctorListByClinic.setDoctorAddress(doctorList.get(i).getDoctorAddress().get(j));
+                             doctorListByClinics.add(doctorListByClinic);
+                         }
+
+                     }
+
+                 }*/
                 mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList, RecentVisitDoctorFragment.this, RecentVisitDoctorFragment.this);
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 showDoctorsRecyclerView.setLayoutManager(linearlayoutManager);
@@ -285,13 +319,12 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 mBookAppointSpecialityListView.setVisibility(View.VISIBLE);
           /*  prevBtn.setVisibility(View.INVISIBLE);
             prevBtn.setEnabled(false);*/
-                prevBtn.setVisibility(View.GONE);
+               /* prevBtn.setVisibility(View.GONE);
                 prevBtn.setEnabled(false);
-                nextBtn.setVisibility(View.VISIBLE);
+                nextBtn.setVisibility(View.VISIBLE);*/
                 whiteUnderLine.setVisibility(View.VISIBLE);
                 searchView.setVisibility(View.VISIBLE);
                 mSpecialityEmptyListView.setVisibility(View.GONE);
-
                 mBookAppointSpecialityListView.setHasFixedSize(true);
                 RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
                 mBookAppointSpecialityListView.setLayoutManager(layoutManager);
@@ -300,7 +333,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 int spacing = 30; // 50px
                 boolean includeEdge = true;
                 mBookAppointSpecialityListView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-                mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, generatePage(currentPage, bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities()));
+                mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
                 // mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
                 mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
                 pickSpeciality.setVisibility(View.VISIBLE);
@@ -422,7 +455,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         bookAppointmentBaseModel = activity.getReceivedBookAppointmentBaseModel();
         if(bookAppointmentBaseModel!=null) {
             setDoctorListAdapter(bookAppointmentBaseModel);
-            toggleButtons(bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
+           // toggleButtons(bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
 
             HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
             String s = userSelectedLocationInfo.get(getString(R.string.location));

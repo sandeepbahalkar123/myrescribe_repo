@@ -21,6 +21,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CircularImageView;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup view, int position) {
-        View imageLayout = mInflater.inflate(R.layout.recently_visit_doctors_layout, view, false);
+        View imageLayout = mInflater.inflate(R.layout.recently_visited_pager_item, view, false);
         assert imageLayout != null;
 
         final TextView doctorNameTextView = (TextView) imageLayout
@@ -66,26 +67,30 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         final TextView doctorAddress = (TextView) imageLayout
                 .findViewById(R.id.doctorAddress);
         final TextView doctorFees = (TextView) imageLayout
-                .findViewById(R.id.doctorFees);
-        final TextView kilometers = (TextView) imageLayout
-                .findViewById(R.id.kilometers);
-        final ImageView favoriteView = (ImageView) imageLayout
+                .findViewById(R.id.feesToPaidVisit);
+       /* final TextView kilometers = (TextView) imageLayout
+                .findViewById(R.id.kilometers);*/
+       /* final ImageView favoriteView = (ImageView) imageLayout
                 .findViewById(R.id.favoriteView);
         final TextView recentVisitView = (TextView) imageLayout
-                .findViewById(R.id.recentVisitView);
+                .findViewById(R.id.recentVisitView);*/
         final CircularImageView imageURL = (CircularImageView) imageLayout
                 .findViewById(R.id.imageURL);
-        if(!mDoctorLists.get(position).getRecentlyVisited()){
+        final CustomTextView doctorAppointmentDate = (CustomTextView) imageLayout
+                .findViewById(R.id.doctorAppointmentDate);
+        final ImageView favorite = (ImageView) imageLayout
+                .findViewById(R.id.favorite);
+       /* if(!mDoctorLists.get(position).getRecentlyVisited()){
             recentVisitView.setVisibility(View.INVISIBLE);
         }else if(!mDoctorLists.get(position).getFavourite()){
             favoriteView.setVisibility(View.INVISIBLE);
         }else if(!mDoctorLists.get(position).getRecentlyVisited()&&!mDoctorLists.get(position).getFavourite()){
-            favoriteView.setVisibility(View.INVISIBLE);
-            recentVisitView.setVisibility(View.INVISIBLE);
+           favoriteView.setVisibility(View.INVISIBLE);
+           recentVisitView.setVisibility(View.INVISIBLE);
         }else{
-            favoriteView.setVisibility(View.VISIBLE);
-            recentVisitView.setVisibility(View.VISIBLE);
-        }
+           favoriteView.setVisibility(View.VISIBLE);
+           recentVisitView.setVisibility(View.VISIBLE);
+        }*/
 
         if (mDoctorLists.get(position).getDoctorImageUrl().equals("")) {
             String doctorName = mDoctorLists.get(position).getDocName();
@@ -121,11 +126,19 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         doctorNameTextView.setText(mDoctorLists.get(position).getDocName());
         doctorType.setText(mDoctorLists.get(position).getDegree());
         doctorExperience.setText(""+ mDoctorLists.get(position).getExperience()+mContext.getString(R.string.space)+mContext.getString(R.string.years_experience));
-        doctorAddress.setText(mDoctorLists.get(position).getDoctorAddress());
+        doctorAddress.setText(mDoctorLists.get(position).getDoctorAddress().get(0));
         doctorFees.setText(""+ mDoctorLists.get(position).getAmount());
-        SpannableString content = new SpannableString(""+ mDoctorLists.get(position).getDistance());
+        SpannableString content = new SpannableString("Oct 18,2017");
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        kilometers.setText(content);
+        doctorAppointmentDate.setText(content);
+        if (mDoctorLists.get(position).getFavourite()) {
+            favorite.setVisibility(View.VISIBLE);
+        } else {
+            favorite.setVisibility(View.GONE);
+        }
+      /*  SpannableString content = new SpannableString(""+ mDoctorLists.get(position).getDistance());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        kilometers.setText(content);*/
         view.addView(imageLayout, 0);
 
         return imageLayout;

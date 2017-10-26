@@ -36,7 +36,7 @@ public class DoctorList implements Parcelable {
     private int experience;
     @SerializedName("doctorAddress")
     @Expose
-    private String doctorAddress = "";
+    private ArrayList<String> doctorAddress = new ArrayList<>();
     @SerializedName("amount")
     @Expose
     private int amount;
@@ -58,13 +58,14 @@ public class DoctorList implements Parcelable {
     @SerializedName("rating")
     @Expose
     private String rating = "";
+
     @SerializedName("waitingTime")
     @Expose
     private String waitingTime = "";
     @SerializedName("tokenNo")
     @Expose
     private String tokenNo;
-    @SerializedName("PracticePlaceInfos")
+    @SerializedName("morePracticePlaces")
     @Expose
     private ArrayList<PracticePlaceInfo> PracticePlaceInfos = new ArrayList<>();
     @SerializedName("openToday")
@@ -76,6 +77,9 @@ public class DoctorList implements Parcelable {
     @SerializedName("reviewCount")
     @Expose
     private int totalReview;
+    @SerializedName("clinicName")
+    @Expose
+    private  ArrayList<String> clinicName = new ArrayList<>();
     private double latitude = 0.0;
     private double longitude = 0.0;
 
@@ -97,7 +101,8 @@ public class DoctorList implements Parcelable {
             instance.doctorImageUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.speciality = ((String) in.readValue((String.class.getClassLoader())));
             instance.experience = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.doctorAddress = ((String) in.readValue((String.class.getClassLoader())));
+            in.readList(instance.doctorAddress, (String.class.getClassLoader()));
+            in.readList(instance.clinicName, (String.class.getClassLoader()));
             instance.amount = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.distance = ((String) in.readValue((String.class.getClassLoader())));
             instance.recentlyVisited = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
@@ -123,6 +128,14 @@ public class DoctorList implements Parcelable {
 
     public boolean getFavourite() {
         return favourite;
+    }
+
+    public ArrayList<String> getClinicName() {
+        return clinicName;
+    }
+
+    public void setClinicName(ArrayList<String> clinicName) {
+        this.clinicName = clinicName;
     }
 
     public void setFavourite(Boolean favourite) {
@@ -187,13 +200,6 @@ public class DoctorList implements Parcelable {
         this.experience = experience;
     }
 
-    public String getDoctorAddress() {
-        return doctorAddress;
-    }
-
-    public void setDoctorAddress(String doctorAddress) {
-        this.doctorAddress = doctorAddress;
-    }
 
     public int getAmount() {
         return amount;
@@ -284,6 +290,15 @@ public class DoctorList implements Parcelable {
         this.totalReview = totalReview;
     }
 
+    public ArrayList<String> getDoctorAddress() {
+        return doctorAddress;
+    }
+
+    public void setDoctorAddress(ArrayList<String> doctorAddress) {
+        this.doctorAddress = doctorAddress;
+    }
+
+
    /* public ArrayList<ReviewList> getReviewList() {
         return reviewList;
     }
@@ -319,7 +334,8 @@ public class DoctorList implements Parcelable {
         dest.writeValue(doctorImageUrl);
         dest.writeValue(speciality);
         dest.writeValue(experience);
-        dest.writeValue(doctorAddress);
+        dest.writeList(doctorAddress);
+        dest.writeList(clinicName);
         dest.writeValue(amount);
         dest.writeValue(distance);
         dest.writeValue(recentlyVisited);

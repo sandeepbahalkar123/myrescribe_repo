@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -32,10 +33,12 @@ import com.rescribe.model.book_appointment.ServicesModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.GoogleSettingsApi;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -223,23 +226,27 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 }
 
                 if (addresses != null && addresses.size() > 0) {
+                    String locality = "";
                     //-------
-
-                    String locality = getArea(addresses.get(0));
-                    String city = addresses.get(0).getLocality();
-
-                    Address address = addresses.get(0);
-                    String addressLine = address.getAddressLine(1);
-                    String addressLineArray[] = addressLine.split(",");
-                    addressLine = addressLineArray[addressLineArray.length - 1];
-
-                    if (placename.toLowerCase().contains(addressLine)) {
-                        locality = addressLine;
-                    } else if (addressLine.toLowerCase().contains(placename)) {
+                    if (placename.contains(" ")) {
+                        locality = getArea(addresses.get(0));
+                    } else {
                         locality = placename;
                     }
+                    String city = addresses.get(0).getLocality();
+
+                    // Address address = addresses.get(0);
+                    // String addressLine = address.getAddressLine(1);
+                    // String addressLineArray[] = addressLine.split(",");
+                    // addressLine = addressLineArray[addressLineArray.length - 1];
+
+                  /*  if (placename.toLowerCase().contains(addressLine)) {*/
+                    //  locality = addresses.get(0).get;
+                    /*} else if (addressLine.toLowerCase().contains(placename)) {
+                        locality = placename;
+                    }*/
                     //-------
-                    DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), placename + ", " + city);
+                    DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality + ", " + city);
                     // DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality + ", " + city);
                     locationTextView.setText(locality + ", " + city);
                 }
@@ -250,10 +257,9 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
 
     private String getArea(Address obj) {
 
-        /*if (obj.getThoroughfare() != null)
+        if (obj.getThoroughfare() != null)
             return obj.getThoroughfare();
-        else */
-        if (obj.getSubLocality() != null)
+        else if (obj.getSubLocality() != null)
             return obj.getSubLocality();
         else if (obj.getSubAdminArea() != null)
             return obj.getSubAdminArea();

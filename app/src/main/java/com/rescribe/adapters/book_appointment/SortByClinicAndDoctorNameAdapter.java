@@ -27,6 +27,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.doctor_data.DoctorListByClinic;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
@@ -37,7 +38,11 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppointFilteredDocList.ListViewHolder> implements Filterable {
+/**
+ * Created by jeetal on 26/10/17.
+ */
+
+public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortByClinicAndDoctorNameAdapter.ListViewHolder> implements Filterable {
 
 
     @BindView(R.id.blueLine)
@@ -70,18 +75,18 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     RatingBar ratingBar;
     private Fragment mFragment;
     private Context mContext;
-    private ArrayList<DoctorList> mDataList;
+    private ArrayList<DoctorListByClinic> mDataList;
     private int mImageSize;
-    private ArrayList<DoctorList> mArrayList;
-    private OnFilterDocListClickListener mOnFilterDocListClickListener;
+    private ArrayList<DoctorListByClinic> mArrayList;
+    private OnClinicAndDoctorNameSearchRowItem mOnClinicAndDoctorNameSearchRowItem;
     private String mSearchString;
     private ColorGenerator mColorGenerator;
 
-    public BookAppointFilteredDocList(Context mContext, ArrayList<DoctorList> dataList, OnFilterDocListClickListener mOnFilterDocListClickListener, Fragment m) {
+    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorListByClinic> dataList, OnClinicAndDoctorNameSearchRowItem mOnClinicAndDoctorNameSearchRowItem, Fragment m) {
         this.mDataList = dataList;
         this.mContext = mContext;
         this.mArrayList = dataList;
-        this.mOnFilterDocListClickListener = mOnFilterDocListClickListener;
+        this.mOnClinicAndDoctorNameSearchRowItem = mOnClinicAndDoctorNameSearchRowItem;
         this.mFragment = m;
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
@@ -96,16 +101,16 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     }
 
     @Override
-    public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SortByClinicAndDoctorNameAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_book_appointment_doctor_list, parent, false);
 
-        return new ListViewHolder(itemView);
+        return new SortByClinicAndDoctorNameAdapter.ListViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ListViewHolder holder, int position) {
-        final DoctorList doctorObject = mDataList.get(position);
+    public void onBindViewHolder(SortByClinicAndDoctorNameAdapter.ListViewHolder holder, int position) {
+        final DoctorListByClinic doctorObject = mDataList.get(position);
 
         // holder.waitingTime.setText("" + mContext.getString(R.string.waiting_for) + mContext.getString(R.string.space) + doctorObject.getWaitingTime());
         //holder.tokenNo.setText(mContext.getString(R.string.token_no_available));
@@ -123,7 +128,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
 
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
-        holder.doctorAddress.setText(doctorObject.getDoctorAddress().get(0));
+        holder.doctorAddress.setText(doctorObject.getDoctorAddress());
         holder.doctorFee.setText("" + doctorObject.getAmount());
         SpannableString content = new SpannableString(doctorObject.getDistance());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
@@ -167,7 +172,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.doctor_details));
 
-                mOnFilterDocListClickListener.onClickOfDoctorRowItem(b);
+                mOnClinicAndDoctorNameSearchRowItem.onClickOfDoctorRowItem(b);
             }
         });
         SpannableString spannableStringSearch = null;
@@ -192,12 +197,10 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         } else {
             holder.favoriteView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.result_line_heart_fav));
         }
-        if (doctorObject.getClinicName().size()== 1) {
-            holder.clinicName.setVisibility(View.VISIBLE);
-            holder.clinicName.setText(doctorObject.getClinicName().get(0));
-        } else {
-            holder.clinicName.setVisibility(View.GONE);
-        }
+
+           // holder.clinicName.setVisibility(View.VISIBLE);
+            holder.clinicName.setText(doctorObject.getClinicName());
+
 
         holder.favoriteView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,7 +208,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 Bundle b = new Bundle();
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.favorite));
-                mOnFilterDocListClickListener.onClickOfDoctorRowItem(b);
+                mOnClinicAndDoctorNameSearchRowItem.onClickOfDoctorRowItem(b);
             }
         });
     }
@@ -255,7 +258,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         }
     }
 
-    public interface OnFilterDocListClickListener {
+    public interface OnClinicAndDoctorNameSearchRowItem {
         void onClickOfDoctorRowItem(Bundle bundleData);
     }
 
@@ -273,13 +276,13 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                     mDataList = mArrayList;
                 } else {
 
-                    ArrayList<DoctorList> filteredList = new ArrayList<>();
+                    ArrayList<DoctorListByClinic> filteredList = new ArrayList<>();
 
-                    for (DoctorList doctorConnectModel : mArrayList) {
+                    for (DoctorListByClinic doctorConnectModel : mArrayList) {
 
                         if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase())) {
                             filteredList.add(doctorConnectModel);
-                        }else{
+                        }/*else{
                             for (String name :
                                     doctorConnectModel.getClinicName()) {
                                 if (name.toLowerCase().startsWith(charString.toLowerCase())) {
@@ -287,7 +290,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                                     break;
                                 }
                             }
-                        }
+                        }*/
 
                     }
                     mDataList = filteredList;
@@ -299,7 +302,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mDataList = (ArrayList<DoctorList>) filterResults.values;
+                mDataList = (ArrayList<DoctorListByClinic>) filterResults.values;
                 if (mDataList.size() == 0) {
                     RecentVisitDoctorFragment temp = (RecentVisitDoctorFragment) mFragment;
                     temp.isDataListViewVisible(true, true);

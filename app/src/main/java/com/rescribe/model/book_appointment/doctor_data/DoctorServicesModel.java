@@ -14,7 +14,7 @@ import com.rescribe.interfaces.CustomResponse;
 
 public class DoctorServicesModel implements Parcelable, CustomResponse {
 
-    @SerializedName("docDetails")
+    @SerializedName("doctorList")
     @Expose
     private ArrayList<DoctorList> doctorList = new ArrayList<>();
     @SerializedName("doctorSpecialities")

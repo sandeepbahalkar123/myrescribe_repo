@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/card"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/doctorCategoryVisit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp6"
+                android:layout_marginTop="@dimen/dp11"
+                android:layout_weight="0.5"
+                android:drawableLeft="@drawable/blue_line"
+                android:drawablePadding="@dimen/dp8"
+                android:paddingLeft="@dimen/dp4"
+                android:paddingRight="@dimen/dp4"
+                android:text="My Appointments"
+                android:textColor="@color/greyish"
+                android:textSize="@dimen/sp12"
+                app:customFont="@string/roboto_regular" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/doctorCategoryType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp10"
+                android:layout_marginTop="@dimen/dp9"
+                android:background="@drawable/rounded_rectangle_8"
+                android:drawableLeft="@drawable/premium_icon"
+                android:text="Premium"
+                android:drawablePadding="@dimen/dp4"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dp4"
+                android:paddingRight="@dimen/dp4"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp10"
+                app:customFont="@string/roboto_medium" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/doctorRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp6"
+                android:background="@drawable/rated_box_cropped"
+                android:gravity="center"
+                android:text="4.2"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp11" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp8"
+            android:layout_marginTop="@dimen/dp10"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/thumbnail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center|top"
+                android:layout_marginRight="@dimen/dp5"
+                android:padding="3dip">
+
+                <com.rescribe.ui.customesViews.CircularImageView
+                    android:id="@+id/imageURL"
+                    android:layout_width="@dimen/dp50"
+                    android:layout_height="@dimen/dp50"
+                    android:src="@drawable/layer_12" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dp14"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:gravity="center|left"
+                android:orientation="vertical">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctorType"
+                    android:layout_toRightOf="@+id/thumbnail"
+                    android:text="Dr. Sandeep Patil"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp16"
+                    app:customFont="@string/roboto_bold" />
+                <!-- Title Of Song-->
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/thumbnail"
+                    android:layout_marginTop="1dip"
+                    android:text="Cardilogist"
+                    android:textColor="@color/grey_shade"
+                    android:textSize="@dimen/sp12"
+                    app:customFont="@string/roboto_medium" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorExperience"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctorName"
+                    android:layout_toRightOf="@+id/thumbnail"
+                    android:gravity="right"
+                    android:text="10 years of experience "
+                    android:textColor="@color/grey_shade"
+                    android:textSize="@dimen/sp12"
+                    app:customFont="@string/roboto_medium" />
+                <!-- Rightend Duration -->
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctorName"
+                    android:layout_toRightOf="@+id/thumbnail"
+                    android:gravity="right"
+                    android:text="Aundh, Pune"
+                    android:textColor="@color/grey_shade"
+                    android:textSize="@dimen/sp12"
+                    app:customFont="@string/roboto_medium" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorAppointmentDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/doctorName"
+                    android:layout_toRightOf="@+id/thumbnail"
+                    android:gravity="right"
+                    android:text="Oct 18,2017"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp12"
+                    app:customFont="@string/roboto_medium" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginBottom="@dimen/dp10"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:visibility="invisible"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:id="@+id/bookAppointmentButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/dashboard_card_book_appointment" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_marginRight="@dimen/dp12"
+                android:orientation="horizontal">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/feesToPaidVisit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:drawableLeft="@drawable/dashboard_big_black_ruppee"
+                    android:drawablePadding="@dimen/dp2"
+                    android:text="500"
+                    android:visibility="invisible"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:customFont="@string/roboto_bold" />
+
+                <ImageView
+                    android:id="@+id/favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp8"
+                    android:layout_marginTop="@dimen/dp6"
+                    android:src="@drawable/result_heart_fav"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

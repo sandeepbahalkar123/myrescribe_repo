@@ -41,7 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
-public class AppointmentAlarmNotify extends Activity {
+public class SnoozeAlarmNotifyActivity extends Activity {
 
 
     @BindView(R.id.messageTitle)
@@ -120,7 +120,7 @@ public class AppointmentAlarmNotify extends Activity {
 
     private void definedTimeSlots() {
         mTimeSlots = new ArrayList<>();
-        mTimeSlots.add("3");
+        mTimeSlots.add("15");
         mTimeSlots.add("30");
         mTimeSlots.add("45");
         mTimeSlots.add("60");

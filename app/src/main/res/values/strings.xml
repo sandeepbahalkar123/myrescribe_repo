@@ -309,7 +309,7 @@
     <string name="do_operation">do_operation</string>
     <string name="favorite">Favorite</string>
 
-     <string name="reviews">Reviews</string>
+    <string name="reviews">Reviews</string>
     <string name="comma">,</string>
     <string name="alerts">Alerts</string>
     <string name="profile">Profile</string>
@@ -326,8 +326,8 @@
     <string name="snooze_interval">Select snooze interval</string>
 
     <string name="alarm">Alarm</string>
+    <string name="notificationAlarmTypeSetting">NotificationAlarmTypeSetting</string>
     <string name="book_appoint_complaint_same_err">Both complaints should not be same.</string>
-
 
 
 </resources>

@@ -19,7 +19,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.notification.AppointmentsNotificationData;
 import com.rescribe.model.notification.AppointmentsNotificationModel;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.ui.activities.AppointmentAlarmNotify;
+import com.rescribe.ui.activities.SnoozeAlarmNotifyActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -120,19 +120,30 @@ public class AppointmentNotificationService extends Service implements HelperRes
         mRemoteViews.setTextViewText(R.id.questionText, message);
         mRemoteViews.setTextViewText(R.id.timeText, notifyTime);
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
         notificationmanager.notify(subNotificationId, builder.build());
 
-        //-----Open Alarm dialog based on config setting-----
-        //----------
-      /*  Intent popup = new Intent(getApplicationContext(), AppointmentAlarmNotify.class);
-        popup.putExtra(RescribeConstants.MEDICINE_SLOT, time);
-        popup.putExtra(RescribeConstants.NOTIFICATION_TIME, time);
-        popup.putExtra(RescribeConstants.NOTIFICATION_ID, "" + subNotificationId);
-        popup.putExtra(RescribeConstants.TITLE, message);
-        popup.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-        startActivity(popup);*/
-        //----------
-        //----------
+
+        /*//--- TODO : ADDED FOR TESTING & DEVELOPMENT, COMMENT THIS AS RIGHT NOW IN ONLY PRESCRIPTION NOTIFICATION REQUIRED NOT IN APPOINTMENT.
+        // //--- TODO : Show notification/Alarm based on user configured setting :START
+        String string = RescribePreferencesManager.getString(getString(R.string.notificationAlarmTypeSetting), this);
+        if (getString(R.string.alarm).equalsIgnoreCase(string)) {
+            //-----Open Alarm dialog based on config setting-----
+            //----------
+            Intent popup = new Intent(getApplicationContext(), SnoozeAlarmNotifyActivity.class);
+            popup.putExtra(RescribeConstants.MEDICINE_SLOT, time);
+            popup.putExtra(RescribeConstants.NOTIFICATION_TIME, time);
+            popup.putExtra(RescribeConstants.NOTIFICATION_ID, "" + subNotificationId);
+            popup.putExtra(RescribeConstants.TITLE, message);
+            popup.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            startActivity(popup);
+            //----------
+            //----------
+        } else {
+            notificationmanager.notify(subNotificationId, builder.build());
+        }
+        //--- Show notification/Alarm based on user configured setting : END
+        */
     }
 
     @Override

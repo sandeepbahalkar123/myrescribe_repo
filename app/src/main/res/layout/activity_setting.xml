@@ -29,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center|left"
-                android:text="@string/doctor_connect"
+                android:text="@string/settings"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp16"
                 android:visibility="visible"
@@ -41,7 +41,7 @@
 
 
     <RadioGroup
-        android:id="@+id/radioSex"
+        android:id="@+id/radioSelectAlarmType"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_marginTop="?attr/actionBarSize"

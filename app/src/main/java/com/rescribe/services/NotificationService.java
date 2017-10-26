@@ -11,14 +11,12 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.rescribe.R;
 import com.rescribe.broadcast_receivers.ClickOnNotificationReceiver;
 import com.rescribe.broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver;
 import com.rescribe.helpers.database.AppDBHelper;
-import com.rescribe.helpers.investigation.InvestigationHelper;
 import com.rescribe.helpers.notification.NotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
@@ -26,7 +24,7 @@ import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.NotificationData;
 import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.ui.activities.AppointmentAlarmNotify;
+import com.rescribe.ui.activities.SnoozeAlarmNotifyActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -142,19 +140,25 @@ public class NotificationService extends Service implements HelperResponse {
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification build = builder.build();
         // build.flags |= Notification.FLAG_INSISTENT;
-        notificationmanager.notify(notification_id, build);
 
-        //-----Open Alarm dialog based on config setting-----
-        //----------
-       /* Intent popup = new Intent(getApplicationContext(), AppointmentAlarmNotify.class);
-        popup.putExtra(RescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(RescribeConstants.MEDICINE_SLOT));
-        popup.putExtra(RescribeConstants.NOTIFICATION_TIME, intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME));
-        popup.putExtra(RescribeConstants.NOTIFICATION_ID, "" + notification_id);
-        popup.putExtra(RescribeConstants.TITLE, getText(R.string.taken_medicine));
-        popup.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-        startActivity(popup);*/
-        //----------
-        //----------
+        //--- Show notification/Alarm based on user configured setting :START
+        String string = RescribePreferencesManager.getString(getString(R.string.notificationAlarmTypeSetting), this);
+        if (getString(R.string.alarm).equalsIgnoreCase(string)) {
+            //-----Open Alarm dialog based on config setting-----
+            //----------
+            Intent popup = new Intent(getApplicationContext(), SnoozeAlarmNotifyActivity.class);
+            popup.putExtra(RescribeConstants.MEDICINE_SLOT, intentData.getStringExtra(RescribeConstants.MEDICINE_SLOT));
+            popup.putExtra(RescribeConstants.NOTIFICATION_TIME, intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME));
+            popup.putExtra(RescribeConstants.NOTIFICATION_ID, "" + notification_id);
+            popup.putExtra(RescribeConstants.TITLE, getText(R.string.taken_medicine));
+            popup.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            startActivity(popup);
+            //----------
+            //----------
+        } else {
+            notificationmanager.notify(notification_id, build);
+        }
+        //--- Show notification/Alarm based on user configured setting : END
 
         stopSelf();
     }
@@ -182,33 +186,33 @@ public class NotificationService extends Service implements HelperResponse {
                 }
                 String slot = CommonMethods.getMealTime(hour24, Min, this);
                 if (slot.equals(getString(R.string.break_fast))) {
-                    if(notificationDataForHeader.getMedication()!=null)
-                    for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
-                        if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("breakfastAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("breakfastBefore")) {
-                            customNotification(intent);
+                    if (notificationDataForHeader.getMedication() != null)
+                        for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
+                            if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("breakfastAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("breakfastBefore")) {
+                                customNotification(intent);
+                            }
                         }
-                    }
                 } else if (slot.equals(getString(R.string.mlunch))) {
-                    if(notificationDataForHeader.getMedication()!=null)
-                    for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
-                        if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("lunchAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("lunchBefore")) {
-                            customNotification(intent);
+                    if (notificationDataForHeader.getMedication() != null)
+                        for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
+                            if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("lunchAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("lunchBefore")) {
+                                customNotification(intent);
+                            }
                         }
-                    }
                 } else if (slot.equals(getString(R.string.msnacks))) {
-                    if(notificationDataForHeader.getMedication()!=null)
-                    for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
-                        if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("snacksAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("snacksBefore")) {
-                            customNotification(intent);
+                    if (notificationDataForHeader.getMedication() != null)
+                        for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
+                            if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("snacksAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("snacksBefore")) {
+                                customNotification(intent);
+                            }
                         }
-                    }
                 } else if (slot.equals(getString(R.string.mdinner))) {
-                    if(notificationDataForHeader.getMedication()!=null)
-                    for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
-                        if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("dinnerAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("dinnerBefore")) {
-                            customNotification(intent);
+                    if (notificationDataForHeader.getMedication() != null)
+                        for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
+                            if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("dinnerAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("dinnerBefore")) {
+                                customNotification(intent);
+                            }
                         }
-                    }
                 }
             }
         }

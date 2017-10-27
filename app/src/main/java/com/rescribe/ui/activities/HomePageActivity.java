@@ -14,11 +14,13 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
@@ -117,14 +119,12 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_dashboard_layout);
         ButterKnife.bind(this);
-     /*   toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
+        String resolution = getImageSizeForPhone();
         dashboardHelper = new DashboardHelper(this, this);
         dashboardHelper.doGetDashboard();
         mContext = HomePageActivity.this;
         HomePageActivityPermissionsDispatcher.getPermissionWithCheck(HomePageActivity.this);
         appDBHelper = new AppDBHelper(mContext);
-
         patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
         loginHelper = new LoginHelper(mContext, HomePageActivity.this);
         ActiveRequest activeRequest = new ActiveRequest();
@@ -139,6 +139,33 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 notificationForMedicine();
         }
         drawerConfiguration();
+    }
+
+    private String getImageSizeForPhone() {
+        String resolution = "";
+        int density= getResources().getDisplayMetrics().densityDpi;
+        switch(density)
+        {
+            case DisplayMetrics.DENSITY_LOW:
+                resolution = "ldpi";
+                break;
+            case DisplayMetrics.DENSITY_MEDIUM:
+                resolution = "mdpi";
+                break;
+            case DisplayMetrics.DENSITY_HIGH:
+                resolution = "hdpi";
+                break;
+            case DisplayMetrics.DENSITY_XHIGH:
+                resolution = "xhdpi";
+                break;
+            case DisplayMetrics.DENSITY_XXHIGH:
+                resolution = "xxhdpi";
+                break;
+            case DisplayMetrics.DENSITY_XXXHIGH:
+                resolution = "xxxhdpi";
+                break;
+        }
+        return resolution;
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)

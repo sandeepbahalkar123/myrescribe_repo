@@ -49,6 +49,7 @@ public class SortByPriceNameFilterAdapter extends RecyclerView.Adapter<SortByPri
         holder.recyclerViewClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 holder.serviceIcon.setVisibility(View.VISIBLE);
             }
         });

@@ -201,7 +201,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 while (matcher.find()) {
                     spannableClinicNameString.setSpan(new ForegroundColorSpan(
                                     ContextCompat.getColor(mContext, R.color.tagColor)),
-                            matcher.start(), matcher.end(),
+                           0, 0+mSearchString.length(),
                             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     holder.clinicName.setText(spannableClinicNameString);
                 }

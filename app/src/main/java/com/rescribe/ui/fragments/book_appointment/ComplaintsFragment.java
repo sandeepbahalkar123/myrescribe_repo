@@ -194,7 +194,7 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
             int selected = (int) parent.getItemAtPosition(position);
             selectIdComplaint1 = mComplaintsBaseModel.getComplaintsModel().getComplaintList().get(selected).getComplaint();
             if (selectIdComplaint1.equals("Others")) {
-                showEditText.setVisibility(View.VISIBLE);
+                showEditText.setVisibility(View.GONE);
             } else {
                 showEditText.setVisibility(View.GONE);
             }
@@ -202,7 +202,7 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
             int selected = (int) parent.getItemAtPosition(position);
             selectIdComplaint2 = mComplaintsBaseModel.getComplaintsModel().getComplaintList().get(selected).getComplaint();
             if (selectIdComplaint2.equals("Others")) {
-                showEditText2.setVisibility(View.VISIBLE);
+                showEditText2.setVisibility(View.GONE);
             } else {
                 showEditText2.setVisibility(View.GONE);
             }

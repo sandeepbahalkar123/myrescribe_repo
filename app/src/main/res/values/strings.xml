@@ -253,6 +253,8 @@
     <string name="complaint1">Complaint 1:</string>
     <string name="enter_string_here">Enter your complaint here</string>
     <string name="complaint2">Complaint 2:</string>
+    <string name="opening_mode">ViewOpeningMode</string>
+    <string name="complaints">Complaints</string>
     <string name="waiting_for">Waiting for </string>
     <string name="token_no_available">Token No. available</string>
     <string name="doctor_data">Doctor Data</string>
@@ -309,7 +311,7 @@
     <string name="do_operation">do_operation</string>
     <string name="favorite">Favorite</string>
 
-     <string name="reviews">Reviews</string>
+    <string name="reviews">Reviews</string>
     <string name="comma">,</string>
     <string name="alerts">Alerts</string>
     <string name="profile">Profile</string>
@@ -326,11 +328,11 @@
     <string name="snooze_interval">Select snooze interval</string>
 
     <string name="alarm">Alarm</string>
+    <string name="notificationAlarmTypeSetting">NotificationAlarmTypeSetting</string>
     <string name="book_appoint_complaint_same_err">Both complaints should not be same.</string>
     <string name="search_doctor_clinic_name">Search Doctor,Clinic</string>
     <string name="sorting">Sorting</string>
     <string name="sort">Sort by</string>
     <string name="choose_one_option">Choose one option</string>
-
 
 </resources>

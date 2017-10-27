@@ -5,18 +5,15 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.os.IBinder;
 
 import com.rescribe.R;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.ui.activities.AppointmentAlarmNotify;
-import com.rescribe.util.CommonMethods;
+import com.rescribe.ui.activities.SnoozeAlarmNotifyActivity;
 import com.rescribe.util.RescribeConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -53,12 +50,12 @@ public class SnoozeAlarmPrescriptionService extends Service {
             this.backgroundThread.start();
         }*/
         //if(!utilObj.readDataInSharedPreferences(Constants.SharedPreferenceTag.TAG_PREFERENCE_NAME, Context.MODE_PRIVATE, Constants.SharedPreferenceTag.TAG_PREFERENCE_USERNAME_ID).equalsIgnoreCase("")){
-        sendDataToServer();
+        startAlarmActivity();
         //}
         return START_STICKY;
     }
 
-    private void sendDataToServer() {
+    private void startAlarmActivity() {
         SharedPreferences sharedPreference = RescribePreferencesManager.getSharedPreference(mContext);
         Map<String, ?> keys = sharedPreference.getAll();
 
@@ -81,16 +78,16 @@ public class SnoozeAlarmPrescriptionService extends Service {
                     receivedCalendar.setTime(receivedDate);
                     int receivedHours = receivedCalendar.get(Calendar.HOUR_OF_DAY);
                     int receivedMinutes = receivedCalendar.get(Calendar.MINUTE);
-                //    CommonMethods.Log("SnoozeAlarmPrescriptionService", "service called " + receivedHours + "|" + receivedMinutes + "|| " + hours + "|" + minutes);
+                    //    CommonMethods.Log("SnoozeAlarmPrescriptionService", "service called " + receivedHours + "|" + receivedMinutes + "|| " + hours + "|" + minutes);
                     if (hours == receivedHours && minutes == receivedMinutes) {
                         //----------
-                      /*  Intent popup = new Intent(getApplicationContext(), AppointmentAlarmNotify.class);
+                        Intent popup = new Intent(getApplicationContext(), SnoozeAlarmNotifyActivity.class);
                         popup.putExtra(RescribeConstants.MEDICINE_SLOT, split[4]);
                         popup.putExtra(RescribeConstants.NOTIFICATION_TIME, split[3]);
                         popup.putExtra(RescribeConstants.NOTIFICATION_ID, "" + split[1]);
                         popup.putExtra(RescribeConstants.TITLE, split[2]);
                         popup.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                        startActivity(popup);*/
+                        startActivity(popup);
                         //----------
                     }
                 } catch (ParseException e) {

@@ -343,7 +343,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.on_going_treatment))) {
                     Intent intent = new Intent(mContext, PrescriptionActivity.class);
-                    intent.putExtra(getString(R.string.toolbarTitle),id);
+                    intent.putExtra(getString(R.string.toolbarTitle), id);
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.appointments))) {
                     Intent intent = new Intent(mContext, AppointmentActivity.class);
@@ -390,11 +390,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
                     //TODO : added for testing purpose, remove it
                     //----------
-                 /*   Intent popup = new Intent(getApplicationContext(), AppointmentAlarmNotify.class);
-                    popup.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, "message");
-                    popup.putExtra(RescribeConstants.APPOINTMENT_TIME, "notifyTime");
-                    popup.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                    startActivity(popup);*/
+                    Intent popup = new Intent(getApplicationContext(), SettingActivity.class);
+                    startActivity(popup);
                     //----------
                 } else if (id.equalsIgnoreCase(getString(R.string.services))) {
                     DoctorDataHelper.getUserSelectedLocationInfo().clear();
@@ -557,12 +554,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     mPendingInvestigationItemSecond.setText("" + pendingInvestigationList.get(1).getSpeciality());
                 }*/
 
-                }
-
-                //------------
             }
 
-        else if (mOldDataTag.equals(RescribeConstants.LOGOUT))
+            //------------
+        } else if (mOldDataTag.equals(RescribeConstants.LOGOUT))
             logout();
         else if (mOldDataTag.equals(ACTIVE_STATUS))
             CommonMethods.Log(ACTIVE_STATUS, "active");
@@ -588,15 +583,15 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     public void onClickOfMenu(String menuName) {
         if (menuName.equals(getString(R.string.find_doctors))) {
             Intent intent = new Intent(mContext, FindDoctorsActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle),menuName);
+            intent.putExtra(getString(R.string.toolbarTitle), menuName);
             startActivity(intent);
         } else if (menuName.equals(getString(R.string.on_going_treatment))) {
             Intent intent = new Intent(mContext, PrescriptionActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle),menuName);
+            intent.putExtra(getString(R.string.toolbarTitle), menuName);
             startActivity(intent);
         } else if (menuName.equals(getString(R.string.health_repository))) {
             Intent intent = new Intent(mContext, HealthRepository.class);
-            intent.putExtra(getString(R.string.toolbarTitle),menuName);
+            intent.putExtra(getString(R.string.toolbarTitle), menuName);
             startActivity(intent);
         } else if (menuName.equals(getString(R.string.health_offers))) {
 
@@ -651,8 +646,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                             Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intentNotification);
-                }else if(mGetMealTime.isEmpty()){
-                    Intent intentNotification = new Intent(HomePageActivity.this,NotificationActivity.class);
+                } else if (mGetMealTime.isEmpty()) {
+                    Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
                     intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
                     intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
                     intentNotification.putExtra(RescribeConstants.TIME, dinnerTime);

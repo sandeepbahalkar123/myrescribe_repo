@@ -112,7 +112,7 @@ public class RescribeConstants {
     public static final String TASK_ADD_VITAL_MANUALLY = RescribeConstants.BLANK + 35;
     public static final String TASK_GET_VITAL_TRACKER_LIST = RescribeConstants.BLANK + 36;
 
-    public static final String TASK_GET_COMPLAINTS = RescribeConstants.BLANK +  37;
+    public static final String TASK_GET_COMPLAINTS = RescribeConstants.BLANK + 37;
     public static final String TASK_GET_BOOK_APPOINT_DRAWER_CONFIG = RescribeConstants.BLANK + 38;
 
     //-------
@@ -122,6 +122,8 @@ public class RescribeConstants {
     public static final String TASK_GET_REVIEW_LIST = RescribeConstants.BLANK + 42;
     public static final String TASK_SET_FAVOURITE_DOCTOR = RescribeConstants.BLANK + 43;
     public static final String TASK_GET_DOCTOR_LIST_BY_COMPLAINT = RescribeConstants.BLANK + 44;
+
+    public static final String TASK_SERVICES_DOC_LIST_FILTER = RescribeConstants.BLANK + 45;
 
 
     public static final String DATA = "DATA";
@@ -161,7 +163,7 @@ public class RescribeConstants {
     public static final String DOCTOR_DATA_REQUEST = "doctor_request_info";
 
 
-    public static class USER_STATUS{
+    public static class USER_STATUS {
         public static final String ONLINE = "online";
         public static final String OFFLINE = "offline";
         public static final String TYPING = "typing";

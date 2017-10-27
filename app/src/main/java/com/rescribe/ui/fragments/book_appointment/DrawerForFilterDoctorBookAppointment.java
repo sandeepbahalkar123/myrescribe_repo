@@ -449,7 +449,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                 break;
             case R.id.applyButton:
                 BookAppointFilterRequestModel bookAppointFilterRequestModel = new BookAppointFilterRequestModel();
-                bookAppointFilterRequestModel.setGender(mSelectedGender);
+                bookAppointFilterRequestModel.setGender(mSelectedGender.toLowerCase());
                 bookAppointFilterRequestModel.setClinicFeesRange(new String[]{"" + mClinicFeesSeekBar.getSelectedMinValue(), "" + mClinicFeesSeekBar.getSelectedMaxValue()});
                 bookAppointFilterRequestModel.setDistance(new String[]{"" + mDistanceSeekBar.getProgress(), "" + mDistanceSeekBar.getProgress()});
 

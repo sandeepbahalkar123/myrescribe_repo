@@ -59,6 +59,8 @@ public class DoctorDataHelper implements ConnectionListener {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_GET_DOCTOR_LIST_BY_COMPLAINT) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                } else if (mOldDataTag == RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
@@ -238,6 +240,16 @@ public class DoctorDataHelper implements ConnectionListener {
 
     public void doFilteringOnSelectedConfig(BookAppointFilterRequestModel requestModel) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER, Request.Method.POST, true);
+
+        String s = DoctorDataHelper.userSelectedLocationInfo.get(mContext.getString(R.string.location));
+
+        //---------
+        String[] split = s.split(",");
+        requestModel.setCityName(split[1].trim());
+        requestModel.setArea(split[0].trim());
+        requestModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+        //---------
+
         mConnectionFactory.setPostParams(requestModel);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.SERVICES_DOC_LIST_FILTER_URL);

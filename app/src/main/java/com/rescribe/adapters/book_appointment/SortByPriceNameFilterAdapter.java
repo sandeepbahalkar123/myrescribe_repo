@@ -14,7 +14,10 @@ import com.rescribe.model.book_appointment.reviews.Review;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -23,10 +26,19 @@ import butterknife.ButterKnife;
  */
 
 public class SortByPriceNameFilterAdapter extends RecyclerView.Adapter<SortByPriceNameFilterAdapter.ListViewHolder> {
-    String[] sortOptions = new String[]{"Star Ratings (low to high)",
-            "Star Ratings (high to low)",
-            "Doctor Fees (low to high)",
-            "Doctor Fees (high to low)"
+
+    private String lowToHigh = "(low to high)";
+    private String highToLow = "(high to low)";
+    private String ratings = " Ratings ";
+    private String fees = " Fees ";
+    private String asc = "asc";
+    private String desc = "desc";
+    private String selectedSortedOption = "";// sortBy|sortOrder
+
+    String[] sortOptions = new String[]{"Star" + ratings + lowToHigh,
+            "Star" + ratings + highToLow,
+            "Doctor" + fees + lowToHigh,
+            "Doctor" + fees + highToLow
     };
     private Context mContext;
 
@@ -45,13 +57,32 @@ public class SortByPriceNameFilterAdapter extends RecyclerView.Adapter<SortByPri
 
     @Override
     public void onBindViewHolder(final ListViewHolder holder, int position) {
-        holder.sortName.setText(sortOptions[position]);
+        String sortOption = sortOptions[position];
+        holder.sortName.setText(sortOption);
+
         holder.recyclerViewClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String tag = (String) v.getTag();
+                //-------
+                if (tag.toLowerCase().contains(ratings.toLowerCase())) {
+                    selectedSortedOption = ratings.trim();
+                } else {
+                    selectedSortedOption = fees.trim();
+                }
+                //-------
+                //-------
+                if (tag.toLowerCase().endsWith(lowToHigh.toLowerCase())) {
+                    selectedSortedOption = selectedSortedOption + "|" + asc.trim();
+                } else {
+                    selectedSortedOption = selectedSortedOption + "|" + desc.trim();
+                }
+                //-------
                 holder.serviceIcon.setVisibility(View.VISIBLE);
             }
         });
+
+        holder.recyclerViewClick.setTag(sortOption);
 
     }
 
@@ -75,5 +106,9 @@ public class SortByPriceNameFilterAdapter extends RecyclerView.Adapter<SortByPri
             ButterKnife.bind(this, view);
             this.view = view;
         }
+    }
+
+    public String getSelectedSortedOption() {
+        return selectedSortedOption;
     }
 }

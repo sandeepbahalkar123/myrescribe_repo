@@ -30,6 +30,10 @@ public class BookAppointFilterRequestModel implements CustomResponse, Parcelable
 
     private String[] locationList;
 
+    private String sortBy;
+    private String sortOrder;
+
+
     public String getGender() {
         return gender;
     }
@@ -94,6 +98,22 @@ public class BookAppointFilterRequestModel implements CustomResponse, Parcelable
         this.patientId = patientId;
     }
 
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
+
+    public String getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(String sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -117,6 +137,8 @@ public class BookAppointFilterRequestModel implements CustomResponse, Parcelable
             instance.cityName = ((String) in.readValue((String.class.getClassLoader())));
             instance.area = ((String) in.readValue((String.class.getClassLoader())));
             instance.patientId = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.sortBy = ((String) in.readValue((String.class.getClassLoader())));
+            instance.sortOrder = ((String) in.readValue((String.class.getClassLoader())));
 
             return instance;
         }
@@ -137,6 +159,8 @@ public class BookAppointFilterRequestModel implements CustomResponse, Parcelable
         dest.writeValue(cityName);
         dest.writeValue(area);
         dest.writeValue(patientId);
+        dest.writeValue(sortBy);
+        dest.writeValue(sortOrder);
 
     }
 

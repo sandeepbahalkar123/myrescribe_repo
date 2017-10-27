@@ -241,9 +241,9 @@ public class DoctorDataHelper implements ConnectionListener {
     public void doFilteringOnSelectedConfig(BookAppointFilterRequestModel requestModel) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER, Request.Method.POST, true);
 
+        //---------
         String s = DoctorDataHelper.userSelectedLocationInfo.get(mContext.getString(R.string.location));
 
-        //---------
         String[] split = s.split(",");
         requestModel.setCityName(split[1].trim());
         requestModel.setArea(split[0].trim());

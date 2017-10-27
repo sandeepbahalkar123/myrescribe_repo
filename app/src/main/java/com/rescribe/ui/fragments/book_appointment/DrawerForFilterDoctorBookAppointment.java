@@ -439,7 +439,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         void onReset(boolean drawerRequired);
     }
 
-    @OnClick({R.id.resetButton, R.id.applyButton, R.id.chooseOptionToSort,R.id.doneButton})
+    @OnClick({R.id.resetButton, R.id.applyButton, R.id.chooseOptionToSort, R.id.doneButton})
     public void onButtonClicked(View v) {
         switch (v.getId()) {
             case R.id.resetButton:
@@ -465,6 +465,12 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                 bookAppointFilterRequestModel.setAvailability(temp.toArray(new String[temp.size()]));
                 //------
                 bookAppointFilterRequestModel.setLocationList(mFilterSelectLocationsAdapter.getSelectedLocation().toArray(new String[temp.size()]));
+                //------
+                String[] split = mSortByPriceNameFilterAdapter.getSelectedSortedOption().split("\\|");
+                if (split.length == 2) {
+                    bookAppointFilterRequestModel.setSortBy(split[0]);
+                    bookAppointFilterRequestModel.setSortOrder(split[1]);
+                }
                 //------
                 Bundle b = new Bundle();
                 b.putParcelable(getString(R.string.filter), bookAppointFilterRequestModel);

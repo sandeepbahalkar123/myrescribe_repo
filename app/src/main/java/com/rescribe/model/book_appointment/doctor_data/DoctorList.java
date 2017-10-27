@@ -83,6 +83,8 @@ public class DoctorList implements Parcelable {
     private double latitude = 0.0;
     private double longitude = 0.0;
 
+    private String nameOfClinic ;
+    private String addressOfDoctor;
     /*  @SerializedName("reviewList")
     @Expose
     private ArrayList<ReviewList> reviewList = null;*/
@@ -111,6 +113,8 @@ public class DoctorList implements Parcelable {
             instance.rating = ((String) in.readValue((String.class.getClassLoader())));
             instance.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.tokenNo = ((String) in.readValue((String.class.getClassLoader())));
+            instance.nameOfClinic = ((String) in.readValue((String.class.getClassLoader())));
+            instance.addressOfDoctor = ((String) in.readValue((String.class.getClassLoader())));
             in.readList(instance.PracticePlaceInfos, (PracticePlaceInfo.class.getClassLoader()));
             instance.openToday = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
@@ -125,6 +129,21 @@ public class DoctorList implements Parcelable {
         }
 
     };
+    public String getNameOfClinic() {
+        return nameOfClinic;
+    }
+
+    public void setNameOfClinic(String nameOfClinic) {
+        this.nameOfClinic = nameOfClinic;
+    }
+
+    public String getAddressOfDoctor() {
+        return addressOfDoctor;
+    }
+
+    public void setAddressOfDoctor(String addressOfDoctor) {
+        this.addressOfDoctor = addressOfDoctor;
+    }
 
     public boolean getFavourite() {
         return favourite;
@@ -344,6 +363,8 @@ public class DoctorList implements Parcelable {
         dest.writeValue(rating);
         dest.writeValue(waitingTime);
         dest.writeValue(tokenNo);
+        dest.writeValue(nameOfClinic);
+        dest.writeValue(addressOfDoctor);
         dest.writeList(PracticePlaceInfos);
         dest.writeValue(openToday);
         dest.writeValue(favourite);

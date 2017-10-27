@@ -123,7 +123,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
 
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
-        holder.doctorAddress.setText(doctorObject.getDoctorAddress().get(0));
+        holder.doctorAddress.setText(doctorObject.getAddressOfDoctor());
         holder.doctorFee.setText("" + doctorObject.getAmount());
         SpannableString content = new SpannableString(doctorObject.getDistance());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
@@ -170,34 +170,14 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 mOnFilterDocListClickListener.onClickOfDoctorRowItem(b);
             }
         });
-        SpannableString spannableStringSearch = null;
-        if ((mSearchString != null) && (!mSearchString.isEmpty())) {
-
-            spannableStringSearch = new SpannableString(doctorObject.getDocName());
-
-            spannableStringSearch.setSpan(new ForegroundColorSpan(
-                            ContextCompat.getColor(mContext, R.color.tagColor)),
-                    4, 4 + mSearchString.length(),//hightlight mSearchString
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        }
-        if (spannableStringSearch != null) {
-            holder.doctorName.setText(spannableStringSearch);
-        } else {
-            holder.doctorName.setText(doctorObject.getDocName());
-        }
 
         if (doctorObject.getFavourite()) {
             holder.favoriteView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.result_heart_fav));
         } else {
             holder.favoriteView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.result_line_heart_fav));
         }
-        if (doctorObject.getClinicName().size()== 1) {
-            holder.clinicName.setVisibility(View.VISIBLE);
-            holder.clinicName.setText(doctorObject.getClinicName().get(0));
-        } else {
-            holder.clinicName.setVisibility(View.GONE);
-        }
+
+        holder.clinicName.setText(doctorObject.getNameOfClinic());
 
         holder.favoriteView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,7 +259,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
                         if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase())) {
                             filteredList.add(doctorConnectModel);
-                        }else{
+                        } else {
                             for (String name :
                                     doctorConnectModel.getClinicName()) {
                                 if (name.toLowerCase().startsWith(charString.toLowerCase())) {

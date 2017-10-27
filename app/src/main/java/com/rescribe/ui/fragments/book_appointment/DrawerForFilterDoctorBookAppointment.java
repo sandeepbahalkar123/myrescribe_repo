@@ -24,6 +24,8 @@ import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.FilterSelectLocationsAdapter;
+import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
+import com.rescribe.adapters.book_appointment.SortByPriceNameFilterAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
@@ -120,6 +122,26 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     @BindView(R.id.mainParentLayout)
     LinearLayout mainParentLayout;
     String locationReceived = "";
+    @BindView(R.id.sortingHeaderView)
+    LinearLayout sortingHeaderView;
+    @BindView(R.id.chooseOptionForSort)
+    CustomTextView chooseOptionForSort;
+    @BindView(R.id.chooseOptionToSort)
+    LinearLayout chooseOptionToSort;
+    @BindView(R.id.doneButton)
+    Button doneButton;
+    @BindView(R.id.sortingTitleTextView)
+    CustomTextView sortingTitleTextView;
+    @BindView(R.id.resetSortingButton)
+    Button resetSortingButton;
+    @BindView(R.id.sortingView)
+    LinearLayout sortingView;
+    @BindView(R.id.sortRecyclerView)
+    RecyclerView sortRecyclerView;
+    @BindView(R.id.hideMainLayout)
+    LinearLayout hideMainLayout;
+    @BindView(R.id.showSortLayout)
+    LinearLayout showSortLayout;
     private OnDrawerInteractionListener mListener;
 
     //--------
@@ -128,6 +150,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     //--------
     View mLeftThumbView, mRightThumbView;
     private FilterSelectLocationsAdapter mFilterSelectLocationsAdapter;
+    private SortByPriceNameFilterAdapter mSortByPriceNameFilterAdapter;
     //--------
 
     public DrawerForFilterDoctorBookAppointment() {
@@ -352,9 +375,9 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
             BookAppointFilterBaseModel.FilterConfigData filterConfigData = bookAppointFilterBaseModel.getFilterConfigData();
 
             if (filterConfigData != null) {
-                for(int i= 0;i<filterConfigData.getLocationList().size();i++){
+                for (int i = 0; i < filterConfigData.getLocationList().size(); i++) {
                     LocationList locationList = new LocationList();
-                    if(filterConfigData.getLocationList().get(i).getIsDoctorAvailable()){
+                    if (filterConfigData.getLocationList().get(i).getIsDoctorAvailable()) {
                         locationList.setAreaName(filterConfigData.getLocationList().get(i).getAreaName());
                         locationList.setIsDoctorAvailable(filterConfigData.getLocationList().get(i).getIsDoctorAvailable());
                         locations.add(locationList);
@@ -416,7 +439,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         void onReset(boolean drawerRequired);
     }
 
-    @OnClick({R.id.resetButton, R.id.applyButton})
+    @OnClick({R.id.resetButton, R.id.applyButton, R.id.chooseOptionToSort,R.id.doneButton})
     public void onButtonClicked(View v) {
         switch (v.getId()) {
             case R.id.resetButton:
@@ -446,6 +469,19 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                 Bundle b = new Bundle();
                 b.putParcelable(getString(R.string.filter), bookAppointFilterRequestModel);
                 mListener.onApply(b, true);
+                break;
+            case R.id.chooseOptionToSort:
+                hideMainLayout.setVisibility(View.GONE);
+                showSortLayout.setVisibility(View.VISIBLE);
+                mSortByPriceNameFilterAdapter = new SortByPriceNameFilterAdapter(getActivity());
+                LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                sortRecyclerView.setLayoutManager(linearlayoutManager);
+                sortRecyclerView.setHasFixedSize(true);
+                sortRecyclerView.setAdapter(mSortByPriceNameFilterAdapter);
+                break;
+            case R.id.doneButton:
+                hideMainLayout.setVisibility(View.VISIBLE);
+                showSortLayout.setVisibility(View.GONE);
                 break;
         }
     }

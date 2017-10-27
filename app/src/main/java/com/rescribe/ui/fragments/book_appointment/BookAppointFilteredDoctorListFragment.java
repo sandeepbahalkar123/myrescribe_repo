@@ -118,7 +118,36 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                     isDataListViewVisible(false);
                 } else {
                     isDataListViewVisible(true);
-                    mReceivedList = doctorList;
+                    ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
+                    for(int i =0;i<doctorList.size();i++){
+                        if(doctorList.get(i).getClinicName().size()>0){
+                            for(int j = 0;j<doctorList.get(i).getClinicName().size();j++){
+                                DoctorList doctorListByClinic = new DoctorList();
+                                doctorListByClinic.setDocId(doctorList.get(i).getDocId());
+                                doctorListByClinic.setDocName(doctorList.get(i).getDocName());
+                                doctorListByClinic.setDoctorImageUrl(doctorList.get(i).getDoctorImageUrl());
+                                doctorListByClinic.setExperience(doctorList.get(i).getExperience());
+                                doctorListByClinic.setSpeciality(doctorList.get(i).getSpeciality());
+                                doctorListByClinic.setAmount(doctorList.get(i).getAmount());
+                                doctorListByClinic.setDistance(doctorList.get(i).getDistance());
+                                doctorListByClinic.setRecentlyVisited(doctorList.get(i).getRecentlyVisited());
+                                doctorListByClinic.setFavourite(doctorList.get(i).getFavourite());
+                                doctorListByClinic.setAboutDoctor(doctorList.get(i).getAboutDoctor());
+                                doctorListByClinic.setDegree(doctorList.get(i).getDegree());
+                                doctorListByClinic.setWaitingTime(doctorList.get(i).getWaitingTime());
+                                doctorListByClinic.setRating(doctorList.get(i).getRating());
+                                doctorListByClinic.setTokenNo(doctorList.get(i).getTokenNo());
+                                doctorListByClinic.setPracticePlaceInfos(doctorList.get(i).getPracticePlaceInfos());
+                                doctorListByClinic.setAvailableTimeSlots(doctorList.get(i).getAvailableTimeSlots());
+                                doctorListByClinic.setOpenToday(doctorList.get(i).getOpenToday());
+                                doctorListByClinic.setTotalReview(doctorList.get(i).getTotalReview());
+                                doctorListByClinic.setNameOfClinic(doctorList.get(i).getClinicName().get(j));
+                                doctorListByClinic.setAddressOfDoctor(doctorList.get(i).getDoctorAddress().get(j));
+                                doctorListByClinics.add(doctorListByClinic);
+                            }
+                        }
+                    }
+                    mReceivedList = doctorListByClinics;
                     if (filterDataOnDocSpeciality().size() == 0) {
                         isDataListViewVisible(false);
                         mLocationFab.setVisibility(View.GONE);
@@ -188,7 +217,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 break;
             case R.id.leftFab:
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
-                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), receivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList());
+                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), mReceivedList);
                 intent.putExtra(getString(R.string.toolbarTitle), mSelectedSpeciality);
                 startActivity(intent);
                 break;
@@ -210,7 +239,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     }
 
     private ArrayList<DoctorList> filterDataOnDocSpeciality() {
+
         ArrayList<DoctorList> doctors = this.mReceivedList;
+
         ArrayList<DoctorList> dataList = new ArrayList<>();
         if (mSelectedSpeciality == null) {
             return doctors;

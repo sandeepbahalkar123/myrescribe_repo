@@ -27,13 +27,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.book_appointment.doctor_data.DoctorListByClinic;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,14 +77,15 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     RatingBar ratingBar;
     private Fragment mFragment;
     private Context mContext;
-    private ArrayList<DoctorListByClinic> mDataList;
+    private ArrayList<DoctorList> mDataList;
     private int mImageSize;
-    private ArrayList<DoctorListByClinic> mArrayList;
+    private ArrayList<DoctorList> mArrayList;
     private OnClinicAndDoctorNameSearchRowItem mOnClinicAndDoctorNameSearchRowItem;
     private String mSearchString;
     private ColorGenerator mColorGenerator;
+    private String mSearchClinicNameString;
 
-    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorListByClinic> dataList, OnClinicAndDoctorNameSearchRowItem mOnClinicAndDoctorNameSearchRowItem, Fragment m) {
+    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, OnClinicAndDoctorNameSearchRowItem mOnClinicAndDoctorNameSearchRowItem, Fragment m) {
         this.mDataList = dataList;
         this.mContext = mContext;
         this.mArrayList = dataList;
@@ -110,11 +113,11 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
     @Override
     public void onBindViewHolder(SortByClinicAndDoctorNameAdapter.ListViewHolder holder, int position) {
-        final DoctorListByClinic doctorObject = mDataList.get(position);
+        final DoctorList doctorObject = mDataList.get(position);
 
         // holder.waitingTime.setText("" + mContext.getString(R.string.waiting_for) + mContext.getString(R.string.space) + doctorObject.getWaitingTime());
         //holder.tokenNo.setText(mContext.getString(R.string.token_no_available));
-        holder.doctorName.setText(doctorObject.getDocName());
+
         holder.aboutDoctor.setText(doctorObject.getDegree());
         if (doctorObject.getRating().equals("NA")) {
             holder.doctorRating.setVisibility(View.INVISIBLE);
@@ -128,7 +131,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
 
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
-        holder.doctorAddress.setText(doctorObject.getDoctorAddress());
+        holder.doctorAddress.setText(doctorObject.getAddressOfDoctor());
         holder.doctorFee.setText("" + doctorObject.getAmount());
         SpannableString content = new SpannableString(doctorObject.getDistance());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
@@ -171,26 +174,57 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 Bundle b = new Bundle();
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.doctor_details));
-
-                mOnClinicAndDoctorNameSearchRowItem.onClickOfDoctorRowItem(b);
+                mOnClinicAndDoctorNameSearchRowItem.onClinicAndDoctorNameSearchRowItem(b);
             }
         });
         SpannableString spannableStringSearch = null;
+        SpannableString spannableClinicNameString = null;
         if ((mSearchString != null) && (!mSearchString.isEmpty())) {
 
-            spannableStringSearch = new SpannableString(doctorObject.getDocName());
+            if (doctorObject.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + mSearchString.toLowerCase())) {
+                spannableStringSearch = new SpannableString(doctorObject.getDocName());
 
-            spannableStringSearch.setSpan(new ForegroundColorSpan(
-                            ContextCompat.getColor(mContext, R.color.tagColor)),
-                    4, 4 + mSearchString.length(),//hightlight mSearchString
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableStringSearch.setSpan(new ForegroundColorSpan(
+                                ContextCompat.getColor(mContext, R.color.tagColor)),
+                        4, 4 + mSearchString.length(),//hightlight mSearchString
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                holder.doctorName.setText(spannableStringSearch);
+            } else {
+
+                holder.doctorName.setText(doctorObject.getDocName());
+            }
+            //----------------------------------
+            if (doctorObject.getNameOfClinic().startsWith(mSearchString)) {
+                spannableClinicNameString = new SpannableString(doctorObject.getNameOfClinic());
+                Pattern pattern = Pattern.compile(mSearchClinicNameString, Pattern.CASE_INSENSITIVE);
+                Matcher matcher = pattern.matcher(doctorObject.getNameOfClinic());
+                while (matcher.find()) {
+                    spannableClinicNameString.setSpan(new ForegroundColorSpan(
+                                    ContextCompat.getColor(mContext, R.color.tagColor)),
+                            matcher.start(), matcher.end(),
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    holder.clinicName.setText(spannableClinicNameString);
+                }
+
+            } else {
+                holder.clinicName.setText(doctorObject.getNameOfClinic());
+            }
 
         }
-        if (spannableStringSearch != null) {
-            holder.doctorName.setText(spannableStringSearch);
-        } else {
-            holder.doctorName.setText(doctorObject.getDocName());
-        }
+     /*   if ((mSearchClinicNameString != null) && (!mSearchClinicNameString.isEmpty())) {
+
+           spannableClinicNameString = new SpannableString(doctorObject.getClinicName());
+            Pattern pattern = Pattern.compile(mSearchClinicNameString, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(doctorObject.getClinicName());
+            while (matcher.find()) {
+                spannableClinicNameString.setSpan(new ForegroundColorSpan(
+                                ContextCompat.getColor(mContext, R.color.tagColor)),
+                        matcher.start(), matcher.end(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+
+        }*/
+
 
         if (doctorObject.getFavourite()) {
             holder.favoriteView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.result_heart_fav));
@@ -198,8 +232,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             holder.favoriteView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.result_line_heart_fav));
         }
 
-           // holder.clinicName.setVisibility(View.VISIBLE);
-            holder.clinicName.setText(doctorObject.getClinicName());
+        // holder.clinicName.setVisibility(View.VISIBLE);
 
 
         holder.favoriteView.setOnClickListener(new View.OnClickListener() {
@@ -208,7 +241,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 Bundle b = new Bundle();
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.favorite));
-                mOnClinicAndDoctorNameSearchRowItem.onClickOfDoctorRowItem(b);
+                mOnClinicAndDoctorNameSearchRowItem.onClinicAndDoctorNameSearchRowItem(b);
             }
         });
     }
@@ -259,7 +292,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     }
 
     public interface OnClinicAndDoctorNameSearchRowItem {
-        void onClickOfDoctorRowItem(Bundle bundleData);
+        void onClinicAndDoctorNameSearchRowItem(Bundle bundleData);
     }
 
     @Override
@@ -271,16 +304,17 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
                 String charString = charSequence.toString();
                 mSearchString = charString;
+                mSearchClinicNameString = charString;
                 if (charString.isEmpty()) {
-
                     mDataList = mArrayList;
+
                 } else {
 
-                    ArrayList<DoctorListByClinic> filteredList = new ArrayList<>();
+                    ArrayList<DoctorList> filteredList = new ArrayList<>();
 
-                    for (DoctorListByClinic doctorConnectModel : mArrayList) {
+                    for (DoctorList doctorConnectModel : mArrayList) {
 
-                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase())) {
+                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase()) || doctorConnectModel.getNameOfClinic().toLowerCase().startsWith(charString.toLowerCase())) {
                             filteredList.add(doctorConnectModel);
                         }/*else{
                             for (String name :
@@ -302,7 +336,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mDataList = (ArrayList<DoctorListByClinic>) filterResults.values;
+                mDataList = (ArrayList<DoctorList>) filterResults.values;
                 if (mDataList.size() == 0) {
                     RecentVisitDoctorFragment temp = (RecentVisitDoctorFragment) mFragment;
                     temp.isDataListViewVisible(true, true);

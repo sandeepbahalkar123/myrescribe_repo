@@ -116,7 +116,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         mMap.setOnMapClickListener(this);
         for (int index = 0; index < mDoctorLists.size(); index++) {
             DoctorList doctorList = mDoctorLists.get(index);
-            p1 = getLocationFromAddress(doctorList.getDoctorAddress().get(0));
+            p1 = getLocationFromAddress(doctorList.getAddressOfDoctor());
             if (p1 != null) {
                 LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
                 doctorList.setLatitude(p1.getLatitude());
@@ -211,6 +211,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
             public void onClick(View v) {
 
                 DoctorList doctorList = new DoctorList();
+                doctorList.setNameOfClinic(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinic());
                 doctorList.setAboutDoctor(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
                 doctorList.setAmount(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAmount());
                 doctorList.setAvailableTimeSlots(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAvailableTimeSlots());
@@ -218,7 +219,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 doctorList.setDistance(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDistance());
                 doctorList.setDocId(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocId());
                 doctorList.setDocName(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocName());
-                doctorList.setDoctorAddress(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorAddress());
+                doctorList.setAddressOfDoctor(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
                 doctorList.setDoctorImageUrl(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorImageUrl());
                 doctorList.setExperience(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getExperience());
                 doctorList.setFavourite(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getFavourite());

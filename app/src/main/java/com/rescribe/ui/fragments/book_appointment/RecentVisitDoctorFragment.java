@@ -30,12 +30,12 @@ import com.rescribe.R;
 import com.rescribe.adapters.DoctorSpecialistBookAppointmentAdapter;
 import com.rescribe.adapters.book_appointment.ShowRecentVisitedDoctorPagerAdapter;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
+import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.book_appointment.doctor_data.DoctorListByClinic;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorSpeciality;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
@@ -44,20 +44,17 @@ import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
-
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
+public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener,SortByClinicAndDoctorNameAdapter.OnClinicAndDoctorNameSearchRowItem {
 
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
@@ -101,11 +98,12 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     Unbinder unbinder;
     BookAppointmentBaseModel bookAppointmentBaseModel;
     DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter;
-    private BookAppointFilteredDocList mBookAppointFilteredDocListAdapter;
+    ArrayList<DoctorList> doctorListByClinics;
     private int currentPage = 0;
     private int totalPages;
     CustomResponse customResponse;
     private String mReceivedToolBarTitle;
+    private SortByClinicAndDoctorNameAdapter mSortByClinicAndDoctorNameAdapter;
 
     public RecentVisitDoctorFragment() {
 
@@ -169,7 +167,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().trim().length() > 0) {
-                    mBookAppointFilteredDocListAdapter.getFilter().filter(s);
+                    mSortByClinicAndDoctorNameAdapter.getFilter().filter(s);
                 } else {
                     isDataListViewVisible(false, false);
                 }
@@ -223,7 +221,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 break;
             case R.id.leftFab:
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
-                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), bookAppointmentBaseModel.getDoctorServicesModel().getDoctorList());
+                intent.putParcelableArrayListExtra(getString(R.string.doctor_data),doctorListByClinics);
                 intent.putExtra(getString(R.string.toolbarTitle), mReceivedToolBarTitle);
                 startActivity(intent);
               /*  activity = (BookAppointDoctorListBaseActivity) getActivity();
@@ -265,14 +263,15 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             //----- to set doc data list, invisible by default -----
             isDataListViewVisible(false, false);
             ArrayList<DoctorList> doctorList = doctorServicesModel.getDoctorList();
-            ArrayList<DoctorListByClinic> doctorListByClinics = new ArrayList<>();
-            if (doctorList.size() > 0) {
-                /* for(int i =0;i<doctorList.size();i++){
-                     if(doctorList.get(i).getClinicName().size()==1){
+            doctorListByClinics = new ArrayList<>();
 
-                     }else if(doctorList.get(i).getClinicName().size()>1){
+            //Doctor List is sorted here for search by clinic and doctorName
+
+            if (doctorList.size() > 0) {
+                 for(int i =0;i<doctorList.size();i++){
+                    if(doctorList.get(i).getClinicName().size()>0){
                          for(int j = 0;j<doctorList.get(i).getClinicName().size();j++){
-                             DoctorListByClinic doctorListByClinic = new DoctorListByClinic();
+                             DoctorList doctorListByClinic = new DoctorList();
                              doctorListByClinic.setDocId(doctorList.get(i).getDocId());
                              doctorListByClinic.setDocName(doctorList.get(i).getDocName());
                              doctorListByClinic.setDoctorImageUrl(doctorList.get(i).getDoctorImageUrl());
@@ -287,23 +286,21 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                              doctorListByClinic.setWaitingTime(doctorList.get(i).getWaitingTime());
                              doctorListByClinic.setRating(doctorList.get(i).getRating());
                              doctorListByClinic.setTokenNo(doctorList.get(i).getTokenNo());
-                             doctorListByClinic.setMorePracticePlaces(doctorList.get(i).getPracticePlaceInfos());
-                             doctorListByClinic.setOpenTimeSlots(doctorList.get(i).getAvailableTimeSlots());
+                             doctorListByClinic.setPracticePlaceInfos(doctorList.get(i).getPracticePlaceInfos());
+                             doctorListByClinic.setAvailableTimeSlots(doctorList.get(i).getAvailableTimeSlots());
                              doctorListByClinic.setOpenToday(doctorList.get(i).getOpenToday());
-                             doctorListByClinic.setReviewCount(doctorList.get(i).getTotalReview());
-                             doctorListByClinic.setClinicName(doctorList.get(i).getClinicName().get(j));
-                             doctorListByClinic.setDoctorAddress(doctorList.get(i).getDoctorAddress().get(j));
+                             doctorListByClinic.setTotalReview(doctorList.get(i).getTotalReview());
+                             doctorListByClinic.setNameOfClinic(doctorList.get(i).getClinicName().get(j));
+                             doctorListByClinic.setAddressOfDoctor(doctorList.get(i).getDoctorAddress().get(j));
                              doctorListByClinics.add(doctorListByClinic);
                          }
-
                      }
-
-                 }*/
-                mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList, RecentVisitDoctorFragment.this, RecentVisitDoctorFragment.this);
+                 }
+                mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), doctorListByClinics, RecentVisitDoctorFragment.this, RecentVisitDoctorFragment.this);
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 showDoctorsRecyclerView.setLayoutManager(linearlayoutManager);
                 showDoctorsRecyclerView.setHasFixedSize(true);
-                showDoctorsRecyclerView.setAdapter(mBookAppointFilteredDocListAdapter);
+                showDoctorsRecyclerView.setAdapter(mSortByClinicAndDoctorNameAdapter);
             }
             //-------------
 
@@ -465,6 +462,17 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         }else{
             isDataListViewVisible(false,true);
         }
+    }
+
+    @Override
+    public void onClinicAndDoctorNameSearchRowItem(Bundle bundleData) {
+        DoctorList doctorList = (DoctorList) bundleData.getParcelable(getString(R.string.clicked_item_data));
+        //TODO: This is done as per requirement, need to set "DOCTOR" as toolbarHeader instead respective doc speciality.
+        bundleData.putString(getString(R.string.toolbarTitle), getString(R.string.doctor));//doctorList.getSpeciality()
+
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
+
     }
 }
 

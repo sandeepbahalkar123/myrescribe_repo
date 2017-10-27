@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.TimeSlotAdapter;
@@ -67,9 +67,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     @BindView(R.id.locationImage)
     ImageView locationImage;
     private View mRootView;
-    private int imageSize;
+    private int mImageSize;
     private DoctorList mClickedDoctorObject;
     public static Bundle args;
+    private Context mContext;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -111,10 +112,21 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         int widthPixels = metrics.widthPixels;
-        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     private void setDataInViews() {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
+        requestOptions.override(mImageSize, mImageSize);
+        requestOptions.placeholder(R.drawable.layer_12);
+
+        Glide.with(getActivity())
+                .load(mClickedDoctorObject.getDoctorImageUrl())
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(mProfileImage);
         mDocRating.setText("" + mClickedDoctorObject.getRating());
         mDoctorName.setText("" + mClickedDoctorObject.getDocName());
         mDoctorSpecialization.setText("" + mClickedDoctorObject.getSpeciality());
@@ -142,9 +154,9 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         }
 
         //requestOptions.placeholder(R.drawable.layer_12);
-        if (!mClickedDoctorObject.getDoctorAddress().isEmpty()) {
+        if (!mClickedDoctorObject.getAddressOfDoctor().isEmpty()) {
             Glide.with(getActivity())
-                    .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mClickedDoctorObject.getDoctorAddress() + "&markers=color:red%7Clabel:C%7C" + mClickedDoctorObject.getDoctorAddress() + "&zoom=12&size=640x250")
+                    .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mClickedDoctorObject.getAddressOfDoctor() + "&markers=color:red%7Clabel:C%7C" + mClickedDoctorObject.getAddressOfDoctor() + "&zoom=12&size=640x250")
                     .into(locationImage);
         }
 
@@ -186,7 +198,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 Intent intent = new Intent(getActivity(), MapActivityShowDoctorLocation.class);
                 intent.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
                 intent.putExtra(getString(R.string.location), userSelectedLocationInfo.get(getString(R.string.location)));
-                intent.putExtra(getString(R.string.address), mClickedDoctorObject.getDoctorAddress());
+                intent.putExtra(getString(R.string.address), mClickedDoctorObject.getAddressOfDoctor());
                 startActivity(intent);
                 break;
 

@@ -6,7 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
-
+<LinearLayout
+    android:id="@+id/hideMainLayout"
+    android:visibility="visible"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp56"
@@ -119,6 +124,7 @@
                         android:orientation="vertical">
 
                         <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/chooseOptionForSort"
                             style="@style/drawer_filter_header_layout"
                             android:text="@string/choose_one_option"
                             android:drawablePadding="@dimen/dp16"
@@ -608,5 +614,84 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+</LinearLayout>
+    <LinearLayout
+        android:id="@+id/showSortLayout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp56"
+            android:background="@color/tagColor">
 
+            <Button
+                android:id="@+id/doneButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@color/transparent"
+                android:text="@string/apply"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp19" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/sortingTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/filter"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp22"
+                app:customFont="@string/roboto_bold" />
+
+            <Button
+                android:id="@+id/resetSortingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@color/transparent"
+                android:text="@string/reset"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp19" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/sortingView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp40"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/drawer_filter_header_icon_layout"
+                android:layout_gravity="center"
+                android:src="@drawable/sorting_icon" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                style="@style/drawer_filter_header_layout"
+                android:text="@string/sorting"
+                app:customFont="@string/roboto_medium" />
+
+            <ImageView
+                style="@style/drawer_filter_header_direction_icon_layout"
+                android:src="@drawable/down_arrow"
+                android:visibility="gone" />
+
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/sortRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:visibility="visible"/>
+    </LinearLayout>
 </LinearLayout>

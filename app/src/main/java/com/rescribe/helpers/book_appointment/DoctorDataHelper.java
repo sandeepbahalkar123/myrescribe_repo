@@ -14,6 +14,7 @@ import com.rescribe.model.book_appointment.ServicesModel;
 import com.rescribe.model.book_appointment.complaints.request_complaints.DoctorListByComplaintModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestDoctorListBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestFavouriteDoctorModel;
+import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -56,7 +57,7 @@ public class DoctorDataHelper implements ConnectionListener {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_BOOK_APPOINTMENT_SERVICES) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                }else if (mOldDataTag == RescribeConstants.TASK_GET_DOCTOR_LIST_BY_COMPLAINT) {
+                } else if (mOldDataTag == RescribeConstants.TASK_GET_DOCTOR_LIST_BY_COMPLAINT) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
@@ -88,13 +89,19 @@ public class DoctorDataHelper implements ConnectionListener {
 
     }
 
-    public void doGetDoctorData(String city, String address) {
+    public void doGetDoctorData(String city, String address, HashMap<String, String> mReceivedComplaintHashMap) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_DOCTOR_DATA, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
         RequestDoctorListBaseModel requestDoctorListBaseModel = new RequestDoctorListBaseModel();
         requestDoctorListBaseModel.setArea(address.trim());
         requestDoctorListBaseModel.setCityName(city.trim());
         requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+        //--------In case of complaint added by user from ComplaintFragment.java---
+        if (mReceivedComplaintHashMap.size() > 0) {
+            requestDoctorListBaseModel.setComplaint1(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint1)));
+            requestDoctorListBaseModel.setComplaint2(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint2)));
+        }
+        //-----------
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_BY_LOCATION);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_DOCTOR_DATA);
@@ -135,7 +142,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.GET_BOOK_APPOINTMENT_FILTER_APPOINTMENT_DATA+cityName);
+        mConnectionFactory.setUrl(Config.GET_BOOK_APPOINTMENT_FILTER_APPOINTMENT_DATA + cityName);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG);
     }
 
@@ -169,12 +176,13 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.setUrl(Config.REVIEW_URL);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_REVIEW_LIST);
     }
-    public void doGetDoctorListByComplaint(String cityName, String area,String complaint1,String complaint2) {
+
+    public void doGetDoctorListByComplaint(String cityName, String area, String complaint1, String complaint2) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_DOCTOR_LIST_BY_COMPLAINT, Request.Method.POST, true);
         DoctorListByComplaintModel doctorListByComplaintModel = new DoctorListByComplaintModel();
         doctorListByComplaintModel.setCityName(cityName);
         doctorListByComplaintModel.setArea(area);
-        doctorListByComplaintModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID,mContext)));
+        doctorListByComplaintModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
         doctorListByComplaintModel.setComplaint1(complaint1);
         doctorListByComplaintModel.setComplaint2(complaint2);
         mConnectionFactory.setPostParams(doctorListByComplaintModel);
@@ -189,6 +197,8 @@ public class DoctorDataHelper implements ConnectionListener {
         requestFavouriteDoctorModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
         requestFavouriteDoctorModel.setFavouriteflag(isFavourite);
         requestFavouriteDoctorModel.setDoctorId(Integer.valueOf(docId));
+        mConnectionFactory.setPostParams(requestFavouriteDoctorModel);
+
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.SET_FAVOURITE_URL);
         mConnectionFactory.createConnection(RescribeConstants.TASK_SET_FAVOURITE_DOCTOR);
@@ -224,6 +234,14 @@ public class DoctorDataHelper implements ConnectionListener {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void doFilteringOnSelectedConfig(BookAppointFilterRequestModel requestModel) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER, Request.Method.POST, true);
+        mConnectionFactory.setPostParams(requestModel);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setUrl(Config.SERVICES_DOC_LIST_FILTER_URL);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER);
     }
 
 }

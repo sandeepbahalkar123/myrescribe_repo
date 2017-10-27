@@ -625,6 +625,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         ReviewListBaseModel reviewListBaseModel = new Gson().fromJson(data, ReviewListBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, reviewListBaseModel, mOldDataTag);
                         break;
+                    case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER: //This is for get archived list
+                        BookAppointmentBaseModel dataObject = new Gson().fromJson(data, BookAppointmentBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dataObject, mOldDataTag);
+                        break;
 
                     default:
                         //This is for get PDF VisitData

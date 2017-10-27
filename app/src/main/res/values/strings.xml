@@ -253,6 +253,8 @@
     <string name="complaint1">Complaint 1:</string>
     <string name="enter_string_here">Enter your complaint here</string>
     <string name="complaint2">Complaint 2:</string>
+    <string name="opening_mode">ViewOpeningMode</string>
+    <string name="complaints">Complaints</string>
     <string name="waiting_for">Waiting for </string>
     <string name="token_no_available">Token No. available</string>
     <string name="doctor_data">Doctor Data</string>

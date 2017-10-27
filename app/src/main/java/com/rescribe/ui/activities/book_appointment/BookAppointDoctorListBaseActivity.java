@@ -72,6 +72,8 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     private int PLACE_PICKER_REQUEST = 1;
     private boolean isLocationChange = false;
 
+    private HashMap<String, String> mComplaintsUserSearchFor = new HashMap<>();
+
     //-----
     String latitude = "";
     String longitude = "";
@@ -155,9 +157,9 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         //----split based on location------
         String[] split = locationReceived.split(",");
         if (split.length == 2) {
-            mDoctorDataHelper.doGetDoctorData(split[1], split[0]);
+            mDoctorDataHelper.doGetDoctorData(split[1], split[0], mComplaintsUserSearchFor);
         } else {
-            mDoctorDataHelper.doGetDoctorData("", "");
+            mDoctorDataHelper.doGetDoctorData("", "", mComplaintsUserSearchFor);
         }
         //----------
     }
@@ -167,10 +169,9 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         mReceivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
 
         if (mReceivedBookAppointmentBaseModel.getDoctorServicesModel() != null) {
-            for(int i = 0;i<mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().size();i++){
-                if(!mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getDocName().contains("Dr."))
-                {
-                    mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).setDocName("Dr. "+ mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getDocName());
+            for (int i = 0; i < mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().size(); i++) {
+                if (!mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getDocName().contains("Dr.")) {
+                    mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).setDocName("Dr. " + mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getDocName());
                 }
             }
             if (isLocationChange) {
@@ -232,6 +233,10 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     public BookAppointmentBaseModel getReceivedBookAppointmentBaseModel() {
         return mReceivedBookAppointmentBaseModel;
+    }
+
+    public void setReceivedBookAppointmentBaseModel(BookAppointmentBaseModel mReceivedBookAppointmentBaseModel) {
+        this.mReceivedBookAppointmentBaseModel = mReceivedBookAppointmentBaseModel;
     }
 
     @OnClick({R.id.bookAppointmentBackButton, R.id.title, R.id.locationTextView})
@@ -326,7 +331,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                     if (s != null) {
                         isLocationChange = true;
                         String[] split = s.split(",");
-                        mDoctorDataHelper.doGetDoctorData(city, split[0]);
+                        mDoctorDataHelper.doGetDoctorData(city.trim(), split[0].trim(), mComplaintsUserSearchFor);
                     }
 
                 }
@@ -334,6 +339,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             }
         }
     }
+
     private String getArea(Address obj) {
 
         if (obj.getThoroughfare() != null)
@@ -354,19 +360,38 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     @Override
     public void onBackPressed() {
 
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
-            mDrawerLayout.closeDrawer(GravityCompat.END);
+        if (mSupportFragmentManager == null) {
+            finish();
         } else {
-            int backStackEntryCount = mSupportFragmentManager.getBackStackEntryCount();
-            if (backStackEntryCount == 1) {
-                finish();
+            if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+                mDrawerLayout.closeDrawer(GravityCompat.END);
             } else {
-                super.onBackPressed();
-                Fragment id = mSupportFragmentManager.findFragmentById(R.id.viewContainer);
-                mCurrentlyLoadedFragment = id;
+                int backStackEntryCount = mSupportFragmentManager.getBackStackEntryCount();
+                if (backStackEntryCount == 1) {
+                    finish();
+                } else {
+                    super.onBackPressed();
+                    Fragment id = mSupportFragmentManager.findFragmentById(R.id.viewContainer);
+                    mCurrentlyLoadedFragment = id;
+
+                    // This to recall API when came from ComplaintFragmnet.
+                    if (mCurrentlyLoadedFragment instanceof RecentVisitDoctorFragment) {
+                        if (mComplaintsUserSearchFor.size() > 0) {
+                            // To clear complaints Map, and call API to get data.
+                            mComplaintsUserSearchFor.clear();
+                            HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+                            String s = userSelectedLocationInfo.get(getString(R.string.location));
+                            if (s != null) {
+                                isLocationChange = true;
+                                String[] split = s.split(",");
+                                mDoctorDataHelper.doGetDoctorData(split[1].trim(), split[0].trim(), mComplaintsUserSearchFor);
+                            }
+                            //-------
+                        }
+                    }
+                }
             }
         }
-
     }
 
     public void loadFragment(Fragment fragmentToLoad, boolean requiredDrawer) {
@@ -377,6 +402,17 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             fragmentTransaction.addToBackStack("");
             fragmentTransaction.commitAllowingStateLoss();
             this.mCurrentlyLoadedFragment = fragmentToLoad;
+
+            //----This is done to hold complaints ----
+            Bundle arguments = fragmentToLoad.getArguments();
+            if (arguments != null) {
+                if (getString(R.string.complaints).equalsIgnoreCase(arguments.getString(getString(R.string.opening_mode)))) {
+                    mComplaintsUserSearchFor.put(getString(R.string.complaints), getString(R.string.complaints));
+                    mComplaintsUserSearchFor.put(getString(R.string.complaint1), arguments.getString(getString(R.string.complaint1)));
+                    mComplaintsUserSearchFor.put(getString(R.string.complaint2), arguments.getString(getString(R.string.complaint2)));
+                }
+            }
+            //--------
             doOperationOnDrawer(requiredDrawer);
         }
     }

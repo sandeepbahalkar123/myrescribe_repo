@@ -63,6 +63,8 @@ public class Config {
     public static final String SET_FAVOURITE_URL = "api/doctors/setFavoriteDoctor";
     public static final String GET_COMPLAINTS_LIST = "api/doctors/getComplaintList";
 
+    public static final String SERVICES_DOC_LIST_FILTER_URL = "api/doctors/filterDoctors";
+
     //----- vital graph-------------
     public static final String TASK_GET_PATIENT_VITAL_LIST = "api/patient/getPatientVitalList";
     public static final String TASK_GET_PATIENT_VITAL_DETAIL = "api/patient/getPatientVitalDetail";

@@ -247,26 +247,27 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
 
     private void setDoctorListAdapter(BookAppointmentBaseModel bookAppointmentBaseModel) {
-        if(bookAppointmentBaseModel==null){
-            isDataListViewVisible(false,true);
-        }else {
+        if (bookAppointmentBaseModel == null) {
+            isDataListViewVisible(false, true);
+        } else {
             DoctorServicesModel doctorServicesModel = bookAppointmentBaseModel.getDoctorServicesModel();
 
-            //-------
-            if (doctorServicesModel.getRecentlyVisitedAndFavoriteDoctorList().size() == 0) {
-                mViewpager.setVisibility(View.GONE);
-                mCircleIndicator.setVisibility(View.GONE);
-            } else {
-                mViewpager.setVisibility(View.VISIBLE);
-                mViewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), doctorServicesModel.getRecentlyVisitedAndFavoriteDoctorList()));
-                mCircleIndicator.setViewPager(mViewpager);
-            }
-            //------
-            //----- to set doc data list, invisible by default -----
-            isDataListViewVisible(false, false);
-            ArrayList<DoctorList> doctorList = doctorServicesModel.getDoctorList();
-            ArrayList<DoctorListByClinic> doctorListByClinics = new ArrayList<>();
-            if (doctorList.size() > 0) {
+            if (doctorServicesModel != null) {
+                //-------
+                if (doctorServicesModel.getRecentlyVisitedAndFavoriteDoctorList().size() == 0) {
+                    mViewpager.setVisibility(View.GONE);
+                    mCircleIndicator.setVisibility(View.GONE);
+                } else {
+                    mViewpager.setVisibility(View.VISIBLE);
+                    mViewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), doctorServicesModel.getRecentlyVisitedAndFavoriteDoctorList()));
+                    mCircleIndicator.setViewPager(mViewpager);
+                }
+                //------
+                //----- to set doc data list, invisible by default -----
+                isDataListViewVisible(false, false);
+                ArrayList<DoctorList> doctorList = doctorServicesModel.getDoctorList();
+                ArrayList<DoctorListByClinic> doctorListByClinics = new ArrayList<>();
+                if (doctorList.size() > 0) {
                 /* for(int i =0;i<doctorList.size();i++){
                      if(doctorList.get(i).getClinicName().size()==1){
 
@@ -299,46 +300,51 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                      }
 
                  }*/
-                mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList, RecentVisitDoctorFragment.this, RecentVisitDoctorFragment.this);
-                LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-                showDoctorsRecyclerView.setLayoutManager(linearlayoutManager);
-                showDoctorsRecyclerView.setHasFixedSize(true);
-                showDoctorsRecyclerView.setAdapter(mBookAppointFilteredDocListAdapter);
-            }
-            //-------------
+                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList, RecentVisitDoctorFragment.this, RecentVisitDoctorFragment.this);
+                    LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                    showDoctorsRecyclerView.setLayoutManager(linearlayoutManager);
+                    showDoctorsRecyclerView.setHasFixedSize(true);
+                    showDoctorsRecyclerView.setAdapter(mBookAppointFilteredDocListAdapter);
+                }
+                //-------------
 
-            if (doctorServicesModel.getDoctorSpecialities().size() == 0) {
-                pickSpeciality.setVisibility(View.GONE);
-                doubtMessage.setVisibility(View.GONE);
-                mSpecialityEmptyListView.setVisibility(View.VISIBLE);
-                prevBtn.setVisibility(View.INVISIBLE);
-                nextBtn.setVisibility(View.INVISIBLE);
-                mBookAppointSpecialityListView.setVisibility(View.GONE);
-            } else {
-                recyclerViewLinearLayout.setVisibility(View.VISIBLE);
-                mBookAppointSpecialityListView.setVisibility(View.VISIBLE);
+                if (doctorServicesModel.getDoctorSpecialities().size() == 0) {
+                    pickSpeciality.setVisibility(View.GONE);
+                    doubtMessage.setVisibility(View.GONE);
+                    mSpecialityEmptyListView.setVisibility(View.VISIBLE);
+                    prevBtn.setVisibility(View.INVISIBLE);
+                    nextBtn.setVisibility(View.INVISIBLE);
+                    mBookAppointSpecialityListView.setVisibility(View.GONE);
+                } else {
+                    recyclerViewLinearLayout.setVisibility(View.VISIBLE);
+                    mBookAppointSpecialityListView.setVisibility(View.VISIBLE);
           /*  prevBtn.setVisibility(View.INVISIBLE);
             prevBtn.setEnabled(false);*/
                /* prevBtn.setVisibility(View.GONE);
                 prevBtn.setEnabled(false);
                 nextBtn.setVisibility(View.VISIBLE);*/
-                whiteUnderLine.setVisibility(View.VISIBLE);
-                searchView.setVisibility(View.VISIBLE);
-                mSpecialityEmptyListView.setVisibility(View.GONE);
-                mBookAppointSpecialityListView.setHasFixedSize(true);
-                RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
-                mBookAppointSpecialityListView.setLayoutManager(layoutManager);
-                mBookAppointSpecialityListView.setItemAnimator(new DefaultItemAnimator());
-                int spanCount = 3; // 3 columns
-                int spacing = 30; // 50px
-                boolean includeEdge = true;
-                mBookAppointSpecialityListView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-                mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
-                // mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
-                mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
-                pickSpeciality.setVisibility(View.VISIBLE);
-                doubtMessage.setVisibility(View.VISIBLE);
+                    whiteUnderLine.setVisibility(View.VISIBLE);
+                    searchView.setVisibility(View.VISIBLE);
+                    mSpecialityEmptyListView.setVisibility(View.GONE);
+                    mBookAppointSpecialityListView.setHasFixedSize(true);
+                    RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
+                    mBookAppointSpecialityListView.setLayoutManager(layoutManager);
+                    mBookAppointSpecialityListView.setItemAnimator(new DefaultItemAnimator());
+                    int spanCount = 3; // 3 columns
+                    int spacing = 30; // 50px
+                    boolean includeEdge = true;
+                    mBookAppointSpecialityListView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+                    mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
+                    // mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
+                    mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
+                    pickSpeciality.setVisibility(View.VISIBLE);
+                    doubtMessage.setVisibility(View.VISIBLE);
+                }
+            }else{
+                isDataListViewVisible(false, true);
+
             }
+
         }
 
         //---set data ---------
@@ -453,17 +459,17 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     public void updateViewData() {
         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
         bookAppointmentBaseModel = activity.getReceivedBookAppointmentBaseModel();
-        if(bookAppointmentBaseModel!=null) {
+        if (bookAppointmentBaseModel != null) {
             setDoctorListAdapter(bookAppointmentBaseModel);
-           // toggleButtons(bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
+            // toggleButtons(bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
 
             HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
             String s = userSelectedLocationInfo.get(getString(R.string.location));
             if (s != null) {
                 BookAppointDoctorListBaseActivity.setSelectedLocationText(s);
             }
-        }else{
-            isDataListViewVisible(false,true);
+        } else {
+            isDataListViewVisible(false, true);
         }
     }
 }

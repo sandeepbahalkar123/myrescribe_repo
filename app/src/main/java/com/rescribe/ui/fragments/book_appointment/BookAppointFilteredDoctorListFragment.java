@@ -149,6 +149,11 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;
+            case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:
+                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                activity.setReceivedBookAppointmentBaseModel((BookAppointmentBaseModel) customResponse);
+                updateViewData();
+                break;
         }
     }
 
@@ -228,8 +233,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     @Override
     public void onApplyClicked(Bundle data) {
         BookAppointFilterRequestModel requestModel = data.getParcelable(getString(R.string.filter));
-        //TODO, API IS NOT IMPLEMENTED YET, CALL API FROM HERE
-        CommonMethods.Log("onApplyClicked", "" + requestModel.toString());
+
+        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel);
     }
 
     @Override
@@ -242,11 +247,12 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
         receivedBookAppointmentBaseModel = activity.getReceivedBookAppointmentBaseModel();
         setDoctorListAdapter(receivedBookAppointmentBaseModel);
-        if (args.getString(getString(R.string.clicked_item_data)).equals("")) {
+        if (RescribeConstants.BLANK.equalsIgnoreCase(args.getString(getString(R.string.clicked_item_data))) || args.getString(getString(R.string.clicked_item_data)) == null) {
             BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss), true);
         } else {
             BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.clicked_item_data)), true);
         }
+
 
         HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         String s = userSelectedLocationInfo.get(getString(R.string.location));

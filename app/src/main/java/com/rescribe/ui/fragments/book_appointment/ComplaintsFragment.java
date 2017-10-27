@@ -19,6 +19,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.complaints.ComplaintList;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
+import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.util.RescribeConstants;
 
@@ -111,12 +112,24 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if(mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_COMPLAINTS)) {
-            if (customResponse != null) {
-                mComplaintsBaseModel = (ComplaintsBaseModel) customResponse;
-                setComplaintSpinnerListAdapter();
-
-            }
+        switch (mOldDataTag) {
+            case RescribeConstants.TASK_GET_DOCTOR_LIST_BY_COMPLAINT:
+                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                activity.setReceivedBookAppointmentBaseModel((BookAppointmentBaseModel) customResponse);
+                //---------------
+                Bundle bundle = new Bundle();
+                bundle.putString(getString(R.string.opening_mode), getString(R.string.complaints));
+                bundle.putString(getString(R.string.complaint1), selectIdComplaint1);
+                bundle.putString(getString(R.string.complaint2), selectIdComplaint2);
+                activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundle), true);
+                //---------------
+                break;
+            case RescribeConstants.TASK_GET_COMPLAINTS:
+                if (customResponse != null) {
+                    mComplaintsBaseModel = (ComplaintsBaseModel) customResponse;
+                    setComplaintSpinnerListAdapter();
+                }
+                break;
         }
 
     }
@@ -161,20 +174,13 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
                         HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
                         locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
                         String[] split = locationReceived.split(",");
-                        doctorDataHelper.doGetDoctorListByComplaint(split[1].trim(),split[0].trim(),selectIdComplaint1,selectIdComplaint2);
-
-                       /* BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                        args.putString(getString(R.string.clicked_item_data), "");
-                        activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(args), true);*/
+                        doctorDataHelper.doGetDoctorListByComplaint(split[1].trim(), split[0].trim(), selectIdComplaint1, selectIdComplaint2);
 
                     }
                 } else if (showEditText2.getVisibility() == View.VISIBLE && showEditText.getVisibility() == View.VISIBLE) {
                     if (editTextComplaint1.getText().toString().equals("") && editTextComplaint2.getText().toString().equals("")) {
                         Toast.makeText(getActivity(), "Please enter text", Toast.LENGTH_SHORT).show();
                     } else {
-                        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                        args.putString(getString(R.string.clicked_item_data), "");
-                        activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(args), true);
                     }
                 }
 

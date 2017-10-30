@@ -147,10 +147,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         searchView.addKeyboardDoneKeyPressedInEditTextListener(new EditTextWithDeleteButton.OnKeyboardDoneKeyPressedInEditTextListener() {
             @Override
             public void onKeyPressed(int actionId, KeyEvent event) {
+//                   || event.getAction() == KeyEvent.ACTION_DOWN
+//                        && event.getKeyCode() == KeyEvent.KEYCODE_ENTER
                 if (actionId == EditorInfo.IME_ACTION_SEARCH
                         || actionId == EditorInfo.IME_ACTION_DONE
-                        || event.getAction() == KeyEvent.ACTION_DOWN
-                        && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                     ) {
                     CommonMethods.hideKeyboard(getActivity());
                 }
             }

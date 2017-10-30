@@ -417,8 +417,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
                     //TODO : added for testing purpose, remove it
                     //----------
-                    Intent popup = new Intent(getApplicationContext(), SettingActivity.class);
-                    startActivity(popup);
+                    //Intent popup = new Intent(getApplicationContext(), SettingActivity.class);
+                //    startActivity(popup);
                     //----------
                 } else if (id.equalsIgnoreCase(getString(R.string.services))) {
                     DoctorDataHelper.getUserSelectedLocationInfo().clear();

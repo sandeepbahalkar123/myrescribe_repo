@@ -425,9 +425,13 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     public void doOperationOnDrawer(boolean flag) {
+
         if (flag) { // for open
+            //  The drawer is unlocked.
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         } else {
+            //The drawer is locked closed. The user may not open it, though
+            // the app may open it programmatically.
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
     }

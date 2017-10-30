@@ -130,7 +130,7 @@
                                 android:drawablePadding="@dimen/dp16"
                                 android:drawableRight="@drawable/sorting_arrow"
                                 android:gravity="right|end|center_vertical"
-                                android:textColor="@color/gender_drawer"
+                                android:textColor="@color/choose_option_color"
                                 app:customFont="@string/roboto_regular" />
                         </LinearLayout>
                     </LinearLayout>
@@ -632,7 +632,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:background="@color/transparent"
-                android:text="@string/apply"
+                android:text="@string/done"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp19" />
@@ -685,6 +685,10 @@
                 android:visibility="gone" />
 
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/divider" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/sortRecyclerView"
             android:layout_width="match_parent"

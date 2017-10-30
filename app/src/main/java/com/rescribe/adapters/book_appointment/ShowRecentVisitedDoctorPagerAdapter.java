@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,6 +61,8 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
         final TextView doctorNameTextView = (TextView) imageLayout
                 .findViewById(R.id.doctorName);
+        final TextView doctorCategoryVisit = (TextView) imageLayout
+                .findViewById(R.id.doctorCategoryVisit);
         final TextView doctorType = (TextView) imageLayout
                 .findViewById(R.id.doctorType);
         final TextView doctorExperience = (TextView) imageLayout
@@ -68,6 +71,12 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.doctorAddress);
         final TextView doctorFees = (TextView) imageLayout
                 .findViewById(R.id.feesToPaidVisit);
+        final TextView doctorRating = (TextView) imageLayout
+                .findViewById(R.id.doctorRating);
+        final ImageView bookAppointmentButton = (ImageView) imageLayout
+                .findViewById(R.id.bookAppointmentButton);
+
+
        /* final TextView kilometers = (TextView) imageLayout
                 .findViewById(R.id.kilometers);*/
        /* final ImageView favoriteView = (ImageView) imageLayout
@@ -128,13 +137,32 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         doctorExperience.setText(""+ mDoctorLists.get(position).getExperience()+mContext.getString(R.string.space)+mContext.getString(R.string.years_experience));
         doctorAddress.setText(mDoctorLists.get(position).getDoctorAddress().get(0));
         doctorFees.setText(""+ mDoctorLists.get(position).getAmount());
-        SpannableString content = new SpannableString("Oct 18,2017");
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        doctorAppointmentDate.setText(content);
+
         if (mDoctorLists.get(position).getFavourite()) {
             favorite.setVisibility(View.VISIBLE);
         } else {
             favorite.setVisibility(View.GONE);
+        }
+        if(mDoctorLists.get(position).getRecentlyVisited()){
+            doctorCategoryVisit.setText(mContext.getString(R.string.recently_visit_doctor));
+            doctorFees.setVisibility(View.VISIBLE);
+            doctorAppointmentDate.setVisibility(View.INVISIBLE);
+            bookAppointmentButton.setVisibility(View.VISIBLE);
+            doctorFees.setText(""+mDoctorLists.get(position).getAmount());
+        }else{
+            doctorAppointmentDate.setVisibility(View.VISIBLE);
+            SpannableString content = new SpannableString("Oct 18,2017");
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            doctorAppointmentDate.setText(content);
+            bookAppointmentButton.setVisibility(View.INVISIBLE);
+            doctorFees.setVisibility(View.INVISIBLE);
+            doctorCategoryVisit.setText(mContext.getString(R.string.my_appointments));
+        }
+        if(mDoctorLists.get(position).getRating().equals("NA")){
+            doctorRating.setVisibility(View.INVISIBLE);
+        }else{
+            doctorRating.setVisibility(View.VISIBLE);
+            doctorRating.setText(""+mDoctorLists.get(position).getRating());
         }
       /*  SpannableString content = new SpannableString(""+ mDoctorLists.get(position).getDistance());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);

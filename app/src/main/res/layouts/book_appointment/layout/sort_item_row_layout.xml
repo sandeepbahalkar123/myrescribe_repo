@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/dp6"
         android:layout_marginLeft="@dimen/dp16"
@@ -23,7 +23,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_toRightOf="@+id/thumbnail"
             android:layout_weight="1"
@@ -66,6 +66,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp1"
-
         android:background="@color/divider" />
 </LinearLayout>

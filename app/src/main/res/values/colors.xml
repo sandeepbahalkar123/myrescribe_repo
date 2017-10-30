@@ -13,6 +13,7 @@
     <color name="drawer_bg">#edf1f4</color>
     <color name="view_detail_color">#737373</color>
     <color name="Red">#FF0000</color>
+    <color name="choose_option_color">#6e6e6e</color>
     <color name="tagColor">#04abdf</color>
     <color name="tans_tagColor">#6004abdf</color>
     <color name="statusbar">#0077a7</color>

@@ -70,8 +70,8 @@
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="@dimen/dp12"
                 app:ci_animator="@anim/indicator_no_animator"
-                app:ci_drawable="@drawable/white_radius"
-                app:ci_drawable_unselected="@drawable/black_radius" />
+                app:ci_drawable="@drawable/black_radius"
+                app:ci_drawable_unselected="@drawable/white_radius" />
 
         </FrameLayout>
 

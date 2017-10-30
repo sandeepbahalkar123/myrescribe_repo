@@ -63,6 +63,7 @@ public class SortByPriceNameFilterAdapter extends RecyclerView.Adapter<SortByPri
         holder.recyclerViewClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String tag = (String) v.getTag();
                 //-------
                 if (tag.toLowerCase().contains(ratings.toLowerCase())) {
@@ -78,6 +79,7 @@ public class SortByPriceNameFilterAdapter extends RecyclerView.Adapter<SortByPri
                     selectedSortedOption = selectedSortedOption + "|" + desc.trim();
                 }
                 //-------
+
                 holder.serviceIcon.setVisibility(View.VISIBLE);
             }
         });

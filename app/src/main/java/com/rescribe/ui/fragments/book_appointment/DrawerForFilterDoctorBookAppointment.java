@@ -466,10 +466,12 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                 //------
                 bookAppointFilterRequestModel.setLocationList(mFilterSelectLocationsAdapter.getSelectedLocation().toArray(new String[temp.size()]));
                 //------
-                String[] split = mSortByPriceNameFilterAdapter.getSelectedSortedOption().split("\\|");
-                if (split.length == 2) {
-                    bookAppointFilterRequestModel.setSortBy(split[0]);
-                    bookAppointFilterRequestModel.setSortOrder(split[1]);
+                if (mSortByPriceNameFilterAdapter != null) {
+                    String[] split = mSortByPriceNameFilterAdapter.getSelectedSortedOption().split("\\|");
+                    if (split.length == 2) {
+                        bookAppointFilterRequestModel.setSortBy(split[0]);
+                        bookAppointFilterRequestModel.setSortOrder(split[1]);
+                    }
                 }
                 //------
                 Bundle b = new Bundle();

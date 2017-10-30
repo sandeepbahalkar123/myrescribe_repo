@@ -114,14 +114,17 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 isDataListViewVisible(false);
             } else {
                 ArrayList<DoctorList> doctorList = doctorServicesModel.getDoctorList();
+                //----This is done to filter list based on speciality selected---
+                doctorList = filterListWhenSpecialitySelected(doctorList);
+                //-------
                 if (doctorList.size() == 0) {
                     isDataListViewVisible(false);
                 } else {
                     isDataListViewVisible(true);
                     ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
-                    for(int i =0;i<doctorList.size();i++){
-                        if(doctorList.get(i).getClinicName().size()>0){
-                            for(int j = 0;j<doctorList.get(i).getClinicName().size();j++){
+                    for (int i = 0; i < doctorList.size(); i++) {
+                        if (doctorList.get(i).getClinicName().size() > 0) {
+                            for (int j = 0; j < doctorList.get(i).getClinicName().size(); j++) {
                                 DoctorList doctorListByClinic = new DoctorList();
                                 doctorListByClinic.setDocId(doctorList.get(i).getDocId());
                                 doctorListByClinic.setDocName(doctorList.get(i).getDocName());
@@ -291,4 +294,19 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
             BookAppointDoctorListBaseActivity.setSelectedLocationText(s);
         }
     }
+
+
+    private ArrayList<DoctorList> filterListWhenSpecialitySelected(ArrayList<DoctorList> list) {
+        ArrayList<DoctorList> temp = new ArrayList<>();
+        if (mSelectedSpeciality != null) {
+            for (DoctorList dataObject :
+                    list) {
+                if (dataObject.getSpeciality().equalsIgnoreCase(mSelectedSpeciality)) {
+                    temp.add(dataObject);
+                }
+            }
+        }
+        return temp;
+    }
+
 }

@@ -14,6 +14,12 @@ import java.util.Arrays;
 
 public class BookAppointFilterRequestModel implements CustomResponse, Parcelable {
 
+
+    private String cityName;
+
+    private String area;
+
+    private Integer patientId;
     private String gender;
 
     private String[] clinicFeesRange;
@@ -23,6 +29,10 @@ public class BookAppointFilterRequestModel implements CustomResponse, Parcelable
     private String[] availability;
 
     private String[] locationList;
+
+    private String sortBy;
+    private String sortOrder;
+
 
     public String getGender() {
         return gender;
@@ -64,6 +74,46 @@ public class BookAppointFilterRequestModel implements CustomResponse, Parcelable
         this.locationList = locationList;
     }
 
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public Integer getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(Integer patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
+
+    public String getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(String sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -84,6 +134,12 @@ public class BookAppointFilterRequestModel implements CustomResponse, Parcelable
             instance.availability = ((String[]) in.readValue((String.class.getClassLoader())));
             instance.locationList = ((String[]) in.readValue((String.class.getClassLoader())));
 
+            instance.cityName = ((String) in.readValue((String.class.getClassLoader())));
+            instance.area = ((String) in.readValue((String.class.getClassLoader())));
+            instance.patientId = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.sortBy = ((String) in.readValue((String.class.getClassLoader())));
+            instance.sortOrder = ((String) in.readValue((String.class.getClassLoader())));
+
             return instance;
         }
 
@@ -99,6 +155,13 @@ public class BookAppointFilterRequestModel implements CustomResponse, Parcelable
         dest.writeArray(distance);
         dest.writeArray(availability);
         dest.writeArray(locationList);
+
+        dest.writeValue(cityName);
+        dest.writeValue(area);
+        dest.writeValue(patientId);
+        dest.writeValue(sortBy);
+        dest.writeValue(sortOrder);
+
     }
 
     @Override

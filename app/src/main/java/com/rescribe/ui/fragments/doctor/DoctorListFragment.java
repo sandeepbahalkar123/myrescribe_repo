@@ -101,6 +101,9 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
                         mDoctorListView.setHasFixedSize(true);
                         mDoctorListView.setAdapter(showDoctorListAdapter);
                     }
+                } else {
+                    mDoctorListView.setVisibility(View.GONE);
+                    mEmptyListView.setVisibility(View.VISIBLE);
                 }
             }
         }

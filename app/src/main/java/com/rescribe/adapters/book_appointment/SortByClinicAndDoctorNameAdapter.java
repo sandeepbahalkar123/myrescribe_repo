@@ -120,8 +120,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
         holder.aboutDoctor.setText(doctorObject.getDegree());
         if (doctorObject.getRating().equals("NA")) {
-            holder.doctorRating.setVisibility(View.INVISIBLE);
-            holder.ratingBar.setVisibility(View.INVISIBLE);
+            holder.doctorRating.setVisibility(View.GONE);
+            holder.ratingBar.setVisibility(View.GONE);
         } else {
             holder.doctorRating.setVisibility(View.VISIBLE);
             holder.ratingBar.setVisibility(View.VISIBLE);
@@ -167,6 +167,11 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                     .into(holder.imageURL);
             //--------------
         }
+        if (doctorObject.getTokenNo().equals("")) {
+            holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.result_book_appointment));
+        } else {
+            holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.token_no_background));
+        }
 
         holder.dataLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,7 +206,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 while (matcher.find()) {
                     spannableClinicNameString.setSpan(new ForegroundColorSpan(
                                     ContextCompat.getColor(mContext, R.color.tagColor)),
-                           0, 0+mSearchString.length(),
+                            0, 0 + mSearchString.length(),
                             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     holder.clinicName.setText(spannableClinicNameString);
                 }
@@ -272,9 +277,9 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         @BindView(R.id.clinicName)
         CustomTextView clinicName;
         /*  @BindView(R.id.waitingTime)
-          CustomTextView waitingTime;
-          @BindView(R.id.tokenNo)
-          CustomTextView tokenNo;*/
+           CustomTextView waitingTime;*/
+        @BindView(R.id.tokenNo)
+        ImageView tokenNo;
         @BindView(R.id.favoriteView)
         ImageView favoriteView;
         @BindView(R.id.imageURL)

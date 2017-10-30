@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -57,7 +58,7 @@
                 android:layout_marginRight="@dimen/dp6"
                 android:background="@drawable/rated_box_cropped"
                 android:gravity="center"
-                android:text="4.2"
+                tools:text="4.2"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp11" />
         </LinearLayout>
@@ -172,7 +173,7 @@
                     android:id="@+id/bookAppointmentButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/dashboard_card_book_appointment" />
+                    android:src="@drawable/card_book_appointment_copy" />
 
             </LinearLayout>
 
@@ -192,6 +193,7 @@
                     android:drawableLeft="@drawable/dashboard_big_black_ruppee"
                     android:drawablePadding="@dimen/dp2"
                     android:text="500"
+                    android:layout_marginTop="@dimen/dp6"
                     android:visibility="invisible"
                     android:layout_marginRight="@dimen/dp10"
                     android:textColor="@color/black"

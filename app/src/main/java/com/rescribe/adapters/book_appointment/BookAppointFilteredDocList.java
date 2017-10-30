@@ -39,35 +39,6 @@ import butterknife.ButterKnife;
 
 public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppointFilteredDocList.ListViewHolder> implements Filterable {
 
-
-    @BindView(R.id.blueLine)
-    ImageView blueLine;
-    @BindView(R.id.doctorCategoryType)
-    CustomTextView doctorCategoryType;
-    @BindView(R.id.doctorFee)
-    CustomTextView doctorFee;
-    @BindView(R.id.imageURL)
-    CircularImageView imageURL;
-    @BindView(R.id.thumbnail)
-    LinearLayout thumbnail;
-    @BindView(R.id.doctorName)
-    CustomTextView doctorName;
-    @BindView(R.id.doctorExperience)
-    CustomTextView doctorExperience;
-    @BindView(R.id.doctorAddress)
-    CustomTextView doctorAddress;
-    @BindView(R.id.dataLayout)
-    LinearLayout dataLayout;
-    @BindView(R.id.favoriteView)
-    ImageView favoriteView;
-    @BindView(R.id.gMapLocationView)
-    ImageView gMapLocationView;
-    @BindView(R.id.distance)
-    CustomTextView distance;
-    @BindView(R.id.doctorRating)
-    CustomTextView doctorRating;
-    @BindView(R.id.ratingBar)
-    RatingBar ratingBar;
     private Fragment mFragment;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
@@ -112,16 +83,19 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         holder.doctorName.setText(doctorObject.getDocName());
         holder.aboutDoctor.setText(doctorObject.getDegree());
         if (doctorObject.getRating().equals("NA")) {
-            holder.doctorRating.setVisibility(View.INVISIBLE);
-            holder.ratingBar.setVisibility(View.INVISIBLE);
+            holder.doctorRating.setVisibility(View.GONE);
+            holder.ratingBar.setVisibility(View.GONE);
         } else {
             holder.doctorRating.setVisibility(View.VISIBLE);
             holder.ratingBar.setVisibility(View.VISIBLE);
             holder.doctorRating.setText("" + doctorObject.getRating());
             holder.ratingBar.setRating(Float.parseFloat(doctorObject.getRating()));
         }
-
-
+        if (doctorObject.getTokenNo().equals("")) {
+            holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.result_book_appointment));
+        } else {
+            holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.token_no_background));
+        }
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
         holder.doctorAddress.setText(doctorObject.getAddressOfDoctor());
         holder.doctorFee.setText("" + doctorObject.getAmount());
@@ -215,10 +189,10 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         CustomTextView aboutDoctor;
         @BindView(R.id.clinicName)
         CustomTextView clinicName;
-        /*  @BindView(R.id.waitingTime)
-          CustomTextView waitingTime;
-          @BindView(R.id.tokenNo)
-          CustomTextView tokenNo;*/
+        /* @BindView(R.id.waitingTime)
+          CustomTextView waitingTime;*/
+        @BindView(R.id.tokenNo)
+        ImageView tokenNo;
         @BindView(R.id.favoriteView)
         ImageView favoriteView;
         @BindView(R.id.imageURL)

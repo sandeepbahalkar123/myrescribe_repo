@@ -43,16 +43,13 @@ import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
-
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
@@ -151,7 +148,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 //                        && event.getKeyCode() == KeyEvent.KEYCODE_ENTER
                 if (actionId == EditorInfo.IME_ACTION_SEARCH
                         || actionId == EditorInfo.IME_ACTION_DONE
-                     ) {
+                        ) {
                     CommonMethods.hideKeyboard(getActivity());
                 }
             }

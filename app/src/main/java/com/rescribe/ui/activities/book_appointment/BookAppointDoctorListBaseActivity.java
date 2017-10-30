@@ -67,6 +67,8 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     private DoctorDataHelper mDoctorDataHelper;
     private Fragment mCurrentlyLoadedFragment; //TODO, fragmentById is not working hence hold this object.
     private BookAppointmentBaseModel mReceivedBookAppointmentBaseModel;
+    private BookAppointmentBaseModel mPreviousReqReceivedBookAppointmentBaseModel;
+
     private FragmentManager mSupportFragmentManager;
     private Fragment mDrawerLoadedFragment;
     private int PLACE_PICKER_REQUEST = 1;
@@ -166,6 +168,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     @Override
     public void onSuccess(final String mOldDataTag, final CustomResponse customResponse) {
+
         mReceivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
 
         if (mReceivedBookAppointmentBaseModel.getDoctorServicesModel() != null) {
@@ -232,11 +235,15 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     public BookAppointmentBaseModel getReceivedBookAppointmentBaseModel() {
+
         return mReceivedBookAppointmentBaseModel;
     }
 
-    public void setReceivedBookAppointmentBaseModel(BookAppointmentBaseModel mReceivedBookAppointmentBaseModel) {
-        this.mReceivedBookAppointmentBaseModel = mReceivedBookAppointmentBaseModel;
+    public void setReceivedBookAppointmentBaseModel(BookAppointmentBaseModel temp) {
+        if (mPreviousReqReceivedBookAppointmentBaseModel == null) {
+            mPreviousReqReceivedBookAppointmentBaseModel = mReceivedBookAppointmentBaseModel;
+        }
+        this.mReceivedBookAppointmentBaseModel = temp;
     }
 
     @OnClick({R.id.bookAppointmentBackButton, R.id.title, R.id.locationTextView})

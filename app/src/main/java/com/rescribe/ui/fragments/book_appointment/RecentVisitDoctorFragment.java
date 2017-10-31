@@ -21,10 +21,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSpecialistBookAppointmentAdapter;
 import com.rescribe.adapters.book_appointment.ShowRecentVisitedDoctorPagerAdapter;
@@ -43,13 +45,16 @@ import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
+
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
@@ -97,9 +102,9 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     Unbinder unbinder;
     BookAppointmentBaseModel bookAppointmentBaseModel;
     DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter;
-    ArrayList<DoctorList> doctorListByClinics;
     private int currentPage = 0;
     private int totalPages;
+    ArrayList<DoctorList> doctorList;
     CustomResponse customResponse;
     private String mReceivedToolBarTitle;
     private SortByClinicAndDoctorNameAdapter mSortByClinicAndDoctorNameAdapter;
@@ -221,7 +226,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 break;
             case R.id.leftFab:
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
-                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
+                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName());
                 intent.putExtra(getString(R.string.toolbarTitle), mReceivedToolBarTitle);
                 startActivity(intent);
               /*  activity = (BookAppointDoctorListBaseActivity) getActivity();
@@ -262,13 +267,13 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 //------
                 //----- to set doc data list, invisible by default -----
                 isDataListViewVisible(false, false);
-                ArrayList<DoctorList> doctorList = doctorServicesModel.getDoctorList();
-                doctorListByClinics = new ArrayList<>();
+                doctorList = doctorServicesModel.getDoctorList();
+                /*doctorListByClinics = new ArrayList<>();*/
 
                 //Doctor List is sorted here for search by clinic and doctorName
 
                 if (doctorList.size() > 0) {
-                    for (int i = 0; i < doctorList.size(); i++) {
+                  /*  for (int i = 0; i < doctorList.size(); i++) {
                         if (doctorList.get(i).getClinicName().size() > 0) {
                             for (int j = 0; j < doctorList.get(i).getClinicName().size(); j++) {
                                 DoctorList doctorListByClinic = new DoctorList();
@@ -292,11 +297,13 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                                 doctorListByClinic.setTotalReview(doctorList.get(i).getTotalReview());
                                 doctorListByClinic.setNameOfClinic(doctorList.get(i).getClinicName().get(j));
                                 doctorListByClinic.setAddressOfDoctor(doctorList.get(i).getDoctorAddress().get(j));
+                                doctorListByClinic.setClinicName(doctorList.get(i).getClinicName());
+                                doctorListByClinic.setDoctorAddress(doctorList.get(i).getDoctorAddress());
                                 doctorListByClinics.add(doctorListByClinic);
                             }
                         }
-                    }
-                    mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), doctorListByClinics, RecentVisitDoctorFragment.this, RecentVisitDoctorFragment.this);
+                    }*/
+                    mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), doctorList, RecentVisitDoctorFragment.this, RecentVisitDoctorFragment.this);
                     LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                     showDoctorsRecyclerView.setLayoutManager(linearlayoutManager);
                     showDoctorsRecyclerView.setHasFixedSize(true);

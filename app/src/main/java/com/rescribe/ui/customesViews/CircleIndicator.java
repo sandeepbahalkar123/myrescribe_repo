@@ -97,8 +97,8 @@ public class CircleIndicator extends LinearLayout {
         typedArray.recycle();
     }
 
-    /**
-     * Create and configure Indicator in Java code.
+    /**r
+     * Create and configure Indicator in Java corrde.
      */
     public void configureIndicator(int indicatorWidth, int indicatorHeight, int indicatorMargin) {
         configureIndicator(indicatorWidth, indicatorHeight, indicatorMargin,

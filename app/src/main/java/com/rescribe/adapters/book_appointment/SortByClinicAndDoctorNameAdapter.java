@@ -131,7 +131,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
 
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
-        holder.doctorAddress.setText(doctorObject.getAddressOfDoctor());
+        /*holder.doctorAddress.setText(doctorObject.getAddressOfDoctor());*/
         holder.doctorFee.setText("" + doctorObject.getAmount());
         SpannableString content = new SpannableString(doctorObject.getDistance());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
@@ -199,7 +199,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 holder.doctorName.setText(doctorObject.getDocName());
             }
             //----------------------------------
-            if (doctorObject.getNameOfClinic().startsWith(mSearchString)) {
+          /*  if (doctorObject.getNameOfClinic().startsWith(mSearchString)) {
                 spannableClinicNameString = new SpannableString(doctorObject.getNameOfClinic());
                 Pattern pattern = Pattern.compile(mSearchClinicNameString, Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(doctorObject.getNameOfClinic());
@@ -213,7 +213,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
             } else {
                 holder.clinicName.setText(doctorObject.getNameOfClinic());
-            }
+            }*/
 
         }
      /*   if ((mSearchClinicNameString != null) && (!mSearchClinicNameString.isEmpty())) {
@@ -319,9 +319,9 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
                     for (DoctorList doctorConnectModel : mArrayList) {
 
-                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase()) || doctorConnectModel.getNameOfClinic().toLowerCase().startsWith(charString.toLowerCase())) {
+                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase())) {
                             filteredList.add(doctorConnectModel);
-                        }/*else{
+                        }else{
                             for (String name :
                                     doctorConnectModel.getClinicName()) {
                                 if (name.toLowerCase().startsWith(charString.toLowerCase())) {
@@ -329,7 +329,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                                     break;
                                 }
                             }
-                        }*/
+                        }
 
                     }
                     mDataList = filteredList;
@@ -352,5 +352,9 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public ArrayList<DoctorList> getSortedListByClinicNameOrDoctorName() {
+        return mDataList;
     }
 }

@@ -69,6 +69,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="@dimen/dp12"
+                app:ci_height="6dp"
+                app:ci_width="6dp"
+                app:ci_margin="1dp"
                 app:ci_animator="@anim/indicator_no_animator"
                 app:ci_drawable="@drawable/black_radius"
                 app:ci_drawable_unselected="@drawable/white_radius" />

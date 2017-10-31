@@ -37,7 +37,7 @@
                         android:layout_height="@dimen/dp120"
                         android:clickable="true"
                         android:scaleType="centerCrop"
-                      />
+                        android:src="@drawable/layer_12" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/docRating"

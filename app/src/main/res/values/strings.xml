@@ -239,13 +239,11 @@
     <string name="clinic_fees">Clinic Fees</string>
     <string name="availability">Availability</string>
     <string name="doctor">Doctor</string>
-    <string name="about_doctor"><u>About Doctor:</u></string>
+    <string name="about_doctor"><u>About Doctor :</u></string>
     <string name="recently_visit_doctor">Recently Visited Doctor</string>
     <!--<string name="clickhere">Not Sure ?......click here</string>-->
     <!--<string name="clickhere">Not Sure ?......click here</string>-->
-
     <string name="clickhere"><![CDATA[<b><font color=#d2d2d2>Not Sure ?......</font>click here</b>]]></string>
-
     <string name="rupee_symbol">\u20B9 &#160;</string>
     <string name="please_select_location">Please select location</string>
     <string name="select_location"><u>Select location</u></string>
@@ -282,7 +280,7 @@
     <string name="weekday_sat">Saturday</string>
     <string name="price_range"><u>Price Range</u></string>
     <string name="select_days"><u>Select Days</u></string>
-    <string name="also_practices">Also practices at</string>
+    <string name="also_practices">Also practices at :</string>
     <string name="more_info">More Info</string>
 
     <string name="services">Services</string>

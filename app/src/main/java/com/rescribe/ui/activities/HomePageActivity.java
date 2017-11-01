@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
@@ -143,9 +142,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     private String getImageSizeForPhone() {
         String resolution = "";
-        int density= getResources().getDisplayMetrics().densityDpi;
-        switch(density)
-        {
+        int density = getResources().getDisplayMetrics().densityDpi;
+        switch (density) {
             case DisplayMetrics.DENSITY_LOW:
                 resolution = "ldpi";
                 break;
@@ -415,10 +413,12 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.settings))) {
 
+
                     //TODO : added for testing purpose, remove it
                     //----------
-                    //Intent popup = new Intent(getApplicationContext(), SettingActivity.class);
-                //    startActivity(popup);
+                    Intent popup = new Intent(getApplicationContext(), SettingActivity.class);
+                    //Intent popup = new Intent(getApplicationContext(), BookAppointFindLocation.class);
+                    startActivity(popup);
                     //----------
                 } else if (id.equalsIgnoreCase(getString(R.string.services))) {
                     DoctorDataHelper.getUserSelectedLocationInfo().clear();

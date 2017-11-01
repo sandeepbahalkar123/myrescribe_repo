@@ -3,9 +3,6 @@ package com.rescribe.ui.fragments.book_appointment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +10,10 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.SelectSlotToBookAppointmentAdapter;
 import com.rescribe.adapters.book_appointment.TimeSlotAdapter;
@@ -31,15 +28,18 @@ import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
  * Created by jeetal on 31/10/17.
  */
 
-public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
+public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener,DatePickerDialog.OnDateSetListener {
 
     @BindView(R.id.profileImage)
     CircularImageView profileImage;
@@ -62,6 +62,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private View mRootView;
     private int mImageSize;
     Unbinder unbinder;
+    private DatePickerDialog datePickerDialog;
     private DoctorDataHelper mDoctorDataHelper;
     private DoctorList mClickedDoctorObject;
     public static Bundle args;
@@ -122,6 +123,17 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             }
         });
 
+        Calendar now = Calendar.getInstance();
+// As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
+        datePickerDialog = DatePickerDialog.newInstance(
+                this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.setAccentColor(getResources().getColor(R.color.tagColor));
+        datePickerDialog.setMaxDate(Calendar.getInstance());
+
+
 
     }
 
@@ -142,45 +154,13 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         requestOptions.skipMemoryCache(true);
         requestOptions.override(mImageSize, mImageSize);
         requestOptions.placeholder(R.drawable.layer_12);
-
         Glide.with(getActivity())
                 .load(mClickedDoctorObject.getDoctorImageUrl())
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(profileImage);
-
-    /*    clinicName.setText("" + mClickedDoctorObject.getNameOfClinic());
-        addressOfClinic.setText("" + mClickedDoctorObject.getAddressOfDoctor());*/
         docRating.setText("" + mClickedDoctorObject.getRating());
         doctorName.setText("" + mClickedDoctorObject.getDocName());
         doctorSpecialization.setText("" + mClickedDoctorObject.getDegree());
-        /*mDoctorExperience.setText("" + mClickedDoctorObject.getExperience() + getString(R.string.space) + getString(R.string.years_experience));
-        mDoctorFees.setText(getString(R.string.fee) + getString(R.string.space) + getString(R.string.rupees) + mClickedDoctorObject.getAmount() + getString(R.string.space) + getString(R.string.slash) + getString(R.string.space) + getString(R.string.session));*/
-       /* List<String> morePracticePlaces = mClickedDoctorObject.getPracticePlaceInfos();
-        StringBuilder builder = new StringBuilder();
-        for (String s :
-                morePracticePlaces) {
-            builder.append(s + "/");
-        }
-        String showMorePlaces = getString(R.string.also_practices) + getString(R.string.space) + builder.toString();*/
-        // mDoctorPractices.setText(showMorePlaces.substring(0, showMorePlaces.length() - 1));
-       /* if (mClickedDoctorObject.getAvailableTimeSlots().size() > 0) {
-            int spanCount = 2; // 3 columns
-            int spacing = 30; // 50px
-            boolean includeEdge = false;
-            LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-            mAllTimeSlotListView.setLayoutManager(linearlayoutManager);
-            mAllTimeSlotListView.setHasFixedSize(true);
-            TimeSlotAdapter t = new TimeSlotAdapter(getActivity(), mClickedDoctorObject.getClinicName());
-            mAllTimeSlotListView.setAdapter(t);
-        }*/
-
-        //requestOptions.placeholder(R.drawable.layer_12);
-      /*  if (!mClickedDoctorObject.getAddressOfDoctor().isEmpty()) {
-            Glide.with(getActivity())
-                    .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mClickedDoctorObject.getAddressOfDoctor() + "&markers=color:red%7Clabel:C%7C" + mClickedDoctorObject.getAddressOfDoctor() + "&zoom=12&size=640x250")
-                    .into(locationImage);
-        }*/
-
 
     }
 
@@ -215,12 +195,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         unbinder.unbind();
     }
 
-   /* @OnClick({R.id.locationImage},{R.id.bookAppointmentButton})
+    @OnClick({R.id.selectDateTime,R.id.bookAppointmentButton})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
-            case R.id.locationImage:
-
+            case R.id.selectDateTime:
+                datePickerDialog.show(getFragmentManager(), getResources().getString(R.string.select_date_text));
                 break;
             case R.id.bookAppointmentButton:
 
@@ -228,10 +208,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
 
         }
-    }*/
+    }
 
     @Override
     public void updateViewData() {
 
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+        selectDateTime.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
     }
 }

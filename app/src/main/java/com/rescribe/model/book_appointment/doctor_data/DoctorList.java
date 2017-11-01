@@ -83,8 +83,8 @@ public class DoctorList implements Parcelable {
     private double latitude = 0.0;
     private double longitude = 0.0;
 
-    private String nameOfClinic ;
-    private String addressOfDoctor;
+    private String nameOfClinic = "" ;
+    private String addressOfDoctor = "";
     /*  @SerializedName("reviewList")
     @Expose
     private ArrayList<ReviewList> reviewList = null;*/

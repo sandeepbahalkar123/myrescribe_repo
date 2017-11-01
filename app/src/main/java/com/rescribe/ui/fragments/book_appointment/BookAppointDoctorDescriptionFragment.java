@@ -28,6 +28,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityShowDoctorLocation;
+import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -41,7 +42,6 @@ import butterknife.Unbinder;
 
 
 public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
-
 
     @BindView(R.id.profileImage)
     CircularImageView mProfileImage;
@@ -138,7 +138,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         SpannableString content = new SpannableString(aboutDoctor.getText());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         aboutDoctor.setText(content);
-    /*    clinicName.setText("" + mClickedDoctorObject.getNameOfClinic());
+       /* clinicName.setText("" + mClickedDoctorObject.getNameOfClinic());
         addressOfClinic.setText("" + mClickedDoctorObject.getAddressOfDoctor());*/
         mDocRating.setText("" + mClickedDoctorObject.getRating());
         mDoctorName.setText("" + mClickedDoctorObject.getDocName());
@@ -166,11 +166,11 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         }
 
         //requestOptions.placeholder(R.drawable.layer_12);
-      /*  if (!mClickedDoctorObject.getAddressOfDoctor().isEmpty()) {
+        if (!mClickedDoctorObject.getAddressOfDoctor().isEmpty()) {
             Glide.with(getActivity())
                     .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mClickedDoctorObject.getAddressOfDoctor() + "&markers=color:red%7Clabel:C%7C" + mClickedDoctorObject.getAddressOfDoctor() + "&zoom=12&size=640x250")
                     .into(locationImage);
-        }*/
+        }
 
 
     }
@@ -201,7 +201,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         unbinder.unbind();
     }
 
-    @OnClick({R.id.locationImage,R.id.bookAppointmentButton})
+    @OnClick({R.id.locationImage, R.id.bookAppointmentButton})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -214,11 +214,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 startActivity(intent);
                 break;
             case R.id.bookAppointmentButton:
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(getString(R.string.clicked_item_data),mClickedDoctorObject);
-                bundle.putString(getString(R.string.toolbarTitle),args.getString(getString(R.string.toolbarTitle)));
-                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                activity.loadFragment(SelectSlotTimeToBookAppointmentFragment.newInstance(bundle), false);
+                Intent intentObject = new Intent(getActivity(), SelectSlotToBookAppointmentBaseActivity.class);
+                intentObject.putExtra(getString(R.string.clicked_item_data), mClickedDoctorObject);
+                intentObject.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
+                startActivity(intentObject);
                 break;
 
 

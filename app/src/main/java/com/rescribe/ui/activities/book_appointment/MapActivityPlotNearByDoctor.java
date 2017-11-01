@@ -116,7 +116,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         mMap.setOnMapClickListener(this);
         for (int index = 0; index < mDoctorLists.size(); index++) {
             DoctorList doctorList = mDoctorLists.get(index);
-            p1 = getLocationFromAddress(doctorList.getDoctorAddress().get(0));
+            p1 = getLocationFromAddress(doctorList.getAddressOfDoctor());
             if (p1 != null) {
                 LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
                 doctorList.setLatitude(p1.getLatitude());
@@ -231,6 +231,10 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 doctorList.setLongitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
                 doctorList.setLatitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
                 doctorList.setTotalReview(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview());
+                doctorList.setAddressOfDoctor(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAddressOfDoctor());
+                doctorList.setDoctorAddress(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorAddress());
+                doctorList.setClinicName(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getClinicName());
+                doctorList.setNameOfClinic(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinic());
                 Intent intent = new Intent(MapActivityPlotNearByDoctor.this, ShowMoreInfoBaseActivity.class);
                 intent.putExtra(getString(R.string.toolbarTitle), title.getText().toString());
                 intent.putExtra(getString(R.string.doctor_data), doctorList);

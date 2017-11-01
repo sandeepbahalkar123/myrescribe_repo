@@ -131,7 +131,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
 
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
-        /*holder.doctorAddress.setText(doctorObject.getAddressOfDoctor());*/
+        holder.doctorAddress.setText(doctorObject.getAddressOfDoctor());
+
         holder.doctorFee.setText("" + doctorObject.getAmount());
         SpannableString content = new SpannableString(doctorObject.getDistance());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
@@ -199,22 +200,18 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 holder.doctorName.setText(doctorObject.getDocName());
             }
             //----------------------------------
-          /*  if (doctorObject.getNameOfClinic().startsWith(mSearchString)) {
+
+            if (!doctorObject.getNameOfClinic().equals(""))
                 spannableClinicNameString = new SpannableString(doctorObject.getNameOfClinic());
-                Pattern pattern = Pattern.compile(mSearchClinicNameString, Pattern.CASE_INSENSITIVE);
-                Matcher matcher = pattern.matcher(doctorObject.getNameOfClinic());
-                while (matcher.find()) {
-                    spannableClinicNameString.setSpan(new ForegroundColorSpan(
-                                    ContextCompat.getColor(mContext, R.color.tagColor)),
-                            0, 0 + mSearchString.length(),
-                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    holder.clinicName.setText(spannableClinicNameString);
-                }
-
-            } else {
-                holder.clinicName.setText(doctorObject.getNameOfClinic());
-            }*/
-
+            Pattern pattern = Pattern.compile(mSearchClinicNameString, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(doctorObject.getNameOfClinic());
+            while (matcher.find()) {
+                spannableClinicNameString.setSpan(new ForegroundColorSpan(
+                                ContextCompat.getColor(mContext, R.color.tagColor)),
+                        0, 0 + mSearchString.length(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                holder.clinicName.setText(spannableClinicNameString);
+            }
         }
      /*   if ((mSearchClinicNameString != null) && (!mSearchClinicNameString.isEmpty())) {
 
@@ -321,12 +318,15 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
                         if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase())) {
                             filteredList.add(doctorConnectModel);
-                        }else{
+                        } else {
+                            int i = 0;
                             for (String name :
                                     doctorConnectModel.getClinicName()) {
                                 if (name.toLowerCase().startsWith(charString.toLowerCase())) {
+                                    doctorConnectModel.setNameOfClinic(name);
+                                    doctorConnectModel.setAddressOfDoctor(doctorConnectModel.getDoctorAddress().get(i));
                                     filteredList.add(doctorConnectModel);
-                                    break;
+                                    i++;
                                 }
                             }
                         }

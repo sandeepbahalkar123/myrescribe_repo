@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         tools:text="8:00 AM"
+        android:padding="@dimen/dp4"
         android:id="@+id/showTime"
         android:textColor="@color/tagColor"
         android:textSize="@dimen/sp14"

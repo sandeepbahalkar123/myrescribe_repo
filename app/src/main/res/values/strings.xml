@@ -333,5 +333,18 @@
     <string name="sort">Sort by</string>
     <string name="choose_one_option">Choose one option</string>
     <string name="locations">Locations</string>
-
+    <string name="place_details">
+    <![CDATA[
+        <b>%1$s</b>
+        <br/>
+        <i>Place Id: %2$s</i>
+        <br/>
+        Address: %3$s
+        <br/>
+        Phone: %4$s
+        <br/>
+        Website: %5$s
+    ]]>
+    </string>
+    <string name="view_all">View All</string>
 </resources>

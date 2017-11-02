@@ -136,6 +136,11 @@
             android:label="@string/doctor_connect"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".ui.activities.book_appointment.BookAppointFindLocation"
+            android:label="@string/doctor_connect"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service android:name=".services.InvestigationNotificationService" />
         <service android:name=".services.AppointmentNotificationService" />
         <service android:name=".services.NotificationService" />

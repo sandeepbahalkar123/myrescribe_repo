@@ -27,12 +27,14 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
+import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.MapActivityShowDoctorLocation;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -201,7 +203,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         unbinder.unbind();
     }
 
-    @OnClick({R.id.locationImage, R.id.bookAppointmentButton})
+    @OnClick({R.id.locationImage, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -219,7 +221,30 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 intentObject.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
                 startActivity(intentObject);
                 break;
+            case R.id.viewAllClinicsOnMap: // on view-all location clicked
 
+                //-----Show all doc clinic on map, copied from BookAppointFilteredDoctorListFragment.java----
+                //TODO: NEED TO IMPLEMENT THIS
+                /*
+                ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
+                ArrayList<String> clinicNameList = mClickedDoctorObject.getClinicName();
+                for (int i = 0; i < clinicNameList.size(); i++) {
+
+                    DoctorList doctorListByClinic = new DoctorList();
+                    doctorListByClinic = mClickedDoctorObject;
+
+                    doctorListByClinic.setAddressOfDoctor(mClickedDoctorObject.getDoctorAddress());
+                    doctorListByClinic.setClinicName(mClickedDoctorObject.getClinicName());
+                    doctorListByClinic.setDoctorAddress(filterDataOnDocSpeciality().get(i).getDoctorAddress());
+                    doctorListByClinics.add(doctorListByClinic);
+
+                }
+                Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
+                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
+                intent.putExtra(getString(R.string.toolbarTitle), mSelectedSpeciality);
+                startActivity(intent);*/
+                //--------
+                break;
 
         }
     }

@@ -265,6 +265,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/dp10" />
 
+                            <TextView
+                                android:id="@+id/viewAllClinicsOnMap"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:text="@string/view_all" />
+
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/allTimeSlotListView"
                                 android:layout_width="match_parent"
@@ -274,6 +281,7 @@
                                 android:paddingBottom="@dimen/dp2"
                                 android:visibility="visible"
                                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -289,14 +297,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/bookAppointmentButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="@color/clickHere"
-                android:text="@string/book_appointment"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/bookAppointmentButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/clickHere"
+            android:text="@string/book_appointment"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
     </LinearLayout>
 </LinearLayout>

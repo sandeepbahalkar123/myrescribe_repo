@@ -257,7 +257,9 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             case R.id.title:
                 break;
             case R.id.locationTextView:
-                BookAppointDoctorListBaseActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
+                //    BookAppointDoctorListBaseActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
+                Intent start = new Intent(this, BookAppointFindLocation.class);
+                startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
         }
     }
@@ -427,9 +429,13 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     public void doOperationOnDrawer(boolean flag) {
+
         if (flag) { // for open
+            //  The drawer is unlocked.
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         } else {
+            //The drawer is locked closed. The user may not open it, though
+            // the app may open it programmatically.
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
     }

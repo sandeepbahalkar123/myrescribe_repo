@@ -90,7 +90,6 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         mContext = MapActivityPlotNearByDoctor.this;
         mIntent = getIntent();
         mUserSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-        mContext = MapActivityPlotNearByDoctor.this;
         mDoctorLists = this.getIntent().getParcelableArrayListExtra(getString(R.string.doctor_data));
         bookAppointmentBackButton.setOnClickListener(new View.OnClickListener() {
             @Override

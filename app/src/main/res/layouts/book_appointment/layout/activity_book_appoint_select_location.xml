@@ -29,6 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:text="Select Location"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp16"
                 android:visibility="visible"
@@ -41,7 +42,8 @@
                 android:layout_marginBottom="@dimen/dp8"
                 android:layout_marginEnd="@dimen/dp16"
                 android:layout_marginStart="@dimen/dp16"
-                android:layout_marginTop="@dimen/dp8">
+                android:layout_marginTop="@dimen/dp8"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -98,7 +100,34 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.rescribe.ui.customesViews.DelayAutoCompleteTextView
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp10"
+                android:layout_marginTop="@dimen/dp10">
+
+                <!-- <fragment
+                     android:id="@+id/autocomplete_fragment"
+                     android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content" />
+ -->
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/findLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp30"
+                    android:drawableLeft="@drawable/search_grey_icon"
+                    android:drawablePadding="@dimen/dp8"
+                    android:gravity="center|left"
+                    android:onClick="callPlaceAutocompleteActivityIntent"
+                    android:paddingLeft="@dimen/dp10"
+                    android:text="Start typing locations..."
+                    android:textColor="@color/Gray"
+                    android:textSize="@dimen/sp12"
+                    app:customFont="@string/roboto_bold" />
+            </android.support.v7.widget.CardView>
+            <!--<com.rescribe.ui.customesViews.DelayAutoCompleteTextView
                 android:id="@+id/geo_autocomplete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +149,7 @@
                 android:layout_marginEnd="12dp"
                 android:layout_marginRight="12dp"
                 android:src="@drawable/icon_text_field_clear_btn"
-                android:visibility="visible" />
+                android:visibility="visible" />-->
         </FrameLayout>
 
 

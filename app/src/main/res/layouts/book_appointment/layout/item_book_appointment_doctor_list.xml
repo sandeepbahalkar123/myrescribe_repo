@@ -134,7 +134,8 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/doctorType"
                             android:layout_toRightOf="@+id/thumbnail"
-                            android:text="Neuro Clinic"
+                            tools:text="Neuro Clinic"
+                            android:visibility="visible"
                             android:textColor="@color/black"
                             android:textSize="@dimen/sp15"
                             app:customFont="@string/roboto_bold" />

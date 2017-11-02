@@ -44,10 +44,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/dp8"
                     android:layout_marginBottom="@dimen/dp8"
+                    android:layout_marginEnd="@dimen/dp16"
                     android:layout_marginStart="@dimen/dp16"
-                    android:layout_marginEnd="@dimen/dp16">
+                    android:layout_marginTop="@dimen/dp8">
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -63,9 +63,9 @@
                             android:drawablePadding="@dimen/dp4"
                             android:drawableRight="@drawable/location_icon"
                             android:text="@string/location"
-                            app:customFont="@string/roboto_bold"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/sp12" />
+                            android:textSize="@dimen/sp12"
+                            app:customFont="@string/roboto_bold" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/showlocation"
@@ -75,9 +75,9 @@
                             android:layout_alignParentRight="true"
                             android:layout_gravity="center"
                             android:textColor="@color/white"
-                            app:customFont="@string/roboto_bold"
                             android:textSize="@dimen/sp12"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            app:customFont="@string/roboto_bold" />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>

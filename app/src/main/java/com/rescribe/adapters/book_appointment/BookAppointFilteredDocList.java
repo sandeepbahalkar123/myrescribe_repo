@@ -97,7 +97,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.token_no_background));
         }
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
-        holder.doctorAddress.setText(doctorObject.getAddressOfDoctor());
+        holder.doctorAddress.setText(doctorObject.getDoctorAddress().size()+mContext.getString(R.string.space)+mContext.getString(R.string.locations));
         holder.doctorFee.setText("" + doctorObject.getAmount());
         SpannableString content = new SpannableString(doctorObject.getDistance());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);

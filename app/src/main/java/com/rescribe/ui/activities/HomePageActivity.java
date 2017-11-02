@@ -42,6 +42,7 @@ import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.book_appointment.BookAppointFindLocation;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
@@ -416,9 +417,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
                     //TODO : added for testing purpose, remove it
                     //----------
-                    Intent popup = new Intent(getApplicationContext(), SettingActivity.class);
-                    //Intent popup = new Intent(getApplicationContext(), BookAppointFindLocation.class);
-                    startActivity(popup);
+                    //Intent popup = new Intent(getApplicationContext(), SettingActivity.class);
+                    //     Intent popup = new Intent(getApplicationContext(), BookAppointFindLocation.class);
+                    // startActivity(popup);
                     //----------
                 } else if (id.equalsIgnoreCase(getString(R.string.services))) {
                     DoctorDataHelper.getUserSelectedLocationInfo().clear();

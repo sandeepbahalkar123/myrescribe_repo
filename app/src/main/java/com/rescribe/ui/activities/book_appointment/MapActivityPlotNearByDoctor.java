@@ -90,7 +90,6 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         mContext = MapActivityPlotNearByDoctor.this;
         mIntent = getIntent();
         mUserSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-        mContext = MapActivityPlotNearByDoctor.this;
         mDoctorLists = this.getIntent().getParcelableArrayListExtra(getString(R.string.doctor_data));
         bookAppointmentBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,7 +218,6 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 doctorList.setDistance(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDistance());
                 doctorList.setDocId(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocId());
                 doctorList.setDocName(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocName());
-                doctorList.setAddressOfDoctor(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
                 doctorList.setDoctorImageUrl(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorImageUrl());
                 doctorList.setExperience(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getExperience());
                 doctorList.setFavourite(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getFavourite());
@@ -232,6 +230,10 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 doctorList.setLongitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
                 doctorList.setLatitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
                 doctorList.setTotalReview(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview());
+                doctorList.setAddressOfDoctor(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAddressOfDoctor());
+                doctorList.setDoctorAddress(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorAddress());
+                doctorList.setClinicName(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getClinicName());
+                doctorList.setNameOfClinic(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinic());
                 Intent intent = new Intent(MapActivityPlotNearByDoctor.this, ShowMoreInfoBaseActivity.class);
                 intent.putExtra(getString(R.string.toolbarTitle), title.getText().toString());
                 intent.putExtra(getString(R.string.doctor_data), doctorList);

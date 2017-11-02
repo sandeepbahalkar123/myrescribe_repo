@@ -56,6 +56,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     private static Bundle args;
 
     private DoctorDataHelper mDoctorDataHelper;
+    private ArrayList<DoctorList> doctorListByClinics;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -121,36 +122,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                     isDataListViewVisible(false);
                 } else {
                     isDataListViewVisible(true);
-                    ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
-                    for (int i = 0; i < doctorList.size(); i++) {
-                        if (doctorList.get(i).getClinicName().size() > 0) {
-                            for (int j = 0; j < doctorList.get(i).getClinicName().size(); j++) {
-                                DoctorList doctorListByClinic = new DoctorList();
-                                doctorListByClinic.setDocId(doctorList.get(i).getDocId());
-                                doctorListByClinic.setDocName(doctorList.get(i).getDocName());
-                                doctorListByClinic.setDoctorImageUrl(doctorList.get(i).getDoctorImageUrl());
-                                doctorListByClinic.setExperience(doctorList.get(i).getExperience());
-                                doctorListByClinic.setSpeciality(doctorList.get(i).getSpeciality());
-                                doctorListByClinic.setAmount(doctorList.get(i).getAmount());
-                                doctorListByClinic.setDistance(doctorList.get(i).getDistance());
-                                doctorListByClinic.setRecentlyVisited(doctorList.get(i).getRecentlyVisited());
-                                doctorListByClinic.setFavourite(doctorList.get(i).getFavourite());
-                                doctorListByClinic.setAboutDoctor(doctorList.get(i).getAboutDoctor());
-                                doctorListByClinic.setDegree(doctorList.get(i).getDegree());
-                                doctorListByClinic.setWaitingTime(doctorList.get(i).getWaitingTime());
-                                doctorListByClinic.setRating(doctorList.get(i).getRating());
-                                doctorListByClinic.setTokenNo(doctorList.get(i).getTokenNo());
-                                doctorListByClinic.setPracticePlaceInfos(doctorList.get(i).getPracticePlaceInfos());
-                                doctorListByClinic.setAvailableTimeSlots(doctorList.get(i).getAvailableTimeSlots());
-                                doctorListByClinic.setOpenToday(doctorList.get(i).getOpenToday());
-                                doctorListByClinic.setTotalReview(doctorList.get(i).getTotalReview());
-                                doctorListByClinic.setNameOfClinic(doctorList.get(i).getClinicName().get(j));
-                                doctorListByClinic.setAddressOfDoctor(doctorList.get(i).getDoctorAddress().get(j));
-                                doctorListByClinics.add(doctorListByClinic);
-                            }
-                        }
-                    }
-                    mReceivedList = doctorListByClinics;
+
+                    mReceivedList = doctorList;
                     if (filterDataOnDocSpeciality().size() == 0) {
                         isDataListViewVisible(false);
                         mLocationFab.setVisibility(View.GONE);
@@ -224,8 +197,39 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);
                 break;
             case R.id.leftFab:
+                doctorListByClinics = new ArrayList<>();
+                for (int i = 0; i < filterDataOnDocSpeciality().size(); i++) {
+                    if (filterDataOnDocSpeciality().get(i).getClinicName().size() > 0) {
+                        for (int j = 0; j < filterDataOnDocSpeciality().get(i).getClinicName().size(); j++) {
+                            DoctorList doctorListByClinic = new DoctorList();
+                            doctorListByClinic.setDocId(filterDataOnDocSpeciality().get(i).getDocId());
+                            doctorListByClinic.setDocName(filterDataOnDocSpeciality().get(i).getDocName());
+                            doctorListByClinic.setDoctorImageUrl(filterDataOnDocSpeciality().get(i).getDoctorImageUrl());
+                            doctorListByClinic.setExperience(filterDataOnDocSpeciality().get(i).getExperience());
+                            doctorListByClinic.setSpeciality(filterDataOnDocSpeciality().get(i).getSpeciality());
+                            doctorListByClinic.setAmount(filterDataOnDocSpeciality().get(i).getAmount());
+                            doctorListByClinic.setDistance(filterDataOnDocSpeciality().get(i).getDistance());
+                            doctorListByClinic.setRecentlyVisited(filterDataOnDocSpeciality().get(i).getRecentlyVisited());
+                            doctorListByClinic.setFavourite(filterDataOnDocSpeciality().get(i).getFavourite());
+                            doctorListByClinic.setAboutDoctor(filterDataOnDocSpeciality().get(i).getAboutDoctor());
+                            doctorListByClinic.setDegree(filterDataOnDocSpeciality().get(i).getDegree());
+                            doctorListByClinic.setWaitingTime(filterDataOnDocSpeciality().get(i).getWaitingTime());
+                            doctorListByClinic.setRating(filterDataOnDocSpeciality().get(i).getRating());
+                            doctorListByClinic.setTokenNo(filterDataOnDocSpeciality().get(i).getTokenNo());
+                            doctorListByClinic.setPracticePlaceInfos(filterDataOnDocSpeciality().get(i).getPracticePlaceInfos());
+                            doctorListByClinic.setAvailableTimeSlots(filterDataOnDocSpeciality().get(i).getAvailableTimeSlots());
+                            doctorListByClinic.setOpenToday(filterDataOnDocSpeciality().get(i).getOpenToday());
+                            doctorListByClinic.setTotalReview(filterDataOnDocSpeciality().get(i).getTotalReview());
+                            doctorListByClinic.setNameOfClinic(filterDataOnDocSpeciality().get(i).getClinicName().get(j));
+                            doctorListByClinic.setAddressOfDoctor(filterDataOnDocSpeciality().get(i).getDoctorAddress().get(j));
+                            doctorListByClinic.setClinicName(filterDataOnDocSpeciality().get(i).getClinicName());
+                            doctorListByClinic.setDoctorAddress(filterDataOnDocSpeciality().get(i).getDoctorAddress());
+                            doctorListByClinics.add(doctorListByClinic);
+                        }
+                    }
+                }
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
-                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), mReceivedList);
+                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
                 intent.putExtra(getString(R.string.toolbarTitle), mSelectedSpeciality);
                 startActivity(intent);
                 break;

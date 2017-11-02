@@ -255,7 +255,9 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             case R.id.title:
                 break;
             case R.id.locationTextView:
-                BookAppointDoctorListBaseActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
+                //    BookAppointDoctorListBaseActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
+                Intent start = new Intent(this, BookAppointFindLocation.class);
+                startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
         }
     }

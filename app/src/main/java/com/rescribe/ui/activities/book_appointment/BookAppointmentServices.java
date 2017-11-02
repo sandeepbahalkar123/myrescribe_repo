@@ -173,8 +173,10 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 onBackPressed();
                 break;
             case R.id.locationTextView:
-                new GoogleSettingsApi(this);
+                //  new GoogleSettingsApi(this);
 
+                Intent start = new Intent(this, BookAppointFindLocation.class);
+                startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
         }
     }

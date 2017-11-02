@@ -109,6 +109,11 @@
             android:label="@string/title_activity_preferences"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity"
+            android:configChanges="orientation|keyboard|screenSize"
+            android:label="@string/title_activity_preferences"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.activities.AppointmentActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/appointments"
@@ -128,6 +133,11 @@
         <activity
             android:name=".ui.activities.DoctorConnectActivity"
             android:configChanges="orientation|keyboard|screenSize"
+            android:label="@string/doctor_connect"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.activities.book_appointment.BookAppointFindLocation"
             android:label="@string/doctor_connect"
             android:theme="@style/AppTheme.NoActionBar" />
 

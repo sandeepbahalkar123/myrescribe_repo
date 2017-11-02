@@ -145,7 +145,8 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setAccentColor(getResources().getColor(R.color.tagColor));
-        datePickerDialog.setMaxDate(Calendar.getInstance());
+     //   datePickerDialog.setMinDate(System.currentTimeMillis() - 1000);
+
 
         // Places
 

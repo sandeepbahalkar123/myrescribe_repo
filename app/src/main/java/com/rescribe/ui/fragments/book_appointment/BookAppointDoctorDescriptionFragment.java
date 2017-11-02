@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,23 +27,23 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
+import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.MapActivityShowDoctorLocation;
+import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
 
 public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
-
 
     @BindView(R.id.profileImage)
     CircularImageView mProfileImage;
@@ -63,11 +65,19 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     LinearLayout mAllTimingListViewLayout;
     @BindView(R.id.allTimeSlotListView)
     RecyclerView mAllTimeSlotListView;
-    Unbinder unbinder;
     @BindView(R.id.locationImage)
     ImageView locationImage;
+    @BindView(R.id.addressOfClinic)
+    CustomTextView addressOfClinic;
+    @BindView(R.id.clinicName)
+    CustomTextView clinicName;
+    @BindView(R.id.aboutDoctor)
+    CustomTextView aboutDoctor;
+    @BindView(R.id.bookAppointmentButton)
+    AppCompatButton bookAppointmentButton;
     private View mRootView;
     private int mImageSize;
+    Unbinder unbinder;
     private DoctorList mClickedDoctorObject;
     public static Bundle args;
     private Context mContext;
@@ -80,7 +90,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.book_appointment_doctor_description, container, false);
+        mRootView = inflater.inflate(R.layout.doctor_description_layout, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         init();
         return mRootView;
@@ -127,29 +137,33 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 .load(mClickedDoctorObject.getDoctorImageUrl())
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(mProfileImage);
+        SpannableString content = new SpannableString(aboutDoctor.getText());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        aboutDoctor.setText(content);
+       /* clinicName.setText("" + mClickedDoctorObject.getNameOfClinic());
+        addressOfClinic.setText("" + mClickedDoctorObject.getAddressOfDoctor());*/
         mDocRating.setText("" + mClickedDoctorObject.getRating());
         mDoctorName.setText("" + mClickedDoctorObject.getDocName());
-        mDoctorSpecialization.setText("" + mClickedDoctorObject.getSpeciality());
+        mDoctorSpecialization.setText("" + mClickedDoctorObject.getDegree());
         mAboutDoctorDescription.setText("" + mClickedDoctorObject.getAboutDoctor());
         mDoctorExperience.setText("" + mClickedDoctorObject.getExperience() + getString(R.string.space) + getString(R.string.years_experience));
         mDoctorFees.setText(getString(R.string.fee) + getString(R.string.space) + getString(R.string.rupees) + mClickedDoctorObject.getAmount() + getString(R.string.space) + getString(R.string.slash) + getString(R.string.space) + getString(R.string.session));
-        List<String> morePracticePlaces = mClickedDoctorObject.getPracticePlaceInfos();
+       /* List<String> morePracticePlaces = mClickedDoctorObject.getPracticePlaceInfos();
         StringBuilder builder = new StringBuilder();
         for (String s :
                 morePracticePlaces) {
             builder.append(s + "/");
         }
-        String showMorePlaces = getString(R.string.also_practices) + getString(R.string.space) + builder.toString();
-        mDoctorPractices.setText(showMorePlaces.substring(0, showMorePlaces.length() - 1));
+        String showMorePlaces = getString(R.string.also_practices) + getString(R.string.space) + builder.toString();*/
+        // mDoctorPractices.setText(showMorePlaces.substring(0, showMorePlaces.length() - 1));
         if (mClickedDoctorObject.getAvailableTimeSlots().size() > 0) {
             int spanCount = 2; // 3 columns
             int spacing = 30; // 50px
             boolean includeEdge = false;
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), spanCount);
-            mAllTimeSlotListView.setLayoutManager(layoutManager);
-            mAllTimeSlotListView.setItemAnimator(new DefaultItemAnimator());
-            mAllTimeSlotListView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-            TimeSlotAdapter t = new TimeSlotAdapter(getActivity(), mClickedDoctorObject.getAvailableTimeSlots());
+            LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            mAllTimeSlotListView.setLayoutManager(linearlayoutManager);
+            mAllTimeSlotListView.setHasFixedSize(true);
+            TimeSlotAdapter t = new TimeSlotAdapter(getActivity(), mClickedDoctorObject.getClinicName());
             mAllTimeSlotListView.setAdapter(t);
         }
 
@@ -189,7 +203,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         unbinder.unbind();
     }
 
-    @OnClick({R.id.locationImage})
+    @OnClick({R.id.locationImage, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -200,6 +214,36 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 intent.putExtra(getString(R.string.location), userSelectedLocationInfo.get(getString(R.string.location)));
                 intent.putExtra(getString(R.string.address), mClickedDoctorObject.getAddressOfDoctor());
                 startActivity(intent);
+                break;
+            case R.id.bookAppointmentButton:
+                Intent intentObject = new Intent(getActivity(), SelectSlotToBookAppointmentBaseActivity.class);
+                intentObject.putExtra(getString(R.string.clicked_item_data), mClickedDoctorObject);
+                intentObject.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
+                startActivity(intentObject);
+                break;
+            case R.id.viewAllClinicsOnMap: // on view-all location clicked
+
+                //-----Show all doc clinic on map, copied from BookAppointFilteredDoctorListFragment.java----
+                //TODO: NEED TO IMPLEMENT THIS
+                /*
+                ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
+                ArrayList<String> clinicNameList = mClickedDoctorObject.getClinicName();
+                for (int i = 0; i < clinicNameList.size(); i++) {
+
+                    DoctorList doctorListByClinic = new DoctorList();
+                    doctorListByClinic = mClickedDoctorObject;
+
+                    doctorListByClinic.setAddressOfDoctor(mClickedDoctorObject.getDoctorAddress());
+                    doctorListByClinic.setClinicName(mClickedDoctorObject.getClinicName());
+                    doctorListByClinic.setDoctorAddress(filterDataOnDocSpeciality().get(i).getDoctorAddress());
+                    doctorListByClinics.add(doctorListByClinic);
+
+                }
+                Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
+                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
+                intent.putExtra(getString(R.string.toolbarTitle), mSelectedSpeciality);
+                startActivity(intent);*/
+                //--------
                 break;
 
         }

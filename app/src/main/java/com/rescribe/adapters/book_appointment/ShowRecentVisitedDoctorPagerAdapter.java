@@ -76,30 +76,12 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         final ImageView bookAppointmentButton = (ImageView) imageLayout
                 .findViewById(R.id.bookAppointmentButton);
 
-
-       /* final TextView kilometers = (TextView) imageLayout
-                .findViewById(R.id.kilometers);*/
-       /* final ImageView favoriteView = (ImageView) imageLayout
-                .findViewById(R.id.favoriteView);
-        final TextView recentVisitView = (TextView) imageLayout
-                .findViewById(R.id.recentVisitView);*/
         final CircularImageView imageURL = (CircularImageView) imageLayout
                 .findViewById(R.id.imageURL);
         final CustomTextView doctorAppointmentDate = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorAppointmentDate);
         final ImageView favorite = (ImageView) imageLayout
                 .findViewById(R.id.favorite);
-       /* if(!mDoctorLists.get(position).getRecentlyVisited()){
-            recentVisitView.setVisibility(View.INVISIBLE);
-        }else if(!mDoctorLists.get(position).getFavourite()){
-            favoriteView.setVisibility(View.INVISIBLE);
-        }else if(!mDoctorLists.get(position).getRecentlyVisited()&&!mDoctorLists.get(position).getFavourite()){
-           favoriteView.setVisibility(View.INVISIBLE);
-           recentVisitView.setVisibility(View.INVISIBLE);
-        }else{
-           favoriteView.setVisibility(View.VISIBLE);
-           recentVisitView.setVisibility(View.VISIBLE);
-        }*/
 
         if (mDoctorLists.get(position).getDoctorImageUrl().equals("")) {
             String doctorName = mDoctorLists.get(position).getDocName();
@@ -164,9 +146,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             doctorRating.setVisibility(View.VISIBLE);
             doctorRating.setText(""+mDoctorLists.get(position).getRating());
         }
-      /*  SpannableString content = new SpannableString(""+ mDoctorLists.get(position).getDistance());
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        kilometers.setText(content);*/
+
         view.addView(imageLayout, 0);
 
         return imageLayout;

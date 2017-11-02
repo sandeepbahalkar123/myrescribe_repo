@@ -157,11 +157,13 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         mCurrentlyLoadedFragment = RecentVisitDoctorFragment.newInstance(bundle);
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         //----split based on location------
-        String[] split = locationReceived.split(",");
-        if (split.length == 2) {
-            mDoctorDataHelper.doGetDoctorData(split[1], split[0], mComplaintsUserSearchFor);
-        } else {
-            mDoctorDataHelper.doGetDoctorData("", "", mComplaintsUserSearchFor);
+        if(locationReceived!=null) {
+            String[] split = locationReceived.split(",");
+            if (split.length == 2) {
+                mDoctorDataHelper.doGetDoctorData(split[1], split[0], mComplaintsUserSearchFor);
+            } else {
+                mDoctorDataHelper.doGetDoctorData("", "", mComplaintsUserSearchFor);
+            }
         }
         //----------
     }

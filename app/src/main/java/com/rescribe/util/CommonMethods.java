@@ -464,7 +464,7 @@ public class CommonMethods {
     public static int getCaseStudyIcons(String caseStudyName) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
-        int abbreviation = R.drawable.common_icon;
+        int abbreviation = R.drawable.commonicon;
         if (caseStudyName.equalsIgnoreCase("complaints"))
             abbreviation = R.drawable.complaints;
         else if (caseStudyName.equalsIgnoreCase("vitals"))
@@ -486,13 +486,13 @@ public class CommonMethods {
         else if (caseStudyName.equalsIgnoreCase("vaccination"))
             abbreviation = R.drawable.vaccination; // not found
         else if (caseStudyName.equalsIgnoreCase("generalprecautions"))
-            abbreviation = R.drawable.general_precautions; // not found
+            abbreviation = R.drawable.generalprecautions; // not found
         else if (caseStudyName.equalsIgnoreCase("preoperativeprecautions"))
-            abbreviation = R.drawable.pre_operative_precautions; // not found
+            abbreviation = R.drawable.preoperativeprecautions; // not found
         else if (caseStudyName.equalsIgnoreCase("postoperativecare"))
-            abbreviation = R.drawable.post_operative_care; // not found
+            abbreviation = R.drawable.postoperativecare; // not found
         else if (caseStudyName.equalsIgnoreCase("painscore"))
-            abbreviation = R.drawable.pain_score; // not found
+            abbreviation = R.drawable.painscore; // not found
         else if (caseStudyName.equalsIgnoreCase("exercise"))
             abbreviation = R.drawable.exercise; // not found
         else if (caseStudyName.equalsIgnoreCase("finding"))

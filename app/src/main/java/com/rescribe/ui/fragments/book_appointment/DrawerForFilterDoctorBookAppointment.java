@@ -494,41 +494,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         }
     }
 
-  /*  @OnClick({R.id.genderHeaderView, R.id.locationHeaderView, R.id.clinicFeesHeaderView, R.id.availabilityHeaderView})
-    public void onHeaderViewClicked(LinearLayout layout) {
-        switch (layout.getId()) {
-            case R.id.genderHeaderView:
-                if (mGenderContentView.getVisibility() == View.VISIBLE) {
-                    mGenderContentView.setVisibility(View.GONE);
-                } else {
-                    mGenderContentView.setVisibility(View.VISIBLE);
-                }
-                break;
-            case R.id.locationHeaderView:
-                if (mLocationContentView.getVisibility() == View.VISIBLE) {
-                    mLocationContentView.setVisibility(View.GONE);
-                } else {
-                    mLocationContentView.setVisibility(View.VISIBLE);
-                }
-                break;
-            case R.id.clinicFeesHeaderView:
-                if (mClinicFeesContentView.getVisibility() == View.VISIBLE) {
-                    mClinicFeesContentView.setVisibility(View.GONE);
-                } else {
-                    mClinicFeesContentView.setVisibility(View.VISIBLE);
-                }
-                break;
-            case R.id.availabilityHeaderView:
-                if (mAvailabilityContentView.getVisibility() == View.VISIBLE) {
-                    mAvailabilityContentView.setVisibility(View.GONE);
-                } else {
-                    mAvailabilityContentView.setVisibility(View.VISIBLE);
-                }
-                break;
-        }
-    }*/
-
-
     public Bitmap setThumbValue(View view, String valueToSet) {
         TextView tvRightProgressValue = (TextView) view.findViewById(R.id.tvProgress);
         Bitmap b = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);

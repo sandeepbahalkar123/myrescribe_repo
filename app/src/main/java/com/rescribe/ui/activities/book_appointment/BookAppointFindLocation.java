@@ -4,14 +4,15 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.content.IntentSender;
 import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -21,31 +22,42 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.rescribe.R;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-
+import com.rescribe.util.LocationUtil.PermissionUtils;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class BookAppointFindLocation extends AppCompatActivity implements PlaceSelectionListener ,LocationListener{
+public class BookAppointFindLocation extends AppCompatActivity implements PlaceSelectionListener ,GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,ActivityCompat.OnRequestPermissionsResultCallback,
+        PermissionUtils.PermissionResultCallback {
 
     public static final String TAG = "BookAppointFindLocation";
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 10;
     @BindView(R.id.bookAppointmentToolbar)
     ImageView bookAppointmentToolbar;
     @BindView(R.id.title)
@@ -57,26 +69,25 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     @BindView(R.id.findLocation)
     CustomTextView findLocation;
     private Context mContext;
-    boolean isGPSEnabled = false;
 
-    // flag for network status
-    boolean isNetworkEnabled = false;
+    private final static int PLAY_SERVICES_REQUEST = 1000;
+    private final static int REQUEST_CHECK_SETTINGS = 2000;
 
-    // flag for GPS status
-    boolean canGetLocation = false;
+    private Location mLastLocation;
 
-    Location location = null; // location
-    double latitude; // latitude
-    double longitude; // longitude
+    // Google client to interact with Google API
 
-    // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private GoogleApiClient mGoogleApiClient;
 
-    // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+    double latitude;
+    double longitude;
 
-    // Declaring a Location Manager
-    protected LocationManager locationManager;
+    // list of permissions
+
+    ArrayList<String> permissions=new ArrayList<>();
+    PermissionUtils permissionUtils;
+
+    boolean isPermissionGranted;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,12 +95,24 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         setContentView(R.layout.activity_book_appoint_select_location);
         ButterKnife.bind(this);
         mContext = BookAppointFindLocation.this;
+        permissionUtils=new PermissionUtils(BookAppointFindLocation.this);
+
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        permissionUtils.check_permission(permissions,"Need GPS permission for getting your location",1);
+
         findViewById(R.id.bookAppointmentToolbar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        if (checkPlayServices()) {
+
+            // Building the GoogleApi client
+            buildGoogleApiClient();
+        }
         /*// Retrieve the PlaceAutocompleteFragment.
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.autocomplete_fragment);
@@ -156,6 +179,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
         super.onActivityResult(requestCode, resultCode, data);
         //autocompleteFragment.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
@@ -173,6 +197,12 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
                 setResult(Activity.RESULT_CANCELED, data);
                 finish();
             }
+        }else if(requestCode==REQUEST_CHECK_SETTINGS){
+            if (resultCode == RESULT_OK) {
+                getLocation();
+            }else if(requestCode==RESULT_CANCELED){
+
+            }
         }
     }
 
@@ -182,85 +212,40 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
             case R.id.bookAppointmentToolbar:
                 break;
             case R.id.detectLocation:
-              /*  LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                // get the last know location from your location manager.
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
+                getLocation();
+
+                if (mLastLocation != null) {
+                    latitude = mLastLocation.getLatitude();
+                    longitude = mLastLocation.getLongitude();
+                  detectLocation.setText(""+getAddress(BookAppointFindLocation.this,latitude,longitude));
+
+                } else {
+
+
+                   // showToast("Couldn't get the location. Make sure location is enabled on the device");
                 }
-                Location location = locationManager.get(LocationManager.GPS_PROVIDER);
-                // now get the lat/lon from the location and do something with it.
-                String address = getAddress(BookAppointFindLocation.this, location.getLatitude(), location.getLongitude());
-                detectLocation.setText("" + address);*/
+
                 break;
         }
     }
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void getLocation() {
 
-    /*public Location getLocation() {
+        if (isPermissionGranted) {
 
-        try {
-            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
-
-            // getting GPS status
-            isGPSEnabled = locationManager
-                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-            // getting network status
-            isNetworkEnabled = locationManager
-                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-            if (!isGPSEnabled && !isNetworkEnabled) {
-                // no network provider is enabled
-            } else {
-                this.canGetLocation = true;
-                if (isNetworkEnabled) {
-                    locationManager.requestLocationUpdates(
-                            LocationManager.NETWORK_PROVIDER,
-                            MIN_TIME_BW_UPDATES,
-                            MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    Log.d("Network", "Network Enabled");
-                    if (locationManager != null) {
-                        location = locationManager
-                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        if (location != null) {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
-                        }
-                    }
-                }
-                // if GPS Enabled get lat/long using GPS Services
-                if (isGPSEnabled) {
-                    if (location == null) {
-                        locationManager.requestLocationUpdates(
-                                LocationManager.GPS_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        Log.d("GPS", "GPS Enabled");
-                        if (locationManager != null) {
-                            location = locationManager
-                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            if (location != null) {
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                            }
-                        }
-                    }
-                }
+            try
+            {
+                mLastLocation = LocationServices.FusedLocationApi
+                        .getLastLocation(mGoogleApiClient);
+            }
+            catch (SecurityException e)
+            {
+                e.printStackTrace();
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
-        return location;
-    }*/
+    }
+
 
     public static String getAddress(Context context, double LATITUDE, double LONGITUDE) {
         String city = "";
@@ -292,8 +277,133 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         return city + "," + area;
     }
 
+
     @Override
-    public void onLocationChanged(Location location) {
+    public void onConnected(@Nullable Bundle bundle) {
+        getLocation();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = "
+                + connectionResult.getErrorCode());
+    }
+
+    @Override
+    public void PermissionGranted(int request_code) {
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        // redirects to utils
+        permissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
+
+    }
+
+
+    @Override
+    public void PartialPermissionGranted(int request_code, ArrayList<String> granted_permissions) {
+
+    }
+
+    @Override
+    public void PermissionDenied(int request_code) {
+
+    }
+
+    @Override
+    public void NeverAskAgain(int request_code) {
+
+    }
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
+
+        mGoogleApiClient.connect();
+
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);
+
+        PendingResult<LocationSettingsResult> result =
+                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
+
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(LocationSettingsResult locationSettingsResult) {
+
+                final Status status = locationSettingsResult.getStatus();
+
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        // All location settings are satisfied. The client can initialize location requests here
+                        getLocation();
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        try {
+                            // Show the dialog by calling startResolutionForResult(),
+                            // and check the result in onActivityResult().
+                            status.startResolutionForResult(BookAppointFindLocation.this, REQUEST_CHECK_SETTINGS);
+
+                        } catch (IntentSender.SendIntentException e) {
+                            // Ignore the error.
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        break;
+                }
+            }
+        });
+
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkPlayServices();
+    }
+
+
+
+
+    /**
+     * Method to verify google play services on the device
+     * */
+
+    private boolean checkPlayServices() {
+
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+
+        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(this);
+
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (googleApiAvailability.isUserResolvableError(resultCode)) {
+                googleApiAvailability.getErrorDialog(this,resultCode,
+                        PLAY_SERVICES_REQUEST).show();
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "This device is not supported.", Toast.LENGTH_LONG)
+                        .show();
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+
+
 }

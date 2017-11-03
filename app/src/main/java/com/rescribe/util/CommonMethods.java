@@ -506,7 +506,7 @@ public class CommonMethods {
     public static int getVitalIcons(String vitalDetailName) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
-        int abbreviation = R.drawable.ellipse_2;
+        int abbreviation = R.drawable.defaulticon;
         if (vitalDetailName.equalsIgnoreCase("bp"))
             abbreviation = R.drawable.bp;
         else if (vitalDetailName.equalsIgnoreCase("weight"))
@@ -555,29 +555,6 @@ public class CommonMethods {
         return abbreviation;
     }
 
-    public static int getServiceListItems(String servicName) {
-
-        // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
-        int abbreviation = R.drawable.ellipse_2;
-        if (servicName.equalsIgnoreCase("Doctor"))
-            abbreviation = R.drawable.doctor_dashboard;
-        else if (servicName.equalsIgnoreCase("Dr. Conenct"))
-            abbreviation = R.drawable.dr_connect;
-        else if (servicName.equalsIgnoreCase("My Records"))
-            abbreviation = R.drawable.my_records;
-        else if (servicName.equalsIgnoreCase("Pharmacy"))
-            abbreviation = R.drawable.pharmacy;
-        else if (servicName.equalsIgnoreCase("Diagnostic Center"))
-            abbreviation = R.drawable.diagnostic_center;
-        else if (servicName.equalsIgnoreCase("Hospital"))
-            abbreviation = R.drawable.hospital;
-        else if (servicName.equalsIgnoreCase("Blood Bank"))
-            abbreviation = R.drawable.blood_bank;
-        else if (servicName.equalsIgnoreCase("Ambulance"))
-            abbreviation = R.drawable.ambulance_dashboard;
-
-        return abbreviation;
-    }
 
     public static int getDoctorSpecialistIcons(String caseStudyName, Context mContext) {
 
@@ -730,17 +707,6 @@ public class CommonMethods {
         return filePath.substring(filePath.lastIndexOf(".") + 1);
     }
 
-    public static int getDiagnosticCentreImages(String diagnosticCentreName) {
-        int abbreviation = R.drawable.gynecologist;
-        if (diagnosticCentreName.equalsIgnoreCase("Metropolis"))
-            abbreviation = R.drawable.health_offers_image_1;
-        else if (diagnosticCentreName.equalsIgnoreCase("Apollo Diagnostics"))
-            abbreviation = R.drawable.health_offers_image_2;
-        else if (diagnosticCentreName.equalsIgnoreCase("Thyrocare"))
-            abbreviation = R.drawable.health_offers_image_3;
-
-        return abbreviation;
-    }
     public static String getFileNameFromPath(String filePath) {
         return filePath.substring(filePath.lastIndexOf("/") + 1);
     }

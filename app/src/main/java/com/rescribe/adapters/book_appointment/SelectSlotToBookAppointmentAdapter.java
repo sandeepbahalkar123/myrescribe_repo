@@ -61,10 +61,6 @@ public class SelectSlotToBookAppointmentAdapter extends BaseExpandableListAdapte
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 4);
         slotRecyclerView.setLayoutManager(layoutManager);
         slotRecyclerView.setItemAnimator(new DefaultItemAnimator());
-       /* int spanCount = 4; // 3 columns
-        int spacing = 5; // 50px
-        boolean includeEdge = true;
-        slotRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));*/
         slotRecyclerView.setAdapter(mShowTimingsBookAppointmentDoctor);
 
         return convertView;

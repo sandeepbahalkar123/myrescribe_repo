@@ -27,15 +27,13 @@ import butterknife.ButterKnife;
 
 public class FilterSelectLocationsAdapter extends RecyclerView.Adapter<FilterSelectLocationsAdapter.ListViewHolder> {
 
-    private Fragment mFragment;
-    private Context mContext;
+
     private ArrayList<LocationList> mDataList;
     // private HashSet<String> mSelectedLocation = new HashSet<>();
     private SparseBooleanArray mSelectedLocation = new SparseBooleanArray();
 
     public FilterSelectLocationsAdapter(Context mContext, ArrayList<LocationList> dataList) {
         this.mDataList = dataList;
-        this.mContext = mContext;
     }
 
     @Override
@@ -81,9 +79,6 @@ public class FilterSelectLocationsAdapter extends RecyclerView.Adapter<FilterSel
         }
     }
 
-    public interface OnFilterDocListClickListener {
-        void onClickOfDoctorRowItem(Bundle bundleData);
-    }
 
     public HashSet<String> getSelectedLocation() {
         HashSet<String> temp = new HashSet<>();

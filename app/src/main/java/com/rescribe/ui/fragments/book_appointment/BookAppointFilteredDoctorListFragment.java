@@ -187,7 +187,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         }
     }
 
-
     @OnClick({R.id.rightFab, R.id.leftFab})
     public void onViewClicked(View view) {
         BookAppointDoctorListBaseActivity activity;
@@ -197,33 +196,16 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);
                 break;
             case R.id.leftFab:
+                //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
                 doctorListByClinics = new ArrayList<>();
                 for (int i = 0; i < filterDataOnDocSpeciality().size(); i++) {
                     if (filterDataOnDocSpeciality().get(i).getClinicName().size() > 0) {
+                        DoctorList doctorList = filterDataOnDocSpeciality().get(i);
                         for (int j = 0; j < filterDataOnDocSpeciality().get(i).getClinicName().size(); j++) {
                             DoctorList doctorListByClinic = new DoctorList();
-                            doctorListByClinic.setDocId(filterDataOnDocSpeciality().get(i).getDocId());
-                            doctorListByClinic.setDocName(filterDataOnDocSpeciality().get(i).getDocName());
-                            doctorListByClinic.setDoctorImageUrl(filterDataOnDocSpeciality().get(i).getDoctorImageUrl());
-                            doctorListByClinic.setExperience(filterDataOnDocSpeciality().get(i).getExperience());
-                            doctorListByClinic.setSpeciality(filterDataOnDocSpeciality().get(i).getSpeciality());
-                            doctorListByClinic.setAmount(filterDataOnDocSpeciality().get(i).getAmount());
-                            doctorListByClinic.setDistance(filterDataOnDocSpeciality().get(i).getDistance());
-                            doctorListByClinic.setRecentlyVisited(filterDataOnDocSpeciality().get(i).getRecentlyVisited());
-                            doctorListByClinic.setFavourite(filterDataOnDocSpeciality().get(i).getFavourite());
-                            doctorListByClinic.setAboutDoctor(filterDataOnDocSpeciality().get(i).getAboutDoctor());
-                            doctorListByClinic.setDegree(filterDataOnDocSpeciality().get(i).getDegree());
-                            doctorListByClinic.setWaitingTime(filterDataOnDocSpeciality().get(i).getWaitingTime());
-                            doctorListByClinic.setRating(filterDataOnDocSpeciality().get(i).getRating());
-                            doctorListByClinic.setTokenNo(filterDataOnDocSpeciality().get(i).getTokenNo());
-                            doctorListByClinic.setPracticePlaceInfos(filterDataOnDocSpeciality().get(i).getPracticePlaceInfos());
-                            doctorListByClinic.setAvailableTimeSlots(filterDataOnDocSpeciality().get(i).getAvailableTimeSlots());
-                            doctorListByClinic.setOpenToday(filterDataOnDocSpeciality().get(i).getOpenToday());
-                            doctorListByClinic.setTotalReview(filterDataOnDocSpeciality().get(i).getTotalReview());
-                            doctorListByClinic.setNameOfClinic(filterDataOnDocSpeciality().get(i).getClinicName().get(j));
-                            doctorListByClinic.setAddressOfDoctor(filterDataOnDocSpeciality().get(i).getDoctorAddress().get(j));
-                            doctorListByClinic.setClinicName(filterDataOnDocSpeciality().get(i).getClinicName());
-                            doctorListByClinic.setDoctorAddress(filterDataOnDocSpeciality().get(i).getDoctorAddress());
+                            doctorListByClinic = doctorList;
+                            doctorListByClinic.setNameOfClinicString(filterDataOnDocSpeciality().get(i).getClinicName().get(j));
+                            doctorListByClinic.setAddressOfDoctorString(filterDataOnDocSpeciality().get(i).getDoctorAddress().get(j));
                             doctorListByClinics.add(doctorListByClinic);
                         }
                     }
@@ -244,7 +226,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
             activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
         } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {
             DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
-
             boolean status = mClickedDoctorObject.getFavourite() ? false : true;
             mDoctorDataHelper.setFavouriteDoctor(status, "" + mClickedDoctorObject.getDocId());
         }
@@ -312,5 +293,4 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         }
         return temp;
     }
-
 }

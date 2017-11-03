@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -37,23 +35,19 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppointFilteredDocList.ListViewHolder> implements Filterable {
+public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppointFilteredDocList.ListViewHolder> {
 
-    private Fragment mFragment;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
     private int mImageSize;
-    private ArrayList<DoctorList> mArrayList;
     private OnFilterDocListClickListener mOnFilterDocListClickListener;
-    private String mSearchString;
+
     private ColorGenerator mColorGenerator;
 
     public BookAppointFilteredDocList(Context mContext, ArrayList<DoctorList> dataList, OnFilterDocListClickListener mOnFilterDocListClickListener, Fragment m) {
         this.mDataList = dataList;
         this.mContext = mContext;
-        this.mArrayList = dataList;
         this.mOnFilterDocListClickListener = mOnFilterDocListClickListener;
-        this.mFragment = m;
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
     }
@@ -78,8 +72,6 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     public void onBindViewHolder(ListViewHolder holder, int position) {
         final DoctorList doctorObject = mDataList.get(position);
 
-        // holder.waitingTime.setText("" + mContext.getString(R.string.waiting_for) + mContext.getString(R.string.space) + doctorObject.getWaitingTime());
-        //holder.tokenNo.setText(mContext.getString(R.string.token_no_available));
         holder.doctorName.setText(doctorObject.getDocName());
         holder.aboutDoctor.setText(doctorObject.getDegree());
         if (doctorObject.getRating().equals("NA")) {
@@ -97,7 +89,14 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.token_no_background));
         }
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
-        holder.doctorAddress.setText(doctorObject.getDoctorAddress().size()+mContext.getString(R.string.space)+mContext.getString(R.string.locations));
+        if(doctorObject.getClinicName().size()==1){
+            holder.clinicName.setVisibility(View.VISIBLE);
+            holder.clinicName.setText(doctorObject.getClinicName().get(0));
+            holder.doctorAddress.setText(doctorObject.getDoctorAddress().get(0));
+        }else {
+            holder.clinicName.setVisibility(View.GONE);
+            holder.doctorAddress.setText(doctorObject.getDoctorAddress().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+        }
         holder.doctorFee.setText("" + doctorObject.getAmount());
         SpannableString content = new SpannableString(doctorObject.getDistance());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
@@ -151,7 +150,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             holder.favoriteView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.result_line_heart_fav));
         }
 
-        holder.clinicName.setText(doctorObject.getNameOfClinic());
+        holder.clinicName.setText(doctorObject.getNameOfClinicString());
 
         holder.favoriteView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,8 +188,6 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         CustomTextView aboutDoctor;
         @BindView(R.id.clinicName)
         CustomTextView clinicName;
-        /* @BindView(R.id.waitingTime)
-          CustomTextView waitingTime;*/
         @BindView(R.id.tokenNo)
         ImageView tokenNo;
         @BindView(R.id.favoriteView)
@@ -213,56 +210,4 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         void onClickOfDoctorRowItem(Bundle bundleData);
     }
 
-    @Override
-    public Filter getFilter() {
-
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-
-                String charString = charSequence.toString();
-                mSearchString = charString;
-                if (charString.isEmpty()) {
-
-                    mDataList = mArrayList;
-                } else {
-
-                    ArrayList<DoctorList> filteredList = new ArrayList<>();
-
-                    for (DoctorList doctorConnectModel : mArrayList) {
-
-                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase())) {
-                            filteredList.add(doctorConnectModel);
-                        } else {
-                            for (String name :
-                                    doctorConnectModel.getClinicName()) {
-                                if (name.toLowerCase().startsWith(charString.toLowerCase())) {
-                                    filteredList.add(doctorConnectModel);
-                                    break;
-                                }
-                            }
-                        }
-
-                    }
-                    mDataList = filteredList;
-                }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = mDataList;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mDataList = (ArrayList<DoctorList>) filterResults.values;
-                if (mDataList.size() == 0) {
-                    RecentVisitDoctorFragment temp = (RecentVisitDoctorFragment) mFragment;
-                    temp.isDataListViewVisible(true, true);
-                } else {
-                    RecentVisitDoctorFragment temp = (RecentVisitDoctorFragment) mFragment;
-                    temp.isDataListViewVisible(true, false);
-                }
-                notifyDataSetChanged();
-            }
-        };
-    }
 }

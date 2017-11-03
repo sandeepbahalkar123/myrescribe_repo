@@ -80,7 +80,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     Unbinder unbinder;
     private DoctorList mClickedDoctorObject;
     public static Bundle args;
-    private Context mContext;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -90,7 +89,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.doctor_description_layout, container, false);
+        mRootView = inflater.inflate(R.layout.book_appointment_doctor_description_layout, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         init();
         return mRootView;
@@ -140,37 +139,30 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         SpannableString content = new SpannableString(aboutDoctor.getText());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         aboutDoctor.setText(content);
-        clinicName.setText("" + mClickedDoctorObject.getNameOfClinic());
+
+        clinicName.setText("" + mClickedDoctorObject.getNameOfClinicString());
       /*  addressOfClinic.setText("" + mClickedDoctorObject.getAddressOfDoctor());*/
+
         mDocRating.setText("" + mClickedDoctorObject.getRating());
         mDoctorName.setText("" + mClickedDoctorObject.getDocName());
         mDoctorSpecialization.setText("" + mClickedDoctorObject.getDegree());
         mAboutDoctorDescription.setText("" + mClickedDoctorObject.getAboutDoctor());
         mDoctorExperience.setText("" + mClickedDoctorObject.getExperience() + getString(R.string.space) + getString(R.string.years_experience));
         mDoctorFees.setText(getString(R.string.fee) + getString(R.string.space) + getString(R.string.rupees) + mClickedDoctorObject.getAmount() + getString(R.string.space) + getString(R.string.slash) + getString(R.string.space) + getString(R.string.session));
-       /* List<String> morePracticePlaces = mClickedDoctorObject.getPracticePlaceInfos();
-        StringBuilder builder = new StringBuilder();
-        for (String s :
-                morePracticePlaces) {
-            builder.append(s + "/");
-        }
-        String showMorePlaces = getString(R.string.also_practices) + getString(R.string.space) + builder.toString();*/
-        // mDoctorPractices.setText(showMorePlaces.substring(0, showMorePlaces.length() - 1));
-        if (mClickedDoctorObject.getAvailableTimeSlots().size() > 0) {
-            int spanCount = 2; // 3 columns
-            int spacing = 30; // 50px
-            boolean includeEdge = false;
-            LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-            mAllTimeSlotListView.setLayoutManager(linearlayoutManager);
-            mAllTimeSlotListView.setHasFixedSize(true);
-            TimeSlotAdapter t = new TimeSlotAdapter(getActivity(), mClickedDoctorObject.getClinicName());
-            mAllTimeSlotListView.setAdapter(t);
-        }
+
+        int spanCount = 2; // 3 columns
+        int spacing = 30; // 50px
+        boolean includeEdge = false;
+        LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        mAllTimeSlotListView.setLayoutManager(linearlayoutManager);
+        mAllTimeSlotListView.setHasFixedSize(true);
+        TimeSlotAdapter t = new TimeSlotAdapter(getActivity(), mClickedDoctorObject.getClinicName());
+        mAllTimeSlotListView.setAdapter(t);
 
         //requestOptions.placeholder(R.drawable.layer_12);
-        if (!mClickedDoctorObject.getAddressOfDoctor().isEmpty()) {
+        if (!mClickedDoctorObject.getAddressOfDoctorString().isEmpty()) {
             Glide.with(getActivity())
-                    .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mClickedDoctorObject.getAddressOfDoctor() + "&markers=color:red%7Clabel:C%7C" + mClickedDoctorObject.getAddressOfDoctor() + "&zoom=12&size=640x250")
+                    .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mClickedDoctorObject.getAddressOfDoctorString() + "&markers=color:red%7Clabel:C%7C" + mClickedDoctorObject.getAddressOfDoctorString() + "&zoom=12&size=640x250")
                     .into(locationImage);
         }
 
@@ -212,7 +204,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 Intent intent = new Intent(getActivity(), MapActivityShowDoctorLocation.class);
                 intent.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
                 intent.putExtra(getString(R.string.location), userSelectedLocationInfo.get(getString(R.string.location)));
-                intent.putExtra(getString(R.string.address), mClickedDoctorObject.getAddressOfDoctor());
+                intent.putExtra(getString(R.string.address), mClickedDoctorObject.getAddressOfDoctorString());
                 startActivity(intent);
                 break;
             case R.id.bookAppointmentButton:
@@ -222,30 +214,23 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 startActivity(intentObject);
                 break;
             case R.id.viewAllClinicsOnMap: // on view-all location clicked
-
                 //-----Show all doc clinic on map, copied from BookAppointFilteredDoctorListFragment.java----
-                //TODO: NEED TO IMPLEMENT THIS
-                /*
+                //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
                 ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
                 ArrayList<String> clinicNameList = mClickedDoctorObject.getClinicName();
                 for (int i = 0; i < clinicNameList.size(); i++) {
-
                     DoctorList doctorListByClinic = new DoctorList();
                     doctorListByClinic = mClickedDoctorObject;
-
-                    doctorListByClinic.setAddressOfDoctor(mClickedDoctorObject.getDoctorAddress());
-                    doctorListByClinic.setClinicName(mClickedDoctorObject.getClinicName());
-                    doctorListByClinic.setDoctorAddress(filterDataOnDocSpeciality().get(i).getDoctorAddress());
+                    doctorListByClinic.setAddressOfDoctorString(mClickedDoctorObject.getDoctorAddress().get(i));
+                    doctorListByClinic.setNameOfClinicString(clinicNameList.get(i));
                     doctorListByClinics.add(doctorListByClinic);
-
                 }
-                Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
-                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-                intent.putExtra(getString(R.string.toolbarTitle), mSelectedSpeciality);
-                startActivity(intent);*/
+                Intent intentObjectMap = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
+                intentObjectMap.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
+                intentObjectMap.putExtra(getString(R.string.toolbarTitle), "");
+                startActivity(intentObjectMap);
                 //--------
                 break;
-
         }
     }
 

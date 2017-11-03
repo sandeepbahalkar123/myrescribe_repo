@@ -32,10 +32,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.ui.activities.HomePageActivity;
-import com.rescribe.ui.activities.LoginSignUpActivity;
-import com.rescribe.ui.activities.SplashScreenActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -115,7 +111,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         mMap.setOnMapClickListener(this);
         for (int index = 0; index < mDoctorLists.size(); index++) {
             DoctorList doctorList = mDoctorLists.get(index);
-            p1 = getLocationFromAddress(doctorList.getAddressOfDoctor());
+            p1 = getLocationFromAddress(doctorList.getAddressOfDoctorString());
             if (p1 != null) {
                 LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
                 doctorList.setLatitude(p1.getLatitude());
@@ -210,7 +206,8 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
             public void onClick(View v) {
 
                 DoctorList doctorList = new DoctorList();
-                doctorList.setNameOfClinic(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinic());
+
+                doctorList.setNameOfClinicString(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinicString());
                 doctorList.setAboutDoctor(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
                 doctorList.setAmount(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAmount());
                 doctorList.setAvailableTimeSlots(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAvailableTimeSlots());
@@ -230,10 +227,10 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 doctorList.setLongitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
                 doctorList.setLatitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
                 doctorList.setTotalReview(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview());
-                doctorList.setAddressOfDoctor(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAddressOfDoctor());
+                doctorList.setAddressOfDoctorString(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAddressOfDoctorString());
                 doctorList.setDoctorAddress(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorAddress());
                 doctorList.setClinicName(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getClinicName());
-                doctorList.setNameOfClinic(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinic());
+                doctorList.setNameOfClinicString(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinicString());
                 Intent intent = new Intent(MapActivityPlotNearByDoctor.this, ShowMoreInfoBaseActivity.class);
                 intent.putExtra(getString(R.string.toolbarTitle), title.getText().toString());
                 intent.putExtra(getString(R.string.doctor_data), doctorList);

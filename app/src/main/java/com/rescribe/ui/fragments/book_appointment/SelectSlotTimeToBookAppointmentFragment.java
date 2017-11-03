@@ -27,6 +27,7 @@ import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActi
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.Calendar;
 
@@ -131,10 +132,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setAccentColor(getResources().getColor(R.color.tagColor));
-        datePickerDialog.setMaxDate(Calendar.getInstance());
-
-
-
+        datePickerDialog.setMinDate(Calendar.getInstance());
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 10);
+        datePickerDialog.setMaxDate(calendar);
     }
 
     private void setColumnNumber(Context context, int columnNum) {
@@ -217,6 +218,11 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     @Override
     public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-        selectDateTime.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+        String dateConverted = ""+dayOfMonth;
+        if(dayOfMonth<10){
+            dateConverted = "0"+dayOfMonth;
+        }
+        selectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY,dateConverted + "-" + (monthOfYear + 1) + "-"+year)+","+getString(R.string.space)+CommonMethods.getFormattedDate(dateConverted + "-" + (monthOfYear + 1) + "-"+year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
     }
 }

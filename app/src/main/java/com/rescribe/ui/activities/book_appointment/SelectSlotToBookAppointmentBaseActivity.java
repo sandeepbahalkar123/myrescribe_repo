@@ -43,7 +43,7 @@ public class SelectSlotToBookAppointmentBaseActivity  extends AppCompatActivity 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_appoint_doc_base_list);
+        setContentView(R.layout.select_slot_book_app_layout);
         ButterKnife.bind(this);
         initialize();
 

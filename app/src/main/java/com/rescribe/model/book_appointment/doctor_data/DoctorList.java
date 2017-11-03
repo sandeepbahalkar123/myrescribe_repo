@@ -2,14 +2,12 @@
 package com.rescribe.model.book_appointment.doctor_data;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.rescribe.interfaces.CustomResponse;
 
 public class DoctorList implements Parcelable {
 
@@ -83,8 +81,9 @@ public class DoctorList implements Parcelable {
     private double latitude = 0.0;
     private double longitude = 0.0;
 
-    private String nameOfClinic = "" ;
-    private String addressOfDoctor = "";
+    //this parameters are used to sort list by clinicName and doctorName as per functionality
+    private String nameOfClinicString = "" ;
+    private String addressOfDoctorString = "";
     /*  @SerializedName("reviewList")
     @Expose
     private ArrayList<ReviewList> reviewList = null;*/
@@ -113,8 +112,8 @@ public class DoctorList implements Parcelable {
             instance.rating = ((String) in.readValue((String.class.getClassLoader())));
             instance.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.tokenNo = ((String) in.readValue((String.class.getClassLoader())));
-            instance.nameOfClinic = ((String) in.readValue((String.class.getClassLoader())));
-            instance.addressOfDoctor = ((String) in.readValue((String.class.getClassLoader())));
+            instance.nameOfClinicString = ((String) in.readValue((String.class.getClassLoader())));
+            instance.addressOfDoctorString = ((String) in.readValue((String.class.getClassLoader())));
             in.readList(instance.PracticePlaceInfos, (PracticePlaceInfo.class.getClassLoader()));
             instance.openToday = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
@@ -129,20 +128,20 @@ public class DoctorList implements Parcelable {
         }
 
     };
-    public String getNameOfClinic() {
-        return nameOfClinic;
+    public String getNameOfClinicString() {
+        return nameOfClinicString;
     }
 
-    public void setNameOfClinic(String nameOfClinic) {
-        this.nameOfClinic = nameOfClinic;
+    public void setNameOfClinicString(String nameOfClinicString) {
+        this.nameOfClinicString = nameOfClinicString;
     }
 
-    public String getAddressOfDoctor() {
-        return addressOfDoctor;
+    public String getAddressOfDoctorString() {
+        return addressOfDoctorString;
     }
 
-    public void setAddressOfDoctor(String addressOfDoctor) {
-        this.addressOfDoctor = addressOfDoctor;
+    public void setAddressOfDoctorString(String addressOfDoctorString) {
+        this.addressOfDoctorString = addressOfDoctorString;
     }
 
     public boolean getFavourite() {
@@ -363,8 +362,8 @@ public class DoctorList implements Parcelable {
         dest.writeValue(rating);
         dest.writeValue(waitingTime);
         dest.writeValue(tokenNo);
-        dest.writeValue(nameOfClinic);
-        dest.writeValue(addressOfDoctor);
+        dest.writeValue(nameOfClinicString);
+        dest.writeValue(addressOfDoctorString);
         dest.writeList(PracticePlaceInfos);
         dest.writeValue(openToday);
         dest.writeValue(favourite);

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -76,6 +77,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         final MQTTMessage message = mqttMessages.get(position);
 
         if (mqttMessages.get(position).getSender().equals(MQTTService.PATIENT)) {
+
+            // reset margin
+            RelativeLayout.LayoutParams resetSenderPhotoLayoutParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            resetSenderPhotoLayoutParams.setMargins(0, 0, 0, 0);
+            resetSenderPhotoLayoutParams.addRule(RelativeLayout.LEFT_OF, R.id.senderProfilePhoto);
+            holder.senderLayoutChild.setLayoutParams(resetSenderPhotoLayoutParams);
+
             holder.receiverLayout.setVisibility(View.GONE);
             holder.senderLayout.setVisibility(View.VISIBLE);
 
@@ -205,6 +215,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                         break;
                     default:
 
+                        // set left margin
+                        RelativeLayout.LayoutParams senderPhotoLayoutParams = new RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.MATCH_PARENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+                        senderPhotoLayoutParams.setMargins(context.getResources().getDimensionPixelOffset(R.dimen.dp68), 0, 0, 0);
+                        senderPhotoLayoutParams.addRule(RelativeLayout.LEFT_OF, R.id.senderProfilePhoto);
+                        holder.senderLayoutChild.setLayoutParams(senderPhotoLayoutParams);
+
                         holder.senderPhotoLayout.setVisibility(View.VISIBLE);
                         holder.senderFileLayout.setVisibility(View.GONE);
 
@@ -291,6 +310,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
             }
 
         } else {
+
+            // reset margin
+            RelativeLayout.LayoutParams resetReceiverPhotoLayoutParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            resetReceiverPhotoLayoutParams.setMargins(0, 0, 0, 0);
+            resetReceiverPhotoLayoutParams.addRule(RelativeLayout.RIGHT_OF, R.id.receiverProfilePhoto);
+            holder.receiverLayoutChild.setLayoutParams(resetReceiverPhotoLayoutParams);
+
             holder.receiverLayout.setVisibility(View.VISIBLE);
             holder.senderLayout.setVisibility(View.GONE);
 
@@ -425,6 +453,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
                         holder.receiverPhotoLayout.setVisibility(View.VISIBLE);
                         holder.receiverFileLayout.setVisibility(View.GONE);
+
+                        // set left margin
+                        RelativeLayout.LayoutParams receiverPhotoLayoutParams = new RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.MATCH_PARENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+                        receiverPhotoLayoutParams.addRule(RelativeLayout.RIGHT_OF, R.id.receiverProfilePhoto);
+                        receiverPhotoLayoutParams.setMargins(0, 0, context.getResources().getDimensionPixelOffset(R.dimen.dp68), 0);
+                        holder.receiverLayoutChild.setLayoutParams(receiverPhotoLayoutParams);
 
                         holder.receiverPhotoProgressLayout.setVisibility(View.VISIBLE);
                         holder.receiverPhotoDownloading.setVisibility(View.VISIBLE);
@@ -562,6 +599,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         RelativeLayout senderPhotoUploading;
         @BindView(R.id.senderPhotoUploadStopped)
         RelativeLayout senderPhotoUploadStopped;
+
+        @BindView(R.id.receiverLayoutChild)
+        LinearLayout receiverLayoutChild;
+        @BindView(R.id.senderLayoutChild)
+        LinearLayout senderLayoutChild;
 
         ListViewHolder(View view) {
             super(view);

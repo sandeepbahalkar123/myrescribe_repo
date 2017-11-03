@@ -56,7 +56,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.chat.SendMessageModel;
-import com.rescribe.model.chat.TypeStatus;
+import com.rescribe.model.chat.UserStatus;
 import com.rescribe.model.chat.history.ChatHistory;
 import com.rescribe.model.chat.history.ChatHistoryModel;
 import com.rescribe.model.doctor_connect.ChatDoctor;
@@ -102,7 +102,6 @@ import permissions.dispatcher.RuntimePermissions;
 import static android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE;
 import static com.rescribe.services.MQTTService.NOTIFY;
 import static com.rescribe.services.MQTTService.PATIENT;
-import static com.rescribe.services.MQTTService.REPLY_ACTION;
 import static com.rescribe.ui.activities.DoctorConnectActivity.FREE;
 import static com.rescribe.util.RescribeConstants.COMPLETED;
 import static com.rescribe.util.RescribeConstants.FAILED;
@@ -197,15 +196,15 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     };
 
     private void typingStatus() {
-        TypeStatus typeStatus = new TypeStatus();
+        UserStatus userStatus = new UserStatus();
         String generatedId = TYPING + mqttMessage.size() + "_" + System.nanoTime();
-        typeStatus.setMsgId(generatedId);
-        typeStatus.setDocId(chatList.getId());
-        typeStatus.setPatId(Integer.parseInt(patId));
-        typeStatus.setSender(PATIENT);
-        typeStatus.setTypeStatus(isTyping);
+        userStatus.setMsgId(generatedId);
+        userStatus.setDocId(chatList.getId());
+        userStatus.setPatId(Integer.parseInt(patId));
+        userStatus.setSender(PATIENT);
+        userStatus.setTypeStatus(isTyping);
         if (mqttService != null)
-            mqttService.typingStatus(typeStatus);
+            mqttService.typingStatus(userStatus);
     }
 
     // End Check Typing
@@ -236,9 +235,9 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     }
                 } else {
                     // Getting type status
-                    TypeStatus typeStatus = intent.getParcelableExtra(MQTTService.MESSAGE);
-                    if (typeStatus.getDocId() == chatList.getId()) {
-                        if (typeStatus.isTyping()) {
+                    UserStatus userStatus = intent.getParcelableExtra(MQTTService.MESSAGE);
+                    if (userStatus.getDocId() == chatList.getId()) {
+                        if (userStatus.isTyping()) {
                             dateTime.setText(TYPING_MESSAGE);
                             dateTime.setTextColor(Color.WHITE);
                         } else {

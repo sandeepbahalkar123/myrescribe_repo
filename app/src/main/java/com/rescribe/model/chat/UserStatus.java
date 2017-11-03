@@ -6,8 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TypeStatus implements Parcelable {
-
+public class UserStatus implements Parcelable {
     @SerializedName("msgId")
     @Expose
     private String msgId;
@@ -26,32 +25,37 @@ public class TypeStatus implements Parcelable {
     @SerializedName("typeStatus")
     @Expose
     private boolean typeStatus;
-    public final static Parcelable.Creator<TypeStatus> CREATOR = new Creator<TypeStatus>() {
+    @SerializedName("userStatus")
+    @Expose
+    private String userStatus;
+
+    public final static Creator<UserStatus> CREATOR = new Creator<UserStatus>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public TypeStatus createFromParcel(Parcel in) {
-            return new TypeStatus(in);
+        public UserStatus createFromParcel(Parcel in) {
+            return new UserStatus(in);
         }
 
-        public TypeStatus[] newArray(int size) {
-            return (new TypeStatus[size]);
+        public UserStatus[] newArray(int size) {
+            return (new UserStatus[size]);
         }
 
     };
 
-    protected TypeStatus(Parcel in) {
+    protected UserStatus(Parcel in) {
         this.msgId = ((String) in.readValue((String.class.getClassLoader())));
         this.user1id = ((int) in.readValue((int.class.getClassLoader())));
         this.user2id = ((int) in.readValue((int.class.getClassLoader())));
         this.sender = ((String) in.readValue((String.class.getClassLoader())));
         this.msgTime = ((String) in.readValue((String.class.getClassLoader())));
         this.typeStatus = ((boolean) in.readValue((boolean.class.getClassLoader())));
+        this.userStatus = ((String) in.readValue((String.class.getClassLoader())));
     }
 
-    public TypeStatus() {
+    public UserStatus() {
     }
 
     public String getMsgId() {
@@ -102,6 +106,14 @@ public class TypeStatus implements Parcelable {
         this.typeStatus = typeStatus;
     }
 
+    public String getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(msgId);
         dest.writeValue(user1id);
@@ -109,6 +121,7 @@ public class TypeStatus implements Parcelable {
         dest.writeValue(sender);
         dest.writeValue(msgTime);
         dest.writeValue(typeStatus);
+        dest.writeValue(userStatus);
     }
 
     public int describeContents() {

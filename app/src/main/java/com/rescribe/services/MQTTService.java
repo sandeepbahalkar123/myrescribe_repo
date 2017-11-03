@@ -15,11 +15,10 @@ import com.google.gson.JsonSyntaxException;
 import com.rescribe.broadcast_receivers.ReplayBroadcastReceiver;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.chat.MQTTMessage;
-import com.rescribe.model.chat.TypeStatus;
+import com.rescribe.model.chat.UserStatus;
 import com.rescribe.notification.MessageNotification;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.ChatActivity;
-import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.rxnetwork.RxNetwork;
@@ -28,7 +27,6 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -217,12 +215,12 @@ public class MQTTService extends Service {
                                         } else Log.d(TAG + " DOCTOR_MES", payloadString);
                                     } else Log.d(TAG + " OTHERS_MES", payloadString);
                                 } else if (topic.equals(TOPIC[1])) {
-                                    TypeStatus typeStatus = gson.fromJson(payloadString, TypeStatus.class);
-                                    if (myid.equals(String.valueOf(typeStatus.getPatId()))) {
-                                        if (!typeStatus.getSender().equals(MQTTService.PATIENT)) {
+                                    UserStatus userStatus = gson.fromJson(payloadString, UserStatus.class);
+                                    if (myid.equals(String.valueOf(userStatus.getPatId()))) {
+                                        if (!userStatus.getSender().equals(MQTTService.PATIENT)) {
                                                 Intent intent = new Intent(NOTIFY);
                                                 intent.putExtra(IS_MESSAGE, false);
-                                                intent.putExtra(MESSAGE, typeStatus);
+                                                intent.putExtra(MESSAGE, userStatus);
                                                 sendBroadcast(intent);
                                         }
                                     }
@@ -295,12 +293,12 @@ public class MQTTService extends Service {
         }
     }
 
-    public void typingStatus(TypeStatus typeStatus) {
+    public void typingStatus(UserStatus userStatus) {
         try {
             // 2017-10-13 13:08:07
             String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss);
-            typeStatus.setMsgTime(msgTime);
-            String content = gson.toJson(typeStatus, TypeStatus.class);
+            userStatus.setMsgTime(msgTime);
+            String content = gson.toJson(userStatus, UserStatus.class);
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(1);
             message.setRetained(true);

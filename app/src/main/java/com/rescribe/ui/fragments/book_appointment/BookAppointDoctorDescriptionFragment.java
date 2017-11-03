@@ -140,8 +140,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         SpannableString content = new SpannableString(aboutDoctor.getText());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         aboutDoctor.setText(content);
-       /* clinicName.setText("" + mClickedDoctorObject.getNameOfClinic());
-        addressOfClinic.setText("" + mClickedDoctorObject.getAddressOfDoctor());*/
+        clinicName.setText("" + mClickedDoctorObject.getNameOfClinic());
+      /*  addressOfClinic.setText("" + mClickedDoctorObject.getAddressOfDoctor());*/
         mDocRating.setText("" + mClickedDoctorObject.getRating());
         mDoctorName.setText("" + mClickedDoctorObject.getDocName());
         mDoctorSpecialization.setText("" + mClickedDoctorObject.getDegree());

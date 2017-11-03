@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spanned;
@@ -12,8 +13,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
@@ -21,17 +24,20 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.rescribe.R;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.GoogleSettingsApi;
 
 
-public class BookAppointFindLocation extends AppCompatActivity implements PlaceSelectionListener {
+public class BookAppointFindLocation extends AppCompatActivity implements PlaceSelectionListener, GoogleApiClient.OnConnectionFailedListener, GoogleSettingsApi.LocationSettings {
 
     public static final String TAG = "BookAppointFindLocation";
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 11;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appoint_select_location);
+
+        new GoogleSettingsApi(this);
 
         findViewById(R.id.bookAppointmentToolbar).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +116,6 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
-                CommonMethods.Log(TAG, "Place:" + place.toString());
                 setResult(Activity.RESULT_OK, data);
                 finish();
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
@@ -123,5 +128,15 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
                 finish();
             }
         }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void gpsStatus() {
+
     }
 }

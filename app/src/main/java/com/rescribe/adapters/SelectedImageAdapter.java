@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.investigation.Image;
@@ -56,6 +57,8 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageAdap
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.centerCrop();
         requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
         requestOptions.override(imageSize, imageSize);
         requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
 

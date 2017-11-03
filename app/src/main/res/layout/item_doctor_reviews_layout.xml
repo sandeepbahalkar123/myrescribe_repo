@@ -5,17 +5,30 @@
     android:layout_height="wrap_content"
     android:layout_marginRight="16dp"
     android:orientation="vertical">
+    <com.rescribe.ui.customesViews.CustomTextView
+        android:id="@+id/reviewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp16"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp16"
+        app:customFont="@string/roboto_bold" />
 
     <com.rescribe.ui.customesViews.CustomTextView
         android:id="@+id/reviewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp6"
         android:layout_marginLeft="@dimen/dp16"
-        android:text="fbdhghfh"
         android:textColor="@color/black"
         android:textSize="@dimen/sp16"
         app:customFont="@string/roboto_bold" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        style="@style/customRatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="12dp"
+        android:layout_marginLeft="@dimen/dp16" />
 
     <com.rescribe.ui.customesViews.CustomTextView
         android:id="@+id/review"
@@ -23,7 +36,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp6"
         android:layout_marginLeft="@dimen/dp16"
-        android:text="fbdhghfh"
         android:textColor="@color/black"
         android:textSize="@dimen/sp16"
         app:customFont="@string/roboto_medium" />

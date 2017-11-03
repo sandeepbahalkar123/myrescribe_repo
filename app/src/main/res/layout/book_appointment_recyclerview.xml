@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/clickHere"
             android:gravity="center"
             android:orientation="vertical"
             android:paddingBottom="@dimen/dp10"
@@ -69,15 +69,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:paddingLeft="@dimen/dp5"
-                android:paddingRight="@dimen/dp5"
-                android:paddingTop="@dimen/dp5"
+                android:padding="@dimen/dp8"
                 android:scaleX="-1"
                 android:src="@drawable/right_arrow"
-                android:visibility="visible" />
+                android:visibility="invisible" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/listView"
+                android:id="@+id/bookAppointSpecialityListView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -93,15 +91,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:padding="@dimen/dp5"
+                android:padding="@dimen/dp8"
                 android:src="@drawable/right_arrow"
-                android:visibility="visible" />
+                android:visibility="invisible" />
         </LinearLayout>
     </LinearLayout>
 
 
     <RelativeLayout
-        android:id="@+id/emptyListView"
+        android:id="@+id/specialityEmptyListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
@@ -118,14 +116,5 @@
             android:gravity="center"
             android:orientation="vertical" />
     </RelativeLayout>
-    <!--  <ImageView
-          android:id="@+id/emptyListView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_centerInParent="true"
-          android:gravity="center"
-          android:src="@drawable/no_records_found"
-          android:textSize="@dimen/sp18"
-          android:visibility="gone" />-->
 
 </RelativeLayout>

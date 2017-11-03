@@ -28,7 +28,7 @@
                 android:layout_height="@dimen/dp50"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dp16"
-                android:src="@drawable/layer_12" />
+                />
 
         </LinearLayout>
 
@@ -106,6 +106,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/dp16"
                 android:textAllCaps="false"
+                android:drawablePadding="4dp"
+                android:drawableLeft="@drawable/ruppee_services"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp16"
                 app:customFont="@string/roboto_bold" />
@@ -163,6 +165,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/dp16"
                 android:gravity="center"
+                android:visibility="invisible"
                 android:layout_marginTop="@dimen/dp30"
                 android:orientation="vertical">
 

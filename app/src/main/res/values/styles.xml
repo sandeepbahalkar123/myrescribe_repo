@@ -173,8 +173,6 @@
         <item name="android:progressDrawable">@drawable/rating_custom_bar</item>
         <item name="android:focusable">false</item>
         <item name="android:isIndicator">true</item>
-        <!--<item name="android:minHeight">30dip</item>-->
-        <!--<item name="android:maxHeight">30dip</item>-->
         <item name="android:gravity">center_vertical</item>
     </style>
 </resources>

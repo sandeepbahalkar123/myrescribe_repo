@@ -10,11 +10,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class DoctorSpeciality implements Parcelable {
 
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("speciality")
-    @Expose
+    private int id;
     private String speciality;
     public final static Creator<DoctorSpeciality> CREATOR = new Creator<DoctorSpeciality>() {
 
@@ -35,11 +31,11 @@ public class DoctorSpeciality implements Parcelable {
 
     };
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

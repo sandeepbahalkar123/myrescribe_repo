@@ -23,6 +23,7 @@
     <string name="enter_full_name">Name</string>
     <string name="enter_email_id">Email ID</string>
     <string name="cancel">Cancel</string>
+    <string name="snooze">Snooze</string>
     <string name="action_settings">Settings</string>
     <string name="internet">Please check your Internet Connection</string>
     <string name="timeout">Timeout error</string>
@@ -194,7 +195,7 @@
     <string name="doctor_activity">Doctor Activity</string>
     <string name="pick_speciality">Pick Speciality</string>
     <string name="details_note"><![CDATA[Your details will remain 100% private & secure. If you think you have medical emergency, contact your doctor immediately.]]></string>
-    <string name="vital_graph">Vital Graph</string>
+    <string name="vital_graph">Vital Graphs</string>
     <string name="post_your_query">Post Your Query</string>
     <string name="cardiologist">cardiologist</string>
     <string name="ophthalmologist">ophthalmologist</string>
@@ -238,13 +239,11 @@
     <string name="clinic_fees">Clinic Fees</string>
     <string name="availability">Availability</string>
     <string name="doctor">Doctor</string>
-    <string name="about_doctor"><u>About Doctor:</u></string>
+    <string name="about_doctor"><u>About Doctor :</u></string>
     <string name="recently_visit_doctor">Recently Visited Doctor</string>
     <!--<string name="clickhere">Not Sure ?......click here</string>-->
     <!--<string name="clickhere">Not Sure ?......click here</string>-->
-
     <string name="clickhere"><![CDATA[<b><font color=#d2d2d2>Not Sure ?......</font>click here</b>]]></string>
-
     <string name="rupee_symbol">\u20B9 &#160;</string>
     <string name="please_select_location">Please select location</string>
     <string name="select_location"><u>Select location</u></string>
@@ -252,6 +251,8 @@
     <string name="complaint1">Complaint 1:</string>
     <string name="enter_string_here">Enter your complaint here</string>
     <string name="complaint2">Complaint 2:</string>
+    <string name="opening_mode">ViewOpeningMode</string>
+    <string name="complaints">Complaints</string>
     <string name="waiting_for">Waiting for </string>
     <string name="token_no_available">Token No. available</string>
     <string name="doctor_data">Doctor Data</string>
@@ -279,7 +280,7 @@
     <string name="weekday_sat">Saturday</string>
     <string name="price_range"><u>Price Range</u></string>
     <string name="select_days"><u>Select Days</u></string>
-    <string name="also_practices">Also practices at</string>
+    <string name="also_practices">Also practices at :</string>
     <string name="more_info">More Info</string>
 
     <string name="services">Services</string>
@@ -298,5 +299,52 @@
     <string name="settings">Settings</string>
     <string name="file_extension">file_extension</string>
 
+    <string name="location_address">Location address</string>
+    <string name="doctorId">DoctorId</string>
 
+    <string name="pending_investigations">Pending Investigations</string>
+    <string name="latestvitalreading">Latest Vital Reading</string>
+    <string name="doctor_data_for_map">map data</string>
+
+    <string name="do_operation">do_operation</string>
+    <string name="favorite">Favorite</string>
+
+    <string name="reviews">Reviews</string>
+    <string name="comma">,</string>
+    <string name="alerts">Alerts</string>
+    <string name="profile">Profile</string>
+    <string name="support">Support</string>
+    <string name="find_doctors">Find Doctors</string>
+    <string name="on_going_treatment">On Going Treatment</string>
+    <string name="health_repository">Health Repository</string>
+    <string name="health_offers">Health Offers</string>
+    <string name="health_education">Health Education</string>
+    <string name="consult_online">Consult Online</string>
+    <string name="doctor_visit">Doctor Visits</string>
+    <string name="saved_articles">Saved Articles</string>
+
+    <string name="snooze_interval">Select snooze interval</string>
+
+    <string name="alarm">Alarm</string>
+    <string name="notificationAlarmTypeSetting">NotificationAlarmTypeSetting</string>
+    <string name="book_appoint_complaint_same_err">Both complaints should not be same.</string>
+    <string name="search_doctor_clinic_name">Search Doctor,Clinic</string>
+    <string name="sorting">Sorting</string>
+    <string name="sort">Sort by</string>
+    <string name="choose_one_option">Choose one option</string>
+    <string name="locations">Locations</string>
+    <string name="place_details">
+    <![CDATA[
+        <b>%1$s</b>
+        <br/>
+        <i>Place Id: %2$s</i>
+        <br/>
+        Address: %3$s
+        <br/>
+        Phone: %4$s
+        <br/>
+        Website: %5$s
+    ]]>
+    </string>
+    <string name="view_all">View All</string>
 </resources>

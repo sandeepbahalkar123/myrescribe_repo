@@ -69,7 +69,7 @@ public class PrescriptionActivity extends AppCompatActivity
         mContext = PrescriptionActivity.this;
         mPrescriptionHelper = new PrescriptionHelper(this, this);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(getString(R.string.going_medication));
+        getSupportActionBar().setTitle(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

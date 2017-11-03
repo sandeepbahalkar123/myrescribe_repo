@@ -432,60 +432,11 @@ public class CommonMethods {
         return time;
     }
 
-    public static Drawable getMedicalTypeIcon(String medicineTypeName, Context context) {
-
-        Drawable abbreviation = ContextCompat.getDrawable(context,R.drawable.tablet_02);
-        if (medicineTypeName.equalsIgnoreCase("syrup"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.syrup_01);
-        else if (medicineTypeName.equalsIgnoreCase("Tablet"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.tablet_02);
-        else if (medicineTypeName.equalsIgnoreCase("Capsule"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.capsule_01);
-        else if (medicineTypeName.equalsIgnoreCase("injection"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.injection_01);
-        else if (medicineTypeName.equalsIgnoreCase("insulin"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.insulin_01);
-        else if (medicineTypeName.equalsIgnoreCase("Inhaler"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.inhaler_01);
-        else if (medicineTypeName.equalsIgnoreCase("liquid"))
-            abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight); // not found
-        else if (medicineTypeName.equalsIgnoreCase("tan"))
-            abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);// not found
-        else if (medicineTypeName.equalsIgnoreCase("cream"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.cream_01);
-        else if (medicineTypeName.equalsIgnoreCase("jelly"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.jelly_02);
-        else if (medicineTypeName.equalsIgnoreCase("local application"))
-            abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);// not found
-        else if (medicineTypeName.equalsIgnoreCase("ointment"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.ointment_01);
-        else if (medicineTypeName.equalsIgnoreCase("lotion"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.lotion_01);
-        else if (medicineTypeName.equalsIgnoreCase("drops"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.drop_01);
-        else if (medicineTypeName.equalsIgnoreCase("eye drops"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.eye_drops_02);
-        else if (medicineTypeName.equalsIgnoreCase("nasal drops"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.nasal_drop_01_01);
-        else if (medicineTypeName.equalsIgnoreCase("nasal spray"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.nasal_spray_01);
-        else if (medicineTypeName.equalsIgnoreCase("ointment/powder"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.ointment_powder_01);
-        else if (medicineTypeName.equalsIgnoreCase("respules"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.respules_01);
-        else if (medicineTypeName.equalsIgnoreCase("rotacaps"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.rotacaps_01);
-        else if (medicineTypeName.equalsIgnoreCase("sachet"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.sachet_01);
-
-        return abbreviation;
-    }
-
     // Return medicine Icon's
 
     public static Drawable getMedicineTypeImage(String medicineTypeName, Context context) {
 
-        Drawable abbreviation = ContextCompat.getDrawable(context, R.mipmap.highlight);
+        Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.defaulticon);
         if (medicineTypeName.equalsIgnoreCase("syrup"))
             abbreviation = ContextCompat.getDrawable(context, R.drawable.syrup);
         else if (medicineTypeName.equalsIgnoreCase("Tablet"))
@@ -507,7 +458,7 @@ public class CommonMethods {
         else if (medicineTypeName.equalsIgnoreCase("jelly"))
             abbreviation = ContextCompat.getDrawable(context, R.drawable.jelly);
         else if (medicineTypeName.equalsIgnoreCase("local application"))
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.tablet);// not found
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.jelly);// not found
         else if (medicineTypeName.equalsIgnoreCase("ointment"))
             abbreviation = ContextCompat.getDrawable(context, R.drawable.ointment);
         else if (medicineTypeName.equalsIgnoreCase("lotion"))
@@ -535,7 +486,7 @@ public class CommonMethods {
     public static int getCaseStudyIcons(String caseStudyName) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
-        int abbreviation = R.drawable.common_icon;
+        int abbreviation = R.drawable.commonicon;
         if (caseStudyName.equalsIgnoreCase("complaints"))
             abbreviation = R.drawable.complaints;
         else if (caseStudyName.equalsIgnoreCase("vitals"))
@@ -557,13 +508,13 @@ public class CommonMethods {
         else if (caseStudyName.equalsIgnoreCase("vaccination"))
             abbreviation = R.drawable.vaccination; // not found
         else if (caseStudyName.equalsIgnoreCase("generalprecautions"))
-            abbreviation = R.drawable.general_precautions; // not found
+            abbreviation = R.drawable.generalprecautions; // not found
         else if (caseStudyName.equalsIgnoreCase("preoperativeprecautions"))
-            abbreviation = R.drawable.pre_operative_precautions; // not found
+            abbreviation = R.drawable.preoperativeprecautions; // not found
         else if (caseStudyName.equalsIgnoreCase("postoperativecare"))
-            abbreviation = R.drawable.post_operative_care; // not found
+            abbreviation = R.drawable.postoperativecare; // not found
         else if (caseStudyName.equalsIgnoreCase("painscore"))
-            abbreviation = R.drawable.pain_score; // not found
+            abbreviation = R.drawable.painscore; // not found
         else if (caseStudyName.equalsIgnoreCase("exercise"))
             abbreviation = R.drawable.exercise; // not found
         else if (caseStudyName.equalsIgnoreCase("finding"))
@@ -577,7 +528,7 @@ public class CommonMethods {
     public static int getVitalIcons(String vitalDetailName) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
-        int abbreviation = R.drawable.ellipse_2;
+        int abbreviation = R.drawable.defaulticon;
         if (vitalDetailName.equalsIgnoreCase("bp"))
             abbreviation = R.drawable.bp;
         else if (vitalDetailName.equalsIgnoreCase("weight"))
@@ -626,29 +577,6 @@ public class CommonMethods {
         return abbreviation;
     }
 
-    public static int getServiceListItems(String servicName) {
-
-        // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
-        int abbreviation = R.drawable.ellipse_2;
-        if (servicName.equalsIgnoreCase("Doctor"))
-            abbreviation = R.drawable.doctor_dashboard;
-        else if (servicName.equalsIgnoreCase("Dr. Conenct"))
-            abbreviation = R.drawable.dr_connect;
-        else if (servicName.equalsIgnoreCase("My Records"))
-            abbreviation = R.drawable.my_records;
-        else if (servicName.equalsIgnoreCase("Pharmacy"))
-            abbreviation = R.drawable.pharmacy;
-        else if (servicName.equalsIgnoreCase("Diagnostic Center"))
-            abbreviation = R.drawable.diagnostic_center;
-        else if (servicName.equalsIgnoreCase("Hospital"))
-            abbreviation = R.drawable.hospital;
-        else if (servicName.equalsIgnoreCase("Blood Bank"))
-            abbreviation = R.drawable.blood_bank;
-        else if (servicName.equalsIgnoreCase("Ambulance"))
-            abbreviation = R.drawable.ambulance_dashboard;
-
-        return abbreviation;
-    }
 
     public static int getDoctorSpecialistIcons(String caseStudyName, Context mContext) {
 
@@ -698,7 +626,7 @@ public class CommonMethods {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.gynecologist;
-        if (caseStudyName.equalsIgnoreCase("Doctor"))
+        if (caseStudyName.equalsIgnoreCase("Doctors"))
             abbreviation = R.drawable.doctor;
         else if (caseStudyName.equalsIgnoreCase("Hospitals"))
             abbreviation = R.drawable.hospital_practices;
@@ -801,17 +729,6 @@ public class CommonMethods {
         return filePath.substring(filePath.lastIndexOf(".") + 1);
     }
 
-    public static int getDiagnosticCentreImages(String diagnosticCentreName) {
-        int abbreviation = R.drawable.gynecologist;
-        if (diagnosticCentreName.equalsIgnoreCase("Metropolis"))
-            abbreviation = R.drawable.health_offers_image_1;
-        else if (diagnosticCentreName.equalsIgnoreCase("Apollo Diagnostics"))
-            abbreviation = R.drawable.health_offers_image_2;
-        else if (diagnosticCentreName.equalsIgnoreCase("Thyrocare"))
-            abbreviation = R.drawable.health_offers_image_3;
-
-        return abbreviation;
-    }
     public static String getFileNameFromPath(String filePath) {
         return filePath.substring(filePath.lastIndexOf("/") + 1);
     }

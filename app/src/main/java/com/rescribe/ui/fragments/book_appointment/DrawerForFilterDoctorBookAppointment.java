@@ -24,14 +24,20 @@ import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.FilterSelectLocationsAdapter;
+import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
+import com.rescribe.adapters.book_appointment.SortByPriceNameFilterAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
+import com.rescribe.model.book_appointment.filterdrawer.LocationList;
+import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +52,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     CustomTextView titleTextView;
     @BindView(R.id.resetButton)
     Button resetButton;
-
     Unbinder unbinder;
     @BindView(R.id.genderHeaderView)
     LinearLayout mGenderHeaderView;
@@ -54,7 +59,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     LinearLayout mGenderContentView;
     @BindView(R.id.clinicFeesHeaderView)
     LinearLayout mClinicFeesHeaderView;
-
     @BindView(R.id.clinicFeesContentView)
     LinearLayout mClinicFeesContentView;
     @BindView(R.id.availabilityHeaderView)
@@ -101,7 +105,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     CustomTextView mAvailFri;
     @BindView(R.id.availSat)
     CustomTextView mAvailSat;
-
     //-----
     @BindView(R.id.clinicFeesSeekBar)
     CrystalRangeSeekbar mClinicFeesSeekBar;
@@ -118,7 +121,27 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     CustomTextView mDistanceSeekBarMaxValue;
     @BindView(R.id.mainParentLayout)
     LinearLayout mainParentLayout;
-
+    String locationReceived = "";
+    @BindView(R.id.sortingHeaderView)
+    LinearLayout sortingHeaderView;
+    @BindView(R.id.chooseOptionForSort)
+    CustomTextView chooseOptionForSort;
+    @BindView(R.id.chooseOptionToSort)
+    LinearLayout chooseOptionToSort;
+    @BindView(R.id.doneButton)
+    Button doneButton;
+    @BindView(R.id.sortingTitleTextView)
+    CustomTextView sortingTitleTextView;
+    @BindView(R.id.resetSortingButton)
+    Button resetSortingButton;
+    @BindView(R.id.sortingView)
+    LinearLayout sortingView;
+    @BindView(R.id.sortRecyclerView)
+    RecyclerView sortRecyclerView;
+    @BindView(R.id.hideMainLayout)
+    LinearLayout hideMainLayout;
+    @BindView(R.id.showSortLayout)
+    LinearLayout showSortLayout;
     private OnDrawerInteractionListener mListener;
 
     //--------
@@ -127,6 +150,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     //--------
     View mLeftThumbView, mRightThumbView;
     private FilterSelectLocationsAdapter mFilterSelectLocationsAdapter;
+    private SortByPriceNameFilterAdapter mSortByPriceNameFilterAdapter;
     //--------
 
     public DrawerForFilterDoctorBookAppointment() {
@@ -156,22 +180,14 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     }
 
     private void initialize() {
-
-        configureClinicFeesSeekBar();
-
-        doctorDataHelper = new DoctorDataHelper(getActivity(), this);
-        doctorDataHelper.doGetDrawerFilterConfigurationData();
-
         mSelectedDays = new HashMap<>();
-        //---------
-        mSelectedDays.put(getString(R.string.weekday_sun), false);
-        mSelectedDays.put(getString(R.string.weekday_mon), false);
-        mSelectedDays.put(getString(R.string.weekday_tues), false);
-        mSelectedDays.put(getString(R.string.weekday_wed), false);
-        mSelectedDays.put(getString(R.string.weekday_thurs), false);
-        mSelectedDays.put(getString(R.string.weekday_fri), false);
-        mSelectedDays.put(getString(R.string.weekday_sat), false);
-        //---------
+
+        configureDrawerFieldsData();
+        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+        locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
+        String[] split = locationReceived.split(",");
+        doctorDataHelper = new DoctorDataHelper(getActivity(), this);
+        doctorDataHelper.doGetDrawerFilterConfigurationData(split[1].trim());
 
         mLocationContentRecycleView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
@@ -221,7 +237,19 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         mListener = null;
     }
 
-    private void configureClinicFeesSeekBar() {
+    private void configureDrawerFieldsData() {
+
+        mSelectedGender = "";
+        //---------
+        mSelectedDays.put(getString(R.string.weekday_sun), false);
+        mSelectedDays.put(getString(R.string.weekday_mon), false);
+        mSelectedDays.put(getString(R.string.weekday_tues), false);
+        mSelectedDays.put(getString(R.string.weekday_wed), false);
+        mSelectedDays.put(getString(R.string.weekday_thurs), false);
+        mSelectedDays.put(getString(R.string.weekday_fri), false);
+        mSelectedDays.put(getString(R.string.weekday_sat), false);
+        //---------
+
 
         //---------- Clinic Seek Bar : START ----------
         mLeftThumbView = LayoutInflater.from(getActivity()).inflate(R.layout.seekbar_progress_thumb_layout, null, false);
@@ -310,34 +338,72 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         mDistanceSeekBarValueIndicator.setX(tr.exactCenterX());
         mDistanceSeekBarValueIndicator.setText(mDistanceSeekBar.getProgress() + "");
 
+        //-----------------
+        mGenderMaleIcon.setImageResource(R.drawable.icon_male_default);
+        mGenderMaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.gender_drawer));
+        mGenderFemaleIcon.setImageResource(R.drawable.icon_female_default);
+        mGenderFemaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.gender_drawer));
+        //-----------------
+        mAvailSunday.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailSunday.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        mAvailMonday.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailMonday.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        mAvailTues.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailTues.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        mAvailWed.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailWed.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        mAvailThurs.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailThurs.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        mAvailFri.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailFri.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        mAvailSat.setBackgroundResource(R.drawable.select_days_circle_default);
+        mAvailSat.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
+        //-----------------
     }
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (customResponse != null) {
             bookAppointFilterBaseModel = (BookAppointFilterBaseModel) customResponse;
+            setDataInDrawerFields();
+        }
+    }
+
+    private void setDataInDrawerFields() {
+        ArrayList<LocationList> locations = new ArrayList<>();
+        if (bookAppointFilterBaseModel != null) {
             BookAppointFilterBaseModel.FilterConfigData filterConfigData = bookAppointFilterBaseModel.getFilterConfigData();
+
             if (filterConfigData != null) {
-                mFilterSelectLocationsAdapter = new FilterSelectLocationsAdapter(getActivity(), filterConfigData.getLocationList());
+                for (int i = 0; i < filterConfigData.getLocationList().size(); i++) {
+                    LocationList locationList = new LocationList();
+                    if (filterConfigData.getLocationList().get(i).getIsDoctorAvailable()) {
+                        locationList.setAreaName(filterConfigData.getLocationList().get(i).getAreaName());
+                        locationList.setIsDoctorAvailable(filterConfigData.getLocationList().get(i).getIsDoctorAvailable());
+                        locations.add(locationList);
+                    }
+
+                }
+                //--------
+                mFilterSelectLocationsAdapter = new FilterSelectLocationsAdapter(getActivity(), locations);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 mLocationContentRecycleView.setLayoutManager(layoutManager);
                 mLocationContentRecycleView.setHasFixedSize(true);
                 mLocationContentRecycleView.setAdapter(mFilterSelectLocationsAdapter);
 
                 //------
-                ArrayList<String> clinicFeesRange = filterConfigData.getClinicFeesRange();
+                ArrayList<Integer> clinicFeesRange = filterConfigData.getClinicFeesRange();
                 if (clinicFeesRange.size() > 0) {
-                    String min = clinicFeesRange.get(0);
-                    String max = clinicFeesRange.get(clinicFeesRange.size() - 1);
+                    Integer min = clinicFeesRange.get(0);
+                    Integer max = clinicFeesRange.get(clinicFeesRange.size() - 1);
                     mClinicFeesSeekBarMinValue.setText("" + min);
                     mClinicFeesSeekBarMaxValue.setText("" + max);
                     setThumbValue(mLeftThumbView, "" + min);
                     setThumbValue(mRightThumbView, "" + max);
-                    mClinicFeesSeekBar.setMinValue(Float.parseFloat(min)).setMaxValue(Float.parseFloat(max)).setMinStartValue(Float.parseFloat(min)).setMaxStartValue(Float.parseFloat(max)).apply();
-
+                    mClinicFeesSeekBar.setMinValue(Float.parseFloat(String.valueOf(min))).setMaxValue(Float.parseFloat(String.valueOf(max))).setMinStartValue(Float.parseFloat(String.valueOf(min))).setMaxStartValue(Float.parseFloat(String.valueOf(max))).apply();
                 }
                 //------
-                ArrayList<String> distanceFeesRange = filterConfigData.getDistanceRange();
+              /*  ArrayList<String> distanceFeesRange = filterConfigData.get();
                 if (distanceFeesRange.size() > 0) {
                     String min = distanceFeesRange.get(0);
                     String max = distanceFeesRange.get(distanceFeesRange.size() - 1);
@@ -345,10 +411,11 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                     mDistanceSeekBarMaxValue.setText("" + max);
                     mDistanceSeekBar.setProgress(Integer.parseInt(min));
                     mDistanceSeekBar.setMax(Integer.parseInt(max));
-                }
+                }*/
                 //------
             }
         }
+
     }
 
     @Override
@@ -367,57 +434,65 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     }
 
     public interface OnDrawerInteractionListener {
-        void onApply(boolean drawerRequired);
+        void onApply(Bundle b, boolean drawerRequired);
 
         void onReset(boolean drawerRequired);
     }
 
-    @OnClick({R.id.resetButton, R.id.applyButton})
+    @OnClick({R.id.resetButton, R.id.applyButton, R.id.chooseOptionToSort, R.id.doneButton})
     public void onButtonClicked(View v) {
         switch (v.getId()) {
             case R.id.resetButton:
-                mListener.onReset(true);
+                configureDrawerFieldsData();
+                setDataInDrawerFields();
+                //mListener.onReset(true);
                 break;
             case R.id.applyButton:
-                mListener.onApply(true);
+                BookAppointFilterRequestModel bookAppointFilterRequestModel = new BookAppointFilterRequestModel();
+                bookAppointFilterRequestModel.setGender(mSelectedGender.toLowerCase());
+                bookAppointFilterRequestModel.setClinicFeesRange(new String[]{"" + mClinicFeesSeekBar.getSelectedMinValue(), "" + mClinicFeesSeekBar.getSelectedMaxValue()});
+                bookAppointFilterRequestModel.setDistance(new String[]{"" + mDistanceSeekBar.getProgress(), "" + mDistanceSeekBar.getProgress()});
+
+                //------
+                ArrayList<String> temp = new ArrayList<>();
+                Iterator it = mSelectedDays.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry) it.next();
+                    if ((boolean) pair.getValue()) {
+                        temp.add((String) pair.getKey());
+                    }
+                }
+                bookAppointFilterRequestModel.setAvailability(temp.toArray(new String[temp.size()]));
+                //------
+                bookAppointFilterRequestModel.setLocationList(mFilterSelectLocationsAdapter.getSelectedLocation().toArray(new String[temp.size()]));
+                //------
+                if (mSortByPriceNameFilterAdapter != null) {
+                    String[] split = mSortByPriceNameFilterAdapter.getSelectedSortedOption().split("\\|");
+                    if (split.length == 2) {
+                        bookAppointFilterRequestModel.setSortBy(split[0]);
+                        bookAppointFilterRequestModel.setSortOrder(split[1]);
+                    }
+                }
+                //------
+                Bundle b = new Bundle();
+                b.putParcelable(getString(R.string.filter), bookAppointFilterRequestModel);
+                mListener.onApply(b, true);
+                break;
+            case R.id.chooseOptionToSort:
+                hideMainLayout.setVisibility(View.GONE);
+                showSortLayout.setVisibility(View.VISIBLE);
+                mSortByPriceNameFilterAdapter = new SortByPriceNameFilterAdapter(getActivity());
+                LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                sortRecyclerView.setLayoutManager(linearlayoutManager);
+                sortRecyclerView.setHasFixedSize(true);
+                sortRecyclerView.setAdapter(mSortByPriceNameFilterAdapter);
+                break;
+            case R.id.doneButton:
+                hideMainLayout.setVisibility(View.VISIBLE);
+                showSortLayout.setVisibility(View.GONE);
                 break;
         }
     }
-
-  /*  @OnClick({R.id.genderHeaderView, R.id.locationHeaderView, R.id.clinicFeesHeaderView, R.id.availabilityHeaderView})
-    public void onHeaderViewClicked(LinearLayout layout) {
-        switch (layout.getId()) {
-            case R.id.genderHeaderView:
-                if (mGenderContentView.getVisibility() == View.VISIBLE) {
-                    mGenderContentView.setVisibility(View.GONE);
-                } else {
-                    mGenderContentView.setVisibility(View.VISIBLE);
-                }
-                break;
-            case R.id.locationHeaderView:
-                if (mLocationContentView.getVisibility() == View.VISIBLE) {
-                    mLocationContentView.setVisibility(View.GONE);
-                } else {
-                    mLocationContentView.setVisibility(View.VISIBLE);
-                }
-                break;
-            case R.id.clinicFeesHeaderView:
-                if (mClinicFeesContentView.getVisibility() == View.VISIBLE) {
-                    mClinicFeesContentView.setVisibility(View.GONE);
-                } else {
-                    mClinicFeesContentView.setVisibility(View.VISIBLE);
-                }
-                break;
-            case R.id.availabilityHeaderView:
-                if (mAvailabilityContentView.getVisibility() == View.VISIBLE) {
-                    mAvailabilityContentView.setVisibility(View.GONE);
-                } else {
-                    mAvailabilityContentView.setVisibility(View.VISIBLE);
-                }
-                break;
-        }
-    }*/
-
 
     public Bitmap setThumbValue(View view, String valueToSet) {
         TextView tvRightProgressValue = (TextView) view.findViewById(R.id.tvProgress);
@@ -550,6 +625,4 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                 break;
         }
     }
-
-
 }

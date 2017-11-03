@@ -112,13 +112,19 @@ public class RescribeConstants {
     public static final String TASK_ADD_VITAL_MANUALLY = RescribeConstants.BLANK + 35;
     public static final String TASK_GET_VITAL_TRACKER_LIST = RescribeConstants.BLANK + 36;
 
-    public static final String TASK_GET_COMPLAINTS = RescribeConstants.BLANK +  37;
+    public static final String TASK_GET_COMPLAINTS = RescribeConstants.BLANK + 37;
     public static final String TASK_GET_BOOK_APPOINT_DRAWER_CONFIG = RescribeConstants.BLANK + 38;
 
     //-------
     public static final String TASK_DASHBOARD_API = RescribeConstants.BLANK + 39;
     public static final String ACTIVE_STATUS = RescribeConstants.BLANK + 40;
     public static final String LOGOUT = RescribeConstants.BLANK + 41;
+    public static final String TASK_GET_REVIEW_LIST = RescribeConstants.BLANK + 42;
+    public static final String TASK_SET_FAVOURITE_DOCTOR = RescribeConstants.BLANK + 43;
+    public static final String TASK_GET_DOCTOR_LIST_BY_COMPLAINT = RescribeConstants.BLANK + 44;
+
+    public static final String TASK_SERVICES_DOC_LIST_FILTER = RescribeConstants.BLANK + 45;
+    public static final String TASK_SLOT_TIME_TO_BOOK_APPOINTMENT = RescribeConstants.BLANK + 46;
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
@@ -157,7 +163,8 @@ public class RescribeConstants {
     public static final String DOCTOR_DATA_REQUEST = "doctor_request_info";
 
 
-    public static class USER_STATUS{
+
+    public static class USER_STATUS {
         public static final String ONLINE = "online";
         public static final String OFFLINE = "offline";
         public static final String TYPING = "typing";
@@ -204,6 +211,7 @@ public class RescribeConstants {
         public static int ONE_SECONDS = 1000;
         public static int TWO_SECONDS = 2000;
         public static int THREE_SECONDS = 3000;
+        public static int FIVE_FIFTY = 500;
     }
 
     public static class FILE {

@@ -32,7 +32,7 @@
             android:textSize="@dimen/sp16"
             android:visibility="gone"
             app:deleteButtonRes="@drawable/close"
-            app:hintText="@string/search" />
+            app:hintText="@string/search_doctor_clinic_name" />
 
         <TextView
             android:id="@+id/whiteUnderLine"
@@ -46,39 +46,8 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/showDoctorsRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/pickSpeciality"
-        android:layout_marginTop="@dimen/dp16"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    </android.support.v7.widget.RecyclerView>
-
-    <RelativeLayout
-        android:id="@+id/emptyListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/no_records_found"
-            android:gravity="center"
-            android:orientation="vertical" />
-    </RelativeLayout>
-
     <LinearLayout
+
         android:id="@+id/recentDoctorLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -92,17 +61,20 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="150dp" />
+                android:layout_height="170dp" />
 
             <com.rescribe.ui.customesViews.CircleIndicator
                 android:id="@+id/circleIndicator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_marginBottom="@dimen/dp8"
+                android:layout_marginBottom="@dimen/dp12"
+                app:ci_height="6dp"
+                app:ci_width="6dp"
+                app:ci_margin="1dp"
                 app:ci_animator="@anim/indicator_no_animator"
-                app:ci_drawable="@drawable/white_radius"
-                app:ci_drawable_unselected="@drawable/black_radius" />
+                app:ci_drawable="@drawable/black_radius"
+                app:ci_drawable_unselected="@drawable/white_radius" />
 
         </FrameLayout>
 
@@ -110,6 +82,16 @@
             layout="@layout/book_appointment_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/filterListLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/filtered_doc_viewlist_with_bottom_fab_margin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 </LinearLayout>

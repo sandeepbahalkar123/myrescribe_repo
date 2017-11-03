@@ -25,6 +25,8 @@
     <dimen name="dp56">56dp</dimen>
     <dimen name="dp40">40dp</dimen>
     <dimen name="dp50">50dp</dimen>
+    <dimen name="sp9">9sp</dimen>
+    <dimen name="sp10">10sp</dimen>
     <dimen name="sp11">11sp</dimen>
     <dimen name="sp12">12sp</dimen>
     <dimen name="sp18">18sp</dimen>
@@ -45,5 +47,12 @@
     <dimen name="dp18">18dp</dimen>
     <dimen name="dp68">68dp</dimen>
     <dimen name="dp36">36dp</dimen>
+
+    <dimen name="pager_padding">33dp</dimen>
+    <dimen name="pager_margin">8dp</dimen>
+    <dimen name="dp11">11dp</dimen>
+    <dimen name="dp9">9dp</dimen>
+    <dimen name="dp3">3dp</dimen>
+    <dimen name="sp13">13sp</dimen>
 
 </resources>

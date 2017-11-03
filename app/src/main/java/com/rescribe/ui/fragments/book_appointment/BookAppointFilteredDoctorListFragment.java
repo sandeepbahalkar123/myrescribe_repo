@@ -1,5 +1,6 @@
 package com.rescribe.ui.fragments.book_appointment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -13,15 +14,21 @@ import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
-import com.rescribe.model.doctor_connect.ChatDoctor;
+import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
+import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +36,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class BookAppointFilteredDoctorListFragment extends Fragment implements View.OnClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener {
+public class BookAppointFilteredDoctorListFragment extends Fragment implements View.OnClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener, BookAppointDoctorListBaseActivity.OnActivityDrawerListener, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
 
 
     @BindView(R.id.listView)
@@ -42,10 +49,14 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     FloatingActionButton mLocationFab;
     Unbinder unbinder;
     private View mRootView;
-    public static Bundle args;
     BookAppointFilteredDocList mBookAppointFilteredDocListAdapter;
     private String mSelectedSpeciality;
+    BookAppointmentBaseModel receivedBookAppointmentBaseModel;
     private ArrayList<DoctorList> mReceivedList;
+    private static Bundle args;
+
+    private DoctorDataHelper mDoctorDataHelper;
+    private ArrayList<DoctorList> doctorListByClinics;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -55,10 +66,10 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.global_recycle_view_list, container, false);
+        mRootView = inflater.inflate(R.layout.filtered_doc_viewlist_with_bottom_fab_margin, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
 
-        init();
+        init(getArguments());
         return mRootView;
     }
 
@@ -72,15 +83,16 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         return fragment;
     }
 
-    private void init() {
-        BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.clicked_item_data)),true);
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            mSelectedSpeciality = arguments.getString(getString(R.string.clicked_item_data));
+    private void init(Bundle args) {
+        mDoctorListView.setNestedScrollingEnabled(false);
+        if (args != null) {
+            mSelectedSpeciality = args.getString(getString(R.string.clicked_item_data));
+            BookAppointDoctorListBaseActivity.setToolBarTitle(mSelectedSpeciality, true);
         }
 
         mLocationFab.setVisibility(View.VISIBLE);
         mFilterFab.setVisibility(View.VISIBLE);
+        mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
     }
 
     @Override
@@ -91,13 +103,11 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     @Override
     public void onResume() {
         super.onResume();
-        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        BookAppointmentBaseModel receivedBookAppointmentBaseModel = activity.getReceivedBookAppointmentBaseModel();
-        setDoctorListAdapter(receivedBookAppointmentBaseModel);
+        updateViewData();
     }
 
     private void setDoctorListAdapter(BookAppointmentBaseModel receivedBookAppointmentBaseModel) {
-        if (receivedBookAppointmentBaseModel== null) {
+        if (receivedBookAppointmentBaseModel == null) {
             isDataListViewVisible(false);
         } else {
             DoctorServicesModel doctorServicesModel = receivedBookAppointmentBaseModel.getDoctorServicesModel();
@@ -105,16 +115,20 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 isDataListViewVisible(false);
             } else {
                 ArrayList<DoctorList> doctorList = doctorServicesModel.getDoctorList();
+                //----This is done to filter list based on speciality selected---
+                doctorList = filterListWhenSpecialitySelected(doctorList);
+                //-------
                 if (doctorList.size() == 0) {
                     isDataListViewVisible(false);
                 } else {
                     isDataListViewVisible(true);
+
                     mReceivedList = doctorList;
-                    if(filterDataOnDocSpeciality().size()==0){
+                    if (filterDataOnDocSpeciality().size() == 0) {
                         isDataListViewVisible(false);
                         mLocationFab.setVisibility(View.GONE);
                         mFilterFab.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), filterDataOnDocSpeciality(), this, this);
                         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                         mDoctorListView.setLayoutManager(layoutManager);
@@ -135,6 +149,17 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
 
+        switch (mOldDataTag) {
+            case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
+                CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
+                CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+                break;
+            case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:
+                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                activity.setReceivedBookAppointmentBaseModel((BookAppointmentBaseModel) customResponse);
+                updateViewData();
+                break;
+        }
     }
 
     @Override
@@ -162,7 +187,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         }
     }
 
-
     @OnClick({R.id.rightFab, R.id.leftFab})
     public void onViewClicked(View view) {
         BookAppointDoctorListBaseActivity activity;
@@ -172,21 +196,45 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);
                 break;
             case R.id.leftFab:
-                activity = (BookAppointDoctorListBaseActivity) getActivity();
-                activity.loadFragment(ShowNearByDoctorsOnMapFragment.newInstance(args), false);
+                //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
+                doctorListByClinics = new ArrayList<>();
+                for (int i = 0; i < filterDataOnDocSpeciality().size(); i++) {
+                    if (filterDataOnDocSpeciality().get(i).getClinicName().size() > 0) {
+                        DoctorList doctorList = filterDataOnDocSpeciality().get(i);
+                        for (int j = 0; j < filterDataOnDocSpeciality().get(i).getClinicName().size(); j++) {
+                            DoctorList doctorListByClinic = new DoctorList();
+                            doctorListByClinic = doctorList;
+                            doctorListByClinic.setNameOfClinicString(filterDataOnDocSpeciality().get(i).getClinicName().get(j));
+                            doctorListByClinic.setAddressOfDoctorString(filterDataOnDocSpeciality().get(i).getDoctorAddress().get(j));
+                            doctorListByClinics.add(doctorListByClinic);
+                        }
+                    }
+                }
+                Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
+                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
+                intent.putExtra(getString(R.string.toolbarTitle), mSelectedSpeciality);
+                startActivity(intent);
                 break;
         }
     }
 
     @Override
     public void onClickOfDoctorRowItem(Bundle bundleData) {
-        bundleData.putString(getString(R.string.toolbarTitle),args.getString(getString(R.string.clicked_item_data)));
-        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
+        if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.doctor_details))) {
+            bundleData.putString(getString(R.string.toolbarTitle), mSelectedSpeciality);
+            BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+            activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
+        } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {
+            DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
+            boolean status = mClickedDoctorObject.getFavourite() ? false : true;
+            mDoctorDataHelper.setFavouriteDoctor(status, "" + mClickedDoctorObject.getDocId());
+        }
     }
 
     private ArrayList<DoctorList> filterDataOnDocSpeciality() {
+
         ArrayList<DoctorList> doctors = this.mReceivedList;
+
         ArrayList<DoctorList> dataList = new ArrayList<>();
         if (mSelectedSpeciality == null) {
             return doctors;
@@ -201,4 +249,48 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         return dataList;
     }
 
+    @Override
+    public void onApplyClicked(Bundle data) {
+        BookAppointFilterRequestModel requestModel = data.getParcelable(getString(R.string.filter));
+
+        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel);
+    }
+
+    @Override
+    public void onResetClicked() {
+
+    }
+
+    @Override
+    public void updateViewData() {
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        receivedBookAppointmentBaseModel = activity.getReceivedBookAppointmentBaseModel();
+        setDoctorListAdapter(receivedBookAppointmentBaseModel);
+        if (RescribeConstants.BLANK.equalsIgnoreCase(args.getString(getString(R.string.clicked_item_data))) || args.getString(getString(R.string.clicked_item_data)) == null) {
+            BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss), true);
+        } else {
+            BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.clicked_item_data)), true);
+        }
+
+
+        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+        String s = userSelectedLocationInfo.get(getString(R.string.location));
+        if (s != null) {
+            BookAppointDoctorListBaseActivity.setSelectedLocationText(s);
+        }
+    }
+
+
+    private ArrayList<DoctorList> filterListWhenSpecialitySelected(ArrayList<DoctorList> list) {
+        ArrayList<DoctorList> temp = new ArrayList<>();
+        if (mSelectedSpeciality != null) {
+            for (DoctorList dataObject :
+                    list) {
+                if (dataObject.getSpeciality().equalsIgnoreCase(mSelectedSpeciality)) {
+                    temp.add(dataObject);
+                }
+            }
+        }
+        return temp;
+    }
 }

@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -38,7 +38,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/dp16">
+                android:layout_marginTop="@dimen/dp8"
+                android:layout_marginBottom="@dimen/dp8"
+                android:layout_marginStart="@dimen/dp16"
+                android:layout_marginEnd="@dimen/dp16">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -55,13 +58,14 @@
                         android:drawableRight="@drawable/location_icon"
                         android:text="@string/location"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/sp16" />
+                        android:textSize="@dimen/sp12"
+                        app:customFont="@string/roboto_bold" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 
         <include
-            layout="@layout/global_recycle_view_list"
+            layout="@layout/globle_recycle_viewlist"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </android.support.design.widget.AppBarLayout>

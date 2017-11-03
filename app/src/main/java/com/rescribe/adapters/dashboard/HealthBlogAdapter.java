@@ -2,8 +2,6 @@ package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.rescribe.R;
-import com.rescribe.model.book_appointment.doctor_data.ReviewList;
 import com.rescribe.model.dashboard.HealthBlogData;
-import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.WebViewActivity;
-import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
 
@@ -30,9 +25,8 @@ public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.Li
 
 
     private ArrayList<HealthBlogData> mHealthBlogList;
-    private Fragment mFragment;
     private Context mContext;
-    Integer[] imageId = {
+    Integer[] mImageId = {
             R.drawable.diabetes_and_weightloss,
             R.drawable.preventing_treating,
             R.drawable.tips_to_getting_sound_sleep,
@@ -57,7 +51,7 @@ public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.Li
     public void onBindViewHolder(ListViewHolder holder, int position) {
 
         final HealthBlogData healthBlogData = mHealthBlogList.get(position);
-        holder.diabetes.setImageResource(imageId[position]);
+        holder.diabetes.setImageResource(mImageId[position]);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +67,7 @@ public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.Li
 
     @Override
     public int getItemCount() {
-        return 4;
+        return mHealthBlogList.size();
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
@@ -87,9 +81,5 @@ public class HealthBlogAdapter extends RecyclerView.Adapter<HealthBlogAdapter.Li
             ButterKnife.bind(this, view);
             this.view = view;
         }
-    }
-
-    public interface OnFilterDocListClickListener {
-        void onClickOfDoctorRowItem(Bundle bundleData);
     }
 }

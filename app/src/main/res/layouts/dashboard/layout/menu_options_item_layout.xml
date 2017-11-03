@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+
+            android:id="@+id/selectMenuLayout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <ImageView
+                android:id="@+id/menuIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp8"
+                android:layout_marginStart="@dimen/dp8"
+                android:adjustViewBounds="true"
+                android:padding="@dimen/dp8"
+                android:src="@drawable/select_doctor" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/menuOptionName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/menuIcon"
+                android:layout_toLeftOf="@+id/arrowIcon1"
+                android:layout_toRightOf="@+id/menuIcon"
+                android:layout_toStartOf="@+id/arrowIcon1"
+                android:paddingEnd="@dimen/dp8"
+                android:paddingStart="@dimen/dp8"
+                android:text="@string/select_doctors"
+                android:textColor="@color/menu_option_on_dashboard_color"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_regular" />
+
+            <ImageView
+                android:id="@+id/dashboardArrowIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dp16"
+                android:layout_marginRight="@dimen/dp16"
+                android:src="@drawable/dashboard_arrow" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

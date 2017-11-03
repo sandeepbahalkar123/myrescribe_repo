@@ -31,12 +31,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:drawableLeft="@drawable/ruppee_dashboard"
+                    android:drawableLeft="@drawable/ruppee_grey"
                     android:drawablePadding="@dimen/dp4"
                     android:gravity="center_vertical"
                     android:paddingTop="14dp"
                     android:text="1799"
-                    android:textColor="@color/black"
+                    android:textColor="@color/Gray"
                     android:textSize="14sp"
                     app:customFont="@string/roboto_bold" />
 
@@ -64,7 +64,7 @@
                         android:layout_marginLeft="10dp"
                         android:gravity="bottom"
                         android:text="1799%"
-                        android:textColor="@color/green_percent"
+                        android:textColor="@color/Red"
                         android:textSize="14sp"
                         app:customFont="@string/roboto_bold" />
 

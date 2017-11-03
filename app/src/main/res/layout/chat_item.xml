@@ -18,15 +18,15 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/senderProfilePhoto"
             android:layout_toStartOf="@+id/senderProfilePhoto"
-            android:background="@drawable/blue_1"
+            android:background="@drawable/chat_input_msg"
             android:paddingBottom="@dimen/dp8"
             android:paddingEnd="@dimen/dp16"
             android:paddingLeft="@dimen/dp8"
             android:paddingRight="@dimen/dp16"
             android:paddingStart="@dimen/dp8"
             android:paddingTop="@dimen/dp8"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp14"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp17"
             app:customFont="@string/roboto_regular"
             tools:text="@string/dummy_normal"
             tools:visibility="gone" />
@@ -34,6 +34,7 @@
         <ImageView
             android:id="@+id/senderProfilePhoto"
             android:layout_width="@dimen/dp40"
+            android:layout_marginLeft="@dimen/dp10"
             android:layout_height="@dimen/dp40"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
@@ -134,7 +135,7 @@
             android:layout_marginStart="@dimen/dp68"
             android:layout_toLeftOf="@+id/senderProfilePhoto"
             android:layout_toStartOf="@+id/senderProfilePhoto"
-            android:background="@drawable/blue_1"
+            android:background="@drawable/chat_input_msg"
             android:paddingBottom="@dimen/dp8"
             android:paddingEnd="@dimen/dp16"
             android:paddingLeft="@dimen/dp8"
@@ -146,6 +147,7 @@
                 android:id="@+id/senderFileIcon"
                 android:layout_width="@dimen/dp30"
                 android:layout_height="@dimen/dp30"
+                android:layout_marginRight="@dimen/dp10"
                 android:layout_centerVertical="true"
                 tools:src="@drawable/welcome_copy_3" />
 
@@ -159,10 +161,11 @@
                 android:layout_toRightOf="@id/senderFileIcon"
                 android:layout_toStartOf="@+id/senderFileProgressLayout"
                 android:padding="@dimen/dp6"
+                android:textSize="@dimen/sp17"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/white"
-                app:customFont="@string/roboto_medium"
+                android:textColor="@color/black"
+                app:customFont="@string/roboto_regular"
                 tools:text="exl" />
 
             <!--Sender Progress-->
@@ -230,6 +233,7 @@
             android:id="@+id/receiverProfilePhoto"
             android:layout_width="@dimen/dp40"
             android:layout_height="@dimen/dp40"
+            android:layout_marginRight="@dimen/dp10"
             android:src="@drawable/doctor_speciality" />
 
         <com.rescribe.ui.customesViews.CustomTextView
@@ -238,7 +242,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/receiverProfilePhoto"
             android:layout_toRightOf="@+id/receiverProfilePhoto"
-            android:background="@drawable/lightblue_1_r"
+            android:background="@drawable/chat_back"
             android:paddingBottom="@dimen/dp8"
             android:paddingEnd="@dimen/dp8"
             android:paddingLeft="@dimen/dp16"
@@ -246,7 +250,7 @@
             android:paddingStart="@dimen/dp16"
             android:paddingTop="@dimen/dp8"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp14"
+            android:textSize="@dimen/sp17"
             app:customFont="@string/roboto_regular"
             tools:text="Hi Hello"
             tools:visibility="gone" />
@@ -345,7 +349,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/receiverProfilePhoto"
             android:layout_toRightOf="@+id/receiverProfilePhoto"
-            android:background="@drawable/lightblue_1_r"
+            android:background="@drawable/chat_back"
             android:paddingBottom="@dimen/dp8"
             android:paddingEnd="@dimen/dp8"
             android:paddingLeft="@dimen/dp16"
@@ -374,7 +378,7 @@
                 android:maxLines="1"
                 android:padding="@dimen/dp6"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp14"
+                android:textSize="@dimen/sp17"
                 app:customFont="@string/roboto_medium"
                 tools:text="@string/dummy_normal" />
 

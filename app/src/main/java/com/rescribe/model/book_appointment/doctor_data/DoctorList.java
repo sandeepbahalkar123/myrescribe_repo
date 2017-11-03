@@ -2,114 +2,93 @@
 package com.rescribe.model.book_appointment.doctor_data;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.rescribe.interfaces.CustomResponse;
 
 public class DoctorList implements Parcelable {
 
     @SerializedName("docId")
     @Expose
-    private Integer docId;
+    private int docId;
+    @SerializedName("doc_location_id")
+    @Expose
+    private int docLocationId;
+    @SerializedName("location_id")
+    @Expose
+    private int locationId;
     @SerializedName("docName")
     @Expose
-    private String docName;
+    private String docName = "";
     @SerializedName("doctorImageUrl")
     @Expose
-    private String doctorImageUrl;
+    private String doctorImageUrl = "";
     @SerializedName("speciality")
     @Expose
-    private String speciality;
+    private String speciality = "";
     @SerializedName("experience")
     @Expose
     private int experience;
     @SerializedName("doctorAddress")
     @Expose
-    private String doctorAddress;
-    @SerializedName("paidStatus")
-    @Expose
-    private Integer paidStatus;
+    private ArrayList<String> doctorAddress = new ArrayList<>();
     @SerializedName("amount")
     @Expose
-    private Integer amount;
+    private int amount;
     @SerializedName("distance")
     @Expose
-    private String distance;
+    private String distance = "";
     @SerializedName("recentlyVisited")
     @Expose
-    private Boolean recentlyVisited;
-    @SerializedName("aboutDoctor")
-    @Expose
-    private String aboutDoctor;
-    @SerializedName("degree")
-    @Expose
-    private String degree;
-    @SerializedName("rating")
-    @Expose
-    private double rating;
-    @SerializedName("waitingTime")
-    @Expose
-    private String waitingTime;
-    @SerializedName("tokenNo")
-    @Expose
-    private Integer tokenNo;
-    @SerializedName("morePracticePlaces")
-    @Expose
-    private List<String> morePracticePlaces = null;
-    @SerializedName("openToday")
-    @Expose
-    private String openToday;
-    @SerializedName("availableTimeSlots")
-    @Expose
-    private ArrayList<String> availableTimeSlots = new ArrayList<>();
+    private boolean recentlyVisited;
     @SerializedName("favourite")
     @Expose
-    private Boolean favourite;
-    @SerializedName("totalReview")
+    private boolean favourite;
+    @SerializedName("aboutDoctor")
     @Expose
-    private Integer totalReview;
-    @SerializedName("reviewList")
+    private String aboutDoctor = "";
+    @SerializedName("degree")
     @Expose
-    private ArrayList<ReviewList> reviewList = null;
+    private String degree = "";
+    @SerializedName("rating")
+    @Expose
+    private String rating = "";
 
-    public Boolean getFavourite() {
-        return favourite;
-    }
+    @SerializedName("waitingTime")
+    @Expose
+    private String waitingTime = "";
+    @SerializedName("tokenNo")
+    @Expose
+    private String tokenNo;
+    @SerializedName("morePracticePlaces")
+    @Expose
+    private ArrayList<PracticePlaceInfo> PracticePlaceInfos = new ArrayList<>();
+    @SerializedName("openToday")
+    @Expose
+    private boolean openToday;
+    @SerializedName("openTimeSlots")
+    @Expose
+    private ArrayList<String> availableTimeSlots = new ArrayList<>();
+    @SerializedName("reviewCount")
+    @Expose
+    private int totalReview;
+    @SerializedName("clinicName")
+    @Expose
+    private  ArrayList<String> clinicName = new ArrayList<>();
+    private double latitude = 0.0;
+    private double longitude = 0.0;
 
-    public void setFavourite(Boolean favourite) {
-        this.favourite = favourite;
-    }
-
-
-
-    private Double latitude;
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    private Double longitude;
+    //this parameters are used to sort list by clinicName and doctorName as per functionality
+    private String nameOfClinicString = "" ;
+    private String addressOfDoctorString = "";
+    /*  @SerializedName("reviewList")
+    @Expose
+    private ArrayList<ReviewList> reviewList = null;*/
 
     public final static Creator<DoctorList> CREATOR = new Creator<DoctorList>() {
-
 
         @SuppressWarnings({
                 "unchecked"
@@ -117,26 +96,30 @@ public class DoctorList implements Parcelable {
         public DoctorList createFromParcel(Parcel in) {
             DoctorList instance = new DoctorList();
             instance.docId = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.docLocationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.locationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.docName = ((String) in.readValue((String.class.getClassLoader())));
             instance.doctorImageUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.speciality = ((String) in.readValue((String.class.getClassLoader())));
-            instance.experience = ((int) in.readValue((Integer.class.getClassLoader())));
-            instance.doctorAddress = ((String) in.readValue((String.class.getClassLoader())));
-            instance.paidStatus = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.experience = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            in.readList(instance.doctorAddress, (String.class.getClassLoader()));
+            in.readList(instance.clinicName, (String.class.getClassLoader()));
             instance.amount = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.distance = ((String) in.readValue((String.class.getClassLoader())));
             instance.recentlyVisited = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.aboutDoctor = ((String) in.readValue((String.class.getClassLoader())));
             instance.degree = ((String) in.readValue((String.class.getClassLoader())));
-            instance.rating = ((double) in.readValue((Float.class.getClassLoader())));
+            instance.rating = ((String) in.readValue((String.class.getClassLoader())));
             instance.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
-            instance.tokenNo = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            in.readList(instance.morePracticePlaces, (String.class.getClassLoader()));
-            instance.openToday = ((String) in.readValue((String.class.getClassLoader())));
+            instance.tokenNo = ((String) in.readValue((String.class.getClassLoader())));
+            instance.nameOfClinicString = ((String) in.readValue((String.class.getClassLoader())));
+            instance.addressOfDoctorString = ((String) in.readValue((String.class.getClassLoader())));
+            in.readList(instance.PracticePlaceInfos, (PracticePlaceInfo.class.getClassLoader()));
+            instance.openToday = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             in.readList(instance.availableTimeSlots, (String.class.getClassLoader()));
             instance.totalReview = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
+            //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
             return instance;
         }
 
@@ -145,12 +128,61 @@ public class DoctorList implements Parcelable {
         }
 
     };
+    public String getNameOfClinicString() {
+        return nameOfClinicString;
+    }
 
-    public Integer getDocId() {
+    public void setNameOfClinicString(String nameOfClinicString) {
+        this.nameOfClinicString = nameOfClinicString;
+    }
+
+    public String getAddressOfDoctorString() {
+        return addressOfDoctorString;
+    }
+
+    public void setAddressOfDoctorString(String addressOfDoctorString) {
+        this.addressOfDoctorString = addressOfDoctorString;
+    }
+
+    public boolean getFavourite() {
+        return favourite;
+    }
+
+    public ArrayList<String> getClinicName() {
+        return clinicName;
+    }
+
+    public void setClinicName(ArrayList<String> clinicName) {
+        this.clinicName = clinicName;
+    }
+
+    public void setFavourite(Boolean favourite) {
+        this.favourite = favourite;
+    }
+
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+
+    public int getDocId() {
         return docId;
     }
 
-    public void setDocId(Integer docId) {
+    public void setDocId(int docId) {
         this.docId = docId;
     }
 
@@ -186,27 +218,12 @@ public class DoctorList implements Parcelable {
         this.experience = experience;
     }
 
-    public String getDoctorAddress() {
-        return doctorAddress;
-    }
 
-    public void setDoctorAddress(String doctorAddress) {
-        this.doctorAddress = doctorAddress;
-    }
-
-    public Integer getPaidStatus() {
-        return paidStatus;
-    }
-
-    public void setPaidStatus(Integer paidStatus) {
-        this.paidStatus = paidStatus;
-    }
-
-    public Integer getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
@@ -218,11 +235,11 @@ public class DoctorList implements Parcelable {
         this.distance = distance;
     }
 
-    public Boolean getRecentlyVisited() {
+    public boolean getRecentlyVisited() {
         return recentlyVisited;
     }
 
-    public void setRecentlyVisited(Boolean recentlyVisited) {
+    public void setRecentlyVisited(boolean recentlyVisited) {
         this.recentlyVisited = recentlyVisited;
     }
 
@@ -242,11 +259,11 @@ public class DoctorList implements Parcelable {
         this.degree = degree;
     }
 
-    public double getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
@@ -258,27 +275,20 @@ public class DoctorList implements Parcelable {
         this.waitingTime = waitingTime;
     }
 
-    public Integer getTokenNo() {
+    public String getTokenNo() {
         return tokenNo;
     }
 
-    public void setTokenNo(Integer tokenNo) {
+    public void setTokenNo(String tokenNo) {
         this.tokenNo = tokenNo;
     }
 
-    public List<String> getMorePracticePlaces() {
-        return morePracticePlaces;
-    }
 
-    public void setMorePracticePlaces(List<String> morePracticePlaces) {
-        this.morePracticePlaces = morePracticePlaces;
-    }
-
-    public String getOpenToday() {
+    public boolean getOpenToday() {
         return openToday;
     }
 
-    public void setOpenToday(String openToday) {
+    public void setOpenToday(boolean openToday) {
         this.openToday = openToday;
     }
 
@@ -288,30 +298,62 @@ public class DoctorList implements Parcelable {
 
     public void setAvailableTimeSlots(ArrayList<String> availableTimeSlots) {
         this.availableTimeSlots = availableTimeSlots;
-    }public Integer getTotalReview() {
+    }
+
+    public int getTotalReview() {
         return totalReview;
     }
 
-    public void setTotalReview(Integer totalReview) {
+    public void setTotalReview(int totalReview) {
         this.totalReview = totalReview;
     }
 
-    public ArrayList<ReviewList> getReviewList() {
+    public ArrayList<String> getDoctorAddress() {
+        return doctorAddress;
+    }
+
+    public void setDoctorAddress(ArrayList<String> doctorAddress) {
+        this.doctorAddress = doctorAddress;
+    }
+
+
+   /* public ArrayList<ReviewList> getReviewList() {
         return reviewList;
     }
 
     public void setReviewList(ArrayList<ReviewList> reviewList) {
         this.reviewList = reviewList;
+    }*/
+
+
+    public ArrayList<String> getPracticePlaceInfos() {
+        ArrayList<String> temp = new ArrayList<>();
+        for (PracticePlaceInfo data :
+                PracticePlaceInfos) {
+            temp.add(data.toString());
+        }
+        return temp;
+    }
+
+    public void setPracticePlaceInfos(ArrayList<String> PracticePlaceInfos) {
+        ArrayList<PracticePlaceInfo> d = new ArrayList<>();
+        for (String data :
+                PracticePlaceInfos) {
+            d.add(new PracticePlaceInfo(data, "", ""));
+        }
+        this.PracticePlaceInfos = d;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(docId);
+        dest.writeValue(docLocationId);
+        dest.writeValue(locationId);
         dest.writeValue(docName);
         dest.writeValue(doctorImageUrl);
         dest.writeValue(speciality);
         dest.writeValue(experience);
-        dest.writeValue(doctorAddress);
-        dest.writeValue(paidStatus);
+        dest.writeList(doctorAddress);
+        dest.writeList(clinicName);
         dest.writeValue(amount);
         dest.writeValue(distance);
         dest.writeValue(recentlyVisited);
@@ -320,40 +362,53 @@ public class DoctorList implements Parcelable {
         dest.writeValue(rating);
         dest.writeValue(waitingTime);
         dest.writeValue(tokenNo);
-        dest.writeList(morePracticePlaces);
+        dest.writeValue(nameOfClinicString);
+        dest.writeValue(addressOfDoctorString);
+        dest.writeList(PracticePlaceInfos);
         dest.writeValue(openToday);
         dest.writeValue(favourite);
         dest.writeList(availableTimeSlots);
         dest.writeValue(totalReview);
-        dest.writeList(reviewList);
+       /*  dest.writeList(reviewList);*/
     }
+
 
     public int describeContents() {
         return 0;
     }
 
+/*
+
     @Override
     public String toString() {
-        return "DoctorData{" +
+        return "DoctorList{" +
                 "docId=" + docId +
+                ", docLocationId=" + docLocationId +
+                ", locationId=" + locationId +
                 ", docName='" + docName + '\'' +
                 ", doctorImageUrl='" + doctorImageUrl + '\'' +
                 ", speciality='" + speciality + '\'' +
                 ", experience=" + experience +
                 ", doctorAddress='" + doctorAddress + '\'' +
-                ", paidStatus=" + paidStatus +
                 ", amount=" + amount +
                 ", distance='" + distance + '\'' +
                 ", recentlyVisited=" + recentlyVisited +
                 ", aboutDoctor='" + aboutDoctor + '\'' +
                 ", degree='" + degree + '\'' +
-                ", rating=" + rating +
+                ", rating='" + rating + '\'' +
                 ", waitingTime='" + waitingTime + '\'' +
                 ", tokenNo=" + tokenNo +
-                ", morePracticePlaces=" + morePracticePlaces +
+                ", PracticePlaceInfos=" + PracticePlaceInfos +
                 ", openToday='" + openToday + '\'' +
                 ", availableTimeSlots=" + availableTimeSlots +
                 ", favourite=" + favourite +
+                ", totalReview=" + totalReview +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
                 '}';
     }
-}
+*/
+
+
+
+    }

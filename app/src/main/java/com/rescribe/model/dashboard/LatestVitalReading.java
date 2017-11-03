@@ -3,6 +3,8 @@ package com.rescribe.model.dashboard;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 public class LatestVitalReading {
 
@@ -55,6 +57,11 @@ public class LatestVitalReading {
     }
 
     public String getDate() {
+        if (date != null) {
+            if (date.contains("T")) {
+                date = CommonMethods.formatDateTime(date, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
+            }
+        }
         return date;
     }
 

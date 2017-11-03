@@ -6,10 +6,13 @@ import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 
+import com.rescribe.R;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.Map;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -135,6 +138,17 @@ public class RescribePreferencesManager {
         getSharedPreference(context).edit().clear().apply();
     }
 
+    public static void removeSharedPrefKey(Context context, String receivedKey) {
+        SharedPreferences sharedPreference = RescribePreferencesManager.getSharedPreference(context);
+        Map<String, ?> keys = sharedPreference.getAll();
+        for (Map.Entry<String, ?> entry : keys.entrySet()) {
+            String key = entry.getKey();
+            if (key.equalsIgnoreCase(receivedKey)) {
+                getSharedPreference(context).edit().remove(key).apply();
+            }
+        }
+    }
+
     private static String encode(byte[] input) {
         return Base64.encodeToString(input, Base64.NO_PADDING | Base64.NO_WRAP);
     }
@@ -222,7 +236,7 @@ public class RescribePreferencesManager {
         String LOGIN_OR_SIGNUP = "signup_login";
         String COACHMARK = "coachmark";
         String NOTIFY_DATE = "notify_date";
-        String MOBILE_NUMBER_GMAIL = "mobile_number_gmail" ;
+        String MOBILE_NUMBER_GMAIL = "mobile_number_gmail";
         String PASSWORD_GMAIL = "password_gmail";
         String MOBILE_NUMBER_FACEBOOK = "mobile_number_facebook";
         String PASSWORD_FACEBOOK = "password_facebook";

@@ -21,12 +21,12 @@ import butterknife.ButterKnife;
 public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDetailsAdapter.FileViewHolder> {
 
     private final ArrayList<CaseDetailsData> caseDetailsList;
-    private final Context context;
+    private final Context mContext;
     private int vitalsPos = -1;
     private ItemClickListener itemClickListener;
 
     public FilterCaseDetailsAdapter(Context context, ArrayList<CaseDetailsData> caseDetailsList) {
-        this.context = context;
+        this.mContext = context;
         this.caseDetailsList = caseDetailsList;
 
         try {
@@ -45,7 +45,7 @@ public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDet
 
     @Override
     public FileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context)
+        View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.case_details_row, parent, false);
         return new FilterCaseDetailsAdapter.FileViewHolder(view);
     }
@@ -73,12 +73,12 @@ public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDet
                     }
                     if (isOtherSelected) {
                         caseDetailsList.get(position).setSelected(false);
-                        CommonMethods.showInfoDialog(context.getResources().getString(R.string.case_details_message), context, false);
+                        CommonMethods.showInfoDialog(mContext.getResources().getString(R.string.case_details_message), mContext, false);
                     } else
                         toggle(position);
                 } else if (caseDetailsList.get(vitalsPos).isSelected()) {
                     caseDetailsList.get(position).setSelected(false);
-                    CommonMethods.showInfoDialog(context.getResources().getString(R.string.case_details_message), context, false);
+                    CommonMethods.showInfoDialog(mContext.getResources().getString(R.string.case_details_message), mContext, false);
                 } else*/
                     toggle(position);
 

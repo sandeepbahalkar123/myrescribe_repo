@@ -30,6 +30,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.DatePickerDialogListener;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.Common;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphBaseModel;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphData;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphList;
@@ -41,8 +42,11 @@ import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -126,8 +130,9 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
                 setTrackerListAdapter(temp);
                 break;
             case RescribeConstants.TASK_ADD_VITAL_MANUALLY:
-                Common common = (Common) customResponse;
-                CommonMethods.showToast(this, "" + common.getStatusMessage());
+                CommonBaseModelContainer common = (CommonBaseModelContainer) customResponse;
+                CommonMethods.showToast(this, "" + common.getCommonRespose().getStatusMessage());
+                finish();
                 break;
         }
 
@@ -193,7 +198,8 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
     }
 
 
-    public void openAddTrackerDialog(final VitalGraphTracker vitalList) {
+    //-- Add Tracker copied from addTrackerActivity.java
+    private void openAddTrackerDialog(final VitalGraphTracker vitalList) {
         final View modalbottomsheet = getLayoutInflater().inflate(R.layout.add_new_tracker_dialog, null);
         final CustomTextView addTrackerDate = (CustomTextView) modalbottomsheet.findViewById(R.id.addTrackerDate);
         CustomTextView header = (CustomTextView) modalbottomsheet.findViewById(R.id.header);
@@ -207,7 +213,6 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
         //------
         Button addTrackerButton = (Button) modalbottomsheet.findViewById(R.id.addTrackerButton);
         //---------
-
 
         //-------------
         if (vitalList.getVitalName().equalsIgnoreCase("Blood Pressure")) {
@@ -235,6 +240,7 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
                 Calendar now = Calendar.getInstance();
                 DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
                         new DatePickerDialog.OnDateSetListener() {
+
                             @Override
                             public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
                                 addTrackerDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
@@ -252,22 +258,38 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
         addTrackerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date currentDate = new Date();
                 String date = addTrackerDate.getText().toString();
                 String readingData = reading.getText().toString();
                 String systolicData = systolic.getText().toString();
                 String dystolicData = dystolic.getText().toString();
+                boolean isError = false;
                 if (date.trim().length() == 0) {
                     CommonMethods.showToast(AddTrackerActivity.this, getString(R.string.enter_date));
+                    isError = true;
+                } else if (date.trim().length() != 0) {
+                    Date enteredDate = CommonMethods.convertStringToDate(mSelectedTrackerDateToSend, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                    if (enteredDate.getTime() > currentDate.getTime()) {
+                        isError = true;
+                        CommonMethods.showToast(AddTrackerActivity.this, getString(R.string.err_reading_date));
+                    }
                 } else if (readingData.trim().length() == 0 && reading.getVisibility() == View.VISIBLE) {
+                    isError = true;
                     CommonMethods.showToast(AddTrackerActivity.this, getString(R.string.enter_reading));
                 } else if (bloodPressureReadingLayout.getVisibility() == View.VISIBLE && systolicData.trim().length() == 0) {
+                    isError = true;
                     CommonMethods.showToast(AddTrackerActivity.this, getString(R.string.enter_systolic));
                 } else if (bloodPressureReadingLayout.getVisibility() == View.VISIBLE && dystolicData.trim().length() == 0) {
+                    isError = true;
                     CommonMethods.showToast(AddTrackerActivity.this, getString(R.string.enter_diastolic));
-                } else {
-                    VitalGraphAddNewTrackerRequestModel model = new VitalGraphAddNewTrackerRequestModel();
+                }
 
-                    model.setCheckDate(mSelectedTrackerDateToSend);
+                if (!isError) {
+                    VitalGraphAddNewTrackerRequestModel model = new VitalGraphAddNewTrackerRequestModel();
+                    //-----
+                    DateFormat writeFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.HH_mm_ss);
+                    model.setCheckDate(mSelectedTrackerDateToSend + " " + writeFormat.format(new Date()));
+                    //-----
                     model.setVitalName(vitalList.getVitalName());
                     if (bloodPressureReadingLayout.getVisibility() == View.VISIBLE) {
                         model.setVitalValue(systolic.getText().toString() + "/" + dystolic.getText().toString());
@@ -279,7 +301,5 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
                 }
             }
         });
-
     }
-
 }

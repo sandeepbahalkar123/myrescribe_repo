@@ -39,6 +39,16 @@ public class DoctorData {
     @SerializedName("degree")
     @Expose
     private String degree;
+    @SerializedName("rating")
+    @Expose
+    private String rating;
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
 
     public String getDocId() {
         return docId;

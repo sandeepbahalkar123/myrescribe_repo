@@ -31,9 +31,11 @@ import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.Connector;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
+import com.rescribe.model.book_appointment.reviews.ReviewListBaseModel;
 import com.rescribe.model.case_details.CaseDetailsModel;
 import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.history.ChatHistoryModel;
@@ -576,9 +578,13 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         ChatHistoryModel chatHistoryModel = new Gson().fromJson(data, ChatHistoryModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, chatHistoryModel, mOldDataTag);
                         break;
-                    case RescribeConstants.TASK_GET_DOCTOR_DATA: //This is for get archived list
+                    case RescribeConstants.TASK_GET_DOCTOR_DATA://get doctor data by location
                         BookAppointmentBaseModel bookAppointmentBaseModel = new Gson().fromJson(data, BookAppointmentBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_GET_DOCTOR_LIST_BY_COMPLAINT://get doctor data by location
+                        BookAppointmentBaseModel bookAppointmentBaseModelForComplaint = new Gson().fromJson(data, BookAppointmentBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModelForComplaint, mOldDataTag);
                         break;
                     case RescribeConstants.TASK_GET_COMPLAINTS: //This is for get archived list
                         ComplaintsBaseModel complaintsBaseModel = new Gson().fromJson(data, ComplaintsBaseModel.class);
@@ -587,7 +593,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG: //This is for get archived list
                         BookAppointFilterBaseModel bookAppointFilterBaseModel = new Gson().fromJson(data, BookAppointFilterBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, bookAppointFilterBaseModel, mOldDataTag);
-
+                        break;
                     case RescribeConstants.TASK_GET_PATIENT_VITAL_LIST: //This is for get vital graph list
                         VitalGraphBaseModel vitalGraphBaseModel = new Gson().fromJson(data, VitalGraphBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, vitalGraphBaseModel, mOldDataTag);
@@ -601,9 +607,8 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, vitalGraphTrackerBaseModel, mOldDataTag);
                         break;
                     case RescribeConstants.TASK_ADD_VITAL_MANUALLY: //This is for get vital graph tracker list
-                        Common c = new Gson().fromJson(data, Common.class);
+                        CommonBaseModelContainer c = new Gson().fromJson(data, CommonBaseModelContainer.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, c, mOldDataTag);
-
                         break;
 
                     case RescribeConstants.ACTIVE_STATUS: //This is for get archived list
@@ -614,6 +619,15 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.LOGOUT: //This is for get archived list
                         ActiveStatusModel activeStatusLogout = new Gson().fromJson(data, ActiveStatusModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, activeStatusLogout, mOldDataTag);
+                        break;
+
+                    case RescribeConstants.TASK_GET_REVIEW_LIST: //This is for get archived list
+                        ReviewListBaseModel reviewListBaseModel = new Gson().fromJson(data, ReviewListBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, reviewListBaseModel, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER: //This is for get archived list
+                        BookAppointmentBaseModel dataObject = new Gson().fromJson(data, BookAppointmentBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dataObject, mOldDataTag);
                         break;
 
                     default:

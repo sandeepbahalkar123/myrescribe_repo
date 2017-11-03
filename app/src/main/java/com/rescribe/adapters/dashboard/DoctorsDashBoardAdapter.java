@@ -1,9 +1,9 @@
 package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.dashboard.DoctorData;
@@ -33,13 +34,8 @@ import butterknife.ButterKnife;
 
 public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoardAdapter.ListViewHolder> {
 
-    @BindView(R.id.doctorAddress)
-    CustomTextView doctorAddress;
-    @BindView(R.id.recentVisit)
-    CustomTextView recentVisit;
-    private Fragment mFragment;
     private Context mContext;
-    private int imageSize;
+    private int mImageSize;
     private ColorGenerator mColorGenerator;
     private ArrayList<DoctorData> mDataList;
 
@@ -48,8 +44,6 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         this.mContext = mContext;
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
-
-
     }
 
     private void setColumnNumber(Context context, int columnNum) {
@@ -57,13 +51,13 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         int widthPixels = metrics.widthPixels;
-        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.doctor_list_item_dashboard, parent, false);
+                .inflate(R.layout.doctor_details_view_item, parent, false);
 
         return new ListViewHolder(itemView);
     }
@@ -91,7 +85,9 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         } else {
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
-            requestOptions.override(imageSize, imageSize);
+            requestOptions.override(mImageSize, mImageSize);
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
             requestOptions.placeholder(R.drawable.layer_12);
 
             Glide.with(mContext)
@@ -105,7 +101,11 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         holder.doctorAddress.setText(doctorObject.getDoctorAddress());
         holder.doctorCategory.setText(doctorObject.getCategoryName());
         holder.feesToPaid.setText(doctorObject.getAmount());
-        if (doctorObject.getRecentlyVisited()) {
+        SpannableString content = new SpannableString("");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        holder.doctorAppointmentDate.setText(content);
+
+       /* if (doctorObject.getRecentlyVisited()) {
             holder.recentVisit.setVisibility(View.VISIBLE);
         } else {
             holder.recentVisit.setVisibility(View.GONE);
@@ -114,7 +114,7 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
             holder.favorite.setVisibility(View.VISIBLE);
         } else {
             holder.favorite.setVisibility(View.INVISIBLE);
-        }
+        }*/
     }
 
     @Override
@@ -123,8 +123,10 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
+        /*@BindView(R.id.recentVisit)
+        CustomTextView recentVisit;
         @BindView(R.id.favorite)
-        ImageView favorite;
+        ImageView favorite;*/
         @BindView(R.id.imageURL)
         CircularImageView imageURL;
         @BindView(R.id.thumbnail)
@@ -137,12 +139,14 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
         CustomTextView doctorExperience;
         @BindView(R.id.doctorAddress)
         CustomTextView doctorAddress;
-        @BindView(R.id.recentVisit)
-        CustomTextView recentVisit;
         @BindView(R.id.doctorCategoryVisit)
         CustomTextView doctorCategory;
         @BindView(R.id.feesToPaidVisit)
         CustomTextView feesToPaid;
+        @BindView(R.id.bookAppointmentButton)
+        ImageView bookAppointmentButton;
+        @BindView(R.id.doctorAppointmentDate)
+        CustomTextView doctorAppointmentDate;
 
         View view;
 
@@ -151,9 +155,5 @@ public class DoctorsDashBoardAdapter extends RecyclerView.Adapter<DoctorsDashBoa
             ButterKnife.bind(this, view);
             this.view = view;
         }
-    }
-
-    public interface OnFilterDocListClickListener {
-        void onClickOfDoctorRowItem(Bundle bundleData);
     }
 }

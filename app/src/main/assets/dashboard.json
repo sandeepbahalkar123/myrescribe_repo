@@ -10,10 +10,10 @@
       "Dr. Conenct",
       "My Records",
       "Pharmacy",
+      "Diagnostic Center",
       "Hospital",
       "Blood Bank",
-      "Ambulance",
-      "Diagnostic Center"
+      "Ambulance"
     ],
     "doctorList": [
       {
@@ -26,12 +26,13 @@
         "doctorAddress": "Hadapsar, Pune",
         "amount": 500,
         "recentlyVisited": true,
-        "favourite": true,
-        "degree": "MBBS,MD-Medicine,Neurology"
+        "favourite": false,
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "rating": "4.2"
       },
       {
         "docId": 5,
-        "categoryName": "Sponsored",
+        "categoryName": "Sponsored Doctor",
         "docName": "Dr. Suresh Shah",
         "doctorImageUrl": "",
         "speciality": "Dermatology",
@@ -40,11 +41,12 @@
         "amount": 200,
         "recentlyVisited": false,
         "favourite": true,
-        "degree": "MBBS, MD - Dermatology"
+        "degree": "MBBS, MD - Dermatology",
+        "rating": "3.2"
       },
       {
         "docId": 6,
-        "categoryName": "Recently Visited",
+        "categoryName": "Recently Visited Doctor",
         "docName": "Dr. Kishor Kulkarni",
         "doctorImageUrl": "",
         "speciality": "Cardiology",
@@ -53,13 +55,14 @@
         "amount": 300,
         "recentlyVisited": true,
         "favourite": true,
-        "degree": "MBBS, MD-Medicine, Cardiology"
+        "degree": "MBBS, MD-Medicine, Cardiology",
+        "rating": "4.8"
       }
     ],
     "pendingInvestigationList": [
       {
         "id": 1,
-        "investigationName": "CT Scan"
+        "speciality": "CT Scan"
       },
       {
         "id": 2,
@@ -95,47 +98,55 @@
         "diagnosticCentreName": "Metropolis",
         "actualPrice": "1799",
         "discountedPrice": "1583",
-        "discountPercentage": "12"
+        "discountPercentage": "12",
+        "centerType": "Premium",
+        "imgUrl": ""
       },
       {
         "id": 2,
         "diagnosticCentreName": "Apollo Diagnostics",
         "actualPrice": "2356",
         "discountedPrice": "2003",
-        "discountPercentage": "12"
+        "discountPercentage": "12",
+        "centerType": "Exclusive",
+        "imgUrl": ""
       },
       {
         "id": 3,
         "diagnosticCentreName": "Thyrocare",
         "actualPrice": "3765",
         "discountedPrice": "3087",
-        "discountPercentage": "18"
+        "discountPercentage": "18",
+        "centerType": "Exclusive",
+        "imgUrl": ""
       }
     ],
     "healthBlogList": [
       {
         "id": 1,
         "healthBlogName": "Diabetes & Weight Loss",
-        "healthBlogImgUrl": "http://blogs.scorgtechnologies.com/weight-loss-in-diabetes/"
+        "healthBlogImgUrl": ""
       },
       {
         "id": 2,
         "healthBlogName": "Preventing & Treating Muscle Cramps",
-        "healthBlogImgUrl": "http://blogs.scorgtechnologies.com/preventing-treating-muscle-cramps/"
+        "healthBlogImgUrl": ""
       },
       {
         "id": 3,
         "healthBlogName": "Tips to getting sound sleep",
-        "healthBlogImgUrl": "http://blogs.scorgtechnologies.com/tips-for-getting-a-sound-sleep/"
-      },
-      {
-        "id": 4,
-        "healthBlogName": "Myths about Cancer - Time to know the truth",
-        "healthBlogImgUrl": "http://blogs.scorgtechnologies.com/five-myths-about-cancer/"
+        "healthBlogImgUrl": ""
       }
     ],
-    "tipOfTheDayImageUrl": "",
-    "jokeOfTheDayImageUrl": ""
+    "tipAndJokeOfTheDayList": [
+      {
+        "imgURL": "",
+        "type": "tip"
+      },
+      {
+        "imgURL": "",
+        "type": "joke"
+      }
+    ]
   }
 }
-

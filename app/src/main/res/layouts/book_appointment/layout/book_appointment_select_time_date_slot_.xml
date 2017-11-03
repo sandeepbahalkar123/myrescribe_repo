@@ -1,0 +1,190 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/doc_detail_header_bg"
+                android:orientation="vertical"
+                android:padding="@dimen/md_baseline"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp10"
+                    android:gravity="center">
+
+                    <com.rescribe.ui.customesViews.CircularImageView
+                        android:id="@+id/profileImage"
+                        android:layout_width="@dimen/dp120"
+                        android:layout_height="@dimen/dp120"
+                        android:clickable="true"
+                        android:scaleType="centerCrop" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/docRating"
+                        style="@style/Base.TextAppearance.AppCompat.Body2"
+                        android:layout_width="@dimen/dp48"
+                        android:layout_height="@dimen/dp48"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="-30dp"
+                        android:layout_toRightOf="@+id/profileImage"
+                        android:background="@drawable/star"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:text="+10"
+                        android:textColor="@android:color/white"
+                        android:textSize="11sp" />
+
+                </RelativeLayout>
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/clinicName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:textColor="@color/recentblue"
+                    android:textSize="@dimen/sp20"
+                    app:customFont="@string/roboto_bold"
+                    tools:text="Dr. Patil" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/recentblue"
+                    android:textSize="@dimen/sp20"
+                    app:customFont="@string/roboto_bold"
+                    tools:text="Dr. Patil" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorSpecialization"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dip"
+                    android:gravity="center"
+                    android:textColor="@color/dose_completed"
+                    android:textSize="@dimen/sp15"
+                    app:customFont="@string/roboto_medium"
+                    tools:text="Cardilogist" />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dp10"
+                android:paddingTop="@dimen/dp10">
+
+                <ImageView
+                    android:id="@+id/leftArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/leftArrow"
+                    android:paddingLeft="@dimen/dp6"
+                    android:paddingStart="@dimen/dp6"
+                    android:layout_marginTop="@dimen/dp4"
+                    android:src="@drawable/left_arrow" />
+
+
+                <ImageView
+                    android:id="@+id/rightArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="@dimen/dp6"
+                    android:layout_marginRight="@dimen/dp6"
+                    android:layout_marginTop="@dimen/dp4"
+                    android:src="@drawable/right_arrow_book_appointment" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/selectDateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/leftArrow"
+                    android:layout_toLeftOf="@id/rightArrow"
+                    android:layout_toRightOf="@id/leftArrow"
+                    android:layout_toStartOf="@id/rightArrow"
+                    android:gravity="center"
+                    android:padding="@dimen/dp4"
+                    android:hint="Select date"
+                    android:textColorHint="@color/grey_300"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp17"
+                    app:customFont="@string/roboto_medium" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/adapter_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider"
+              />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ExpandableListView
+                    android:id="@+id/selectTimeDateExpandableView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:groupIndicator="@null"
+                    android:visibility="visible"
+                    android:listSelector="@android:color/transparent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"></ExpandableListView>
+
+            </LinearLayout>
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/bookAppointmentButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/clickHere"
+            android:text="@string/book_appointment"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+</LinearLayout>

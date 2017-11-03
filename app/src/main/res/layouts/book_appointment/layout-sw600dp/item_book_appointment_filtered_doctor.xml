@@ -187,6 +187,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:paddingTop="@dimen/dp6"
+                    android:visibility="invisible"
                     android:src="@drawable/location_green" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
@@ -195,6 +196,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="2.1 KM"
+                    android:visibility="invisible"
                     android:textAllCaps="false"
                     android:textColor="@color/dose_completed"
                     android:textSize="@dimen/sp11"

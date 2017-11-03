@@ -7,12 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.book_appointment.doctor_data.ReviewList;
+import com.rescribe.model.book_appointment.reviews.Review;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -25,14 +26,12 @@ import butterknife.ButterKnife;
 
 public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.ListViewHolder> {
 
-    private Fragment mFragment;
     private Context mContext;
-    private ArrayList<ReviewList> mDataList;
+    private ArrayList<Review> mDataList;
 
-    public ShowReviewsAdapter(Context mContext, ArrayList<ReviewList> dataList) {
+    public ShowReviewsAdapter(Context mContext, ArrayList<Review> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
-
 
     }
 
@@ -47,12 +46,18 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
 
-        final ReviewList doctorObject = mDataList.get(position);
-
-
-        holder.reviewName.setText(doctorObject.getUserName());
-        holder.review.setText(doctorObject.getUserMessage());
-
+        final Review doctorObject = mDataList.get(position);
+        holder.reviewName.setText(doctorObject.getRevierName());
+        if(doctorObject.getReviewCommment().equals("")){
+            holder.review.setVisibility(View.GONE);
+        }else {
+            holder.review.setText(doctorObject.getReviewCommment());
+            holder.review.setVisibility(View.VISIBLE);
+        }
+        holder.reviewDate.setText(CommonMethods.getFormattedDate(doctorObject.getReviewDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN,RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+        if(!doctorObject.getRating().equals("NA")) {
+            holder.ratingBar.setRating(Float.parseFloat(doctorObject.getRating()));
+        }
     }
 
     @Override
@@ -65,6 +70,10 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
         CustomTextView reviewName;
         @BindView(R.id.review)
         CustomTextView review;
+        @BindView(R.id.reviewDate)
+        CustomTextView reviewDate;
+        @BindView(R.id.ratingBar)
+        RatingBar ratingBar;
 
         View view;
 
@@ -74,9 +83,4 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
             this.view = view;
         }
     }
-
-    public interface OnFilterDocListClickListener {
-        void onClickOfDoctorRowItem(Bundle bundleData);
-    }
-
 }

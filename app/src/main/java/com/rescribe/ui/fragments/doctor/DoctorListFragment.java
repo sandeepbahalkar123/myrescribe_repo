@@ -43,7 +43,7 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.global_recycle_view_list, container, false);
+        mRootView = inflater.inflate(R.layout.globle_recycle_viewlist, container, false);
         init();
         mParentActivity = (DoctorListActivity) getActivity();
 
@@ -101,6 +101,9 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
                         mDoctorListView.setHasFixedSize(true);
                         mDoctorListView.setAdapter(showDoctorListAdapter);
                     }
+                } else {
+                    mDoctorListView.setVisibility(View.GONE);
+                    mEmptyListView.setVisibility(View.VISIBLE);
                 }
             }
         }

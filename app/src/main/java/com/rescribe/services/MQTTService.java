@@ -51,7 +51,6 @@ public class MQTTService extends Service {
     public static final String KEY_REPLY = "key_replay";
     public static final String REPLY_ACTION = "com.rescribe.REPLY_ACTION";
     public static final String SEND_MESSAGE = "send_message";
-
     private static int currentChatUser = 0;
     private static final String TAG = "MQTTService";
     public static final String MESSAGE = "message";

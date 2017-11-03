@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.doctors.appointments.AptList;
@@ -41,7 +42,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private int imageSize;
 
 
-    public AppointmentAdapter(Context mContext, ArrayList<AptList> appointmentsList, String appointmentType) {
+    public AppointmentAdapter(final Context mContext, ArrayList<AptList> appointmentsList, String appointmentType) {
+
         this.mAppointmentType = appointmentType;
         this.appointmentsList = appointmentsList;
         this.mContext = mContext;
@@ -128,6 +130,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         //-------Load image-------
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
         requestOptions.override(imageSize, imageSize);
         requestOptions.placeholder(R.drawable.layer_12);
 

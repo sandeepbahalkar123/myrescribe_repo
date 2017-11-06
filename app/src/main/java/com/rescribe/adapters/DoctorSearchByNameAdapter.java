@@ -17,6 +17,9 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.ChatActivity;
@@ -31,6 +34,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
+import static com.rescribe.util.RescribeConstants.USER_STATUS.IDLE;
+import static com.rescribe.util.RescribeConstants.USER_STATUS.OFFLINE;
+import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 /**
  * Created by jeetal on 8/9/17.
@@ -42,7 +48,6 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
     private ArrayList<ChatDoctor> appointmentsList;
     private ArrayList<ChatDoctor> mArrayList;
     String searchString = "";
-    private String mIdle, mOnline, mOffline;
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
 
@@ -52,6 +57,10 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         TextView doctorType;
         @BindView(R.id.onlineStatusTextView)
         TextView onlineStatusTextView;
+
+        @BindView(R.id.onlineStatusIcon)
+        ImageView onlineStatusIcon;
+
         @BindView(R.id.paidStatusTextView)
         TextView paidStatusTextView;
         @BindView(R.id.imageOfDoctor)
@@ -72,9 +81,6 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         mArrayList = appointmentsList;
         this.mContext = mContext;
         mColorGenerator = ColorGenerator.MATERIAL;
-        mOnline = mContext.getString(R.string.online);
-        mOffline = mContext.getString(R.string.offline);
-        mIdle = mContext.getString(R.string.idle);
     }
 
     @Override
@@ -90,31 +96,51 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         final ChatDoctor chatDoctor = appointmentsList.get(position);
         holder.doctorType.setText(chatDoctor.getSpecialization());
         //-----------
-        if (chatDoctor.getOnlineStatus().equalsIgnoreCase(mOnline)) {
+
+        holder.onlineStatusIcon.setVisibility(View.GONE);
+
+        if (chatDoctor.getOnlineStatus().equalsIgnoreCase(ONLINE)) {
+
+            holder.onlineStatusIcon.setVisibility(View.VISIBLE);
+
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.green_light));
-        } else if (chatDoctor.getOnlineStatus().equalsIgnoreCase(mIdle)) {
+        } else if (chatDoctor.getOnlineStatus().equalsIgnoreCase(IDLE)) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
-        } else if (chatDoctor.getOnlineStatus().equalsIgnoreCase(mOffline)) {
+        } else if (chatDoctor.getOnlineStatus().equalsIgnoreCase(OFFLINE)) {
             holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.grey_500));
-        } else {
-            holder.onlineStatusTextView.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
         }
+
         //-----------
         holder.onlineStatusTextView.setText(chatDoctor.getOnlineStatus());
         holder.paidStatusTextView.setText(chatDoctor.getPaidStatus() == DoctorConnectActivity.PAID ? "Rs 255/-" : "FREE");
         String doctorName = chatDoctor.getDoctorName();
-        // Removed Dr. from doctor name to get starting letter of doctorName to set to image icon.
-        doctorName = doctorName.replace("Dr. ", "");
-        if (doctorName != null) {
-            int color2 = mColorGenerator.getColor(doctorName);
-            TextDrawable drawable = TextDrawable.builder()
-                    .beginConfig()
-                    .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
-                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
-                    .endConfig()
-                    .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-            holder.imageOfDoctor.setImageDrawable(drawable);
+
+        int color2 = mColorGenerator.getColor(doctorName);
+        TextDrawable drawable = TextDrawable.builder()
+                .beginConfig()
+                .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                .endConfig()
+                .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
+        holder.imageOfDoctor.setImageDrawable(drawable);
+
+        if (chatDoctor.getImageUrl() != null) {
+            if (!chatDoctor.getImageUrl().equals("")) {
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.dontAnimate();
+                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.skipMemoryCache(true);
+                requestOptions.override(CommonMethods.convertDpToPixel(40), CommonMethods.convertDpToPixel(40));
+                requestOptions.placeholder(drawable);
+                requestOptions.error(drawable);
+
+                Glide.with(mContext)
+                        .load(chatDoctor.getImageUrl())
+                        .apply(requestOptions).thumbnail(0.5f)
+                        .into(holder.imageOfDoctor);
+            }
         }
+
         //Used spannable to show searchtext in different colour
         SpannableString spannableStringSearch = null;
         if ((searchString != null) && (!searchString.isEmpty())) {

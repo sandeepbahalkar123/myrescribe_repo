@@ -12,6 +12,7 @@ import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.notification.MessageNotification;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import static com.rescribe.services.MQTTService.REPLY_ACTION;
@@ -67,6 +68,10 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
             messageL.setSpecialization("");
             messageL.setPaidStatus(FREE);
             messageL.setFileType("");
+
+            // 2017-10-13 13:08:07
+            String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+            messageL.setMsgTime(msgTime);
 
             // send msg by http api
 

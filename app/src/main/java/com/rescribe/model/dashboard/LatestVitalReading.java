@@ -59,7 +59,7 @@ public class LatestVitalReading {
     public String getDate() {
         if (date != null) {
             if (date.contains("T")) {
-                date = CommonMethods.formatDateTime(date, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
+                date = CommonMethods.formatDateTime(date, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
             }
         }
         return date;

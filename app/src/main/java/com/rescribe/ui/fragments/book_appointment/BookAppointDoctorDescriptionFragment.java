@@ -42,6 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+//TODO , NNED TO IMPLEMNT AS PER NEW JSON
 
 public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
 
@@ -148,7 +149,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         mDoctorSpecialization.setText("" + mClickedDoctorObject.getDegree());
         mAboutDoctorDescription.setText("" + mClickedDoctorObject.getAboutDoctor());
         mDoctorExperience.setText("" + mClickedDoctorObject.getExperience() + getString(R.string.space) + getString(R.string.years_experience));
-        mDoctorFees.setText(getString(R.string.fee) + getString(R.string.space) + getString(R.string.rupees) + mClickedDoctorObject.getAmount() + getString(R.string.space) + getString(R.string.slash) + getString(R.string.space) + getString(R.string.session));
+       // mDoctorFees.setText(getString(R.string.fee) + getString(R.string.space) + getString(R.string.rupees) + mClickedDoctorObject.getAmount() + getString(R.string.space) + getString(R.string.slash) + getString(R.string.space) + getString(R.string.session));
 
         int spanCount = 2; // 3 columns
         int spacing = 30; // 50px
@@ -156,7 +157,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mAllTimeSlotListView.setLayoutManager(linearlayoutManager);
         mAllTimeSlotListView.setHasFixedSize(true);
-        TimeSlotAdapter t = new TimeSlotAdapter(getActivity(), mClickedDoctorObject.getClinicName());
+        TimeSlotAdapter t = new TimeSlotAdapter(getActivity(), mClickedDoctorObject.getClinicDataList());
         mAllTimeSlotListView.setAdapter(t);
 
         //requestOptions.placeholder(R.drawable.layer_12);
@@ -217,12 +218,12 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 //-----Show all doc clinic on map, copied from BookAppointFilteredDoctorListFragment.java----
                 //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
                 ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
-                ArrayList<String> clinicNameList = mClickedDoctorObject.getClinicName();
+                ArrayList<DoctorList.ClinicData> clinicNameList = mClickedDoctorObject.getClinicDataList();
                 for (int i = 0; i < clinicNameList.size(); i++) {
                     DoctorList doctorListByClinic = new DoctorList();
                     doctorListByClinic = mClickedDoctorObject;
-                    doctorListByClinic.setAddressOfDoctorString(mClickedDoctorObject.getDoctorAddress().get(i));
-                    doctorListByClinic.setNameOfClinicString(clinicNameList.get(i));
+                    doctorListByClinic.setAddressOfDoctorString(clinicNameList.get(i).getClinicAddress());
+                    doctorListByClinic.setNameOfClinicString(clinicNameList.get(i).getClinicName());
                     doctorListByClinics.add(doctorListByClinic);
                 }
                 Intent intentObjectMap = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);

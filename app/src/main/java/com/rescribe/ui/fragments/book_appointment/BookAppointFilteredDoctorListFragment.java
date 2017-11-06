@@ -199,13 +199,13 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
                 doctorListByClinics = new ArrayList<>();
                 for (int i = 0; i < filterDataOnDocSpeciality().size(); i++) {
-                    if (filterDataOnDocSpeciality().get(i).getClinicName().size() > 0) {
+                    if (filterDataOnDocSpeciality().get(i).getClinicDataList().size() > 0) {
                         DoctorList doctorList = filterDataOnDocSpeciality().get(i);
-                        for (int j = 0; j < filterDataOnDocSpeciality().get(i).getClinicName().size(); j++) {
+                        for (int j = 0; j < filterDataOnDocSpeciality().get(i).getClinicDataList().size(); j++) {
                             DoctorList doctorListByClinic = new DoctorList();
                             doctorListByClinic = doctorList;
-                            doctorListByClinic.setNameOfClinicString(filterDataOnDocSpeciality().get(i).getClinicName().get(j));
-                            doctorListByClinic.setAddressOfDoctorString(filterDataOnDocSpeciality().get(i).getDoctorAddress().get(j));
+                            doctorListByClinic.setNameOfClinicString(filterDataOnDocSpeciality().get(i).getClinicDataList().get(j).getClinicName());
+                            doctorListByClinic.setAddressOfDoctorString(filterDataOnDocSpeciality().get(i).getClinicDataList().get(j).getClinicAddress());
                             doctorListByClinics.add(doctorListByClinic);
                         }
                     }
@@ -241,7 +241,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         } else {
             for (DoctorList listObject :
                     doctors) {
-                if (mSelectedSpeciality.equalsIgnoreCase(listObject.getSpeciality())) {
+                if (mSelectedSpeciality.equalsIgnoreCase(listObject.getDocSpeciality())) {
                     dataList.add(listObject);
                 }
             }
@@ -286,7 +286,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         if (mSelectedSpeciality != null) {
             for (DoctorList dataObject :
                     list) {
-                if (dataObject.getSpeciality().equalsIgnoreCase(mSelectedSpeciality)) {
+                if (dataObject.getDocSpeciality().equalsIgnoreCase(mSelectedSpeciality)) {
                     temp.add(dataObject);
                 }
             }

@@ -24,6 +24,7 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -59,6 +60,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         View imageLayout = mInflater.inflate(R.layout.recently_visited_pager_item, view, false);
         assert imageLayout != null;
 
+        //---------
         final TextView doctorNameTextView = (TextView) imageLayout
                 .findViewById(R.id.doctorName);
         final TextView doctorCategoryVisit = (TextView) imageLayout
@@ -82,9 +84,13 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.doctorAppointmentDate);
         final ImageView favorite = (ImageView) imageLayout
                 .findViewById(R.id.favorite);
+        final CustomTextView doctorCategoryType = (CustomTextView) imageLayout
+                .findViewById(R.id.doctorCategoryType);
+        //---------
+        DoctorList doctorListObject = mDoctorLists.get(position);
 
-        if (mDoctorLists.get(position).getDoctorImageUrl().equals("")) {
-            String doctorName = mDoctorLists.get(position).getDocName();
+        if (doctorListObject.getDoctorImageUrl().equals(RescribeConstants.BLANK)) {
+            String doctorName = doctorListObject.getDocName();
             if (doctorName.contains("Dr. ")) {
                 doctorName = doctorName.replace("Dr. ", "");
             }
@@ -96,14 +102,13 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                     .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
                     .endConfig()
                     .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-                     imageURL.setImageDrawable(drawable);
+            imageURL.setImageDrawable(drawable);
 
         } else {
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
-
             requestOptions.override(mImageSize, mImageSize);
             requestOptions.placeholder(R.drawable.layer_12);
 
@@ -114,43 +119,67 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             //--------------
         }
 
-        doctorNameTextView.setText(mDoctorLists.get(position).getDocName());
-        doctorType.setText(mDoctorLists.get(position).getDegree());
-        doctorExperience.setText(""+ mDoctorLists.get(position).getExperience()+mContext.getString(R.string.space)+mContext.getString(R.string.years_experience));
-        doctorAddress.setText(mDoctorLists.get(position).getDoctorAddress().get(0));
-        doctorFees.setText(""+ mDoctorLists.get(position).getAmount());
-
-        if (mDoctorLists.get(position).getFavourite()) {
+        //---------
+        doctorNameTextView.setText(doctorListObject.getDocName());
+        doctorType.setText(doctorListObject.getDegree());
+        doctorExperience.setText("" + doctorListObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
+        //---------
+        if (doctorListObject.getCategorySpeciality() != null) {
+            doctorCategoryType.setText(doctorListObject.getCategorySpeciality());
+            doctorCategoryType.setVisibility(View.VISIBLE);
+        } else {
+            doctorCategoryType.setVisibility(View.INVISIBLE);
+        }
+        //---------
+        if (doctorListObject.getFavourite()) {
             favorite.setVisibility(View.VISIBLE);
         } else {
             favorite.setVisibility(View.GONE);
         }
-        if(mDoctorLists.get(position).getRecentlyVisited()){
-            doctorCategoryVisit.setText(mContext.getString(R.string.recently_visit_doctor));
+        //---------
+        if (mContext.getString(R.string.recently_visited_doctor).equalsIgnoreCase(doctorListObject.getCategoryName())) {
+            doctorCategoryVisit.setText(mContext.getString(R.string.recently_visited_doctor));
             doctorFees.setVisibility(View.VISIBLE);
+            ArrayList<DoctorList.ClinicData> clinicDataList = doctorListObject.getClinicDataList();
+            if (clinicDataList.size() > 0) {
+                doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                doctorFees.setText(clinicDataList.get(0).getAmt());
+            }
             doctorAppointmentDate.setVisibility(View.INVISIBLE);
             bookAppointmentButton.setVisibility(View.VISIBLE);
-            doctorFees.setText(""+mDoctorLists.get(position).getAmount());
-        }else{
+        } else if (mContext.getString(R.string.my_appointments).equalsIgnoreCase(doctorListObject.getCategoryName())) {
             doctorAppointmentDate.setVisibility(View.VISIBLE);
-            SpannableString content = new SpannableString("Oct 18,2017");
+            SpannableString content = new SpannableString(doctorListObject.getAptDate() + " " + doctorListObject.getAptTime());
             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
             doctorAppointmentDate.setText(content);
             bookAppointmentButton.setVisibility(View.INVISIBLE);
             doctorFees.setVisibility(View.INVISIBLE);
             doctorCategoryVisit.setText(mContext.getString(R.string.my_appointments));
+        } else if (mContext.getString(R.string.sponsored_doctor).equalsIgnoreCase(doctorListObject.getCategoryName())) {
+            doctorCategoryVisit.setText(mContext.getString(R.string.sponsored_doctor));
+            doctorFees.setVisibility(View.VISIBLE);
+            ArrayList<DoctorList.ClinicData> clinicDataList = doctorListObject.getClinicDataList();
+            if (clinicDataList.size() > 0) {
+                doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                doctorFees.setText(clinicDataList.get(0).getAmt());
+            }
+            doctorAppointmentDate.setVisibility(View.INVISIBLE);
+            bookAppointmentButton.setVisibility(View.VISIBLE);
         }
-        if(mDoctorLists.get(position).getRating().equals("NA")){
+        //---------
+        if (doctorListObject.getRating().equals("NA")) {
             doctorRating.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             doctorRating.setVisibility(View.VISIBLE);
-            doctorRating.setText(""+mDoctorLists.get(position).getRating());
+            doctorRating.setText("" + doctorListObject.getRating());
         }
+        //---------
 
         view.addView(imageLayout, 0);
 
         return imageLayout;
     }
+
     private void setColumnNumber(Context context, int columnNum) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();

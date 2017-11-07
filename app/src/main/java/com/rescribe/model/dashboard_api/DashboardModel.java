@@ -2,7 +2,7 @@
 package com.rescribe.model.dashboard_api;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,57 +10,57 @@ public class DashboardModel {
 
     @SerializedName("doctorList")
     @Expose
-    private List<DashboardDoctorList> dashboardDoctorList = new ArrayList<DashboardDoctorList>();
+    private ArrayList<DashboardDoctorList> dashboardDoctorList = new ArrayList<DashboardDoctorList>();
     @SerializedName("cardBgImageUrlList")
     @Expose
-    private List<String> cardBgImageUrlList = new ArrayList<String>();
+    private ArrayList<String> cardBgImageUrlList = new ArrayList<String>();
     @SerializedName("dashboardMenuList")
     @Expose
-    private List<DashboardMenuList> dashboardMenuList = new ArrayList<DashboardMenuList>();
+    private ArrayList<DashboardMenuList> dashboardMenuList = new ArrayList<DashboardMenuList>();
     @SerializedName("dashboardBottomMenuList")
     @Expose
-    private List<DashboardBottomMenuList> dashboardBottomMenuList = new ArrayList<DashboardBottomMenuList>();
+    private ArrayList<DashboardBottomMenuList> dashboardBottomMenuList = new ArrayList<DashboardBottomMenuList>();
     @SerializedName("dashboardLeftSideDrawerMenuList")
     @Expose
-    private List<DashboardLeftSideDrawerMenuList> dashboardLeftSideDrawerMenuList = new ArrayList<DashboardLeftSideDrawerMenuList>();
+    private ArrayList<DashboardLeftSideDrawerMenuList> dashboardLeftSideDrawerMenuList = new ArrayList<DashboardLeftSideDrawerMenuList>();
 
-    public List<DashboardDoctorList> getDashboardDoctorList() {
+    public ArrayList<DashboardDoctorList> getDashboardDoctorList() {
         return dashboardDoctorList;
     }
 
-    public void setDashboardDoctorList(List<DashboardDoctorList> dashboardDoctorList) {
+    public void setDashboardDoctorList(ArrayList<DashboardDoctorList> dashboardDoctorList) {
         this.dashboardDoctorList = dashboardDoctorList;
     }
 
-    public List<String> getCardBgImageUrlList() {
+    public ArrayList<String> getCardBgImageUrlList() {
         return cardBgImageUrlList;
     }
 
-    public void setCardBgImageUrlList(List<String> cardBgImageUrlList) {
+    public void setCardBgImageUrlList(ArrayList<String> cardBgImageUrlList) {
         this.cardBgImageUrlList = cardBgImageUrlList;
     }
 
-    public List<DashboardMenuList> getDashboardMenuList() {
+    public ArrayList<DashboardMenuList> getDashboardMenuList() {
         return dashboardMenuList;
     }
 
-    public void setDashboardMenuList(List<DashboardMenuList> dashboardMenuList) {
+    public void setDashboardMenuList(ArrayList<DashboardMenuList> dashboardMenuList) {
         this.dashboardMenuList = dashboardMenuList;
     }
 
-    public List<DashboardBottomMenuList> getDashboardBottomMenuList() {
+    public ArrayList<DashboardBottomMenuList> getDashboardBottomMenuList() {
         return dashboardBottomMenuList;
     }
 
-    public void setDashboardBottomMenuList(List<DashboardBottomMenuList> dashboardBottomMenuList) {
+    public void setDashboardBottomMenuList(ArrayList<DashboardBottomMenuList> dashboardBottomMenuList) {
         this.dashboardBottomMenuList = dashboardBottomMenuList;
     }
 
-    public List<DashboardLeftSideDrawerMenuList> getDashboardLeftSideDrawerMenuList() {
+    public ArrayList<DashboardLeftSideDrawerMenuList> getDashboardLeftSideDrawerMenuList() {
         return dashboardLeftSideDrawerMenuList;
     }
 
-    public void setDashboardLeftSideDrawerMenuList(List<DashboardLeftSideDrawerMenuList> dashboardLeftSideDrawerMenuList) {
+    public void setDashboardLeftSideDrawerMenuList(ArrayList<DashboardLeftSideDrawerMenuList> dashboardLeftSideDrawerMenuList) {
         this.dashboardLeftSideDrawerMenuList = dashboardLeftSideDrawerMenuList;
     }
 

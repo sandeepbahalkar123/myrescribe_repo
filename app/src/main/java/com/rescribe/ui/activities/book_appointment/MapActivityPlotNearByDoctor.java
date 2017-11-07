@@ -191,7 +191,6 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
 
         mDoctorName = (TextView) findViewById(R.id.doctorName);
         mDoctorRating = (TextView) findViewById(R.id.doctorRating);
-        mKilometers = (TextView) findViewById(R.id.kilometers);
         mDoctorReviews = (TextView) findViewById(R.id.doctorReviews);
         mDirections = (ImageView) findViewById(R.id.directions);
         mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
@@ -206,7 +205,6 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
             public void onClick(View v) {
 
                 DoctorList doctorList = new DoctorList();
-
                 doctorList.setNameOfClinicString(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinicString());
                 doctorList.setAboutDoctor(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
                 doctorList.setAmount(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAmount());

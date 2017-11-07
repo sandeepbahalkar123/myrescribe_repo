@@ -14,7 +14,6 @@
     <string name="location">Location</string>
     <string name="snacks_before">snacksBefore</string>
     <string name="investigations">Investigations</string>
-    <string name="going_medication">On Going Medication</string>
     <string name="visit_details">Single Visit Details</string>
     <string name="doctor_details">Doctor Visits</string>
     <string name="before">Before</string>
@@ -196,7 +195,6 @@
     <string name="pick_speciality">Pick Speciality</string>
     <string name="details_note"><![CDATA[Your details will remain 100% private & secure. If you think you have medical emergency, contact your doctor immediately.]]></string>
     <string name="vital_graph">Vital Graphs</string>
-    <string name="post_your_query">Post Your Query</string>
     <string name="cardiologist">cardiologist</string>
     <string name="ophthalmologist">ophthalmologist</string>
     <string name="gastro">gastro</string>
@@ -225,12 +223,9 @@
     <string name="clicked_item_data">clicked_item_data</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="type_a_message">Type a message</string>
-    <string name="chat">Chat</string>
     <string name="online">Online</string>
     <string name="offline">Offline</string>
     <string name="idle">Idle</string>
-    <string name="not_connected">Not Connected</string>
-    <string name="send">Send</string>
     <string name="book_appointment">Book Appointment</string>
     <string name="gender">Gender</string>
     <string name="select_gender"><u>Select Gender</u></string>
@@ -244,20 +239,14 @@
     <!--<string name="clickhere">Not Sure ?......click here</string>-->
     <!--<string name="clickhere">Not Sure ?......click here</string>-->
     <string name="clickhere"><![CDATA[<b><font color=#d2d2d2>Not Sure ?......</font>click here</b>]]></string>
-    <string name="rupee_symbol">\u20B9 &#160;</string>
     <string name="please_select_location">Please select location</string>
     <string name="select_location"><u>Select location</u></string>
     <string name="relevantkeywords">Enter relevant keywords to optimize your doctor search</string>
     <string name="complaint1">Complaint 1:</string>
-    <string name="enter_string_here">Enter your complaint here</string>
     <string name="complaint2">Complaint 2:</string>
     <string name="opening_mode">ViewOpeningMode</string>
     <string name="complaints">Complaints</string>
-    <string name="waiting_for">Waiting for </string>
-    <string name="token_no_available">Token No. available</string>
     <string name="doctor_data">Doctor Data</string>
-    <string name="open_today"><u>Open Today</u></string>
-    <string name="all_timings">All Timings</string>
 
     <string name="distance">Distance</string>
     <string name="distance_in_km"><u>Distance in KM</u></string>
@@ -281,7 +270,6 @@
     <string name="price_range"><u>Price Range</u></string>
     <string name="select_days"><u>Select Days</u></string>
     <string name="also_practices">Also practices at :</string>
-    <string name="more_info">More Info</string>
 
     <string name="services">Services</string>
     <string name="doctorss">Doctors</string>
@@ -302,15 +290,10 @@
     <string name="location_address">Location address</string>
     <string name="doctorId">DoctorId</string>
 
-    <string name="pending_investigations">Pending Investigations</string>
-    <string name="latestvitalreading">Latest Vital Reading</string>
-    <string name="doctor_data_for_map">map data</string>
-
     <string name="do_operation">do_operation</string>
     <string name="favorite">Favorite</string>
 
     <string name="reviews">Reviews</string>
-    <string name="comma">,</string>
     <string name="alerts">Alerts</string>
     <string name="profile">Profile</string>
     <string name="support">Support</string>
@@ -347,4 +330,10 @@
     ]]>
     </string>
     <string name="view_all">View All</string>
+    <string name="platform"><![CDATA[&platform=]]></string>
+    <string name="android">android</string>
+    <string name="screen_resolution"><![CDATA[&screenResolution=]]></string>
+    <string name="sponsered_doctor">Sponsored Doctor</string>
+    <string name="dashboardcard">dashboardcard</string>
+    <string name="app_logo">AppLogo</string>
 </resources>

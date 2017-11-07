@@ -3,9 +3,10 @@ package com.rescribe.model.dashboard_api;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 
-public class DashBoardBaseModel {
+public class DashBoardBaseModel implements CustomResponse{
 
     @SerializedName("common")
     @Expose

@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -39,6 +38,7 @@ import com.rescribe.model.book_appointment.reviews.ReviewListBaseModel;
 import com.rescribe.model.case_details.CaseDetailsModel;
 import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.history.ChatHistoryModel;
+import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.doctor_connect.DoctorConnectBaseModel;
 import com.rescribe.model.doctor_connect.RecentChatDoctorModel;
 import com.rescribe.model.doctor_connect_chat.DoctorConnectChatBaseModel;
@@ -74,10 +74,8 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.NetworkUtil;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -628,6 +626,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER: //This is for get archived list
                         BookAppointmentBaseModel dataObject = new Gson().fromJson(data, BookAppointmentBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dataObject, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_DASHBOARD_API: //This is for get archived list
+                        DashBoardBaseModel dashboardBaseModel = new Gson().fromJson(data, DashBoardBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dashboardBaseModel, mOldDataTag);
                         break;
 
                     default:

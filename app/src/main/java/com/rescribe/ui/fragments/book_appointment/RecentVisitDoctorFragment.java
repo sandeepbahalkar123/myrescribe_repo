@@ -259,7 +259,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     private void setDoctorListAdapter(BookAppointmentBaseModel bookAppointmentBaseModel) {
         if (bookAppointmentBaseModel == null) {
-            isDataListViewVisible(false, true);
+            isDataListViewVisible(true, true);
         } else {
             DoctorServicesModel doctorServicesModel = bookAppointmentBaseModel.getDoctorServicesModel();
             if (doctorServicesModel != null) {
@@ -313,7 +313,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     doubtMessage.setVisibility(View.VISIBLE);
                 }
             } else {
-                isDataListViewVisible(false, true);
+                isDataListViewVisible(true, true);
             }
 
         }
@@ -396,7 +396,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 BookAppointDoctorListBaseActivity.setSelectedLocationText(s);
             }
         } else {
-            isDataListViewVisible(false, true);
+            isDataListViewVisible(true, true);
         }
     }
 

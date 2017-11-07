@@ -3,6 +3,7 @@ package com.rescribe.model.dashboard_api;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -32,24 +33,49 @@ public class DashboardDoctorList {
     @SerializedName("experience")
     @Expose
     private int experience;
-    @SerializedName("doctorAddress")
+    @SerializedName("clinicList")
     @Expose
-    private List<String> doctorAddress = new ArrayList<String>();
-    @SerializedName("amount")
-    @Expose
-    private String amount;
-    @SerializedName("favourite")
-    @Expose
-    private boolean favourite;
-    @SerializedName("rating")
-    @Expose
-    private String rating;
+    private List<DashboardClinicList> clinicList = new ArrayList<DashboardClinicList>();
     @SerializedName("aptDate")
     @Expose
     private String aptDate;
     @SerializedName("aptTime")
     @Expose
     private String aptTime;
+    @SerializedName("favorite")
+    @Expose
+    private String favorite;
+    @SerializedName("rating")
+    @Expose
+    private double rating;
+    private int sizeOfList;
+
+
+    public String getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(String favorite) {
+        this.favorite = favorite;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public int getSizeOfList() {
+        return sizeOfList;
+    }
+
+    public void setSizeOfList(int sizeOfList) {
+        this.sizeOfList = sizeOfList;
+    }
+
+
 
     public int getDocId() {
         return docId;
@@ -115,36 +141,12 @@ public class DashboardDoctorList {
         this.experience = experience;
     }
 
-    public List<String> getDoctorAddress() {
-        return doctorAddress;
+    public List<DashboardClinicList> getClinicList() {
+        return clinicList;
     }
 
-    public void setDoctorAddress(List<String> doctorAddress) {
-        this.doctorAddress = doctorAddress;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public boolean isFavourite() {
-        return favourite;
-    }
-
-    public void setFavourite(boolean favourite) {
-        this.favourite = favourite;
-    }
-
-    public String getRating() {
-        return rating;
-    }
-
-    public void setRating(String rating) {
-        this.rating = rating;
+    public void setClinicList(List<DashboardClinicList> clinicList) {
+        this.clinicList = clinicList;
     }
 
     public String getAptDate() {

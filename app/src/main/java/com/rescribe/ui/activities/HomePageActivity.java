@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,12 +22,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 import com.heinrichreimersoftware.materialdrawer.theme.DrawerTheme;
 import com.rescribe.R;
+import com.rescribe.adapters.dashboard.DashBoardBottomMenuListAdapter;
 import com.rescribe.adapters.dashboard.MenuOptionsDashBoardAdapter;
 import com.rescribe.adapters.dashboard.ShowBackgroundViewPagerAdapter;
 import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
@@ -35,33 +37,32 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.dashboard.DashboardBaseModel;
-import com.rescribe.model.dashboard.DashboardDataModel;
+import com.rescribe.model.dashboard_api.DashBoardBaseModel;
+import com.rescribe.model.dashboard_api.DashboardDoctorList;
+import com.rescribe.model.dashboard_api.DashboardModel;
 import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.ui.activities.book_appointment.BookAppointFindLocation;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
+import com.rescribe.ui.activities.dashboard.ProfileActivity;
+import com.rescribe.ui.activities.dashboard.SettingsActivity;
+import com.rescribe.ui.activities.dashboard.SupportActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
 import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
-import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import net.gotev.uploadservice.UploadService;
-
+import java.util.ArrayList;
 import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
-
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
@@ -70,7 +71,7 @@ import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
  */
 
 @RuntimePermissions
-public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener {
+public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, ShowDoctorViewPagerAdapter.OnClickOfCardOnDashboard, DashBoardBottomMenuListAdapter.onBottomMenuListClickListener {
 
     private static final long MANAGE_ACCOUNT = 121;
     private static final long ADD_ACCOUNT = 122;
@@ -81,20 +82,12 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     ViewPager viewPagerDoctorItem;
     @BindView(R.id.menuOptionsListView)
     RecyclerView mMenuOptionsListView;
-    @BindView(R.id.alertsIcon)
-    ImageView alertsIcon;
-    @BindView(R.id.alerts)
-    CustomTextView alerts;
-    @BindView(R.id.alertsLayout)
-    LinearLayout alertsLayout;
-    @BindView(R.id.profileLayout)
-    LinearLayout profileLayout;
-    @BindView(R.id.logoLayout)
-    LinearLayout logoLayout;
-    @BindView(R.id.settingLayout)
-    LinearLayout settingLayout;
-    @BindView(R.id.supportLayout)
-    LinearLayout supportLayout;
+    @BindView(R.id.doctorOptionsView)
+    LinearLayout doctorOptionsView;
+    @BindView(R.id.menuIcon)
+    ImageView menuIcon;
+    @BindView(R.id.bottomMenulistRecyclerView)
+    RecyclerView bottomMenulistRecyclerView;
     private Context mContext;
     private String mGetMealTime;
     String breakFastTime = "";
@@ -112,16 +105,18 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     int Min = c.get(Calendar.MINUTE);
     private ShowDoctorViewPagerAdapter mShowDoctorViewPagerAdapter;
     private ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter;
-
+    private DashboardModel mDashboardModel;
+    private DashBoardBottomMenuListAdapter mDashBoardBottomMenuList;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_dashboard_layout);
         ButterKnife.bind(this);
         String resolution = getImageSizeForPhone();
         dashboardHelper = new DashboardHelper(this, this);
-        dashboardHelper.doGetDashboard();
+        dashboardHelper.doGetDashboard(getImageSizeForPhone());
         mContext = HomePageActivity.this;
         HomePageActivityPermissionsDispatcher.getPermissionWithCheck(HomePageActivity.this);
         appDBHelper = new AppDBHelper(mContext);
@@ -139,6 +134,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 notificationForMedicine();
         }
         drawerConfiguration();
+      //  alertTab.setVisibility(View.VISIBLE);
     }
 
     private String getImageSizeForPhone() {
@@ -499,17 +495,29 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equalsIgnoreCase(TASK_DASHBOARD_API)) {
-            DashboardBaseModel dashboardBaseModel = (DashboardBaseModel) customResponse;
-            DashboardDataModel dashboardDataModel = dashboardBaseModel.getDashboardDataModel();
+            DashBoardBaseModel dashboardBaseModel = (DashBoardBaseModel) customResponse;
+            mDashboardModel = dashboardBaseModel.getDashboardModel();
+            ArrayList<DashboardDoctorList> dashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
+            if (mDashboardModel != null) {
 
-            if (dashboardDataModel != null) {
+                ArrayList<DashboardDoctorList> myAppoint = filterDataOnDocSpeciality(getString(R.string.my_appointments));
+                ArrayList<DashboardDoctorList> sponsered = filterDataOnDocSpeciality(getString(R.string.sponsered_doctor));
+                ArrayList<DashboardDoctorList> recently_visit_doctor = filterDataOnDocSpeciality(getString(R.string.recently_visit_doctor));
+                dashboardDoctorListsToShowDashboardDoctor.add(myAppoint.get(0));
+                dashboardDoctorListsToShowDashboardDoctor.add(sponsered.get(0));
+                dashboardDoctorListsToShowDashboardDoctor.add(recently_visit_doctor.get(0));
 
-                //----------
-                /*menuDashBoardAdapter = new MenuDashBoardAdapter(this, dashboardDataModel.getServicesList());
-                menuListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-                menuListView.setHasFixedSize(true);
-                menuListView.setAdapter(menuDashBoardAdapter);*/
-                mShowDoctorViewPagerAdapter = new ShowDoctorViewPagerAdapter(this, dashboardDataModel.getDoctorList());
+                for (int sizeOfList = 0; sizeOfList < dashboardDoctorListsToShowDashboardDoctor.size(); sizeOfList++) {
+                    DashboardDoctorList temp = dashboardDoctorListsToShowDashboardDoctor.get(sizeOfList);
+                    if (temp.getCategoryName().equalsIgnoreCase(getString(R.string.my_appointments))) {
+                        temp.setSizeOfList(myAppoint.size());
+                    } else if (temp.getCategoryName().equalsIgnoreCase(getString(R.string.sponsered_doctor))) {
+                        temp.setSizeOfList(sponsered.size());
+                    } else if (temp.getCategoryName().equalsIgnoreCase(getString(R.string.recently_visit_doctor))) {
+                        temp.setSizeOfList(recently_visit_doctor.size());
+                    }
+                }
+                mShowDoctorViewPagerAdapter = new ShowDoctorViewPagerAdapter(this, dashboardDoctorListsToShowDashboardDoctor, this);
                 viewPagerDoctorItem.setAdapter(mShowDoctorViewPagerAdapter);
 
                 // Disable clip to padding
@@ -520,7 +528,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
                 viewPagerDoctorItem.setPageMargin(pager_margin);
 
-                mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, dashboardDataModel.getDoctorList());
+                mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, mDashboardModel.getCardBgImageUrlList());
                 viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
                 viewpager.setOffscreenPageLimit(mShowBackgroundViewPagerAdapter.getCount());
 
@@ -549,7 +557,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 });
                 //----------
 
-                mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this);
+                mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, dashboardBaseModel.getDashboardModel().getDashboardMenuList());
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 mMenuOptionsListView.setLayoutManager(linearLayoutManager);
                 mMenuOptionsListView.setHasFixedSize(true);
@@ -558,38 +566,38 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 mMenuOptionsListView.addItemDecoration(dividerItemDecoration);
                 mMenuOptionsListView.setAdapter(mMenuOptionsDashBoardAdapter);
 
-               /* LatestVitalReading latestVitalReading = dashboardDataModel.getLatestVitalReading();
-                if (latestVitalReading != null) {
-                    mLatestReadingVitalName.setText(latestVitalReading.getVitalName() + "-" + latestVitalReading.getVitalValue() + latestVitalReading.getUnit());
-                    //------------
-                    if (latestVitalReading.getDate() != null) {
-                        Date timeStamp = CommonMethods.convertStringToDate(latestVitalReading.getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTime(timeStamp);
-                        String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + "" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup>" + " " + new SimpleDateFormat("MMM yy").format(cal.getTime());
-                        //------
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                            mLatestReadingVitalDate.setText(Html.fromHtml(toDisplay, Html.FROM_HTML_MODE_LEGACY));
-                        } else {
-                            mLatestReadingVitalDate.setText(Html.fromHtml(toDisplay));
-                        }
-                    }
-                }
-                //------------
-                ArrayList<PendingInvestigationData> pendingInvestigationList = dashboardDataModel.getPendingInvestigationList();
-                if (pendingInvestigationList.size() > 2) {
-                    mPendingInvestigationItemFirst.setText("" + pendingInvestigationList.get(0).getSpeciality());
-                    mPendingInvestigationItemSecond.setText("" + pendingInvestigationList.get(1).getSpeciality());
-                }*/
+                mDashBoardBottomMenuList = new DashBoardBottomMenuListAdapter(this, this, dashboardBaseModel.getDashboardModel().getDashboardBottomMenuList());
+                LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                bottomMenulistRecyclerView.setLayoutManager(layoutManager);
+                bottomMenulistRecyclerView.setHasFixedSize(true);
+                bottomMenulistRecyclerView.setAdapter(mDashBoardBottomMenuList);
+            } else {
 
             }
-
             //------------
         } else if (mOldDataTag.equals(RescribeConstants.LOGOUT))
             logout();
         else if (mOldDataTag.equals(ACTIVE_STATUS))
             CommonMethods.Log(ACTIVE_STATUS, "active");
 
+    }
+
+    private ArrayList<DashboardDoctorList> filterDataOnDocSpeciality(String mCategoryName) {
+
+        ArrayList<DashboardDoctorList> doctors = mDashboardModel.getDashboardDoctorList();
+
+        ArrayList<DashboardDoctorList> dataList = new ArrayList<>();
+        if (mCategoryName == null) {
+            return doctors;
+        } else {
+            for (DashboardDoctorList listObject :
+                    doctors) {
+                if (mCategoryName.equalsIgnoreCase(listObject.getCategoryName())) {
+                    dataList.add(listObject);
+                }
+            }
+        }
+        return dataList;
     }
 
     @Override
@@ -608,28 +616,72 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     @Override
-    public void onClickOfMenu(String menuName) {
-        if (menuName.equals(getString(R.string.find_doctors))) {
-            Intent intent = new Intent(mContext, FindDoctorsActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle), menuName);
-            startActivity(intent);
-        } else if (menuName.equals(getString(R.string.on_going_treatment))) {
-            Intent intent = new Intent(mContext, PrescriptionActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle), menuName);
-            startActivity(intent);
-        } else if (menuName.equals(getString(R.string.health_repository))) {
-            Intent intent = new Intent(mContext, HealthRepository.class);
-            intent.putExtra(getString(R.string.toolbarTitle), menuName);
-            startActivity(intent);
-        } else if (menuName.equals(getString(R.string.health_offers))) {
+    public void onBottomClickOfMenu(String menuName) {
+        if(menuName.equalsIgnoreCase(getString(R.string.alerts))){
+            mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
+            if (mGetMealTime.equals(getString(R.string.break_fast))) {
+                Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
+                intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
+                intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intentNotification.putExtra(RescribeConstants.TIME, breakFastTime);
+                intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentNotification);
 
-        } else if (menuName.equals(getString(R.string.health_education))) {
+            } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
+                Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
+                intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
+                intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intentNotification.putExtra(RescribeConstants.TIME, lunchTime);
+                intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentNotification);
 
+            } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
+                Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
+                intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
+                intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intentNotification.putExtra(RescribeConstants.TIME, snacksTime);
+                intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentNotification);
+
+            } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
+                Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
+                intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
+                intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intentNotification.putExtra(RescribeConstants.TIME, dinnerTime);
+                intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentNotification);
+            } else if (mGetMealTime.isEmpty()) {
+                Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
+                intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
+                intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+                intentNotification.putExtra(RescribeConstants.TIME, dinnerTime);
+                intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentNotification);
+            }
+        }else if(menuName.equalsIgnoreCase(getString(R.string.profile))){
+            Intent intent = new Intent(HomePageActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        }else if(menuName.equalsIgnoreCase(getString(R.string.settings))){
+            Intent intentSetting = new Intent(HomePageActivity.this, SettingsActivity.class);
+            startActivity(intentSetting);
+        }else if(menuName.equalsIgnoreCase(getString(R.string.support))){
+            Intent intentSupport = new Intent(HomePageActivity.this, SupportActivity.class);
+            startActivity(intentSupport);
         }
 
     }
 
-    @OnClick({R.id.alertsLayout, R.id.profileLayout, R.id.logoLayout, R.id.settingLayout, R.id.supportLayout, R.id.menuIcon})
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @OnClick({/*R.id.alertsLayout,*/ /*R.id.profileLayout, R.id.logoLayout, R.id.settingLayout, R.id.supportLayout, */R.id.menuIcon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
@@ -637,7 +689,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 openDrawer();
                 break;
 
-            case R.id.alertsLayout:
+          /*  case R.id.alertsLayout:
                 mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
                 if (mGetMealTime.equals(getString(R.string.break_fast))) {
                     Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
@@ -683,15 +735,58 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                             Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intentNotification);
                 }
-                break;
-            case R.id.profileLayout:
+                break;*/
+            /*case R.id.profileLayout:
+                Intent intent = new Intent(HomePageActivity.this, ProfileActivity.class);
+                startActivity(intent);
                 break;
             case R.id.logoLayout:
+               *//* Intent intent = new Intent(HomePageActivity.this, ProfileActivity.class);
+                startActivity(intent);*//*
                 break;
             case R.id.settingLayout:
+                Intent intentSetting = new Intent(HomePageActivity.this, SettingsActivity.class);
+                startActivity(intentSetting);
                 break;
             case R.id.supportLayout:
-                break;
+                Intent intentSupport = new Intent(HomePageActivity.this, SupportActivity.class);
+                startActivity(intentSupport);
+                break;*/
+        }
+    }
+
+    @Override
+    public void onClickOfDashboardDoctorItem(String mDashBoardCardName) {
+        if (mDashBoardCardName.equals(getString(R.string.my_appointments))) {
+            Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
+            startActivity(intent);
+        } else if (mDashBoardCardName.equals(getString(R.string.sponsered_doctor))) {
+            /*Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
+            startActivity(intent);*/
+        } else if (mDashBoardCardName.equals(getString(R.string.recently_visit_doctor))) {
+            /*Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
+            startActivity(intent);*/
+        }
+    }
+
+    @Override
+    public void onClickOfMenu(String menuName) {
+        if (menuName.equals(getString(R.string.find_doctors))) {
+            Intent intent = new Intent(mContext, FindDoctorsActivity.class);
+            intent.putExtra(getString(R.string.toolbarTitle), menuName);
+            startActivity(intent);
+        } else if (menuName.equals(getString(R.string.on_going_treatment))) {
+            Intent intent = new Intent(mContext, PrescriptionActivity.class);
+            intent.putExtra(getString(R.string.toolbarTitle), menuName);
+            startActivity(intent);
+        } else if (menuName.equals(getString(R.string.health_repository))) {
+            Intent intent = new Intent(mContext, HealthRepository.class);
+            intent.putExtra(getString(R.string.toolbarTitle), menuName);
+            startActivity(intent);
+        } else if (menuName.equals(getString(R.string.health_offers))) {
+
+        } else if (menuName.equals(getString(R.string.health_education))) {
+
         }
     }
 }

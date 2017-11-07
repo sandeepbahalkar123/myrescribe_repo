@@ -1,5 +1,4 @@
 <resources>
-
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="horizontal_margin">26dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -47,12 +46,11 @@
     <dimen name="dp18">18dp</dimen>
     <dimen name="dp68">68dp</dimen>
     <dimen name="dp36">36dp</dimen>
-
     <dimen name="pager_padding">33dp</dimen>
     <dimen name="pager_margin">8dp</dimen>
     <dimen name="dp11">11dp</dimen>
     <dimen name="dp9">9dp</dimen>
     <dimen name="dp3">3dp</dimen>
     <dimen name="sp13">13sp</dimen>
-
+    <dimen name="dp60">60dp</dimen>
 </resources>

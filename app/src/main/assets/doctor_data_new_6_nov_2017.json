@@ -23,8 +23,8 @@
             "locationId": 1
           },
           {
-            "clinicName": "Dr. Himanshu Pahariya",
-            "clinicAddress": "kothrud,Pune",
+            "clinicName": "Dr. Himanshu Pahariya 2",
+            "clinicAddress": "kothrud 2,Pune",
             "amt": 350,
             "apptScheduleLmtDays": 7,
             "locationId": 16
@@ -40,6 +40,8 @@
           "Migraine",
           "Parkinson’s Disease",
           "Spinal Disorders",
+          "Brain Mapping",
+          "Brain Mapping",
           "Brain Mapping"
         ],
         "aptDate": "2017-09-30",

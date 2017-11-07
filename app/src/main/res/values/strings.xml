@@ -348,4 +348,5 @@
     </string>
     <string name="view_all">View All</string>
     <string name="sponsored_doctor">Sponsored Doctor</string>
- </resources>
+    <string name="practices_at_locations">Practices at $$ locations</string>
+</resources>

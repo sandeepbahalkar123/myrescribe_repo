@@ -386,5 +386,11 @@ public class DoctorList implements Parcelable {
         public void setLocationId(String locationId) {
             this.locationId = locationId;
         }
+
+
+        @Override
+        public String toString() {
+            return clinicName + ',' + clinicAddress;
+        }
     }
 }

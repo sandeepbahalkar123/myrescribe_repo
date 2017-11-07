@@ -94,17 +94,17 @@ public class GoogleSettingsApi implements GoogleApiClient.ConnectionCallbacks, G
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.d(TAG, "Connected");
+        Log.e(TAG, "Connected");
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d(TAG, "ConnectionSuspended");
+        Log.e(TAG, "ConnectionSuspended");
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d(TAG, "ConnectionFailed");
+        Log.e(TAG, "ConnectionFailed");
     }
 
     public interface LocationSettings {

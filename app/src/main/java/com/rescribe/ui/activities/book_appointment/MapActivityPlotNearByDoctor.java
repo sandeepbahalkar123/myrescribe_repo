@@ -199,7 +199,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
 
     // On map marker click display details of doctor on bottom dialog
     public void init_modal_bottomsheet(final Marker marker) {
-     // Map activity direscted to doctor description page
+        // Map activity direscted to doctor description page
         mMoreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,10 +207,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 DoctorList doctorList = new DoctorList();
                 doctorList.setNameOfClinicString(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinicString());
                 doctorList.setAboutDoctor(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
-                doctorList.setAmount(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAmount());
-                doctorList.setAvailableTimeSlots(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAvailableTimeSlots());
                 doctorList.setDegree(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDegree());
-                doctorList.setDistance(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDistance());
                 doctorList.setDocId(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocId());
                 doctorList.setDocName(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocName());
                 doctorList.setDoctorImageUrl(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorImageUrl());
@@ -218,17 +215,13 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 doctorList.setFavourite(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getFavourite());
                 doctorList.setWaitingTime(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getWaitingTime());
                 doctorList.setTokenNo(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getTokenNo());
-                doctorList.setSpeciality(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getSpeciality());
-                doctorList.setRecentlyVisited(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRecentlyVisited());
-                doctorList.setOpenToday(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getOpenToday());
-                doctorList.setPracticePlaceInfos(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getPracticePlaceInfos());
+                doctorList.setDocSpeciality(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocSpeciality());
                 doctorList.setLongitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
                 doctorList.setLatitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
-                doctorList.setTotalReview(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview());
                 doctorList.setAddressOfDoctorString(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAddressOfDoctorString());
-                doctorList.setDoctorAddress(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorAddress());
-                doctorList.setClinicName(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getClinicName());
+                doctorList.setClinicDataList(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getClinicDataList());
                 doctorList.setNameOfClinicString(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinicString());
+
                 Intent intent = new Intent(MapActivityPlotNearByDoctor.this, ShowMoreInfoBaseActivity.class);
                 intent.putExtra(getString(R.string.toolbarTitle), title.getText().toString());
                 intent.putExtra(getString(R.string.doctor_data), doctorList);
@@ -239,7 +232,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
             mDoctorRating.setText("" + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
             mRatingBar.setRating(Float.parseFloat(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating()));
 
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
         mDirections.setOnClickListener(new View.OnClickListener() {
@@ -251,7 +244,9 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
                 startActivity(intent);
             }
         });
-        mDoctorReviews.setText(getString(R.string.openingbrace) + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview() + getString(R.string.closeingbrace));
+
+        //TODO : REVIEWS NEED TO ADDED , NOT IN UPDATED JSON.
+        //  mDoctorReviews.setText(getString(R.string.openingbrace) + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getTotalReview() + getString(R.string.closeingbrace));
         mDoctorReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

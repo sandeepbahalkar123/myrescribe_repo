@@ -225,12 +225,12 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     ArrayList<DoctorList> sortedListByClinicNameOrDoctorName = mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName();
                     for (int i = 0; i < sortedListByClinicNameOrDoctorName.size(); i++) {
                         DoctorList doctorList = sortedListByClinicNameOrDoctorName.get(i);
-                        if (doctorList.getClinicName().size() > 0) {
-                            for (int j = 0; j < doctorList.getClinicName().size(); j++) {
+                        if (doctorList.getClinicDataList().size() > 0) {
+                            for (int j = 0; j < doctorList.getClinicDataList().size(); j++) {
                                 DoctorList doctorListByClinic = new DoctorList();
                                 doctorListByClinic = doctorList;
-                                doctorListByClinic.setNameOfClinicString(doctorList.getClinicName().get(j));
-                                doctorListByClinic.setAddressOfDoctorString(doctorList.getDoctorAddress().get(j));
+                                doctorListByClinic.setNameOfClinicString(doctorList.getClinicDataList().get(j).getClinicName());
+                                doctorListByClinic.setAddressOfDoctorString(doctorList.getClinicDataList().get(j).getClinicAddress());
                                 doctorListByClinics.add(doctorListByClinic);
                             }
                         }
@@ -259,17 +259,28 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     private void setDoctorListAdapter(BookAppointmentBaseModel bookAppointmentBaseModel) {
         if (bookAppointmentBaseModel == null) {
-            isDataListViewVisible(true, true);
+            isDataListViewVisible(false, true);
         } else {
             DoctorServicesModel doctorServicesModel = bookAppointmentBaseModel.getDoctorServicesModel();
+
+            //------------
+            ArrayList<DoctorList> myApp = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.my_appointments));
+            ArrayList<DoctorList> sDoctor = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
+            ArrayList<DoctorList> recentlyVisitDoc = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor));
+
+            ArrayList<DoctorList> mergeList = new ArrayList<>();
+            mergeList.addAll(myApp);
+            mergeList.addAll(sDoctor);
+            mergeList.addAll(recentlyVisitDoc);
+            //------------
             if (doctorServicesModel != null) {
                 //-------
-                if (doctorServicesModel.getRecentlyVisitedAndFavoriteDoctorList().size() == 0) {
+                if (mergeList.size() == 0) {
                     mViewpager.setVisibility(View.GONE);
                     mCircleIndicator.setVisibility(View.GONE);
                 } else {
                     mViewpager.setVisibility(View.VISIBLE);
-                    mViewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), doctorServicesModel.getRecentlyVisitedAndFavoriteDoctorList()));
+                    mViewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), mergeList));
                     mCircleIndicator.setViewPager(mViewpager);
                 }
                 //------
@@ -313,7 +324,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     doubtMessage.setVisibility(View.VISIBLE);
                 }
             } else {
-                isDataListViewVisible(true, true);
+                isDataListViewVisible(false, true);
             }
 
         }
@@ -396,7 +407,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 BookAppointDoctorListBaseActivity.setSelectedLocationText(s);
             }
         } else {
-            isDataListViewVisible(true, true);
+            isDataListViewVisible(false, true);
         }
     }
 

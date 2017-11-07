@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -43,17 +44,19 @@ import com.rescribe.R;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.LocationUtil.PermissionUtils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class BookAppointFindLocation extends AppCompatActivity implements PlaceSelectionListener ,GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,ActivityCompat.OnRequestPermissionsResultCallback,
+public class BookAppointFindLocation extends AppCompatActivity implements PlaceSelectionListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, ActivityCompat.OnRequestPermissionsResultCallback,
         PermissionUtils.PermissionResultCallback {
 
     public static final String TAG = "BookAppointFindLocation";
@@ -84,7 +87,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
 
     // list of permissions
 
-    ArrayList<String> permissions=new ArrayList<>();
+    ArrayList<String> permissions = new ArrayList<>();
     PermissionUtils permissionUtils;
 
     boolean isPermissionGranted;
@@ -95,12 +98,12 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         setContentView(R.layout.activity_book_appoint_select_location);
         ButterKnife.bind(this);
         mContext = BookAppointFindLocation.this;
-        permissionUtils=new PermissionUtils(BookAppointFindLocation.this);
+        permissionUtils = new PermissionUtils(BookAppointFindLocation.this);
 
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
 
-        permissionUtils.check_permission(permissions,"Need GPS permission for getting your location",1);
+        permissionUtils.check_permission(permissions, "Need GPS permission for getting your location", 1);
 
         findViewById(R.id.bookAppointmentToolbar).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +119,6 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         /*// Retrieve the PlaceAutocompleteFragment.
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
         // Register a listener to receive callbacks when a place has been selected or an error has
         // occurred.
         autocompleteFragment.setOnPlaceSelectedListener(this);*/
@@ -197,10 +199,10 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
                 setResult(Activity.RESULT_CANCELED, data);
                 finish();
             }
-        }else if(requestCode==REQUEST_CHECK_SETTINGS){
+        } else if (requestCode == REQUEST_CHECK_SETTINGS) {
             if (resultCode == RESULT_OK) {
                 getLocation();
-            }else if(requestCode==RESULT_CANCELED){
+            } else if (requestCode == RESULT_CANCELED) {
 
             }
         }
@@ -217,28 +219,26 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
                 if (mLastLocation != null) {
                     latitude = mLastLocation.getLatitude();
                     longitude = mLastLocation.getLongitude();
-                  detectLocation.setText(""+getAddress(BookAppointFindLocation.this,latitude,longitude));
+                    detectLocation.setText("" + getAddress(BookAppointFindLocation.this, latitude, longitude));
 
                 } else {
 
 
-                   // showToast("Couldn't get the location. Make sure location is enabled on the device");
+                    // showToast("Couldn't get the location. Make sure location is enabled on the device");
                 }
 
                 break;
         }
     }
+
     private void getLocation() {
 
         if (isPermissionGranted) {
 
-            try
-            {
+            try {
                 mLastLocation = LocationServices.FusedLocationApi
                         .getLastLocation(mGoogleApiClient);
-            }
-            catch (SecurityException e)
-            {
+            } catch (SecurityException e) {
                 e.printStackTrace();
             }
 
@@ -303,7 +303,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         // redirects to utils
-        permissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        permissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
     }
 
@@ -322,6 +322,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     public void NeverAskAgain(int request_code) {
 
     }
+
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -370,6 +371,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
 
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -377,11 +379,9 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     }
 
 
-
-
     /**
      * Method to verify google play services on the device
-     * */
+     */
 
     private boolean checkPlayServices() {
 
@@ -391,7 +391,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
 
         if (resultCode != ConnectionResult.SUCCESS) {
             if (googleApiAvailability.isUserResolvableError(resultCode)) {
-                googleApiAvailability.getErrorDialog(this,resultCode,
+                googleApiAvailability.getErrorDialog(this, resultCode,
                         PLAY_SERVICES_REQUEST).show();
             } else {
                 Toast.makeText(getApplicationContext(),
@@ -403,7 +403,6 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         }
         return true;
     }
-
 
 
 }

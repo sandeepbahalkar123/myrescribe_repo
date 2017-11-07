@@ -11,11 +11,14 @@ import android.widget.ImageView;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.dashboard_api.DashboardDoctorList;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.BookAppointDoctorDescriptionFragment;
 import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
 import com.rescribe.ui.fragments.book_appointment.SelectSlotTimeToBookAppointmentFragment;
+import com.rescribe.ui.fragments.dashboard.MyAppointmentsFragment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -26,7 +29,7 @@ import butterknife.OnClick;
  * Created by jeetal on 6/11/17.
  */
 
-public class DashboardShowCategoryNameByListBaseActivity  extends AppCompatActivity {
+public class DashboardShowCategoryNameByListBaseActivity extends AppCompatActivity {
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
@@ -38,8 +41,10 @@ public class DashboardShowCategoryNameByListBaseActivity  extends AppCompatActiv
     CustomTextView showlocation;
     @BindView(R.id.viewContainer)
     FrameLayout viewContainer;
+    ArrayList<DashboardDoctorList> doctorList;
     HashMap<String, String> userSelectedLocationInfo;
-    private BookAppointFilteredDoctorListFragment mBookAppointFilteredDoctorListFragment;
+    private MyAppointmentsFragment mMyAppointmentsFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,20 +56,20 @@ public class DashboardShowCategoryNameByListBaseActivity  extends AppCompatActiv
     }
 
     private void initialize() {
-
-        DoctorList doctorList = getIntent().getExtras().getParcelable(getString(R.string.clicked_item_data));
+        doctorList = new ArrayList<>();
+        doctorList = getIntent().getExtras().getParcelableArrayList(getString(R.string.clicked_item_data));
         showlocation.setVisibility(View.VISIBLE);
         locationTextView.setVisibility(View.GONE);
         title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         Bundle bundle = new Bundle();
-        bundle.putParcelable(getString(R.string.clicked_item_data), doctorList);
+        bundle.putParcelableArrayList(getString(R.string.clicked_item_data), doctorList);
         bundle.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
-        mBookAppointFilteredDoctorListFragment = BookAppointFilteredDoctorListFragment.newInstance(bundle);
+        mMyAppointmentsFragment = MyAppointmentsFragment.newInstance(bundle);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.viewContainer, mBookAppointFilteredDoctorListFragment);
+        fragmentTransaction.replace(R.id.viewContainer, mMyAppointmentsFragment);
         fragmentTransaction.commit();
 
     }

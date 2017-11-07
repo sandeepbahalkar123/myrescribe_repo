@@ -27,10 +27,10 @@ import butterknife.ButterKnife;
 public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListViewHolder> {
 
     private Context mContext;
-    private ArrayList<String> mDataList;
+    private ArrayList<DoctorList.ClinicData> mDataList;
     private String mSelectedTimeSlot;
 
-    public TimeSlotAdapter(Context mContext, ArrayList<String> dataList) {
+    public TimeSlotAdapter(Context mContext, ArrayList<DoctorList.ClinicData> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
 
@@ -46,8 +46,9 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListVi
 
     @Override
     public void onBindViewHolder(final ListViewHolder holder, int position) {
-        String doctorObject = mDataList.get(position);
-        holder.timeSlot.setText(doctorObject);
+        DoctorList.ClinicData doctorObject = mDataList.get(position);
+        //TODO : NEED TO IMPLEMENT
+      //  holder.timeSlot.setText(doctorObject.ge);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,0 +1,133 @@
+{
+  "common": {
+    "success": true,
+    "statusCode": 200,
+    "statusMessage": "USER AUTHENTICATED"
+  },
+  "data": {
+    "doctorList": [
+      {
+        "docId": 4,
+        "docName": "Dr. Himanshu Pahariya",
+        "categoryName": "My Appointments",
+        "categorySpeciality": "Premium",
+        "doctorImageUrl": "http://192.168.0.182/medsonit-be//assets/doc_profile/DR-avatar.png",
+        "speciality": "General Physician",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Dr. Himanshu Pahariya",
+            "clinicAddress": "kothrud,Pune",
+            "amt": 450,
+            "apptScheduleLmtDays": 7,
+            "locationId": 1
+          },
+          {
+            "clinicName": "Dr. Himanshu Pahariya",
+            "clinicAddress": "kothrud,Pune",
+            "amt": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 16
+          }
+        ],
+        "favourite": true,
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "rating": "4.00",
+        "waitingTime": "",
+        "tokenNo": "",
+        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
+        "docServices": [
+          "Migraine",
+          "Parkinson’s Disease",
+          "Spinal Disorders",
+          "Brain Mapping"
+        ],
+        "aptDate": "2017-09-30",
+        "aptTime": "14:00:00"
+      },
+      {
+        "docId": 5,
+        "docName": "DR. SUNEETA PHADKE",
+        "categoryName": "Sponsored Doctor",
+        "categorySpeciality": "Premium",
+        "doctorImageUrl": "http://192.168.0.182/medsonit-be//assets/doc_profile/DR-avatar.png",
+        "speciality": "General Physician",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "DR. SUNEETA PHADKE",
+            "clinicAddress": "kothrud,Pune",
+            "amt": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 17
+          },
+          {
+            "clinicName": "DR. SUNEETA PHADKE",
+            "clinicAddress": "warje,Pune",
+            "amt": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 2
+          }
+        ],
+        "favourite": false,
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "rating": "0",
+        "waitingTime": "",
+        "tokenNo": "",
+        "isPremium": true,
+        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
+        "docServices": [
+          "Migraine",
+          "Parkinson’s Disease",
+          "Spinal Disorders",
+          "Brain Mapping"
+        ],
+        "aptDate": "",
+        "aptTime": ""
+      },
+      {
+        "docId": 6,
+        "docName": "DR. AVINASH KULKARNI",
+        "categoryName": "Recently Visited Doctor",
+        "categorySpeciality": "Premium",
+        "doctorImageUrl": "http://192.168.0.182/medsonit-be//assets/doc_profile/DR-avatar.png",
+        "speciality": "General Physician",
+        "experience": 13,
+        "clinicList": [
+          {
+            "clinicName": "DR. AVINASH KULKARNI",
+            "clinicAddress": "lane no 1,kothrud,Pune",
+            "amt": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 3
+          },
+          {
+            "clinicName": "DR. AVINASH KULKARNI",
+            "clinicAddress": "kothrud,Pune",
+            "amt": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 18
+          }
+        ],
+        "favourite": false,
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "rating": "0",
+        "waitingTime": "",
+        "tokenNo": "",
+        "isPremium": true,
+        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
+        "docServices": [
+          "Migraine",
+          "Parkinson’s Disease",
+          "Spinal Disorders",
+          "Brain Mapping"
+        ],
+        "aptDate": "",
+        "aptTime": ""
+      }
+    ],
+    "doctorSpecialities": [
+      "General Physician"
+    ]
+  }
+}

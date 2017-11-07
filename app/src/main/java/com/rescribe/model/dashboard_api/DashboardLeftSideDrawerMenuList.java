@@ -1,10 +1,14 @@
 
 package com.rescribe.model.dashboard_api;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DashboardLeftSideDrawerMenuList {
+public class DashboardLeftSideDrawerMenuList implements Parcelable
+{
 
     @SerializedName("name")
     @Expose
@@ -12,6 +16,30 @@ public class DashboardLeftSideDrawerMenuList {
     @SerializedName("imageUrl")
     @Expose
     private String imageUrl;
+    public final static Creator<DashboardLeftSideDrawerMenuList> CREATOR = new Creator<DashboardLeftSideDrawerMenuList>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public DashboardLeftSideDrawerMenuList createFromParcel(Parcel in) {
+            return new DashboardLeftSideDrawerMenuList(in);
+        }
+
+        public DashboardLeftSideDrawerMenuList[] newArray(int size) {
+            return (new DashboardLeftSideDrawerMenuList[size]);
+        }
+
+    }
+    ;
+
+    protected DashboardLeftSideDrawerMenuList(Parcel in) {
+        this.name = ((String) in.readValue((String.class.getClassLoader())));
+        this.imageUrl = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+    public DashboardLeftSideDrawerMenuList() {
+    }
 
     public String getName() {
         return name;
@@ -27,6 +55,15 @@ public class DashboardLeftSideDrawerMenuList {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(name);
+        dest.writeValue(imageUrl);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

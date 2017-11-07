@@ -40,7 +40,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     private ColorGenerator mColorGenerator;
 
 
-    public ShowDoctorViewPagerAdapter(Context context, ArrayList<DashboardDoctorList> doctorLists,OnClickOfCardOnDashboard mOnClickOfCardOnDashboard) {
+    public ShowDoctorViewPagerAdapter(Context context, ArrayList<DashboardDoctorList> doctorLists, OnClickOfCardOnDashboard mOnClickOfCardOnDashboard) {
         this.mContext = context;
         this.mDataList = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
@@ -147,7 +147,13 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         sizeOfList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
+                    mOnClickOfCardOnDashboard.onClickOfCount(mContext.getString(R.string.my_appointments));
+                }else if(doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
+                    mOnClickOfCardOnDashboard.onClickOfCount(mContext.getString(R.string.sponsered_doctor));
+                }else if(doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
+                    mOnClickOfCardOnDashboard.onClickOfCount(mContext.getString(R.string.recently_visit_doctor));
+                }
             }
         });
         dashBoardCard.setOnClickListener(new View.OnClickListener() {
@@ -212,6 +218,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
     public interface OnClickOfCardOnDashboard {
         void onClickOfDashboardDoctorItem(String nameOfClickOnItem);
+        void onClickOfCount(String nameOfCategoryType);
     }
 
 }

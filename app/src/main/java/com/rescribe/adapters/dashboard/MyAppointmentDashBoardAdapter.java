@@ -23,14 +23,16 @@ import butterknife.ButterKnife;
  * Created by jeetal on 7/11/17.
  */
 
-public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdapter.ListViewHolder> {
+public class MyAppointmentDashBoardAdapter extends RecyclerView.Adapter<MyAppointmentDashBoardAdapter.ListViewHolder> {
 
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
+    private OnCardOfAppointmentClickListener mOnCardOfAppointmentClickListener;
 
-    public MyAppointmentAdapter(Context mContext, ArrayList<DoctorList> dataList) {
+    public MyAppointmentDashBoardAdapter(Context mContext, ArrayList<DoctorList> dataList,OnCardOfAppointmentClickListener mOnCardOfAppointmentClickListener) {
         this.mDataList = dataList;
         this.mContext = mContext;
+        this.mOnCardOfAppointmentClickListener = mOnCardOfAppointmentClickListener;
 
     }
 
@@ -47,30 +49,36 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
 
         final DoctorList doctorObject = mDataList.get(position);
         holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
-        if(doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))){
+        if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
             holder.tokenNo.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             holder.tokenNo.setVisibility(View.VISIBLE);
             holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.result_book_appointment));
 
         }
         holder.doctorName.setText(doctorObject.getDocName());
-        holder.doctorExperience.setText(doctorObject.getExperience()+mContext.getString(R.string.space)+mContext.getString(R.string.years_experience));
-        if(doctorObject.getClinicDataList().size()==1){
+        holder.doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
+        if (doctorObject.getClinicDataList().size() == 1) {
             holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
-        }else{
-            holder.doctorAddress.setText(doctorObject.getClinicDataList().size()+mContext.getString(R.string.space)+mContext.getString(R.string.locations));
+        } else {
+            holder.doctorAddress.setText(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
         }
-        if(doctorObject.getRating()==0){
+        if (doctorObject.getRating() == 0) {
             holder.ratingBar.setVisibility(View.INVISIBLE);
             holder.doctorRating.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             holder.ratingBar.setVisibility(View.VISIBLE);
             holder.doctorRating.setVisibility(View.VISIBLE);
             holder.ratingBar.setRating((float) doctorObject.getRating());
-            holder.doctorRating.setText(""+doctorObject.getRating());
+            holder.doctorRating.setText("" + doctorObject.getRating());
         }
         holder.doctorFee.setVisibility(View.INVISIBLE);
+        holder.doctorlistCardLinearlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnCardOfAppointmentClickListener.onClickOfCard(doctorObject.getCategoryName());
+            }
+        });
       /*  if (doctorObject.do().equals("")) {*/
        /* } else {
             holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.token_no_background));
@@ -120,7 +128,8 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
         RatingBar ratingBar;
         @BindView(R.id.tokenNo)
         ImageView tokenNo;
-
+        @BindView(R.id.doctorlistCardLinearlayout)
+        LinearLayout doctorlistCardLinearlayout;
         View view;
 
         ListViewHolder(View view) {
@@ -128,6 +137,9 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
             ButterKnife.bind(this, view);
             this.view = view;
         }
+    }
+    public interface OnCardOfAppointmentClickListener {
+        void onClickOfCard(String menuName);
     }
 }
 

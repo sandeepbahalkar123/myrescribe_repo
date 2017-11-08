@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
@@ -47,7 +48,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 4/10/17.
  */
 
-public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
+public class MapActivityPlotNearByDoctor extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
@@ -67,7 +68,6 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
     private Context mContext;
     TextView mDoctorName;
     TextView mDoctorRating;
-    TextView mKilometers;
     TextView mDoctorReviews;
     ImageView mDirections;
     RatingBar mRatingBar;
@@ -84,16 +84,16 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
 
     private void init() {
         mContext = MapActivityPlotNearByDoctor.this;
-        mIntent = getIntent();
+        mDoctorLists = new ArrayList<>();
         mUserSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-        mDoctorLists = this.getIntent().getParcelableArrayListExtra(getString(R.string.doctor_data));
+        mDoctorLists = getIntent().getExtras().getParcelableArrayList(getString(R.string.doctor_data));;
         bookAppointmentBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        title.setText(mIntent.getStringExtra(getString(R.string.toolbarTitle)));
+        title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         showlocation.setVisibility(View.VISIBLE);
         showlocation.setText(mUserSelectedLocationInfo.get(getString(R.string.location)));
         locationTextView.setVisibility(View.GONE);

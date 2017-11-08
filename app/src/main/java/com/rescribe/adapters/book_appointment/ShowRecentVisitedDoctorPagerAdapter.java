@@ -144,7 +144,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             ArrayList<DashboardClinicList> clinicDataList = doctorListObject.getClinicDataList();
             if (clinicDataList.size() > 0) {
                 doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
-                doctorFees.setText(clinicDataList.get(0).getAmt());
+                doctorFees.setText(""+clinicDataList.get(0).getAmt());
             }
             doctorAppointmentDate.setVisibility(View.INVISIBLE);
             bookAppointmentButton.setVisibility(View.VISIBLE);

@@ -118,7 +118,8 @@ public class DoctorList implements Parcelable {
             instance.aptDate = ((String) in.readValue((String.class.getClassLoader())));
             instance.aptTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.sizeOfList = ((Integer) in.readValue((Integer.class.getClassLoader())));
-
+            instance.addressOfDoctorString = ((String) in.readValue((String.class.getClassLoader())));
+            instance.nameOfClinicString = ((String) in.readValue((String.class.getClassLoader())));
             //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
             return instance;
         }
@@ -335,6 +336,8 @@ public class DoctorList implements Parcelable {
         dest.writeValue(aptDate);
         dest.writeValue(aptTime);
         dest.writeValue(sizeOfList);
+        dest.writeValue(addressOfDoctorString);
+        dest.writeValue(nameOfClinicString);
     }
 
 

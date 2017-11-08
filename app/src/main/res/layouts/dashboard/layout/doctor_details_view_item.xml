@@ -219,8 +219,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/dp8"
+                    android:paddingLeft="@dimen/dp4"
+                    android:paddingStart="@dimen/dp4"
+                    android:paddingRight="@dimen/dp4"
+                    android:paddingEnd="@dimen/dp4"
                     android:layout_marginTop="@dimen/dp2"
-                    android:src="@drawable/dashboard_heart_fav"
                     android:visibility="visible" />
             </LinearLayout>
         </LinearLayout>

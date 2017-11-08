@@ -6,7 +6,7 @@ import com.rescribe.interfaces.CustomResponse;
 
 public class RequestFavouriteDoctorModel implements CustomResponse {
 
-    @SerializedName("doctorId")
+    @SerializedName("docId")
     @Expose
     private Integer doctorId;
     @SerializedName("patientId")

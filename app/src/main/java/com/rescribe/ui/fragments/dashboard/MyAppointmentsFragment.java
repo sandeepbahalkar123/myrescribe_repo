@@ -1,5 +1,6 @@
 package com.rescribe.ui.fragments.dashboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -10,8 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.rescribe.R;
-import com.rescribe.adapters.dashboard.MyAppointmentAdapter;
+import com.rescribe.adapters.dashboard.MyAppointmentDashBoardAdapter;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.ui.activities.AppointmentActivity;
 
 import java.util.ArrayList;
 
@@ -23,7 +25,7 @@ import butterknife.Unbinder;
  * Created by jeetal on 7/11/17.
  */
 
-public class MyAppointmentsFragment extends Fragment {
+public class MyAppointmentsFragment extends Fragment implements MyAppointmentDashBoardAdapter.OnCardOfAppointmentClickListener{
 
     Unbinder unbinder;
     private static Bundle args;
@@ -32,7 +34,7 @@ public class MyAppointmentsFragment extends Fragment {
     private View mRootView;
     ArrayList<DoctorList> dashboardDoctorLists;
     private DividerItemDecoration mDividerItemDecoration;
-    private MyAppointmentAdapter mMyAppointmentAdapter;
+    private MyAppointmentDashBoardAdapter mMyAppointmentAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -64,7 +66,7 @@ public class MyAppointmentsFragment extends Fragment {
     private void init() {
         dashboardDoctorLists = args.getParcelableArrayList(getString(R.string.clicked_item_data));
         if(dashboardDoctorLists!=null){
-            mMyAppointmentAdapter = new MyAppointmentAdapter(getActivity(), dashboardDoctorLists);
+            mMyAppointmentAdapter = new MyAppointmentDashBoardAdapter(getActivity(), dashboardDoctorLists,this);
             LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             myAppoinmentRecyclerView.setLayoutManager(linearlayoutManager);
             myAppoinmentRecyclerView.setHasFixedSize(true);
@@ -91,4 +93,11 @@ public class MyAppointmentsFragment extends Fragment {
     }
 
 
+    @Override
+    public void onClickOfCard(String menuName) {
+        if(menuName.equals(getString(R.string.my_appointments))){
+            Intent intent = new Intent(getActivity(), AppointmentActivity.class);
+            startActivity(intent);
+        }
+    }
 }

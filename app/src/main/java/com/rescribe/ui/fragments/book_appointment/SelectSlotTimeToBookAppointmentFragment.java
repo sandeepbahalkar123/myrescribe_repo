@@ -98,7 +98,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     private void init() {
         // setColumnNumber(getActivity(), 2);
-        BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
+   //     BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
         Bundle arguments = getArguments();
         if (arguments != null) {
             mClickedDoctorObject = (DoctorList) arguments.getParcelable(getString(R.string.clicked_item_data));

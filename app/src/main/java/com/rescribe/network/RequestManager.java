@@ -33,6 +33,7 @@ import com.rescribe.model.Common;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
+import com.rescribe.model.book_appointment.doctor_data.add_to_favourite.ResponseFavouriteDoctorBaseModel;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
 import com.rescribe.model.book_appointment.reviews.ReviewListBaseModel;
 import com.rescribe.model.case_details.CaseDetailsModel;
@@ -631,6 +632,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         DashBoardBaseModel dashboardBaseModel = new Gson().fromJson(data, DashBoardBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dashboardBaseModel, mOldDataTag);
                         break;
+                    case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR: //This is for get archived list
+                        ResponseFavouriteDoctorBaseModel responseFavouriteDoctorBaseModel = new Gson().fromJson(data, ResponseFavouriteDoctorBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseFavouriteDoctorBaseModel, mOldDataTag);
+                        break;
+
 
                     default:
                         //This is for get PDF VisitData

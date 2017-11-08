@@ -216,7 +216,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             case R.id.leftFab:
                 if (mSortByClinicAndDoctorNameAdapter.isListByClinicName()) {
                     Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
-                    intent.putParcelableArrayListExtra(getString(R.string.doctor_data), mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName());
+                    intent.putExtra(getString(R.string.doctor_data), mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName());
                     intent.putExtra(getString(R.string.toolbarTitle), mReceivedToolBarTitle);
                     startActivity(intent);
                 } else {
@@ -236,7 +236,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                         }
                     }
                     Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
-                    intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
+                    intent.putExtra(getString(R.string.doctor_data), doctorListByClinics);
                     intent.putExtra(getString(R.string.toolbarTitle), mReceivedToolBarTitle);
                     startActivity(intent);
                 }

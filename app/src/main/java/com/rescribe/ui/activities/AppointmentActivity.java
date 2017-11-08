@@ -150,10 +150,6 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(AppointmentActivity.this, HomePageActivity.class);
-        intent.putExtra(RescribeConstants.ALERT, false);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
         super.onBackPressed();
     }
 
@@ -179,5 +175,6 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
 
         return tempList;
     }
+
 
 }

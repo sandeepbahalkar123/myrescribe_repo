@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
@@ -36,7 +37,10 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.Common;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.doctor_data.add_to_favourite.ResponseAddToFavourite;
+import com.rescribe.model.book_appointment.doctor_data.add_to_favourite.ResponseFavouriteDoctorBaseModel;
 import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.dashboard_api.DashboardModel;
 import com.rescribe.model.login.ActiveRequest;
@@ -112,6 +116,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter;
     private DashboardModel mDashboardModel;
     private DashBoardBottomMenuListAdapter mDashBoardBottomMenuList;
+    DoctorDataHelper doctorDataHelper;
+    ArrayList<DoctorList> dashboardDoctorListsToShowDashboardDoctor;
+    int doctorID;
 
     @Override
 
@@ -502,7 +509,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         if (mOldDataTag.equalsIgnoreCase(TASK_DASHBOARD_API)) {
             DashBoardBaseModel dashboardBaseModel = (DashBoardBaseModel) customResponse;
             mDashboardModel = dashboardBaseModel.getDashboardModel();
-            ArrayList<DoctorList> dashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
+            dashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
             if (mDashboardModel != null) {
 
                 ArrayList<DoctorList> myAppoint = filterDataOnDocSpeciality(getString(R.string.my_appointments));
@@ -511,6 +518,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 dashboardDoctorListsToShowDashboardDoctor.add(myAppoint.get(0));
                 dashboardDoctorListsToShowDashboardDoctor.add(sponsered.get(0));
                 dashboardDoctorListsToShowDashboardDoctor.add(recently_visit_doctor.get(0));
+                dashboardDoctorListsToShowDashboardDoctor.add(getFavouriteList().get(0));
 
                 for (int sizeOfList = 0; sizeOfList < dashboardDoctorListsToShowDashboardDoctor.size(); sizeOfList++) {
                     DoctorList temp = dashboardDoctorListsToShowDashboardDoctor.get(sizeOfList);
@@ -584,6 +592,30 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             logout();
         else if (mOldDataTag.equals(ACTIVE_STATUS))
             CommonMethods.Log(ACTIVE_STATUS, "active");
+        else if(mOldDataTag.equals(RescribeConstants.TASK_SET_FAVOURITE_DOCTOR)){
+            if(customResponse!=null){
+                ResponseFavouriteDoctorBaseModel responseFavouriteDoctorBaseModel = (ResponseFavouriteDoctorBaseModel)customResponse;
+                if(responseFavouriteDoctorBaseModel.getCommon().isSuccess()){
+                    Toast.makeText(mContext, responseFavouriteDoctorBaseModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                    for(int i = 0;i<dashboardDoctorListsToShowDashboardDoctor.size();i++){
+                        if(doctorID==dashboardDoctorListsToShowDashboardDoctor.get(i).getDocId()){
+                            boolean isFavourite = dashboardDoctorListsToShowDashboardDoctor.get(i).getFavourite();
+                            if(dashboardDoctorListsToShowDashboardDoctor.get(i).getFavourite()) {
+                                dashboardDoctorListsToShowDashboardDoctor.get(i).setFavourite(false);
+                                mShowDoctorViewPagerAdapter.notify();
+                            }else{
+                                dashboardDoctorListsToShowDashboardDoctor.get(i).setFavourite(true);
+                                mShowDoctorViewPagerAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+
+                }else{
+                    Toast.makeText(mContext, responseFavouriteDoctorBaseModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }
 
     }
 
@@ -602,6 +634,21 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 }
             }
         }
+        return dataList;
+    }
+    private ArrayList<DoctorList> getFavouriteList() {
+
+        ArrayList<DoctorList> doctors = mDashboardModel.getDoctorList();
+
+        ArrayList<DoctorList> dataList = new ArrayList<>();
+
+            for (DoctorList listObject :
+                    doctors) {
+                if (listObject.getFavourite()) {
+                    dataList.add(listObject);
+                }
+            }
+
         return dataList;
     }
 
@@ -735,6 +782,13 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             /*Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
             startActivity(intent);*/
         }
+    }
+
+    @Override
+    public void onClickOfFavourite(boolean isFavourite, int docId) {
+        doctorID = docId;
+        doctorDataHelper = new DoctorDataHelper(this,this);
+        doctorDataHelper.setFavouriteDoctor(isFavourite,docId);
     }
 
     @Override

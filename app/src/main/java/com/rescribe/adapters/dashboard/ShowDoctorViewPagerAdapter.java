@@ -183,6 +183,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
             }
+
             bookAppointmentButton.setVisibility(View.VISIBLE);
             doctorAppointmentDate.setVisibility(View.INVISIBLE);
         }
@@ -192,11 +193,18 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         } else {
             recentVisit.setVisibility(View.GONE);
         }*/
-      /*  if (doctorObject.getFavourite()) {
-            favorite.setVisibility(View.VISIBLE);
+        if (doctorObject.getFavourite()) {
+            favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.dashboard_heart_fav));
+
         } else {
-            favorite.setVisibility(View.GONE);
-        }*/
+            favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.result_line_heart_fav));
+        }
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnClickOfCardOnDashboard.onClickOfFavourite(doctorObject.getFavourite(),doctorObject.getDocId());
+            }
+        });
 
         view.addView(imageLayout, 0);
 
@@ -219,6 +227,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     public interface OnClickOfCardOnDashboard {
         void onClickOfDashboardDoctorItem(String nameOfClickOnItem);
         void onClickOfCount(String nameOfCategoryType);
+        void onClickOfFavourite(boolean isFavourite,int docId);
     }
 
 }

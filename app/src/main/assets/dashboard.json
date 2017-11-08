@@ -262,7 +262,7 @@
         ],
         "tokenNo":"",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favourite": true,
         "rating": 0,
         "aptDate": "",
         "aptTime": ""
@@ -323,7 +323,7 @@
         ],
         "tokenNo":"",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favourite": true,
         "rating": 4.5,
         "aptDate": "2017-06-17",
         "aptTime": "19:45:00"
@@ -364,6 +364,7 @@
     "cardBgImageUrlList": [
       "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/hdpi/myappointments.png",
       "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/hdpi/sponsored.png",
+      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/hdpi/recentlyvisited.png",
       "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/hdpi/recentlyvisited.png"
     ],
     "dashboardMenuList": [

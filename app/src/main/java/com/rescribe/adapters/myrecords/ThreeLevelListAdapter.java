@@ -2,6 +2,7 @@ package com.rescribe.adapters.myrecords;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -184,8 +185,12 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
         secondLevelELV.setGroupIndicator(null);
         secondLevelELV.setChildIndicator(null);
-        secondLevelELV.setChildDivider(context.getDrawable(R.color.black));
-        secondLevelELV.setDivider(context.getDrawable(R.color.black));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            secondLevelELV.setChildDivider(context.getDrawable(R.color.black));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            secondLevelELV.setDivider(context.getDrawable(R.color.black));
+        }
         secondLevelELV.setDividerHeight(0);
 
         secondLevelELV.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {

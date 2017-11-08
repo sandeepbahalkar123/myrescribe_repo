@@ -74,14 +74,14 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
         holder.doctorName.setText(doctorObject.getDocName());
         holder.aboutDoctor.setText(doctorObject.getDegree());
-        if (doctorObject.getRating().equals("NA")) {
+        if (doctorObject.getRating()==0) {
             holder.doctorRating.setVisibility(View.GONE);
             holder.ratingBar.setVisibility(View.GONE);
         } else {
             holder.doctorRating.setVisibility(View.VISIBLE);
             holder.ratingBar.setVisibility(View.VISIBLE);
             holder.doctorRating.setText("" + doctorObject.getRating());
-            holder.ratingBar.setRating(Float.parseFloat(doctorObject.getRating()));
+            holder.ratingBar.setRating((float) doctorObject.getRating());
         }
         if (doctorObject.getTokenNo().equals("")) {
             holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.result_book_appointment));

@@ -44,7 +44,7 @@ public class DoctorList implements Parcelable {
 
     @SerializedName("clinicList")
     @Expose
-    private ArrayList<ClinicData> clinicDataList = new ArrayList<>();
+    private ArrayList<com.rescribe.model.book_appointment.doctor_data.ClinicData> clinicDataList = new ArrayList<>();
 
     @SerializedName("favourite")
     @Expose
@@ -55,7 +55,7 @@ public class DoctorList implements Parcelable {
 
     @SerializedName("rating")
     @Expose
-    private String rating = "";
+    private double rating;
 
     @SerializedName("waitingTime")
     @Expose
@@ -78,13 +78,14 @@ public class DoctorList implements Parcelable {
     @Expose
     private String aptTime = "";
     //------
-
+    private int sizeOfList = 0;
     private double latitude = 0.0;
     private double longitude = 0.0;
 
     //this parameters are used to sort list by clinicName and doctorName as per functionality
     private String nameOfClinicString = "";
     private String addressOfDoctorString = "";
+
     /*  @SerializedName("reviewList")
     @Expose
     private ArrayList<ReviewList> reviewList = null;*/
@@ -105,16 +106,19 @@ public class DoctorList implements Parcelable {
             instance.doctorImageUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.docSpeciality = ((String) in.readValue((String.class.getClassLoader())));
             instance.experience = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            in.readList(instance.clinicDataList, (ClinicData.class.getClassLoader()));
+            in.readList(instance.clinicDataList, (com.rescribe.model.book_appointment.doctor_data.ClinicData.class.getClassLoader()));
             instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.degree = ((String) in.readValue((String.class.getClassLoader())));
-            instance.rating = ((String) in.readValue((String.class.getClassLoader())));
+            instance.rating = ((Double) in.readValue((Double.class.getClassLoader())));
             instance.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.tokenNo = ((String) in.readValue((String.class.getClassLoader())));
             instance.aboutDoctor = ((String) in.readValue((String.class.getClassLoader())));
             in.readList(instance.docServices, (String.class.getClassLoader()));
             instance.aptDate = ((String) in.readValue((String.class.getClassLoader())));
             instance.aptTime = ((String) in.readValue((String.class.getClassLoader())));
+            instance.sizeOfList = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.addressOfDoctorString = ((String) in.readValue((String.class.getClassLoader())));
+            instance.nameOfClinicString = ((String) in.readValue((String.class.getClassLoader())));
             //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
             return instance;
         }
@@ -139,6 +143,14 @@ public class DoctorList implements Parcelable {
 
     public void setAddressOfDoctorString(String addressOfDoctorString) {
         this.addressOfDoctorString = addressOfDoctorString;
+    }
+
+    public int getSizeOfList() {
+        return sizeOfList;
+    }
+
+    public void setSizeOfList(int sizeOfList) {
+        this.sizeOfList = sizeOfList;
     }
 
     public boolean getFavourite() {
@@ -223,11 +235,11 @@ public class DoctorList implements Parcelable {
         this.degree = degree;
     }
 
-    public String getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
@@ -247,11 +259,11 @@ public class DoctorList implements Parcelable {
         this.tokenNo = tokenNo;
     }
 
-    public ArrayList<ClinicData> getClinicDataList() {
+    public ArrayList<com.rescribe.model.book_appointment.doctor_data.ClinicData> getClinicDataList() {
         return clinicDataList;
     }
 
-    public void setClinicDataList(ArrayList<ClinicData> clinicDataList) {
+    public void setClinicDataList(ArrayList<com.rescribe.model.book_appointment.doctor_data.ClinicData> clinicDataList) {
         this.clinicDataList = clinicDataList;
     }
 
@@ -323,6 +335,9 @@ public class DoctorList implements Parcelable {
         dest.writeList(docServices);
         dest.writeValue(aptDate);
         dest.writeValue(aptTime);
+        dest.writeValue(sizeOfList);
+        dest.writeValue(addressOfDoctorString);
+        dest.writeValue(nameOfClinicString);
     }
 
 
@@ -330,102 +345,4 @@ public class DoctorList implements Parcelable {
         return 0;
     }
 
-    public static class ClinicData implements Parcelable {
-        @SerializedName("clinicName")
-        @Expose
-        private String clinicName = "";
-        @SerializedName("clinicAddress")
-        @Expose
-        private String clinicAddress = "";
-        @SerializedName("amt")
-        @Expose
-        private int amt;
-        @SerializedName("apptScheduleLmtDays")
-        @Expose
-        private int apptScheduleLmtDays;
-        @SerializedName("locationId")
-        @Expose
-        private int locationId;
-
-        public final static Creator<ClinicData> CREATOR = new Creator<ClinicData>() {
-
-            @SuppressWarnings({
-                    "unchecked"
-            })
-            public ClinicData createFromParcel(Parcel in) {
-                ClinicData instance = new ClinicData();
-                instance.clinicName = ((String) in.readValue((String.class.getClassLoader())));
-                instance.clinicAddress = ((String) in.readValue((String.class.getClassLoader())));
-                instance.amt = ((Integer) in.readValue((Integer.class.getClassLoader())));
-                instance.apptScheduleLmtDays = ((Integer) in.readValue((Integer.class.getClassLoader())));
-                instance.locationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
-
-                return instance;
-            }
-
-            public ClinicData[] newArray(int size) {
-                return (new ClinicData[size]);
-            }
-
-        };
-
-        public String getClinicName() {
-            return clinicName;
-        }
-
-        public void setClinicName(String clinicName) {
-            this.clinicName = clinicName;
-        }
-
-        public String getClinicAddress() {
-            return clinicAddress;
-        }
-
-        public void setClinicAddress(String clinicAddress) {
-            this.clinicAddress = clinicAddress;
-        }
-
-        public int getAmt() {
-            return amt;
-        }
-
-        public void setAmt(int amt) {
-            this.amt = amt;
-        }
-
-        public int getApptScheduleLmtDays() {
-            return apptScheduleLmtDays;
-        }
-
-        public void setApptScheduleLmtDays(int apptScheduleLmtDays) {
-            this.apptScheduleLmtDays = apptScheduleLmtDays;
-        }
-
-        public int getLocationId() {
-            return locationId;
-        }
-
-        public void setLocationId(int locationId) {
-            this.locationId = locationId;
-        }
-
-        @Override
-        public String toString() {
-            return clinicName + ',' + clinicAddress;
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeValue(clinicName);
-            dest.writeValue(clinicAddress);
-            dest.writeValue(amt);
-            dest.writeValue(apptScheduleLmtDays);
-            dest.writeValue(locationId);
-        }
-    }
 }

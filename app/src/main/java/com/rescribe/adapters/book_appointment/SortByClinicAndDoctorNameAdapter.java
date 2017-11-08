@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +26,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
@@ -90,14 +90,14 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
 
         holder.aboutDoctor.setText(doctorObject.getDegree());
-        if (doctorObject.getRating().equals("NA")) {
+        if (doctorObject.getRating()==0) {
             holder.doctorRating.setVisibility(View.GONE);
             holder.ratingBar.setVisibility(View.GONE);
         } else {
             holder.doctorRating.setVisibility(View.VISIBLE);
             holder.ratingBar.setVisibility(View.VISIBLE);
             holder.doctorRating.setText("" + doctorObject.getRating());
-            holder.ratingBar.setRating(Float.parseFloat(doctorObject.getRating()));
+            holder.ratingBar.setRating((float) doctorObject.getRating());
         }
 
         //if only one clinic is available then only show doctoraddress otherwise show total locations available
@@ -292,7 +292,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                             setListByClinicName(false);
                         } else {
                             int i = 0;
-                            for (DoctorList.ClinicData dataObj :
+                            for (ClinicData dataObj :
                                     doctorConnectModel.getClinicDataList()) {
                                 if (dataObj.getClinicName().toLowerCase().startsWith(charString.toLowerCase())) {
                                     doctorConnectModel.setNameOfClinicString(dataObj.getClinicName());

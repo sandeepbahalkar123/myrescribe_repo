@@ -40,6 +40,8 @@
             android:layout_gravity="center"
             android:src="@drawable/rectangle_4"
             android:paddingTop="@dimen/dp4"
+            android:id="@+id/alertTab"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -71,6 +73,14 @@
             android:paddingTop="@dimen/dp5"
             android:layout_gravity="center"
             app:customFont="@string/roboto_regular" />
+        <ImageView
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:src="@drawable/rectangle_4"
+            android:paddingTop="@dimen/dp4"
+            android:id="@+id/profileTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
     <LinearLayout
@@ -84,11 +94,11 @@
 
 
         <ImageView
-            android:layout_gravity="center"
             android:id="@+id/appLogo"
-            android:src="@drawable/logo"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/logo" />
 
 
     </LinearLayout>
@@ -120,6 +130,14 @@
             android:text="@string/settings"
             android:layout_gravity="center"
             app:customFont="@string/roboto_regular" />
+        <ImageView
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:src="@drawable/rectangle_4"
+            android:paddingTop="@dimen/dp4"
+            android:id="@+id/settingTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
     <LinearLayout
@@ -150,6 +168,14 @@
             android:paddingTop="@dimen/dp5"
             android:layout_gravity="center"
             app:customFont="@string/roboto_regular" />
+        <ImageView
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:src="@drawable/rectangle_4"
+            android:paddingTop="@dimen/dp4"
+            android:id="@+id/supportTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </LinearLayout>

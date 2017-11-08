@@ -63,6 +63,8 @@ public class DoctorDataHelper implements ConnectionListener {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                }else if (mOldDataTag == RescribeConstants.TASK_SET_FAVOURITE_DOCTOR) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
@@ -195,14 +197,13 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_DOCTOR_LIST_BY_COMPLAINT);
     }
 
-    public void setFavouriteDoctor(Boolean isFavourite, String docId) {
+    public void setFavouriteDoctor(Boolean isFavourite, int docId) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SET_FAVOURITE_DOCTOR, Request.Method.POST, true);
         RequestFavouriteDoctorModel requestFavouriteDoctorModel = new RequestFavouriteDoctorModel();
         requestFavouriteDoctorModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
         requestFavouriteDoctorModel.setFavouriteflag(isFavourite);
-        requestFavouriteDoctorModel.setDoctorId(Integer.valueOf(docId));
+        requestFavouriteDoctorModel.setDoctorId(docId);
         mConnectionFactory.setPostParams(requestFavouriteDoctorModel);
-
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.SET_FAVOURITE_URL);
         mConnectionFactory.createConnection(RescribeConstants.TASK_SET_FAVOURITE_DOCTOR);

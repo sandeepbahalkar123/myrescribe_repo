@@ -1,23 +1,15 @@
 package com.rescribe.adapters.book_appointment;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.ui.customesViews.CircularImageView;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 
@@ -27,10 +19,10 @@ import butterknife.ButterKnife;
 public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListViewHolder> {
 
     private Context mContext;
-    private ArrayList<DoctorList.ClinicData> mDataList;
+    private ArrayList<ClinicData> mDataList;
     private String mSelectedTimeSlot;
 
-    public TimeSlotAdapter(Context mContext, ArrayList<DoctorList.ClinicData> dataList) {
+    public TimeSlotAdapter(Context mContext, ArrayList<ClinicData> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
 
@@ -46,7 +38,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListVi
 
     @Override
     public void onBindViewHolder(final ListViewHolder holder, int position) {
-        DoctorList.ClinicData doctorObject = mDataList.get(position);
+        ClinicData doctorObject = mDataList.get(position);
         //TODO : NEED TO IMPLEMENT
       //  holder.timeSlot.setText(doctorObject.ge);
 

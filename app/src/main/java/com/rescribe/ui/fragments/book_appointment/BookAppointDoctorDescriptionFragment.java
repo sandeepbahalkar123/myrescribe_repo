@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -25,29 +23,22 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
-import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.dashboard.DoctorData;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
-import com.rescribe.ui.activities.book_appointment.MapActivityShowDoctorLocation;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -133,7 +124,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
     private void init() {
         setColumnNumber(getActivity(), 2);
-        BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
+     //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
         Bundle arguments = getArguments();
         if (arguments != null) {
             mClickedDoctorObject = (DoctorList) arguments.getParcelable(getString(R.string.clicked_item_data));
@@ -176,18 +167,18 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 .into(mProfileImage);
         //-------
         if (mClickedDoctorObject.getFavourite()) {
-            mFavorite.setImageResource(R.drawable.filled_favorite_red);
+            mFavorite.setImageResource(R.drawable.fav_icon);
         } else {
-            mFavorite.setImageResource(R.drawable.fav_red);
+            mFavorite.setImageResource(R.drawable.result_line_heart_fav);
         }
         //---------------
-        String rating = mClickedDoctorObject.getRating();
-        if (rating == null || RescribeConstants.BLANK.equalsIgnoreCase(rating)) {
+
+        if (mClickedDoctorObject.getRating()==0) {
             mDocRatingBarLayout.setVisibility(View.INVISIBLE);
         } else {
             mDocRatingBarLayout.setVisibility(View.VISIBLE);
-            mDocRating.setText("" + rating);
-            mDocRatingBar.setRating(Float.parseFloat(rating));
+            mDocRating.setText("" + mClickedDoctorObject.getRating());
+            mDocRatingBar.setRating((float) mClickedDoctorObject.getRating());
         }
         //----------
         mDoctorName.setText("" + mClickedDoctorObject.getDocName());
@@ -227,17 +218,14 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         }*/
 
         //---------
-        ArrayAdapter<DoctorList.ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
+        ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
         mClinicNameSpinner.setAdapter(arrayAdapter);
         mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                DoctorList.ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
-
+                ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
                 mClinicName.setText("" + clinicData.getClinicName());
-                mDoctorFees.setText(
-                        "" + clinicData.getAmt());
+                mDoctorFees.setText(""+ clinicData.getAmt());
             }
 
             @Override
@@ -315,7 +303,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 //-----Show all doc clinic on map, copied from BookAppointFilteredDoctorListFragment.java----
                 //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
                 ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
-                ArrayList<DoctorList.ClinicData> clinicNameList = mClickedDoctorObject.getClinicDataList();
+                ArrayList<ClinicData> clinicNameList = mClickedDoctorObject.getClinicDataList();
                 for (int i = 0; i < clinicNameList.size(); i++) {
                     DoctorList doctorListByClinic = new DoctorList();
                     doctorListByClinic = mClickedDoctorObject;

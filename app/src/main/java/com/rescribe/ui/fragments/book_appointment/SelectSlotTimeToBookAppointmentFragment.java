@@ -1,6 +1,7 @@
 package com.rescribe.ui.fragments.book_appointment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -29,16 +30,19 @@ import com.rescribe.adapters.book_appointment.SelectSlotToBookAppointmentAdapter
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
+import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -101,7 +105,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private int mLastExpandedPosition = -1;
     private SelectSlotToBookAppointmentAdapter mSelectSlotToBookAppointmentAdapter;
     private String mSelectedTimeSlotDate;
-    private DoctorList.ClinicData mSelectedClinicDataObject;
+    private ClinicData mSelectedClinicDataObject;
 
     public SelectSlotTimeToBookAppointmentFragment() {
         // Required empty public constructor
@@ -140,9 +144,9 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         //----------
         mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
         // setColumnNumber(getActivity(), 2);
-        //-------------
-        BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
-        //----------
+
+        //     BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
+
         Bundle arguments = getArguments();
         if (arguments != null) {
             mClickedDoctorObject = arguments.getParcelable(getString(R.string.clicked_item_data));
@@ -193,12 +197,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 .into(mProfileImage);
         //-------
         if (mClickedDoctorObject.getFavourite()) {
-            mFavorite.setImageResource(R.drawable.filled_favorite_red);
+            mFavorite.setImageResource(R.drawable.fav_icon);
         } else {
-            mFavorite.setImageResource(R.drawable.fav_red);
+            mFavorite.setImageResource(R.drawable.result_line_heart_fav);
         }
         //---------------
-        String rating = mClickedDoctorObject.getRating();
+        String rating = "" + mClickedDoctorObject.getRating();
         if (rating == null || RescribeConstants.BLANK.equalsIgnoreCase(rating)) {
             mDocRatingBarLayout.setVisibility(View.INVISIBLE);
         } else {
@@ -230,7 +234,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             mPremiumType.setVisibility(View.INVISIBLE);
         }
         //-------------------
-        ArrayAdapter<DoctorList.ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
+        ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
         mClinicNameSpinner.setAdapter(arrayAdapter);
         mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -289,7 +293,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         unbinder.unbind();
     }
 
-    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton})
+    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -310,6 +314,24 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 datePickerDialog.show(getFragmentManager(), getResources().getString(R.string.select_date_text));
                 break;
             case R.id.bookAppointmentButton:
+                break;
+            case R.id.viewAllClinicsOnMap: // on view-all location clicked
+                //-----Show all doc clinic on map, copied from BookAppointFilteredDoctorListFragment.java----
+                //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
+                ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
+                ArrayList<ClinicData> clinicNameList = mClickedDoctorObject.getClinicDataList();
+                for (int i = 0; i < clinicNameList.size(); i++) {
+                    DoctorList doctorListByClinic = new DoctorList();
+                    doctorListByClinic = mClickedDoctorObject;
+                    doctorListByClinic.setAddressOfDoctorString(clinicNameList.get(i).getClinicAddress());
+                    doctorListByClinic.setNameOfClinicString(clinicNameList.get(i).getClinicName());
+                    doctorListByClinics.add(doctorListByClinic);
+                }
+                Intent intentObjectMap = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
+                intentObjectMap.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
+                intentObjectMap.putExtra(getString(R.string.toolbarTitle), "");
+                startActivity(intentObjectMap);
+                //--------
                 break;
         }
     }

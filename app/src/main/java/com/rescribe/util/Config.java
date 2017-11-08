@@ -15,6 +15,7 @@ public class Config {
     public static final String DOCTOR_LIST_BY_LOCATION = "api/doctors/getDoctorListByLocation";
     public static final String REVIEW_URL = "api/doctors/getReviewsForDoctor?docId=10";
     public static final String GET_DOCTOR_LIST_BY_COMPLAINT = "api/doctors/getDocListByCityAreaComplaint" ;
+    public static final Object GET_DASHBOARD_DATA = "api/dashboard/getDashboardDetails?patientId=";
     public static boolean DEV_BUILD = true;
     //Declared all URL used in app here
     //    public static final String BROKER = "tcp://ec2-13-126-175-156.ap-south-1.compute.amazonaws.com:1883";

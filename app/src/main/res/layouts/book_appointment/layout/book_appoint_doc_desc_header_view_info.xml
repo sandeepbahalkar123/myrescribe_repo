@@ -65,7 +65,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ruppee_blue" />
+                            android:src="@drawable/ruppee" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/doctorFees"
@@ -213,7 +213,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp20"
-                        android:src="@drawable/fav_red" />
+                        android:src="@drawable/fav_icon" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

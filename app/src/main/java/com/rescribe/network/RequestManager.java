@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -34,12 +33,14 @@ import com.rescribe.model.Common;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
+import com.rescribe.model.book_appointment.doctor_data.add_to_favourite.ResponseFavouriteDoctorBaseModel;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
 import com.rescribe.model.book_appointment.reviews.ReviewListBaseModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.case_details.CaseDetailsModel;
 import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.history.ChatHistoryModel;
+import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.doctor_connect.DoctorConnectBaseModel;
 import com.rescribe.model.doctor_connect.RecentChatDoctorModel;
 import com.rescribe.model.doctor_connect_chat.DoctorConnectChatBaseModel;
@@ -75,10 +76,8 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.NetworkUtil;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -630,9 +629,19 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         BookAppointmentBaseModel dataObject = new Gson().fromJson(data, BookAppointmentBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dataObject, mOldDataTag);
                         break;
+
                     case RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT: //This is for get archived list
                         TimeSlotListBaseModel dataTimeSlot = new Gson().fromJson(data, TimeSlotListBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dataTimeSlot, mOldDataTag);
+                        break;
+
+                    case RescribeConstants.TASK_DASHBOARD_API: //This is for get archived list
+                        DashBoardBaseModel dashboardBaseModel = new Gson().fromJson(data, DashBoardBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dashboardBaseModel, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR: //This is for get archived list
+                        ResponseFavouriteDoctorBaseModel responseFavouriteDoctorBaseModel = new Gson().fromJson(data, ResponseFavouriteDoctorBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseFavouriteDoctorBaseModel, mOldDataTag);
                         break;
 
                     default:

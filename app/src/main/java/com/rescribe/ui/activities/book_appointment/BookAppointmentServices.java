@@ -282,13 +282,12 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     @Override
     public void setOnClickOfServices(ServicesList servicesObject) {
 
-        /*
+
         //TODO : AADED FOR DEVELOPMENT, REMOVE IT IN PRODUCTION.
         //---------
-       // DoctorDataHelper.setUserSelectedLocationInfo(mContext, new LatLng(18.5074, 73.8077), "kothrud,Pune");
-        // DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality + ", " + city);
-       // locationTextView.setText("kothrud,Pune");
-        //---------*/
+        DoctorDataHelper.setUserSelectedLocationInfo(mContext, new LatLng(18.5074, 73.8077), "kothrud,Pune");
+        locationTextView.setText("kothrud,Pune");
+        //---------
 
         if (locationTextView.getText().toString().equals(getString(R.string.location))) {
             Toast.makeText(mContext, getString(R.string.please_select_location), Toast.LENGTH_SHORT).show();

@@ -3,16 +3,21 @@ package com.rescribe.adapters.dashboard;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
-import com.rescribe.model.dashboard.HealthOffersData;
+import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 
@@ -25,8 +30,10 @@ import butterknife.ButterKnife;
 
 public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOptionsDashBoardAdapter.ListViewHolder> {
     private onMenuListClickListener mMenuListClickListener;
+    private ArrayList<DashboardMenuList> mDashboardMenuList;
     private Context mContext;
-    String[] menuOptions = new String[]{"Find Doctors",
+    private int mImageSize;
+  /*  String[] menuOptions = new String[]{"Find Doctors",
             "On Going Treatment",
             "Health Repository",
             "Health Offers",
@@ -39,13 +46,23 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
             R.drawable.dashboard_health_offers,
             R.drawable.dashboard_health_education
 
-    };
+    };*/
 
-    public MenuOptionsDashBoardAdapter(Context mContext, onMenuListClickListener mMenuListClickListener) {
+    public MenuOptionsDashBoardAdapter(Context mContext, onMenuListClickListener mMenuListClickListener, ArrayList<DashboardMenuList> mDashboardMenuList) {
         this.mContext = mContext;
+        setColumnNumber(mContext, 2);
         this.mMenuListClickListener = mMenuListClickListener;
+        this.mDashboardMenuList = mDashboardMenuList;
 
 
+    }
+
+    private void setColumnNumber(Context context, int columnNum) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        int widthPixels = metrics.widthPixels;
+        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     @Override
@@ -58,19 +75,26 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, final int position) {
-         holder.menuOptionName.setText(menuOptions[position]);
-        holder.menuIcon.setImageResource(mImageMenuICons[position]);
+        holder.menuOptionName.setText(mDashboardMenuList.get(position).getName());
         holder.selectMenuLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              mMenuListClickListener.onClickOfMenu(menuOptions[position]);
+                mMenuListClickListener.onClickOfMenu(mDashboardMenuList.get(position).getName());
             }
         });
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
+
+        Glide.with(mContext)
+                .load(mDashboardMenuList.get(position).getImageUrl())
+                .into(holder.menuIcon);
     }
 
     @Override
     public int getItemCount() {
-        return menuOptions.length;
+        return mDashboardMenuList.size();
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {

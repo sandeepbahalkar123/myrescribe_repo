@@ -327,10 +327,6 @@ public class MQTTService extends Service {
     // change
     public void messageStatus(StatusInfo statusInfo) {
         try {
-            // 2017-10-13 13:08:07
-            String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
-            statusInfo.setMsgTime(msgTime);
-            statusInfo.setSender(PATIENT);
             String content = gson.toJson(statusInfo, StatusInfo.class);
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(1);
@@ -352,7 +348,6 @@ public class MQTTService extends Service {
             // 2017-10-13 13:08:07
             String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
             statusInfo.setMsgTime(msgTime);
-            statusInfo.setSender(PATIENT);
             String content = gson.toJson(statusInfo, StatusInfo.class);
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(1);
@@ -371,7 +366,6 @@ public class MQTTService extends Service {
 
     public void passMessage(MQTTMessage mqttMessage) {
         try {
-            mqttMessage.setSender(PATIENT);
             String content = gson.toJson(mqttMessage, MQTTMessage.class);
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(1);

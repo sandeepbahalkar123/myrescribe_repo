@@ -12,11 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rescribe.R;
-import com.rescribe.model.book_appointment.select_slot_book_appointment.SlotList;
+import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotsInfoList;
 
 import java.util.ArrayList;
-
-import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -27,19 +25,18 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class SelectSlotToBookAppointmentAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
-    private ArrayList<SlotList> expandableListTitle;
+    private ArrayList<TimeSlotsInfoList> expandableListTitle;
     private ShowTimingsBookAppointmentDoctor mShowTimingsBookAppointmentDoctor;
 
 
-    public SelectSlotToBookAppointmentAdapter(Context context, ArrayList<SlotList> expandableListTitle) {
+    public SelectSlotToBookAppointmentAdapter(Context context, ArrayList<TimeSlotsInfoList> expandableListTitle) {
         this.mContext = context;
         this.expandableListTitle = expandableListTitle;
-
     }
 
     @Override
     public Object getChild(int listPosition, int expandedListPosition) {
-        return this.expandableListTitle.get(listPosition);
+        return this.expandableListTitle.get(listPosition).getTimeSlotList();
     }
 
     @Override
@@ -50,14 +47,15 @@ public class SelectSlotToBookAppointmentAdapter extends BaseExpandableListAdapte
     @Override
     public View getChildView(int listPosition, final int expandedListPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final ArrayList<String> childListOfTimings = expandableListTitle.get(listPosition).getSlotTimingsList();
+        ArrayList<TimeSlotsInfoList.TimeSlotData> timeSlotData = expandableListTitle.get(listPosition).getTimeSlotList();
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.select_slot_recycler_child_layout, null);
         }
+
         RecyclerView slotRecyclerView = (RecyclerView) convertView.findViewById(R.id.slotRecyclerView);
-        mShowTimingsBookAppointmentDoctor = new ShowTimingsBookAppointmentDoctor(mContext, expandableListTitle.get(listPosition).getSlotTimingsList());
+        mShowTimingsBookAppointmentDoctor = new ShowTimingsBookAppointmentDoctor(mContext, timeSlotData);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 4);
         slotRecyclerView.setLayoutManager(layoutManager);
         slotRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -68,17 +66,22 @@ public class SelectSlotToBookAppointmentAdapter extends BaseExpandableListAdapte
 
     @Override
     public int getChildrenCount(int listPosition) {
-        return 1;
+        // THIS is done explicitly to manage child count in grid view.
+        if (expandableListTitle.get(listPosition).getTimeSlotList().size() > 0) {
+            return 1;
+        }
+        return 0;
+        // return expandableListTitle.get(listPosition).getTimeSlotList().size();
     }
 
     @Override
     public Object getGroup(int listPosition) {
-        return this.expandableListTitle.get(listPosition);
+        return expandableListTitle.get(listPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return this.expandableListTitle.size();
+        return expandableListTitle.size();
     }
 
     @Override
@@ -89,7 +92,7 @@ public class SelectSlotToBookAppointmentAdapter extends BaseExpandableListAdapte
     @Override
     public View getGroupView(int listPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        final SlotList slotList = expandableListTitle.get(listPosition);
+        final TimeSlotsInfoList slotList = expandableListTitle.get(listPosition);
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.mContext.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -98,19 +101,19 @@ public class SelectSlotToBookAppointmentAdapter extends BaseExpandableListAdapte
         TextView slotName = (TextView) convertView.findViewById(R.id.slotName);
         TextView slotTime = (TextView) convertView.findViewById(R.id.slotTime);
         ImageView slotImage = (ImageView) convertView.findViewById(R.id.slotImage);
-        if (slotList.getSlotName().equals("Morning")) {
+        if (mContext.getString(R.string.morning).equalsIgnoreCase(slotList.getSlotName())) {
             slotImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.breakfast_normal));
         }
-        if (slotList.getSlotName().equals("Afternoon")) {
+        if (mContext.getString(R.string.afternoon).equalsIgnoreCase(slotList.getSlotName())) {
             slotImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.lunch_highlighted));
         }
-        if (slotList.getSlotName().equals("Evening")) {
+        if (mContext.getString(R.string.evening).equalsIgnoreCase(slotList.getSlotName())) {
             slotImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.snacks));
         }
-        if (slotList.getSlotName().equals("Night")) {
+        if (mContext.getString(R.string.night).equalsIgnoreCase(slotList.getSlotName())) {
             slotImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.night_dinner));
         }
-        slotTime.setText(slotList.getSlotTime());
+        slotTime.setText(slotList.getSlotDescription());
         slotName.setText(slotList.getSlotName());
         return convertView;
     }

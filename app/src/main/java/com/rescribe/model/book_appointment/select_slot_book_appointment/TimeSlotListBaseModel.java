@@ -6,14 +6,14 @@ import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 
-public class SlotListBaseModel implements CustomResponse{
+public class TimeSlotListBaseModel implements CustomResponse {
 
     @SerializedName("common")
     @Expose
     private Common common;
     @SerializedName("data")
     @Expose
-    private SelectSlotList selectSlotList;
+    private TimeSlotListDataModel timeSlotListDataModel;
 
     public Common getCommon() {
         return common;
@@ -23,12 +23,12 @@ public class SlotListBaseModel implements CustomResponse{
         this.common = common;
     }
 
-    public SelectSlotList getSelectSlotList() {
-        return selectSlotList;
+
+    public TimeSlotListDataModel getTimeSlotListDataModel() {
+        return timeSlotListDataModel;
     }
 
-    public void setSelectSlotList(SelectSlotList selectSlotList) {
-        this.selectSlotList = selectSlotList;
+    public void setTimeSlotListDataModel(TimeSlotListDataModel timeSlotListDataModel) {
+        this.timeSlotListDataModel = timeSlotListDataModel;
     }
-
 }

@@ -64,6 +64,7 @@ public class Config {
     public static final String GET_COMPLAINTS_LIST = "api/doctors/getComplaintList";
 
     public static final String SERVICES_DOC_LIST_FILTER_URL = "api/doctors/filterDoctors";
+    public static final String  TIME_SLOT_TO_BOOK_APPOINTMENT = "api/doctors/getDocOpenTimeSlots?";
 
     //----- vital graph-------------
     public static final String TASK_GET_PATIENT_VITAL_LIST = "api/patient/getPatientVitalList";

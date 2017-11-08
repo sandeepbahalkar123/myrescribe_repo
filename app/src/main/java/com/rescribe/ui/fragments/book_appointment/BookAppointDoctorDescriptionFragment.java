@@ -57,6 +57,7 @@ import butterknife.Unbinder;
 
 public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
 
+    //-------------
     @BindView(R.id.profileImage)
     CircularImageView mProfileImage;
     @BindView(R.id.docRating)
@@ -69,36 +70,37 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     CustomTextView mDoctorName;
     @BindView(R.id.doctorSpecialization)
     CustomTextView mDoctorSpecialization;
-    @BindView(R.id.aboutDoctorDescription)
-    CustomTextView mAboutDoctorDescription;
-    @BindView(R.id.doctorExperience)
-    CustomTextView mDoctorExperience;
     @BindView(R.id.doctorFees)
     CustomTextView mDoctorFees;
-
     @BindView(R.id.clinicName)
     CustomTextView mClinicName;
-    @BindView(R.id.aboutDoctor)
-    CustomTextView aboutDoctor;
     @BindView(R.id.docPracticesLocationCount)
     CustomTextView mDocPracticesLocationCount;
-    @BindView(R.id.doctorExperienceLayout)
-    LinearLayout mDoctorExperienceLayout;
     @BindView(R.id.premiumType)
     CustomTextView mPremiumType;
-    @BindView(R.id.bookAppointmentButton)
-    AppCompatButton bookAppointmentButton;
     @BindView(R.id.clinicNameSpinner)
     Spinner mClinicNameSpinner;
+    @BindView(R.id.favorite)
+    ImageView mFavorite;
+    @BindView(R.id.doctorExperience)
+    CustomTextView mDoctorExperience;
+    @BindView(R.id.doctorExperienceLayout)
+    LinearLayout mDoctorExperienceLayout;
+    //-------------
+    @BindView(R.id.aboutDoctorDescription)
+    CustomTextView mAboutDoctorDescription;
+    @BindView(R.id.aboutDoctor)
+    CustomTextView aboutDoctor;
+
+    @BindView(R.id.bookAppointmentButton)
+    AppCompatButton bookAppointmentButton;
     @BindView(R.id.servicesListView)
     ListView mServicesListView;
     @BindView(R.id.servicesHeaderView)
     CustomTextView mServicesHeaderView;
-
     @BindView(R.id.readMoreDocServices)
     CustomTextView mReadMoreDocServices;
-    @BindView(R.id.favorite)
-    ImageView mFavorite;
+    //-------
     private View mRootView;
     private int mImageSize;
     Unbinder unbinder;
@@ -235,8 +237,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
                 mClinicName.setText("" + clinicData.getClinicName());
                 mDoctorFees.setText(
-                        clinicData.getAmt());
-
+                        "" + clinicData.getAmt());
             }
 
             @Override

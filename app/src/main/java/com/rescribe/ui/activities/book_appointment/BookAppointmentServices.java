@@ -23,6 +23,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.ServicesAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
@@ -173,7 +174,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 onBackPressed();
                 break;
             case R.id.locationTextView:
-              //  new GoogleSettingsApi(this);
+                //  new GoogleSettingsApi(this);
 
                 Intent start = new Intent(this, BookAppointFindLocation.class);
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
@@ -280,6 +281,14 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
 
     @Override
     public void setOnClickOfServices(ServicesList servicesObject) {
+
+        /*
+        //TODO : AADED FOR DEVELOPMENT, REMOVE IT IN PRODUCTION.
+        //---------
+       // DoctorDataHelper.setUserSelectedLocationInfo(mContext, new LatLng(18.5074, 73.8077), "kothrud,Pune");
+        // DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality + ", " + city);
+       // locationTextView.setText("kothrud,Pune");
+        //---------*/
 
         if (locationTextView.getText().toString().equals(getString(R.string.location))) {
             Toast.makeText(mContext, getString(R.string.please_select_location), Toast.LENGTH_SHORT).show();

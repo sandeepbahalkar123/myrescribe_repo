@@ -349,4 +349,8 @@
     <string name="view_all">View All</string>
     <string name="sponsored_doctor">Sponsored Doctor</string>
     <string name="practices_at_locations">Practices at $$ locations</string>
+    <string name="morning">Morning</string>
+    <string name="afternoon">Afternoon</string>
+    <string name="evening">Evening</string>
+    <string name="night">Night</string>
 </resources>

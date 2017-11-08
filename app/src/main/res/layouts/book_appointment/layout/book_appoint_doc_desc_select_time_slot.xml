@@ -5,83 +5,94 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v4.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp0"
         android:layout_weight="1"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/book_appoint_doc_desc_header_view_info" />
-
-            <RelativeLayout
+            <include
+                layout="@layout/book_appoint_doc_desc_header_view_info"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/dp10"
-                android:paddingTop="@dimen/dp10">
-
-                <ImageView
-                    android:id="@+id/leftArrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/leftArrow"
-                    android:layout_marginTop="@dimen/dp4"
-                    android:paddingLeft="@dimen/dp6"
-                    android:paddingStart="@dimen/dp6"
-                    android:src="@drawable/left_arrow" />
-
-
-                <ImageView
-                    android:id="@+id/rightArrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginEnd="@dimen/dp6"
-                    android:layout_marginRight="@dimen/dp6"
-                    android:layout_marginTop="@dimen/dp4"
-                    android:src="@drawable/right_arrow_book_appointment" />
-
-                <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/selectDateTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/leftArrow"
-                    android:layout_toLeftOf="@id/rightArrow"
-                    android:layout_toRightOf="@id/leftArrow"
-                    android:layout_toStartOf="@id/rightArrow"
-                    android:gravity="center"
-                    android:hint="Select date"
-                    android:padding="@dimen/dp4"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/grey_300"
-                    android:textSize="@dimen/sp17"
-                    app:customFont="@string/roboto_medium" />
-            </RelativeLayout>
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <ExpandableListView
-                    android:id="@+id/selectTimeDateExpandableView"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/dp10"
+        >
+
+                    <ImageView
+                        android:id="@+id/leftArrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/leftArrow"
+                        android:layout_marginTop="@dimen/dp4"
+                        android:paddingLeft="@dimen/dp6"
+                        android:paddingStart="@dimen/dp6"
+                        android:src="@drawable/left_arrow" />
+
+
+                    <ImageView
+                        android:id="@+id/rightArrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="@dimen/dp6"
+                        android:layout_marginRight="@dimen/dp6"
+                        android:layout_marginTop="@dimen/dp4"
+                        android:src="@drawable/right_arrow_book_appointment" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/selectDateTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/leftArrow"
+                        android:layout_toLeftOf="@id/rightArrow"
+                        android:layout_toRightOf="@id/leftArrow"
+                        android:layout_toStartOf="@id/rightArrow"
+                        android:gravity="center"
+                        android:hint="Select date"
+                        android:padding="@dimen/dp4"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey_300"
+                        android:textSize="@dimen/sp17"
+                        app:customFont="@string/roboto_medium" />
+                </RelativeLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:groupIndicator="@null"
-                    android:listSelector="@android:color/transparent"
-                    android:visibility="visible"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"></ExpandableListView>
+                    android:orientation="vertical">
 
+                    <ExpandableListView
+                        android:id="@+id/selectTimeDateExpandableView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:groupIndicator="@null"
+                        android:listSelector="@android:color/transparent"
+                        android:visibility="visible"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"></ExpandableListView>
+
+                </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -36,6 +36,7 @@ import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
 import com.rescribe.model.book_appointment.reviews.ReviewListBaseModel;
+import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.case_details.CaseDetailsModel;
 import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.history.ChatHistoryModel;
@@ -628,6 +629,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER: //This is for get archived list
                         BookAppointmentBaseModel dataObject = new Gson().fromJson(data, BookAppointmentBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dataObject, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT: //This is for get archived list
+                        TimeSlotListBaseModel dataTimeSlot = new Gson().fromJson(data, TimeSlotListBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dataTimeSlot, mOldDataTag);
                         break;
 
                     default:

@@ -124,7 +124,7 @@ public class RescribeConstants {
     public static final String TASK_GET_DOCTOR_LIST_BY_COMPLAINT = RescribeConstants.BLANK + 44;
 
     public static final String TASK_SERVICES_DOC_LIST_FILTER = RescribeConstants.BLANK + 45;
-    public static final String TASK_SLOT_TIME_TO_BOOK_APPOINTMENT = RescribeConstants.BLANK + 46;
+    public static final String TASK_TIME_SLOT_TO_BOOK_APPOINTMENT = RescribeConstants.BLANK + 46;
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;

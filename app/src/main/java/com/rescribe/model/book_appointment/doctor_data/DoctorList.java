@@ -330,7 +330,7 @@ public class DoctorList implements Parcelable {
         return 0;
     }
 
-    public class ClinicData {
+    public static class ClinicData implements Parcelable {
         @SerializedName("clinicName")
         @Expose
         private String clinicName = "";
@@ -339,13 +339,35 @@ public class DoctorList implements Parcelable {
         private String clinicAddress = "";
         @SerializedName("amt")
         @Expose
-        private String amt = "";
+        private int amt;
         @SerializedName("apptScheduleLmtDays")
         @Expose
-        private String apptScheduleLmtDays = "";
+        private int apptScheduleLmtDays;
         @SerializedName("locationId")
         @Expose
-        private String locationId = "";
+        private int locationId;
+
+        public final static Creator<ClinicData> CREATOR = new Creator<ClinicData>() {
+
+            @SuppressWarnings({
+                    "unchecked"
+            })
+            public ClinicData createFromParcel(Parcel in) {
+                ClinicData instance = new ClinicData();
+                instance.clinicName = ((String) in.readValue((String.class.getClassLoader())));
+                instance.clinicAddress = ((String) in.readValue((String.class.getClassLoader())));
+                instance.amt = ((Integer) in.readValue((Integer.class.getClassLoader())));
+                instance.apptScheduleLmtDays = ((Integer) in.readValue((Integer.class.getClassLoader())));
+                instance.locationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
+
+                return instance;
+            }
+
+            public ClinicData[] newArray(int size) {
+                return (new ClinicData[size]);
+            }
+
+        };
 
         public String getClinicName() {
             return clinicName;
@@ -363,34 +385,47 @@ public class DoctorList implements Parcelable {
             this.clinicAddress = clinicAddress;
         }
 
-        public String getAmt() {
+        public int getAmt() {
             return amt;
         }
 
-        public void setAmt(String amt) {
+        public void setAmt(int amt) {
             this.amt = amt;
         }
 
-        public String getApptScheduleLmtDays() {
+        public int getApptScheduleLmtDays() {
             return apptScheduleLmtDays;
         }
 
-        public void setApptScheduleLmtDays(String apptScheduleLmtDays) {
+        public void setApptScheduleLmtDays(int apptScheduleLmtDays) {
             this.apptScheduleLmtDays = apptScheduleLmtDays;
         }
 
-        public String getLocationId() {
+        public int getLocationId() {
             return locationId;
         }
 
-        public void setLocationId(String locationId) {
+        public void setLocationId(int locationId) {
             this.locationId = locationId;
         }
-
 
         @Override
         public String toString() {
             return clinicName + ',' + clinicAddress;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeValue(clinicName);
+            dest.writeValue(clinicAddress);
+            dest.writeValue(amt);
+            dest.writeValue(apptScheduleLmtDays);
+            dest.writeValue(locationId);
         }
     }
 }

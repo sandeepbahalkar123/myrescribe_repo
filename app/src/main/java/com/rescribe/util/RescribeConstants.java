@@ -161,7 +161,7 @@ public class RescribeConstants {
     public static final String IS_URL = "isUrl";
     public static final String DOCTORS_INFO = "doctor_info";
     public static final String DOCTOR_DATA_REQUEST = "doctor_request_info";
-
+    public static final String BOTTOM_MENUS = "bottom_menu";
 
 
     public static class USER_STATUS {

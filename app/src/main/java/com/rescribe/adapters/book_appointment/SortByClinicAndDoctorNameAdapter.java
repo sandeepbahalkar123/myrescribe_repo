@@ -27,6 +27,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.dashboard_api.DashboardClinicList;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
@@ -90,27 +91,27 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
 
         holder.aboutDoctor.setText(doctorObject.getDegree());
-        if (doctorObject.getRating().equals("NA")) {
+        if (doctorObject.getRating()==0) {
             holder.doctorRating.setVisibility(View.GONE);
             holder.ratingBar.setVisibility(View.GONE);
         } else {
             holder.doctorRating.setVisibility(View.VISIBLE);
             holder.ratingBar.setVisibility(View.VISIBLE);
             holder.doctorRating.setText("" + doctorObject.getRating());
-            holder.ratingBar.setRating(Float.parseFloat(doctorObject.getRating()));
+            holder.ratingBar.setRating((float) doctorObject.getRating());
         }
 
-    //if only one clinic is available then only show doctoraddress otherwise show total locations available
-        if (doctorObject.getClinicName().size() == 1) {
-            holder.doctorAddress.setText(doctorObject.getDoctorAddress().get(0));
+        //if only one clinic is available then only show doctoraddress otherwise show total locations available
+        if (doctorObject.getClinicDataList().size() == 1) {
+            holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
         } else {
-            holder.doctorAddress.setText("" + doctorObject.getDoctorAddress().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+            holder.doctorAddress.setText("" + doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
         }
 
-        holder.doctorFee.setText("" + doctorObject.getAmount());
-        SpannableString content = new SpannableString(doctorObject.getDistance());
+        // holder.doctorFee.setText("" + doctorObject.getAmount());
+      /*  SpannableString content = new SpannableString(doctorObject.getDistance());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        holder.distance.setText(content);
+        holder.distance.setText(content);*/
 
         //-------Load image-------
 
@@ -193,9 +194,9 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                     }
                 } else {
                     holder.clinicName.setVisibility(View.GONE);
-                    if (doctorObject.getClinicName().size() == 1) {
+                    if (doctorObject.getClinicDataList().size() == 1) {
                         holder.clinicName.setVisibility(View.VISIBLE);
-                        holder.clinicName.setText(doctorObject.getClinicName().get(0));
+                        holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
                     } else {
                         holder.clinicName.setVisibility(View.GONE);
                         holder.clinicName.setText("");
@@ -292,12 +293,12 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                             setListByClinicName(false);
                         } else {
                             int i = 0;
-                            for (String name :
-                                    doctorConnectModel.getClinicName()) {
-                                if (name.toLowerCase().startsWith(charString.toLowerCase())) {
-                                    doctorConnectModel.setNameOfClinicString(name);
+                            for (DashboardClinicList dataObj :
+                                    doctorConnectModel.getClinicDataList()) {
+                                if (dataObj.getClinicName().toLowerCase().startsWith(charString.toLowerCase())) {
+                                    doctorConnectModel.setNameOfClinicString(dataObj.getClinicName());
                                     setListByClinicName(true);
-                                    doctorConnectModel.setAddressOfDoctorString(doctorConnectModel.getDoctorAddress().get(i));
+                                    doctorConnectModel.setAddressOfDoctorString(dataObj.getClinicAddress());
                                     filteredList.add(doctorConnectModel);
                                     i++;
                                 }

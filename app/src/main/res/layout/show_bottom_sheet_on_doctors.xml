@@ -26,7 +26,7 @@
                 android:layout_marginLeft="@dimen/dp16"
                 android:layout_marginTop="@dimen/dp6"
                 android:gravity="center_vertical"
-                android:text="Dr. Dinesh Ahir"
+                tools:text="Dr. Dinesh Ahir"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp16"
                 app:customFont="@string/roboto_bold" />
@@ -45,7 +45,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="@dimen/dp6"
                     android:layout_marginLeft="@dimen/dp16"
-                    android:text="4.5"
+                    tools:text="4.5"
                     android:textColor="@color/map_green"
                     android:textSize="@dimen/sp16"
                     app:customFont="@string/roboto_regular" />
@@ -57,7 +57,7 @@
                     android:layout_height="12dp"
                     android:stepSize="0.5"
                     android:layout_marginLeft="@dimen/dp10"
-                    tools:rating="3.5" />
+                    tools:rating="3.0" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/doctorReviews"

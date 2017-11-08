@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,11 +42,11 @@
                 android:layout_marginTop="@dimen/dp9"
                 android:background="@drawable/rounded_rectangle_8"
                 android:drawableLeft="@drawable/premium_icon"
-                android:text="Premium"
                 android:drawablePadding="@dimen/dp4"
                 android:gravity="center"
                 android:paddingLeft="@dimen/dp4"
                 android:paddingRight="@dimen/dp4"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp10"
                 app:customFont="@string/roboto_medium" />
@@ -58,9 +58,9 @@
                 android:layout_marginRight="@dimen/dp6"
                 android:background="@drawable/rated_box_cropped"
                 android:gravity="center"
-                tools:text="4.2"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp11" />
+                android:textSize="@dimen/sp11"
+                tools:text="" />
         </LinearLayout>
 
         <LinearLayout
@@ -156,9 +156,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginBottom="@dimen/dp10"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp10"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -168,21 +168,21 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:visibility="invisible"
-                    android:layout_marginLeft="@dimen/dp16"
                     android:id="@+id/bookAppointmentButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/card_book_appointment_copy" />
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:src="@drawable/card_book_appointment_copy"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/dp12"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:layout_marginRight="@dimen/dp12"
                 android:orientation="horizontal">
 
                 <com.rescribe.ui.customesViews.CustomTextView
@@ -190,14 +190,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:layout_marginTop="@dimen/dp6"
                     android:drawableLeft="@drawable/dashboard_big_black_ruppee"
                     android:drawablePadding="@dimen/dp2"
                     android:text="500"
-                    android:layout_marginTop="@dimen/dp6"
-                    android:visibility="invisible"
-                    android:layout_marginRight="@dimen/dp10"
                     android:textColor="@color/black"
                     android:textSize="12sp"
+                    android:visibility="invisible"
                     app:customFont="@string/roboto_bold" />
 
                 <ImageView

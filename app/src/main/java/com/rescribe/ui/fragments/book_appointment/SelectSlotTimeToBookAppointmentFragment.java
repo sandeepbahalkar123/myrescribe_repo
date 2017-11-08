@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -40,7 +41,7 @@ import butterknife.Unbinder;
  * Created by jeetal on 31/10/17.
  */
 
-public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener,DatePickerDialog.OnDateSetListener {
+public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener, DatePickerDialog.OnDateSetListener {
 
     @BindView(R.id.profileImage)
     CircularImageView profileImage;
@@ -79,7 +80,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.book_appointment_select_time_date_slot_, container, false);
+        mRootView = inflater.inflate(R.layout.book_appoint_doc_desc_select_time_slot, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         init();
         return mRootView;
@@ -125,7 +126,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         });
 
         Calendar now = Calendar.getInstance();
-// As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
+        // As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
         datePickerDialog = DatePickerDialog.newInstance(
                 this,
                 now.get(Calendar.YEAR),
@@ -167,10 +168,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if(customResponse!=null){
+        if (customResponse != null) {
             SlotListBaseModel slotListBaseModel = (SlotListBaseModel) customResponse;
             SelectSlotList selectSlotList = slotListBaseModel.getSelectSlotList();
-            mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(),selectSlotList.getSlotList());
+            mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getSlotList());
             selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
         }
     }
@@ -196,7 +197,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         unbinder.unbind();
     }
 
-    @OnClick({R.id.selectDateTime,R.id.bookAppointmentButton})
+    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -219,10 +220,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     @Override
     public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
 
-        String dateConverted = ""+dayOfMonth;
-        if(dayOfMonth<10){
-            dateConverted = "0"+dayOfMonth;
+        String dateConverted = "" + dayOfMonth;
+        if (dayOfMonth < 10) {
+            dateConverted = "0" + dayOfMonth;
         }
-        selectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY,dateConverted + "-" + (monthOfYear + 1) + "-"+year)+","+getString(R.string.space)+CommonMethods.getFormattedDate(dateConverted + "-" + (monthOfYear + 1) + "-"+year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
+        selectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, dateConverted + "-" + (monthOfYear + 1) + "-" + year) + "," + getString(R.string.space) + CommonMethods.getFormattedDate(dateConverted + "-" + (monthOfYear + 1) + "-" + year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
     }
 }

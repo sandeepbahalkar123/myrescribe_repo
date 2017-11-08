@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.dashboard_api.DashboardClinicList;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -27,10 +28,10 @@ import butterknife.ButterKnife;
 public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListViewHolder> {
 
     private Context mContext;
-    private ArrayList<String> mDataList;
+    private ArrayList<DashboardClinicList> mDataList;
     private String mSelectedTimeSlot;
 
-    public TimeSlotAdapter(Context mContext, ArrayList<String> dataList) {
+    public TimeSlotAdapter(Context mContext, ArrayList<DashboardClinicList> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
 
@@ -46,8 +47,9 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListVi
 
     @Override
     public void onBindViewHolder(final ListViewHolder holder, int position) {
-        String doctorObject = mDataList.get(position);
-        holder.timeSlot.setText(doctorObject);
+        DashboardClinicList doctorObject = mDataList.get(position);
+        //TODO : NEED TO IMPLEMENT
+      //  holder.timeSlot.setText(doctorObject.ge);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

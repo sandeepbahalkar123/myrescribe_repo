@@ -376,7 +376,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                             spinnerList.add(visitD);
                         }
 
-                        ArrayAdapter<VisitDate> arrayAdapter = new ArrayAdapter<>(AddRecordsActivity.this, R.layout.simple_spinner_item, spinnerList);
+                        ArrayAdapter<VisitDate> arrayAdapter = new ArrayAdapter<>(AddRecordsActivity.this, R.layout.global_item_simple_spinner, spinnerList);
                         selectDateSpinner.setAdapter(arrayAdapter);
                         selectDateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override

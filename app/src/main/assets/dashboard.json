@@ -5,147 +5,439 @@
     "statusMessage": "USER AUTHENTICATED"
   },
   "data": {
-    "servicesList": [
-      "Doctor",
-      "Dr. Conenct",
-      "My Records",
-      "Pharmacy",
-      "Diagnostic Center",
-      "Hospital",
-      "Blood Bank",
-      "Ambulance"
-    ],
     "doctorList": [
       {
-        "docId": 4,
+        "docId": 10,
         "categoryName": "My Appointments",
-        "docName": "Dr. Himanshu Pahariya",
+        "categorySpeciality": "Premium",
+        "docName": "Dr. Shalu Gupta",
         "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "speciality": "Neurology",
-        "experience": 10,
-        "doctorAddress": "Hadapsar, Pune",
-        "amount": 500,
-        "recentlyVisited": true,
-        "favourite": false,
         "degree": "MBBS,MD-Medicine,Neurology",
-        "rating": "4.2"
+        "speciality": "Surgeon",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Dr. Parag Khare clinic",
+            "clinicAddress": "warje, Pune",
+            "locationId": 5,
+            "amt": 350,
+            "apptScheduleLmtDays": 7
+          }
+        ],
+        "tokenNo":"",
+        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
+        "favourite": true,
+        "rating": 4.5,
+        "aptDate": "2017-09-17",
+        "aptTime": "15:00:00"
       },
       {
-        "docId": 5,
+        "docId": 10,
+        "categoryName": "My Appointments",
+        "categorySpeciality": "Premium",
+        "docName": "Dr. Shalu Gupta",
+        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "speciality": "Surgeon",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Dr. Parag Khare clinic",
+            "clinicAddress": "warje, Pune",
+            "locationId": 5,
+            "amt": 350,
+            "locationId": 5,
+            "apptScheduleLmtDays": 7
+          }
+        ],
+        "tokenNo":"",
+        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
+        "favourite": false,
+        "rating": 4.5,
+        "aptDate": "2017-09-30",
+        "aptTime": "14:00:00"
+      },
+      {
+        "docId": 8,
         "categoryName": "Sponsored Doctor",
-        "docName": "Dr. Suresh Shah",
-        "doctorImageUrl": "",
-        "speciality": "Dermatology",
-        "experience": 6,
-        "doctorAddress": "Kothrud, Pune",
-        "amount": 200,
-        "recentlyVisited": false,
-        "favourite": true,
-        "degree": "MBBS, MD - Dermatology",
-        "rating": "3.2"
+        "categorySpeciality": "Premium",
+        "docName": "Dr. Parag Khare",
+        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "speciality": "General Physician",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Dr. Parag Khare clinic",
+            "clinicAddress": "bhandarkar road, Pune",
+            "locationId": 5,
+            "locationId": 5,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Dr. Parag Khare",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 20,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          }
+        ],
+        "tokenNo":"",
+        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
+        "favourite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": ""
       },
       {
-        "docId": 6,
+        "docId": 9,
+        "categoryName": "Sponsored Doctor",
+        "categorySpeciality": "Premium",
+        "docName": "Dr. Hemant Pahariya",
+        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "speciality": "General Physician",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Dr. Hemant Pahariya clinic",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 6,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Dr. Hemant Pahariya",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 21,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          }
+        ],
+        "tokenNo":"",
+        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
+        "favourite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": ""
+      },
+      {
+        "docId": 13,
+        "categoryName": "Sponsored Doctor",
+        "categorySpeciality": "Premium",
+        "docName": "Dr. Kailash Kothari. M.D.",
+        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "speciality": "General Physician",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Dr. Venkatesh Nevagi M.D.",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 11,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Dr. Kailash Kothari. M.D.",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 10,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Dr. Kailash Kothari. M.D.",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 25,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Phoenix Hospital",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 29,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Phoenix Hospital",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 30,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Phoenix Hospital",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 33,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          }
+        ],
+        "tokenNo":"",
+        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
+        "favourite": false,
+        "rating": 4,
+        "aptDate": "",
+        "aptTime": ""
+      },
+      {
+        "docId": 14,
+        "categoryName": "Sponsored Doctor",
+        "categorySpeciality": "Premium",
+        "docName": "Dr. Venkatesh Nevagi M.D.",
+        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "speciality": "General Physician",
+        "experience": 5,
+        "clinicList": [
+          {
+            "clinicName": "Dr. Venkatesh Nevagi M.D.",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 11,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Dr. Manjiri Pandit M.D.",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 12,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Dr. Venkatesh Nevagi M.D.",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 26,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Phoenix Hospital",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 29,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Phoenix Hospital",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 30,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Phoenix Hospital",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 33,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          }
+        ],
+        "tokenNo":"",
+        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
+        "favourite": false,
+        "rating": 0.3,
+        "aptDate": "",
+        "aptTime": ""
+      },
+      {
+        "docId": 18,
+        "categoryName": "Sponsored Doctor",
+        "categorySpeciality": "Premium",
+        "docName": "DR. Sandeep",
+        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "speciality": "General Physician",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "DR. Sandeep",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 15,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          }
+        ],
+        "tokenNo":"",
+        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
+        "favourite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": ""
+      },
+      {
+        "docId": 7,
         "categoryName": "Recently Visited Doctor",
-        "docName": "Dr. Kishor Kulkarni",
-        "doctorImageUrl": "",
-        "speciality": "Cardiology",
-        "experience": 12,
-        "doctorAddress": "Aundh, Pune",
-        "amount": 300,
-        "recentlyVisited": true,
-        "favourite": true,
-        "degree": "MBBS, MD-Medicine, Cardiology",
-        "rating": "4.8"
+        "categorySpeciality": "Premium",
+        "docName": "DR. Amruta Nikam",
+        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "speciality": "General Physician",
+        "experience": 11,
+        "clinicList": [],
+        "favorite": "1",
+        "rating": 0,
+        "aptDate": "2017-05-17",
+        "aptTime": "19:00:00"
+      },
+      {
+        "docId": 10,
+        "categoryName": "Recently Visited Doctor",
+        "categorySpeciality": "Premium",
+        "docName": "Dr. Shalu Gupta",
+        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "speciality": "Surgeon",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Dr. Shalu Gupta clinic",
+            "clinicAddress": "mulund, Mumbai",
+            "locationId": 7,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Dr. Shalu Gupta clinic",
+            "clinicAddress": "mulund, Mumbai",
+            "locationId": 32,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Dr. Hemant Pahariya clinic",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 6,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Dr. Parag Khare clinic",
+            "clinicAddress": "bhandarkar road, Pune",
+            "locationId": 5,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          }
+        ],
+        "tokenNo":"",
+        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
+        "favourite": false,
+        "rating": 4.5,
+        "aptDate": "2017-06-17",
+        "aptTime": "19:45:00"
+      },
+      {
+        "docId": 11,
+        "categoryName": "Recently Visited Doctor",
+        "categorySpeciality": "Premium",
+        "docName": "Dr. Doctor Doctor",
+        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
+        "degree": "MBBS,MD-Medicine,Neurology",
+        "speciality": "General Physician",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Dr. Shalu Gupta clinic",
+            "clinicAddress": "mulund, Mumbai",
+            "locationId": 7,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          },
+          {
+            "clinicName": "Dr. Shalu Gupta clinic",
+            "clinicAddress": "mulund, Mumbai",
+            "locationId": 32,
+            "amount": 350,
+            "apptScheduleLmtDays": 7
+          }
+        ],
+        "tokenNo":"",
+        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
+        "favourite": false,
+        "rating": 4,
+        "aptDate": "2017-07-21",
+        "aptTime": "09:30:00"
       }
     ],
-    "pendingInvestigationList": [
+    "cardBgImageUrlList": [
+      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xxhdpi/myappointments.png",
+      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xxhdpi/sponsored.png",
+      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xxhdpi/recentlyvisited.png"
+    ],
+    "dashboardMenuList": [
       {
-        "id": 1,
-        "speciality": "CT Scan"
+        "name": "Find Doctors",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/finddoctors.png"
       },
       {
-        "id": 2,
-        "speciality": "Lipid Profile"
+        "name": "On Going Treatment",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/ongoingtreatment.png"
       },
       {
-        "id": 3,
-        "speciality": "Liver Profile"
+        "name": "Health Repository",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/healthrepository.png"
       },
       {
-        "id": 4,
-        "speciality": "Platelet Count"
+        "name": "Health Offers",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/healthoffers.png"
       },
       {
-        "id": 5,
-        "speciality": "HB"
-      },
-      {
-        "id": 6,
-        "speciality": "PCV"
+        "name": "Health Education",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/healtheducation.png"
       }
     ],
-    "latestVitalReading": {
-      "id": 1,
-      "vitalName": "BP",
-      "vitalValue": "120/80",
-      "unit": "mm Hg",
-      "date": "2017-09-15T11:21:52.000Z"
-    },
-    "healthOffersList": [
+    "dashboardBottomMenuList": [
       {
-        "id": 1,
-        "diagnosticCentreName": "Metropolis",
-        "actualPrice": "1799",
-        "discountedPrice": "1583",
-        "discountPercentage": "12",
-        "centerType": "Premium",
-        "imgUrl": ""
+        "name": "Alerts",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/alerts.png"
       },
       {
-        "id": 2,
-        "diagnosticCentreName": "Apollo Diagnostics",
-        "actualPrice": "2356",
-        "discountedPrice": "2003",
-        "discountPercentage": "12",
-        "centerType": "Exclusive",
-        "imgUrl": ""
+        "name": "Profile",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/profile.png"
       },
       {
-        "id": 3,
-        "diagnosticCentreName": "Thyrocare",
-        "actualPrice": "3765",
-        "discountedPrice": "3087",
-        "discountPercentage": "18",
-        "centerType": "Exclusive",
-        "imgUrl": ""
+        "name": "AppLogo",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/logo.png"
+      },
+      {
+        "name": "Settings",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/settings.png"
+      },
+      {
+        "name": "Support",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/support.png"
       }
     ],
-    "healthBlogList": [
+    "dashboardLeftSideDrawerMenuList": [
       {
-        "id": 1,
-        "healthBlogName": "Diabetes & Weight Loss",
-        "healthBlogImgUrl": ""
+        "name": "Services",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/services.png"
       },
       {
-        "id": 2,
-        "healthBlogName": "Preventing & Treating Muscle Cramps",
-        "healthBlogImgUrl": ""
+        "name": "On Going Treatment",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/ongoingtreatment.png"
       },
       {
-        "id": 3,
-        "healthBlogName": "Tips to getting sound sleep",
-        "healthBlogImgUrl": ""
-      }
-    ],
-    "tipAndJokeOfTheDayList": [
-      {
-        "imgURL": "",
-        "type": "tip"
+        "name": "Appointments",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/appointments.png"
       },
       {
-        "imgURL": "",
-        "type": "joke"
+        "name": "Doctor Visits",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/doctorvisits.png"
+      },
+      {
+        "name": "Vital Graphs",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/vitalgraphs.png"
+      },
+      {
+        "name": "Settings",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/settings.png"
+      },
+      {
+        "name": "Logout",
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/logout.png"
       }
     ]
   }

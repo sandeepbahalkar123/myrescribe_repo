@@ -32,6 +32,7 @@
         android:textColor="@color/Gray"
         android:textSize="@dimen/sp12"
         android:textAllCaps="true"
+        android:visibility="gone"
         android:padding="@dimen/dp6"
         android:layout_marginTop="@dimen/dp6"
         android:background="@drawable/date_time_back"

@@ -8,7 +8,10 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rescribe.model.dashboard_api.DashboardClinicList;
 
+
+//TODO : RESPONSE JSON IS GOING TO CHANGE, ONCE RESPONSE FINAL REMOVE UNWANTED VARIABLES.
 public class DoctorList implements Parcelable {
 
     @SerializedName("docId")
@@ -23,39 +26,37 @@ public class DoctorList implements Parcelable {
     @SerializedName("docName")
     @Expose
     private String docName = "";
+    @SerializedName("categoryName")
+    @Expose
+    private String categoryName = "";
+    @SerializedName("categorySpeciality")
+    @Expose
+    private String categorySpeciality = "";
+
     @SerializedName("doctorImageUrl")
     @Expose
     private String doctorImageUrl = "";
     @SerializedName("speciality")
     @Expose
-    private String speciality = "";
+    private String docSpeciality = "";
     @SerializedName("experience")
     @Expose
     private int experience;
-    @SerializedName("doctorAddress")
+
+    @SerializedName("clinicList")
     @Expose
-    private ArrayList<String> doctorAddress = new ArrayList<>();
-    @SerializedName("amount")
-    @Expose
-    private int amount;
-    @SerializedName("distance")
-    @Expose
-    private String distance = "";
-    @SerializedName("recentlyVisited")
-    @Expose
-    private boolean recentlyVisited;
+    private ArrayList<DashboardClinicList> clinicDataList = new ArrayList<>();
+
     @SerializedName("favourite")
     @Expose
     private boolean favourite;
-    @SerializedName("aboutDoctor")
-    @Expose
-    private String aboutDoctor = "";
     @SerializedName("degree")
     @Expose
     private String degree = "";
+
     @SerializedName("rating")
     @Expose
-    private String rating = "";
+    private double rating;
 
     @SerializedName("waitingTime")
     @Expose
@@ -63,27 +64,29 @@ public class DoctorList implements Parcelable {
     @SerializedName("tokenNo")
     @Expose
     private String tokenNo;
-    @SerializedName("morePracticePlaces")
+    @SerializedName("aboutDoctor")
     @Expose
-    private ArrayList<PracticePlaceInfo> PracticePlaceInfos = new ArrayList<>();
-    @SerializedName("openToday")
+    private String aboutDoctor = "";
+
+    //------
+    @SerializedName("docServices")
     @Expose
-    private boolean openToday;
-    @SerializedName("openTimeSlots")
+    private ArrayList<String> docServices = new ArrayList<>();
+    @SerializedName("aptDate")
     @Expose
-    private ArrayList<String> availableTimeSlots = new ArrayList<>();
-    @SerializedName("reviewCount")
+    private String aptDate = "";
+    @SerializedName("aptTime")
     @Expose
-    private int totalReview;
-    @SerializedName("clinicName")
-    @Expose
-    private  ArrayList<String> clinicName = new ArrayList<>();
+    private String aptTime = "";
+    //------
+    private int sizeOfList = 0;
     private double latitude = 0.0;
     private double longitude = 0.0;
 
     //this parameters are used to sort list by clinicName and doctorName as per functionality
-    private String nameOfClinicString = "" ;
+    private String nameOfClinicString = "";
     private String addressOfDoctorString = "";
+
     /*  @SerializedName("reviewList")
     @Expose
     private ArrayList<ReviewList> reviewList = null;*/
@@ -99,26 +102,23 @@ public class DoctorList implements Parcelable {
             instance.docLocationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.locationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.docName = ((String) in.readValue((String.class.getClassLoader())));
+            instance.categoryName = ((String) in.readValue((String.class.getClassLoader())));
+            instance.categorySpeciality = ((String) in.readValue((String.class.getClassLoader())));
             instance.doctorImageUrl = ((String) in.readValue((String.class.getClassLoader())));
-            instance.speciality = ((String) in.readValue((String.class.getClassLoader())));
+            instance.docSpeciality = ((String) in.readValue((String.class.getClassLoader())));
             instance.experience = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            in.readList(instance.doctorAddress, (String.class.getClassLoader()));
-            in.readList(instance.clinicName, (String.class.getClassLoader()));
-            instance.amount = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.distance = ((String) in.readValue((String.class.getClassLoader())));
-            instance.recentlyVisited = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.aboutDoctor = ((String) in.readValue((String.class.getClassLoader())));
+            in.readList(instance.clinicDataList, (DashboardClinicList.class.getClassLoader()));
+            instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.degree = ((String) in.readValue((String.class.getClassLoader())));
-            instance.rating = ((String) in.readValue((String.class.getClassLoader())));
+            instance.rating = ((Double) in.readValue((Double.class.getClassLoader())));
             instance.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.tokenNo = ((String) in.readValue((String.class.getClassLoader())));
-            instance.nameOfClinicString = ((String) in.readValue((String.class.getClassLoader())));
-            instance.addressOfDoctorString = ((String) in.readValue((String.class.getClassLoader())));
-            in.readList(instance.PracticePlaceInfos, (PracticePlaceInfo.class.getClassLoader()));
-            instance.openToday = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            in.readList(instance.availableTimeSlots, (String.class.getClassLoader()));
-            instance.totalReview = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.aboutDoctor = ((String) in.readValue((String.class.getClassLoader())));
+            in.readList(instance.docServices, (String.class.getClassLoader()));
+            instance.aptDate = ((String) in.readValue((String.class.getClassLoader())));
+            instance.aptTime = ((String) in.readValue((String.class.getClassLoader())));
+            instance.sizeOfList = ((Integer) in.readValue((Integer.class.getClassLoader())));
+
             //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
             return instance;
         }
@@ -128,6 +128,7 @@ public class DoctorList implements Parcelable {
         }
 
     };
+
     public String getNameOfClinicString() {
         return nameOfClinicString;
     }
@@ -143,17 +144,16 @@ public class DoctorList implements Parcelable {
     public void setAddressOfDoctorString(String addressOfDoctorString) {
         this.addressOfDoctorString = addressOfDoctorString;
     }
+    public int getSizeOfList() {
+        return sizeOfList;
+    }
+
+    public void setSizeOfList(int sizeOfList) {
+        this.sizeOfList = sizeOfList;
+    }
 
     public boolean getFavourite() {
         return favourite;
-    }
-
-    public ArrayList<String> getClinicName() {
-        return clinicName;
-    }
-
-    public void setClinicName(ArrayList<String> clinicName) {
-        this.clinicName = clinicName;
     }
 
     public void setFavourite(Boolean favourite) {
@@ -202,12 +202,12 @@ public class DoctorList implements Parcelable {
         this.doctorImageUrl = doctorImageUrl;
     }
 
-    public String getSpeciality() {
-        return speciality;
+    public String getDocSpeciality() {
+        return docSpeciality;
     }
 
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
+    public void setDocSpeciality(String speciality) {
+        this.docSpeciality = speciality;
     }
 
     public int getExperience() {
@@ -216,31 +216,6 @@ public class DoctorList implements Parcelable {
 
     public void setExperience(int experience) {
         this.experience = experience;
-    }
-
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public String getDistance() {
-        return distance;
-    }
-
-    public void setDistance(String distance) {
-        this.distance = distance;
-    }
-
-    public boolean getRecentlyVisited() {
-        return recentlyVisited;
-    }
-
-    public void setRecentlyVisited(boolean recentlyVisited) {
-        this.recentlyVisited = recentlyVisited;
     }
 
     public String getAboutDoctor() {
@@ -259,11 +234,11 @@ public class DoctorList implements Parcelable {
         this.degree = degree;
     }
 
-    public String getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
@@ -283,41 +258,54 @@ public class DoctorList implements Parcelable {
         this.tokenNo = tokenNo;
     }
 
-
-    public boolean getOpenToday() {
-        return openToday;
+    public ArrayList<DashboardClinicList> getClinicDataList() {
+        return clinicDataList;
     }
 
-    public void setOpenToday(boolean openToday) {
-        this.openToday = openToday;
+    public void setClinicDataList(ArrayList<DashboardClinicList> clinicDataList) {
+        this.clinicDataList = clinicDataList;
     }
 
-    public ArrayList<String> getAvailableTimeSlots() {
-        return availableTimeSlots;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setAvailableTimeSlots(ArrayList<String> availableTimeSlots) {
-        this.availableTimeSlots = availableTimeSlots;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
-    public int getTotalReview() {
-        return totalReview;
+    public String getCategorySpeciality() {
+        return categorySpeciality;
     }
 
-    public void setTotalReview(int totalReview) {
-        this.totalReview = totalReview;
+    public void setCategorySpeciality(String categorySpeciality) {
+        this.categorySpeciality = categorySpeciality;
     }
 
-    public ArrayList<String> getDoctorAddress() {
-        return doctorAddress;
+    public ArrayList<String> getDocServices() {
+        return docServices;
     }
 
-    public void setDoctorAddress(ArrayList<String> doctorAddress) {
-        this.doctorAddress = doctorAddress;
+    public void setDocServices(ArrayList<String> docServices) {
+        this.docServices = docServices;
     }
 
+    public String getAptDate() {
+        return aptDate;
+    }
 
-   /* public ArrayList<ReviewList> getReviewList() {
+    public void setAptDate(String aptDate) {
+        this.aptDate = aptDate;
+    }
+
+    public String getAptTime() {
+        return aptTime;
+    }
+
+    public void setAptTime(String aptTime) {
+        this.aptTime = aptTime;
+    }
+/* public ArrayList<ReviewList> getReviewList() {
         return reviewList;
     }
 
@@ -326,50 +314,27 @@ public class DoctorList implements Parcelable {
     }*/
 
 
-    public ArrayList<String> getPracticePlaceInfos() {
-        ArrayList<String> temp = new ArrayList<>();
-        for (PracticePlaceInfo data :
-                PracticePlaceInfos) {
-            temp.add(data.toString());
-        }
-        return temp;
-    }
-
-    public void setPracticePlaceInfos(ArrayList<String> PracticePlaceInfos) {
-        ArrayList<PracticePlaceInfo> d = new ArrayList<>();
-        for (String data :
-                PracticePlaceInfos) {
-            d.add(new PracticePlaceInfo(data, "", ""));
-        }
-        this.PracticePlaceInfos = d;
-    }
-
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(docId);
         dest.writeValue(docLocationId);
         dest.writeValue(locationId);
         dest.writeValue(docName);
+        dest.writeValue(categoryName);
+        dest.writeValue(categorySpeciality);
         dest.writeValue(doctorImageUrl);
-        dest.writeValue(speciality);
+        dest.writeValue(docSpeciality);
         dest.writeValue(experience);
-        dest.writeList(doctorAddress);
-        dest.writeList(clinicName);
-        dest.writeValue(amount);
-        dest.writeValue(distance);
-        dest.writeValue(recentlyVisited);
-        dest.writeValue(aboutDoctor);
+        dest.writeList(clinicDataList);
+        dest.writeValue(favourite);
         dest.writeValue(degree);
         dest.writeValue(rating);
         dest.writeValue(waitingTime);
         dest.writeValue(tokenNo);
-        dest.writeValue(nameOfClinicString);
-        dest.writeValue(addressOfDoctorString);
-        dest.writeList(PracticePlaceInfos);
-        dest.writeValue(openToday);
-        dest.writeValue(favourite);
-        dest.writeList(availableTimeSlots);
-        dest.writeValue(totalReview);
-       /*  dest.writeList(reviewList);*/
+        dest.writeValue(aboutDoctor);
+        dest.writeList(docServices);
+        dest.writeValue(aptDate);
+        dest.writeValue(aptTime);
+        dest.writeValue(sizeOfList);
     }
 
 
@@ -377,38 +342,4 @@ public class DoctorList implements Parcelable {
         return 0;
     }
 
-/*
-
-    @Override
-    public String toString() {
-        return "DoctorList{" +
-                "docId=" + docId +
-                ", docLocationId=" + docLocationId +
-                ", locationId=" + locationId +
-                ", docName='" + docName + '\'' +
-                ", doctorImageUrl='" + doctorImageUrl + '\'' +
-                ", speciality='" + speciality + '\'' +
-                ", experience=" + experience +
-                ", doctorAddress='" + doctorAddress + '\'' +
-                ", amount=" + amount +
-                ", distance='" + distance + '\'' +
-                ", recentlyVisited=" + recentlyVisited +
-                ", aboutDoctor='" + aboutDoctor + '\'' +
-                ", degree='" + degree + '\'' +
-                ", rating='" + rating + '\'' +
-                ", waitingTime='" + waitingTime + '\'' +
-                ", tokenNo=" + tokenNo +
-                ", PracticePlaceInfos=" + PracticePlaceInfos +
-                ", openToday='" + openToday + '\'' +
-                ", availableTimeSlots=" + availableTimeSlots +
-                ", favourite=" + favourite +
-                ", totalReview=" + totalReview +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                '}';
-    }
-*/
-
-
-
-    }
+}

@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black">
+
+    <LinearLayout
+        android:id="@+id/menuBottomLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="@dimen/dp8"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/menuBottomIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo"
+            android:layout_gravity="center"/>
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/bottomMenuName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/dp4"
+            android:textColor="@color/tagColor"
+            android:textSize="@dimen/sp10"
+            app:customFont="@string/roboto_regular"
+            tools:text="@string/alerts" />
+
+        <ImageView
+            android:id="@+id/bottomMenuTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/dp4"
+            android:src="@drawable/rectangle_4"
+            android:visibility="visible" />
+    </LinearLayout>
+
+</RelativeLayout>

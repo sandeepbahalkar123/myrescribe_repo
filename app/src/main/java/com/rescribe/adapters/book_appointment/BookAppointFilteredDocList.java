@@ -74,14 +74,14 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
         holder.doctorName.setText(doctorObject.getDocName());
         holder.aboutDoctor.setText(doctorObject.getDegree());
-        if (doctorObject.getRating().equals("NA")) {
+        if (doctorObject.getRating()==0) {
             holder.doctorRating.setVisibility(View.GONE);
             holder.ratingBar.setVisibility(View.GONE);
         } else {
             holder.doctorRating.setVisibility(View.VISIBLE);
             holder.ratingBar.setVisibility(View.VISIBLE);
             holder.doctorRating.setText("" + doctorObject.getRating());
-            holder.ratingBar.setRating(Float.parseFloat(doctorObject.getRating()));
+            holder.ratingBar.setRating((float) doctorObject.getRating());
         }
         if (doctorObject.getTokenNo().equals("")) {
             holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.result_book_appointment));
@@ -89,18 +89,20 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.token_no_background));
         }
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
-        if(doctorObject.getClinicName().size()==1){
+        if (doctorObject.getClinicDataList().size() == 1) {
             holder.clinicName.setVisibility(View.VISIBLE);
-            holder.clinicName.setText(doctorObject.getClinicName().get(0));
-            holder.doctorAddress.setText(doctorObject.getDoctorAddress().get(0));
-        }else {
+            holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
+            holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
+        } else {
             holder.clinicName.setVisibility(View.GONE);
-            holder.doctorAddress.setText(doctorObject.getDoctorAddress().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+            holder.doctorAddress.setText(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
         }
-        holder.doctorFee.setText("" + doctorObject.getAmount());
-        SpannableString content = new SpannableString(doctorObject.getDistance());
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        holder.distance.setText(content);
+        //-- TODO : NEED TO CHECK
+        // holder.doctorFee.setText("" + doctorObject.getAmount());
+        //  SpannableString content = new SpannableString(doctorObject.getDistance());
+        //  content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        //  holder.distance.setText(content);
+        //---------
 
         //-------Load image-------
         if (doctorObject.getDoctorImageUrl().equals("")) {

@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.model.dashboard.DoctorData;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -30,19 +29,13 @@ import java.util.ArrayList;
 
 public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
-    private ArrayList<DoctorData> mDataList;
+    private ArrayList<String> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
     private int mImageSize;
     private ColorGenerator mColorGenerator;
-    Integer[] mImageId = {
-            R.drawable.background_dashboard1,
-            R.drawable.background_dashboard3,
-            R.drawable.background_dashboard1
 
-    };
-
-    public ShowBackgroundViewPagerAdapter(Context context, ArrayList<DoctorData> doctorLists) {
+    public ShowBackgroundViewPagerAdapter(Context context, ArrayList<String> doctorLists) {
         this.mContext = context;
         this.mDataList = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
@@ -67,75 +60,16 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
         final ImageView dashboardBackgroundLayout = (ImageView) imageLayout
                 .findViewById(R.id.dashboardBackgroundLayout);
-        dashboardBackgroundLayout.setImageResource(mImageId[position]);
 
-       /* final CustomTextView doctorNameTextView = (CustomTextView) imageLayout
-                .findViewById(R.id.doctorName);
-        final CustomTextView doctorType = (CustomTextView) imageLayout
-                .findViewById(R.id.doctorType);
-        final CustomTextView doctorExperience = (CustomTextView) imageLayout
-                .findViewById(R.id.doctorExperience);
-        final CustomTextView doctorAddress = (CustomTextView) imageLayout
-                .findViewById(R.id.doctorAddress);
-        final CustomTextView feesToPaid = (CustomTextView) imageLayout
-                .findViewById(R.id.feesToPaidVisit);
-        final CustomTextView doctorCategory = (CustomTextView) imageLayout
-                .findViewById(R.id.doctorCategoryVisit);
-        final ImageView favorite = (ImageView) imageLayout
-                .findViewById(R.id.favorite);
-        final CustomTextView recentVisit = (CustomTextView) imageLayout
-                .findViewById(R.id.recentVisit);
-        final CircularImageView imageURL = (CircularImageView) imageLayout
-                .findViewById(R.id.imageURL);
-        final LinearLayout thumbnail = (LinearLayout) imageLayout
-                .findViewById(R.id.thumbnail);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
 
-        final DoctorData doctorObject = mDataList.get(position);
-        if (doctorObject.getDoctorImageUrl().equals("")) {
-            String doctorName = doctorObject.getDocName();
-            if (doctorName.contains("Dr. ")) {
-                doctorName = doctorName.replace("Dr. ", "");
-            }
+        Glide.with(mContext)
+                .load(mDataList.get(position))
+                .into(dashboardBackgroundLayout);
 
-            if (doctorName != null) {
-                int color2 = mColorGenerator.getColor(doctorName);
-                TextDrawable drawable = TextDrawable.builder()
-                        .beginConfig()
-                        .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
-                        .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
-                        .endConfig()
-                        .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-                imageURL.setImageDrawable(drawable);
-            }
-        } else {
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.dontAnimate();
-            requestOptions.override(mImageSize, mImageSize);
-            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-            requestOptions.skipMemoryCache(true);
-            requestOptions.placeholder(R.drawable.layer_12);
-
-            Glide.with(mContext)
-                    .load(doctorObject.getDoctorImageUrl())
-                    .apply(requestOptions).thumbnail(0.5f)
-                    .into(imageURL);
-        }
-        doctorNameTextView.setText(doctorObject.getDocName());
-        doctorType.setText(doctorObject.getDegree());
-        doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
-        doctorAddress.setText(doctorObject.getDoctorAddress());
-        doctorCategory.setText(doctorObject.getCategoryName());
-        feesToPaid.setText(doctorObject.getAmount());
-        if (doctorObject.getRecentlyVisited()) {
-            recentVisit.setVisibility(View.VISIBLE);
-        } else {
-            recentVisit.setVisibility(View.GONE);
-        }
-        if (doctorObject.getFavourite()) {
-            favorite.setVisibility(View.VISIBLE);
-        } else {
-            favorite.setVisibility(View.INVISIBLE);
-        }*/
         view.addView(imageLayout, 0);
 
         return imageLayout;

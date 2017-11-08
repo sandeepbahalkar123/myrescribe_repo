@@ -219,58 +219,93 @@ public class CommonMethods {
         return noofyears;
     }
 
+    public static String getDayFromDateTime(String dateText,String originalDateFormat, String expectedDateFormat) {
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
+
+        calendar.add(Calendar.DAY_OF_YEAR, -1);
+        Date yesterday = calendar.getTime();
+
+        DateFormat expectedFormat = new SimpleDateFormat(expectedDateFormat, Locale.US);
+
+        SimpleDateFormat originalFormat = new SimpleDateFormat(originalDateFormat, Locale.US);
+        Date date;
+        try {
+            date = originalFormat.parse(dateText);
+        } catch (ParseException ex) {
+            return "";
+        }
+
+        String originalDateAsString = expectedFormat.format(date);
+
+        String todayAsString = expectedFormat.format(today);
+        String yesterdayAsString = expectedFormat.format(yesterday);
+
+        if (todayAsString.equals(originalDateAsString))
+            return "Today";
+
+        if (yesterdayAsString.equals(originalDateAsString))
+            return "Yesterday";
+
+        return originalDateAsString;
+    }
+
     public static String getDayFromDate(String dateFormat, String date) {
 
-        date = date.trim();
-        Date currentDate = new Date();
-        String timeString = new SimpleDateFormat(dateFormat + " HH:mm:ss", Locale.US).format(currentDate).substring(10);
-
-        SimpleDateFormat mainDateFormat = new SimpleDateFormat(dateFormat + " HH:mm:ss", Locale.US);
-        Date formattedInputDate = null;
         try {
-            formattedInputDate = mainDateFormat.parse(date + timeString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+            date = date.trim();
+            Date currentDate = new Date();
+            String timeString = new SimpleDateFormat(dateFormat + " HH:mm:ss", Locale.US).format(currentDate).substring(10);
 
-        if (date.trim().equalsIgnoreCase(new SimpleDateFormat(dateFormat, Locale.US).format(currentDate).trim())) {
-            return "Today";
-        }
-        //-----------
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
-        Date yesterdayDate = cal.getTime();
-        String sDate = new SimpleDateFormat(dateFormat, Locale.US).format(yesterdayDate);
-        try {
-            yesterdayDate = mainDateFormat.parse(sDate + timeString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        if (formattedInputDate.getTime() == yesterdayDate.getTime()) {
-            return "Yesterday";
-        }
-        //-----------
-        cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, +1);
-        Date tomorrowDate = cal.getTime();
-        sDate = new SimpleDateFormat(dateFormat, Locale.US).format(tomorrowDate);
-        try {
-            tomorrowDate = mainDateFormat.parse(sDate + timeString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        if (formattedInputDate.getTime() == tomorrowDate.getTime()) {
-            return "Tomorrow";
-        } else {
-            DateFormat f = new SimpleDateFormat("EEEE", Locale.US);
+            SimpleDateFormat mainDateFormat = new SimpleDateFormat(dateFormat + " HH:mm:ss", Locale.US);
+            Date formattedInputDate = null;
             try {
-                return f.format(formattedInputDate);
-            } catch (Exception e) {
+                formattedInputDate = mainDateFormat.parse(date + timeString);
+            } catch (ParseException e) {
                 e.printStackTrace();
-                return "";
             }
+
+            if (date.trim().equalsIgnoreCase(new SimpleDateFormat(dateFormat, Locale.US).format(currentDate).trim())) {
+                return "Today";
+            }
+            //-----------
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, -1);
+            Date yesterdayDate = cal.getTime();
+            String sDate = new SimpleDateFormat(dateFormat, Locale.US).format(yesterdayDate);
+            try {
+                yesterdayDate = mainDateFormat.parse(sDate + timeString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (formattedInputDate.getTime() == yesterdayDate.getTime()) {
+                return "Yesterday";
+            }
+            //-----------
+            cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, +1);
+            Date tomorrowDate = cal.getTime();
+            sDate = new SimpleDateFormat(dateFormat, Locale.US).format(tomorrowDate);
+            try {
+                tomorrowDate = mainDateFormat.parse(sDate + timeString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (formattedInputDate.getTime() == tomorrowDate.getTime()) {
+                return "Tomorrow";
+            } else {
+                DateFormat f = new SimpleDateFormat("EEEE", Locale.US);
+                try {
+                    return f.format(formattedInputDate);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return "";
+                }
+            }
+        } catch (NullPointerException e) {
+            return "";
         }
     }
 

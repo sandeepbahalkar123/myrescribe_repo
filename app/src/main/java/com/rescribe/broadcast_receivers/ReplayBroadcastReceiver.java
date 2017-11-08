@@ -21,7 +21,9 @@ import static com.rescribe.ui.activities.ChatActivity.CHAT;
 import static com.rescribe.ui.activities.DoctorConnectActivity.FREE;
 
 public class ReplayBroadcastReceiver extends BroadcastReceiver implements HelperResponse {
+
     public static final String MESSAGE_LIST = "message_list";
+
     private MQTTMessage recievedMessage;
     private Context context;
     private AppDBHelper appDBHelper;
@@ -48,7 +50,6 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
 
             MQTTMessage messageL = new MQTTMessage();
             messageL.setTopic(MQTTService.TOPIC[0]);
-            messageL.setSender(MQTTService.PATIENT);
             messageL.setMsg(message.toString());
 
             String generatedId = CHAT + 0 + "_" + System.nanoTime();

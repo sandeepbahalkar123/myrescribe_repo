@@ -28,6 +28,7 @@ import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.model.doctor_connect_search.DoctorConnectSearchBaseModel;
 import com.rescribe.model.doctor_connect_search.SearchDataModel;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
@@ -44,6 +45,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 
 /**
@@ -98,6 +101,7 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
     private SearchDataModel searchDataModel;
     private String mFragmentLoaded;
     private ArrayList<ChatDoctor> mChatDoctors;
+    private String patientId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +111,8 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         mFragmentTitleList[0] = getString(R.string.chats);
         mFragmentTitleList[1] = getString(R.string.connect);
         mFragmentTitleList[2] = getString(R.string.search);
+
+        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, DoctorConnectActivity.this);
 
         setupViewPager();
         mTabsDoctorConnect.setupWithViewPager(mDoctorConnectViewpager);
@@ -332,6 +338,8 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         super.onResume();
         registerReceiver(receiver, new IntentFilter(
                 MQTTService.NOTIFY));
+
+//        sendUserStatus(ONLINE);
     }
 
     @Override
@@ -348,4 +356,22 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
             doctorConnectChatFragment.addItem(chatDoctor);
         }
     }
+
+    // change
+
+    /*private void sendUserStatus(String userStatus) {
+        // send user status via mqtt
+        StatusInfo statusInfo = new StatusInfo();
+        statusInfo.setPatId(Integer.parseInt(patientId));
+        statusInfo.setDocId(-2);
+        statusInfo.setUserStatus(userStatus);
+        String generatedId = CHAT + 0 + "_" + System.nanoTime();
+        statusInfo.setMsgId(generatedId);
+
+        Intent intentService = new Intent(DoctorConnectActivity.this, MQTTService.class);
+        intentService.putExtra(SEND_MESSAGE, true);
+        intentService.putExtra(MESSAGE, false);
+        intentService.putExtra(STATUS_INFO, statusInfo);
+        startService(intentService);
+    }*/
 }

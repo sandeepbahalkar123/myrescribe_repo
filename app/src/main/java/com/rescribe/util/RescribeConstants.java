@@ -169,6 +169,8 @@ public class RescribeConstants {
         public static final String OFFLINE = "offline";
         public static final String TYPING = "typing";
         public static final String IDLE = "idle";
+        public static final String ACTIVE = "active";
+        public static final String INACTIVE = "inactive";
     }
 
     // change

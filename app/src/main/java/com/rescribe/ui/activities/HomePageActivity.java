@@ -35,6 +35,7 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.chat.StatusInfo;
 import com.rescribe.model.dashboard.DashboardBaseModel;
 import com.rescribe.model.dashboard.DashboardDataModel;
 import com.rescribe.model.login.ActiveRequest;
@@ -42,7 +43,7 @@ import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.ui.activities.book_appointment.BookAppointFindLocation;
+import com.rescribe.services.MQTTService;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
@@ -62,8 +63,13 @@ import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.rescribe.services.MQTTService.MESSAGE;
+import static com.rescribe.services.MQTTService.SEND_MESSAGE;
+import static com.rescribe.services.MQTTService.STATUS_INFO;
+import static com.rescribe.ui.activities.ChatActivity.CHAT;
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
+import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 /**
  * Created by jeetal on 28/6/17.

@@ -28,6 +28,7 @@ public class DashboardClinicList implements Parcelable
     @SerializedName("amount")
     @Expose
     private int amount;
+
     public final static Creator<DashboardClinicList> CREATOR = new Creator<DashboardClinicList>() {
 
 

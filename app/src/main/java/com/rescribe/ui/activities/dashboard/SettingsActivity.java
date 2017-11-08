@@ -101,6 +101,7 @@ public class SettingsActivity extends AppCompatActivity {
             case R.id.profileLayout:
                 Intent intent = new Intent(SettingsActivity.this, ProfileActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.logoLayout:
                /* Intent intent = new Intent(HomePageActivity.this, ProfileActivity.class);
@@ -109,6 +110,7 @@ public class SettingsActivity extends AppCompatActivity {
             case R.id.supportLayout:
                 Intent intentSupport = new Intent(SettingsActivity.this, SupportActivity.class);
                 startActivity(intentSupport);
+                finish();
                 break;
         }
     }

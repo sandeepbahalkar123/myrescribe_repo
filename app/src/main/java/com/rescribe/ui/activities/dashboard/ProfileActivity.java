@@ -105,10 +105,12 @@ public class ProfileActivity extends AppCompatActivity {
             case R.id.settingLayout:
                 Intent intentSetting = new Intent(ProfileActivity.this, SettingsActivity.class);
                 startActivity(intentSetting);
+                finish();
                 break;
             case R.id.supportLayout:
                 Intent intentSupport = new Intent(ProfileActivity.this, SupportActivity.class);
                 startActivity(intentSupport);
+                finish();
                 break;
         }
     }

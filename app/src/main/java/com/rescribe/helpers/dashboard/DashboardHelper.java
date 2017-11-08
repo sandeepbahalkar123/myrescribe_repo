@@ -1,17 +1,24 @@
 package com.rescribe.helpers.dashboard;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.android.volley.Request;
+import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by riteshpandhurkar on 1/3/17.
@@ -74,7 +81,7 @@ public class DashboardHelper implements ConnectionListener {
     }
 
     public void doGetDashboard(String screenResolutionValue) {
-    /*    try {
+       try {
             InputStream is = mContext.getAssets().open("dashboard.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -83,15 +90,16 @@ public class DashboardHelper implements ConnectionListener {
             String json = new String(buffer, "UTF-8");
             Log.e(TAG, "dashboard" + json);
 
-            DashboardBaseModel model = new Gson().fromJson(json, DashboardBaseModel.class);
+            DashBoardBaseModel model = new Gson().fromJson(json, DashBoardBaseModel.class);
             onResponse(ConnectionListener.RESPONSE_OK, model, RescribeConstants.TASK_DASHBOARD_API);
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }*/
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
+        }
+
+     /*   ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID,mContext)+mContext.getString(R.string.platform)+mContext.getString(R.string.android)+mContext.getString(R.string.screen_resolution)+screenResolutionValue);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);*/
     }
 }

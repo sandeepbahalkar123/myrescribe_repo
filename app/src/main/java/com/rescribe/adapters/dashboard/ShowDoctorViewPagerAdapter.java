@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.model.dashboard_api.DashboardDoctorList;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
-    private ArrayList<DashboardDoctorList> mDataList;
+    private ArrayList<DoctorList> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
     private int mImageSize;
@@ -40,7 +40,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     private ColorGenerator mColorGenerator;
 
 
-    public ShowDoctorViewPagerAdapter(Context context, ArrayList<DashboardDoctorList> doctorLists, OnClickOfCardOnDashboard mOnClickOfCardOnDashboard) {
+    public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, OnClickOfCardOnDashboard mOnClickOfCardOnDashboard) {
         this.mContext = context;
         this.mDataList = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
@@ -96,7 +96,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         final LinearLayout thumbnail = (LinearLayout) imageLayout
                 .findViewById(R.id.thumbnail);
 
-        final DashboardDoctorList doctorObject = mDataList.get(position);
+        final DoctorList doctorObject = mDataList.get(position);
         if (doctorObject.getDoctorImageUrl().equals("")) {
             String doctorName = doctorObject.getDocName();
             if (doctorName.contains("Dr. ")) {
@@ -129,10 +129,10 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         doctorNameTextView.setText(doctorObject.getDocName());
         doctorType.setText(doctorObject.getDegree());
         doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
-        if (doctorObject.getClinicList().size() == 1) {
-            doctorAddress.setText(doctorObject.getClinicList().get(0).getClinicAddress());
+        if (doctorObject.getClinicDataList().size() == 1) {
+            doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
         } else {
-            doctorAddress.setText(doctorObject.getClinicList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+            doctorAddress.setText(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
         }
         doctorCategory.setText(doctorObject.getCategoryName());
         if(doctorObject.getRating()==0){
@@ -176,9 +176,9 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             doctorAppointmentDate.setText(content);
 
         } else {
-            if (doctorObject.getClinicList().size() > 0) {
+            if (doctorObject.getClinicDataList().size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
-                feesToPaid.setText("" + doctorObject.getClinicList().get(0).getAmt());
+                feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmt());
 
             } else {
                 feesToPaid.setVisibility(View.INVISIBLE);

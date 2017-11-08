@@ -36,8 +36,8 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.dashboard_api.DashBoardBaseModel;
-import com.rescribe.model.dashboard_api.DashboardDoctorList;
 import com.rescribe.model.dashboard_api.DashboardModel;
 import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.notification.AppointmentAlarmTask;
@@ -46,6 +46,7 @@ import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.activities.dashboard.DashboardShowCategoryNameByListBaseActivity;
+import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.ui.activities.dashboard.ProfileActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.SupportActivity;
@@ -501,18 +502,18 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         if (mOldDataTag.equalsIgnoreCase(TASK_DASHBOARD_API)) {
             DashBoardBaseModel dashboardBaseModel = (DashBoardBaseModel) customResponse;
             mDashboardModel = dashboardBaseModel.getDashboardModel();
-            ArrayList<DashboardDoctorList> dashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
+            ArrayList<DoctorList> dashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
             if (mDashboardModel != null) {
 
-                ArrayList<DashboardDoctorList> myAppoint = filterDataOnDocSpeciality(getString(R.string.my_appointments));
-                ArrayList<DashboardDoctorList> sponsered = filterDataOnDocSpeciality(getString(R.string.sponsered_doctor));
-                ArrayList<DashboardDoctorList> recently_visit_doctor = filterDataOnDocSpeciality(getString(R.string.recently_visit_doctor));
+                ArrayList<DoctorList> myAppoint = filterDataOnDocSpeciality(getString(R.string.my_appointments));
+                ArrayList<DoctorList> sponsered = filterDataOnDocSpeciality(getString(R.string.sponsered_doctor));
+                ArrayList<DoctorList> recently_visit_doctor = filterDataOnDocSpeciality(getString(R.string.recently_visit_doctor));
                 dashboardDoctorListsToShowDashboardDoctor.add(myAppoint.get(0));
                 dashboardDoctorListsToShowDashboardDoctor.add(sponsered.get(0));
                 dashboardDoctorListsToShowDashboardDoctor.add(recently_visit_doctor.get(0));
 
                 for (int sizeOfList = 0; sizeOfList < dashboardDoctorListsToShowDashboardDoctor.size(); sizeOfList++) {
-                    DashboardDoctorList temp = dashboardDoctorListsToShowDashboardDoctor.get(sizeOfList);
+                    DoctorList temp = dashboardDoctorListsToShowDashboardDoctor.get(sizeOfList);
                     if (temp.getCategoryName().equalsIgnoreCase(getString(R.string.my_appointments))) {
                         temp.setSizeOfList(myAppoint.size());
                     } else if (temp.getCategoryName().equalsIgnoreCase(getString(R.string.sponsered_doctor))) {
@@ -586,15 +587,15 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     }
 
-    private ArrayList<DashboardDoctorList> filterDataOnDocSpeciality(String mCategoryName) {
+    private ArrayList<DoctorList> filterDataOnDocSpeciality(String mCategoryName) {
 
-        ArrayList<DashboardDoctorList> doctors = mDashboardModel.getDoctorList();
+        ArrayList<DoctorList> doctors = mDashboardModel.getDoctorList();
 
-        ArrayList<DashboardDoctorList> dataList = new ArrayList<>();
+        ArrayList<DoctorList> dataList = new ArrayList<>();
         if (mCategoryName == null) {
             return doctors;
         } else {
-            for (DashboardDoctorList listObject :
+            for (DoctorList listObject :
                     doctors) {
                 if (mCategoryName.equalsIgnoreCase(listObject.getCategoryName())) {
                     dataList.add(listObject);
@@ -700,11 +701,15 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
             startActivity(intent);
         } else if (mDashBoardCardName.equals(getString(R.string.sponsered_doctor))) {
-            /*Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
-            startActivity(intent);*/
+            Intent intent = new Intent(HomePageActivity.this, DoctorDescriptionBaseActivity.class);
+            intent.putExtra(getString(R.string.clicked_item_data),filterDataOnDocSpeciality(getString(R.string.sponsered_doctor)).get(0));
+            intent.putExtra(getString(R.string.toolbarTitle),getString(R.string.sponsered_doctor));
+            startActivity(intent);
         } else if (mDashBoardCardName.equals(getString(R.string.recently_visit_doctor))) {
-            /*Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
-            startActivity(intent);*/
+            Intent intent = new Intent(HomePageActivity.this, DoctorDescriptionBaseActivity.class);
+            intent.putExtra(getString(R.string.clicked_item_data),filterDataOnDocSpeciality(getString(R.string.recently_visit_doctor)).get(0));
+            intent.putExtra(getString(R.string.toolbarTitle),getString(R.string.sponsered_doctor));
+            startActivity(intent);
         }
     }
 
@@ -712,20 +717,20 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     public void onClickOfCount(String nameOfCategoryType) {
         if (nameOfCategoryType.equals(getString(R.string.my_appointments))) {
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle),getString(R.string.my_appointments));
-            intent.putExtra(getString(R.string.clicked_item_data),filterDataOnDocSpeciality(getString(R.string.my_appointments)));
+            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.my_appointments));
+            intent.putExtra(getString(R.string.clicked_item_data), filterDataOnDocSpeciality(getString(R.string.my_appointments)));
             startActivity(intent);
         } else if (nameOfCategoryType.equals(getString(R.string.sponsered_doctor))) {
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle),getString(R.string.sponsered_doctor));
-            intent.putExtra(getString(R.string.clicked_item_data),filterDataOnDocSpeciality(getString(R.string.sponsered_doctor)));
+            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.sponsered_doctor));
+            intent.putExtra(getString(R.string.clicked_item_data), filterDataOnDocSpeciality(getString(R.string.sponsered_doctor)));
             startActivity(intent);
             /*Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
             startActivity(intent);*/
         } else if (nameOfCategoryType.equals(getString(R.string.recently_visit_doctor))) {
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle),getString(R.string.recently_visit_doctor));
-            intent.putExtra(getString(R.string.clicked_item_data),filterDataOnDocSpeciality(getString(R.string.recently_visit_doctor)));
+            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.recently_visit_doctor));
+            intent.putExtra(getString(R.string.clicked_item_data), filterDataOnDocSpeciality(getString(R.string.recently_visit_doctor)));
             startActivity(intent);
             /*Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
             startActivity(intent);*/

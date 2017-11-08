@@ -10,10 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.rescribe.R;
-import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
 import com.rescribe.adapters.dashboard.MyAppointmentAdapter;
-import com.rescribe.model.dashboard_api.DashboardDoctorList;
-import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 
 import java.util.ArrayList;
 
@@ -32,7 +30,7 @@ public class MyAppointmentsFragment extends Fragment {
     @BindView(R.id.myAppoinmentRecyclerView)
     RecyclerView myAppoinmentRecyclerView;
     private View mRootView;
-    ArrayList<DashboardDoctorList> dashboardDoctorLists;
+    ArrayList<DoctorList> dashboardDoctorLists;
     private DividerItemDecoration mDividerItemDecoration;
     private MyAppointmentAdapter mMyAppointmentAdapter;
 

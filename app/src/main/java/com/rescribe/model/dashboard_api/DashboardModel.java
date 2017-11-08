@@ -8,13 +8,14 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 
 public class DashboardModel implements Parcelable
 {
 
     @SerializedName("doctorList")
     @Expose
-    private ArrayList<DashboardDoctorList> doctorList = new ArrayList<DashboardDoctorList>();
+    private ArrayList<DoctorList> doctorList = new ArrayList<DoctorList>();
     @SerializedName("cardBgImageUrlList")
     @Expose
     private ArrayList<String> cardBgImageUrlList = new ArrayList<String>();
@@ -45,7 +46,7 @@ public class DashboardModel implements Parcelable
     ;
 
     protected DashboardModel(Parcel in) {
-        in.readList(this.doctorList, (DashboardDoctorList.class.getClassLoader()));
+        in.readList(this.doctorList, (DoctorList.class.getClassLoader()));
         in.readList(this.cardBgImageUrlList, (String.class.getClassLoader()));
         in.readList(this.dashboardMenuList, (DashboardMenuList.class.getClassLoader()));
         in.readList(this.dashboardBottomMenuList, (DashboardBottomMenuList.class.getClassLoader()));
@@ -55,11 +56,11 @@ public class DashboardModel implements Parcelable
     public DashboardModel() {
     }
 
-    public ArrayList<DashboardDoctorList> getDoctorList() {
+    public ArrayList<DoctorList> getDoctorList() {
         return doctorList;
     }
 
-    public void setDoctorList(ArrayList<DashboardDoctorList> doctorList) {
+    public void setDoctorList(ArrayList<DoctorList> doctorList) {
         this.doctorList = doctorList;
     }
 

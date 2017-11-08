@@ -8,6 +8,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rescribe.model.dashboard_api.DashboardClinicList;
 
 
 //TODO : RESPONSE JSON IS GOING TO CHANGE, ONCE RESPONSE FINAL REMOVE UNWANTED VARIABLES.
@@ -44,7 +45,7 @@ public class DoctorList implements Parcelable {
 
     @SerializedName("clinicList")
     @Expose
-    private ArrayList<ClinicData> clinicDataList = new ArrayList<>();
+    private ArrayList<DashboardClinicList> clinicDataList = new ArrayList<>();
 
     @SerializedName("favourite")
     @Expose
@@ -55,7 +56,7 @@ public class DoctorList implements Parcelable {
 
     @SerializedName("rating")
     @Expose
-    private String rating = "";
+    private double rating;
 
     @SerializedName("waitingTime")
     @Expose
@@ -78,13 +79,14 @@ public class DoctorList implements Parcelable {
     @Expose
     private String aptTime = "";
     //------
-
+    private int sizeOfList = 0;
     private double latitude = 0.0;
     private double longitude = 0.0;
 
     //this parameters are used to sort list by clinicName and doctorName as per functionality
     private String nameOfClinicString = "";
     private String addressOfDoctorString = "";
+
     /*  @SerializedName("reviewList")
     @Expose
     private ArrayList<ReviewList> reviewList = null;*/
@@ -105,16 +107,18 @@ public class DoctorList implements Parcelable {
             instance.doctorImageUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.docSpeciality = ((String) in.readValue((String.class.getClassLoader())));
             instance.experience = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            in.readList(instance.clinicDataList, (ClinicData.class.getClassLoader()));
+            in.readList(instance.clinicDataList, (DashboardClinicList.class.getClassLoader()));
             instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.degree = ((String) in.readValue((String.class.getClassLoader())));
-            instance.rating = ((String) in.readValue((String.class.getClassLoader())));
+            instance.rating = ((Double) in.readValue((Double.class.getClassLoader())));
             instance.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.tokenNo = ((String) in.readValue((String.class.getClassLoader())));
             instance.aboutDoctor = ((String) in.readValue((String.class.getClassLoader())));
             in.readList(instance.docServices, (String.class.getClassLoader()));
             instance.aptDate = ((String) in.readValue((String.class.getClassLoader())));
             instance.aptTime = ((String) in.readValue((String.class.getClassLoader())));
+            instance.sizeOfList = ((Integer) in.readValue((Integer.class.getClassLoader())));
+
             //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
             return instance;
         }
@@ -139,6 +143,13 @@ public class DoctorList implements Parcelable {
 
     public void setAddressOfDoctorString(String addressOfDoctorString) {
         this.addressOfDoctorString = addressOfDoctorString;
+    }
+    public int getSizeOfList() {
+        return sizeOfList;
+    }
+
+    public void setSizeOfList(int sizeOfList) {
+        this.sizeOfList = sizeOfList;
     }
 
     public boolean getFavourite() {
@@ -223,11 +234,11 @@ public class DoctorList implements Parcelable {
         this.degree = degree;
     }
 
-    public String getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
@@ -247,11 +258,11 @@ public class DoctorList implements Parcelable {
         this.tokenNo = tokenNo;
     }
 
-    public ArrayList<ClinicData> getClinicDataList() {
+    public ArrayList<DashboardClinicList> getClinicDataList() {
         return clinicDataList;
     }
 
-    public void setClinicDataList(ArrayList<ClinicData> clinicDataList) {
+    public void setClinicDataList(ArrayList<DashboardClinicList> clinicDataList) {
         this.clinicDataList = clinicDataList;
     }
 
@@ -323,6 +334,7 @@ public class DoctorList implements Parcelable {
         dest.writeList(docServices);
         dest.writeValue(aptDate);
         dest.writeValue(aptTime);
+        dest.writeValue(sizeOfList);
     }
 
 
@@ -330,61 +342,4 @@ public class DoctorList implements Parcelable {
         return 0;
     }
 
-    public class ClinicData {
-        @SerializedName("clinicName")
-        @Expose
-        private String clinicName = "";
-        @SerializedName("clinicAddress")
-        @Expose
-        private String clinicAddress = "";
-        @SerializedName("amt")
-        @Expose
-        private String amt = "";
-        @SerializedName("apptScheduleLmtDays")
-        @Expose
-        private String apptScheduleLmtDays = "";
-        @SerializedName("locationId")
-        @Expose
-        private String locationId = "";
-
-        public String getClinicName() {
-            return clinicName;
-        }
-
-        public void setClinicName(String clinicName) {
-            this.clinicName = clinicName;
-        }
-
-        public String getClinicAddress() {
-            return clinicAddress;
-        }
-
-        public void setClinicAddress(String clinicAddress) {
-            this.clinicAddress = clinicAddress;
-        }
-
-        public String getAmt() {
-            return amt;
-        }
-
-        public void setAmt(String amt) {
-            this.amt = amt;
-        }
-
-        public String getApptScheduleLmtDays() {
-            return apptScheduleLmtDays;
-        }
-
-        public void setApptScheduleLmtDays(String apptScheduleLmtDays) {
-            this.apptScheduleLmtDays = apptScheduleLmtDays;
-        }
-
-        public String getLocationId() {
-            return locationId;
-        }
-
-        public void setLocationId(String locationId) {
-            this.locationId = locationId;
-        }
-    }
 }

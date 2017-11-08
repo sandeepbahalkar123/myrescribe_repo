@@ -20,54 +20,69 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/dp10">
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10">
 
-                <com.rescribe.ui.customesViews.CustomTextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/services"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp16"
-                    app:customFont="@string/roboto_medium" />
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/dp10">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/servicesListView"
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/servicesHeaderView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/services"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp16"
+                        app:customFont="@string/roboto_medium" />
+
+                    <ListView
+                        android:id="@+id/servicesListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@null"
+                        android:dividerHeight="0dp"
+                        android:visibility="visible" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/readMoreDocServices"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/read_more"
+                        android:textColor="@color/tagColor"
+                        android:visibility="gone"
+                        app:customFont="@string/roboto_medium" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="@null"
-                    android:dividerHeight="0dp"
-                    android:paddingBottom="@dimen/dp2"
-                    android:visibility="visible"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/dp10">
 
-            </LinearLayout>
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/aboutDoctor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_doctor"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp16"
+                        app:customFont="@string/roboto_medium" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/dp10">
-
-                <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/aboutDoctor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/about_doctor"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp16"
-                    app:customFont="@string/roboto_medium" />
-
-                <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/aboutDoctorDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dp10"
-                    android:textColor="@color/about_doctor_color"
-                    android:textSize="@dimen/sp14"
-                    app:customFont="@string/roboto_regular"
-                    tools:text="Lorem \n\n" />
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/aboutDoctorDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/dp10"
+                        android:textColor="@color/about_doctor_color"
+                        android:textSize="@dimen/sp14"
+                        app:customFont="@string/roboto_regular"
+                        tools:text="Lorem \n\n" />
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

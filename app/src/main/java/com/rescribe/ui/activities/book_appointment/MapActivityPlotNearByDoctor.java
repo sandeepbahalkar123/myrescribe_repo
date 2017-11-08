@@ -230,7 +230,7 @@ public class MapActivityPlotNearByDoctor extends FragmentActivity implements OnM
         });
         try {
             mDoctorRating.setText("" + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
-            mRatingBar.setRating(Float.parseFloat(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating()));
+            mRatingBar.setRating((float) mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
 
         } catch (NumberFormatException e) {
             e.printStackTrace();

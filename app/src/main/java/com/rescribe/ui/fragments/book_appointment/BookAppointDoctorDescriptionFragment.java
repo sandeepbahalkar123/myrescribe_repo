@@ -4,39 +4,41 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
+import android.widget.ListView;
+import android.widget.RatingBar;
+import android.widget.Spinner;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.adapters.book_appointment.TimeSlotAdapter;
-import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.dashboard_api.DashboardClinicList;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
-import com.rescribe.ui.activities.book_appointment.MapActivityShowDoctorLocation;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-
+import com.rescribe.util.RescribeConstants;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -50,6 +52,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     CircularImageView mProfileImage;
     @BindView(R.id.docRating)
     CustomTextView mDocRating;
+    @BindView(R.id.docRatingBar)
+    RatingBar mDocRatingBar;
+    @BindView(R.id.docRatingBarLayout)
+    LinearLayout mDocRatingBarLayout;
     @BindView(R.id.doctorName)
     CustomTextView mDoctorName;
     @BindView(R.id.doctorSpecialization)
@@ -60,22 +66,28 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     CustomTextView mDoctorExperience;
     @BindView(R.id.doctorFees)
     CustomTextView mDoctorFees;
-    @BindView(R.id.doctorPractices)
-    CustomTextView mDoctorPractices;
-    @BindView(R.id.allTimingListViewLayout)
-    LinearLayout mAllTimingListViewLayout;
-    @BindView(R.id.allTimeSlotListView)
-    RecyclerView mAllTimeSlotListView;
-    @BindView(R.id.locationImage)
-    ImageView locationImage;
-    @BindView(R.id.addressOfClinic)
-    CustomTextView addressOfClinic;
     @BindView(R.id.clinicName)
-    CustomTextView clinicName;
+    CustomTextView mClinicName;
     @BindView(R.id.aboutDoctor)
     CustomTextView aboutDoctor;
+    @BindView(R.id.docPracticesLocationCount)
+    CustomTextView mDocPracticesLocationCount;
+    @BindView(R.id.doctorExperienceLayout)
+    LinearLayout mDoctorExperienceLayout;
+    @BindView(R.id.premiumType)
+    CustomTextView mPremiumType;
     @BindView(R.id.bookAppointmentButton)
     AppCompatButton bookAppointmentButton;
+    @BindView(R.id.clinicNameSpinner)
+    Spinner mClinicNameSpinner;
+    @BindView(R.id.servicesListView)
+    ListView mServicesListView;
+    @BindView(R.id.servicesHeaderView)
+    CustomTextView mServicesHeaderView;
+    @BindView(R.id.readMoreDocServices)
+    CustomTextView mReadMoreDocServices;
+    @BindView(R.id.favorite)
+    ImageView mFavorite;
     private View mRootView;
     private int mImageSize;
     Unbinder unbinder;
@@ -90,7 +102,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.book_appointment_doctor_description_layout, container, false);
+        mRootView = inflater.inflate(R.layout.book_appoint_doc_description_new, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         init();
         return mRootView;
@@ -115,6 +127,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             CommonMethods.Log("TAG", " parcelable :" + mClickedDoctorObject.toString());
             setDataInViews();
         }
+
+
     }
 
     private void setColumnNumber(Context context, int columnNum) {
@@ -126,6 +140,16 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     }
 
     private void setDataInViews() {
+        //-------
+        SpannableString contentServices = new SpannableString(getString(R.string.services));
+        contentServices.setSpan(new UnderlineSpan(), 0, contentServices.length(), 0);
+        mServicesHeaderView.setText(contentServices);
+        //-------
+        SpannableString content = new SpannableString(aboutDoctor.getText());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        aboutDoctor.setText(content);
+        mAboutDoctorDescription.setText("" + mClickedDoctorObject.getAboutDoctor());
+        //-------
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
@@ -137,37 +161,97 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 .load(mClickedDoctorObject.getDoctorImageUrl())
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(mProfileImage);
-        SpannableString content = new SpannableString(aboutDoctor.getText());
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        aboutDoctor.setText(content);
+        //-------
+        if (mClickedDoctorObject.getFavourite()) {
+            mFavorite.setImageResource(R.drawable.fav_icon);
+        } else {
+            mFavorite.setImageResource(R.drawable.result_line_heart_fav);
+        }
+        //---------------
 
-        clinicName.setText("" + mClickedDoctorObject.getNameOfClinicString());
-      /*  addressOfClinic.setText("" + mClickedDoctorObject.getAddressOfDoctor());*/
-
-        mDocRating.setText("" + mClickedDoctorObject.getRating());
+        if (mClickedDoctorObject.getRating()==0) {
+            mDocRatingBarLayout.setVisibility(View.INVISIBLE);
+        } else {
+            mDocRatingBarLayout.setVisibility(View.VISIBLE);
+            mDocRating.setText("" + mClickedDoctorObject.getRating());
+            mDocRatingBar.setRating((float) mClickedDoctorObject.getRating());
+        }
+        //----------
         mDoctorName.setText("" + mClickedDoctorObject.getDocName());
         mDoctorSpecialization.setText("" + mClickedDoctorObject.getDegree());
-        mAboutDoctorDescription.setText("" + mClickedDoctorObject.getAboutDoctor());
-        mDoctorExperience.setText("" + mClickedDoctorObject.getExperience() + getString(R.string.space) + getString(R.string.years_experience));
-       // mDoctorFees.setText(getString(R.string.fee) + getString(R.string.space) + getString(R.string.rupees) + mClickedDoctorObject.getAmount() + getString(R.string.space) + getString(R.string.slash) + getString(R.string.space) + getString(R.string.session));
-
-        int spanCount = 2; // 3 columns
-        int spacing = 30; // 50px
-        boolean includeEdge = false;
-        LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mAllTimeSlotListView.setLayoutManager(linearlayoutManager);
-        mAllTimeSlotListView.setHasFixedSize(true);
-        TimeSlotAdapter t = new TimeSlotAdapter(getActivity(), mClickedDoctorObject.getClinicDataList());
-        mAllTimeSlotListView.setAdapter(t);
-
+        //------------
+        int experience = mClickedDoctorObject.getExperience();
+        if (experience > 0) {
+            mDoctorExperienceLayout.setVisibility(View.VISIBLE);
+            mDoctorExperience.setText("" + experience + getString(R.string.space) + getString(R.string.years_experience));
+        } else {
+            mDoctorExperienceLayout.setVisibility(View.GONE);
+        }
+        //----------
+        int size = mClickedDoctorObject.getClinicDataList().size();
+        if (size > 0) {
+            String updatedString = getString(R.string.practices_at_locations).replace("$$", "" + size);
+            SpannableString contentExp = new SpannableString(updatedString);
+            contentExp.setSpan(new ForegroundColorSpan(
+                            ContextCompat.getColor(getActivity(), R.color.tagColor)),
+                    13, 13 + size,//hightlight mSearchString
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mDocPracticesLocationCount.setText(contentExp);
+        }
+        //------------
+        if (mClickedDoctorObject.getCategorySpeciality() != null) {
+            mPremiumType.setText("" + mClickedDoctorObject.getCategorySpeciality());
+            mPremiumType.setVisibility(View.VISIBLE);
+        } else {
+            mPremiumType.setVisibility(View.INVISIBLE);
+        }
+        //-----------
         //requestOptions.placeholder(R.drawable.layer_12);
-        if (!mClickedDoctorObject.getAddressOfDoctorString().isEmpty()) {
+      /*  if (!mClickedDoctorObject.getAddressOfDoctorString().isEmpty()) {
             Glide.with(getActivity())
                     .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mClickedDoctorObject.getAddressOfDoctorString() + "&markers=color:red%7Clabel:C%7C" + mClickedDoctorObject.getAddressOfDoctorString() + "&zoom=12&size=640x250")
                     .into(locationImage);
+        }*/
+
+        //---------
+        ArrayAdapter<DashboardClinicList> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
+        mClinicNameSpinner.setAdapter(arrayAdapter);
+        mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                DashboardClinicList clinicData = mClickedDoctorObject.getClinicDataList().get(position);
+
+                mClinicName.setText("" + clinicData.getClinicName());
+                mDoctorFees.setText(""+ clinicData.getAmt());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        //---------
+        ArrayList<String> receivedDocService = mClickedDoctorObject.getDocServices();
+        int receivedDocServiceSize = receivedDocService.size();
+        if (receivedDocServiceSize > 0) {
+            ArrayList<String> docListToSend = new ArrayList<>();
+            if (receivedDocServiceSize > 5) {
+                docListToSend.addAll(receivedDocService.subList(0, 4));
+                mReadMoreDocServices.setVisibility(View.VISIBLE);
+            } else {
+                docListToSend.addAll(receivedDocService);
+                mReadMoreDocServices.setVisibility(View.GONE);
+            }
+            DocServicesListAdapter mServicesAdapter = new DocServicesListAdapter(getActivity(), docListToSend);
+            mServicesListView.setAdapter(mServicesAdapter);
+            CommonMethods.setListViewHeightBasedOnChildren(mServicesListView);
+        } else {
+            mReadMoreDocServices.setVisibility(View.GONE);
         }
 
-
+        //---------
     }
 
     @Override
@@ -196,18 +280,18 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         unbinder.unbind();
     }
 
-    @OnClick({R.id.locationImage, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap})
+    @OnClick({R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
-            case R.id.locationImage:
+           /* case R.id.locationImage:
                 HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
                 Intent intent = new Intent(getActivity(), MapActivityShowDoctorLocation.class);
                 intent.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
                 intent.putExtra(getString(R.string.location), userSelectedLocationInfo.get(getString(R.string.location)));
                 intent.putExtra(getString(R.string.address), mClickedDoctorObject.getAddressOfDoctorString());
                 startActivity(intent);
-                break;
+                break;*/
             case R.id.bookAppointmentButton:
                 Intent intentObject = new Intent(getActivity(), SelectSlotToBookAppointmentBaseActivity.class);
                 intentObject.putExtra(getString(R.string.clicked_item_data), mClickedDoctorObject);
@@ -218,7 +302,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 //-----Show all doc clinic on map, copied from BookAppointFilteredDoctorListFragment.java----
                 //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
                 ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
-                ArrayList<DoctorList.ClinicData> clinicNameList = mClickedDoctorObject.getClinicDataList();
+                ArrayList<DashboardClinicList> clinicNameList = mClickedDoctorObject.getClinicDataList();
                 for (int i = 0; i < clinicNameList.size(); i++) {
                     DoctorList doctorListByClinic = new DoctorList();
                     doctorListByClinic = mClickedDoctorObject;
@@ -238,5 +322,46 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     @Override
     public void updateViewData() {
 
+    }
+
+
+    public class DocServicesListAdapter extends BaseAdapter {
+        Context mContext;
+        private ArrayList<String> mDocServiceList;
+
+
+        public DocServicesListAdapter(Context context, ArrayList<String> items) {
+            this.mContext = context;
+            this.mDocServiceList = items;
+        }
+
+        @Override
+        public int getCount() {
+            return mDocServiceList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return i;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup viewGroup) {
+            View view = convertView;
+            String data = mDocServiceList.get(position);
+
+            if (convertView == null) {
+                LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+                view = layoutInflater.inflate(R.layout.global_item_textview, null);
+            }
+            CustomTextView dataView = (CustomTextView) view.findViewById(R.id.text);
+            dataView.setText("" + data);
+            return view;
+        }
     }
 }

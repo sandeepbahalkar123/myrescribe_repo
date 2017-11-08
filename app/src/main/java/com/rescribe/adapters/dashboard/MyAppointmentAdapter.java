@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
 import com.rescribe.R;
-import com.rescribe.model.dashboard_api.DashboardDoctorList;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 
@@ -26,9 +26,9 @@ import butterknife.ButterKnife;
 public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdapter.ListViewHolder> {
 
     private Context mContext;
-    private ArrayList<DashboardDoctorList> mDataList;
+    private ArrayList<DoctorList> mDataList;
 
-    public MyAppointmentAdapter(Context mContext, ArrayList<DashboardDoctorList> dataList) {
+    public MyAppointmentAdapter(Context mContext, ArrayList<DoctorList> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
 
@@ -45,14 +45,21 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
 
-        final DashboardDoctorList doctorObject = mDataList.get(position);
-        holder.doctorCategoryType.setText(doctorObject.getCategoryName());
+        final DoctorList doctorObject = mDataList.get(position);
+        holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
+        if(doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))){
+            holder.tokenNo.setVisibility(View.INVISIBLE);
+        }else{
+            holder.tokenNo.setVisibility(View.VISIBLE);
+            holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.result_book_appointment));
+
+        }
         holder.doctorName.setText(doctorObject.getDocName());
         holder.doctorExperience.setText(doctorObject.getExperience()+mContext.getString(R.string.space)+mContext.getString(R.string.years_experience));
-        if(doctorObject.getClinicList().size()==1){
-            holder.doctorAddress.setText(doctorObject.getClinicList().get(0).getClinicAddress());
+        if(doctorObject.getClinicDataList().size()==1){
+            holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
         }else{
-            holder.doctorAddress.setText(doctorObject.getClinicList().size()+mContext.getString(R.string.space)+mContext.getString(R.string.locations));
+            holder.doctorAddress.setText(doctorObject.getClinicDataList().size()+mContext.getString(R.string.space)+mContext.getString(R.string.locations));
         }
         if(doctorObject.getRating()==0){
             holder.ratingBar.setVisibility(View.INVISIBLE);
@@ -63,12 +70,12 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
             holder.ratingBar.setRating((float) doctorObject.getRating());
             holder.doctorRating.setText(""+doctorObject.getRating());
         }
-        if(doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))){
-            holder.tokenNo.setVisibility(View.INVISIBLE);
-        }else{
-            holder.tokenNo.setVisibility(View.VISIBLE);
+        holder.doctorFee.setVisibility(View.INVISIBLE);
+      /*  if (doctorObject.do().equals("")) {*/
+       /* } else {
+            holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.token_no_background));
         }
-
+*/
     }
 
     @Override

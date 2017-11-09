@@ -65,6 +65,9 @@ public class RescribeConstants {
     public static final String APPOINTMENT_NOTIFICATION_ID = "appointment_notification_id";
     public static final String APPOINTMENT_MESSAGE = "appointment_message";
     public static final String BLANK = "";
+
+    public static final String DOCTOR_OBJECT = "services";
+
     //Click codes
     public static final String CLICK_DELETE = RescribeConstants.BLANK + 0;
     public static final String CLICK_EXPAND_VIEW = RescribeConstants.BLANK + 1;

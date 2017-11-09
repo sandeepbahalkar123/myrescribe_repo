@@ -10,5 +10,6 @@
     android:paddingTop="@dimen/dp10"
     android:text="@string/select_date_text"
     android:textSize="@dimen/sp16"
-    app:customFont="@string/roboto_bold"
+    android:textColor="@color/black"
+    app:customFont="@string/roboto_regular"
     tools:ignore="MissingTranslation" />

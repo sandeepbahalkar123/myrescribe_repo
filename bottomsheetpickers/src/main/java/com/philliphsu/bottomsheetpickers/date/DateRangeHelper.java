@@ -53,6 +53,21 @@ final class DateRangeHelper {
         return day < minDate.get(Calendar.DAY_OF_MONTH);
     }
 
+    boolean isSameMinMax() {
+        if (mController == null) {
+            return false;
+        }
+
+        Calendar maxDate = mController.getMaxDate();
+        Calendar minDate = mController.getMinDate();
+
+        boolean checkYear = maxDate.get(Calendar.YEAR) == minDate.get(Calendar.YEAR);
+
+        boolean checkMonth = maxDate.get(Calendar.MONTH) == minDate.get(Calendar.MONTH);
+
+        return checkMonth && checkYear;
+    }
+
     boolean isAfterMax(int year, int month, int day) {
         if (mController == null) {
             return false;

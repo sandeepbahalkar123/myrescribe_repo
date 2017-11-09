@@ -3,6 +3,7 @@ package com.rescribe.ui.fragments.book_appointment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
@@ -32,9 +33,10 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
-import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.doctor_connect.ChatDoctor;
+import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
@@ -42,17 +44,25 @@ import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.rescribe.util.RescribeConstants.DOCTOR_OBJECT;
+import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 //TODO , NNED TO IMPLEMNT AS PER NEW JSON
 
 public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
 
     //-------------
+    @BindView(R.id.doChat)
+    ImageView doChat;
+
     @BindView(R.id.profileImage)
     CircularImageView mProfileImage;
     @BindView(R.id.docRating)
@@ -306,7 +316,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         unbinder.unbind();
     }
 
-    @OnClick({R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite})
+    @OnClick({R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat, R.id.readMoreDocServices})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -345,8 +355,31 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 //--------
                 break;
             case R.id.favorite:
-                boolean status = mClickedDoctorObject.getFavourite() ? false : true;
-                mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
+                mDoctorDataHelper.setFavouriteDoctor(!mClickedDoctorObject.getFavourite(), mClickedDoctorObject.getDocId());
+                break;
+            case R.id.doChat:
+
+                ChatDoctor chatDoctor = new ChatDoctor();
+                chatDoctor.setId(mClickedDoctorObject.getDocId());
+                chatDoctor.setDoctorName(mClickedDoctorObject.getDocName());
+                chatDoctor.setOnlineStatus(ONLINE);
+                chatDoctor.setAddress(mClickedDoctorObject.getAddressOfDoctorString());
+                chatDoctor.setImageUrl(mClickedDoctorObject.getDoctorImageUrl());
+
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
+                startActivity(intent);
+
+                break;
+
+            case R.id.readMoreDocServices:
+
+                BottomSheetDialogFragment bottomSheetDialogFragment = new ServiceDialogFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(DOCTOR_OBJECT, mClickedDoctorObject);
+                bottomSheetDialogFragment.setArguments(bundle);
+                bottomSheetDialogFragment.show(getChildFragmentManager(), bottomSheetDialogFragment.getTag());
+
                 break;
         }
     }
@@ -357,7 +390,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     }
 
 
-    public class DocServicesListAdapter extends BaseAdapter {
+    public static class DocServicesListAdapter extends BaseAdapter {
         Context mContext;
         private ArrayList<String> mDocServiceList;
 

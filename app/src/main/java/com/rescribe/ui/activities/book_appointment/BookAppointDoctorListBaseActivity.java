@@ -30,6 +30,8 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.BookAppointDoctorDescriptionFragment;
 import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
@@ -38,6 +40,7 @@ import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -157,7 +160,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         mCurrentlyLoadedFragment = RecentVisitDoctorFragment.newInstance(bundle);
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         //----split based on location------
-        if(locationReceived!=null) {
+        if (locationReceived != null) {
             String[] split = locationReceived.split(",");
             if (split.length == 2) {
                 mDoctorDataHelper.doGetDoctorData(split[1], split[0], mComplaintsUserSearchFor);
@@ -477,4 +480,23 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
 
+    public void replaceDoctorListById(String docId, DoctorList docObjectToReplace) {
+        DoctorServicesModel doctorServicesModel = mReceivedBookAppointmentBaseModel.getDoctorServicesModel();
+        if (doctorServicesModel != null) {
+            ArrayList<DoctorList> doctorList = doctorServicesModel.getDoctorList();
+            int positionToReplaceObject = -1;
+            for (int i = 0; i < doctorList.size(); i++) {
+                DoctorList tempObject = doctorList.get(i);
+                if (docId.equalsIgnoreCase("" + tempObject.getDocId())) {
+                    positionToReplaceObject = i;
+                    break;
+                }
+            }
+            if (positionToReplaceObject != -1) {
+                doctorList.set(positionToReplaceObject, docObjectToReplace);
+                doctorServicesModel.setDoctorList(doctorList);
+                mReceivedBookAppointmentBaseModel.setDoctorServicesModel(doctorServicesModel);
+            }
+        }
+    }
 }

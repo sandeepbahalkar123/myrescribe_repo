@@ -23,12 +23,16 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.CommonBaseModelContainer;
+import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
@@ -37,8 +41,10 @@ import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBa
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -97,6 +103,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     Unbinder unbinder;
     private DoctorList mClickedDoctorObject;
     public static Bundle args;
+    private DoctorDataHelper mDoctorDataHelper;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -123,8 +130,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     }
 
     private void init() {
+        mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
+
         setColumnNumber(getActivity(), 2);
-     //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
+        //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
         Bundle arguments = getArguments();
         if (arguments != null) {
             mClickedDoctorObject = (DoctorList) arguments.getParcelable(getString(R.string.clicked_item_data));
@@ -173,7 +182,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         }
         //---------------
 
-        if (mClickedDoctorObject.getRating()==0) {
+        if (mClickedDoctorObject.getRating() == 0) {
             mDocRatingBarLayout.setVisibility(View.INVISIBLE);
         } else {
             mDocRatingBarLayout.setVisibility(View.VISIBLE);
@@ -225,7 +234,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
                 mClinicName.setText("" + clinicData.getClinicName());
-                mDoctorFees.setText(""+ clinicData.getAmt());
+                mDoctorFees.setText("" + clinicData.getAmt());
             }
 
             @Override
@@ -257,7 +266,23 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-
+        switch (mOldDataTag) {
+            case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
+                CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
+                if (temp.getCommonRespose().isSuccess()) {
+                    boolean status = mClickedDoctorObject.getFavourite() ? false : true;
+                    mClickedDoctorObject.setFavourite(status);
+                    BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                    activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                    if (mClickedDoctorObject.getFavourite()) {
+                        mFavorite.setImageResource(R.drawable.fav_icon);
+                    } else {
+                        mFavorite.setImageResource(R.drawable.result_line_heart_fav);
+                    }
+                }
+                CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+                break;
+        }
     }
 
     @Override
@@ -281,7 +306,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         unbinder.unbind();
     }
 
-    @OnClick({R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap})
+    @OnClick({R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -316,6 +341,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 intentObjectMap.putExtra(getString(R.string.toolbarTitle), "");
                 startActivity(intentObjectMap);
                 //--------
+                break;
+            case R.id.favorite:
+                boolean status = mClickedDoctorObject.getFavourite() ? false : true;
+                mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
                 break;
         }
     }

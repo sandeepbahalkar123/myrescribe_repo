@@ -30,6 +30,7 @@ import com.rescribe.adapters.book_appointment.SelectSlotToBookAppointmentAdapter
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
@@ -269,6 +270,21 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     }
                 }
                 break;
+            case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
+                CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
+                if (temp.getCommonRespose().isSuccess()) {
+                    boolean status = mClickedDoctorObject.getFavourite() ? false : true;
+                    mClickedDoctorObject.setFavourite(status);
+                    BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                    activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                    if (mClickedDoctorObject.getFavourite()) {
+                        mFavorite.setImageResource(R.drawable.fav_icon);
+                    } else {
+                        mFavorite.setImageResource(R.drawable.result_line_heart_fav);
+                    }
+                }
+                CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+                break;
         }
     }
 
@@ -293,7 +309,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         unbinder.unbind();
     }
 
-    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap})
+    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -332,6 +348,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 intentObjectMap.putExtra(getString(R.string.toolbarTitle), "");
                 startActivity(intentObjectMap);
                 //--------
+                break;
+            case R.id.favorite:
+                boolean status = mClickedDoctorObject.getFavourite() ? false : true;
+                mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
                 break;
         }
     }

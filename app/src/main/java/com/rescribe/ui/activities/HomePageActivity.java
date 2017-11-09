@@ -37,10 +37,8 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.Common;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.book_appointment.doctor_data.add_to_favourite.ResponseAddToFavourite;
-import com.rescribe.model.book_appointment.doctor_data.add_to_favourite.ResponseFavouriteDoctorBaseModel;
 import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.dashboard_api.DashboardModel;
 import com.rescribe.model.login.ActiveRequest;
@@ -592,26 +590,26 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             logout();
         else if (mOldDataTag.equals(ACTIVE_STATUS))
             CommonMethods.Log(ACTIVE_STATUS, "active");
-        else if(mOldDataTag.equals(RescribeConstants.TASK_SET_FAVOURITE_DOCTOR)){
-            if(customResponse!=null){
-                ResponseFavouriteDoctorBaseModel responseFavouriteDoctorBaseModel = (ResponseFavouriteDoctorBaseModel)customResponse;
-                if(responseFavouriteDoctorBaseModel.getCommon().isSuccess()){
-                    Toast.makeText(mContext, responseFavouriteDoctorBaseModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
-                    for(int i = 0;i<dashboardDoctorListsToShowDashboardDoctor.size();i++){
-                        if(doctorID==dashboardDoctorListsToShowDashboardDoctor.get(i).getDocId()){
+        else if (mOldDataTag.equals(RescribeConstants.TASK_SET_FAVOURITE_DOCTOR)) {
+            if (customResponse != null) {
+                CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
+                if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
+                    Toast.makeText(mContext, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                    for (int i = 0; i < dashboardDoctorListsToShowDashboardDoctor.size(); i++) {
+                        if (doctorID == dashboardDoctorListsToShowDashboardDoctor.get(i).getDocId()) {
                             boolean isFavourite = dashboardDoctorListsToShowDashboardDoctor.get(i).getFavourite();
-                            if(dashboardDoctorListsToShowDashboardDoctor.get(i).getFavourite()) {
+                            if (dashboardDoctorListsToShowDashboardDoctor.get(i).getFavourite()) {
                                 dashboardDoctorListsToShowDashboardDoctor.get(i).setFavourite(false);
                                 mShowDoctorViewPagerAdapter.notify();
-                            }else{
+                            } else {
                                 dashboardDoctorListsToShowDashboardDoctor.get(i).setFavourite(true);
                                 mShowDoctorViewPagerAdapter.notifyDataSetChanged();
                             }
                         }
                     }
 
-                }else{
-                    Toast.makeText(mContext, responseFavouriteDoctorBaseModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -636,18 +634,19 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         }
         return dataList;
     }
+
     private ArrayList<DoctorList> getFavouriteList() {
 
         ArrayList<DoctorList> doctors = mDashboardModel.getDoctorList();
 
         ArrayList<DoctorList> dataList = new ArrayList<>();
 
-            for (DoctorList listObject :
-                    doctors) {
-                if (listObject.getFavourite()) {
-                    dataList.add(listObject);
-                }
+        for (DoctorList listObject :
+                doctors) {
+            if (listObject.getFavourite()) {
+                dataList.add(listObject);
             }
+        }
 
         return dataList;
     }
@@ -749,13 +748,13 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             startActivity(intent);
         } else if (mDashBoardCardName.equals(getString(R.string.sponsered_doctor))) {
             Intent intent = new Intent(HomePageActivity.this, DoctorDescriptionBaseActivity.class);
-            intent.putExtra(getString(R.string.clicked_item_data),filterDataOnDocSpeciality(getString(R.string.sponsered_doctor)).get(0));
-            intent.putExtra(getString(R.string.toolbarTitle),getString(R.string.sponsered_doctor));
+            intent.putExtra(getString(R.string.clicked_item_data), filterDataOnDocSpeciality(getString(R.string.sponsered_doctor)).get(0));
+            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.sponsered_doctor));
             startActivity(intent);
         } else if (mDashBoardCardName.equals(getString(R.string.recently_visit_doctor))) {
             Intent intent = new Intent(HomePageActivity.this, DoctorDescriptionBaseActivity.class);
-            intent.putExtra(getString(R.string.clicked_item_data),filterDataOnDocSpeciality(getString(R.string.recently_visit_doctor)).get(0));
-            intent.putExtra(getString(R.string.toolbarTitle),getString(R.string.sponsered_doctor));
+            intent.putExtra(getString(R.string.clicked_item_data), filterDataOnDocSpeciality(getString(R.string.recently_visit_doctor)).get(0));
+            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.sponsered_doctor));
             startActivity(intent);
         }
     }
@@ -787,8 +786,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     @Override
     public void onClickOfFavourite(boolean isFavourite, int docId) {
         doctorID = docId;
-        doctorDataHelper = new DoctorDataHelper(this,this);
-        doctorDataHelper.setFavouriteDoctor(isFavourite,docId);
+        doctorDataHelper = new DoctorDataHelper(this, this);
+        doctorDataHelper.setFavouriteDoctor(isFavourite, docId);
     }
 
     @Override

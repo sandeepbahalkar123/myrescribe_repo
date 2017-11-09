@@ -7,7 +7,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DashboardClinicList implements Parcelable
+public class ClinicListData implements Parcelable
 {
 
     @SerializedName("clinicName")
@@ -29,24 +29,23 @@ public class DashboardClinicList implements Parcelable
     @Expose
     private int amount;
 
-    public final static Creator<DashboardClinicList> CREATOR = new Creator<DashboardClinicList>() {
+    public final static Creator<ClinicListData> CREATOR = new Creator<ClinicListData>() {
 
 
         @SuppressWarnings({
             "unchecked"
         })
-        public DashboardClinicList createFromParcel(Parcel in) {
-            return new DashboardClinicList(in);
+        public ClinicListData createFromParcel(Parcel in) {
+            return new ClinicListData(in);
         }
 
-        public DashboardClinicList[] newArray(int size) {
-            return (new DashboardClinicList[size]);
+        public ClinicListData[] newArray(int size) {
+            return (new ClinicListData[size]);
         }
 
-    }
-    ;
+    };
 
-    protected DashboardClinicList(Parcel in) {
+    protected ClinicListData(Parcel in) {
         this.clinicName = ((String) in.readValue((String.class.getClassLoader())));
         this.clinicAddress = ((String) in.readValue((String.class.getClassLoader())));
         this.locationId = ((int) in.readValue((int.class.getClassLoader())));
@@ -55,7 +54,7 @@ public class DashboardClinicList implements Parcelable
         this.amount = ((int) in.readValue((int.class.getClassLoader())));
     }
 
-    public DashboardClinicList() {
+    public ClinicListData() {
     }
 
     public String getClinicName() {

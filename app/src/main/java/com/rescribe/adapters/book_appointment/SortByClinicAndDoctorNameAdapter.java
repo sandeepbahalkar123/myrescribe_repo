@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +26,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.dashboard_api.DashboardClinicList;
+import com.rescribe.model.dashboard_api.ClinicListData;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
@@ -293,7 +292,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                             setListByClinicName(false);
                         } else {
                             int i = 0;
-                            for (DashboardClinicList dataObj :
+                            for (ClinicListData dataObj :
                                     doctorConnectModel.getClinicDataList()) {
                                 if (dataObj.getClinicName().toLowerCase().startsWith(charString.toLowerCase())) {
                                     doctorConnectModel.setNameOfClinicString(dataObj.getClinicName());

@@ -8,7 +8,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.rescribe.model.dashboard_api.DashboardClinicList;
+import com.rescribe.model.dashboard_api.ClinicListData;
 
 
 //TODO : RESPONSE JSON IS GOING TO CHANGE, ONCE RESPONSE FINAL REMOVE UNWANTED VARIABLES.
@@ -45,9 +45,9 @@ public class DoctorList implements Parcelable {
 
     @SerializedName("clinicList")
     @Expose
-    private ArrayList<DashboardClinicList> clinicDataList = new ArrayList<>();
+    private ArrayList<ClinicListData> clinicDataList = new ArrayList<>();
 
-    @SerializedName("favourite")
+    @SerializedName("favorite")
     @Expose
     private boolean favourite;
     @SerializedName("degree")
@@ -107,7 +107,7 @@ public class DoctorList implements Parcelable {
             instance.doctorImageUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.docSpeciality = ((String) in.readValue((String.class.getClassLoader())));
             instance.experience = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            in.readList(instance.clinicDataList, (DashboardClinicList.class.getClassLoader()));
+            in.readList(instance.clinicDataList, (ClinicListData.class.getClassLoader()));
             instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.degree = ((String) in.readValue((String.class.getClassLoader())));
             instance.rating = ((Double) in.readValue((Double.class.getClassLoader())));
@@ -259,11 +259,11 @@ public class DoctorList implements Parcelable {
         this.tokenNo = tokenNo;
     }
 
-    public ArrayList<DashboardClinicList> getClinicDataList() {
+    public ArrayList<ClinicListData> getClinicDataList() {
         return clinicDataList;
     }
 
-    public void setClinicDataList(ArrayList<DashboardClinicList> clinicDataList) {
+    public void setClinicDataList(ArrayList<ClinicListData> clinicDataList) {
         this.clinicDataList = clinicDataList;
     }
 

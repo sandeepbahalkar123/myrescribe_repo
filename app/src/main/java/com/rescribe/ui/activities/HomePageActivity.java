@@ -522,6 +522,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
                 for (int sizeOfList = 0; sizeOfList < dashboardDoctorListsToShowDashboardDoctor.size(); sizeOfList++) {
                     DoctorList temp = dashboardDoctorListsToShowDashboardDoctor.get(sizeOfList);
+
                     if (temp.getCategoryName().equalsIgnoreCase(getString(R.string.my_appointments))) {
                         temp.setSizeOfList(myAppoint.size());
                     } else if (temp.getCategoryName().equalsIgnoreCase(getString(R.string.sponsered_doctor))) {

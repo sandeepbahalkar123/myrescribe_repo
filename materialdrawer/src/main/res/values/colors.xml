@@ -50,5 +50,8 @@
 
     <color name="md_ripple_material_dark">#33ffffff</color>
     <color name="md_ripple_material_light">#1f000000</color>
+    <color name="black">#000000</color>
+    <color name="tagColor">#04abdf</color>
+    <color name="grey">#b3b3b3</color>
 
 </resources>

@@ -34,21 +34,11 @@
         android:id="@+id/menuOptionsListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/doctorOptionsView"
         android:layout_below="@+id/dividerView"
+        android:layout_alignParentBottom="true"
         android:dividerHeight="1dp">
 
     </android.support.v7.widget.RecyclerView>
-
-    <LinearLayout
-        android:id="@+id/doctorOptionsView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
-        <include layout="@layout/dashboard_bottom_sheet_recycler_view" />
-
-    </LinearLayout>
 
     <ImageView
         android:id="@+id/menuIcon"

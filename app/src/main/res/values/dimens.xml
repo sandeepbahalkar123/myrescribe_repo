@@ -55,4 +55,5 @@
     <dimen name="dp3">3dp</dimen>
     <dimen name="sp13">13sp</dimen>
     <dimen name="dp60">60dp</dimen>
+    <dimen name="dp13">13dp</dimen>
 </resources>

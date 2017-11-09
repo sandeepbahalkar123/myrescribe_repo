@@ -343,5 +343,6 @@
     <string name="afternoon">Afternoon</string>
     <string name="evening">Evening</string>
     <string name="night">Night</string>
+    <string name="home">Home</string>
 </resources>
 

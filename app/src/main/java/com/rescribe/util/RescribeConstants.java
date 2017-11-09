@@ -161,13 +161,23 @@ public class RescribeConstants {
     public static final String IS_URL = "isUrl";
     public static final String DOCTORS_INFO = "doctor_info";
     public static final String DOCTOR_DATA_REQUEST = "doctor_request_info";
-
+    public static final String BOTTOM_MENUS = "bottom_menu";
 
 
     public static class USER_STATUS {
         public static final String ONLINE = "online";
         public static final String OFFLINE = "offline";
         public static final String TYPING = "typing";
+        public static final String IDLE = "idle";
+        public static final String ACTIVE = "active";
+        public static final String INACTIVE = "inactive";
+    }
+
+    // change
+    public static class MESSAGE_STATUS {
+        public static final String SEEN = "seen";
+        public static final String REACHED = "reached";
+        public static final String SENT = "sent";
     }
 
 
@@ -190,6 +200,7 @@ public class RescribeConstants {
     }
 
     public static class DATE_PATTERN {
+        public static final String DD_MMMM_YYYY = "dd MMMM yyyy";
         public static String YYYY_MM_DD_hh_mm_a = "yyyy-MM-dd hh:mm a";
         public static String DD_MM = "dd/MM";
         public static String DD_MMM = "dd MMM";
@@ -206,6 +217,7 @@ public class RescribeConstants {
         public static String MMM_DD_YYYY = "MMM dd,yyyy";
         public static String DD_MM_YYYY_hh_mm_ss = "dd-MM-yyyy hh:mm:ss";
         public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
+        public static String YYYY_MM_DD_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
     }
 
     public static class TIME_STAMPS {

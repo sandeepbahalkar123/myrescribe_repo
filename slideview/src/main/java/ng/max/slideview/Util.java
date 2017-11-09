@@ -38,15 +38,4 @@ public class Util {
         }
     }
 
-    public static float spToPx(int sp, Context context) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp,
-                context.getResources().getDisplayMetrics());
-    }
-
-    public static int convertDpToPixel(float dp) {
-        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        float px = dp * (metrics.densityDpi / 160f);
-        return Math.round(px);
-    }
-
 }

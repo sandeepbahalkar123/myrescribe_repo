@@ -40,6 +40,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerFragmentItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
@@ -49,7 +50,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @SuppressLint("Registered")
-public class DrawerActivity extends AppCompatActivity {
+public class DrawerActivity extends BottomMenuActivity {
 
     private DrawerFrameLayout mDrawer;
     private Toolbar mDefaultToolbar;

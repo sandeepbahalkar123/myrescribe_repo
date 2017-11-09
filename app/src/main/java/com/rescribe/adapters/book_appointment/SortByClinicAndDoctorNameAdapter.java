@@ -26,7 +26,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.dashboard_api.ClinicListData;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
@@ -292,7 +292,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                             setListByClinicName(false);
                         } else {
                             int i = 0;
-                            for (ClinicListData dataObj :
+                            for (ClinicData dataObj :
                                     doctorConnectModel.getClinicDataList()) {
                                 if (dataObj.getClinicName().toLowerCase().startsWith(charString.toLowerCase())) {
                                     doctorConnectModel.setNameOfClinicString(dataObj.getClinicName());

@@ -19,7 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.dashboard_api.ClinicListData;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -139,7 +139,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         if (mContext.getString(R.string.recently_visited_doctor).equalsIgnoreCase(doctorListObject.getCategoryName())) {
             doctorCategoryVisit.setText(mContext.getString(R.string.recently_visited_doctor));
             doctorFees.setVisibility(View.VISIBLE);
-            ArrayList<ClinicListData> clinicDataList = doctorListObject.getClinicDataList();
+            ArrayList<ClinicData> clinicDataList = doctorListObject.getClinicDataList();
             if (clinicDataList.size() > 0) {
                 doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
                 doctorFees.setText(""+clinicDataList.get(0).getAmt());
@@ -157,7 +157,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         } else if (mContext.getString(R.string.sponsored_doctor).equalsIgnoreCase(doctorListObject.getCategoryName())) {
             doctorCategoryVisit.setText(mContext.getString(R.string.sponsored_doctor));
             doctorFees.setVisibility(View.VISIBLE);
-            ArrayList<ClinicListData> clinicDataList = doctorListObject.getClinicDataList();
+            ArrayList<ClinicData> clinicDataList = doctorListObject.getClinicDataList();
             if (clinicDataList.size() > 0) {
                 doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
                 doctorFees.setText(""+clinicDataList.get(0).getAmt());

@@ -52,7 +52,7 @@ public class VitalGraphData implements Parcelable {
     public String getVitalDate() {
         if (vitalDate != null) {
             if (vitalDate.contains("T")) {
-                vitalDate = CommonMethods.formatDateTime(vitalDate, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
+                vitalDate = CommonMethods.formatDateTime(vitalDate, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
             }
         }
         return vitalDate;

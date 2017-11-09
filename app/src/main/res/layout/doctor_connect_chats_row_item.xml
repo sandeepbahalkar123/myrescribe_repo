@@ -12,28 +12,38 @@
     android:layout_marginStart="@dimen/dp16"
     android:layout_marginTop="@dimen/dp16"
     android:background="@color/white"
+    android:baselineAligned="false"
     android:clickable="true"
-    android:orientation="horizontal"
-    android:baselineAligned="false">
+    android:orientation="horizontal">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/thumbnail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/dp50"
+        android:layout_height="@dimen/dp50"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="@dimen/dp5"
+        android:layout_marginLeft="@dimen/dp16"
         android:layout_marginRight="@dimen/dp5"
+        android:layout_marginStart="@dimen/dp16"
         android:padding="3dip">
 
         <ImageView
             android:id="@+id/imageOfDoctor"
             android:layout_width="@dimen/dp50"
             android:layout_height="@dimen/dp50"
-            android:layout_marginLeft="@dimen/dp16"
-            android:layout_marginStart="@dimen/dp16"
             tools:src="@drawable/layer_12" />
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/onlineStatusIcon"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            app:srcCompat="@drawable/online_icon" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/textLayout"
@@ -82,25 +92,25 @@
     <RelativeLayout
         android:layout_width="@dimen/dp50"
         android:layout_height="@dimen/dp56"
-        android:layout_marginEnd="@dimen/dp16"
         android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/dp16"
         android:layout_marginRight="@dimen/dp16">
 
         <TextView
             android:id="@+id/badgeView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:textColor="@color/white"
-            android:visibility="gone"
-            tools:visibility="visible"
-            tools:text="1"
-            android:gravity="center"
-            android:textSize="@dimen/sp12"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_gravity="end"
             android:background="@drawable/badge"
-            android:layout_alignParentRight="true" />
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp12"
+            android:visibility="gone"
+            tools:text="1"
+            tools:visibility="visible" />
 
         <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/paidStatusTextView"

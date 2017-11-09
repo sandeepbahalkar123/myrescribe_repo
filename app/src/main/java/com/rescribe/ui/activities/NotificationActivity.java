@@ -19,6 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.rescribe.R;
 import com.rescribe.adapters.NotificationAdapter;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -26,6 +29,7 @@ import com.rescribe.helpers.notification.NotificationHelper;
 import com.rescribe.helpers.notification.RespondToNotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.notification.AdapterNotificationData;
 import com.rescribe.model.notification.AdapterNotificationModel;
 import com.rescribe.model.notification.NotificationData;
@@ -34,6 +38,9 @@ import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.model.notification.SlotModel;
 import com.rescribe.model.response_model_notification.NotificationResponseBaseModel;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.dashboard.ProfileActivity;
+import com.rescribe.ui.activities.dashboard.SettingsActivity;
+import com.rescribe.ui.activities.dashboard.SupportActivity;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -45,7 +52,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NotificationActivity extends AppCompatActivity implements HelperResponse, NotificationAdapter.OnNotificationClickListener {
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
+
+public class NotificationActivity extends BottomMenuActivity implements HelperResponse, NotificationAdapter.OnNotificationClickListener, BottomMenuAdapter.onBottomMenuClickListener {
 
     private NotificationAdapter mAdapter;
     private String mMedicineSlot;
@@ -57,6 +66,8 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
     private boolean isHeaderExpand = true;
     private RespondToNotificationHelper mRespondToNotificationHelper;
     private ArrayList<Medication> mTodayDataList;
+
+    ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
 
     @BindView(R.id.recycler)
     RecyclerView mRecyclerView;
@@ -94,6 +105,16 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
         setContentView(R.layout.activity_notification);
         ButterKnife.bind(this);
         initialize();
+
+        dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
+        for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+            BottomMenu bottomMenu = new BottomMenu();
+            bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
+            bottomMenu.setMenuName(dashboardBottomMenuList.getName());
+            bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
+            bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.alerts)));
+            addBottomMenu(bottomMenu);
+        }
     }
 
     private void initialize() {
@@ -485,6 +506,29 @@ public class NotificationActivity extends AppCompatActivity implements HelperRes
             mRespondToNotificationHelper.doRespondToNotificationForHeaderOfNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName);
         } else {
             mRespondToNotificationHelper.doRespondToNotificationForNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName);
+        }
+    }
+
+    @Override
+    public void onBottomMenuClick(BottomMenu bottomMenu) {
+
+        String menuName = bottomMenu.getMenuName();
+
+        if (menuName.equalsIgnoreCase(getString(R.string.profile))) {
+            Intent intent = new Intent(this, ProfileActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            startActivity(intent);
+            finish();
+        } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            startActivity(intent);
+            finish();
+        } else if (menuName.equalsIgnoreCase(getString(R.string.support))) {
+            Intent intent = new Intent(this, SupportActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            startActivity(intent);
+            finish();
         }
     }
 }

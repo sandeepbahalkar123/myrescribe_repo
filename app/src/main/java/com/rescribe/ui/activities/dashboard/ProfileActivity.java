@@ -1,82 +1,40 @@
 package com.rescribe.ui.activities.dashboard;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.rescribe.R;
-import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.customesViews.NonSwipeableViewPager;
+import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
+import com.rescribe.ui.activities.NotificationActivity;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+
+import static android.view.View.VISIBLE;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
 /**
  * Created by jeetal on 3/11/17.
  */
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BottomMenuActivity implements BottomMenuAdapter.onBottomMenuClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.viewpager)
-    NonSwipeableViewPager viewpager;
-    @BindView(R.id.viewPagerDoctorItem)
-    ViewPager viewPagerDoctorItem;
-    @BindView(R.id.sliderView)
-    FrameLayout sliderView;
-    @BindView(R.id.dividerView)
-    View dividerView;
-    @BindView(R.id.menuOptionsListView)
-    RecyclerView menuOptionsListView;
-    @BindView(R.id.alertsIcon)
-    ImageView alertsIcon;
-    @BindView(R.id.alerts)
-    CustomTextView alerts;
-    @BindView(R.id.alertTab)
-    ImageView alertTab;
-    @BindView(R.id.alertsLayout)
-    LinearLayout alertsLayout;
-    @BindView(R.id.profileImage)
-    ImageView profileImage;
-    @BindView(R.id.profile)
-    CustomTextView profile;
-    @BindView(R.id.profileTab)
-    ImageView profileTab;
-    @BindView(R.id.profileLayout)
-    LinearLayout profileLayout;
-    @BindView(R.id.appLogo)
-    ImageView appLogo;
-    @BindView(R.id.logoLayout)
-    LinearLayout logoLayout;
-    @BindView(R.id.settingIcon)
-    ImageView settingIcon;
-    @BindView(R.id.setting)
-    CustomTextView setting;
-    @BindView(R.id.settingTab)
-    ImageView settingTab;
-    @BindView(R.id.settingLayout)
-    LinearLayout settingLayout;
-    @BindView(R.id.supportIcon)
-    ImageView supportIcon;
-    @BindView(R.id.support)
-    CustomTextView support;
-    @BindView(R.id.supportTab)
-    ImageView supportTab;
-    @BindView(R.id.supportLayout)
-    LinearLayout supportLayout;
-    @BindView(R.id.doctorOptionsView)
-    LinearLayout doctorOptionsView;
-    @BindView(R.id.menuIcon)
-    ImageView menuIcon;
+
+    ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,33 +43,89 @@ public class ProfileActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initialize();
 
+        dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
+        for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+            BottomMenu bottomMenu = new BottomMenu();
+            bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
+            bottomMenu.setMenuName(dashboardBottomMenuList.getName());
+            bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
+            bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.profile)));
+            addBottomMenu(bottomMenu);
+        }
+
     }
 
     private void initialize() {
-        profileTab.setVisibility(View.VISIBLE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.profile));
     }
 
-    @OnClick({R.id.alertsLayout, R.id.profileLayout, R.id.logoLayout, R.id.settingLayout, R.id.supportLayout})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.alertsLayout:
-                break;
-            case R.id.logoLayout:
-               /* Intent intent = new Intent(HomePageActivity.this, ProfileActivity.class);
-                startActivity(intent);*/
-                break;
-            case R.id.settingLayout:
-                Intent intentSetting = new Intent(ProfileActivity.this, SettingsActivity.class);
-                startActivity(intentSetting);
-                finish();
-                break;
-            case R.id.supportLayout:
-                Intent intentSupport = new Intent(ProfileActivity.this, SupportActivity.class);
-                startActivity(intentSupport);
-                finish();
-                break;
+    @Override
+    public void onBottomMenuClick(BottomMenu bottomMenu) {
+
+        String menuName = bottomMenu.getMenuName();
+
+        if (menuName.equalsIgnoreCase(getString(R.string.alerts))) {
+
+            AppDBHelper appDBHelper = new AppDBHelper(this);
+            Cursor cursor = appDBHelper.getPreferences("1");
+            String breakFastTime = "";
+            String lunchTime = "";
+            String dinnerTime = "";
+            String snacksTime = "";
+
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    breakFastTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
+                    lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
+                    dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
+                    snacksTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.SNACKS_TIME));
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+
+            Calendar c = Calendar.getInstance();
+            int hour24 = c.get(Calendar.HOUR_OF_DAY);
+            int Min = c.get(Calendar.MINUTE);
+
+            String mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
+            Intent intent = new Intent(this, NotificationActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            intent.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            if (mGetMealTime.equals(getString(R.string.break_fast))) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
+                intent.putExtra(RescribeConstants.TIME, breakFastTime);
+            } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
+                intent.putExtra(RescribeConstants.TIME, lunchTime);
+            } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
+                intent.putExtra(RescribeConstants.TIME, snacksTime);
+            } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
+                intent.putExtra(RescribeConstants.TIME, dinnerTime);
+            } else if (mGetMealTime.isEmpty()) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
+                intent.putExtra(RescribeConstants.TIME, dinnerTime);
+            }
+
+            startActivity(intent);
+            finish();
+
+        } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            startActivity(intent);
+            finish();
+        } else if (menuName.equalsIgnoreCase(getString(R.string.support))) {
+            Intent intent = new Intent(this, SupportActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            startActivity(intent);
+            finish();
         }
     }
 }

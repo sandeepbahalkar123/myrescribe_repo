@@ -362,83 +362,85 @@
       }
     ],
     "cardBgImageUrlList": [
+
       "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/hdpi/myappointments.png",
       "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/hdpi/sponsored.png",
       "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/hdpi/recentlyvisited.png",
       "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/hdpi/recentlyvisited.png"
+
     ],
     "dashboardMenuList": [
       {
         "name": "Find Doctors",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/hdpi/finddoctors.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/finddoctors.png"
       },
       {
         "name": "On Going Treatment",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/hdpi/ongoingtreatment.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/ongoingtreatment.png"
       },
       {
         "name": "Health Repository",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/hdpi/healthrepository.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/healthrepository.png"
       },
       {
         "name": "Health Offers",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/hdpi/healthoffers.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/healthoffers.png"
       },
       {
         "name": "Health Education",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/hdpi/healtheducation.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/healtheducation.png"
       }
     ],
     "dashboardBottomMenuList": [
       {
         "name": "Alerts",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/hdpi/alerts.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/alerts.png"
       },
       {
         "name": "Profile",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/hdpi/profile.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/profile.png"
       },
       {
         "name": "AppLogo",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/hdpi/logo.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/logo.png"
       },
       {
         "name": "Settings",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/hdpi/settings.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/settings.png"
       },
       {
         "name": "Support",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/hdpi/support.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/support.png"
       }
     ],
     "dashboardLeftSideDrawerMenuList": [
       {
         "name": "Services",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/hdpi/services.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/services.png"
       },
       {
         "name": "On Going Treatment",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/hdpi/ongoingtreatment.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/ongoingtreatment.png"
       },
       {
         "name": "Appointments",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/hdpi/appointments.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/appointments.png"
       },
       {
         "name": "Doctor Visits",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/hdpi/doctorvisits.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/doctorvisits.png"
       },
       {
         "name": "Vital Graphs",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/hdpi/vitalgraphs.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/vitalgraphs.png"
       },
       {
         "name": "Settings",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/hdpi/settings.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/settings.png"
       },
       {
         "name": "Logout",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/hdpi/logout.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/logout.png"
       }
     ]
   }

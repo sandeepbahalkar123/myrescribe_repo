@@ -1,6 +1,7 @@
 package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -19,6 +20,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -187,6 +189,15 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             bookAppointmentButton.setVisibility(View.VISIBLE);
             doctorAppointmentDate.setVisibility(View.INVISIBLE);
         }
+        bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
+                intent.putExtra(mContext.getString(R.string.clicked_item_data),doctorObject);
+                intent.putExtra(mContext.getString(R.string.toolbarTitle),doctorObject.getCategoryName());
+                mContext.startActivity(intent);
+            }
+        });
 
       /*  if (doctorObject.getRecentlyVisited()) {
             recentVisit.setVisibility(View.VISIBLE);

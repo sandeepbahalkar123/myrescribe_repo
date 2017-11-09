@@ -25,7 +25,6 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListVi
     public TimeSlotAdapter(Context mContext, ArrayList<ClinicData> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
-
     }
 
     @Override
@@ -40,7 +39,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListVi
     public void onBindViewHolder(final ListViewHolder holder, int position) {
         ClinicData doctorObject = mDataList.get(position);
         //TODO : NEED TO IMPLEMENT
-      //  holder.timeSlot.setText(doctorObject.ge);
+        //  holder.timeSlot.setText(doctorObject.ge);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

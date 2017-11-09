@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -117,6 +118,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private int widthPixels;
     private DashBoardBaseModel dashboardBaseModel;
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
+
 
     @Override
 
@@ -508,7 +510,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equalsIgnoreCase(TASK_DASHBOARD_API)) {
+
             dashboardBaseModel = (DashBoardBaseModel) customResponse;
+            dashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
             DashboardModel mDashboardModel = dashboardBaseModel.getDashboardModel();
             ArrayList<DoctorList> dashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
 
@@ -524,6 +528,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
                 for (int sizeOfList = 0; sizeOfList < dashboardDoctorListsToShowDashboardDoctor.size(); sizeOfList++) {
                     DoctorList temp = dashboardDoctorListsToShowDashboardDoctor.get(sizeOfList);
+
                     if (temp.getCategoryName().equalsIgnoreCase(getString(R.string.my_appointments))) {
                         temp.setSizeOfList(myAppoint.size());
                     } else if (temp.getCategoryName().equalsIgnoreCase(getString(R.string.sponsered_doctor))) {

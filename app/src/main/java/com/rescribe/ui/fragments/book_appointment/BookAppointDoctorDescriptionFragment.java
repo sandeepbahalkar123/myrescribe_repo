@@ -42,9 +42,7 @@ import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -228,10 +226,12 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
         //---------
         ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
+
         mClinicNameSpinner.setAdapter(arrayAdapter);
         mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
                 mClinicName.setText("" + clinicData.getClinicName());
                 mDoctorFees.setText("" + clinicData.getAmt());
@@ -328,7 +328,9 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 //-----Show all doc clinic on map, copied from BookAppointFilteredDoctorListFragment.java----
                 //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
                 ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
+
                 ArrayList<ClinicData> clinicNameList = mClickedDoctorObject.getClinicDataList();
+
                 for (int i = 0; i < clinicNameList.size(); i++) {
                     DoctorList doctorListByClinic = new DoctorList();
                     doctorListByClinic = mClickedDoctorObject;

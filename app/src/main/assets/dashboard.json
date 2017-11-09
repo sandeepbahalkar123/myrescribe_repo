@@ -24,9 +24,9 @@
             "apptScheduleLmtDays": 7
           }
         ],
-        "tokenNo":"",
+        "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": true,
+        "favorite": true,
         "rating": 4.5,
         "aptDate": "2017-09-17",
         "aptTime": "15:00:00"
@@ -50,9 +50,9 @@
             "apptScheduleLmtDays": 7
           }
         ],
-        "tokenNo":"",
+        "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": false,
         "rating": 4.5,
         "aptDate": "2017-09-30",
         "aptTime": "14:00:00"
@@ -83,9 +83,9 @@
             "apptScheduleLmtDays": 7
           }
         ],
-        "tokenNo":"",
+        "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": false,
         "rating": 0,
         "aptDate": "",
         "aptTime": ""
@@ -115,9 +115,9 @@
             "apptScheduleLmtDays": 7
           }
         ],
-        "tokenNo":"",
+        "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": false,
         "rating": 0,
         "aptDate": "",
         "aptTime": ""
@@ -175,9 +175,9 @@
             "apptScheduleLmtDays": 7
           }
         ],
-        "tokenNo":"",
+        "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": false,
         "rating": 4,
         "aptDate": "",
         "aptTime": ""
@@ -235,9 +235,9 @@
             "apptScheduleLmtDays": 7
           }
         ],
-        "tokenNo":"",
+        "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": false,
         "rating": 0.3,
         "aptDate": "",
         "aptTime": ""
@@ -260,9 +260,9 @@
             "apptScheduleLmtDays": 7
           }
         ],
-        "tokenNo":"",
+        "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": true,
         "rating": 0,
         "aptDate": "",
         "aptTime": ""
@@ -277,7 +277,7 @@
         "speciality": "General Physician",
         "experience": 11,
         "clinicList": [],
-        "favorite": "1",
+        "favorite": true,
         "rating": 0,
         "aptDate": "2017-05-17",
         "aptTime": "19:00:00"
@@ -321,9 +321,9 @@
             "apptScheduleLmtDays": 7
           }
         ],
-        "tokenNo":"",
+        "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": true,
         "rating": 4.5,
         "aptDate": "2017-06-17",
         "aptTime": "19:45:00"
@@ -353,91 +353,92 @@
             "apptScheduleLmtDays": 7
           }
         ],
-        "tokenNo":"",
+        "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": false,
         "rating": 4,
         "aptDate": "2017-07-21",
         "aptTime": "09:30:00"
       }
     ],
     "cardBgImageUrlList": [
-      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xxhdpi/myappointments.png",
-      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xxhdpi/sponsored.png",
-      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xxhdpi/recentlyvisited.png"
+      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xhdpi/myappointments.png",
+      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xhdpi/sponsored.png",
+      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xhdpi/recentlyvisited.png",
+      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xhdpi/recentlyvisited.png"
     ],
     "dashboardMenuList": [
       {
         "name": "Find Doctors",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/finddoctors.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xhdpi/finddoctors.png"
       },
       {
         "name": "On Going Treatment",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/ongoingtreatment.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xhdpi/ongoingtreatment.png"
       },
       {
         "name": "Health Repository",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/healthrepository.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xhdpi/healthrepository.png"
       },
       {
         "name": "Health Offers",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/healthoffers.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xhdpi/healthoffers.png"
       },
       {
         "name": "Health Education",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xxhdpi/healtheducation.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xhdpi/healtheducation.png"
       }
     ],
     "dashboardBottomMenuList": [
       {
         "name": "Alerts",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/alerts.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xhdpi/alerts.png"
       },
       {
         "name": "Profile",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/profile.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xhdpi/profile.png"
       },
       {
         "name": "AppLogo",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/logo.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xhdpi/logo.png"
       },
       {
         "name": "Settings",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/settings.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xhdpi/settings.png"
       },
       {
         "name": "Support",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xxhdpi/support.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xhdpi/support.png"
       }
     ],
     "dashboardLeftSideDrawerMenuList": [
       {
         "name": "Services",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/services.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/services.png"
       },
       {
         "name": "On Going Treatment",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/ongoingtreatment.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/ongoingtreatment.png"
       },
       {
         "name": "Appointments",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/appointments.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/appointments.png"
       },
       {
         "name": "Doctor Visits",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/doctorvisits.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/doctorvisits.png"
       },
       {
         "name": "Vital Graphs",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/vitalgraphs.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/vitalgraphs.png"
       },
       {
         "name": "Settings",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/settings.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/settings.png"
       },
       {
         "name": "Logout",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xxhdpi/logout.png"
+        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/logout.png"
       }
     ]
   }

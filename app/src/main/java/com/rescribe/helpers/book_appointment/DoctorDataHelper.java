@@ -13,6 +13,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesModel;
 import com.rescribe.model.book_appointment.complaints.request_complaints.DoctorListByComplaintModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
+import com.rescribe.model.book_appointment.doctor_data.RequestDoctorListBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestFavouriteDoctorModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
 import com.rescribe.network.ConnectRequest;
@@ -111,7 +112,7 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_BY_LOCATION);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_DOCTOR_DATA);*/
-        try {
+      try {
             InputStream is = mContext.getAssets().open("doctor_data_new_6_nov_2017.json");
             int size = is.available();
             byte[] buffer = new byte[size];

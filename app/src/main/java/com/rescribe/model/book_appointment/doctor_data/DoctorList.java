@@ -44,9 +44,9 @@ public class DoctorList implements Parcelable {
 
     @SerializedName("clinicList")
     @Expose
-    private ArrayList<com.rescribe.model.book_appointment.doctor_data.ClinicData> clinicDataList = new ArrayList<>();
+    private ArrayList<ClinicData> clinicDataList = new ArrayList<>();
 
-    @SerializedName("favourite")
+    @SerializedName("favorite")
     @Expose
     private boolean favourite;
     @SerializedName("degree")
@@ -106,7 +106,7 @@ public class DoctorList implements Parcelable {
             instance.doctorImageUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.docSpeciality = ((String) in.readValue((String.class.getClassLoader())));
             instance.experience = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            in.readList(instance.clinicDataList, (com.rescribe.model.book_appointment.doctor_data.ClinicData.class.getClassLoader()));
+            in.readList(instance.clinicDataList, (ClinicData.class.getClassLoader()));
             instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.degree = ((String) in.readValue((String.class.getClassLoader())));
             instance.rating = ((Double) in.readValue((Double.class.getClassLoader())));
@@ -259,11 +259,11 @@ public class DoctorList implements Parcelable {
         this.tokenNo = tokenNo;
     }
 
-    public ArrayList<com.rescribe.model.book_appointment.doctor_data.ClinicData> getClinicDataList() {
+    public ArrayList<ClinicData> getClinicDataList() {
         return clinicDataList;
     }
 
-    public void setClinicDataList(ArrayList<com.rescribe.model.book_appointment.doctor_data.ClinicData> clinicDataList) {
+    public void setClinicDataList(ArrayList<ClinicData> clinicDataList) {
         this.clinicDataList = clinicDataList;
     }
 

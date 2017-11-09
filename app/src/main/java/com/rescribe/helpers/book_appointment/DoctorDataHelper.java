@@ -16,7 +16,6 @@ import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestDoctorListBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestFavouriteDoctorModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
-import com.rescribe.model.book_appointment.select_slot_book_appointment.SlotListBaseModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -63,7 +62,7 @@ public class DoctorDataHelper implements ConnectionListener {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_SLOT_TIME_TO_BOOK_APPOINTMENT) {
+                } else if (mOldDataTag == RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }else if (mOldDataTag == RescribeConstants.TASK_SET_FAVOURITE_DOCTOR) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
@@ -98,7 +97,7 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doGetDoctorData(String city, String address, HashMap<String, String> mReceivedComplaintHashMap) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_DOCTOR_DATA, Request.Method.POST, true);
+       /* ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_DOCTOR_DATA, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
         RequestDoctorListBaseModel requestDoctorListBaseModel = new RequestDoctorListBaseModel();
         requestDoctorListBaseModel.setArea(address.trim());
@@ -112,8 +111,8 @@ public class DoctorDataHelper implements ConnectionListener {
         //-----------
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_BY_LOCATION);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_GET_DOCTOR_DATA);
-        /*try {
+        mConnectionFactory.createConnection(RescribeConstants.TASK_GET_DOCTOR_DATA);*/
+      try {
             InputStream is = mContext.getAssets().open("doctor_data_new_6_nov_2017.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -128,7 +127,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }*/
+        }
     }
 
     public void doGetDrawerFilterConfigurationData(String cityName) {
@@ -261,14 +260,14 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER);
     }
 
-    public void getSlotTimingToBookAppointment() {
+    public void getTimeSlotToBookAppointmentWithDoctor(String docId, String locationID, String date) {
 
-      /*  ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_COMPLAINTS, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.GET_COMPLAINTS_LIST);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_GET_COMPLAINTS);
-*/
-        try {
+        mConnectionFactory.setUrl(Config.TIME_SLOT_TO_BOOK_APPOINTMENT + "docId=" + docId + "&locationId=" + locationID + "&date=" + date);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT);
+
+       /* try {
             InputStream is = mContext.getAssets().open("book_appointment_select_time");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -277,12 +276,12 @@ public class DoctorDataHelper implements ConnectionListener {
             String json = new String(buffer, "UTF-8");
             Log.e(TAG, "book_appointment_select_time" + json);
 
-            SlotListBaseModel slotListBaseModel = new Gson().fromJson(json, SlotListBaseModel.class);
+            TimeSlotListBaseModel slotListBaseModel = new Gson().fromJson(json, TimeSlotListBaseModel.class);
             onResponse(ConnectionListener.RESPONSE_OK, slotListBaseModel, RescribeConstants.TASK_SLOT_TIME_TO_BOOK_APPOINTMENT);
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        }*/
     }
 
 }

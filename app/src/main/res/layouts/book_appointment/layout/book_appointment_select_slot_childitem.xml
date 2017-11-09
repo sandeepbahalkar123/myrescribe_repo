@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
-    <com.rescribe.ui.customesViews.CustomTextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        tools:text="8:00 AM"
-        android:padding="@dimen/dp4"
-        android:id="@+id/showTime"
-        android:textColor="@color/tagColor"
-        android:textSize="@dimen/sp14"
-        android:layout_gravity="center"/>
 
+    <LinearLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/showTime"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:padding="@dimen/dp6"
+            android:textColor="@color/tagColor"
+            android:textSize="@dimen/sp14"
+            tools:text="8:00 AM" />
+    </LinearLayout>
 </LinearLayout>

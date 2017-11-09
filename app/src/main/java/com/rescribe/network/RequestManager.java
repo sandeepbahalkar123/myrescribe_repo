@@ -33,9 +33,9 @@ import com.rescribe.model.Common;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
-import com.rescribe.model.book_appointment.doctor_data.add_to_favourite.ResponseFavouriteDoctorBaseModel;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
 import com.rescribe.model.book_appointment.reviews.ReviewListBaseModel;
+import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.case_details.CaseDetailsModel;
 import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.history.ChatHistoryModel;
@@ -628,15 +628,20 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         BookAppointmentBaseModel dataObject = new Gson().fromJson(data, BookAppointmentBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dataObject, mOldDataTag);
                         break;
+
+                    case RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT: //This is for get archived list
+                        TimeSlotListBaseModel dataTimeSlot = new Gson().fromJson(data, TimeSlotListBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dataTimeSlot, mOldDataTag);
+                        break;
+
                     case RescribeConstants.TASK_DASHBOARD_API: //This is for get archived list
                         DashBoardBaseModel dashboardBaseModel = new Gson().fromJson(data, DashBoardBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dashboardBaseModel, mOldDataTag);
                         break;
                     case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR: //This is for get archived list
-                        ResponseFavouriteDoctorBaseModel responseFavouriteDoctorBaseModel = new Gson().fromJson(data, ResponseFavouriteDoctorBaseModel.class);
+                        CommonBaseModelContainer responseFavouriteDoctorBaseModel = new Gson().fromJson(data, CommonBaseModelContainer.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseFavouriteDoctorBaseModel, mOldDataTag);
                         break;
-
 
                     default:
                         //This is for get PDF VisitData

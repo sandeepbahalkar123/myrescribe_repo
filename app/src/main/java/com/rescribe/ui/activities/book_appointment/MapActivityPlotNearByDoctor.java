@@ -86,7 +86,8 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
         mContext = MapActivityPlotNearByDoctor.this;
         mDoctorLists = new ArrayList<>();
         mUserSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-        mDoctorLists = getIntent().getExtras().getParcelableArrayList(getString(R.string.doctor_data));;
+        mDoctorLists = getIntent().getExtras().getParcelableArrayList(getString(R.string.doctor_data));
+        ;
         bookAppointmentBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

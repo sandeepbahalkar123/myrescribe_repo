@@ -23,12 +23,16 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.CommonBaseModelContainer;
+import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.dashboard_api.ClinicListData;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
@@ -37,7 +41,7 @@ import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBa
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-
+import com.rescribe.util.RescribeConstants;
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +52,7 @@ import butterknife.Unbinder;
 
 public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
 
+    //-------------
     @BindView(R.id.profileImage)
     CircularImageView mProfileImage;
     @BindView(R.id.docRating)
@@ -60,39 +65,43 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     CustomTextView mDoctorName;
     @BindView(R.id.doctorSpecialization)
     CustomTextView mDoctorSpecialization;
-    @BindView(R.id.aboutDoctorDescription)
-    CustomTextView mAboutDoctorDescription;
-    @BindView(R.id.doctorExperience)
-    CustomTextView mDoctorExperience;
     @BindView(R.id.doctorFees)
     CustomTextView mDoctorFees;
     @BindView(R.id.clinicName)
     CustomTextView mClinicName;
-    @BindView(R.id.aboutDoctor)
-    CustomTextView aboutDoctor;
     @BindView(R.id.docPracticesLocationCount)
     CustomTextView mDocPracticesLocationCount;
-    @BindView(R.id.doctorExperienceLayout)
-    LinearLayout mDoctorExperienceLayout;
     @BindView(R.id.premiumType)
     CustomTextView mPremiumType;
-    @BindView(R.id.bookAppointmentButton)
-    AppCompatButton bookAppointmentButton;
     @BindView(R.id.clinicNameSpinner)
     Spinner mClinicNameSpinner;
+    @BindView(R.id.favorite)
+    ImageView mFavorite;
+    @BindView(R.id.doctorExperience)
+    CustomTextView mDoctorExperience;
+    @BindView(R.id.doctorExperienceLayout)
+    LinearLayout mDoctorExperienceLayout;
+    //-------------
+    @BindView(R.id.aboutDoctorDescription)
+    CustomTextView mAboutDoctorDescription;
+    @BindView(R.id.aboutDoctor)
+    CustomTextView aboutDoctor;
+
+    @BindView(R.id.bookAppointmentButton)
+    AppCompatButton bookAppointmentButton;
     @BindView(R.id.servicesListView)
     ListView mServicesListView;
     @BindView(R.id.servicesHeaderView)
     CustomTextView mServicesHeaderView;
     @BindView(R.id.readMoreDocServices)
     CustomTextView mReadMoreDocServices;
-    @BindView(R.id.favorite)
-    ImageView mFavorite;
+    //-------
     private View mRootView;
     private int mImageSize;
     Unbinder unbinder;
     private DoctorList mClickedDoctorObject;
     public static Bundle args;
+    private DoctorDataHelper mDoctorDataHelper;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -119,8 +128,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     }
 
     private void init() {
+        mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
+
         setColumnNumber(getActivity(), 2);
-     //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
+        //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
         Bundle arguments = getArguments();
         if (arguments != null) {
             mClickedDoctorObject = (DoctorList) arguments.getParcelable(getString(R.string.clicked_item_data));
@@ -169,7 +180,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         }
         //---------------
 
-        if (mClickedDoctorObject.getRating()==0) {
+        if (mClickedDoctorObject.getRating() == 0) {
             mDocRatingBarLayout.setVisibility(View.INVISIBLE);
         } else {
             mDocRatingBarLayout.setVisibility(View.VISIBLE);
@@ -215,16 +226,15 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
         //---------
         ArrayAdapter<ClinicListData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
+
         mClinicNameSpinner.setAdapter(arrayAdapter);
         mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 ClinicListData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
-
                 mClinicName.setText("" + clinicData.getClinicName());
-                mDoctorFees.setText(""+ clinicData.getAmt());
-
+                mDoctorFees.setText("" + clinicData.getAmt());
             }
 
             @Override
@@ -256,7 +266,23 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-
+        switch (mOldDataTag) {
+            case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
+                CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
+                if (temp.getCommonRespose().isSuccess()) {
+                    boolean status = mClickedDoctorObject.getFavourite() ? false : true;
+                    mClickedDoctorObject.setFavourite(status);
+                    BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                    activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                    if (mClickedDoctorObject.getFavourite()) {
+                        mFavorite.setImageResource(R.drawable.fav_icon);
+                    } else {
+                        mFavorite.setImageResource(R.drawable.result_line_heart_fav);
+                    }
+                }
+                CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+                break;
+        }
     }
 
     @Override
@@ -280,7 +306,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         unbinder.unbind();
     }
 
-    @OnClick({R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap})
+    @OnClick({R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -302,7 +328,9 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 //-----Show all doc clinic on map, copied from BookAppointFilteredDoctorListFragment.java----
                 //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
                 ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
+
                 ArrayList<ClinicListData> clinicNameList = mClickedDoctorObject.getClinicDataList();
+
                 for (int i = 0; i < clinicNameList.size(); i++) {
                     DoctorList doctorListByClinic = new DoctorList();
                     doctorListByClinic = mClickedDoctorObject;
@@ -315,6 +343,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 intentObjectMap.putExtra(getString(R.string.toolbarTitle), "");
                 startActivity(intentObjectMap);
                 //--------
+                break;
+            case R.id.favorite:
+                boolean status = mClickedDoctorObject.getFavourite() ? false : true;
+                mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
                 break;
         }
     }

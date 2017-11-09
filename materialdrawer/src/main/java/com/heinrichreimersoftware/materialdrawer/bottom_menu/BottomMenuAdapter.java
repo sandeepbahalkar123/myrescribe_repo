@@ -59,9 +59,17 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
             }
         });
 
+        RequestOptions options = new RequestOptions()
+                .centerInside()
+                .priority(Priority.HIGH);
+
+        Glide.with(holder.menuBottomIcon.getContext())
+                .load(bottomMenu.getMenuIcon()).apply(options)
+                .into(holder.menuBottomIcon);
+
         if (bottomMenu.isAppIcon()) {
             holder.bottomMenuName.setVisibility(View.GONE);
-            holder.bottomMenuTab.setVisibility(View.INVISIBLE);
+            holder.bottomMenuTab.setVisibility(View.GONE);
         } else {
             if (bottomMenu.isSelected()) {
                 holder.bottomMenuTab.setVisibility(View.VISIBLE);
@@ -73,14 +81,6 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
                 holder.menuBottomIcon.setColorFilter(ContextCompat.getColor(holder.menuBottomIcon.getContext(), R.color.grey), android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         }
-
-        RequestOptions options = new RequestOptions()
-                .centerInside()
-                .priority(Priority.HIGH);
-
-        Glide.with(holder.menuBottomIcon.getContext())
-                .load(bottomMenu.getMenuIcon()).apply(options)
-                .into(holder.menuBottomIcon);
     }
 
     @Override

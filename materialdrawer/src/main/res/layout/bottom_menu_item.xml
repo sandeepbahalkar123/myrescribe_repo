@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,17 +8,18 @@
         android:id="@+id/menuBottomLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginStart="8dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="@dimen/dp8"
-        android:layout_centerHorizontal="true">
+        android:orientation="vertical">
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/menuBottomIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:tint="@color/grey"
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/bottomMenuName"
@@ -31,7 +31,7 @@
             android:textSize="@dimen/sp10"
             tools:text="@string/md_content_description_drawer_close" />
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/bottomMenuTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

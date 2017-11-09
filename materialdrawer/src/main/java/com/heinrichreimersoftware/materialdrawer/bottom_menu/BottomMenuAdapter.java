@@ -2,6 +2,7 @@ package com.heinrichreimersoftware.materialdrawer.bottom_menu;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.bottom_menu_list_item, parent, false);
+                .inflate(R.layout.bottom_menu_item, parent, false);
 
         int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         int width = (widthPixels * 20) / 100;
@@ -62,10 +63,15 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
             holder.bottomMenuName.setVisibility(View.GONE);
             holder.bottomMenuTab.setVisibility(View.INVISIBLE);
         } else {
-            if (bottomMenu.isSelected())
+            if (bottomMenu.isSelected()) {
                 holder.bottomMenuTab.setVisibility(View.VISIBLE);
-            else
+                holder.bottomMenuName.setTextColor(holder.bottomMenuName.getContext().getResources().getColor(R.color.tagColor));
+                holder.menuBottomIcon.setColorFilter(ContextCompat.getColor(holder.menuBottomIcon.getContext(), R.color.tagColor), android.graphics.PorterDuff.Mode.MULTIPLY);
+            } else {
                 holder.bottomMenuTab.setVisibility(View.INVISIBLE);
+                holder.bottomMenuName.setTextColor(holder.bottomMenuName.getContext().getResources().getColor(R.color.grey));
+                holder.menuBottomIcon.setColorFilter(ContextCompat.getColor(holder.menuBottomIcon.getContext(), R.color.grey), android.graphics.PorterDuff.Mode.MULTIPLY);
+            }
         }
 
         RequestOptions options = new RequestOptions()

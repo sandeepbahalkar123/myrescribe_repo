@@ -574,8 +574,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 mMenuOptionsListView.addItemDecoration(dividerItemDecoration);
                 mMenuOptionsListView.setAdapter(mMenuOptionsDashBoardAdapter);
 
-                dashboardBottomMenuLists = dashboardBaseModel.getDashboardModel().getDashboardBottomMenuList();
+                // add bottom menu
 
+                dashboardBottomMenuLists = dashboardBaseModel.getDashboardModel().getDashboardBottomMenuList();
                 for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
                     BottomMenu bottomMenu = new BottomMenu();
                     bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
@@ -586,7 +587,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
                     addBottomMenu(bottomMenu);
                 }
-
 
             } else {
 

@@ -2,6 +2,9 @@ package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -20,6 +23,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -27,6 +31,8 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by jeetal on 11/10/17.
@@ -34,6 +40,7 @@ import java.util.ArrayList;
 
 public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
+    private Map<String, Integer> mListSizeWithTypeMap;
     private ArrayList<DoctorList> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
@@ -42,13 +49,14 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     private ColorGenerator mColorGenerator;
 
 
-    public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, OnClickOfCardOnDashboard mOnClickOfCardOnDashboard) {
+    public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, OnClickOfCardOnDashboard mOnClickOfCardOnDashboard, Map<String, Integer> dataMap) {
         this.mContext = context;
         this.mDataList = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
         this.mOnClickOfCardOnDashboard = mOnClickOfCardOnDashboard;
         mInflater = LayoutInflater.from(context);
+        this.mListSizeWithTypeMap = dataMap;
     }
 
     @Override
@@ -131,29 +139,43 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         doctorNameTextView.setText(doctorObject.getDocName());
         doctorType.setText(doctorObject.getDegree());
         doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
+
+        //-----THIS IS DONE TO SHOW COUNT OF FAVORITE(CUSTOM CREATED CATEGORY), ASSUME IT WILL COME LAST ALWAYS ----
+        int size;
+        if (position == mDataList.size()-1) {
+            doctorCategory.setText(mContext.getString(R.string.favorite));
+            size = mListSizeWithTypeMap.get(mContext.getString(R.string.favorite));
+        } else {
+            doctorCategory.setText(doctorObject.getCategoryName());
+            size = mListSizeWithTypeMap.get(doctorObject.getCategoryName());
+        }
+        sizeOfList.setText("" + size);
+
+        //-----------
+
         if (doctorObject.getClinicDataList().size() == 1) {
             doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
         } else {
             doctorAddress.setText(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
         }
-        doctorCategory.setText(doctorObject.getCategoryName());
-        if(doctorObject.getRating()==0){
+        if (doctorObject.getRating() == 0) {
             doctorRating.setVisibility(View.INVISIBLE);
-        }else {
+        } else {
             doctorRating.setVisibility(View.VISIBLE);
             doctorRating.setText("" + doctorObject.getRating());
 
         }
         doctorCategoryType.setText(doctorObject.getCategorySpeciality());
-        sizeOfList.setText(""+doctorObject.getSizeOfList());
+
+
         sizeOfList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
+                if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
                     mOnClickOfCardOnDashboard.onClickOfCount(mContext.getString(R.string.my_appointments));
-                }else if(doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
+                } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
                     mOnClickOfCardOnDashboard.onClickOfCount(mContext.getString(R.string.sponsered_doctor));
-                }else if(doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
+                } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
                     mOnClickOfCardOnDashboard.onClickOfCount(mContext.getString(R.string.recently_visit_doctor));
                 }
             }
@@ -161,11 +183,11 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         dashBoardCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
+                if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
                     mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(mContext.getString(R.string.my_appointments));
-                }else if(doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
+                } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
                     mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(mContext.getString(R.string.sponsered_doctor));
-                }else if(doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
+                } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
                     mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(mContext.getString(R.string.recently_visit_doctor));
                 }
             }
@@ -181,7 +203,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             if (doctorObject.getClinicDataList().size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
                 feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmt());
-
             } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
             }
@@ -193,27 +214,22 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
-                intent.putExtra(mContext.getString(R.string.clicked_item_data),doctorObject);
-                intent.putExtra(mContext.getString(R.string.toolbarTitle),doctorObject.getCategoryName());
+                intent.putExtra(mContext.getString(R.string.clicked_item_data), doctorObject);
+                intent.putExtra(mContext.getString(R.string.toolbarTitle), doctorObject.getCategoryName());
                 mContext.startActivity(intent);
             }
         });
 
-      /*  if (doctorObject.getRecentlyVisited()) {
-            recentVisit.setVisibility(View.VISIBLE);
-        } else {
-            recentVisit.setVisibility(View.GONE);
-        }*/
         if (doctorObject.getFavourite()) {
             favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.dashboard_heart_fav));
-
         } else {
             favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.result_line_heart_fav));
         }
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnClickOfCardOnDashboard.onClickOfFavourite(doctorObject.getFavourite(),doctorObject.getDocId());
+                boolean status = doctorObject.getFavourite() ? false : true;
+                mOnClickOfCardOnDashboard.onClickOfFavourite(status, doctorObject.getDocId(), favorite);
             }
         });
 
@@ -237,8 +253,10 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
     public interface OnClickOfCardOnDashboard {
         void onClickOfDashboardDoctorItem(String nameOfClickOnItem);
+
         void onClickOfCount(String nameOfCategoryType);
-        void onClickOfFavourite(boolean isFavourite,int docId);
+
+        void onClickOfFavourite(boolean isFavourite, int docId, ImageView favorite);
     }
 
 }

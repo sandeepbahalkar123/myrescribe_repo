@@ -221,7 +221,7 @@ public class CommonMethods {
         return noofyears;
     }
 
-    public static String getDayFromDateTime(String dateText,String originalDateFormat, String expectedDateFormat) {
+    public static String getDayFromDateTime(String dateText, String originalDateFormat, String expectedDateFormat) {
         Calendar calendar = Calendar.getInstance();
         Date today = calendar.getTime();
 
@@ -796,6 +796,32 @@ public class CommonMethods {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+
+    public static String getDeviceResolution(Context mContext) {
+        String resolution = "";
+        int density = mContext.getResources().getDisplayMetrics().densityDpi;
+        switch (density) {
+            case DisplayMetrics.DENSITY_LOW:
+                resolution = "ldpi";
+                break;
+            case DisplayMetrics.DENSITY_MEDIUM:
+                resolution = "mdpi";
+                break;
+            case DisplayMetrics.DENSITY_HIGH:
+                resolution = "hdpi";
+                break;
+            case DisplayMetrics.DENSITY_XHIGH:
+                resolution = "xhdpi";
+                break;
+            case DisplayMetrics.DENSITY_XXHIGH:
+                resolution = "xxhdpi";
+                break;
+            case DisplayMetrics.DENSITY_XXXHIGH:
+                resolution = "xxxhdpi";
+                break;
+        }
+        return resolution;
     }
 }
 

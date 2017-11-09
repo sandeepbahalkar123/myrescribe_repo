@@ -3,7 +3,7 @@ package com.rescribe.model.dashboard_api;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
@@ -17,7 +17,7 @@ public class DashBoardBaseModel implements Parcelable, CustomResponse
     private Common common;
     @SerializedName("data")
     @Expose
-    private DashboardModel dashboardModel;
+    private DashboardDataModel dashboardModel;
     public final static Creator<DashBoardBaseModel> CREATOR = new Creator<DashBoardBaseModel>() {
 
 
@@ -37,7 +37,7 @@ public class DashBoardBaseModel implements Parcelable, CustomResponse
 
     protected DashBoardBaseModel(Parcel in) {
         this.common = ((Common) in.readValue((Common.class.getClassLoader())));
-        this.dashboardModel = ((DashboardModel) in.readValue((DashboardModel.class.getClassLoader())));
+        this.dashboardModel = ((DashboardDataModel) in.readValue((DashboardDataModel.class.getClassLoader())));
     }
 
     public DashBoardBaseModel() {
@@ -51,11 +51,11 @@ public class DashBoardBaseModel implements Parcelable, CustomResponse
         this.common = common;
     }
 
-    public DashboardModel getDashboardModel() {
+    public DashboardDataModel getDashboardModel() {
         return dashboardModel;
     }
 
-    public void setDashboardModel(DashboardModel dashboardModel) {
+    public void setDashboardModel(DashboardDataModel dashboardModel) {
         this.dashboardModel = dashboardModel;
     }
 

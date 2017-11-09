@@ -2,7 +2,7 @@
 package com.rescribe.model.dashboard_api;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -10,8 +10,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 
-public class DashboardModel implements Parcelable
-{
+public class DashboardDataModel implements Parcelable {
 
     @SerializedName("doctorList")
     @Expose
@@ -28,24 +27,23 @@ public class DashboardModel implements Parcelable
     @SerializedName("dashboardLeftSideDrawerMenuList")
     @Expose
     private ArrayList<DashboardLeftSideDrawerMenuList> dashboardLeftSideDrawerMenuList = new ArrayList<DashboardLeftSideDrawerMenuList>();
-    public final static Creator<DashboardModel> CREATOR = new Creator<DashboardModel>() {
+    public final static Creator<DashboardDataModel> CREATOR = new Creator<DashboardDataModel>() {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public DashboardModel createFromParcel(Parcel in) {
-            return new DashboardModel(in);
+        public DashboardDataModel createFromParcel(Parcel in) {
+            return new DashboardDataModel(in);
         }
 
-        public DashboardModel[] newArray(int size) {
-            return (new DashboardModel[size]);
+        public DashboardDataModel[] newArray(int size) {
+            return (new DashboardDataModel[size]);
         }
 
-    }
-    ;
+    };
 
-    protected DashboardModel(Parcel in) {
+    protected DashboardDataModel(Parcel in) {
         in.readList(this.doctorList, (DoctorList.class.getClassLoader()));
         in.readList(this.cardBgImageUrlList, (String.class.getClassLoader()));
         in.readList(this.dashboardMenuList, (DashboardMenuList.class.getClassLoader()));
@@ -53,7 +51,7 @@ public class DashboardModel implements Parcelable
         in.readList(this.dashboardLeftSideDrawerMenuList, (DashboardLeftSideDrawerMenuList.class.getClassLoader()));
     }
 
-    public DashboardModel() {
+    public DashboardDataModel() {
     }
 
     public ArrayList<DoctorList> getDoctorList() {
@@ -105,7 +103,61 @@ public class DashboardModel implements Parcelable
     }
 
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
+
+    public ArrayList<DoctorList> getCategoryWiseDoctorList(String categoryName) {
+        ArrayList<DoctorList> temp = new ArrayList<>();
+        for (DoctorList docObject :
+                doctorList) {
+            if (categoryName.equalsIgnoreCase(docObject.getCategoryName())) {
+                temp.add(docObject);
+            }
+        }
+    /*    //-------
+        int size = temp.size();
+        for (DoctorList docObject :
+                temp) {
+            docObject.setSizeOfList(size);
+        }
+        //-------*/
+        return temp;
+    }
+
+    public ArrayList<DoctorList> getFavouriteDocList() {
+        ArrayList<DoctorList> temp = new ArrayList<>();
+        for (DoctorList docObject :
+                doctorList) {
+            if (docObject.getFavourite()) {
+                temp.add(docObject);
+            }
+        }
+        return temp;
+    }
+
+    public void replaceDoctorListById(String docId, DoctorList docObjectToReplace) {
+        int positionToReplaceObject = -1;
+        for (int i = 0; i < doctorList.size(); i++) {
+            DoctorList tempObject = doctorList.get(i);
+            if (docId.equalsIgnoreCase("" + tempObject.getDocId())) {
+                positionToReplaceObject = i;
+                break;
+            }
+        }
+        if (positionToReplaceObject != -1) {
+            doctorList.set(positionToReplaceObject, docObjectToReplace);
+            setDoctorList(doctorList);
+        }
+    }
+
+    public DoctorList findDoctorListById(String docId) {
+        for (int i = 0; i < doctorList.size(); i++) {
+            DoctorList tempObject = doctorList.get(i);
+            if (docId.equalsIgnoreCase("" + tempObject.getDocId())) {
+                return tempObject;
+            }
+        }
+        return null;
+    }
 }

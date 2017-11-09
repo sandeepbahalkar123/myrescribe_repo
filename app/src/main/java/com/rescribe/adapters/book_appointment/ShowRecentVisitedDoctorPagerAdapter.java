@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -142,7 +143,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             ArrayList<ClinicData> clinicDataList = doctorListObject.getClinicDataList();
             if (clinicDataList.size() > 0) {
                 doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
-                doctorFees.setText(""+clinicDataList.get(0).getAmt());
+                doctorFees.setText("" + clinicDataList.get(0).getAmt());
             }
             doctorAppointmentDate.setVisibility(View.INVISIBLE);
             bookAppointmentButton.setVisibility(View.VISIBLE);
@@ -160,13 +161,13 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             ArrayList<ClinicData> clinicDataList = doctorListObject.getClinicDataList();
             if (clinicDataList.size() > 0) {
                 doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
-                doctorFees.setText(""+clinicDataList.get(0).getAmt());
+                doctorFees.setText("" + clinicDataList.get(0).getAmt());
             }
             doctorAppointmentDate.setVisibility(View.INVISIBLE);
             bookAppointmentButton.setVisibility(View.VISIBLE);
         }
         //---------
-        if (doctorListObject.getRating()==0) {
+        if (doctorListObject.getRating() == 0) {
             doctorRating.setVisibility(View.INVISIBLE);
         } else {
             doctorRating.setVisibility(View.VISIBLE);

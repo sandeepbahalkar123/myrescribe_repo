@@ -80,8 +80,9 @@ public class DashboardHelper implements ConnectionListener {
 
     }
 
-    public void doGetDashboard(String screenResolutionValue) {
-       try {
+    public void doGetDashboard() {
+        String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
+        try {
             InputStream is = mContext.getAssets().open("dashboard.json");
             int size = is.available();
             byte[] buffer = new byte[size];

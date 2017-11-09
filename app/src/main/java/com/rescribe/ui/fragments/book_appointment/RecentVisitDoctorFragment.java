@@ -47,6 +47,8 @@ import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -264,14 +266,25 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             DoctorServicesModel doctorServicesModel = bookAppointmentBaseModel.getDoctorServicesModel();
 
             //------------
-            ArrayList<DoctorList> myApp = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.my_appointments));
-            ArrayList<DoctorList> sDoctor = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
-            ArrayList<DoctorList> recentlyVisitDoc = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor));
+            //----------
+            Map<String, Integer> dataMap = new LinkedHashMap<>();
+            ArrayList<DoctorList> myAppoint = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.my_appointments));
+            ArrayList<DoctorList> sponsered = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
+            ArrayList<DoctorList> recently_visit_doctor = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor));
+            ArrayList<DoctorList> favoriteList = doctorServicesModel.getFavouriteDocList();
+
+            dataMap.put(getString(R.string.my_appointments), myAppoint.size());
+            dataMap.put(getString(R.string.sponsored_doctor), sponsered.size());
+            dataMap.put(getString(R.string.recently_visited_doctor), recently_visit_doctor.size());
+            dataMap.put(getString(R.string.favorite), favoriteList.size());
 
             ArrayList<DoctorList> mergeList = new ArrayList<>();
-            mergeList.addAll(myApp);
-            mergeList.addAll(sDoctor);
-            mergeList.addAll(recentlyVisitDoc);
+
+            mergeList.addAll(myAppoint);
+            mergeList.addAll(sponsered);
+            mergeList.addAll(recently_visit_doctor);
+            mergeList.addAll(favoriteList);
+
             //------------
             if (doctorServicesModel != null) {
                 //-------

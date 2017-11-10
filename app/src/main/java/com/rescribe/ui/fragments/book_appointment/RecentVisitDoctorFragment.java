@@ -194,12 +194,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         return fragment;
     }
 
-    @Override
-    public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
-        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundleData), true);
-    }
-
     @OnClick({R.id.viewpager, R.id.circleIndicator, R.id.doubtMessage, R.id.prevBtn, R.id.nextBtn, R.id.rightFab, R.id.leftFab})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -361,16 +355,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     }
 
-    @Override
-    public void onClickOfDoctorRowItem(Bundle bundleData) {
-        DoctorList doctorList = (DoctorList) bundleData.getParcelable(getString(R.string.clicked_item_data));
-        //TODO: This is done as per requirement, need to set "DOCTOR" as toolbarHeader instead respective doc speciality.
-        bundleData.putString(getString(R.string.toolbarTitle), getString(R.string.doctor));//doctorList.getSpeciality()
-
-        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
-    }
-
     /*
      * GENERATE A SINGLE PAGE DATA
      * PASS US THE CURRENT PAGE POSITION THEN WE GENERATE NECEASSARY DATA
@@ -433,5 +417,22 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
 
     }
+
+    @Override
+    public void onClickOfDoctorRowItem(Bundle bundleData) {
+        DoctorList doctorList = (DoctorList) bundleData.getParcelable(getString(R.string.clicked_item_data));
+        //TODO: This is done as per requirement, need to set "DOCTOR" as toolbarHeader instead respective doc speciality.
+        bundleData.putString(getString(R.string.toolbarTitle), getString(R.string.doctor));//doctorList.getSpeciality()
+
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
+    }
+
+    @Override
+    public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundleData), true);
+    }
+
 }
 

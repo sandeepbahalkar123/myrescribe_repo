@@ -47,6 +47,8 @@ import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +59,7 @@ import droidninja.filepicker.utils.GridSpacingItemDecoration;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener, SortByClinicAndDoctorNameAdapter.OnClinicAndDoctorNameSearchRowItem {
+public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener, SortByClinicAndDoctorNameAdapter.OnClinicAndDoctorNameSearchRowItem, ShowRecentVisitedDoctorPagerAdapter.OnViewPagerItemClickListener {
 
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
@@ -192,12 +194,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         return fragment;
     }
 
-    @Override
-    public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
-        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundleData), true);
-    }
-
     @OnClick({R.id.viewpager, R.id.circleIndicator, R.id.doubtMessage, R.id.prevBtn, R.id.nextBtn, R.id.rightFab, R.id.leftFab})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -264,14 +260,25 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             DoctorServicesModel doctorServicesModel = bookAppointmentBaseModel.getDoctorServicesModel();
 
             //------------
-            ArrayList<DoctorList> myApp = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.my_appointments));
-            ArrayList<DoctorList> sDoctor = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
-            ArrayList<DoctorList> recentlyVisitDoc = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor));
+            //----------
+            Map<String, Integer> dataMap = new LinkedHashMap<>();
+            ArrayList<DoctorList> myAppoint = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.my_appointments));
+            ArrayList<DoctorList> sponsered = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
+            ArrayList<DoctorList> recently_visit_doctor = doctorServicesModel.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor));
+            ArrayList<DoctorList> favoriteList = doctorServicesModel.getFavouriteDocList();
+
+            dataMap.put(getString(R.string.my_appointments), myAppoint.size());
+            dataMap.put(getString(R.string.sponsored_doctor), sponsered.size());
+            dataMap.put(getString(R.string.recently_visited_doctor), recently_visit_doctor.size());
+            dataMap.put(getString(R.string.favorite), favoriteList.size());
 
             ArrayList<DoctorList> mergeList = new ArrayList<>();
-            mergeList.addAll(myApp);
-            mergeList.addAll(sDoctor);
-            mergeList.addAll(recentlyVisitDoc);
+
+            mergeList.addAll(myAppoint);
+            mergeList.addAll(sponsered);
+            mergeList.addAll(recently_visit_doctor);
+            mergeList.addAll(favoriteList);
+
             //------------
             if (doctorServicesModel != null) {
                 //-------
@@ -280,7 +287,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     mCircleIndicator.setVisibility(View.GONE);
                 } else {
                     mViewpager.setVisibility(View.VISIBLE);
-                    mViewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), mergeList));
+                    mViewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), mergeList, dataMap, this));
                     mCircleIndicator.setViewPager(mViewpager);
                 }
                 //------
@@ -348,16 +355,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     }
 
-    @Override
-    public void onClickOfDoctorRowItem(Bundle bundleData) {
-        DoctorList doctorList = (DoctorList) bundleData.getParcelable(getString(R.string.clicked_item_data));
-        //TODO: This is done as per requirement, need to set "DOCTOR" as toolbarHeader instead respective doc speciality.
-        bundleData.putString(getString(R.string.toolbarTitle), getString(R.string.doctor));//doctorList.getSpeciality()
-
-        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
-    }
-
     /*
      * GENERATE A SINGLE PAGE DATA
      * PASS US THE CURRENT PAGE POSITION THEN WE GENERATE NECEASSARY DATA
@@ -419,6 +416,27 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
         activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
 
+    }
+
+    @Override
+    public void onClickOfDoctorRowItem(Bundle bundleData) {
+        DoctorList doctorList = (DoctorList) bundleData.getParcelable(getString(R.string.clicked_item_data));
+        //TODO: This is done as per requirement, need to set "DOCTOR" as toolbarHeader instead respective doc speciality.
+        bundleData.putString(getString(R.string.toolbarTitle), getString(R.string.doctor));//doctorList.getSpeciality()
+
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
+    }
+
+    @Override
+    public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
+        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+        activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundleData), true);
+    }
+
+    @Override
+    public void setOnClickedOfViewPagerItem(Bundle bundleData) {
+        setOnClickOfDoctorSpeciality(bundleData);
     }
 }
 

@@ -79,5 +79,32 @@ public class DoctorServicesModel implements Parcelable, CustomResponse {
         return 0;
     }
 
+    public ArrayList<DoctorList> getFavouriteDocList() {
+        ArrayList<DoctorList> temp = new ArrayList<>();
+        for (DoctorList docObject :
+                doctorList) {
+            if (docObject.getFavourite()) {
+                temp.add(docObject);
+            }
+        }
+        return temp;
+    }
 
+    public ArrayList<DoctorList> filterDocListBySpeciality(String selectedSpeciality) {
+
+        ArrayList<DoctorList> doctors = this.doctorList;
+
+        ArrayList<DoctorList> dataList = new ArrayList<>();
+        if (selectedSpeciality == null) {
+            return dataList;
+        } else {
+            for (DoctorList listObject :
+                    doctors) {
+                if (selectedSpeciality.equalsIgnoreCase(listObject.getDocSpeciality())) {
+                    dataList.add(listObject);
+                }
+            }
+        }
+        return dataList;
+    }
 }

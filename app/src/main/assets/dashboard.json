@@ -26,7 +26,7 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": true,
+        "favourite": true,
         "rating": 4.5,
         "aptDate": "2017-09-17",
         "aptTime": "15:00:00"
@@ -52,7 +52,7 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": false,
+        "favourite": false,
         "rating": 4.5,
         "aptDate": "2017-09-30",
         "aptTime": "14:00:00"
@@ -85,7 +85,7 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": false,
+        "favourite": false,
         "rating": 0,
         "aptDate": "",
         "aptTime": ""
@@ -117,7 +117,7 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": false,
+        "favourite": false,
         "rating": 0,
         "aptDate": "",
         "aptTime": ""
@@ -177,7 +177,7 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": false,
+        "favourite": false,
         "rating": 4,
         "aptDate": "",
         "aptTime": ""
@@ -237,7 +237,7 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": false,
+        "favourite": false,
         "rating": 0.3,
         "aptDate": "",
         "aptTime": ""
@@ -262,7 +262,7 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": true,
+        "favourite": true,
         "rating": 0,
         "aptDate": "",
         "aptTime": ""
@@ -277,7 +277,7 @@
         "speciality": "General Physician",
         "experience": 11,
         "clinicList": [],
-        "favorite": true,
+        "favourite": true,
         "rating": 0,
         "aptDate": "2017-05-17",
         "aptTime": "19:00:00"
@@ -323,7 +323,7 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": true,
+        "favourite": true,
         "rating": 4.5,
         "aptDate": "2017-06-17",
         "aptTime": "19:45:00"
@@ -355,7 +355,7 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": false,
+        "favourite": false,
         "rating": 4,
         "aptDate": "2017-07-21",
         "aptTime": "09:30:00"

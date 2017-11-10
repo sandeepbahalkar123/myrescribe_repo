@@ -56,7 +56,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     private static Bundle args;
 
     private DoctorDataHelper mDoctorDataHelper;
-    private ArrayList<DoctorList> doctorListByClinics;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -114,27 +113,20 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
             if (doctorServicesModel == null) {
                 isDataListViewVisible(false);
             } else {
-                ArrayList<DoctorList> doctorList = doctorServicesModel.getDoctorList();
                 //----This is done to filter list based on speciality selected---
-                doctorList = filterListWhenSpecialitySelected(doctorList);
+                ArrayList<DoctorList> doctorList = doctorServicesModel.filterDocListBySpeciality(mSelectedSpeciality);
                 //-------
                 if (doctorList.size() == 0) {
                     isDataListViewVisible(false);
                 } else {
-                    isDataListViewVisible(true);
-
                     mReceivedList = doctorList;
-                    if (filterDataOnDocSpeciality().size() == 0) {
-                        isDataListViewVisible(false);
-                        mLocationFab.setVisibility(View.GONE);
-                        mFilterFab.setVisibility(View.GONE);
-                    } else {
-                        mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), filterDataOnDocSpeciality(), this, this);
-                        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-                        mDoctorListView.setLayoutManager(layoutManager);
-                        mDoctorListView.setHasFixedSize(true);
-                        mDoctorListView.setAdapter(mBookAppointFilteredDocListAdapter);
-                    }
+
+                    isDataListViewVisible(true);
+                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList, this, this);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                    mDoctorListView.setLayoutManager(layoutManager);
+                    mDoctorListView.setHasFixedSize(true);
+                    mDoctorListView.setAdapter(mBookAppointFilteredDocListAdapter);
                 }
             }
         }
@@ -181,7 +173,11 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         if (flag) {
             mEmptyListView.setVisibility(View.GONE);
             mDoctorListView.setVisibility(View.VISIBLE);
+            mLocationFab.setVisibility(View.VISIBLE);
+            mFilterFab.setVisibility(View.VISIBLE);
         } else {
+            mLocationFab.setVisibility(View.GONE);
+            mFilterFab.setVisibility(View.GONE);
             mEmptyListView.setVisibility(View.VISIBLE);
             mDoctorListView.setVisibility(View.GONE);
         }
@@ -197,15 +193,15 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 break;
             case R.id.leftFab:
                 //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
-                doctorListByClinics = new ArrayList<>();
-                for (int i = 0; i < filterDataOnDocSpeciality().size(); i++) {
-                    if (filterDataOnDocSpeciality().get(i).getClinicDataList().size() > 0) {
-                        DoctorList doctorList = filterDataOnDocSpeciality().get(i);
-                        for (int j = 0; j < filterDataOnDocSpeciality().get(i).getClinicDataList().size(); j++) {
+                ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
+                for (int i = 0; i < mReceivedList.size(); i++) {
+                    if (mReceivedList.get(i).getClinicDataList().size() > 0) {
+                        DoctorList doctorList = mReceivedList.get(i);
+                        for (int j = 0; j < mReceivedList.get(i).getClinicDataList().size(); j++) {
                             DoctorList doctorListByClinic = new DoctorList();
                             doctorListByClinic = doctorList;
-                            doctorListByClinic.setNameOfClinicString(filterDataOnDocSpeciality().get(i).getClinicDataList().get(j).getClinicName());
-                            doctorListByClinic.setAddressOfDoctorString(filterDataOnDocSpeciality().get(i).getClinicDataList().get(j).getClinicAddress());
+                            doctorListByClinic.setNameOfClinicString(mReceivedList.get(i).getClinicDataList().get(j).getClinicName());
+                            doctorListByClinic.setAddressOfDoctorString(mReceivedList.get(i).getClinicDataList().get(j).getClinicAddress());
                             doctorListByClinics.add(doctorListByClinic);
                         }
                     }
@@ -229,24 +225,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
             boolean status = mClickedDoctorObject.getFavourite() ? false : true;
             mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
         }
-    }
-
-    private ArrayList<DoctorList> filterDataOnDocSpeciality() {
-
-        ArrayList<DoctorList> doctors = this.mReceivedList;
-
-        ArrayList<DoctorList> dataList = new ArrayList<>();
-        if (mSelectedSpeciality == null) {
-            return doctors;
-        } else {
-            for (DoctorList listObject :
-                    doctors) {
-                if (mSelectedSpeciality.equalsIgnoreCase(listObject.getDocSpeciality())) {
-                    dataList.add(listObject);
-                }
-            }
-        }
-        return dataList;
     }
 
     @Override
@@ -281,16 +259,4 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     }
 
 
-    private ArrayList<DoctorList> filterListWhenSpecialitySelected(ArrayList<DoctorList> list) {
-        ArrayList<DoctorList> temp = new ArrayList<>();
-        if (mSelectedSpeciality != null) {
-            for (DoctorList dataObject :
-                    list) {
-                if (dataObject.getDocSpeciality().equalsIgnoreCase(mSelectedSpeciality)) {
-                    temp.add(dataObject);
-                }
-            }
-        }
-        return temp;
-    }
 }

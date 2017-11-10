@@ -46,7 +46,7 @@ public class DoctorList implements Parcelable {
     @Expose
     private ArrayList<ClinicData> clinicDataList = new ArrayList<>();
 
-    @SerializedName("favorite")
+    @SerializedName("favourite")
     @Expose
     private boolean favourite;
     @SerializedName("degree")
@@ -62,7 +62,7 @@ public class DoctorList implements Parcelable {
     private String waitingTime = "";
     @SerializedName("tokenNo")
     @Expose
-    private String tokenNo;
+    private String tokenNo = "";
     @SerializedName("aboutDoctor")
     @Expose
     private String aboutDoctor = "";

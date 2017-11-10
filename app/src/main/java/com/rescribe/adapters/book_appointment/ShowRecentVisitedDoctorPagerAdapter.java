@@ -1,7 +1,9 @@
 package com.rescribe.adapters.book_appointment;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -27,9 +29,12 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
+    private OnViewPagerItemClickListener mOnViewPagerItemClickListener;
+    private Map<String, Integer> mListSizeWithTypeMap;
     private ArrayList<DoctorList> mDoctorLists;
     private LayoutInflater mInflater;
     private Context mContext;
@@ -37,13 +42,17 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
     private ColorGenerator mColorGenerator;
 
 
-    public ShowRecentVisitedDoctorPagerAdapter(Context context, ArrayList<DoctorList> doctorLists) {
+    public ShowRecentVisitedDoctorPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, Map<String, Integer> dataMap, ShowRecentVisitedDoctorPagerAdapter.OnViewPagerItemClickListener listener) {
         this.mContext = context;
         this.mDoctorLists = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
         mInflater = LayoutInflater.from(context);
+        this.mListSizeWithTypeMap = dataMap;
+        mOnViewPagerItemClickListener = listener;
+
     }
+
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
@@ -63,7 +72,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         //---------
         final TextView doctorNameTextView = (TextView) imageLayout
                 .findViewById(R.id.doctorName);
-        final TextView doctorCategoryVisit = (TextView) imageLayout
+        final TextView doctorCategory = (TextView) imageLayout
                 .findViewById(R.id.doctorCategoryVisit);
         final TextView doctorType = (TextView) imageLayout
                 .findViewById(R.id.doctorType);
@@ -123,6 +132,22 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         doctorNameTextView.setText(doctorListObject.getDocName());
         doctorType.setText(doctorListObject.getDegree());
         doctorExperience.setText("" + doctorListObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
+
+        //---------
+        if (doctorListObject.getFavourite()) {
+            favorite.setVisibility(View.VISIBLE);
+        } else {
+            favorite.setVisibility(View.GONE);
+        }
+        //-----------
+        if (doctorListObject.getRating() == 0) {
+            doctorRating.setVisibility(View.INVISIBLE);
+        } else {
+            doctorRating.setVisibility(View.VISIBLE);
+            doctorRating.setText("" + doctorListObject.getRating());
+        }
+        //---------
+
         //---------
         if (doctorListObject.getCategorySpeciality() != null) {
             doctorCategoryType.setText(doctorListObject.getCategorySpeciality());
@@ -130,15 +155,21 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         } else {
             doctorCategoryType.setVisibility(View.INVISIBLE);
         }
-        //---------
-        if (doctorListObject.getFavourite()) {
-            favorite.setVisibility(View.VISIBLE);
+        //-----THIS IS DONE TO SHOW COUNT OF FAVORITE(CUSTOM CREATED CATEGORY), ASSUME IT WILL COME LAST ALWAYS ----
+        int size;
+        if (position == mDoctorLists.size() - 1) {
+            doctorCategory.setText(mContext.getString(R.string.favorite));
+            size = mListSizeWithTypeMap.get(mContext.getString(R.string.favorite));
         } else {
-            favorite.setVisibility(View.GONE);
+            doctorCategory.setText(doctorListObject.getCategoryName());
+            size = mListSizeWithTypeMap.get(doctorListObject.getCategoryName());
         }
+        //  sizeOfList.setText("" + size); // TOD ADDED YET
+
+        //-----------
+
         //---------
         if (mContext.getString(R.string.recently_visited_doctor).equalsIgnoreCase(doctorListObject.getCategoryName())) {
-            doctorCategoryVisit.setText(mContext.getString(R.string.recently_visited_doctor));
             doctorFees.setVisibility(View.VISIBLE);
             ArrayList<ClinicData> clinicDataList = doctorListObject.getClinicDataList();
             if (clinicDataList.size() > 0) {
@@ -154,9 +185,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             doctorAppointmentDate.setText(content);
             bookAppointmentButton.setVisibility(View.INVISIBLE);
             doctorFees.setVisibility(View.INVISIBLE);
-            doctorCategoryVisit.setText(mContext.getString(R.string.my_appointments));
         } else if (mContext.getString(R.string.sponsored_doctor).equalsIgnoreCase(doctorListObject.getCategoryName())) {
-            doctorCategoryVisit.setText(mContext.getString(R.string.sponsored_doctor));
             doctorFees.setVisibility(View.VISIBLE);
             ArrayList<ClinicData> clinicDataList = doctorListObject.getClinicDataList();
             if (clinicDataList.size() > 0) {
@@ -167,13 +196,16 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             bookAppointmentButton.setVisibility(View.VISIBLE);
         }
         //---------
-        if (doctorListObject.getRating() == 0) {
-            doctorRating.setVisibility(View.INVISIBLE);
-        } else {
-            doctorRating.setVisibility(View.VISIBLE);
-            doctorRating.setText("" + doctorListObject.getRating());
-        }
-        //---------
+
+        //-- TODO: NEED CLICK OF COUNT
+        doctorCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
+                mOnViewPagerItemClickListener.setOnClickedOfViewPagerItem(b);
+            }
+        });
 
         view.addView(imageLayout, 0);
 
@@ -202,4 +234,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         return null;
     }
 
+    public interface OnViewPagerItemClickListener {
+        void setOnClickedOfViewPagerItem(Bundle bundleData);
+    }
 }

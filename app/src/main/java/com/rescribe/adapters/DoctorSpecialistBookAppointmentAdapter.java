@@ -74,6 +74,7 @@ public class DoctorSpecialistBookAppointmentAdapter extends RecyclerView.Adapter
             public void onClick(View v) {
                 Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data), doctorConnectSearchModel.getSpeciality());
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.doctors_speciality));
                 mOnDoctorSpecialityClickListener.setOnClickOfDoctorSpeciality(b);
             }
         });

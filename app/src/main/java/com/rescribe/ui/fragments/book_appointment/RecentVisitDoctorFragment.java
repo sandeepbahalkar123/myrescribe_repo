@@ -59,7 +59,7 @@ import droidninja.filepicker.utils.GridSpacingItemDecoration;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener, SortByClinicAndDoctorNameAdapter.OnClinicAndDoctorNameSearchRowItem {
+public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener, SortByClinicAndDoctorNameAdapter.OnClinicAndDoctorNameSearchRowItem, ShowRecentVisitedDoctorPagerAdapter.OnViewPagerItemClickListener {
 
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
@@ -287,7 +287,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     mCircleIndicator.setVisibility(View.GONE);
                 } else {
                     mViewpager.setVisibility(View.VISIBLE);
-                    mViewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), mergeList));
+                    mViewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), mergeList, dataMap, this));
                     mCircleIndicator.setViewPager(mViewpager);
                 }
                 //------
@@ -434,5 +434,9 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundleData), true);
     }
 
+    @Override
+    public void setOnClickedOfViewPagerItem(Bundle bundleData) {
+        setOnClickOfDoctorSpeciality(bundleData);
+    }
 }
 

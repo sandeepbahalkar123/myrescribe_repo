@@ -221,6 +221,7 @@
     <string name="server_error">Server Error</string>
     <string name="dr">Dr.</string>
     <string name="clicked_item_data">clicked_item_data</string>
+    <string name="clicked_item_data_type_value">clicked_item_data_type_value</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="type_a_message">Type a message</string>
     <string name="online">Online</string>

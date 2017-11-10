@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -56,17 +57,21 @@ import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import net.gotev.uploadservice.UploadService;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
+
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
@@ -628,43 +633,41 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onClickOfDashboardDoctorItem(String mDashBoardCardName) {
-        if (mDashBoardCardName.equals(getString(R.string.my_appointments))) {
+        if (mDashBoardCardName.equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
             startActivity(intent);
-        } else if (mDashBoardCardName.equals(getString(R.string.sponsered_doctor))) {
+        } else if (mDashBoardCardName.equalsIgnoreCase(getString(R.string.favorite))) {// favorite card name
             Intent intent = new Intent(HomePageActivity.this, DoctorDescriptionBaseActivity.class);
-            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.sponsered_doctor)).get(0));
-            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.sponsered_doctor));
+            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getFavouriteDocList().get(0));
+            intent.putExtra(getString(R.string.toolbarTitle), mDashBoardCardName);
             startActivity(intent);
-        } else if (mDashBoardCardName.equals(getString(R.string.recently_visit_doctor))) {
+        } else {
+            // for sponcered and recent visited doctor list.
             Intent intent = new Intent(HomePageActivity.this, DoctorDescriptionBaseActivity.class);
-            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor)).get(0));
-            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.sponsered_doctor));
+            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(mDashBoardCardName).get(0));
+            intent.putExtra(getString(R.string.toolbarTitle), mDashBoardCardName);
             startActivity(intent);
         }
     }
 
     @Override
     public void onClickOfCount(String nameOfCategoryType) {
-        if (nameOfCategoryType.equals(getString(R.string.my_appointments))) {
+        if (nameOfCategoryType.equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
             intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.my_appointments));
             intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.my_appointments)));
             startActivity(intent);
-        } else if (nameOfCategoryType.equals(getString(R.string.sponsered_doctor))) {
+        } else if (nameOfCategoryType.equalsIgnoreCase(getString(R.string.favorite))) { // favorite card name
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.sponsered_doctor));
-            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.sponsered_doctor)));
+            intent.putExtra(getString(R.string.toolbarTitle), nameOfCategoryType);
+            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getFavouriteDocList());
             startActivity(intent);
-            /*Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
-            startActivity(intent);*/
-        } else if (nameOfCategoryType.equals(getString(R.string.recently_visit_doctor))) {
+        } else {
+            // for sponcered and recent visited doctor list.
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.recently_visit_doctor));
-            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor)));
+            intent.putExtra(getString(R.string.toolbarTitle), nameOfCategoryType);
+            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(nameOfCategoryType));
             startActivity(intent);
-            /*Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
-            startActivity(intent);*/
         }
     }
 

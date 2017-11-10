@@ -35,6 +35,8 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
+import com.rescribe.model.doctor_connect.ChatDoctor;
+import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.customesViews.CircularImageView;
@@ -51,6 +53,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 /**
  * Created by jeetal on 31/10/17.
@@ -85,6 +89,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     ImageView mFavorite;
     @BindView(R.id.doctorExperienceLayout)
     LinearLayout mDoctorExperienceLayout;
+    @BindView(R.id.clinicNameSpinnerParentLayout)
+    LinearLayout mClinicNameSpinnerParentLayout;
+    @BindView(R.id.allClinicPracticeLocationMainLayout)
+    LinearLayout mAllClinicPracticeLocationMainLayout;
     //-------------
     @BindView(R.id.leftArrow)
     ImageView leftArrow;
@@ -219,6 +227,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         //----------
         int size = mClickedDoctorObject.getClinicDataList().size();
         if (size > 0) {
+            mAllClinicPracticeLocationMainLayout.setVisibility(View.VISIBLE);
             String updatedString = getString(R.string.practices_at_locations).replace("$$", "" + size);
             SpannableString contentExp = new SpannableString(updatedString);
             contentExp.setSpan(new ForegroundColorSpan(
@@ -226,6 +235,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     13, 13 + size,//hightlight mSearchString
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             mDocPracticesLocationCount.setText(contentExp);
+        } else {
+            mAllClinicPracticeLocationMainLayout.setVisibility(View.GONE);
         }
         //------------
         if (mClickedDoctorObject.getCategorySpeciality() != null) {
@@ -235,23 +246,41 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             mPremiumType.setVisibility(View.INVISIBLE);
         }
         //-------------------
-        ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
-        mClinicNameSpinner.setAdapter(arrayAdapter);
-        mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(position);
-                mClinicName.setText("" + mSelectedClinicDataObject.getClinicName());
-                mDoctorFees.setText(
-                        "" + mSelectedClinicDataObject.getAmount());
-                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+        if (mClickedDoctorObject.getClinicDataList().size() > 0) {
+            mClinicNameSpinnerParentLayout.setVisibility(View.VISIBLE);
 
+            ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
+            mClinicNameSpinner.setAdapter(arrayAdapter);
+            mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(position);
+                    mClinicName.setText("" + mSelectedClinicDataObject.getClinicName());
+                    mDoctorFees.setText(
+                            "" + mSelectedClinicDataObject.getAmount());
+                    mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate);
+                }
+
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            if (mClickedDoctorObject.getClinicDataList().size() == 1) {
+                mClinicNameSpinner.setEnabled(false);
+                mClinicNameSpinner.setClickable(false);
+                mClinicNameSpinner.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.transparent));
+            } else {
+                mClinicNameSpinner.setEnabled(true);
+                mClinicNameSpinner.setClickable(true);
+                mClinicNameSpinner.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.spinner_bg));
             }
-        });
+        } else {
+            mClinicNameSpinnerParentLayout.setVisibility(View.GONE);
+        }
+
         //---------
     }
 
@@ -309,7 +338,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         unbinder.unbind();
     }
 
-    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite})
+    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -323,11 +352,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         now.get(Calendar.MONTH),
                         now.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.setAccentColor(getResources().getColor(R.color.tagColor));
-                datePickerDialog.setMinDate(Calendar.getInstance());
+
+                datePickerDialog.setMinDate(now);
+
                 Calendar calendar = Calendar.getInstance();
                 calendar.add(Calendar.DATE, mSelectedClinicDataObject.getApptScheduleLmtDays());
                 datePickerDialog.setMaxDate(calendar);
+
                 datePickerDialog.show(getFragmentManager(), getResources().getString(R.string.select_date_text));
+                datePickerDialog.setOutOfRageInvisible();
                 break;
             case R.id.bookAppointmentButton:
                 break;
@@ -350,8 +383,19 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 //--------
                 break;
             case R.id.favorite:
-                boolean status = mClickedDoctorObject.getFavourite() ? false : true;
-                mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
+                mDoctorDataHelper.setFavouriteDoctor(!mClickedDoctorObject.getFavourite(), mClickedDoctorObject.getDocId());
+                break;
+            case R.id.doChat:
+                ChatDoctor chatDoctor = new ChatDoctor();
+                chatDoctor.setId(mClickedDoctorObject.getDocId());
+                chatDoctor.setDoctorName(mClickedDoctorObject.getDocName());
+                chatDoctor.setOnlineStatus(ONLINE);
+                chatDoctor.setAddress(mClickedDoctorObject.getAddressOfDoctorString());
+                chatDoctor.setImageUrl(mClickedDoctorObject.getDoctorImageUrl());
+
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
+                startActivity(intent);
                 break;
         }
     }

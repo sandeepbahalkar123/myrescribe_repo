@@ -178,13 +178,16 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         sizeOfList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
+                mOnClickOfCardOnDashboard.onClickOfCount(doctorCategory.getText().toString());
+
+
+               /* if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
                     mOnClickOfCardOnDashboard.onClickOfCount(mContext.getString(R.string.my_appointments));
                 } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
                     mOnClickOfCardOnDashboard.onClickOfCount(mContext.getString(R.string.sponsered_doctor));
                 } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
                     mOnClickOfCardOnDashboard.onClickOfCount(mContext.getString(R.string.recently_visit_doctor));
-                }
+                }*/
             }
         });
 
@@ -192,13 +195,14 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         dashBoardCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
+                mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(doctorCategory.getText().toString());
+              /*  if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
                     mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(mContext.getString(R.string.my_appointments));
                 } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
                     mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(mContext.getString(R.string.sponsered_doctor));
                 } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
                     mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(mContext.getString(R.string.recently_visit_doctor));
-                }
+                }*/
             }
         });
 
@@ -235,6 +239,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             if (doctorObject.getClinicDataList().size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
                 feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
+
             } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
 
@@ -264,7 +269,9 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             if (doctorObject.getClinicDataList().size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
+
                 feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
+
             } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
 
@@ -295,7 +302,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         }*/
         if (doctorObject.getFavourite()) {
             favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_icon));
-
         } else {
             favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
         }

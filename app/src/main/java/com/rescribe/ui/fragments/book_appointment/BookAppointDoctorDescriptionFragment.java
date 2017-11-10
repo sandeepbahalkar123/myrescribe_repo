@@ -1,10 +1,17 @@
 package com.rescribe.ui.fragments.book_appointment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatButton;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -14,6 +21,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -32,9 +41,10 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
-import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.doctor_connect.ChatDoctor;
+import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
@@ -42,17 +52,25 @@ import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.rescribe.util.RescribeConstants.DOCTOR_OBJECT;
+import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 //TODO , NNED TO IMPLEMNT AS PER NEW JSON
 
 public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
 
     //-------------
+    @BindView(R.id.doChat)
+    ImageView doChat;
+
     @BindView(R.id.profileImage)
     CircularImageView mProfileImage;
     @BindView(R.id.docRating)
@@ -81,6 +99,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     CustomTextView mDoctorExperience;
     @BindView(R.id.doctorExperienceLayout)
     LinearLayout mDoctorExperienceLayout;
+    @BindView(R.id.clinicNameSpinnerParentLayout)
+    LinearLayout mClinicNameSpinnerParentLayout;
+    @BindView(R.id.allClinicPracticeLocationMainLayout)
+    LinearLayout mAllClinicPracticeLocationMainLayout;
     //-------------
     @BindView(R.id.aboutDoctorDescription)
     CustomTextView mAboutDoctorDescription;
@@ -166,7 +188,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.override(mImageSize, mImageSize);
-        requestOptions.placeholder(R.drawable.layer_12);
+
 
         Glide.with(getActivity())
                 .load(mClickedDoctorObject.getDoctorImageUrl())
@@ -201,6 +223,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         //----------
         int size = mClickedDoctorObject.getClinicDataList().size();
         if (size > 0) {
+            mAllClinicPracticeLocationMainLayout.setVisibility(View.VISIBLE);
+
             String updatedString = getString(R.string.practices_at_locations).replace("$$", "" + size);
             SpannableString contentExp = new SpannableString(updatedString);
             contentExp.setSpan(new ForegroundColorSpan(
@@ -208,6 +232,9 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                     13, 13 + size,//hightlight mSearchString
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             mDocPracticesLocationCount.setText(contentExp);
+        } else {
+            mAllClinicPracticeLocationMainLayout.setVisibility(View.GONE);
+
         }
         //------------
         if (mClickedDoctorObject.getCategorySpeciality() != null) {
@@ -225,23 +252,37 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         }*/
 
         //---------
-        ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
+        if (mClickedDoctorObject.getClinicDataList().size() > 0) {
+            ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
 
-        mClinicNameSpinner.setAdapter(arrayAdapter);
-        mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            mClinicNameSpinner.setAdapter(arrayAdapter);
+            mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
                 mClinicName.setText("" + clinicData.getClinicName());
                 mDoctorFees.setText("" + clinicData.getAmount());
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
 
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            if (mClickedDoctorObject.getClinicDataList().size() == 1) {
+                mClinicNameSpinner.setEnabled(false);
+                mClinicNameSpinner.setClickable(false);
+                mClinicNameSpinner.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.transparent));
+            } else {
+                mClinicNameSpinner.setEnabled(true);
+                mClinicNameSpinner.setClickable(true);
+                mClinicNameSpinner.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.spinner_bg));
             }
-        });
+        } else {
+            mClinicNameSpinnerParentLayout.setVisibility(View.GONE);
+        }
         //---------
         ArrayList<String> receivedDocService = mClickedDoctorObject.getDocServices();
         int receivedDocServiceSize = receivedDocService.size();
@@ -306,7 +347,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         unbinder.unbind();
     }
 
-    @OnClick({R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite})
+    @OnClick({R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat, R.id.readMoreDocServices})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -345,9 +386,93 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 //--------
                 break;
             case R.id.favorite:
-                boolean status = mClickedDoctorObject.getFavourite() ? false : true;
-                mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
+                mDoctorDataHelper.setFavouriteDoctor(!mClickedDoctorObject.getFavourite(), mClickedDoctorObject.getDocId());
                 break;
+            case R.id.doChat:
+
+                ChatDoctor chatDoctor = new ChatDoctor();
+                chatDoctor.setId(mClickedDoctorObject.getDocId());
+                chatDoctor.setDoctorName(mClickedDoctorObject.getDocName());
+                chatDoctor.setOnlineStatus(ONLINE);
+                chatDoctor.setAddress(mClickedDoctorObject.getAddressOfDoctorString());
+                chatDoctor.setImageUrl(mClickedDoctorObject.getDoctorImageUrl());
+
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
+                startActivity(intent);
+
+                break;
+
+            case R.id.readMoreDocServices:
+
+                showServiceDialog();
+
+                break;
+        }
+    }
+
+    public void showServiceDialog() {
+
+        final Dialog dialog = new Dialog(getContext());
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.services_dialog_modal);
+
+        dialog.findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        ListView mServicesListView = (ListView) dialog.findViewById(R.id.servicesListView);
+        DialogServicesListAdapter mServicesAdapter = new DialogServicesListAdapter(getActivity(), mClickedDoctorObject.getDocServices());
+        mServicesListView.setAdapter(mServicesAdapter);
+
+        dialog.show();
+    }
+
+    class DialogServicesListAdapter extends BaseAdapter {
+        Context mContext;
+        private ArrayList<String> mDocServiceList;
+
+        DialogServicesListAdapter(Context context, ArrayList<String> items) {
+            this.mContext = context;
+            this.mDocServiceList = items;
+        }
+
+        @Override
+        public int getCount() {
+            return mDocServiceList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return i;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup viewGroup) {
+            View view = convertView;
+            String data = mDocServiceList.get(position);
+
+            if (convertView == null) {
+                LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+                view = layoutInflater.inflate(R.layout.services_item_textview, null);
+            }
+
+            CustomTextView dataView = (CustomTextView) view.findViewById(R.id.text);
+            Drawable leftDrawable = AppCompatResources.getDrawable(getContext(), R.drawable.services_dot);
+            dataView.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, null, null, null);
+
+            dataView.setText("" + data);
+            return view;
         }
     }
 
@@ -362,7 +487,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         private ArrayList<String> mDocServiceList;
 
 
-        public DocServicesListAdapter(Context context, ArrayList<String> items) {
+        DocServicesListAdapter(Context context, ArrayList<String> items) {
             this.mContext = context;
             this.mDocServiceList = items;
         }

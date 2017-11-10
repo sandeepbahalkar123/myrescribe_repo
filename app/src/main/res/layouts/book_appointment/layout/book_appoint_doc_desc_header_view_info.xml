@@ -13,7 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/doc_detail_header_bg"
+            android:background="@drawable/layer_3_3_x"
             android:orientation="vertical"
             android:paddingBottom="@dimen/dp5"
             android:paddingLeft="@dimen/dp10"
@@ -225,6 +225,7 @@
             android:padding="@dimen/dp10">
 
             <LinearLayout
+                android:id="@+id/allClinicPracticeLocationMainLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -251,6 +252,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/clinicNameSpinnerParentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"

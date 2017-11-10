@@ -135,7 +135,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     // Audio End
 
     private static final int MAX_ATTACHMENT_COUNT = 10;
-    public static final String CHAT = "chat";
 
     private static final String RESCRIBE_FILES = "/Rescribe/Files/";
     private static final String RESCRIBE_PHOTOS = "/Rescribe/Photos/";
@@ -224,7 +223,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private void messageStatus(String messageStatus) {
         StatusInfo statusInfo = new StatusInfo();
 
-        String generatedId = CHAT + mqttMessage.size() + "_" + System.nanoTime();
+        String generatedId = patId + "_" + mqttMessage.size() + System.nanoTime();
         statusInfo.setMsgId(generatedId);
         statusInfo.setDocId(chatList.getId());
         statusInfo.setPatId(Integer.parseInt(patId));
@@ -828,7 +827,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     messageL.setTopic(MQTTService.TOPIC[0]);
                     messageL.setMsg(message);
 
-                    String generatedId = CHAT + mqttMessage.size() + "_" + System.nanoTime();
+                    String generatedId = patId + "_" + mqttMessage.size() + System.nanoTime();
 
                     messageL.setMsgId(generatedId);
                     messageL.setDocId(chatList.getId());
@@ -842,6 +841,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     messageL.setFileType("");
                     messageL.setSpecialization("");
                     messageL.setPaidStatus(FREE);
+
+                    messageL.setSender(PATIENT);
 
                     // 2017-10-13 13:08:07
                     String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
@@ -929,7 +930,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
             messageL.setMsg(fileName);
 
-            String generatedId = CHAT + mqttMessage.size() + "_" + System.nanoTime();
+            String generatedId = patId + "_" + mqttMessage.size() + System.nanoTime();
 
             messageL.setMsgId(generatedId);
             messageL.setDocId(chatList.getId());
@@ -943,6 +944,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             messageL.setFileType(fileType);
             messageL.setSpecialization("");
             messageL.setPaidStatus(FREE);
+
+            messageL.setSender(PATIENT);
 
             // 2017-10-13 13:08:07
             String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
@@ -972,7 +975,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             messageL.setTopic(MQTTService.TOPIC[0]);
             messageL.setMsg("");
 
-            String generatedId = CHAT + mqttMessage.size() + "_" + System.nanoTime();
+            String generatedId = patId + "_" + mqttMessage.size() + System.nanoTime();
 
             messageL.setMsgId(generatedId);
             messageL.setDocId(chatList.getId());
@@ -987,6 +990,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             messageL.setSpecialization("");
             messageL.setPaidStatus(FREE);
             messageL.setUploadStatus(UPLOADING);
+
+            messageL.setSender(PATIENT);
 
             // 2017-10-13 13:08:07
             String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
@@ -1437,17 +1442,13 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         @Override
         public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
 
-            if (uploadInfo.getUploadId().length() > CHAT.length()) {
-                String prefix = uploadInfo.getUploadId().substring(0, 4);
-                if (prefix.equals(CHAT)) {
+                String prefix[] = uploadInfo.getUploadId().split("_");
+                if (prefix[0].equals(patId)) {
                     appDBHelper.updateMessageUpload(uploadInfo.getUploadId(), FAILED);
-
                     int position = getPositionById(uploadInfo.getUploadId());
-
                     mqttMessage.get(position).setUploadStatus(FAILED);
                     chatAdapter.notifyItemChanged(position);
                 }
-            }
 
         }
 
@@ -1465,9 +1466,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         @Override
         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
 
-            if (uploadInfo.getUploadId().length() > CHAT.length()) {
-                String prefix = uploadInfo.getUploadId().substring(0, 4);
-                if (prefix.equals(CHAT)) {
+                String prefix[] = uploadInfo.getUploadId().split("_");
+                if (prefix[0].equals(patId)) {
 //                    appDBHelper.deleteUploadedMessage(uploadInfo.getUploadId());
 
                     int position = getPositionById(uploadInfo.getUploadId());
@@ -1475,7 +1475,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     mqttMessage.get(position).setUploadStatus(COMPLETED);
                     chatAdapter.notifyItemChanged(position);
                 }
-            }
         }
 
         @Override

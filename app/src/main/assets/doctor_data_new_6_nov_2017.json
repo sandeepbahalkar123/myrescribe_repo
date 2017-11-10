@@ -41,8 +41,13 @@
           "Parkinson’s Disease",
           "Spinal Disorders",
           "Brain Mapping",
-          "Brain Mapping",
-          "Brain Mapping"
+          "Physician assistants",
+          "Nurse practitioners",
+          "Clinical nurse specialists",
+          "Clinical social workers",
+          "Physical and occupational therapists",
+          "Speech language pathologists",
+          "Clinical psychologists"
         ],
         "aptDate": "2017-09-30",
         "aptTime": "14:00:00"
@@ -82,7 +87,14 @@
           "Migraine",
           "Parkinson’s Disease",
           "Spinal Disorders",
-          "Brain Mapping"
+          "Brain Mapping",
+          "Physician assistants",
+          "Nurse practitioners",
+          "Clinical nurse specialists",
+          "Clinical social workers",
+          "Physical and occupational therapists",
+          "Speech language pathologists",
+          "Clinical psychologists"
         ],
         "aptDate": "",
         "aptTime": ""
@@ -122,7 +134,14 @@
           "Migraine",
           "Parkinson’s Disease",
           "Spinal Disorders",
-          "Brain Mapping"
+          "Brain Mapping",
+          "Physician assistants",
+          "Nurse practitioners",
+          "Clinical nurse specialists",
+          "Clinical social workers",
+          "Physical and occupational therapists",
+          "Speech language pathologists",
+          "Clinical psychologists"
         ],
         "aptDate": "",
         "aptTime": ""

@@ -225,6 +225,7 @@
             android:padding="@dimen/dp10">
 
             <LinearLayout
+                android:id="@+id/allClinicPracticeLocationMainLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -251,6 +252,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/clinicNameSpinnerParentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"

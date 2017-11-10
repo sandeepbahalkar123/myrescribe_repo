@@ -1,11 +1,17 @@
 package com.rescribe.ui.fragments.book_appointment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatButton;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -15,6 +21,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -374,13 +382,74 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
             case R.id.readMoreDocServices:
 
-                BottomSheetDialogFragment bottomSheetDialogFragment = new ServiceDialogFragment();
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(DOCTOR_OBJECT, mClickedDoctorObject);
-                bottomSheetDialogFragment.setArguments(bundle);
-                bottomSheetDialogFragment.show(getChildFragmentManager(), bottomSheetDialogFragment.getTag());
+                showServiceDialog();
 
                 break;
+        }
+    }
+
+    public void showServiceDialog() {
+
+        final Dialog dialog = new Dialog(getContext());
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.services_dialog_modal);
+
+        dialog.findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        ListView mServicesListView = (ListView) dialog.findViewById(R.id.servicesListView);
+        DialogServicesListAdapter mServicesAdapter = new DialogServicesListAdapter(getActivity(), mClickedDoctorObject.getDocServices());
+        mServicesListView.setAdapter(mServicesAdapter);
+
+        dialog.show();
+    }
+
+    class DialogServicesListAdapter extends BaseAdapter {
+        Context mContext;
+        private ArrayList<String> mDocServiceList;
+
+        DialogServicesListAdapter(Context context, ArrayList<String> items) {
+            this.mContext = context;
+            this.mDocServiceList = items;
+        }
+
+        @Override
+        public int getCount() {
+            return mDocServiceList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return i;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup viewGroup) {
+            View view = convertView;
+            String data = mDocServiceList.get(position);
+
+            if (convertView == null) {
+                LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+                view = layoutInflater.inflate(R.layout.services_item_textview, null);
+            }
+
+            CustomTextView dataView = (CustomTextView) view.findViewById(R.id.text);
+            Drawable leftDrawable = AppCompatResources.getDrawable(getContext(), R.drawable.services_dot);
+            dataView.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, null, null, null);
+
+            dataView.setText("" + data);
+            return view;
         }
     }
 
@@ -390,12 +459,12 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     }
 
 
-    public static class DocServicesListAdapter extends BaseAdapter {
+    public class DocServicesListAdapter extends BaseAdapter {
         Context mContext;
         private ArrayList<String> mDocServiceList;
 
 
-        public DocServicesListAdapter(Context context, ArrayList<String> items) {
+        DocServicesListAdapter(Context context, ArrayList<String> items) {
             this.mContext = context;
             this.mDocServiceList = items;
         }

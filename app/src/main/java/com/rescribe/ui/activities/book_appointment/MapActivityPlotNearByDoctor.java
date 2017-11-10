@@ -226,7 +226,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
                 Intent intent = new Intent(MapActivityPlotNearByDoctor.this, ShowMoreInfoBaseActivity.class);
                 intent.putExtra(getString(R.string.toolbarTitle), title.getText().toString());
                 intent.putExtra(getString(R.string.doctor_data), doctorList);
-                startActivity(intent);
+                startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
             }
         });
         try {

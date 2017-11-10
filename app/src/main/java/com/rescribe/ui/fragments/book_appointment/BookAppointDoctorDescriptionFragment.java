@@ -7,10 +7,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatButton;
 import android.text.SpannableString;
@@ -31,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -48,6 +45,8 @@ import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
+import com.rescribe.ui.activities.book_appointment.ShowMoreInfoBaseActivity;
+import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -60,7 +59,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static com.rescribe.util.RescribeConstants.DOCTOR_OBJECT;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 //TODO , NNED TO IMPLEMNT AS PER NEW JSON
@@ -135,6 +133,14 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         return mRootView;
     }
 
+    public void setFavorite(boolean favorite){
+        if (favorite) {
+            mFavorite.setImageResource(R.drawable.fav_icon);
+        } else {
+            mFavorite.setImageResource(R.drawable.result_line_heart_fav);
+        }
+    }
+
     public static BookAppointDoctorDescriptionFragment newInstance(Bundle b) {
         BookAppointDoctorDescriptionFragment fragment = new BookAppointDoctorDescriptionFragment();
         args = b;
@@ -191,11 +197,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(mProfileImage);
         //-------
-        if (mClickedDoctorObject.getFavourite()) {
-            mFavorite.setImageResource(R.drawable.fav_icon);
-        } else {
-            mFavorite.setImageResource(R.drawable.result_line_heart_fav);
-        }
+        setFavorite(mClickedDoctorObject.getFavourite());
         //---------------
 
         if (mClickedDoctorObject.getRating() == 0) {
@@ -290,8 +292,16 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 if (temp.getCommonRespose().isSuccess()) {
                     boolean status = mClickedDoctorObject.getFavourite() ? false : true;
                     mClickedDoctorObject.setFavourite(status);
-                    BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                    activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                    if (getActivity() instanceof BookAppointDoctorListBaseActivity) {
+                        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                    } else if (getActivity() instanceof DoctorDescriptionBaseActivity) {
+                        DoctorDescriptionBaseActivity activity = (DoctorDescriptionBaseActivity) getActivity();
+                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                    } else if (getActivity() instanceof ShowMoreInfoBaseActivity){
+                        ShowMoreInfoBaseActivity activity = (ShowMoreInfoBaseActivity) getActivity();
+                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                    }
                     if (mClickedDoctorObject.getFavourite()) {
                         mFavorite.setImageResource(R.drawable.fav_icon);
                     } else {
@@ -340,7 +350,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 Intent intentObject = new Intent(getActivity(), SelectSlotToBookAppointmentBaseActivity.class);
                 intentObject.putExtra(getString(R.string.clicked_item_data), mClickedDoctorObject);
                 intentObject.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
-                startActivity(intentObject);
+                getActivity().startActivityForResult(intentObject, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
                 break;
             case R.id.viewAllClinicsOnMap: // on view-all location clicked
                 //-----Show all doc clinic on map, copied from BookAppointFilteredDoctorListFragment.java----

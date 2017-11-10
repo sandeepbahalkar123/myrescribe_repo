@@ -31,11 +31,14 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesList;
 import com.rescribe.model.book_appointment.ServicesModel;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.GoogleSettingsApi;
+import com.rescribe.util.RescribeConstants;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +48,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
+
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
 
 /**
  * Created by jeetal on 15/9/17.
@@ -69,6 +75,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     String longitude = "";
     String address;
     private DoctorDataHelper mDoctorDataHelper;
+    private ArrayList<DoctorList> doctorLists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +190,16 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     }
 
     @Override
+    public void onBackPressed() {
+        if (doctorLists != null) {
+            Intent intent = new Intent();
+            intent.putExtra(DOCTOR_DATA, doctorLists);
+            setResult(DOCTOR_DATA_REQUEST_CODE, intent);
+        }
+        super.onBackPressed();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         BookAppointmentServicesPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
@@ -255,6 +272,11 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 }
                 CommonMethods.Log("Address: ", stBuilder.toString());
             }
+        } else if (RescribeConstants.DOCTOR_DATA_REQUEST_CODE == requestCode) {
+
+            if (data != null)
+                doctorLists = data.getParcelableArrayListExtra(DOCTOR_DATA);
+
         }
     }
 
@@ -301,7 +323,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 intent.putExtra(getString(R.string.longitude), longitude);
                 intent.putExtra(getString(R.string.location), locationTextView.getText().toString());
                 intent.putExtra(getString(R.string.clicked_item_data), servicesObject.getServiceName());
-                startActivity(intent);
+                startActivityForResult(intent, DOCTOR_DATA_REQUEST_CODE);
             }
         }
     }

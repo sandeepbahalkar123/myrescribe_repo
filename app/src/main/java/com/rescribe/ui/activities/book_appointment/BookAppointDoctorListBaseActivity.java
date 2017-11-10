@@ -24,7 +24,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.model.LatLng;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
@@ -50,6 +49,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
+
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
 
 /**
  * Created by jeetal on 15/9/17.
@@ -374,6 +376,10 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     @Override
     public void onBackPressed() {
 
+        Intent intent = new Intent();
+        intent.putExtra(DOCTOR_DATA, mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList());
+        setResult(DOCTOR_DATA_REQUEST_CODE, intent);
+
         if (mSupportFragmentManager == null) {
             finish();
         } else {
@@ -471,7 +477,6 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     public interface OnActivityDrawerListener {
         void onApplyClicked(Bundle data);
-
         void onResetClicked();
     }
 

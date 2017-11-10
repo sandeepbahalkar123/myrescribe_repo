@@ -1,5 +1,6 @@
 package com.rescribe.adapters.dashboard;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
@@ -284,7 +285,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 Intent intent = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
                 intent.putExtra(mContext.getString(R.string.clicked_item_data), doctorObject);
                 intent.putExtra(mContext.getString(R.string.toolbarTitle), doctorObject.getCategoryName());
-                mContext.startActivity(intent);
+                ((Activity) mContext).startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
             }
         });
 
@@ -301,7 +302,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean status = doctorObject.getFavourite() ? false : true;
+                boolean status = !doctorObject.getFavourite();
                 mOnClickOfCardOnDashboard.onClickOfFavourite(status, doctorObject.getDocId(), favorite);
             }
         });

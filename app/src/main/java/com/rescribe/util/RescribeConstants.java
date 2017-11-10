@@ -166,6 +166,9 @@ public class RescribeConstants {
     public static final String DOCTOR_DATA_REQUEST = "doctor_request_info";
     public static final String BOTTOM_MENUS = "bottom_menu";
 
+    public static final int DOCTOR_DATA_REQUEST_CODE = 1221;
+    public static final String DOCTOR_DATA = "doctor_data";
+
 
     public static class USER_STATUS {
         public static final String ONLINE = "online";

@@ -186,7 +186,7 @@
                         android:id="@+id/docRatingBar"
                         style="@style/customRatingBar"
                         android:layout_width="wrap_content"
-                        android:layout_height="12dp"
+                        android:layout_height="9dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp3"
                         android:layout_toRightOf="@+id/doctorRating"

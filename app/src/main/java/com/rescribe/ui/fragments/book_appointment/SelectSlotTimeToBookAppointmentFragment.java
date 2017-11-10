@@ -243,7 +243,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(position);
                 mClinicName.setText("" + mSelectedClinicDataObject.getClinicName());
                 mDoctorFees.setText(
-                        "" + mSelectedClinicDataObject.getAmt());
+                        "" + mSelectedClinicDataObject.getAmount());
                 mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate);
             }
 

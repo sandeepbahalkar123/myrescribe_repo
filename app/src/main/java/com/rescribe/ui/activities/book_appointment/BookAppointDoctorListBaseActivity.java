@@ -178,7 +178,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
         if (mReceivedBookAppointmentBaseModel.getDoctorServicesModel() != null) {
             for (int i = 0; i < mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().size(); i++) {
-                if (!mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getDocName().contains("Dr.")) {
+                if (!mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getDocName().toLowerCase().contains("dr.")) {
                     mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).setDocName("Dr. " + mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getDocName());
                 }
             }

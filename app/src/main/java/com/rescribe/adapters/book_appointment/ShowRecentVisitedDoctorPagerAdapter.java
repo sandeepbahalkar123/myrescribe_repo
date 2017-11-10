@@ -57,7 +57,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup view, int position) {
-        View imageLayout = mInflater.inflate(R.layout.recently_visited_pager_item, view, false);
+        View imageLayout = mInflater.inflate(R.layout.dashboard_doctor_category_item, view, false);
         assert imageLayout != null;
 
         //---------

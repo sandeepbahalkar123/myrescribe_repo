@@ -234,7 +234,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
                 ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
                 mClinicName.setText("" + clinicData.getClinicName());
-                mDoctorFees.setText("" + clinicData.getAmt());
+                mDoctorFees.setText("" + clinicData.getAmount());
             }
 
             @Override

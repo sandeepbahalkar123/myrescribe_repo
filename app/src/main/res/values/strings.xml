@@ -291,7 +291,7 @@
     <string name="doctorId">DoctorId</string>
 
     <string name="do_operation">do_operation</string>
-    <string name="favorite">Favorite</string>
+    <string name="favorite">Favourite Doctors</string>
 
     <string name="reviews">Reviews</string>
     <string name="alerts">Alerts</string>
@@ -339,13 +339,12 @@
     <string name="sponsored_doctor">Sponsored Doctor</string>
     <string name="recently_visit_doctor">Recently Visited Doctor</string>
     <string name="practices_at_locations">Practices at $$ locations</string>
-
     <string name="home">Home</string>
-
     <string name="morning">Morning</string>
     <string name="afternoon">Afternoon</string>
     <string name="evening">Evening</string>
     <string name="night">Night</string>
+    <string name="book">Book</string>
 
 </resources>
 

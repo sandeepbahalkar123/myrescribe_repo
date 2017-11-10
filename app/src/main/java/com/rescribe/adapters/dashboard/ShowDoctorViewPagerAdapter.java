@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -26,6 +27,7 @@ import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -120,7 +122,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
         //-----THIS IS DONE TO SHOW COUNT OF FAVORITE(CUSTOM CREATED CATEGORY), ASSUME IT WILL COME LAST ALWAYS ----
         int size;
-        if (position == mDataList.size()-1) {
+        if (position == mDataList.size() - 1) {
             doctorCategory.setText(mContext.getString(R.string.favorite));
             size = mListSizeWithTypeMap.get(mContext.getString(R.string.favorite));
         } else {
@@ -232,15 +234,15 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             feesToPaid.setVisibility(View.VISIBLE);
             if (doctorObject.getClinicDataList().size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
-                feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmt());
-            }else{
+                feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
+            } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
 
             }
-            if(doctorObject.getTokenNo().equals("")){
+            if (doctorObject.getTokenNo().equals("")) {
                 bookAppointmentButton.setVisibility(View.VISIBLE);
                 tokenNo.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 tokenNo.setVisibility(View.VISIBLE);
                 bookAppointmentButton.setVisibility(View.INVISIBLE);
             }
@@ -262,15 +264,15 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             if (doctorObject.getClinicDataList().size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
-                feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmt());
-            }else{
+                feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
+            } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
 
             }
-            if(doctorObject.getTokenNo().equals("")){
+            if (doctorObject.getTokenNo().equals("")) {
                 bookAppointmentButton.setVisibility(View.VISIBLE);
                 tokenNo.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 tokenNo.setVisibility(View.VISIBLE);
                 bookAppointmentButton.setVisibility(View.INVISIBLE);
             }
@@ -301,7 +303,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 boolean status = doctorObject.getFavourite() ? false : true;
-                mOnClickOfCardOnDashboard.onClickOfFavourite(status, doctorObject.getDocId(), favorite);            }
+                mOnClickOfCardOnDashboard.onClickOfFavourite(status, doctorObject.getDocId(), favorite);
+            }
         });
 
         view.addView(imageLayout, 0);

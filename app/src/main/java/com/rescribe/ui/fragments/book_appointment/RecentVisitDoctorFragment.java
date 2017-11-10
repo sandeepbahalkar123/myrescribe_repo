@@ -38,6 +38,8 @@ import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorSpeciality;
+import com.rescribe.ui.activities.AppointmentActivity;
+import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.customesViews.CircleIndicator;
@@ -436,6 +438,18 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @Override
     public void setOnClickedOfViewPagerItem(Bundle bundleData) {
+        String value = bundleData.getString(getString(R.string.clicked_item_data_type_value));
+        if (value.equalsIgnoreCase(getString(R.string.my_appointments))) {
+            Intent intent = new Intent(getActivity(), AppointmentActivity.class);
+            startActivity(intent);
+        } else {
+            BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+            activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
+        }
+    }
+
+    @Override
+    public void setOnClickedOfCatTypeTotalCount(Bundle bundleData) {
         setOnClickOfDoctorSpeciality(bundleData);
     }
 }

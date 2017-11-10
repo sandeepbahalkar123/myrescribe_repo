@@ -56,6 +56,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     private static Bundle args;
 
     private DoctorDataHelper mDoctorDataHelper;
+    private String mClickedItemDataTypeValue;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -86,6 +87,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         mDoctorListView.setNestedScrollingEnabled(false);
         if (args != null) {
             mSelectedSpeciality = args.getString(getString(R.string.clicked_item_data));
+            mClickedItemDataTypeValue = args.getString(getString(R.string.clicked_item_data_type_value));
             BookAppointDoctorListBaseActivity.setToolBarTitle(mSelectedSpeciality, true);
         }
 
@@ -114,7 +116,20 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 isDataListViewVisible(false);
             } else {
                 //----This is done to filter list based on speciality selected---
-                ArrayList<DoctorList> doctorList = doctorServicesModel.filterDocListBySpeciality(mSelectedSpeciality);
+                ArrayList<DoctorList> doctorList;
+                //---category name like myAppointment,Sponserced doctor, recently visited doctor,[custom]favorite
+                if (getString(R.string.category_name).equalsIgnoreCase(mClickedItemDataTypeValue)) {
+                    //--clicked_item_data is favorite.
+                    if (getString(R.string.favorite).equalsIgnoreCase(mSelectedSpeciality)) {
+                        doctorList = doctorServicesModel.getFavouriteDocList();
+                    } else {
+                        //--clicked_item_data is categoryName like myAppointment,Sponserced doctor, recently visited doctor.
+                        doctorList = doctorServicesModel.getCategoryWiseDoctorList(mSelectedSpeciality);
+                    }
+                } else {
+                    //--- filter based on speciality of doctor.
+                    doctorList = doctorServicesModel.filterDocListBySpeciality(mSelectedSpeciality);
+                }
                 //-------
                 if (doctorList.size() == 0) {
                     isDataListViewVisible(false);

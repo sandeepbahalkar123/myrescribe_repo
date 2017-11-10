@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -70,6 +71,8 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         assert imageLayout != null;
 
         //---------
+        final LinearLayout mainCardParentLayout = (LinearLayout) imageLayout
+                .findViewById(R.id.mainCardParentLayout);
         final TextView doctorNameTextView = (TextView) imageLayout
                 .findViewById(R.id.doctorName);
         final TextView doctorCategory = (TextView) imageLayout
@@ -96,7 +99,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         final CustomTextView doctorCategoryType = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorCategoryType);
         //---------
-        DoctorList doctorListObject = mDoctorLists.get(position);
+        final DoctorList doctorListObject = mDoctorLists.get(position);
 
         if (doctorListObject.getDoctorImageUrl().equals(RescribeConstants.BLANK)) {
             String doctorName = doctorListObject.getDocName();
@@ -202,7 +205,18 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
+                b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
+                mOnViewPagerItemClickListener.setOnClickedOfCatTypeTotalCount(b);
+            }
+        });
+
+        mainCardParentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorListObject);
                 mOnViewPagerItemClickListener.setOnClickedOfViewPagerItem(b);
             }
         });
@@ -236,5 +250,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
     public interface OnViewPagerItemClickListener {
         void setOnClickedOfViewPagerItem(Bundle bundleData);
+
+        void setOnClickedOfCatTypeTotalCount(Bundle bundleData);
     }
 }

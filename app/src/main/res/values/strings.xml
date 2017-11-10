@@ -347,6 +347,7 @@
     <string name="afternoon">Afternoon</string>
     <string name="evening">Evening</string>
     <string name="night">Night</string>
+    <string name="category_name">category_name</string>
 
 </resources>
 

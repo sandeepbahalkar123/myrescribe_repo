@@ -27,13 +27,14 @@ import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by jeetal on 11/10/17.
  */
 
 public class ShowDoctorViewPagerAdapter extends PagerAdapter {
-
+    private Map<String, Integer> mListSizeWithTypeMap;
     private ArrayList<DoctorList> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
@@ -42,13 +43,14 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     private ColorGenerator mColorGenerator;
 
 
-    public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, OnClickOfCardOnDashboard mOnClickOfCardOnDashboard) {
+    public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, OnClickOfCardOnDashboard mOnClickOfCardOnDashboard, Map<String, Integer> dataMap) {
         this.mContext = context;
         this.mDataList = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
         this.mOnClickOfCardOnDashboard = mOnClickOfCardOnDashboard;
         mInflater = LayoutInflater.from(context);
+        this.mListSizeWithTypeMap = dataMap;
     }
 
     @Override
@@ -111,11 +113,23 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
 
         doctorCategoryType.setText(doctorObject.getCategorySpeciality());
-        sizeOfList.setText("" + doctorObject.getSizeOfList());
         doctorCategory.setText(doctorObject.getCategoryName());
         doctorNameTextView.setText(doctorObject.getDocName());
         doctorType.setText(doctorObject.getDegree());
         doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
+
+        //-----THIS IS DONE TO SHOW COUNT OF FAVORITE(CUSTOM CREATED CATEGORY), ASSUME IT WILL COME LAST ALWAYS ----
+        int size;
+        if (position == mDataList.size()-1) {
+            doctorCategory.setText(mContext.getString(R.string.favorite));
+            size = mListSizeWithTypeMap.get(mContext.getString(R.string.favorite));
+        } else {
+            doctorCategory.setText(doctorObject.getCategoryName());
+            size = mListSizeWithTypeMap.get(doctorObject.getCategoryName());
+        }
+        sizeOfList.setText("" + size);
+
+        //-----------
 
         if (doctorObject.getDoctorImageUrl().equals("")) {
             String doctorName = doctorObject.getDocName();
@@ -286,8 +300,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnClickOfCardOnDashboard.onClickOfFavourite(doctorObject.getFavourite(), doctorObject.getDocId());
-            }
+                boolean status = doctorObject.getFavourite() ? false : true;
+                mOnClickOfCardOnDashboard.onClickOfFavourite(status, doctorObject.getDocId(), favorite);            }
         });
 
         view.addView(imageLayout, 0);
@@ -313,7 +327,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
         void onClickOfCount(String nameOfCategoryType);
 
-        void onClickOfFavourite(boolean isFavourite, int docId);
+        void onClickOfFavourite(boolean isFavourite, int docId, ImageView favorite);
     }
 
 }

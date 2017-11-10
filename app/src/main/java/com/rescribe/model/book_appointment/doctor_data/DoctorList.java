@@ -8,7 +8,6 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.rescribe.model.dashboard_api.ClinicListData;
 
 
 //TODO : RESPONSE JSON IS GOING TO CHANGE, ONCE RESPONSE FINAL REMOVE UNWANTED VARIABLES.
@@ -45,9 +44,9 @@ public class DoctorList implements Parcelable {
 
     @SerializedName("clinicList")
     @Expose
-    private ArrayList<ClinicListData> clinicDataList = new ArrayList<>();
+    private ArrayList<ClinicData> clinicDataList = new ArrayList<>();
 
-    @SerializedName("favorite")
+    @SerializedName("favourite")
     @Expose
     private boolean favourite;
     @SerializedName("degree")
@@ -107,7 +106,7 @@ public class DoctorList implements Parcelable {
             instance.doctorImageUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.docSpeciality = ((String) in.readValue((String.class.getClassLoader())));
             instance.experience = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            in.readList(instance.clinicDataList, (ClinicListData.class.getClassLoader()));
+            in.readList(instance.clinicDataList, (ClinicData.class.getClassLoader()));
             instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.degree = ((String) in.readValue((String.class.getClassLoader())));
             instance.rating = ((Double) in.readValue((Double.class.getClassLoader())));
@@ -145,6 +144,7 @@ public class DoctorList implements Parcelable {
     public void setAddressOfDoctorString(String addressOfDoctorString) {
         this.addressOfDoctorString = addressOfDoctorString;
     }
+
     public int getSizeOfList() {
         return sizeOfList;
     }
@@ -259,11 +259,11 @@ public class DoctorList implements Parcelable {
         this.tokenNo = tokenNo;
     }
 
-    public ArrayList<ClinicListData> getClinicDataList() {
+    public ArrayList<ClinicData> getClinicDataList() {
         return clinicDataList;
     }
 
-    public void setClinicDataList(ArrayList<ClinicListData> clinicDataList) {
+    public void setClinicDataList(ArrayList<ClinicData> clinicDataList) {
         this.clinicDataList = clinicDataList;
     }
 

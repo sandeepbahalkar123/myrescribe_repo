@@ -6,20 +6,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import com.rescribe.R;
-import com.rescribe.model.dashboard_api.ClinicListData;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.ui.customesViews.CustomTextView;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListViewHolder> {
 
     private Context mContext;
-    private ArrayList<ClinicListData> mDataList;
+    private ArrayList<ClinicData> mDataList;
     private String mSelectedTimeSlot;
 
-    public TimeSlotAdapter(Context mContext, ArrayList<ClinicListData> dataList) {
+    public TimeSlotAdapter(Context mContext, ArrayList<ClinicData> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
     }
@@ -34,7 +37,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ListVi
 
     @Override
     public void onBindViewHolder(final ListViewHolder holder, int position) {
-        ClinicListData doctorObject = mDataList.get(position);
+        ClinicData doctorObject = mDataList.get(position);
         //TODO : NEED TO IMPLEMENT
         //  holder.timeSlot.setText(doctorObject.ge);
 

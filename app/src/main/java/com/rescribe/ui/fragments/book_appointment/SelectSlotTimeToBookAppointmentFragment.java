@@ -31,11 +31,10 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
-import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
-import com.rescribe.model.dashboard_api.ClinicListData;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.customesViews.CircularImageView;
@@ -107,7 +106,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private int mLastExpandedPosition = -1;
     private SelectSlotToBookAppointmentAdapter mSelectSlotToBookAppointmentAdapter;
     private String mSelectedTimeSlotDate;
-    private ClinicListData mSelectedClinicDataObject;
+    private ClinicData mSelectedClinicDataObject;
 
     public SelectSlotTimeToBookAppointmentFragment() {
         // Required empty public constructor
@@ -236,7 +235,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             mPremiumType.setVisibility(View.INVISIBLE);
         }
         //-------------------
-        ArrayAdapter<ClinicListData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
+        ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
         mClinicNameSpinner.setAdapter(arrayAdapter);
         mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -336,7 +335,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 //-----Show all doc clinic on map, copied from BookAppointFilteredDoctorListFragment.java----
                 //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
                 ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
-                ArrayList<ClinicListData> clinicNameList = mClickedDoctorObject.getClinicDataList();
+                ArrayList<ClinicData> clinicNameList = mClickedDoctorObject.getClinicDataList();
                 for (int i = 0; i < clinicNameList.size(); i++) {
                     DoctorList doctorListByClinic = new DoctorList();
                     doctorListByClinic = mClickedDoctorObject;

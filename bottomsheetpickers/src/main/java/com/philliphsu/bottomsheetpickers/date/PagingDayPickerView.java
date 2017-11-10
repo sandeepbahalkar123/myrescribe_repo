@@ -105,26 +105,24 @@ class PagingDayPickerView extends LinearLayout implements OnDateChangedListener,
         init(context);
     }
 
-    public PagingDayPickerView(Context context, DatePickerController controller) {
-        this(context, controller, false);
+    public PagingDayPickerView(Context context, DatePickerController controller, boolean isOutOfRangeInvisible) {
+        this(context, controller, false, isOutOfRangeInvisible);
     }
 
-    public PagingDayPickerView(Context context, DatePickerController controller, boolean themeDark) {
-        this(context, controller, themeDark, Utils.getThemeAccentColor(context));
+    public PagingDayPickerView(Context context, DatePickerController controller, boolean themeDark, boolean isOutOfRangeInvisible) {
+        this(context, controller, themeDark, Utils.getThemeAccentColor(context), isOutOfRangeInvisible);
     }
 
     public PagingDayPickerView(Context context, DatePickerController controller, boolean themeDark,
-                               int accentColor) {
+                               int accentColor, boolean isOutOfRangeInvisible) {
         super(context);
+
+        this.isOutOfRangeInvisible = isOutOfRangeInvisible;
         // keep these before init()
         mThemeDark = themeDark;
         mAccentColor = accentColor;
         init(context);
         setController(controller);
-    }
-
-    public void setOutOfRageInvisible(boolean isOutOfRangeInvisible){
-        this.isOutOfRangeInvisible = isOutOfRangeInvisible;
     }
 
     public void setController(DatePickerController controller) {
@@ -550,18 +548,26 @@ class PagingDayPickerView extends LinearLayout implements OnDateChangedListener,
                 mCurrentMonthDisplayed = month;
             }
 
-            if (isOutOfRangeInvisible) {
-                if (mDatePickerController.isAfterMax(year, month + 1, 1)) {
-                    mViewPager.setAllowedSwipeDirection(SwipeDirection.left);
-                    mNextButton.setEnabled(false);
-                } else if (mDatePickerController.isBeforeMin(year, month, 1)) {
-                    mViewPager.setAllowedSwipeDirection(SwipeDirection.right);
-                    mPreviousButton.setEnabled(false);
-                } else {
-                    mViewPager.setAllowedSwipeDirection(SwipeDirection.all);
-                    mNextButton.setEnabled(true);
-                    mPreviousButton.setEnabled(true);
-                }
+            disableViewPagerDirection(year, month);
+        }
+    }
+
+    private void disableViewPagerDirection(int year, int month) {
+        if (isOutOfRangeInvisible) {
+            if (mDatePickerController.isSameMinMax() && isOutOfRangeInvisible) {
+                mViewPager.setAllowedSwipeDirection(SwipeDirection.none);
+                mNextButton.setEnabled(false);
+                mPreviousButton.setEnabled(false);
+            } else if (mDatePickerController.isAfterMax(year, month + 1, 1)) {
+                mViewPager.setAllowedSwipeDirection(SwipeDirection.left);
+                mNextButton.setEnabled(false);
+            } else if (mDatePickerController.isBeforeMin(year, month, 1)) {
+                mViewPager.setAllowedSwipeDirection(SwipeDirection.right);
+                mPreviousButton.setEnabled(false);
+            } else {
+                mViewPager.setAllowedSwipeDirection(SwipeDirection.all);
+                mNextButton.setEnabled(true);
+                mPreviousButton.setEnabled(true);
             }
         }
     }

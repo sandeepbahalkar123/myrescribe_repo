@@ -256,8 +256,7 @@ public class DatePickerDialog extends BottomSheetPickerDialog implements
         }
 
         final Activity activity = getActivity();
-        mDayPickerView = new PagingDayPickerView(activity, this, mThemeDark, mAccentColor);
-        mDayPickerView.setOutOfRageInvisible(isOutOfRangeInvisible);
+        mDayPickerView = new PagingDayPickerView(activity, this, mThemeDark, mAccentColor, isOutOfRangeInvisible);
         mYearPickerView = new YearPickerView(activity, this);
         mYearPickerView.setTheme(activity, mThemeDark);
         mYearPickerView.setAccentColor(mAccentColor);
@@ -381,8 +380,8 @@ public class DatePickerDialog extends BottomSheetPickerDialog implements
         return view;
     }
 
-    public void setOutOfRageInvisible(boolean isOutOfRangeInvisible) {
-            this.isOutOfRangeInvisible = isOutOfRangeInvisible;
+    public void setOutOfRageInvisible() {
+            this.isOutOfRangeInvisible = true;
     }
 
     @Override

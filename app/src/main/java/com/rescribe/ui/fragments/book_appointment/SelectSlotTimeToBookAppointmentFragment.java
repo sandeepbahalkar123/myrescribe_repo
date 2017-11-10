@@ -35,6 +35,8 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
+import com.rescribe.model.doctor_connect.ChatDoctor;
+import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.customesViews.CircularImageView;
@@ -51,6 +53,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 /**
  * Created by jeetal on 31/10/17.
@@ -309,7 +313,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         unbinder.unbind();
     }
 
-    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite})
+    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -323,11 +327,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         now.get(Calendar.MONTH),
                         now.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.setAccentColor(getResources().getColor(R.color.tagColor));
-                datePickerDialog.setMinDate(Calendar.getInstance());
+
+                datePickerDialog.setMinDate(now);
+
                 Calendar calendar = Calendar.getInstance();
                 calendar.add(Calendar.DATE, mSelectedClinicDataObject.getApptScheduleLmtDays());
                 datePickerDialog.setMaxDate(calendar);
+
                 datePickerDialog.show(getFragmentManager(), getResources().getString(R.string.select_date_text));
+                datePickerDialog.setOutOfRageInvisible();
                 break;
             case R.id.bookAppointmentButton:
                 break;
@@ -350,8 +358,19 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 //--------
                 break;
             case R.id.favorite:
-                boolean status = mClickedDoctorObject.getFavourite() ? false : true;
-                mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
+                mDoctorDataHelper.setFavouriteDoctor(!mClickedDoctorObject.getFavourite(), mClickedDoctorObject.getDocId());
+                break;
+            case R.id.doChat:
+                ChatDoctor chatDoctor = new ChatDoctor();
+                chatDoctor.setId(mClickedDoctorObject.getDocId());
+                chatDoctor.setDoctorName(mClickedDoctorObject.getDocName());
+                chatDoctor.setOnlineStatus(ONLINE);
+                chatDoctor.setAddress(mClickedDoctorObject.getAddressOfDoctorString());
+                chatDoctor.setImageUrl(mClickedDoctorObject.getDoctorImageUrl());
+
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
+                startActivity(intent);
                 break;
         }
     }

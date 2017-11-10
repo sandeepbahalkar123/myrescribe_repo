@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.chat.uploadfile.ChatFileUploadModel;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -18,7 +19,6 @@ import net.gotev.uploadservice.UploadServiceBroadcastReceiver;
 
 import static com.rescribe.broadcast_receivers.ReplayBroadcastReceiver.MESSAGE_LIST;
 import static com.rescribe.services.MQTTService.SEND_MESSAGE;
-import static com.rescribe.ui.activities.ChatActivity.CHAT;
 
 public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
     AppDBHelper instance;
@@ -35,16 +35,14 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
         if (instance == null)
             instance = new AppDBHelper(context);
 
-        if (uploadInfo.getUploadId().length() > CHAT.length()) {
-            String prefix = uploadInfo.getUploadId().substring(0, 4);
-            if (prefix.equals(CHAT)) {
+        String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, context);
+
+        String prefix[] = uploadInfo.getUploadId().split("_");
+        if (prefix[0].equals(patientId)) {
                 instance.updateMessageUpload(uploadInfo.getUploadId(), RescribeConstants.FAILED);
             } else {
                 instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.FAILED);
             }
-        } else {
-            instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.FAILED);
-        }
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(uploadInfo.getNotificationID());
@@ -56,9 +54,10 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
         if (instance == null)
             instance = new AppDBHelper(context);
 
-        if (uploadInfo.getUploadId().length() > CHAT.length()) {
-            String prefix = uploadInfo.getUploadId().substring(0, 4);
-            if (prefix.equals(CHAT)) {
+        String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, context);
+
+        String prefix[] = uploadInfo.getUploadId().split("_");
+        if (prefix[0].equals(patientId)) {
 
                 MQTTMessage mqttMessage = instance.getMessageUploadById(uploadInfo.getUploadId());
 
@@ -80,9 +79,6 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
             } else {
                 instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
             }
-        } else {
-            instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
-        }
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(uploadInfo.getNotificationID());

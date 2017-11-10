@@ -63,7 +63,7 @@ public class DoctorList implements Parcelable {
     private String waitingTime = "";
     @SerializedName("tokenNo")
     @Expose
-    private String tokenNo;
+    private String tokenNo = "";
     @SerializedName("aboutDoctor")
     @Expose
     private String aboutDoctor = "";

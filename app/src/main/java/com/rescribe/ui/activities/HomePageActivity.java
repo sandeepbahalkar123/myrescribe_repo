@@ -20,8 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -60,18 +58,14 @@ import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import net.gotev.uploadservice.UploadService;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
-
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
@@ -92,7 +86,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     ViewPager viewPagerDoctorItem;
     @BindView(R.id.menuOptionsListView)
     RecyclerView mMenuOptionsListView;
-
     @BindView(R.id.menuIcon)
     ImageView menuIcon;
     private Context mContext;

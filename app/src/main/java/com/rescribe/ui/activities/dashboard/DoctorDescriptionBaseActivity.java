@@ -86,7 +86,6 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
             case R.id.bookAppointmentBackButton:
                 onBackPressed();
                 break;
-
         }
     }
 
@@ -118,7 +117,7 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    public void replaceDoctorListById(String docId, DoctorList mClickedDoctorObject) {
+    public void replaceDoctorListById(int docId, DoctorList mClickedDoctorObject) {
         doctorObject.setFavourite(mClickedDoctorObject.getFavourite());
         if (doctorList.isEmpty())
             doctorList.add(doctorObject);

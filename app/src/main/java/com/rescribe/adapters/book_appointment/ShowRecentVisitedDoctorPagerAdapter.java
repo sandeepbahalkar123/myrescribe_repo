@@ -3,7 +3,6 @@ package com.rescribe.adapters.book_appointment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -21,8 +20,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -91,12 +90,14 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.imageURL);
         final CustomTextView doctorAppointmentDate = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorAppointmentDate);
+
         final ImageView favorite = (ImageView) imageLayout
                 .findViewById(R.id.favorite);
+
         final CustomTextView doctorCategoryType = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorCategoryType);
         //---------
-        DoctorList doctorListObject = mDoctorLists.get(position);
+        final DoctorList doctorListObject = mDoctorLists.get(position);
 
         if (doctorListObject.getDoctorImageUrl().equals(RescribeConstants.BLANK)) {
             String doctorName = doctorListObject.getDocName();
@@ -136,6 +137,15 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         //---------
         if (doctorListObject.getFavourite()) {
             favorite.setVisibility(View.VISIBLE);
+
+            favorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    doctorListObject.setFavourite(!doctorListObject.getFavourite());
+                    mOnViewPagerItemClickListener.onFavoriteClick(doctorListObject, favorite);
+                }
+            });
+
         } else {
             favorite.setVisibility(View.GONE);
         }
@@ -236,5 +246,6 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
     public interface OnViewPagerItemClickListener {
         void setOnClickedOfViewPagerItem(Bundle bundleData);
+        void onFavoriteClick(DoctorList doctorListObject, ImageView favorite);
     }
 }

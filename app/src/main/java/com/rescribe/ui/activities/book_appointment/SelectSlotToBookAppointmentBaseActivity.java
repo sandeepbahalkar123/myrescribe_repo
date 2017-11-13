@@ -58,9 +58,7 @@ public class SelectSlotToBookAppointmentBaseActivity  extends AppCompatActivity 
     }
 
     private void initialize() {
-
         doctorList = new ArrayList<>();
-
         doctorObject = getIntent().getExtras().getParcelable(getString(R.string.clicked_item_data));
         showlocation.setVisibility(View.VISIBLE);
         locationTextView.setVisibility(View.GONE);

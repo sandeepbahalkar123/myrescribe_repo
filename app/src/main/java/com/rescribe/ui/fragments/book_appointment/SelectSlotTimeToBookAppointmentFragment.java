@@ -283,10 +283,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     mClickedDoctorObject.setFavourite(status);
                     if (getActivity() instanceof BookAppointDoctorListBaseActivity) {
                         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
                     } else if (getActivity() instanceof DoctorDescriptionBaseActivity) {
                         DoctorDescriptionBaseActivity activity = (DoctorDescriptionBaseActivity) getActivity();
-                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
                     }else if (getActivity() instanceof SelectSlotToBookAppointmentBaseActivity) {
                         SelectSlotToBookAppointmentBaseActivity activity = (SelectSlotToBookAppointmentBaseActivity) getActivity();
                         activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);

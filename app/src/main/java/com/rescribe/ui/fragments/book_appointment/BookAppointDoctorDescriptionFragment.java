@@ -133,7 +133,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         return mRootView;
     }
 
-    public void setFavorite(boolean favorite){
+    public void setFavorite(boolean favorite) {
         if (favorite) {
             mFavorite.setImageResource(R.drawable.fav_icon);
         } else {
@@ -290,23 +290,21 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
-                    boolean status = mClickedDoctorObject.getFavourite() ? false : true;
+                    boolean status = !mClickedDoctorObject.getFavourite();
                     mClickedDoctorObject.setFavourite(status);
                     if (getActivity() instanceof BookAppointDoctorListBaseActivity) {
                         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
                     } else if (getActivity() instanceof DoctorDescriptionBaseActivity) {
                         DoctorDescriptionBaseActivity activity = (DoctorDescriptionBaseActivity) getActivity();
-                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
-                    } else if (getActivity() instanceof ShowMoreInfoBaseActivity){
+                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                    } else if (getActivity() instanceof ShowMoreInfoBaseActivity) {
                         ShowMoreInfoBaseActivity activity = (ShowMoreInfoBaseActivity) getActivity();
-                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
                     }
-                    if (mClickedDoctorObject.getFavourite()) {
-                        mFavorite.setImageResource(R.drawable.fav_icon);
-                    } else {
-                        mFavorite.setImageResource(R.drawable.result_line_heart_fav);
-                    }
+
+                    setFavorite(mClickedDoctorObject.getFavourite());
+
                 }
                 CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;

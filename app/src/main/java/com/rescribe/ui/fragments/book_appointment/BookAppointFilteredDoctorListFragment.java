@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
@@ -258,5 +260,21 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         }
     }
 
+    @Override
+    public void onClickOfDoctorFavorite(DoctorList doctorList, ImageView favoriteView) {
+        for (DoctorList doctorL : receivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList()) {
+            if (doctorL.getDocId() == doctorList.getDocId()) {
+                doctorL.setFavourite(doctorList.getFavourite());
+            }
+        }
+
+        // apicall
+
+        if (doctorList.getFavourite()) {
+            favoriteView.setImageDrawable(ContextCompat.getDrawable(favoriteView.getContext(), R.drawable.result_heart_fav));
+        } else {
+            favoriteView.setImageDrawable(ContextCompat.getDrawable(favoriteView.getContext(), R.drawable.result_line_heart_fav));
+        }
+    }
 
 }

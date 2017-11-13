@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -28,22 +29,25 @@ import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSpecialistBookAppointmentAdapter;
-import com.rescribe.adapters.book_appointment.ShowRecentVisitedDoctorPagerAdapter;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
+import com.rescribe.adapters.book_appointment.ShowRecentVisitedDoctorPagerAdapter;
 import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
-import com.rescribe.model.book_appointment.doctor_data.DoctorSpeciality;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
+import com.rescribe.ui.activities.book_appointment.ShowMoreInfoBaseActivity;
+import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -437,6 +441,34 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @Override
     public void setOnClickedOfViewPagerItem(Bundle bundleData) {
         setOnClickOfDoctorSpeciality(bundleData);
+    }
+
+    @Override
+    public void onFavoriteClick(DoctorList doctorListObject, ImageView favorite) {
+
+        // apicall
+
+        if (doctorListObject.getFavourite()) {
+            favorite.setImageResource(R.drawable.fav_icon);
+        } else {
+            favorite.setImageResource(R.drawable.result_line_heart_fav);
+        }
+    }
+
+    @Override
+    public void onClickOfDoctorFavorite(DoctorList doctorList, ImageView favoriteView) {
+
+        // apicall
+    }
+
+
+
+    private void setFavourite(DoctorList doctorL, ImageView favoriteView){
+        if (doctorL.getFavourite()) {
+            favoriteView.setImageDrawable(ContextCompat.getDrawable(favoriteView.getContext(), R.drawable.result_heart_fav));
+        } else {
+            favoriteView.setImageDrawable(ContextCompat.getDrawable(favoriteView.getContext(), R.drawable.result_line_heart_fav));
+        }
     }
 }
 

@@ -475,14 +475,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         }
     }
 
-    @Override
-    public void onClickOfDoctorFavorite(DoctorList doctorList, ImageView favoriteView) {
-
-        // apicall
-    }
-
-
-
     private void setFavourite(DoctorList doctorL, ImageView favoriteView){
         if (doctorL.getFavourite()) {
             favoriteView.setImageDrawable(ContextCompat.getDrawable(favoriteView.getContext(), R.drawable.result_heart_fav));

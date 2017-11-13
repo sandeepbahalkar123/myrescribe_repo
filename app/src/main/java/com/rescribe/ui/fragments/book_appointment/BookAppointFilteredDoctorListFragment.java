@@ -298,21 +298,4 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         }
     }
 
-    @Override
-    public void onClickOfDoctorFavorite(DoctorList doctorList, ImageView favoriteView) {
-        for (DoctorList doctorL : receivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList()) {
-            if (doctorL.getDocId() == doctorList.getDocId()) {
-                doctorL.setFavourite(doctorList.getFavourite());
-            }
-        }
-
-        // apicall
-
-        if (doctorList.getFavourite()) {
-            favoriteView.setImageDrawable(ContextCompat.getDrawable(favoriteView.getContext(), R.drawable.result_heart_fav));
-        } else {
-            favoriteView.setImageDrawable(ContextCompat.getDrawable(favoriteView.getContext(), R.drawable.result_line_heart_fav));
-        }
-    }
-
 }

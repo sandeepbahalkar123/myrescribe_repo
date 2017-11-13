@@ -156,8 +156,10 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         holder.favoriteView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doctorObject.setFavourite(!doctorObject.getFavourite());
-                mOnFilterDocListClickListener.onClickOfDoctorFavorite(doctorObject, holder.favoriteView);
+                Bundle b = new Bundle();
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.favorite));
+                mOnFilterDocListClickListener.onClickOfDoctorRowItem(b);
             }
         });
     }
@@ -207,7 +209,6 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
     public interface OnFilterDocListClickListener {
         void onClickOfDoctorRowItem(Bundle bundleData);
-        void onClickOfDoctorFavorite(DoctorList doctorList, ImageView favoriteView);
     }
 
 }

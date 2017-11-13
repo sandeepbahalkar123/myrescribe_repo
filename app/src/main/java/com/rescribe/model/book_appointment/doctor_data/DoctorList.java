@@ -46,7 +46,7 @@ public class DoctorList implements Parcelable {
     @Expose
     private ArrayList<ClinicData> clinicDataList = new ArrayList<>();
 
-    @SerializedName("favourite")
+    @SerializedName("favorite")
     @Expose
     private boolean favourite;
     @SerializedName("degree")

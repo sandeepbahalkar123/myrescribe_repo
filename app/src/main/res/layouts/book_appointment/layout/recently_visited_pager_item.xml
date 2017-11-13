@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    app:cardUseCompatPadding="true"
+    android:background="@drawable/rounded_rectangle_3"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/mainCardParentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/card"
         android:orientation="vertical">
 
         <LinearLayout
@@ -213,4 +214,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</android.support.v7.widget.CardView>

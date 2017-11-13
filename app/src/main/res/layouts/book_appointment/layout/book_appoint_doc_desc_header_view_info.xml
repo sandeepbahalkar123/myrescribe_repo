@@ -13,7 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/doc_detail_header_bg"
+            android:background="@drawable/layer_3_3_x"
             android:orientation="vertical"
             android:paddingBottom="@dimen/dp5"
             android:paddingLeft="@dimen/dp10"
@@ -186,7 +186,7 @@
                         android:id="@+id/docRatingBar"
                         style="@style/customRatingBar"
                         android:layout_width="wrap_content"
-                        android:layout_height="12dp"
+                        android:layout_height="9dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp3"
                         android:layout_toRightOf="@+id/doctorRating"

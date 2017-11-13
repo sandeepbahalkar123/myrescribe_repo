@@ -238,7 +238,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             feesToPaid.setVisibility(View.VISIBLE);
             if (doctorObject.getClinicDataList().size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
-                feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmt());
+                feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
+
             } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
 
@@ -268,7 +269,9 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             if (doctorObject.getClinicDataList().size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
-                feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmt());
+
+                feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
+
             } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
 

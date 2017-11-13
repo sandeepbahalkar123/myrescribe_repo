@@ -53,32 +53,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible">
-
+<LinearLayout
+    android:background="#05163B"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
         <FrameLayout
-
+            android:background="@drawable/dark_bg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="220dp">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpager"
+                android:layout_marginTop="32dp"
                 android:layout_width="match_parent"
-                android:layout_height="170dp" />
+                android:layout_height="160dp" />
 
-            <com.rescribe.ui.customesViews.CircleIndicator
-                android:id="@+id/circleIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="@dimen/dp12"
-                app:ci_height="6dp"
-                app:ci_width="6dp"
-                app:ci_margin="1dp"
-                app:ci_animator="@anim/indicator_no_animator"
-                app:ci_drawable="@drawable/black_radius"
-                app:ci_drawable_unselected="@drawable/white_radius" />
 
         </FrameLayout>
-
+</LinearLayout>
         <include
             layout="@layout/book_appointment_recyclerview"
             android:layout_width="match_parent"

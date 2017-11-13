@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp16"
-        android:textColor="@color/black"
+        android:textColor="@color/rating_color"
         android:textSize="@dimen/sp16"
         app:customFont="@string/roboto_bold" />
 
@@ -27,7 +27,7 @@
         android:id="@+id/ratingBar"
         style="@style/customRatingBar"
         android:layout_width="wrap_content"
-        android:layout_height="12dp"
+        android:layout_height="9dp"
         android:layout_marginLeft="@dimen/dp16" />
 
     <com.rescribe.ui.customesViews.CustomTextView

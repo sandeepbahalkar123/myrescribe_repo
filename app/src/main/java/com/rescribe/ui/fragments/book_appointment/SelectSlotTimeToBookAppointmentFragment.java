@@ -246,6 +246,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             mPremiumType.setVisibility(View.INVISIBLE);
         }
         //-------------------
+
         if (mClickedDoctorObject.getClinicDataList().size() > 0) {
             mClinicNameSpinnerParentLayout.setVisibility(View.VISIBLE);
 
@@ -257,9 +258,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(position);
                     mClinicName.setText("" + mSelectedClinicDataObject.getClinicName());
                     mDoctorFees.setText(
-                            "" + mSelectedClinicDataObject.getAmt());
+                            "" + mSelectedClinicDataObject.getAmount());
                     mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate);
                 }
+
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {

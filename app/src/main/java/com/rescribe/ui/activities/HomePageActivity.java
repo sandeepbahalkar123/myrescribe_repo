@@ -111,7 +111,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     int Min = c.get(Calendar.MINUTE);
     private ShowDoctorViewPagerAdapter mShowDoctorViewPagerAdapter;
     private ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter;
-
     DoctorDataHelper mDoctorDataHelper;
     ArrayList<DoctorList> mDashboardDoctorListsToShowDashboardDoctor;
     int mClickedDoctorID;

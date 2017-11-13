@@ -188,7 +188,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.override(mImageSize, mImageSize);
-        requestOptions.placeholder(R.drawable.layer_12);
+
 
         Glide.with(getActivity())
                 .load(mClickedDoctorObject.getDoctorImageUrl())
@@ -260,10 +260,11 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                    ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
-                    mClinicName.setText("" + clinicData.getClinicName());
-                    mDoctorFees.setText("" + clinicData.getAmt());
-                }
+                ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
+                mClinicName.setText("" + clinicData.getClinicName());
+                mDoctorFees.setText("" + clinicData.getAmount());
+            }
+
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {

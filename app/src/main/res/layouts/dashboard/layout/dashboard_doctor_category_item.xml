@@ -5,10 +5,11 @@
     android:id="@+id/dashBoardCard"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardUseCompatPadding="true"
-    android:background="@drawable/rounded_rectangle_3">
+    android:background="@drawable/rounded_rectangle_3"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
+        android:id="@+id/mainCardParentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -65,10 +66,14 @@
                     android:layout_marginTop="@dimen/dp9"
                     android:background="@drawable/rounded_rectangle_8"
                     android:drawableLeft="@drawable/premium_icon"
-                    android:drawablePadding="@dimen/dp4"
+                    android:drawablePadding="@dimen/dp2"
                     android:gravity="center"
+                    android:paddingBottom="@dimen/dp4"
+                    android:paddingEnd="@dimen/dp4"
                     android:paddingLeft="@dimen/dp4"
                     android:paddingRight="@dimen/dp4"
+                    android:paddingStart="@dimen/dp4"
+                    android:paddingTop="@dimen/dp4"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp10"
                     app:customFont="@string/roboto_medium"
@@ -201,7 +206,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dp6"
                 android:text="4.5"
-                android:textColor="@color/map_green"
+                android:textColor="@color/rating_color"
                 android:textSize="@dimen/sp13"
                 app:customFont="@string/roboto_regular" />
 
@@ -209,8 +214,9 @@
                 android:id="@+id/ratingBar"
                 style="@style/customRatingBar"
                 android:layout_width="wrap_content"
-                android:layout_height="12dp"
+                android:layout_height="9dp"
                 android:layout_marginLeft="@dimen/dp6"
+                android:layout_marginTop="@dimen/dp4"
                 android:layout_toRightOf="@id/doctorRating"
                 android:stepSize="0.5" />
 

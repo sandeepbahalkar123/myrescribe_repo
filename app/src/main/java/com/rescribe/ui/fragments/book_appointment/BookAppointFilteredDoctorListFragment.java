@@ -22,6 +22,8 @@ import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
+import com.rescribe.ui.activities.AppointmentActivity;
+import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.util.CommonMethods;
@@ -57,6 +59,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
 
     private DoctorDataHelper mDoctorDataHelper;
     private String mClickedItemDataTypeValue;
+    private int mClickedDocIdToUpdateFavoriteStatus;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -137,7 +140,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                     mReceivedList = doctorList;
 
                     isDataListViewVisible(true);
-                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), doctorList, this, this);
+                    mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), mReceivedList, this, this);
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                     mDoctorListView.setLayoutManager(layoutManager);
                     mDoctorListView.setHasFixedSize(true);
@@ -158,8 +161,19 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
 
         switch (mOldDataTag) {
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
+                BookAppointDoctorListBaseActivity baseActivity = (BookAppointDoctorListBaseActivity) getActivity();
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
-                CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+                CommonMethods.showToast(baseActivity, temp.getCommonRespose().getStatusMessage());
+                for (DoctorList dataObject :
+                        mReceivedList) {
+                    if (dataObject.getDocId() == mClickedDocIdToUpdateFavoriteStatus) {
+                        dataObject.setFavourite(dataObject.getFavourite() ? false : true);
+                        baseActivity.replaceDoctorListById("" + mClickedDocIdToUpdateFavoriteStatus, dataObject);
+                        mBookAppointFilteredDocListAdapter.notifyDataSetChanged();
+                        break;
+                    }
+                }
+
                 break;
             case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
@@ -232,11 +246,20 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     @Override
     public void onClickOfDoctorRowItem(Bundle bundleData) {
         if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.doctor_details))) {
-            bundleData.putString(getString(R.string.toolbarTitle), mSelectedSpeciality);
-            BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-            activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
+            DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
+
+            if (mClickedDoctorObject.getCategoryName().equalsIgnoreCase(getString(R.string.my_appointments))) {
+                Intent intent = new Intent(getActivity(), AppointmentActivity.class);
+                startActivity(intent);
+            } else {
+                bundleData.putString(getString(R.string.toolbarTitle), mSelectedSpeciality);
+                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+                activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
+            }
+
         } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {
             DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
+            mClickedDocIdToUpdateFavoriteStatus = mClickedDoctorObject.getDocId();
             boolean status = mClickedDoctorObject.getFavourite() ? false : true;
             mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
         }

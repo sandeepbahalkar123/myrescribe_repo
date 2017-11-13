@@ -51,6 +51,7 @@
                     android:layout_toRightOf="@id/doctorCategoryVisit"
                     android:background="@drawable/show_count_bg"
                     android:gravity="center"
+                    android:paddingBottom="@dimen/dp4"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp12"
                     app:customFont="@string/roboto_bold"

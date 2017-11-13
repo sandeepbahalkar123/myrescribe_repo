@@ -480,23 +480,33 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
 
-    public void replaceDoctorListById(String docId, DoctorList docObjectToReplace) {
+    public void replaceDoctorListById(String docId, DoctorList docObjectToReplace, String objectUpdateType) {
         DoctorServicesModel doctorServicesModel = mReceivedBookAppointmentBaseModel.getDoctorServicesModel();
         if (doctorServicesModel != null) {
-            ArrayList<DoctorList> doctorList = doctorServicesModel.getDoctorList();
-            int positionToReplaceObject = -1;
-            for (int i = 0; i < doctorList.size(); i++) {
-                DoctorList tempObject = doctorList.get(i);
+            ArrayList<DoctorList> tempDoctorList = doctorServicesModel.getDoctorList();
+            ArrayList<DoctorList> newListToUpdateTempDoctorList = new ArrayList<>(tempDoctorList);
+            boolean isUpdated = false;
+            for (int i = 0; i < tempDoctorList.size(); i++) {
+                DoctorList tempObject = tempDoctorList.get(i);
                 if (docId.equalsIgnoreCase("" + tempObject.getDocId())) {
-                    positionToReplaceObject = i;
-                    break;
+                    isUpdated = true;
+                    newListToUpdateTempDoctorList.set(i, docObjectToReplace);
                 }
             }
-            if (positionToReplaceObject != -1) {
-                doctorList.set(positionToReplaceObject, docObjectToReplace);
-                doctorServicesModel.setDoctorList(doctorList);
+
+            if (isUpdated) {
+                doctorServicesModel.setDoctorList(newListToUpdateTempDoctorList);
                 mReceivedBookAppointmentBaseModel.setDoctorServicesModel(doctorServicesModel);
             }
+
+            /*if (positionToReplaceObject.size() > 0) {
+                for (Integer position :
+                        positionToReplaceObject) {
+                    doctorList.set(position, docObjectToReplace);
+                    doctorServicesModel.setDoctorList(doctorList);
+                    mReceivedBookAppointmentBaseModel.setDoctorServicesModel(doctorServicesModel);
+                }
+            }*/
         }
     }
 }

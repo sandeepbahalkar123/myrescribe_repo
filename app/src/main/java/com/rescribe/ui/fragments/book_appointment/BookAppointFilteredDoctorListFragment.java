@@ -2,6 +2,7 @@ package com.rescribe.ui.fragments.book_appointment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -168,12 +169,10 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                         mReceivedList) {
                     if (dataObject.getDocId() == mClickedDocIdToUpdateFavoriteStatus) {
                         dataObject.setFavourite(dataObject.getFavourite() ? false : true);
-                        baseActivity.replaceDoctorListById("" + mClickedDocIdToUpdateFavoriteStatus, dataObject);
-                        mBookAppointFilteredDocListAdapter.notifyDataSetChanged();
-                        break;
+                        baseActivity.replaceDoctorListById("" + mClickedDocIdToUpdateFavoriteStatus, dataObject, getString(R.string.object_update_common_to_doc));
                     }
                 }
-
+                mBookAppointFilteredDocListAdapter.notifyDataSetChanged();
                 break;
             case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
@@ -236,7 +235,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                     }
                 }
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
-                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
+                 intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
+             //   intent.putParcelableArrayListExtra(getString(R.string.doctor_data), new ArrayList<DoctorList>());
                 intent.putExtra(getString(R.string.toolbarTitle), mSelectedSpeciality);
                 startActivity(intent);
                 break;

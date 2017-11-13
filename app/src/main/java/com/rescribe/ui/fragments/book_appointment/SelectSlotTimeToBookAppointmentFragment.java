@@ -305,7 +305,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     boolean status = mClickedDoctorObject.getFavourite() ? false : true;
                     mClickedDoctorObject.setFavourite(status);
                     BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                    activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                    activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject,getString(R.string.object_update_common_to_doc));
                     if (mClickedDoctorObject.getFavourite()) {
                         mFavorite.setImageResource(R.drawable.fav_icon);
                     } else {

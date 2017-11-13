@@ -588,7 +588,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     DoctorList doctorListById = mDashboardDataModel.findDoctorListById("" + mClickedDoctorID);
                     boolean status = doctorListById.getFavourite() ? false : true;
                     doctorListById.setFavourite(status);
-                    mDashboardDataModel.replaceDoctorListById("" + doctorListById.getDocId(), doctorListById);
+                    mDashboardDataModel.replaceDoctorListById("" + doctorListById.getDocId(), doctorListById, getString(R.string.object_update_common_to_doc));
                     if (mCLickedFavDocIDImageView != null) {
                         if (doctorListById.getFavourite()) {
                             mCLickedFavDocIDImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.dashboard_heart_fav));

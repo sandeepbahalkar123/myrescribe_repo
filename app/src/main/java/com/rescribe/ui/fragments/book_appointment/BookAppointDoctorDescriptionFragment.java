@@ -260,10 +260,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
-                mClinicName.setText("" + clinicData.getClinicName());
-                mDoctorFees.setText("" + clinicData.getAmount());
-            }
+                    ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
+                    mClinicName.setText("" + clinicData.getClinicName());
+                    mDoctorFees.setText("" + clinicData.getAmount());
+                }
 
 
                 @Override
@@ -314,7 +314,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                     boolean status = mClickedDoctorObject.getFavourite() ? false : true;
                     mClickedDoctorObject.setFavourite(status);
                     BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                    activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                    activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject, getString(R.string.object_update_common_to_doc));
                     if (mClickedDoctorObject.getFavourite()) {
                         mFavorite.setImageResource(R.drawable.fav_icon);
                     } else {

@@ -472,7 +472,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     public static void setToolBarTitle(String toolbartitle, boolean isLocationVisible) {
-        title.setText(toolbartitle);
+        title.setText("" + toolbartitle);
         if (isLocationVisible) {
             locationTextView.setVisibility(View.VISIBLE);
             showlocation.setVisibility(View.GONE);
@@ -526,15 +526,6 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                 doctorServicesModel.setDoctorList(newListToUpdateTempDoctorList);
                 mReceivedBookAppointmentBaseModel.setDoctorServicesModel(doctorServicesModel);
             }
-
-            /*if (positionToReplaceObject.size() > 0) {
-                for (Integer position :
-                        positionToReplaceObject) {
-                    doctorList.set(position, docObjectToReplace);
-                    doctorServicesModel.setDoctorList(doctorList);
-                    mReceivedBookAppointmentBaseModel.setDoctorServicesModel(doctorServicesModel);
-                }
-            }*/
         }
     }
 }

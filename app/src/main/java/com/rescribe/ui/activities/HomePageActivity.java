@@ -87,7 +87,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private static final long ADD_ACCOUNT = 122;
     private static final String TAG = "HomePage";
 
-    private int pagerPosition = 0;
+    //private int pagerPosition = 0;
 
     @BindView(R.id.viewpager)
     ViewPager viewpager;
@@ -550,8 +550,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private void setUpViewPager() {
         //----------
 
-        ArrayList<DoctorList> dashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
-
         Map<String, Integer> dataMap = new LinkedHashMap<>();
         ArrayList<DoctorList> myAppoint = mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.my_appointments));
         ArrayList<DoctorList> sponsered = mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
@@ -563,14 +561,25 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         dataMap.put(getString(R.string.recently_visited_doctor), recently_visit_doctor.size());
         dataMap.put(getString(R.string.favorite), favoriteList.size());
 
-        dashboardDoctorListsToShowDashboardDoctor.add(myAppoint.get(0));
-        dashboardDoctorListsToShowDashboardDoctor.add(sponsered.get(0));
-        dashboardDoctorListsToShowDashboardDoctor.add(recently_visit_doctor.get(0));
-        dashboardDoctorListsToShowDashboardDoctor.add(favoriteList.get(0));
+        ArrayList<DoctorList> mergeList = new ArrayList<>();
 
-        mDashboardDoctorListsToShowDashboardDoctor.addAll(dashboardDoctorListsToShowDashboardDoctor);
+        if (myAppoint.size() > 0)
+            mergeList.add(myAppoint.get(0));
 
-        mShowDoctorViewPagerAdapter = new ShowDoctorViewPagerAdapter(this, dashboardDoctorListsToShowDashboardDoctor, this, dataMap);
+        if (sponsered.size() > 0)
+            mergeList.add(sponsered.get(0));
+
+        if (recently_visit_doctor.size() > 0)
+            mergeList.add(recently_visit_doctor.get(0));
+
+        if (favoriteList.size() > 0)
+            mergeList.add(favoriteList.get(0));
+
+        //------------
+
+        mDashboardDoctorListsToShowDashboardDoctor.addAll(mergeList);
+
+        mShowDoctorViewPagerAdapter = new ShowDoctorViewPagerAdapter(this, mergeList, this, dataMap);
         viewPagerDoctorItem.setAdapter(mShowDoctorViewPagerAdapter);
         //-----------
 
@@ -609,12 +618,12 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             }
         });
 
-        viewPagerDoctorItem.postDelayed(new Runnable() {
+       /* viewPagerDoctorItem.postDelayed(new Runnable() {
             @Override
             public void run() {
                 viewPagerDoctorItem.setCurrentItem(pagerPosition);
             }
-        }, 300);
+        }, 300);*/
 
     }
 
@@ -650,7 +659,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     @Override
     public void onClickOfDashboardDoctorItem(String mDashBoardCardName) {
 
-        pagerPosition = viewPagerDoctorItem.getCurrentItem();
+       // pagerPosition = viewPagerDoctorItem.getCurrentItem();
         if (mDashBoardCardName.equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
             startActivity(intent);
@@ -674,18 +683,19 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
             intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.my_appointments));
             intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.my_appointments)));
-            startActivity(intent);
+            startActivityForResult(intent,RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
         } else if (nameOfCategoryType.equalsIgnoreCase(getString(R.string.favorite))) { // favorite card name
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
             intent.putExtra(getString(R.string.toolbarTitle), nameOfCategoryType);
             intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getFavouriteDocList());
-            startActivity(intent);
+            startActivityForResult(intent,RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
         } else {
             // for sponcered and recent visited doctor list.
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
             intent.putExtra(getString(R.string.toolbarTitle), nameOfCategoryType);
             intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(nameOfCategoryType));
-            startActivity(intent);
+            startActivityForResult(intent,RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+
         }
     }
 

@@ -66,6 +66,7 @@ public class MyAppointmentDashBoardAdapter extends RecyclerView.Adapter<MyAppoin
         holder.doctorName.setText(doctorObject.getDocName());
         holder.doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
         holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
+        holder.aboutDoctor.setText(doctorObject.getDegree());
 /////
         if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
             holder.ruppessIcon.setVisibility(View.INVISIBLE);
@@ -80,7 +81,6 @@ public class MyAppointmentDashBoardAdapter extends RecyclerView.Adapter<MyAppoin
                 holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
                 holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
             }
-
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
 
             if (doctorObject.getClinicDataList().size() == 1) {
@@ -89,9 +89,12 @@ public class MyAppointmentDashBoardAdapter extends RecyclerView.Adapter<MyAppoin
                holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
 
             } else {
-                if (doctorObject.getClinicDataList().size() > 0)
-                    holder.doctorAddress.setText(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
-                holder.clinicName.setVisibility(View.INVISIBLE);
+                if (doctorObject.getClinicDataList().size() > 0) {
+                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                    holder.doctorAddress.setText(locationString);
+                    holder.clinicName.setVisibility(View.GONE);
+                }
             }
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
             holder.appointmentDate.setVisibility(View.INVISIBLE);
@@ -121,8 +124,12 @@ public class MyAppointmentDashBoardAdapter extends RecyclerView.Adapter<MyAppoin
 
             } else {
                 if (doctorObject.getClinicDataList().size() > 0)
-                    holder.doctorAddress.setText(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
-                holder.clinicName.setVisibility(View.INVISIBLE);
+                {
+                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                    holder.doctorAddress.setText(locationString);
+                    holder.clinicName.setVisibility(View.GONE);
+                }
             }
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
             holder.appointmentDate.setVisibility(View.INVISIBLE);
@@ -143,7 +150,6 @@ public class MyAppointmentDashBoardAdapter extends RecyclerView.Adapter<MyAppoin
                 holder.tokenNo.setVisibility(View.VISIBLE);
                 holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
             }
-
         }
 
 ////

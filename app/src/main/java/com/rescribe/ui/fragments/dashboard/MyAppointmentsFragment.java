@@ -3,6 +3,7 @@ package com.rescribe.ui.fragments.dashboard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,9 +12,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.rescribe.R;
+import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
 import com.rescribe.adapters.dashboard.MyAppointmentDashBoardAdapter;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.ui.activities.AppointmentActivity;
+import com.rescribe.ui.activities.HomePageActivity;
+import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
+import com.rescribe.ui.activities.dashboard.DashboardShowCategoryNameByListBaseActivity;
+import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
+import com.rescribe.ui.fragments.book_appointment.BookAppointDoctorDescriptionFragment;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -21,11 +35,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
+
 /**
  * Created by jeetal on 7/11/17.
  */
 
-public class MyAppointmentsFragment extends Fragment implements MyAppointmentDashBoardAdapter.OnCardOfAppointmentClickListener{
+public class MyAppointmentsFragment extends Fragment implements BookAppointFilteredDocList.OnFilterDocListClickListener, HelperResponse {
 
     Unbinder unbinder;
     private static Bundle args;
@@ -34,7 +50,8 @@ public class MyAppointmentsFragment extends Fragment implements MyAppointmentDas
     private View mRootView;
     ArrayList<DoctorList> dashboardDoctorLists;
     private DividerItemDecoration mDividerItemDecoration;
-    private MyAppointmentDashBoardAdapter mMyAppointmentAdapter;
+    private BookAppointFilteredDocList mMyAppointmentAdapter;
+    private int mClickedDocIdToUpdateFavoriteStatus;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -65,8 +82,9 @@ public class MyAppointmentsFragment extends Fragment implements MyAppointmentDas
 
     private void init() {
         dashboardDoctorLists = args.getParcelableArrayList(getString(R.string.clicked_item_data));
-        if(dashboardDoctorLists!=null){
-            mMyAppointmentAdapter = new MyAppointmentDashBoardAdapter(getActivity(), dashboardDoctorLists,this);
+        if (dashboardDoctorLists != null) {
+            // mMyAppointmentAdapter = new MyAppointmentDashBoardAdapter(getActivity(), dashboardDoctorLists,this);
+            mMyAppointmentAdapter = new BookAppointFilteredDocList(getActivity(), dashboardDoctorLists, this, this);
             LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             myAppoinmentRecyclerView.setLayoutManager(linearlayoutManager);
             myAppoinmentRecyclerView.setHasFixedSize(true);
@@ -88,16 +106,64 @@ public class MyAppointmentsFragment extends Fragment implements MyAppointmentDas
     }
 
 
-    private void setAdapter() {
-
-    }
-
-
     @Override
-    public void onClickOfCard(String menuName) {
-        if(menuName.equals(getString(R.string.my_appointments))){
-            Intent intent = new Intent(getActivity(), AppointmentActivity.class);
-            startActivity(intent);
+    public void onClickOfDoctorRowItem(Bundle bundleData) {
+        if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.doctor_details))) {
+            DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
+
+            if (mClickedDoctorObject.getCategoryName().equalsIgnoreCase(getString(R.string.my_appointments))) {
+                Intent intent = new Intent(getActivity(), AppointmentActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
+                intent.putExtra(getString(R.string.toolbarTitle), mClickedDoctorObject.getCategoryName());
+                intent.putExtra(getString(R.string.clicked_item_data), mClickedDoctorObject);
+                startActivityForResult(intent, DOCTOR_DATA_REQUEST_CODE);
+            }
+
+        } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {
+            DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
+            mClickedDocIdToUpdateFavoriteStatus = mClickedDoctorObject.getDocId();
+            boolean status = mClickedDoctorObject.getFavourite() ? false : true;
+            new DoctorDataHelper(this.getContext(), this).setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
         }
     }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        switch (mOldDataTag) {
+            case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
+                CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
+                if (temp.getCommonRespose().isSuccess()) {
+                    DashboardShowCategoryNameByListBaseActivity activity = (DashboardShowCategoryNameByListBaseActivity) getActivity();
+
+                    for (int i = 0; i < dashboardDoctorLists.size(); i++) {
+                        DoctorList tempObject = dashboardDoctorLists.get(i);
+                        if (tempObject.getDocId() == mClickedDocIdToUpdateFavoriteStatus) {
+                            tempObject.setFavourite(tempObject.getFavourite() ? false : true);
+                            activity.replaceDoctorListById(tempObject.getDocId(), tempObject, getString(R.string.object_update_common_to_doc));
+                        }
+                    }
+                    mMyAppointmentAdapter.notifyDataSetChanged();
+                }
+                CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+                break;
+        }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
 }

@@ -163,11 +163,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         Bundle arguments = getArguments();
         if (arguments != null) {
             mClickedDoctorObject = (DoctorList) arguments.getParcelable(getString(R.string.clicked_item_data));
-            CommonMethods.Log("TAG", " parcelable :" + mClickedDoctorObject.toString());
-            setDataInViews();
+             setDataInViews();
         }
-
-
     }
 
     private void setColumnNumber(Context context, int columnNum) {

@@ -42,6 +42,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
     private Context mContext;
     private int mImageSize;
     private ColorGenerator mColorGenerator;
+    private boolean mIsFavAvail = false;
 
 
     public ShowRecentVisitedDoctorPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, Map<String, Integer> dataMap, ShowRecentVisitedDoctorPagerAdapter.OnViewPagerItemClickListener listener) {
@@ -52,7 +53,9 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         mInflater = LayoutInflater.from(context);
         this.mListSizeWithTypeMap = dataMap;
         mOnViewPagerItemClickListener = listener;
-
+        if (mListSizeWithTypeMap.get(mContext.getString(R.string.favorite)) > 0) {
+            mIsFavAvail = true;
+        }
     }
 
 
@@ -122,7 +125,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
         //-----THIS IS DONE TO SHOW COUNT OF FAVORITE(CUSTOM CREATED CATEGORY), ASSUME IT WILL COME LAST ALWAYS ----
         int size;
-        if (position == mDoctorLists.size() - 1) {
+        if (((position == mDoctorLists.size() - 1) && mIsFavAvail)) {
             doctorCategory.setText(mContext.getString(R.string.favorite));
             size = mListSizeWithTypeMap.get(mContext.getString(R.string.favorite));
         } else {
@@ -232,9 +235,9 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
         if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
             feesToPaid.setVisibility(View.INVISIBLE);
-            bookAppointmentButton.setVisibility(View.INVISIBLE);
+            bookAppointmentButton.setVisibility(View.GONE);
             doctorAppointmentDate.setVisibility(View.VISIBLE);
-            tokenNo.setVisibility(View.INVISIBLE);
+            tokenNo.setVisibility(View.GONE);
             SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + ", " + CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a));
             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
             doctorAppointmentDate.setText(content);
@@ -252,13 +255,15 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
 
             } else {
-                if (doctorObject.getClinicDataList().size() > 0)
-                    doctorAddress.setText(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
-                clinicName.setVisibility(View.INVISIBLE);
+                if (doctorObject.getClinicDataList().size() > 0) {
+                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                    doctorAddress.setText(locationString);
+                    clinicName.setVisibility(View.INVISIBLE);
+                }
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
-            bookAppointmentButton.setVisibility(View.VISIBLE);
-            doctorAppointmentDate.setVisibility(View.INVISIBLE);
+            doctorAppointmentDate.setVisibility(View.GONE);
             feesToPaid.setVisibility(View.VISIBLE);
             if (doctorObject.getClinicDataList().size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
@@ -270,10 +275,10 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             }
             if (doctorObject.getTokenNo().equals("")) {
                 bookAppointmentButton.setVisibility(View.VISIBLE);
-                tokenNo.setVisibility(View.INVISIBLE);
+                tokenNo.setVisibility(View.GONE);
             } else {
                 tokenNo.setVisibility(View.VISIBLE);
-                bookAppointmentButton.setVisibility(View.INVISIBLE);
+                bookAppointmentButton.setVisibility(View.GONE);
             }
 
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
@@ -283,16 +288,19 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
 
             } else {
-                if (doctorObject.getClinicDataList().size() > 0)
-                    doctorAddress.setText(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
-                clinicName.setVisibility(View.INVISIBLE);
+                if (doctorObject.getClinicDataList().size() > 0) {
+                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                    doctorAddress.setText(locationString);
+                    clinicName.setVisibility(View.INVISIBLE);
+                }
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.desing_line_for_big_name));
-            bookAppointmentButton.setVisibility(View.VISIBLE);
-            doctorAppointmentDate.setVisibility(View.INVISIBLE);
+            doctorAppointmentDate.setVisibility(View.GONE);
 
             if (doctorObject.getClinicDataList().size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
+
                 feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
 
             } else {
@@ -301,10 +309,10 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             }
             if (doctorObject.getTokenNo().equals("")) {
                 bookAppointmentButton.setVisibility(View.VISIBLE);
-                tokenNo.setVisibility(View.INVISIBLE);
+                tokenNo.setVisibility(View.GONE);
             } else {
                 tokenNo.setVisibility(View.VISIBLE);
-                bookAppointmentButton.setVisibility(View.INVISIBLE);
+                bookAppointmentButton.setVisibility(View.GONE);
             }
 
         }
@@ -364,6 +372,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
     public interface OnViewPagerItemClickListener {
         void setOnClickedOfViewPagerItem(Bundle bundleData);
+
         void onFavoriteClick(DoctorList doctorListObject, ImageView favorite);
 
         void setOnClickedOfCatTypeTotalCount(Bundle bundleData);

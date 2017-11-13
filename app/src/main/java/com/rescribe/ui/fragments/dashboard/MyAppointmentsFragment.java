@@ -98,6 +98,8 @@ public class MyAppointmentsFragment extends Fragment implements MyAppointmentDas
         if(menuName.equals(getString(R.string.my_appointments))){
             Intent intent = new Intent(getActivity(), AppointmentActivity.class);
             startActivity(intent);
+        }else if(menuName.equals(getString(R.string.sponsered_doctor))){
+
         }
     }
 }

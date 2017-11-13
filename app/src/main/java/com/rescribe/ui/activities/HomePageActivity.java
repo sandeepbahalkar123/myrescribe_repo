@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -57,21 +56,16 @@ import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import net.gotev.uploadservice.UploadService;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
-
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
@@ -100,7 +94,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     String lunchTime = "";
     String dinnerTime = "";
     String snacksTime = "";
-    private Toolbar toolbar;
     private AppDBHelper appDBHelper;
     private DashboardHelper mDashboardHelper;
     private MenuOptionsDashBoardAdapter mMenuOptionsDashBoardAdapter;
@@ -491,6 +484,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
             if (mDashboardDataModel != null) {
                 //----------
+
                 Map<String, Integer> dataMap = new LinkedHashMap<>();
                 ArrayList<DoctorList> myAppoint = mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.my_appointments));
                 ArrayList<DoctorList> sponsered = mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
@@ -551,9 +545,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 //----------
 
                 mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, mDashboardDataModel.getDashboardMenuList());
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                linearLayoutManager.setAutoMeasureEnabled(true);
                 mMenuOptionsListView.setLayoutManager(linearLayoutManager);
-                mMenuOptionsListView.setHasFixedSize(true);
+                mMenuOptionsListView.setNestedScrollingEnabled(false);
                 DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mMenuOptionsListView.getContext(),
                         linearLayoutManager.getOrientation());
                 mMenuOptionsListView.addItemDecoration(dividerItemDecoration);
@@ -622,7 +617,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         super.onResume();
     }
 
-    @OnClick({R.id.menuIcon})
+    @OnClick({R.id.menuIcon,R.id.locationImageView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.menuIcon:
@@ -732,23 +727,23 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             }
 
             startActivity(intent);
-            finish();
+
 
         } else if (menuName.equalsIgnoreCase(getString(R.string.profile))) {
             Intent intent = new Intent(HomePageActivity.this, ProfileActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
-            finish();
+
         } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
             Intent intent = new Intent(HomePageActivity.this, SettingsActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
-            finish();
+
         } else if (menuName.equalsIgnoreCase(getString(R.string.support))) {
             Intent intent = new Intent(HomePageActivity.this, SupportActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
-            finish();
+
         }
     }
 }

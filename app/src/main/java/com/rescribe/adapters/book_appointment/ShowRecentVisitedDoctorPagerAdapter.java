@@ -300,6 +300,40 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 bookAppointmentButton.setVisibility(View.GONE);
             }
 
+        }else if (doctorObject.getCategoryName().equals("")) {
+            if (doctorObject.getClinicDataList().size() == 1) {
+                clinicName.setVisibility(View.VISIBLE);
+                clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
+                doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
+
+            } else {
+                if (doctorObject.getClinicDataList().size() > 0) {
+                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                    doctorAddress.setText(locationString);
+                    clinicName.setVisibility(View.INVISIBLE);
+                }
+            }
+            designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.desing_line_for_big_name));
+            doctorAppointmentDate.setVisibility(View.GONE);
+
+            if (doctorObject.getClinicDataList().size() > 0) {
+                feesToPaid.setVisibility(View.VISIBLE);
+
+                feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
+
+            } else {
+                feesToPaid.setVisibility(View.INVISIBLE);
+
+            }
+            if (doctorObject.getTokenNo().equals("")) {
+                bookAppointmentButton.setVisibility(View.VISIBLE);
+                tokenNo.setVisibility(View.GONE);
+            } else {
+                tokenNo.setVisibility(View.VISIBLE);
+                bookAppointmentButton.setVisibility(View.GONE);
+            }
+
         }
         bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -69,12 +69,12 @@
                     android:drawableLeft="@drawable/premium_icon"
                     android:drawablePadding="@dimen/dp2"
                     android:gravity="center"
-                    android:paddingBottom="@dimen/dp4"
+                    android:paddingBottom="@dimen/dp3"
                     android:paddingEnd="@dimen/dp4"
                     android:paddingLeft="@dimen/dp4"
                     android:paddingRight="@dimen/dp4"
                     android:paddingStart="@dimen/dp4"
-                    android:paddingTop="@dimen/dp4"
+                    android:paddingTop="@dimen/dp3"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp10"
                     app:customFont="@string/roboto_medium"
@@ -271,7 +271,7 @@
                     android:drawablePadding="@dimen/dp2"
                     android:textColor="@color/black"
                     android:textSize="12sp"
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     app:customFont="@string/roboto_bold"
                     tools:text="500" />
 

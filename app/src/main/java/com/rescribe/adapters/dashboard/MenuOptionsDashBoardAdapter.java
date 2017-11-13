@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 28/9/17.
  */
 
+@SuppressWarnings("CheckResult")
 public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOptionsDashBoardAdapter.ListViewHolder> {
     private onMenuListClickListener mMenuListClickListener;
     private ArrayList<DashboardMenuList> mDashboardMenuList;

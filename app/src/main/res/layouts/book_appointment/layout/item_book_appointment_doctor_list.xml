@@ -253,7 +253,7 @@
                 android:layout_marginBottom="@dimen/dp6"
                 android:layout_marginLeft="@dimen/dp16"
                 android:text="4.5"
-                android:textColor="@color/map_green"
+                android:textColor="@color/rating_color"
                 android:textSize="@dimen/sp16"
                 app:customFont="@string/roboto_regular" />
 
@@ -261,9 +261,9 @@
                 android:id="@+id/ratingBar"
                 style="@style/customRatingBar"
                 android:layout_width="wrap_content"
-                android:layout_height="12dp"
+                android:layout_height="9dp"
                 android:layout_marginLeft="@dimen/dp10"
-                android:layout_marginTop="@dimen/dp4"
+                android:layout_marginTop="@dimen/dp6"
                 android:layout_toRightOf="@id/doctorRating"
                 android:stepSize="0.5" />
 
@@ -275,8 +275,35 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="@dimen/dp6"
                 android:layout_marginEnd="@dimen/dp10"
+                android:visibility="invisible"
                 android:layout_marginRight="@dimen/dp10"
-                tools:src="@drawable/token_no_background" />
+                android:src="@drawable/get_token" />
+            <ImageView
+                android:id="@+id/bookAppointmentButton"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/dp6"
+                android:layout_marginEnd="@dimen/dp10"
+                android:layout_marginRight="@dimen/dp10"
+                android:src="@drawable/card_book_appointment_copy" />
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/appointmentDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/dp6"
+                android:layout_marginEnd="@dimen/dp10"
+                android:layout_marginRight="@dimen/dp10"
+                android:text="Aundh, Pune"
+                android:visibility="invisible"
+                android:textColor="@color/dose_completed"
+                android:textSize="@dimen/sp11"
+                app:customFont="@string/roboto_medium" />
         </RelativeLayout>
 
         <View

@@ -97,6 +97,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     CustomTextView mDoctorExperience;
     @BindView(R.id.doctorExperienceLayout)
     LinearLayout mDoctorExperienceLayout;
+    @BindView(R.id.clinicNameSpinnerParentLayout)
+    LinearLayout mClinicNameSpinnerParentLayout;
+    @BindView(R.id.allClinicPracticeLocationMainLayout)
+    LinearLayout mAllClinicPracticeLocationMainLayout;
     //-------------
     @BindView(R.id.aboutDoctorDescription)
     CustomTextView mAboutDoctorDescription;
@@ -190,7 +194,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.override(mImageSize, mImageSize);
-        requestOptions.placeholder(R.drawable.layer_12);
+
 
         Glide.with(getActivity())
                 .load(mClickedDoctorObject.getDoctorImageUrl())
@@ -221,6 +225,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         //----------
         int size = mClickedDoctorObject.getClinicDataList().size();
         if (size > 0) {
+            mAllClinicPracticeLocationMainLayout.setVisibility(View.VISIBLE);
+
             String updatedString = getString(R.string.practices_at_locations).replace("$$", "" + size);
             SpannableString contentExp = new SpannableString(updatedString);
             contentExp.setSpan(new ForegroundColorSpan(
@@ -228,6 +234,9 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                     13, 13 + size,//hightlight mSearchString
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             mDocPracticesLocationCount.setText(contentExp);
+        } else {
+            mAllClinicPracticeLocationMainLayout.setVisibility(View.GONE);
+
         }
         //------------
         if (mClickedDoctorObject.getCategorySpeciality() != null) {
@@ -245,23 +254,37 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         }*/
 
         //---------
-        ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
+        if (mClickedDoctorObject.getClinicDataList().size() > 0) {
+            ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
 
-        mClinicNameSpinner.setAdapter(arrayAdapter);
-        mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            mClinicNameSpinner.setAdapter(arrayAdapter);
+            mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
-                mClinicName.setText("" + clinicData.getClinicName());
-                mDoctorFees.setText("" + clinicData.getAmt());
+                    ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
+                    mClinicName.setText("" + clinicData.getClinicName());
+                    mDoctorFees.setText("" + clinicData.getAmount());
+                }
+
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            if (mClickedDoctorObject.getClinicDataList().size() == 1) {
+                mClinicNameSpinner.setEnabled(false);
+                mClinicNameSpinner.setClickable(false);
+                mClinicNameSpinner.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.transparent));
+            } else {
+                mClinicNameSpinner.setEnabled(true);
+                mClinicNameSpinner.setClickable(true);
+                mClinicNameSpinner.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.spinner_bg));
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        } else {
+            mClinicNameSpinnerParentLayout.setVisibility(View.GONE);
+        }
         //---------
         ArrayList<String> receivedDocService = mClickedDoctorObject.getDocServices();
         int receivedDocServiceSize = receivedDocService.size();
@@ -292,9 +315,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 if (temp.getCommonRespose().isSuccess()) {
                     boolean status = !mClickedDoctorObject.getFavourite();
                     mClickedDoctorObject.setFavourite(status);
+
                     if (getActivity() instanceof BookAppointDoctorListBaseActivity) {
                         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject, getContext().getResources().getString(R.string.object_update_common_to_doc));
                     } else if (getActivity() instanceof DoctorDescriptionBaseActivity) {
                         DoctorDescriptionBaseActivity activity = (DoctorDescriptionBaseActivity) getActivity();
                         activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);

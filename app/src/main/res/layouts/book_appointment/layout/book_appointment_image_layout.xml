@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:background="@drawable/get_token_bg"
+        android:layout_width="53dp"
+        android:orientation="horizontal"
+        android:layout_height="18dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dashboard_book_appointments_icon"/>
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp8"
+            app:customFont="@string/roboto_medium"
+            android:textSize="@dimen/sp10"
+            android:text="@string/book">
+        </com.rescribe.ui.customesViews.CustomTextView>
+    </LinearLayout>
+</LinearLayout>

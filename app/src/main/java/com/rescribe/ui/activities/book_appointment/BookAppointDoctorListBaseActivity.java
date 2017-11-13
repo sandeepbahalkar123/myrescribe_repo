@@ -182,7 +182,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
         if (mReceivedBookAppointmentBaseModel.getDoctorServicesModel() != null) {
             for (int i = 0; i < mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().size(); i++) {
-                if (!mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getDocName().contains("Dr.")) {
+                if (!mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getDocName().toLowerCase().contains("dr.")) {
                     mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).setDocName("Dr. " + mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getDocName());
                 }
             }
@@ -370,7 +370,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                     bookAppointDoctorDescriptionFragment.setFavorite(doctorLists.get(0).getFavourite());
                 }
 
-                replaceDoctorListById(object.getDocId(), object);
+                replaceDoctorListById(object.getDocId(), object, getResources().getString(R.string.object_update_common_to_doc));
             }
         }
     }
@@ -508,23 +508,33 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
 
-    public void replaceDoctorListById(int docId, DoctorList docObjectToReplace) {
+    public void replaceDoctorListById(int docId, DoctorList docObjectToReplace, String objectUpdateType) {
         DoctorServicesModel doctorServicesModel = mReceivedBookAppointmentBaseModel.getDoctorServicesModel();
         if (doctorServicesModel != null) {
-            ArrayList<DoctorList> doctorList = doctorServicesModel.getDoctorList();
-            int positionToReplaceObject = -1;
-            for (int i = 0; i < doctorList.size(); i++) {
-                DoctorList tempObject = doctorList.get(i);
+            ArrayList<DoctorList> tempDoctorList = doctorServicesModel.getDoctorList();
+            ArrayList<DoctorList> newListToUpdateTempDoctorList = new ArrayList<>(tempDoctorList);
+            boolean isUpdated = false;
+            for (int i = 0; i < tempDoctorList.size(); i++) {
+                DoctorList tempObject = tempDoctorList.get(i);
                 if (docId == tempObject.getDocId()) {
-                    positionToReplaceObject = i;
-                    break;
+                    isUpdated = true;
+                    newListToUpdateTempDoctorList.set(i, docObjectToReplace);
                 }
             }
-            if (positionToReplaceObject != -1) {
-                doctorList.set(positionToReplaceObject, docObjectToReplace);
-                doctorServicesModel.setDoctorList(doctorList);
+
+            if (isUpdated) {
+                doctorServicesModel.setDoctorList(newListToUpdateTempDoctorList);
                 mReceivedBookAppointmentBaseModel.setDoctorServicesModel(doctorServicesModel);
             }
+
+            /*if (positionToReplaceObject.size() > 0) {
+                for (Integer position :
+                        positionToReplaceObject) {
+                    doctorList.set(position, docObjectToReplace);
+                    doctorServicesModel.setDoctorList(doctorList);
+                    mReceivedBookAppointmentBaseModel.setDoctorServicesModel(doctorServicesModel);
+                }
+            }*/
         }
     }
 }

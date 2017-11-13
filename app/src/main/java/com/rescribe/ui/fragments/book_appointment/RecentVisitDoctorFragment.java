@@ -2,7 +2,6 @@ package com.rescribe.ui.fragments.book_appointment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -15,7 +14,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.Html;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,19 +33,15 @@ import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
+import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
-import com.rescribe.ui.activities.book_appointment.ShowMoreInfoBaseActivity;
-import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
-import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,8 +61,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
-    @BindView(R.id.circleIndicator)
-    CircleIndicator mCircleIndicator;
     @BindView(R.id.pickSpeciality)
     CustomTextView pickSpeciality;
     @BindView(R.id.emptyListView)
@@ -77,8 +69,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     RelativeLayout mSpecialityEmptyListView;
     @BindView(R.id.fragmentContainer)
     RelativeLayout fragmentContainer;
-    @BindView(R.id.doubtMessage)
-    RelativeLayout doubtMessage;
     @BindView(R.id.recyclerViewLinearLayout)
     LinearLayout recyclerViewLinearLayout;
     @BindView(R.id.searchView)
@@ -97,8 +87,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     RecyclerView mBookAppointSpecialityListView;
     @BindView(R.id.whiteUnderLine)
     TextView whiteUnderLine;
-    @BindView(R.id.clickHere)
-    CustomTextView mClickHere;
     @BindView(R.id.rightFab)
     FloatingActionButton rightFab;
     @BindView(R.id.leftFab)
@@ -134,11 +122,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     private void init() {
         //----------
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             mClickHere.setText(Html.fromHtml(getString(R.string.clickhere), Html.FROM_HTML_MODE_LEGACY));
         } else {
             mClickHere.setText(Html.fromHtml(getString(R.string.clickhere)));
-        }
+        }*/
         //----------
         if (getArguments() != null) {
             mReceivedToolBarTitle = getArguments().getString(getString(R.string.title));
@@ -198,18 +186,20 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         return fragment;
     }
 
-    @OnClick({R.id.viewpager, R.id.circleIndicator, R.id.doubtMessage, R.id.prevBtn, R.id.nextBtn, R.id.rightFab, R.id.leftFab})
+    @OnClick({R.id.viewpager,/* R.id.doubtMessage,*/ R.id.prevBtn, R.id.nextBtn, R.id.rightFab, R.id.leftFab})
+
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.viewpager:
                 break;
 
-            case R.id.doubtMessage:
+         /*   case R.id.doubtMessage:
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
                 activity.loadFragment(ComplaintsFragment.newInstance(new Bundle()), false);
-                break;
+                break;*/
 
             case R.id.rightFab:
+                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
                 activity = (BookAppointDoctorListBaseActivity) getActivity();
                 activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);
                 break;
@@ -278,21 +268,39 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
             ArrayList<DoctorList> mergeList = new ArrayList<>();
 
-            mergeList.addAll(myAppoint);
-            mergeList.addAll(sponsered);
-            mergeList.addAll(recently_visit_doctor);
-            mergeList.addAll(favoriteList);
+            if (myAppoint.size() > 0)
+                mergeList.add(myAppoint.get(0));
+
+            if (sponsered.size() > 0)
+                mergeList.add(sponsered.get(0));
+
+            if (recently_visit_doctor.size() > 0)
+                mergeList.add(recently_visit_doctor.get(0));
+
+            if (favoriteList.size() > 0)
+                mergeList.add(favoriteList.get(0));
 
             //------------
             if (doctorServicesModel != null) {
                 //-------
                 if (mergeList.size() == 0) {
                     mViewpager.setVisibility(View.GONE);
-                    mCircleIndicator.setVisibility(View.GONE);
+                    //mCircleIndicator.setVisibility(View.GONE);
                 } else {
                     mViewpager.setVisibility(View.VISIBLE);
+
                     mViewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), mergeList, dataMap, this));
-                    mCircleIndicator.setViewPager(mViewpager);
+                    mViewpager.setClipToPadding(false);
+
+                    int pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
+                    mViewpager.setPadding(pager_padding, 0, pager_padding, 0);
+                    int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
+                    mViewpager.setPageMargin(pager_margin);
+
+                    // mCircleIndicator.setViewPager(mViewpager);
+
+                    mViewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), mergeList, dataMap, this));
+
                 }
                 //------
                 //----- to set doc data list, invisible by default -----
@@ -310,7 +318,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
                 if (doctorServicesModel.getDoctorSpecialities().size() == 0) {
                     pickSpeciality.setVisibility(View.GONE);
-                    doubtMessage.setVisibility(View.GONE);
+                    //   doubtMessage.setVisibility(View.GONE);
                     mSpecialityEmptyListView.setVisibility(View.VISIBLE);
                     prevBtn.setVisibility(View.INVISIBLE);
                     nextBtn.setVisibility(View.INVISIBLE);
@@ -332,7 +340,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, bookAppointmentBaseModel.getDoctorServicesModel().getDoctorSpecialities());
                     mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
                     pickSpeciality.setVisibility(View.VISIBLE);
-                    doubtMessage.setVisibility(View.VISIBLE);
+                    //  doubtMessage.setVisibility(View.VISIBLE);
                 }
             } else {
                 isDataListViewVisible(false, true);
@@ -440,6 +448,18 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @Override
     public void setOnClickedOfViewPagerItem(Bundle bundleData) {
+        String value = bundleData.getString(getString(R.string.clicked_item_data_type_value));
+        if (value.equalsIgnoreCase(getString(R.string.my_appointments))) {
+            Intent intent = new Intent(getActivity(), AppointmentActivity.class);
+            startActivity(intent);
+        } else {
+            BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
+            activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
+        }
+    }
+
+    @Override
+    public void setOnClickedOfCatTypeTotalCount(Bundle bundleData) {
         setOnClickOfDoctorSpeciality(bundleData);
     }
 

@@ -97,7 +97,7 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doGetDoctorData(String city, String address, HashMap<String, String> mReceivedComplaintHashMap) {
-       /* ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_DOCTOR_DATA, Request.Method.POST, true);
+       ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_DOCTOR_DATA, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
         RequestDoctorListBaseModel requestDoctorListBaseModel = new RequestDoctorListBaseModel();
         requestDoctorListBaseModel.setArea(address.trim());
@@ -111,8 +111,8 @@ public class DoctorDataHelper implements ConnectionListener {
         //-----------
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_BY_LOCATION);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_GET_DOCTOR_DATA);*/
-      try {
+        mConnectionFactory.createConnection(RescribeConstants.TASK_GET_DOCTOR_DATA);
+      /*try {
             InputStream is = mContext.getAssets().open("doctor_data_new_6_nov_2017.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -127,7 +127,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        }*/
     }
 
     public void doGetDrawerFilterConfigurationData(String cityName) {

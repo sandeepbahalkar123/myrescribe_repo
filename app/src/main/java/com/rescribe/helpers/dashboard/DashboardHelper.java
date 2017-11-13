@@ -82,25 +82,10 @@ public class DashboardHelper implements ConnectionListener {
 
     public void doGetDashboard() {
         String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
-        try {
-            InputStream is = mContext.getAssets().open("dashboard.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "dashboard" + json);
 
-            DashBoardBaseModel model = new Gson().fromJson(json, DashBoardBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, model, RescribeConstants.TASK_DASHBOARD_API);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-     /*   ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID,mContext)+mContext.getString(R.string.platform)+mContext.getString(R.string.android)+mContext.getString(R.string.screen_resolution)+screenResolutionValue);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);*/
+        mConnectionFactory.setUrl(Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.platform) + mContext.getString(R.string.android) + mContext.getString(R.string.screen_resolution) + screenResolutionValue);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);
     }
 }

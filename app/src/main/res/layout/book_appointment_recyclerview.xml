@@ -9,6 +9,7 @@
     android:orientation="vertical"
     tools:ignore="MissingTranslation">
 
+<!--
     <RelativeLayout
         android:id="@+id/doubtMessage"
         android:layout_width="match_parent"
@@ -36,6 +37,7 @@
             android:textSize="@dimen/sp12"
             app:customFont="@string/roboto_bold" />
     </RelativeLayout>
+-->
 
     <LinearLayout
         android:id="@+id/listLayout"

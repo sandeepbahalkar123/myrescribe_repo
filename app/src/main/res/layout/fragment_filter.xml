@@ -86,7 +86,7 @@
                             android:layout_marginStart="@dimen/dp8"
                             android:adjustViewBounds="true"
                             android:padding="@dimen/dp8"
-                            android:src="@drawable/select_doctor" />
+                            android:src="@drawable/selectdoctor" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/drNameTextView"
@@ -137,7 +137,7 @@
                             android:layout_marginStart="@dimen/dp8"
                             android:adjustViewBounds="true"
                             android:padding="@dimen/dp8"
-                            android:src="@drawable/doctor_speciality" />
+                            android:src="@drawable/doctorspeciality" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/drSpecialityTextView"
@@ -188,7 +188,7 @@
                             android:layout_marginStart="@dimen/dp8"
                             android:adjustViewBounds="true"
                             android:padding="@dimen/dp8"
-                            android:src="@drawable/date_month" />
+                            android:src="@drawable/datemonth" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/drCalenderTextView"

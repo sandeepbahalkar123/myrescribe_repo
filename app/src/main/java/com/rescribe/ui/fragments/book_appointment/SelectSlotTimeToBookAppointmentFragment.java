@@ -91,6 +91,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     ImageView mFavorite;
     @BindView(R.id.doctorExperienceLayout)
     LinearLayout mDoctorExperienceLayout;
+    @BindView(R.id.clinicNameSpinnerParentLayout)
+    LinearLayout mClinicNameSpinnerParentLayout;
+    @BindView(R.id.allClinicPracticeLocationMainLayout)
+    LinearLayout mAllClinicPracticeLocationMainLayout;
     //-------------
     @BindView(R.id.leftArrow)
     ImageView leftArrow;
@@ -225,6 +229,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         //----------
         int size = mClickedDoctorObject.getClinicDataList().size();
         if (size > 0) {
+            mAllClinicPracticeLocationMainLayout.setVisibility(View.VISIBLE);
             String updatedString = getString(R.string.practices_at_locations).replace("$$", "" + size);
             SpannableString contentExp = new SpannableString(updatedString);
             contentExp.setSpan(new ForegroundColorSpan(
@@ -232,6 +237,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     13, 13 + size,//hightlight mSearchString
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             mDocPracticesLocationCount.setText(contentExp);
+        } else {
+            mAllClinicPracticeLocationMainLayout.setVisibility(View.GONE);
         }
         //------------
         if (mClickedDoctorObject.getCategorySpeciality() != null) {
@@ -241,23 +248,41 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             mPremiumType.setVisibility(View.INVISIBLE);
         }
         //-------------------
-        ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
-        mClinicNameSpinner.setAdapter(arrayAdapter);
-        mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(position);
-                mClinicName.setText("" + mSelectedClinicDataObject.getClinicName());
-                mDoctorFees.setText(
-                        "" + mSelectedClinicDataObject.getAmt());
-                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+        if (mClickedDoctorObject.getClinicDataList().size() > 0) {
+            mClinicNameSpinnerParentLayout.setVisibility(View.VISIBLE);
 
+            ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
+            mClinicNameSpinner.setAdapter(arrayAdapter);
+            mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(position);
+                    mClinicName.setText("" + mSelectedClinicDataObject.getClinicName());
+                    mDoctorFees.setText(
+                            "" + mSelectedClinicDataObject.getAmount());
+                    mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate);
+                }
+
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            if (mClickedDoctorObject.getClinicDataList().size() == 1) {
+                mClinicNameSpinner.setEnabled(false);
+                mClinicNameSpinner.setClickable(false);
+                mClinicNameSpinner.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.transparent));
+            } else {
+                mClinicNameSpinner.setEnabled(true);
+                mClinicNameSpinner.setClickable(true);
+                mClinicNameSpinner.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.spinner_bg));
             }
-        });
+        } else {
+            mClinicNameSpinnerParentLayout.setVisibility(View.GONE);
+        }
+
         //---------
     }
 
@@ -281,9 +306,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 if (temp.getCommonRespose().isSuccess()) {
                     boolean status = !mClickedDoctorObject.getFavourite();
                     mClickedDoctorObject.setFavourite(status);
+
                     if (getActivity() instanceof BookAppointDoctorListBaseActivity) {
                         BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject, mContext.getResources().getString(R.string.object_update_common_to_doc));
                     } else if (getActivity() instanceof DoctorDescriptionBaseActivity) {
                         DoctorDescriptionBaseActivity activity = (DoctorDescriptionBaseActivity) getActivity();
                         activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
@@ -291,6 +317,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         SelectSlotToBookAppointmentBaseActivity activity = (SelectSlotToBookAppointmentBaseActivity) getActivity();
                         activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
                     }
+
                     if (mClickedDoctorObject.getFavourite()) {
                         mFavorite.setImageResource(R.drawable.fav_icon);
                     } else {

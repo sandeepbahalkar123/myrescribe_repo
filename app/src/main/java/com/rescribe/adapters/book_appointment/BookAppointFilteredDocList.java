@@ -13,8 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -26,10 +24,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+
+import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
+
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
+
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -72,7 +73,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     }
 
     @Override
-    public void onBindViewHolder(ListViewHolder holder, int position) {
+    public void onBindViewHolder(final ListViewHolder holder, int position) {
         final DoctorList doctorObject = mDataList.get(position);
         holder.doctorName.setText(doctorObject.getDocName());
         holder.doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
@@ -134,8 +135,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
 
             } else {
-                if (doctorObject.getClinicDataList().size() > 0)
-                {
+                if (doctorObject.getClinicDataList().size() > 0) {
                     SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     holder.doctorAddress.setText(locationString);
@@ -161,15 +161,14 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 holder.tokenNo.setVisibility(View.VISIBLE);
                 holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
             }
-        }else if (doctorObject.getCategoryName().equals("")){
+        } else if (doctorObject.getCategoryName().equals("")) {
             if (doctorObject.getClinicDataList().size() == 1) {
                 holder.clinicName.setVisibility(View.VISIBLE);
                 holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
                 holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
 
             } else {
-                if (doctorObject.getClinicDataList().size() > 0)
-                {
+                if (doctorObject.getClinicDataList().size() > 0) {
                     SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     holder.doctorAddress.setText(locationString);
@@ -197,7 +196,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             }
         }
 
-////
+        ////-------------------
         if (doctorObject.getRating() == 0) {
             holder.ratingBar.setVisibility(View.INVISIBLE);
             holder.doctorRating.setVisibility(View.INVISIBLE);
@@ -207,31 +206,16 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             holder.ratingBar.setRating((float) doctorObject.getRating());
             holder.doctorRating.setText("" + doctorObject.getRating());
         }
+        ////-------------------
 
-        holder.doctorlistCardLinearlayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // mOnCardOfAppointmentClickListener.onClickOfCard(doctorObject.getCategoryName());
-            }
-        });
-        holder.bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
-                intent.putExtra(mContext.getString(R.string.clicked_item_data), doctorObject);
-                intent.putExtra(mContext.getString(R.string.toolbarTitle), doctorObject.getCategoryName());
-                mContext.startActivity(intent);
-            }
-        });
+
+        //----------
         if (doctorObject.getFavourite()) {
             holder.favoriteView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_icon));
-
         } else {
             holder.favoriteView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
         }
-
-
-
+        //-----------
         if (doctorObject.getDoctorImageUrl().equals(RescribeConstants.BLANK)) {
             String doctorName = doctorObject.getDocName();
             if (doctorName.contains("Dr. ")) {
@@ -260,8 +244,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                     .into(holder.imageURL);
             //--------------
         }
-
-
+        //-----------
 
         holder.dataLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,6 +265,21 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.favorite));
                 mOnFilterDocListClickListener.onClickOfDoctorRowItem(b);
+            }
+        });
+        holder.doctorlistCardLinearlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // mOnCardOfAppointmentClickListener.onClickOfCard(doctorObject.getCategoryName());
+            }
+        });
+        holder.bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
+                intent.putExtra(mContext.getString(R.string.clicked_item_data), doctorObject);
+                intent.putExtra(mContext.getString(R.string.toolbarTitle), doctorObject.getCategoryName());
+                mContext.startActivity(intent);
             }
         });
     }
@@ -329,6 +327,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         ImageView ruppessIcon;
         @BindView(R.id.doctorCategoryType)
         CustomTextView doctorCategoryType;
+
         View view;
 
         ListViewHolder(View view) {

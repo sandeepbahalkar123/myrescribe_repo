@@ -2,11 +2,11 @@ package com.rescribe.ui.fragments.book_appointment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,7 +14,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.Html;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +27,8 @@ import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSpecialistBookAppointmentAdapter;
-import com.rescribe.adapters.book_appointment.ShowRecentVisitedDoctorPagerAdapter;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
+import com.rescribe.adapters.book_appointment.ShowRecentVisitedDoctorPagerAdapter;
 import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
@@ -37,12 +36,9 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
-import com.rescribe.model.book_appointment.doctor_data.DoctorSpeciality;
 import com.rescribe.ui.activities.AppointmentActivity;
-import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
-import com.rescribe.ui.customesViews.CircleIndicator;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
@@ -465,6 +461,26 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @Override
     public void setOnClickedOfCatTypeTotalCount(Bundle bundleData) {
         setOnClickOfDoctorSpeciality(bundleData);
+    }
+
+    @Override
+    public void onFavoriteClick(DoctorList doctorListObject, ImageView favorite) {
+
+        // apicall
+
+        if (doctorListObject.getFavourite()) {
+            favorite.setImageResource(R.drawable.fav_icon);
+        } else {
+            favorite.setImageResource(R.drawable.result_line_heart_fav);
+        }
+    }
+
+    private void setFavourite(DoctorList doctorL, ImageView favoriteView){
+        if (doctorL.getFavourite()) {
+            favoriteView.setImageDrawable(ContextCompat.getDrawable(favoriteView.getContext(), R.drawable.result_heart_fav));
+        } else {
+            favoriteView.setImageDrawable(ContextCompat.getDrawable(favoriteView.getContext(), R.drawable.result_line_heart_fav));
+        }
     }
 }
 

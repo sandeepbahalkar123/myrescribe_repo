@@ -1,6 +1,8 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -14,11 +16,15 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.SelectSlotTimeToBookAppointmentFragment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
 
 /**
  * Created by jeetal on 1/11/17.
@@ -39,6 +45,9 @@ public class SelectSlotToBookAppointmentBaseActivity  extends AppCompatActivity 
     HashMap<String, String> userSelectedLocationInfo;
     private SelectSlotTimeToBookAppointmentFragment mSelectSlotTimeToBookAppointmentFragment;
 
+    private DoctorList doctorObject;
+    ArrayList<DoctorList> doctorList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,15 +58,15 @@ public class SelectSlotToBookAppointmentBaseActivity  extends AppCompatActivity 
     }
 
     private void initialize() {
-
-        DoctorList doctorList = getIntent().getExtras().getParcelable(getString(R.string.clicked_item_data));
+        doctorList = new ArrayList<>();
+        doctorObject = getIntent().getExtras().getParcelable(getString(R.string.clicked_item_data));
         showlocation.setVisibility(View.VISIBLE);
         locationTextView.setVisibility(View.GONE);
         title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         Bundle bundle = new Bundle();
-        bundle.putParcelable(getString(R.string.clicked_item_data),doctorList);
+        bundle.putParcelable(getString(R.string.clicked_item_data),doctorObject);
         bundle.putString(getString(R.string.toolbarTitle),getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         mSelectSlotTimeToBookAppointmentFragment = SelectSlotTimeToBookAppointmentFragment.newInstance(bundle);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
@@ -78,6 +87,23 @@ public class SelectSlotToBookAppointmentBaseActivity  extends AppCompatActivity 
             case R.id.showlocation:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doctorList != null) {
+            Intent intent = new Intent();
+            intent.putExtra(DOCTOR_DATA, doctorList);
+            setResult(DOCTOR_DATA_REQUEST_CODE, intent);
+        }
+        super.onBackPressed();
+    }
+
+    public void replaceDoctorListById(String docId, DoctorList mClickedDoctorObject) {
+        doctorObject.setFavourite(mClickedDoctorObject.getFavourite());
+        if (doctorList.isEmpty())
+            doctorList.add(doctorObject);
+        else doctorList.get(0).setFavourite(mClickedDoctorObject.getFavourite());
     }
 }
 

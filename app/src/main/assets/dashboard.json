@@ -26,7 +26,7 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": true,
+        "favourite": true,
         "rating": 4.5,
         "aptDate": "2017-09-17",
         "aptTime": "15:00:00"
@@ -50,9 +50,9 @@
             "apptScheduleLmtDays": 7
           }
         ],
-        "tokenNo": "10",
+        "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": false,
+        "favourite": false,
         "rating": 4.5,
         "aptDate": "2017-09-30",
         "aptTime": "14:00:00"
@@ -83,10 +83,10 @@
             "apptScheduleLmtDays": 7
           }
         ],
-        "tokenNo": "35",
+        "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": false,
-        "rating": 2.5,
+        "favourite": false,
+        "rating": 0,
         "aptDate": "",
         "aptTime": ""
       },
@@ -115,10 +115,10 @@
             "apptScheduleLmtDays": 7
           }
         ],
-        "tokenNo": "87",
+        "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": true,
-        "rating": 3.2,
+        "favourite": false,
+        "rating": 0,
         "aptDate": "",
         "aptTime": ""
       },
@@ -175,9 +175,9 @@
             "apptScheduleLmtDays": 7
           }
         ],
-        "tokenNo": "Agf",
+        "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": false,
+        "favourite": false,
         "rating": 4,
         "aptDate": "",
         "aptTime": ""
@@ -237,7 +237,7 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": false,
+        "favourite": false,
         "rating": 0.3,
         "aptDate": "",
         "aptTime": ""
@@ -262,8 +262,8 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": true,
-        "rating": 5,
+        "favourite": true,
+        "rating": 0,
         "aptDate": "",
         "aptTime": ""
       },
@@ -276,38 +276,9 @@
         "degree": "MBBS,MD-Medicine,Neurology",
         "speciality": "General Physician",
         "experience": 11,
-        "clinicList": [
-          {
-            "clinicName": "Dr. Shalu Gupta clinic",
-            "clinicAddress": "mulund, Mumbai",
-            "locationId": 7,
-            "amount": 350,
-            "apptScheduleLmtDays": 7
-          },
-          {
-            "clinicName": "Dr. Shalu Gupta clinic",
-            "clinicAddress": "mulund, Mumbai",
-            "locationId": 32,
-            "amount": 350,
-            "apptScheduleLmtDays": 7
-          },
-          {
-            "clinicName": "Dr. Hemant Pahariya clinic",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 6,
-            "amount": 350,
-            "apptScheduleLmtDays": 7
-          },
-          {
-            "clinicName": "Dr. Parag Khare clinic",
-            "clinicAddress": "bhandarkar road, Pune",
-            "locationId": 5,
-            "amount": 350,
-            "apptScheduleLmtDays": 7
-          }
-        ],
-        "favorite": true,
-        "rating": 3.5,
+        "clinicList": [],
+        "favourite": true,
+        "rating": 0,
         "aptDate": "2017-05-17",
         "aptTime": "19:00:00"
       },
@@ -352,7 +323,7 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": true,
+        "favourite": true,
         "rating": 4.5,
         "aptDate": "2017-06-17",
         "aptTime": "19:45:00"
@@ -384,7 +355,7 @@
         ],
         "tokenNo": "",
         "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favorite": false,
+        "favourite": false,
         "rating": 4,
         "aptDate": "2017-07-21",
         "aptTime": "09:30:00"

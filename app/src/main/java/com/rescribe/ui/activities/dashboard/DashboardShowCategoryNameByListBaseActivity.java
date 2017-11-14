@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities.dashboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,8 +12,11 @@ import android.widget.ImageView;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
 import com.rescribe.ui.fragments.dashboard.MyAppointmentsFragment;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +24,9 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
 
 /**
  * Created by jeetal on 6/11/17.
@@ -62,6 +69,7 @@ public class DashboardShowCategoryNameByListBaseActivity extends AppCompatActivi
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(getString(R.string.clicked_item_data), doctorList);
         bundle.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
+        // mMyAppointmentsFragment = BookAppointFilteredDoctorListFragment.newInstance(bundle);
         mMyAppointmentsFragment = MyAppointmentsFragment.newInstance(bundle);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
@@ -76,7 +84,25 @@ public class DashboardShowCategoryNameByListBaseActivity extends AppCompatActivi
             case R.id.bookAppointmentBackButton:
                 onBackPressed();
                 break;
+        }
+    }
 
+
+    @Override
+    public void onBackPressed() {
+        if (doctorList != null) {
+            Intent intent = new Intent();
+            intent.putExtra(DOCTOR_DATA, doctorList);
+            setResult(DOCTOR_DATA_REQUEST_CODE, intent);
+        }
+        super.onBackPressed();
+    }
+
+    public void replaceDoctorListById(int docId, DoctorList docObjectToReplace, String objectUpdateType) {
+        for (DoctorList tempObject : doctorList) {
+            if (docId == tempObject.getDocId()){
+                tempObject.setFavourite(docObjectToReplace.getFavourite());
+            }
         }
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
 import android.text.SpannableString;
@@ -17,7 +16,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
@@ -26,7 +24,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -45,6 +42,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
     private Context mContext;
     private int mImageSize;
     private ColorGenerator mColorGenerator;
+    private boolean mIsFavAvail = false;
 
 
     public ShowRecentVisitedDoctorPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, Map<String, Integer> dataMap, ShowRecentVisitedDoctorPagerAdapter.OnViewPagerItemClickListener listener) {
@@ -55,7 +53,9 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         mInflater = LayoutInflater.from(context);
         this.mListSizeWithTypeMap = dataMap;
         mOnViewPagerItemClickListener = listener;
-
+        if (mListSizeWithTypeMap.get(mContext.getString(R.string.favorite)) > 0) {
+            mIsFavAvail = true;
+        }
     }
 
 
@@ -101,6 +101,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.bookAppointmentButton);
         final CustomTextView doctorAppointmentDate = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorAppointmentDate);
+        //---------
         final CircularImageView imageURL = (CircularImageView) imageLayout
                 .findViewById(R.id.imageURL);
         final LinearLayout thumbnail = (LinearLayout) imageLayout
@@ -114,9 +115,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         final ImageView tokenNo = (ImageView) imageLayout
                 .findViewById(R.id.tokenNo);
 
-
         final DoctorList doctorObject = mDoctorLists.get(position);
-
 
         doctorCategoryType.setText(doctorObject.getCategorySpeciality());
         doctorCategory.setText(doctorObject.getCategoryName());
@@ -126,7 +125,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
         //-----THIS IS DONE TO SHOW COUNT OF FAVORITE(CUSTOM CREATED CATEGORY), ASSUME IT WILL COME LAST ALWAYS ----
         int size;
-        if (position == mDoctorLists.size() - 1) {
+        if (((position == mDoctorLists.size() - 1) && mIsFavAvail)) {
             doctorCategory.setText(mContext.getString(R.string.favorite));
             size = mListSizeWithTypeMap.get(mContext.getString(R.string.favorite));
         } else {
@@ -166,6 +165,22 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                     .into(imageURL);
         }
 
+        //---------
+        if (doctorObject.getFavourite()) {
+            favorite.setVisibility(View.VISIBLE);
+
+            favorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    doctorObject.setFavourite(!doctorObject.getFavourite());
+                    mOnViewPagerItemClickListener.onFavoriteClick(doctorObject, favorite);
+                }
+            });
+
+        } else {
+            favorite.setVisibility(View.GONE);
+        }
+        //-----------
 
         if (doctorObject.getRating() == 0) {
             doctorRating.setVisibility(View.INVISIBLE);
@@ -186,7 +201,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
                 b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
                 mOnViewPagerItemClickListener.setOnClickedOfCatTypeTotalCount(b);
-               // mOnClickOfCardOnDashboard.onClickOfCount(doctorCategory.getText().toString());
+                // mOnClickOfCardOnDashboard.onClickOfCount(doctorCategory.getText().toString());
 
 
                /* if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
@@ -207,7 +222,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 mOnViewPagerItemClickListener.setOnClickedOfViewPagerItem(b);
-             //   mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(doctorCategory.getText().toString());
+                //   mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(doctorCategory.getText().toString());
               /*  if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
                     mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(mContext.getString(R.string.my_appointments));
                 } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
@@ -359,7 +374,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 boolean status = doctorObject.getFavourite() ? false : true;
-              //  mOnClickOfCardOnDashboard.onClickOfFavourite(status, doctorObject.getDocId(), favorite);
+                //  mOnClickOfCardOnDashboard.onClickOfFavourite(status, doctorObject.getDocId(), favorite);
             }
         });
         view.addView(imageLayout, 0);
@@ -391,6 +406,8 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
     public interface OnViewPagerItemClickListener {
         void setOnClickedOfViewPagerItem(Bundle bundleData);
+
+        void onFavoriteClick(DoctorList doctorListObject, ImageView favorite);
 
         void setOnClickedOfCatTypeTotalCount(Bundle bundleData);
     }

@@ -102,7 +102,12 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        initializeMarkerBottomSheetViews();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initializeMarkerBottomSheetViews();
+            }
+        }, RescribeConstants.TIME_STAMPS.FIVE_FIFTY);
     }
 
     @Override
@@ -110,33 +115,41 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapClickListener(this);
-        for (int index = 0; index < mDoctorLists.size(); index++) {
-            DoctorList doctorList = mDoctorLists.get(index);
-            p1 = getLocationFromAddress(doctorList.getAddressOfDoctorString());
-            if (p1 != null) {
-                LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
-                doctorList.setLatitude(p1.getLatitude());
-                doctorList.setLongitude(p1.getLongitude());
 
-                View itemView = getLayoutInflater().inflate(R.layout.custom_marker_map, null);
-                TextView ratingText = (TextView) itemView.findViewById(R.id.ratingText);
-                TextView doctorNameText = (TextView) itemView.findViewById(R.id.doctorNameText);
-                ratingText.setText(String.valueOf(doctorList.getRating()));
-                doctorNameText.setText(doctorList.getDocName());
+        //------------
 
-                mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(MapActivityPlotNearByDoctor.this, itemView))));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), 14.0f));
-            } else
-                CommonMethods.showToast(MapActivityPlotNearByDoctor.this, getString(R.string.address_not_found));
-        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (int index = 0; index < mDoctorLists.size(); index++) {
+                    DoctorList doctorList = mDoctorLists.get(index);
+                    p1 = getLocationFromAddress(doctorList.getAddressOfDoctorString());
+                    if (p1 != null) {
+                        LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
+                        doctorList.setLatitude(p1.getLatitude());
+                        doctorList.setLongitude(p1.getLongitude());
+
+                        View itemView = getLayoutInflater().inflate(R.layout.custom_marker_map, null);
+                        TextView ratingText = (TextView) itemView.findViewById(R.id.ratingText);
+                        TextView doctorNameText = (TextView) itemView.findViewById(R.id.doctorNameText);
+                        ratingText.setText(String.valueOf(doctorList.getRating()));
+                        doctorNameText.setText(doctorList.getDocName());
+
+                        mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(MapActivityPlotNearByDoctor.this, itemView))));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), 14.0f));
+                    } else
+                        CommonMethods.showToast(MapActivityPlotNearByDoctor.this, getString(R.string.address_not_found));
+                }
+            }
+        }, 100);
+        //------------
+
     }
 
     public Address getLocationFromAddress(String strAddress) {
         Address location = null;
         Geocoder coder = new Geocoder(this);
         List<Address> address;
-
-
         try {
             address = coder.getFromLocationName(strAddress, 5);
             if (address == null) {
@@ -145,12 +158,9 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
             location = address.get(0);
             location.getLatitude();
             location.getLongitude();
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return location;
     }
 
@@ -226,7 +236,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
                 Intent intent = new Intent(MapActivityPlotNearByDoctor.this, ShowMoreInfoBaseActivity.class);
                 intent.putExtra(getString(R.string.toolbarTitle), title.getText().toString());
                 intent.putExtra(getString(R.string.doctor_data), doctorList);
-                startActivity(intent);
+                startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
             }
         });
         try {

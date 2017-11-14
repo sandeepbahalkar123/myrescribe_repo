@@ -136,18 +136,19 @@ public class DashboardDataModel implements Parcelable {
         return temp;
     }
 
-    public void replaceDoctorListById(String docId, DoctorList docObjectToReplace) {
-        int positionToReplaceObject = -1;
+    public void replaceDoctorListById(String docId, DoctorList docObjectToReplace, String objectUpdateType) {
+        ArrayList<DoctorList> newListToUpdateTempDoctorList = new ArrayList<>(doctorList);
+        boolean isUpdated = false;
         for (int i = 0; i < doctorList.size(); i++) {
             DoctorList tempObject = doctorList.get(i);
             if (docId.equalsIgnoreCase("" + tempObject.getDocId())) {
-                positionToReplaceObject = i;
-                break;
+                isUpdated = true;
+                newListToUpdateTempDoctorList.set(i, docObjectToReplace);
             }
         }
-        if (positionToReplaceObject != -1) {
-            doctorList.set(positionToReplaceObject, docObjectToReplace);
-            setDoctorList(doctorList);
+
+        if (isUpdated) {
+            setDoctorList(newListToUpdateTempDoctorList);
         }
     }
 

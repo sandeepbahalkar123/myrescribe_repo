@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -7,16 +8,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.fragments.LoginFragment;
 import com.rescribe.ui.fragments.book_appointment.BookAppointDoctorDescriptionFragment;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
 
 /**
  * Created by jeetal on 6/10/17.
@@ -35,7 +42,9 @@ public class ShowMoreInfoBaseActivity extends AppCompatActivity {
     @BindView(R.id.viewContainer)
     FrameLayout viewContainer;
     HashMap<String, String> userSelectedLocationInfo;
-    private BookAppointDoctorDescriptionFragment mBookAppointDoctorDescriptionFragment;
+
+    private DoctorList doctorObject;
+    ArrayList<DoctorList> doctorList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,26 +52,27 @@ public class ShowMoreInfoBaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_book_appoint_doc_base_list);
         ButterKnife.bind(this);
         initialize();
-
     }
 
     private void initialize() {
 
-        DoctorList doctorList = getIntent().getExtras().getParcelable(getString(R.string.doctor_data));
+        doctorList = new ArrayList<>();
+
+        doctorList = getIntent().getExtras().getParcelable(getString(R.string.doctor_data));
         showlocation.setVisibility(View.VISIBLE);
         locationTextView.setVisibility(View.GONE);
         title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         Bundle bundle = new Bundle();
-        bundle.putParcelable(getString(R.string.clicked_item_data),doctorList);
-        bundle.putString(getString(R.string.toolbarTitle),getIntent().getStringExtra(getString(R.string.toolbarTitle)));
-        mBookAppointDoctorDescriptionFragment = BookAppointDoctorDescriptionFragment.newInstance(bundle);
+        bundle.putParcelable(getString(R.string.clicked_item_data), doctorObject);
+        bundle.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
+
+        BookAppointDoctorDescriptionFragment mBookAppointDoctorDescriptionFragment = BookAppointDoctorDescriptionFragment.newInstance(bundle);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.viewContainer, mBookAppointDoctorDescriptionFragment);
         fragmentTransaction.commit();
-
     }
 
     @OnClick({R.id.bookAppointmentBackButton, R.id.locationTextView, R.id.showlocation})
@@ -76,5 +86,22 @@ public class ShowMoreInfoBaseActivity extends AppCompatActivity {
             case R.id.showlocation:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doctorList != null) {
+            Intent intent = new Intent();
+            intent.putExtra(DOCTOR_DATA, doctorList);
+            setResult(DOCTOR_DATA_REQUEST_CODE, intent);
+        }
+        super.onBackPressed();
+    }
+
+    public void replaceDoctorListById(int docId, DoctorList mClickedDoctorObject) {
+        doctorObject.setFavourite(mClickedDoctorObject.getFavourite());
+        if (doctorList.isEmpty())
+            doctorList.add(doctorObject);
+        else doctorList.get(0).setFavourite(mClickedDoctorObject.getFavourite());
     }
 }

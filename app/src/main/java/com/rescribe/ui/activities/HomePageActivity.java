@@ -13,7 +13,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,6 +66,8 @@ import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
 /**
@@ -79,6 +80,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private static final long MANAGE_ACCOUNT = 121;
     private static final long ADD_ACCOUNT = 122;
     private static final String TAG = "HomePage";
+
+    //private int pagerPosition = 0;
 
     @BindView(R.id.viewpager)
     ViewPager viewpager;
@@ -402,7 +405,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     DoctorDataHelper.getUserSelectedLocationInfo().clear();
                     Intent intent = new Intent(mContext, BookAppointmentServices.class);
                     //    Intent intent = new Intent(mContext, DoctorListToBookAppointment.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
                 }
 
                 closeDrawer();
@@ -480,68 +483,11 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             DashBoardBaseModel mDashboardBaseModel = (DashBoardBaseModel) customResponse;
 
             mDashboardDataModel = mDashboardBaseModel.getDashboardModel();
-            ArrayList<DoctorList> dashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
 
             if (mDashboardDataModel != null) {
                 //----------
 
-                Map<String, Integer> dataMap = new LinkedHashMap<>();
-                ArrayList<DoctorList> myAppoint = mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.my_appointments));
-                ArrayList<DoctorList> sponsered = mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
-                ArrayList<DoctorList> recently_visit_doctor = mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor));
-                ArrayList<DoctorList> favoriteList = mDashboardDataModel.getFavouriteDocList();
-
-                dataMap.put(getString(R.string.my_appointments), myAppoint.size());
-                dataMap.put(getString(R.string.sponsored_doctor), sponsered.size());
-                dataMap.put(getString(R.string.recently_visited_doctor), recently_visit_doctor.size());
-                dataMap.put(getString(R.string.favorite), favoriteList.size());
-
-                dashboardDoctorListsToShowDashboardDoctor.add(myAppoint.get(0));
-                dashboardDoctorListsToShowDashboardDoctor.add(sponsered.get(0));
-                dashboardDoctorListsToShowDashboardDoctor.add(recently_visit_doctor.get(0));
-                dashboardDoctorListsToShowDashboardDoctor.add(favoriteList.get(0));
-                //----------
-
-                mDashboardDoctorListsToShowDashboardDoctor.addAll(dashboardDoctorListsToShowDashboardDoctor);
-
-                mShowDoctorViewPagerAdapter = new ShowDoctorViewPagerAdapter(this, dashboardDoctorListsToShowDashboardDoctor, this, dataMap);
-                viewPagerDoctorItem.setAdapter(mShowDoctorViewPagerAdapter);
-                //-----------
-
-                // Disable clip to padding
-                viewPagerDoctorItem.setClipToPadding(false);
-
-                int pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
-                viewPagerDoctorItem.setPadding(pager_padding, 0, pager_padding, 0);
-                int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
-                viewPagerDoctorItem.setPageMargin(pager_margin);
-
-                mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, mDashboardDataModel.getCardBgImageUrlList());
-                viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
-                viewpager.setOffscreenPageLimit(mShowBackgroundViewPagerAdapter.getCount());
-
-                final int scrollPixels = widthPixels * mShowDoctorViewPagerAdapter.getCount();
-                final int exactScroll = scrollPixels - widthPixels;
-                int itemWidth = (widthPixels - (pager_padding * 2)) + pager_margin;
-                final int scrollWidth = itemWidth * (mShowDoctorViewPagerAdapter.getCount() - 1);
-
-                viewPagerDoctorItem.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                        float ans = (float) (exactScroll * viewPagerDoctorItem.getScrollX()) / scrollWidth;
-                        viewpager.setScrollX((int) ans);
-                    }
-
-                    @Override
-                    public void onPageSelected(int position) {
-//                        viewpager.setCurrentItem(position, true);
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int state) {
-
-                    }
-                });
+                setUpViewPager();
                 //----------
 
                 mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, mDashboardDataModel.getDashboardMenuList());
@@ -568,8 +514,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     addBottomMenu(bottomMenu);
                 }
 
-            } else {
-
             }
             //------------
         } else if (mOldDataTag.equals(RescribeConstants.LOGOUT))
@@ -583,7 +527,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     DoctorList doctorListById = mDashboardDataModel.findDoctorListById("" + mClickedDoctorID);
                     boolean status = doctorListById.getFavourite() ? false : true;
                     doctorListById.setFavourite(status);
-                    mDashboardDataModel.replaceDoctorListById("" + doctorListById.getDocId(), doctorListById);
+                    mDashboardDataModel.replaceDoctorListById("" + doctorListById.getDocId(), doctorListById, getString(R.string.object_update_common_to_doc));
                     if (mCLickedFavDocIDImageView != null) {
                         if (doctorListById.getFavourite()) {
                             mCLickedFavDocIDImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.dashboard_heart_fav));
@@ -595,6 +539,86 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
             }
         }
+    }
+
+    private void setUpViewPager() {
+        //----------
+
+        Map<String, Integer> dataMap = new LinkedHashMap<>();
+        ArrayList<DoctorList> myAppoint = mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.my_appointments));
+        ArrayList<DoctorList> sponsered = mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
+        ArrayList<DoctorList> recently_visit_doctor = mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor));
+        ArrayList<DoctorList> favoriteList = mDashboardDataModel.getFavouriteDocList();
+
+        dataMap.put(getString(R.string.my_appointments), myAppoint.size());
+        dataMap.put(getString(R.string.sponsored_doctor), sponsered.size());
+        dataMap.put(getString(R.string.recently_visited_doctor), recently_visit_doctor.size());
+        dataMap.put(getString(R.string.favorite), favoriteList.size());
+
+        ArrayList<DoctorList> mergeList = new ArrayList<>();
+
+        if (myAppoint.size() > 0)
+            mergeList.add(myAppoint.get(0));
+
+        if (sponsered.size() > 0)
+            mergeList.add(sponsered.get(0));
+
+        if (recently_visit_doctor.size() > 0)
+            mergeList.add(recently_visit_doctor.get(0));
+
+        if (favoriteList.size() > 0)
+            mergeList.add(favoriteList.get(0));
+
+        //------------
+
+        mDashboardDoctorListsToShowDashboardDoctor.addAll(mergeList);
+
+        mShowDoctorViewPagerAdapter = new ShowDoctorViewPagerAdapter(this, mergeList, this, dataMap);
+        viewPagerDoctorItem.setAdapter(mShowDoctorViewPagerAdapter);
+        //-----------
+
+        // Disable clip to padding
+        viewPagerDoctorItem.setClipToPadding(false);
+
+        int pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
+        viewPagerDoctorItem.setPadding(pager_padding, 0, pager_padding, 0);
+        int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
+        viewPagerDoctorItem.setPageMargin(pager_margin);
+
+        mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, mDashboardDataModel.getCardBgImageUrlList());
+        viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
+        viewpager.setOffscreenPageLimit(mShowBackgroundViewPagerAdapter.getCount());
+
+        final int scrollPixels = widthPixels * mShowDoctorViewPagerAdapter.getCount();
+        final int exactScroll = scrollPixels - widthPixels;
+        int itemWidth = (widthPixels - (pager_padding * 2)) + pager_margin;
+        final int scrollWidth = itemWidth * (mShowDoctorViewPagerAdapter.getCount() - 1);
+
+        viewPagerDoctorItem.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                float ans = (float) (exactScroll * viewPagerDoctorItem.getScrollX()) / scrollWidth;
+                viewpager.setScrollX((int) ans);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+//                        viewpager.setCurrentItem(position, true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+       /* viewPagerDoctorItem.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                viewPagerDoctorItem.setCurrentItem(pagerPosition);
+            }
+        }, 300);*/
+
     }
 
     @Override
@@ -628,20 +652,22 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onClickOfDashboardDoctorItem(String mDashBoardCardName) {
+
+       // pagerPosition = viewPagerDoctorItem.getCurrentItem();
         if (mDashBoardCardName.equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
             startActivity(intent);
         } else if (mDashBoardCardName.equalsIgnoreCase(getString(R.string.favorite))) {// favorite card name
             Intent intent = new Intent(HomePageActivity.this, DoctorDescriptionBaseActivity.class);
-            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getFavouriteDocList().get(0));
-            intent.putExtra(getString(R.string.toolbarTitle), mDashBoardCardName);
-            startActivity(intent);
+            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.sponsered_doctor)).get(0));
+            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.sponsered_doctor));
+            startActivityForResult(intent, DOCTOR_DATA_REQUEST_CODE);
         } else {
             // for sponcered and recent visited doctor list.
             Intent intent = new Intent(HomePageActivity.this, DoctorDescriptionBaseActivity.class);
             intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(mDashBoardCardName).get(0));
             intent.putExtra(getString(R.string.toolbarTitle), mDashBoardCardName);
-            startActivity(intent);
+            startActivityForResult(intent, DOCTOR_DATA_REQUEST_CODE);
         }
     }
 
@@ -651,18 +677,19 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
             intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.my_appointments));
             intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.my_appointments)));
-            startActivity(intent);
+            startActivityForResult(intent,RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
         } else if (nameOfCategoryType.equalsIgnoreCase(getString(R.string.favorite))) { // favorite card name
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
             intent.putExtra(getString(R.string.toolbarTitle), nameOfCategoryType);
             intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getFavouriteDocList());
-            startActivity(intent);
+            startActivityForResult(intent,RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
         } else {
             // for sponcered and recent visited doctor list.
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
             intent.putExtra(getString(R.string.toolbarTitle), nameOfCategoryType);
             intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(nameOfCategoryType));
-            startActivity(intent);
+            startActivityForResult(intent,RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+
         }
     }
 
@@ -745,5 +772,24 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             startActivity(intent);
 
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (RescribeConstants.DOCTOR_DATA_REQUEST_CODE == requestCode && data != null) {
+            ArrayList<DoctorList> doctorLists = data.getParcelableArrayListExtra(DOCTOR_DATA);
+            for (DoctorList doctorList : doctorLists) {
+                for (DoctorList doctorL : mDashboardDataModel.getDoctorList()) {
+                    if (doctorL.getDocId() == doctorList.getDocId())
+                        doctorL.setFavourite(doctorList.getFavourite());
+                }
+            }
+
+            setUpViewPager();
+            // notify UI
+        }
+
     }
 }

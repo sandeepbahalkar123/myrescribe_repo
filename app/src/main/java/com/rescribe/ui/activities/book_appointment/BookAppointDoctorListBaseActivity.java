@@ -13,7 +13,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -24,7 +23,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.model.LatLng;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
@@ -50,6 +48,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
+
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
+import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
 
 /**
  * Created by jeetal on 15/9/17.
@@ -83,6 +84,9 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     String latitude = "";
     String longitude = "";
     String address;
+
+    private DoctorList object;
+
     //-----
 
     @Override
@@ -184,14 +188,14 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             }
             if (isLocationChange) {
                 if (mCurrentlyLoadedFragment instanceof BookAppointFilteredDoctorListFragment) {
-                    BookAppointFilteredDoctorListFragment d = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
-                    d.updateViewData();
+                    BookAppointFilteredDoctorListFragment bookAppointFilteredDoctorListFragment = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
+                    bookAppointFilteredDoctorListFragment.updateViewData();
                 } else if (mCurrentlyLoadedFragment instanceof BookAppointDoctorDescriptionFragment) {
-                    BookAppointDoctorDescriptionFragment d = (BookAppointDoctorDescriptionFragment) mCurrentlyLoadedFragment;
-                    d.updateViewData();
+                    BookAppointDoctorDescriptionFragment bookAppointDoctorDescriptionFragment = (BookAppointDoctorDescriptionFragment) mCurrentlyLoadedFragment;
+                    bookAppointDoctorDescriptionFragment.updateViewData();
                 } else if (mCurrentlyLoadedFragment instanceof RecentVisitDoctorFragment) {
-                    RecentVisitDoctorFragment d = (RecentVisitDoctorFragment) mCurrentlyLoadedFragment;
-                    d.updateViewData();
+                    RecentVisitDoctorFragment recentVisitDoctorFragment = (RecentVisitDoctorFragment) mCurrentlyLoadedFragment;
+                    recentVisitDoctorFragment.updateViewData();
                 }
             } else {
                 loadFragment(mCurrentlyLoadedFragment, false);
@@ -220,9 +224,9 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         mDrawerLayout.closeDrawers();
         doOperationOnDrawer(drawerRequired);
         if (mCurrentlyLoadedFragment instanceof BookAppointFilteredDoctorListFragment) {
-            BookAppointFilteredDoctorListFragment d = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
+            BookAppointFilteredDoctorListFragment bookAppointFilteredDoctorListFragment = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
             if (mDrawerLoadedFragment instanceof DrawerForFilterDoctorBookAppointment) {
-                d.onApplyClicked(b);
+                bookAppointFilteredDoctorListFragment.onApplyClicked(b);
             }
         }
     }
@@ -232,9 +236,9 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         mDrawerLayout.closeDrawers();
         doOperationOnDrawer(drawerRequired);
         if (mCurrentlyLoadedFragment instanceof BookAppointFilteredDoctorListFragment) {
-            BookAppointFilteredDoctorListFragment d = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
+            BookAppointFilteredDoctorListFragment bookAppointFilteredDoctorListFragment = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
             if (mDrawerLoadedFragment instanceof DrawerForFilterDoctorBookAppointment) {
-                d.onResetClicked();
+                bookAppointFilteredDoctorListFragment.onResetClicked();
             }
         }
     }
@@ -351,6 +355,23 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                 }
                 CommonMethods.Log("Address: ", stBuilder.toString());
             }
+        } else if (requestCode == DOCTOR_DATA_REQUEST_CODE && data != null) {
+            ArrayList<DoctorList> doctorLists = data.getParcelableArrayListExtra(DOCTOR_DATA);
+
+            if (!doctorLists.isEmpty()) {
+                if (object != null)
+                    object.setFavourite(doctorLists.get(0).getFavourite());
+                else object = doctorLists.get(0);
+
+                // update ui
+
+                if (mCurrentlyLoadedFragment instanceof BookAppointDoctorDescriptionFragment) {
+                    BookAppointDoctorDescriptionFragment bookAppointDoctorDescriptionFragment = (BookAppointDoctorDescriptionFragment) mCurrentlyLoadedFragment;
+                    bookAppointDoctorDescriptionFragment.setFavorite(doctorLists.get(0).getFavourite());
+                }
+
+                replaceDoctorListById(object.getDocId(), object, getResources().getString(R.string.object_update_common_to_doc));
+            }
         }
     }
 
@@ -374,6 +395,10 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     @Override
     public void onBackPressed() {
 
+        Intent intent = new Intent();
+        intent.putExtra(DOCTOR_DATA, mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList());
+        setResult(DOCTOR_DATA_REQUEST_CODE, intent);
+
         if (mSupportFragmentManager == null) {
             finish();
         } else {
@@ -385,8 +410,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                     finish();
                 } else {
                     super.onBackPressed();
-                    Fragment id = mSupportFragmentManager.findFragmentById(R.id.viewContainer);
-                    mCurrentlyLoadedFragment = id;
+                    mCurrentlyLoadedFragment = mSupportFragmentManager.findFragmentById(R.id.viewContainer);
 
                     // This to recall API when came from ComplaintFragmnet.
                     if (mCurrentlyLoadedFragment instanceof RecentVisitDoctorFragment) {
@@ -448,7 +472,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     public static void setToolBarTitle(String toolbartitle, boolean isLocationVisible) {
-        title.setText(toolbartitle);
+        title.setText("" + toolbartitle);
         if (isLocationVisible) {
             locationTextView.setVisibility(View.VISIBLE);
             showlocation.setVisibility(View.GONE);
@@ -469,6 +493,10 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     }
 
+    public void setObject(DoctorList object) {
+        this.object = object;
+    }
+
     public interface OnActivityDrawerListener {
         void onApplyClicked(Bundle data);
 
@@ -480,21 +508,22 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
 
-    public void replaceDoctorListById(String docId, DoctorList docObjectToReplace) {
+    public void replaceDoctorListById(int docId, DoctorList docObjectToReplace, String objectUpdateType) {
         DoctorServicesModel doctorServicesModel = mReceivedBookAppointmentBaseModel.getDoctorServicesModel();
         if (doctorServicesModel != null) {
-            ArrayList<DoctorList> doctorList = doctorServicesModel.getDoctorList();
-            int positionToReplaceObject = -1;
-            for (int i = 0; i < doctorList.size(); i++) {
-                DoctorList tempObject = doctorList.get(i);
-                if (docId.equalsIgnoreCase("" + tempObject.getDocId())) {
-                    positionToReplaceObject = i;
-                    break;
+            ArrayList<DoctorList> tempDoctorList = doctorServicesModel.getDoctorList();
+            ArrayList<DoctorList> newListToUpdateTempDoctorList = new ArrayList<>(tempDoctorList);
+            boolean isUpdated = false;
+            for (int i = 0; i < tempDoctorList.size(); i++) {
+                DoctorList tempObject = tempDoctorList.get(i);
+                if (docId == tempObject.getDocId()) {
+                    isUpdated = true;
+                    newListToUpdateTempDoctorList.set(i, docObjectToReplace);
                 }
             }
-            if (positionToReplaceObject != -1) {
-                doctorList.set(positionToReplaceObject, docObjectToReplace);
-                doctorServicesModel.setDoctorList(doctorList);
+
+            if (isUpdated) {
+                doctorServicesModel.setDoctorList(newListToUpdateTempDoctorList);
                 mReceivedBookAppointmentBaseModel.setDoctorServicesModel(doctorServicesModel);
             }
         }

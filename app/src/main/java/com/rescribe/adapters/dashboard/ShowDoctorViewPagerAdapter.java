@@ -301,7 +301,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 boolean status = !doctorObject.getFavourite();
-                mOnClickOfCardOnDashboard.onClickOfFavourite(status, doctorObject.getDocId(), favorite);
+                mOnClickOfCardOnDashboard.onFavoriteClick(status, doctorObject, favorite);
             }
         });
 
@@ -330,7 +330,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
         void onClickOfCount(String nameOfCategoryType);
 
-        void onClickOfFavourite(boolean isFavourite, int docId, ImageView favorite);
+        void onFavoriteClick(boolean isFavourite, DoctorList doctorListObject, ImageView favorite);
     }
 
 }

@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -233,9 +234,9 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
                 doctorList.setClinicDataList(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getClinicDataList());
                 doctorList.setNameOfClinicString(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinicString());
 
-                Intent intent = new Intent(MapActivityPlotNearByDoctor.this, ShowMoreInfoBaseActivity.class);
+                Intent intent = new Intent(MapActivityPlotNearByDoctor.this, DoctorDescriptionBaseActivity.class);
                 intent.putExtra(getString(R.string.toolbarTitle), title.getText().toString());
-                intent.putExtra(getString(R.string.doctor_data), doctorList);
+                intent.putExtra(getString(R.string.clicked_item_data), doctorList);
                 startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
             }
         });

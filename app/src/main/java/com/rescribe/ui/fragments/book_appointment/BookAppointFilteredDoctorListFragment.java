@@ -104,8 +104,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
             }
         }
 
-        mLocationFab.setVisibility(View.VISIBLE);
-        mFilterFab.setVisibility(View.VISIBLE);
         mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
     }
 
@@ -217,6 +215,12 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
             mFilterFab.setVisibility(View.GONE);
             mEmptyListView.setVisibility(View.VISIBLE);
             mDoctorListView.setVisibility(View.GONE);
+        }
+
+        //--- invisible left & right button if mClickedItemDataTypeValue!=doctor's speciality
+        if (!mClickedItemDataTypeValue.equalsIgnoreCase(getString(R.string.doctors_speciality))) {
+            mLocationFab.setVisibility(View.GONE);
+            mFilterFab.setVisibility(View.GONE);
         }
     }
 

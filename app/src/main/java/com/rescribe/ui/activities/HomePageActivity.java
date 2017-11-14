@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -57,20 +56,16 @@ import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import net.gotev.uploadservice.UploadService;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
-
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
 import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
@@ -86,9 +81,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private static final long MANAGE_ACCOUNT = 121;
     private static final long ADD_ACCOUNT = 122;
     private static final String TAG = "HomePage";
-
-    //private int pagerPosition = 0;
-
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.viewPagerDoctorItem)
@@ -113,13 +105,12 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     int Min = c.get(Calendar.MINUTE);
     private ShowDoctorViewPagerAdapter mShowDoctorViewPagerAdapter;
     private ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter;
-    DoctorDataHelper mDoctorDataHelper;
     ArrayList<DoctorList> mDashboardDoctorListsToShowDashboardDoctor;
-    int mClickedDoctorID;
     private int widthPixels;
     DashboardDataModel mDashboardDataModel;
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     private ImageView mCLickedFavDocIDImageView;
+    private DoctorList mClickedDoctorListToUpdateFavStatus;
 
 
     @Override
@@ -530,12 +521,11 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             if (customResponse != null) {
                 CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
                 if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
-                    DoctorList doctorListById = mDashboardDataModel.findDoctorListById("" + mClickedDoctorID);
-                    boolean status = doctorListById.getFavourite() ? false : true;
-                    doctorListById.setFavourite(status);
-                    mDashboardDataModel.replaceDoctorListById("" + doctorListById.getDocId(), doctorListById, getString(R.string.object_update_common_to_doc));
+                    boolean status = mClickedDoctorListToUpdateFavStatus.getFavourite() ? false : true;
+                    mClickedDoctorListToUpdateFavStatus.setFavourite(status);
+                    mDashboardDataModel.replaceDoctorListById("" + mClickedDoctorListToUpdateFavStatus.getDocId(), mClickedDoctorListToUpdateFavStatus, getString(R.string.object_update_common_to_doc));
                     if (mCLickedFavDocIDImageView != null) {
-                        if (doctorListById.getFavourite()) {
+                        if (mClickedDoctorListToUpdateFavStatus.getFavourite()) {
                             mCLickedFavDocIDImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.dashboard_heart_fav));
                         } else {
                             mCLickedFavDocIDImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.result_line_heart_fav));
@@ -688,11 +678,12 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     @Override
-    public void onClickOfFavourite(boolean isFavourite, int docId, ImageView favorite) {
-        mClickedDoctorID = docId;
+    public void onFavoriteClick(boolean isFavourite, DoctorList doctorListObject, ImageView favorite) {
+        mClickedDoctorListToUpdateFavStatus = doctorListObject;
+
         this.mCLickedFavDocIDImageView = favorite;
-        mDoctorDataHelper = new DoctorDataHelper(this, this);
-        mDoctorDataHelper.setFavouriteDoctor(isFavourite, docId);
+
+        new DoctorDataHelper(this, this).setFavouriteDoctor(isFavourite, mClickedDoctorListToUpdateFavStatus.getDocId());
     }
 
     @Override
@@ -710,8 +701,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             intent.putExtra(getString(R.string.toolbarTitle), menuName);
             startActivity(intent);
         } else if (menuName.equals(getString(R.string.health_offers))) {
-            Intent intent = new Intent(mContext,HealthOffersActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle),menuName);
+            Intent intent = new Intent(mContext, HealthOffersActivity.class);
+            intent.putExtra(getString(R.string.toolbarTitle), menuName);
             startActivity(intent);
 
         } else if (menuName.equals(getString(R.string.health_education))) {

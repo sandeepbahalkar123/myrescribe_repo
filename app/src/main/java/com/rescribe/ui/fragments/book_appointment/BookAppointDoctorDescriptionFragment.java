@@ -45,7 +45,6 @@ import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
-import com.rescribe.ui.activities.book_appointment.ShowMoreInfoBaseActivity;
 import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -68,7 +67,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     //-------------
     @BindView(R.id.doChat)
     ImageView doChat;
-
     @BindView(R.id.profileImage)
     CircularImageView mProfileImage;
     @BindView(R.id.docRating)
@@ -106,7 +104,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     CustomTextView mAboutDoctorDescription;
     @BindView(R.id.aboutDoctor)
     CustomTextView aboutDoctor;
-
     @BindView(R.id.bookAppointmentButton)
     AppCompatButton bookAppointmentButton;
     @BindView(R.id.servicesListView)
@@ -319,11 +316,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                     } else if (getActivity() instanceof DoctorDescriptionBaseActivity) {
                         DoctorDescriptionBaseActivity activity = (DoctorDescriptionBaseActivity) getActivity();
                         activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
-                    } else if (getActivity() instanceof ShowMoreInfoBaseActivity) {
-                        ShowMoreInfoBaseActivity activity = (ShowMoreInfoBaseActivity) getActivity();
-                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
                     }
-
                     setFavorite(mClickedDoctorObject.getFavourite());
 
                 }

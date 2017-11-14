@@ -165,22 +165,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                     .into(imageURL);
         }
 
-        //---------
-        if (doctorObject.getFavourite()) {
-            favorite.setVisibility(View.VISIBLE);
 
-            favorite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    doctorObject.setFavourite(!doctorObject.getFavourite());
-                    mOnViewPagerItemClickListener.onFavoriteClick(doctorObject, favorite);
-                }
-            });
-
-        } else {
-            favorite.setVisibility(View.GONE);
-        }
-        //-----------
 
         if (doctorObject.getRating() == 0) {
             doctorRating.setVisibility(View.INVISIBLE);
@@ -360,11 +345,8 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             }
         });
 
-      /*  if (doctorObject.getRecentlyVisited()) {
-            recentVisit.setVisibility(View.VISIBLE);
-        } else {
-            recentVisit.setVisibility(View.GONE);
-        }*/
+        //---------
+
         if (doctorObject.getFavourite()) {
             favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_icon));
         } else {
@@ -374,9 +356,12 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 boolean status = doctorObject.getFavourite() ? false : true;
-                //  mOnClickOfCardOnDashboard.onClickOfFavourite(status, doctorObject.getDocId(), favorite);
+                mOnViewPagerItemClickListener.onFavoriteClick(status,doctorObject, favorite);
             }
         });
+
+        //-----------
+
         view.addView(imageLayout, 0);
 
         return imageLayout;
@@ -407,7 +392,9 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
     public interface OnViewPagerItemClickListener {
         void setOnClickedOfViewPagerItem(Bundle bundleData);
 
-        void onFavoriteClick(DoctorList doctorListObject, ImageView favorite);
+        //void onFavoriteClick(DoctorList doctorListObject, ImageView favorite);
+
+        void onFavoriteClick(boolean isFavourite, DoctorList doctorListObject, ImageView favorite);
 
         void setOnClickedOfCatTypeTotalCount(Bundle bundleData);
     }

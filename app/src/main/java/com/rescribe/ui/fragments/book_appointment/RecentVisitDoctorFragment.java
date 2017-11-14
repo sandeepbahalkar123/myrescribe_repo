@@ -33,6 +33,7 @@ import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
@@ -42,6 +43,7 @@ import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,6 +104,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private String mReceivedToolBarTitle;
     private SortByClinicAndDoctorNameAdapter mSortByClinicAndDoctorNameAdapter;
     private ArrayList<DoctorList> doctorListByClinics;
+    private ImageView mCLickedFavDocIDImageView;
+    private DoctorList mClickedDoctorListToUpdateFavStatus;
 
     public RecentVisitDoctorFragment() {
 
@@ -237,15 +241,31 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse c) {
-        this.customResponse = c;
-    }
+        //  this.customResponse = c;
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        CommonMethods.Log("REcenet", "onresume");
-    }
+        switch (mOldDataTag) {
+            case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
+                if (c != null) {
+                    CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) c;
+                    if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
+                        boolean status = mClickedDoctorListToUpdateFavStatus.getFavourite() ? false : true;
+                        mClickedDoctorListToUpdateFavStatus.setFavourite(status);
+                        BookAppointDoctorListBaseActivity baseActivity = (BookAppointDoctorListBaseActivity) getActivity();
 
+                        baseActivity.replaceDoctorListById(mClickedDoctorListToUpdateFavStatus.getDocId(), mClickedDoctorListToUpdateFavStatus, getString(R.string.object_update_common_to_doc));
+                        if (mCLickedFavDocIDImageView != null) {
+                            if (mClickedDoctorListToUpdateFavStatus.getFavourite()) {
+                                mCLickedFavDocIDImageView.setImageDrawable(this.getResources().getDrawable(R.drawable.dashboard_heart_fav));
+                            } else {
+                                mCLickedFavDocIDImageView.setImageDrawable(this.getResources().getDrawable(R.drawable.result_line_heart_fav));
+                            }
+                        }
+                    }
+                    CommonMethods.showToast(getActivity(), responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
+                }
+                break;
+        }
+    }
 
     private void setDoctorListAdapter(BookAppointmentBaseModel bookAppointmentBaseModel) {
         if (bookAppointmentBaseModel == null) {
@@ -347,7 +367,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             }
 
         }
-
         //---set data ---------
     }
 
@@ -464,23 +483,13 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     @Override
-    public void onFavoriteClick(DoctorList doctorListObject, ImageView favorite) {
+    public void onFavoriteClick(boolean isFavourite, DoctorList doctorListObject, ImageView favorite) {
 
         // apicall
-
-        if (doctorListObject.getFavourite()) {
-            favorite.setImageResource(R.drawable.fav_icon);
-        } else {
-            favorite.setImageResource(R.drawable.result_line_heart_fav);
-        }
+        mClickedDoctorListToUpdateFavStatus = doctorListObject;
+        this.mCLickedFavDocIDImageView = favorite;
+        new DoctorDataHelper(this.getContext(), this).setFavouriteDoctor(isFavourite, mClickedDoctorListToUpdateFavStatus.getDocId());
     }
 
-    private void setFavourite(DoctorList doctorL, ImageView favoriteView){
-        if (doctorL.getFavourite()) {
-            favoriteView.setImageDrawable(ContextCompat.getDrawable(favoriteView.getContext(), R.drawable.result_heart_fav));
-        } else {
-            favoriteView.setImageDrawable(ContextCompat.getDrawable(favoriteView.getContext(), R.drawable.result_line_heart_fav));
-        }
-    }
 }
 

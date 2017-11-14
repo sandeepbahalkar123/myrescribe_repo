@@ -98,10 +98,25 @@ public class DashboardShowCategoryNameByListBaseActivity extends AppCompatActivi
         super.onBackPressed();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RescribeConstants.DOCTOR_DATA_REQUEST_CODE && data != null) {
+            ArrayList<DoctorList> receivedList = data.getParcelableArrayListExtra(DOCTOR_DATA);
+            if (receivedList.size() > 0) {
+                DoctorList docObject = receivedList.get(0);
+                replaceDoctorListById(docObject.getDocId(), docObject, getString(R.string.object_update_common_to_doc));
+            }
+            mMyAppointmentsFragment.setAdapter(doctorList);
+        }
+    }
+
     public void replaceDoctorListById(int docId, DoctorList docObjectToReplace, String objectUpdateType) {
-        for (DoctorList tempObject : doctorList) {
-            if (docId == tempObject.getDocId()){
-                tempObject.setFavourite(docObjectToReplace.getFavourite());
+        ArrayList<DoctorList> tempDoctorList = doctorList;
+        for (int i = 0; i < tempDoctorList.size(); i++) {
+            DoctorList tempObject = tempDoctorList.get(i);
+            if (docId == tempObject.getDocId()) {
+                doctorList.set(i, docObjectToReplace);
             }
         }
     }

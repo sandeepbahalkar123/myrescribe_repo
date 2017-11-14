@@ -95,6 +95,13 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
             mSelectedSpeciality = args.getString(getString(R.string.clicked_item_data));
             mClickedItemDataTypeValue = args.getString(getString(R.string.clicked_item_data_type_value));
             BookAppointDoctorListBaseActivity.setToolBarTitle(mSelectedSpeciality, true);
+            if (mClickedItemDataTypeValue.equalsIgnoreCase(getString(R.string.doctors_speciality))) {
+                mLocationFab.setVisibility(View.VISIBLE);
+                mFilterFab.setVisibility(View.VISIBLE);
+            } else {
+                mLocationFab.setVisibility(View.GONE);
+                mFilterFab.setVisibility(View.GONE);
+            }
         }
 
         mLocationFab.setVisibility(View.VISIBLE);
@@ -171,7 +178,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                         mReceivedList) {
                     if (dataObject.getDocId() == mClickedDocIdToUpdateFavoriteStatus) {
                         dataObject.setFavourite(dataObject.getFavourite() ? false : true);
-                        baseActivity.replaceDoctorListById( mClickedDocIdToUpdateFavoriteStatus, dataObject, getString(R.string.object_update_common_to_doc));
+                        baseActivity.replaceDoctorListById(mClickedDocIdToUpdateFavoriteStatus, dataObject, getString(R.string.object_update_common_to_doc));
                     }
                 }
                 mBookAppointFilteredDocListAdapter.notifyDataSetChanged();
@@ -237,8 +244,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                     }
                 }
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
-                 intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-             //   intent.putParcelableArrayListExtra(getString(R.string.doctor_data), new ArrayList<DoctorList>());
+                intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
+                //   intent.putParcelableArrayListExtra(getString(R.string.doctor_data), new ArrayList<DoctorList>());
                 intent.putExtra(getString(R.string.toolbarTitle), mSelectedSpeciality);
                 startActivity(intent);
                 break;
@@ -289,7 +296,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         } else {
             BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.clicked_item_data)), true);
         }
-
 
         HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         String s = userSelectedLocationInfo.get(getString(R.string.location));

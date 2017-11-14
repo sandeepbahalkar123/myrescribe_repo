@@ -98,7 +98,6 @@ public class DashboardHelper implements ConnectionListener {
             ex.printStackTrace();
         }*/
 
-
         String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();

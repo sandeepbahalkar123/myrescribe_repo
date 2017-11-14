@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -56,16 +57,20 @@ import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import net.gotev.uploadservice.UploadService;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
+
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
 import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
@@ -642,7 +647,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         super.onResume();
     }
 
-    @OnClick({R.id.menuIcon,R.id.locationImageView})
+    @OnClick({R.id.menuIcon, R.id.locationImageView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.menuIcon:
@@ -654,7 +659,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     @Override
     public void onClickOfDashboardDoctorItem(String mDashBoardCardName) {
 
-       // pagerPosition = viewPagerDoctorItem.getCurrentItem();
+        // pagerPosition = viewPagerDoctorItem.getCurrentItem();
         if (mDashBoardCardName.equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
             startActivity(intent);
@@ -678,18 +683,18 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
             intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.my_appointments));
             intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.my_appointments)));
-            startActivityForResult(intent,RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+            startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
         } else if (nameOfCategoryType.equalsIgnoreCase(getString(R.string.favorite))) { // favorite card name
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
             intent.putExtra(getString(R.string.toolbarTitle), nameOfCategoryType);
             intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getFavouriteDocList());
-            startActivityForResult(intent,RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+            startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
         } else {
             // for sponcered and recent visited doctor list.
             Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
             intent.putExtra(getString(R.string.toolbarTitle), nameOfCategoryType);
             intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(nameOfCategoryType));
-            startActivityForResult(intent,RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+            startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
 
         }
     }

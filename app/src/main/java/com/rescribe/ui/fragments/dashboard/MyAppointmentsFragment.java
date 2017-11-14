@@ -2,6 +2,7 @@ package com.rescribe.ui.fragments.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
@@ -21,10 +23,13 @@ import com.rescribe.ui.activities.dashboard.DashboardShowCategoryNameByListBaseA
 import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
 import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
 
 /**
@@ -39,9 +44,8 @@ public class MyAppointmentsFragment extends Fragment implements BookAppointFilte
     RecyclerView myAppoinmentRecyclerView;
     private View mRootView;
     ArrayList<DoctorList> dashboardDoctorLists;
-    private DividerItemDecoration mDividerItemDecoration;
     private BookAppointFilteredDocList mMyAppointmentAdapter;
-    private int mClickedDocIdToUpdateFavoriteStatus;
+    private DoctorList mClickedDocListToUpdateFavStatus;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -66,12 +70,14 @@ public class MyAppointmentsFragment extends Fragment implements BookAppointFilte
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.show_myappointment_layout, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
-        init();
+        ArrayList<DoctorList> dataList = args.getParcelableArrayList(getString(R.string.clicked_item_data));
+
+        setAdapter(dataList);
         return mRootView;
     }
 
-    private void init() {
-        dashboardDoctorLists = args.getParcelableArrayList(getString(R.string.clicked_item_data));
+    public void setAdapter(ArrayList<DoctorList> dataList) {
+        dashboardDoctorLists = dataList;
         if (dashboardDoctorLists != null) {
             // mMyAppointmentAdapter = new MyAppointmentDashBoardAdapter(getActivity(), dashboardDoctorLists,this);
             mMyAppointmentAdapter = new BookAppointFilteredDocList(getActivity(), dashboardDoctorLists, this, this);
@@ -80,6 +86,9 @@ public class MyAppointmentsFragment extends Fragment implements BookAppointFilte
             myAppoinmentRecyclerView.setHasFixedSize(true);
             myAppoinmentRecyclerView.setAdapter(mMyAppointmentAdapter);
         }
+    }
+
+    public void objectToUpdateInList() {
 
     }
 
@@ -108,14 +117,13 @@ public class MyAppointmentsFragment extends Fragment implements BookAppointFilte
                 Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
                 intent.putExtra(getString(R.string.toolbarTitle), mClickedDoctorObject.getCategoryName());
                 intent.putExtra(getString(R.string.clicked_item_data), mClickedDoctorObject);
-                startActivityForResult(intent, DOCTOR_DATA_REQUEST_CODE);
+                getActivity().startActivityForResult(intent, DOCTOR_DATA_REQUEST_CODE);
             }
 
         } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {
-            DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
-            mClickedDocIdToUpdateFavoriteStatus = mClickedDoctorObject.getDocId();
-            boolean status = mClickedDoctorObject.getFavourite() ? false : true;
-            new DoctorDataHelper(this.getContext(), this).setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
+            mClickedDocListToUpdateFavStatus = bundleData.getParcelable(getString(R.string.clicked_item_data));
+            boolean status = mClickedDocListToUpdateFavStatus.getFavourite() ? false : true;
+            new DoctorDataHelper(this.getContext(), this).setFavouriteDoctor(status, mClickedDocListToUpdateFavStatus.getDocId());
         }
     }
 
@@ -127,13 +135,16 @@ public class MyAppointmentsFragment extends Fragment implements BookAppointFilte
                 if (temp.getCommonRespose().isSuccess()) {
                     DashboardShowCategoryNameByListBaseActivity activity = (DashboardShowCategoryNameByListBaseActivity) getActivity();
 
+                    //---------
+                    mClickedDocListToUpdateFavStatus.setFavourite(mClickedDocListToUpdateFavStatus.getFavourite() ? false : true);
                     for (int i = 0; i < dashboardDoctorLists.size(); i++) {
                         DoctorList tempObject = dashboardDoctorLists.get(i);
-                        if (tempObject.getDocId() == mClickedDocIdToUpdateFavoriteStatus) {
-                            tempObject.setFavourite(tempObject.getFavourite() ? false : true);
-                            activity.replaceDoctorListById(tempObject.getDocId(), tempObject, getString(R.string.object_update_common_to_doc));
+                        if (tempObject.getDocId() == mClickedDocListToUpdateFavStatus.getDocId()) {
+                            dashboardDoctorLists.set(i, mClickedDocListToUpdateFavStatus);
+                            activity.replaceDoctorListById(mClickedDocListToUpdateFavStatus.getDocId(), mClickedDocListToUpdateFavStatus, getString(R.string.object_update_common_to_doc));
                         }
                     }
+                    //-----------
                     mMyAppointmentAdapter.notifyDataSetChanged();
                 }
                 CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
@@ -149,17 +160,6 @@ public class MyAppointmentsFragment extends Fragment implements BookAppointFilte
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
 
-    }
-
-
-
-    public void onClickOfCard(String menuName) {
-        if (menuName.equals(getString(R.string.my_appointments))) {
-            Intent intent = new Intent(getActivity(), AppointmentActivity.class);
-            startActivity(intent);
-        } else if (menuName.equals(getString(R.string.sponsered_doctor))) {
-
-        }
     }
 
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {

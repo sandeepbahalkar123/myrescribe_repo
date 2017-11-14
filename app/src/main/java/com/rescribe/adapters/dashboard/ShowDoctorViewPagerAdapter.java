@@ -3,6 +3,7 @@ package com.rescribe.adapters.dashboard;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
 import android.text.SpannableString;
@@ -190,7 +191,10 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         dashBoardCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(doctorCategory.getText().toString());
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                mOnClickOfCardOnDashboard.setOnClickedOfViewPagerItem(b);
             }
         });
 
@@ -320,7 +324,9 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     }
 
     public interface OnClickOfCardOnDashboard {
-        void onClickOfDashboardDoctorItem(String nameOfClickOnItem);
+        //  void onClickOfDashboardDoctorItem(String nameOfClickOnItem);
+
+        void setOnClickedOfViewPagerItem(Bundle bundleData);
 
         void onClickOfCount(String nameOfCategoryType);
 

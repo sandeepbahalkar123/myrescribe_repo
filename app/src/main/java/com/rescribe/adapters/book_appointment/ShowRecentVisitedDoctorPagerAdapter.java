@@ -186,16 +186,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
                 b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
                 mOnViewPagerItemClickListener.setOnClickedOfCatTypeTotalCount(b);
-                // mOnClickOfCardOnDashboard.onClickOfCount(doctorCategory.getText().toString());
 
-
-               /* if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
-                    mOnClickOfCardOnDashboard.onClickOfCount(mContext.getString(R.string.my_appointments));
-                } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
-                    mOnClickOfCardOnDashboard.onClickOfCount(mContext.getString(R.string.sponsered_doctor));
-                } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
-                    mOnClickOfCardOnDashboard.onClickOfCount(mContext.getString(R.string.recently_visit_doctor));
-                }*/
             }
         });
 
@@ -207,14 +198,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 mOnViewPagerItemClickListener.setOnClickedOfViewPagerItem(b);
-                //   mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(doctorCategory.getText().toString());
-              /*  if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
-                    mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(mContext.getString(R.string.my_appointments));
-                } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
-                    mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(mContext.getString(R.string.sponsered_doctor));
-                } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
-                    mOnClickOfCardOnDashboard.onClickOfDashboardDoctorItem(mContext.getString(R.string.recently_visit_doctor));
-                }*/
+
             }
         });
 

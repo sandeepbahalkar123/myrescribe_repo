@@ -260,6 +260,10 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                                 mCLickedFavDocIDImageView.setImageDrawable(this.getResources().getDrawable(R.drawable.result_line_heart_fav));
                             }
                         }
+                        //---THIS IS TO UPDATE VIEW-PAGER CARDS DATA-----
+                        bookAppointmentBaseModel = baseActivity.getReceivedBookAppointmentBaseModel();
+                        setDoctorListAdapter(bookAppointmentBaseModel);
+                        //--------
                     }
                     CommonMethods.showToast(getActivity(), responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
                 }

@@ -543,6 +543,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     }
                 }
                 CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
+                setUpViewPager();
             }
         }
     }
@@ -618,13 +619,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             }
         });
 
-       /* viewPagerDoctorItem.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                viewPagerDoctorItem.setCurrentItem(pagerPosition);
-            }
-        }, 300);*/
-
     }
 
     @Override
@@ -657,22 +651,16 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     @Override
-    public void onClickOfDashboardDoctorItem(String mDashBoardCardName) {
-
-        // pagerPosition = viewPagerDoctorItem.getCurrentItem();
-        if (mDashBoardCardName.equalsIgnoreCase(getString(R.string.my_appointments))) {
+    public void setOnClickedOfViewPagerItem(Bundle bundleData) {
+        String value = bundleData.getString(getString(R.string.clicked_item_data_type_value));
+        if (value.equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
             startActivity(intent);
-        } else if (mDashBoardCardName.equalsIgnoreCase(getString(R.string.favorite))) {// favorite card name
-            Intent intent = new Intent(HomePageActivity.this, DoctorDescriptionBaseActivity.class);
-            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.sponsered_doctor)).get(0));
-            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.sponsered_doctor));
-            startActivityForResult(intent, DOCTOR_DATA_REQUEST_CODE);
         } else {
-            // for sponcered and recent visited doctor list.
+            DoctorList doctorListObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
             Intent intent = new Intent(HomePageActivity.this, DoctorDescriptionBaseActivity.class);
-            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(mDashBoardCardName).get(0));
-            intent.putExtra(getString(R.string.toolbarTitle), mDashBoardCardName);
+            intent.putExtra(getString(R.string.clicked_item_data), doctorListObject);
+            intent.putExtra(getString(R.string.toolbarTitle), value);
             startActivityForResult(intent, DOCTOR_DATA_REQUEST_CODE);
         }
     }

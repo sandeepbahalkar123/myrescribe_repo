@@ -78,8 +78,11 @@ public class MyAppointmentDashBoardAdapter extends RecyclerView.Adapter<MyAppoin
             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
             holder.appointmentDate.setText(content);
             if (doctorObject.getClinicDataList().size() > 0) {
+                holder.clinicName.setVisibility(View.VISIBLE);
                 holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
                 holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
+            }else{
+                holder.clinicName.setVisibility(View.GONE);
             }
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
 
@@ -89,6 +92,7 @@ public class MyAppointmentDashBoardAdapter extends RecyclerView.Adapter<MyAppoin
                holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
 
             } else {
+
                 if (doctorObject.getClinicDataList().size() > 0) {
                     SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);

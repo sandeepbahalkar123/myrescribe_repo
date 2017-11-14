@@ -30,8 +30,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dp10"
-        >
+                    android:paddingBottom="@dimen/dp10">
 
                     <ImageView
                         android:id="@+id/leftArrow"
@@ -42,7 +41,6 @@
                         android:paddingLeft="@dimen/dp6"
                         android:paddingStart="@dimen/dp6"
                         android:src="@drawable/left_arrow" />
-
 
                     <ImageView
                         android:id="@+id/rightArrow"

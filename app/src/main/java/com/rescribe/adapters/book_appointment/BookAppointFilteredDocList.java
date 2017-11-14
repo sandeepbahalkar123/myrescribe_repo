@@ -90,8 +90,11 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
             holder.appointmentDate.setText(content);
             if (doctorObject.getClinicDataList().size() > 0) {
+                holder.clinicName.setVisibility(View.VISIBLE);
                 holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
                 holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
+            }else{
+                holder.clinicName.setVisibility(View.GONE);
             }
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
 

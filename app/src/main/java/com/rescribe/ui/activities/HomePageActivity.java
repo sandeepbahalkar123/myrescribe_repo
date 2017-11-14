@@ -46,6 +46,7 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.activities.dashboard.DashboardShowCategoryNameByListBaseActivity;
 import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
+import com.rescribe.ui.activities.dashboard.HealthOffersActivity;
 import com.rescribe.ui.activities.dashboard.ProfileActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.SupportActivity;
@@ -716,6 +717,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             intent.putExtra(getString(R.string.toolbarTitle), menuName);
             startActivity(intent);
         } else if (menuName.equals(getString(R.string.health_offers))) {
+            Intent intent = new Intent(mContext,HealthOffersActivity.class);
+            intent.putExtra(getString(R.string.toolbarTitle),menuName);
+            startActivity(intent);
 
         } else if (menuName.equals(getString(R.string.health_education))) {
 

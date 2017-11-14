@@ -39,7 +39,6 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
     @BindView(R.id.tabs)
     TabLayout mTabLayout;
     String[] mFragmentTitleList = new String[3];
-
     private DoctorHelper mDoctorHelper;
     private ArrayList<AptList> mAppointmentList;
 

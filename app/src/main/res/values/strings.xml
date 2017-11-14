@@ -351,6 +351,9 @@
     <string name="category_name">category_name</string>
     <string name="object_update_common_to_doc">UPDATE COMMON TO ALL DOCTOR</string>
     <string name="object_update_specific_to_doc">UPDATE SPECIFIC TO DOCTOR</string>
+    <string name="consultation">CONSULTATION</string>
+    <string name="medicines">MEDICINES</string>
+    <string name="lab_test">LAB TEST</string>
 
 
 </resources>

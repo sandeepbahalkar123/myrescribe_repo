@@ -33,6 +33,7 @@ import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.interfaces.IServicesCardViewClickListener;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
@@ -59,7 +60,7 @@ import droidninja.filepicker.utils.GridSpacingItemDecoration;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener, SortByClinicAndDoctorNameAdapter.OnClinicAndDoctorNameSearchRowItem, ShowRecentVisitedDoctorPagerAdapter.OnViewPagerItemClickListener {
+public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener, SortByClinicAndDoctorNameAdapter.OnClinicAndDoctorNameSearchRowItem, IServicesCardViewClickListener {
 
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
@@ -321,10 +322,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
                     mViewpager.setPageMargin(pager_margin);
 
-                    // mCircleIndicator.setViewPager(mViewpager);
-
-                    mViewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), mergeList, dataMap, this));
-
                 }
                 //------
                 //----- to set doc data list, invisible by default -----
@@ -470,7 +467,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     @Override
-    public void setOnClickedOfViewPagerItem(Bundle bundleData) {
+    public void onClickOfCardView(Bundle bundleData) {
         String value = bundleData.getString(getString(R.string.clicked_item_data_type_value));
         if (value.equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(getActivity(), AppointmentActivity.class);
@@ -482,18 +479,16 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     @Override
-    public void setOnClickedOfCatTypeTotalCount(Bundle bundleData) {
-        setOnClickOfDoctorSpeciality(bundleData);
-    }
-
-    @Override
-    public void onFavoriteClick(boolean isFavourite, DoctorList doctorListObject, ImageView favorite) {
-
+    public void onFavoriteIconClick(boolean isFavouriteStatus, DoctorList doctorListObject, ImageView favorite) {
         // apicall
         mClickedDoctorListToUpdateFavStatus = doctorListObject;
         this.mCLickedFavDocIDImageView = favorite;
-        new DoctorDataHelper(this.getContext(), this).setFavouriteDoctor(isFavourite, mClickedDoctorListToUpdateFavStatus.getDocId());
+        new DoctorDataHelper(this.getContext(), this).setFavouriteDoctor(isFavouriteStatus, mClickedDoctorListToUpdateFavStatus.getDocId());
     }
 
+    @Override
+    public void onClickOfTotalCount(Bundle bundleData) {
+        setOnClickOfDoctorSpeciality(bundleData);
+    }
 }
 

@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.interfaces.IServicesCardViewClickListener;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
@@ -44,16 +45,16 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
     private int mImageSize;
-    private OnClickOfCardOnDashboard mOnClickOfCardOnDashboard;
+    private IServicesCardViewClickListener mServicesCardViewClickListener;
     private ColorGenerator mColorGenerator;
 
 
-    public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, OnClickOfCardOnDashboard mOnClickOfCardOnDashboard, Map<String, Integer> dataMap) {
+    public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, IServicesCardViewClickListener mOnClickOfCardOnDashboard, Map<String, Integer> dataMap) {
         this.mContext = context;
         this.mDataList = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
-        this.mOnClickOfCardOnDashboard = mOnClickOfCardOnDashboard;
+        this.mServicesCardViewClickListener = mOnClickOfCardOnDashboard;
         mInflater = LayoutInflater.from(context);
         this.mListSizeWithTypeMap = dataMap;
         if (mListSizeWithTypeMap.get(mContext.getString(R.string.favorite)) > 0) {
@@ -182,8 +183,10 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         sizeOfList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnClickOfCardOnDashboard.onClickOfCount(doctorCategory.getText().toString());
-
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
+                b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
+                mServicesCardViewClickListener.onClickOfTotalCount(b);
             }
         });
 
@@ -194,7 +197,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                mOnClickOfCardOnDashboard.setOnClickedOfViewPagerItem(b);
+                mServicesCardViewClickListener.onClickOfCardView(b);
             }
         });
 
@@ -301,7 +304,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 boolean status = !doctorObject.getFavourite();
-                mOnClickOfCardOnDashboard.onFavoriteClick(status, doctorObject, favorite);
+                mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite);
             }
         });
 
@@ -321,16 +324,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view.equals(object);
-    }
-
-    public interface OnClickOfCardOnDashboard {
-        //  void onClickOfDashboardDoctorItem(String nameOfClickOnItem);
-
-        void setOnClickedOfViewPagerItem(Bundle bundleData);
-
-        void onClickOfCount(String nameOfCategoryType);
-
-        void onFavoriteClick(boolean isFavourite, DoctorList doctorListObject, ImageView favorite);
     }
 
 }

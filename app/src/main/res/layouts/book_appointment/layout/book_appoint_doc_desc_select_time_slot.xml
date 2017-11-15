@@ -23,9 +23,11 @@
                 android:layout_height="wrap_content" />
 
             <LinearLayout
+                android:id="@+id/bookingSlotLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -88,6 +90,22 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/no_data_found"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/no_clinic_data_found" />
+
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
@@ -105,6 +123,7 @@
             android:background="@color/clickHere"
             android:text="@string/book_appointment"
             android:textAllCaps="false"
+            android:visibility="gone"
             android:textColor="@color/white" />
     </LinearLayout>
 </LinearLayout>

@@ -46,12 +46,14 @@
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/rupeesLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="right|center"
                     android:background="@drawable/white_square"
                     android:gravity="center"
+                    android:visibility="invisible"
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/dp4"
                     android:paddingRight="@dimen/dp4">
@@ -128,6 +130,7 @@
                         android:layout_alignTop="@+id/thumbnail"
                         android:layout_marginTop="1dip"
                         tools:text="Cardilogist"
+                        android:visibility="gone"
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp18"
                         android:textStyle="bold"
@@ -163,6 +166,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:gravity="bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

@@ -29,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -50,14 +49,11 @@ import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 //TODO , NNED TO IMPLEMNT AS PER NEW JSON
@@ -112,7 +108,14 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     CustomTextView mServicesHeaderView;
     @BindView(R.id.readMoreDocServices)
     CustomTextView mReadMoreDocServices;
+    @BindView(R.id.rupeesLayout)
+    LinearLayout rupeesLayout;
+    @BindView(R.id.servicesLayout)
+    LinearLayout servicesLayout;
+    @BindView(R.id.aboutLayout)
+    LinearLayout aboutLayout;
     //-------
+
     private View mRootView;
     private int mImageSize;
     Unbinder unbinder;
@@ -160,7 +163,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         Bundle arguments = getArguments();
         if (arguments != null) {
             mClickedDoctorObject = (DoctorList) arguments.getParcelable(getString(R.string.clicked_item_data));
-             setDataInViews();
+            setDataInViews();
         }
     }
 
@@ -178,11 +181,16 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         contentServices.setSpan(new UnderlineSpan(), 0, contentServices.length(), 0);
         mServicesHeaderView.setText(contentServices);
         //-------
-        SpannableString content = new SpannableString(aboutDoctor.getText());
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        aboutDoctor.setText(content);
-        mAboutDoctorDescription.setText("" + mClickedDoctorObject.getAboutDoctor());
-        //-------
+        if(aboutDoctor.getText().equals("")) {
+           aboutLayout.setVisibility(View.INVISIBLE);
+            //-------
+        }else{
+            aboutLayout.setVisibility(View.VISIBLE);
+            SpannableString content = new SpannableString(aboutDoctor.getText());
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            aboutDoctor.setText(content);
+            mAboutDoctorDescription.setText("" + mClickedDoctorObject.getAboutDoctor());
+        }
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
@@ -257,8 +265,19 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                     ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
-                    mClinicName.setText("" + clinicData.getClinicName());
-                    mDoctorFees.setText("" + clinicData.getAmount());
+                    if (clinicData.getClinicName().equals("")) {
+                        mClinicName.setVisibility(View.GONE);
+                    } else {
+                        mClinicName.setVisibility(View.VISIBLE);
+                        mClinicName.setText("" + clinicData.getClinicName());
+
+                    }
+                    if (clinicData.getAmount() == 0) {
+                        rupeesLayout.setVisibility(View.INVISIBLE);
+                    } else {
+                        rupeesLayout.setVisibility(View.VISIBLE);
+                        mDoctorFees.setText("" + clinicData.getAmount());
+                    }
                 }
 
 
@@ -283,6 +302,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         ArrayList<String> receivedDocService = mClickedDoctorObject.getDocServices();
         int receivedDocServiceSize = receivedDocService.size();
         if (receivedDocServiceSize > 0) {
+            servicesLayout.setVisibility(View.VISIBLE);
             ArrayList<String> docListToSend = new ArrayList<>();
             if (receivedDocServiceSize > 5) {
                 docListToSend.addAll(receivedDocService.subList(0, 4));
@@ -295,7 +315,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             mServicesListView.setAdapter(mServicesAdapter);
             CommonMethods.setListViewHeightBasedOnChildren(mServicesListView);
         } else {
-            mReadMoreDocServices.setVisibility(View.GONE);
+            servicesLayout.setVisibility(View.GONE);
         }
 
         //---------
@@ -350,14 +370,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
-           /* case R.id.locationImage:
-                HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-                Intent intent = new Intent(getActivity(), MapActivityShowDoctorLocation.class);
-                intent.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
-                intent.putExtra(getString(R.string.location), userSelectedLocationInfo.get(getString(R.string.location)));
-                intent.putExtra(getString(R.string.address), mClickedDoctorObject.getAddressOfDoctorString());
-                startActivity(intent);
-                break;*/
+
             case R.id.bookAppointmentButton:
                 Intent intentObject = new Intent(getActivity(), SelectSlotToBookAppointmentBaseActivity.class);
                 intentObject.putExtra(getString(R.string.clicked_item_data), mClickedDoctorObject);

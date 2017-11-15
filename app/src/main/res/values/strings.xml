@@ -236,7 +236,7 @@
     <string name="availability">Availability</string>
     <string name="doctor">Doctor</string>
     <string name="about_doctor"><u>About Doctor :</u></string>
-    <string name="recently_visited_doctor">Recently Visited Doctor</string>
+    <string name="recently_visited_doctor">Recently Visited Doctors</string>
     <!--<string name="clickhere">Not Sure ?......click here</string>-->
     <!--<string name="clickhere">Not Sure ?......click here</string>-->
     <string name="clickhere"><![CDATA[<b><font color=#d2d2d2>Not Sure ?......</font>click here</b>]]></string>
@@ -334,11 +334,11 @@
     <string name="platform"><![CDATA[&platform=]]></string>
     <string name="android">android</string>
     <string name="screen_resolution"><![CDATA[&screenResolution=]]></string>
-    <string name="sponsered_doctor">Sponsored Doctor</string>
+    <string name="sponsered_doctor">Sponsored Doctors</string>
     <string name="dashboardcard">dashboardcard</string>
     <string name="app_logo">AppLogo</string>
-    <string name="sponsored_doctor">Sponsored Doctor</string>
-    <string name="recently_visit_doctor">Recently Visited Doctor</string>
+    <string name="sponsored_doctor">Sponsored Doctors</string>
+    <string name="recently_visit_doctor">Recently Visited Doctors</string>
     <string name="practices_at_locations">Practices at $$ locations</string>
     <string name="home">Home</string>
     <string name="morning">Morning</string>
@@ -354,6 +354,7 @@
     <string name="consultation">CONSULTATION</string>
     <string name="medicines">MEDICINES</string>
     <string name="lab_test">LAB TEST</string>
+    <string name="no_clinic_data_found">No clinic data found</string>
 
 
 </resources>

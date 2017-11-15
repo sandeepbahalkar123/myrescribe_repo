@@ -33,6 +33,7 @@
         android:textSize="@dimen/sp12"
         android:textAllCaps="true"
         android:visibility="gone"
+        android:clickable="false"
         android:padding="@dimen/dp6"
         android:layout_marginTop="@dimen/dp6"
         android:background="@drawable/date_time_back"
@@ -112,7 +113,7 @@
 
         </RelativeLayout>
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/sendButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,5 +127,110 @@
             android:src="@drawable/send" />
 
     </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/exitRevealDialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <io.codetail.widget.RevealFrameLayout
+        android:id="@+id/revealFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/messageTypeLayout"
+        android:paddingEnd="@dimen/dp6"
+        android:paddingStart="@dimen/dp6">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/reveal_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="@dimen/dp10"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/camera"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/camera" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Camera" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/document"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/circular_bullet"
+                        android:src="@drawable/attach" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Document" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/location"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/location" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Location" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </io.codetail.widget.RevealFrameLayout>
 
 </RelativeLayout>

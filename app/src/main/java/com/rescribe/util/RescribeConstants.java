@@ -186,6 +186,14 @@ public class RescribeConstants {
         public static final String SENT = "sent";
     }
 
+    public static class FILE {
+        public static final String IMG = "img";
+        public static final String DOC = "doc";
+        public static final String VID = "vid";
+        public static final String AUD = "aud";
+        public static final String LOC = "loc";
+    }
+
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 
@@ -232,13 +240,6 @@ public class RescribeConstants {
         public static int THREE_SECONDS = 3000;
         public static int FIVE_FIFTY = 500;
      }
-
-    public static class FILE {
-        public static final String IMG = "img";
-        public static final String DOC = "doc";
-        public static final String VID = "vid";
-        public static final String AUD = "aud";
-    }
 
     public class INVESTIGATION_KEYS {
         public static final String INVESTIGATION_DATE = "investigation_date";

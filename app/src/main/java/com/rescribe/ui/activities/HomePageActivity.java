@@ -563,10 +563,17 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         dataMap.put(getString(R.string.recently_visited_doctor), recently_visit_doctor.size());
         dataMap.put(getString(R.string.favorite), favoriteList.size());
 
-        dashboardDoctorListsToShowDashboardDoctor.add(myAppoint.get(0));
-        dashboardDoctorListsToShowDashboardDoctor.add(sponsered.get(0));
-        dashboardDoctorListsToShowDashboardDoctor.add(recently_visit_doctor.get(0));
-        dashboardDoctorListsToShowDashboardDoctor.add(favoriteList.get(0));
+        if (!myAppoint.isEmpty())
+            dashboardDoctorListsToShowDashboardDoctor.add(myAppoint.get(0));
+
+        if (!sponsered.isEmpty())
+            dashboardDoctorListsToShowDashboardDoctor.add(sponsered.get(0));
+
+        if (!recently_visit_doctor.isEmpty())
+            dashboardDoctorListsToShowDashboardDoctor.add(recently_visit_doctor.get(0));
+
+        if (!favoriteList.isEmpty())
+            dashboardDoctorListsToShowDashboardDoctor.add(favoriteList.get(0));
 
         mDashboardDoctorListsToShowDashboardDoctor.addAll(dashboardDoctorListsToShowDashboardDoctor);
 

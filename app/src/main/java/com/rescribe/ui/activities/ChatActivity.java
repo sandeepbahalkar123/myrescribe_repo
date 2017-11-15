@@ -29,6 +29,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
@@ -36,7 +37,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,6 +59,7 @@ import com.rescribe.helpers.chat.ChatHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.Common;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.chat.SendMessageModel;
@@ -98,6 +102,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
+import io.codetail.animation.SupportAnimator;
+import io.codetail.animation.ViewAnimationUtils;
 import ng.max.slideview.SlideView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -194,6 +200,12 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     @BindView(R.id.dateTextView)
     TextView dateTextView;
 
+    @BindView(R.id.reveal_items)
+    CardView mRevealView;
+
+    @BindView(R.id.exitRevealDialog)
+    FrameLayout exitRevealDialog;
+
     // Check Typing
 
     final int TYPING_TIMEOUT = 3000; // 5 seconds timeout
@@ -207,6 +219,12 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             typingStatus();
         }
     };
+
+    private boolean isOpen;
+
+    private boolean mPressed = false;
+    private SupportAnimator mAnimator;
+    private boolean hidden = true;
 
     private void typingStatus() {
         StatusInfo statusInfo = new StatusInfo();
@@ -373,16 +391,20 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
     @Override
     public void onBackPressed() {
-        if (isExistInChat) {
-            if (mqttMessage.isEmpty())
-                setResult(Activity.RESULT_CANCELED);
-            else {
-                Intent in = new Intent();
-                in.putExtra(RescribeConstants.CHAT_USERS, chatList);
-                setResult(Activity.RESULT_OK, in);
-            }
-        } else setResult(Activity.RESULT_CANCELED);
-        super.onBackPressed();
+        if (mPressed) {
+            openBottomSheetMenu();
+        } else {
+            if (isExistInChat) {
+                if (mqttMessage.isEmpty())
+                    setResult(Activity.RESULT_CANCELED);
+                else {
+                    Intent in = new Intent();
+                    in.putExtra(RescribeConstants.CHAT_USERS, chatList);
+                    setResult(Activity.RESULT_OK, in);
+                }
+            } else setResult(Activity.RESULT_CANCELED);
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -390,6 +412,9 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
+
+        mRevealView.setVisibility(View.INVISIBLE);
+        exitRevealDialog.setVisibility(View.GONE);
 
         appDBHelper = new AppDBHelper(this);
         patId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this);
@@ -805,14 +830,34 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         UploadService.UPLOAD_POOL_SIZE = 10;
     }
 
-    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.sendButton})
+    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.sendButton, R.id.exitRevealDialog, R.id.camera, R.id.document, R.id.location})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+
+            case R.id.camera:
+                ChatActivityPermissionsDispatcher.onPickPhotoWithCheck(ChatActivity.this);
+                openBottomSheetMenu();
+                break;
+
+            case R.id.document:
+                ChatActivityPermissionsDispatcher.onPickDocWithCheck(ChatActivity.this);
+                openBottomSheetMenu();
+                break;
+
+            case R.id.location:
+                CommonMethods.showToast(ChatActivity.this, "Location");
+                openBottomSheetMenu();
+                break;
+
+            case R.id.exitRevealDialog:
+                if (mPressed)
+                    openBottomSheetMenu();
+                break;
             case R.id.backButton:
                 onBackPressed();
                 break;
             case R.id.attachmentButton:
-                ChatActivityPermissionsDispatcher.onPickDocWithCheck(ChatActivity.this);
+                openBottomSheetMenu();
                 break;
             case R.id.cameraButton:
                 ChatActivityPermissionsDispatcher.onPickPhotoWithCheck(ChatActivity.this);
@@ -864,6 +909,57 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                         CommonMethods.showToast(ChatActivity.this, getResources().getString(R.string.internet));
                 }
                 break;
+        }
+    }
+
+    private void openBottomSheetMenu() {
+
+        if (!mPressed) {
+            mPressed = true;
+
+            int cx = (mRevealView.getLeft() + mRevealView.getRight());
+            int cy = mRevealView.getBottom();
+            int endradius = Math.max(mRevealView.getWidth(), mRevealView.getHeight());
+            mAnimator = ViewAnimationUtils.createCircularReveal(mRevealView, cx, cy, 0, endradius);
+            mAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+            mAnimator.setDuration(300);
+
+            if (hidden) {
+                mRevealView.setVisibility(View.VISIBLE);
+                exitRevealDialog.setVisibility(View.VISIBLE);
+                mAnimator.start();
+                hidden = false;
+
+            }
+        } else {
+            if (mAnimator != null && !mAnimator.isRunning()) {
+                mAnimator = mAnimator.reverse();
+                mAnimator.addListener(new SupportAnimator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart() {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd() {
+                        mRevealView.setVisibility(View.INVISIBLE);
+                        exitRevealDialog.setVisibility(View.GONE);
+                        hidden = true;
+                        mPressed = false;
+                    }
+
+                    @Override
+                    public void onAnimationCancel() {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat() {
+
+                    }
+                });
+                mAnimator.start();
+            }
         }
     }
 
@@ -1442,13 +1538,13 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         @Override
         public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
 
-                String prefix[] = uploadInfo.getUploadId().split("_");
-                if (prefix[0].equals(patId)) {
-                    appDBHelper.updateMessageUpload(uploadInfo.getUploadId(), FAILED);
-                    int position = getPositionById(uploadInfo.getUploadId());
-                    mqttMessage.get(position).setUploadStatus(FAILED);
-                    chatAdapter.notifyItemChanged(position);
-                }
+            String prefix[] = uploadInfo.getUploadId().split("_");
+            if (prefix[0].equals(patId)) {
+                appDBHelper.updateMessageUpload(uploadInfo.getUploadId(), FAILED);
+                int position = getPositionById(uploadInfo.getUploadId());
+                mqttMessage.get(position).setUploadStatus(FAILED);
+                chatAdapter.notifyItemChanged(position);
+            }
 
         }
 
@@ -1466,15 +1562,15 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         @Override
         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
 
-                String prefix[] = uploadInfo.getUploadId().split("_");
-                if (prefix[0].equals(patId)) {
+            String prefix[] = uploadInfo.getUploadId().split("_");
+            if (prefix[0].equals(patId)) {
 //                    appDBHelper.deleteUploadedMessage(uploadInfo.getUploadId());
 
-                    int position = getPositionById(uploadInfo.getUploadId());
+                int position = getPositionById(uploadInfo.getUploadId());
 
-                    mqttMessage.get(position).setUploadStatus(COMPLETED);
-                    chatAdapter.notifyItemChanged(position);
-                }
+                mqttMessage.get(position).setUploadStatus(COMPLETED);
+                chatAdapter.notifyItemChanged(position);
+            }
         }
 
         @Override

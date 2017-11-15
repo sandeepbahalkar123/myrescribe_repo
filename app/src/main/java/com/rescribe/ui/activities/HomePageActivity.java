@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -33,6 +34,7 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.interfaces.IServicesCardViewClickListener;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.dashboard_api.DashBoardBaseModel;
@@ -56,16 +58,20 @@ import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import net.gotev.uploadservice.UploadService;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
+
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
 import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
@@ -76,7 +82,7 @@ import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
  */
 
 @RuntimePermissions
-public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, ShowDoctorViewPagerAdapter.OnClickOfCardOnDashboard, BottomMenuAdapter.onBottomMenuClickListener {
+public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, IServicesCardViewClickListener, BottomMenuAdapter.onBottomMenuClickListener {
 
     private static final long MANAGE_ACCOUNT = 121;
     private static final long ADD_ACCOUNT = 122;
@@ -641,52 +647,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     @Override
-    public void setOnClickedOfViewPagerItem(Bundle bundleData) {
-        String value = bundleData.getString(getString(R.string.clicked_item_data_type_value));
-        if (value.equalsIgnoreCase(getString(R.string.my_appointments))) {
-            Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
-            startActivity(intent);
-        } else {
-            DoctorList doctorListObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
-            Intent intent = new Intent(HomePageActivity.this, DoctorDescriptionBaseActivity.class);
-            intent.putExtra(getString(R.string.clicked_item_data), doctorListObject);
-            intent.putExtra(getString(R.string.toolbarTitle), value);
-            startActivityForResult(intent, DOCTOR_DATA_REQUEST_CODE);
-        }
-    }
-
-    @Override
-    public void onClickOfCount(String nameOfCategoryType) {
-        if (nameOfCategoryType.equalsIgnoreCase(getString(R.string.my_appointments))) {
-            Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.my_appointments));
-            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.my_appointments)));
-            startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
-        } else if (nameOfCategoryType.equalsIgnoreCase(getString(R.string.favorite))) { // favorite card name
-            Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle), nameOfCategoryType);
-            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getFavouriteDocList());
-            startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
-        } else {
-            // for sponcered and recent visited doctor list.
-            Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle), nameOfCategoryType);
-            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(nameOfCategoryType));
-            startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
-
-        }
-    }
-
-    @Override
-    public void onFavoriteClick(boolean isFavourite, DoctorList doctorListObject, ImageView favorite) {
-        mClickedDoctorListToUpdateFavStatus = doctorListObject;
-
-        this.mCLickedFavDocIDImageView = favorite;
-
-        new DoctorDataHelper(this, this).setFavouriteDoctor(isFavourite, mClickedDoctorListToUpdateFavStatus.getDocId());
-    }
-
-    @Override
     public void onClickOfMenu(String menuName) {
         if (menuName.equals(getString(R.string.find_doctors))) {
             Intent intent = new Intent(mContext, FindDoctorsActivity.class);
@@ -779,5 +739,52 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             // notify UI
         }
 
+    }
+
+    @Override
+    public void onClickOfCardView(Bundle bundleData) {
+        String value = bundleData.getString(getString(R.string.clicked_item_data_type_value));
+        if (value.equalsIgnoreCase(getString(R.string.my_appointments))) {
+            Intent intent = new Intent(HomePageActivity.this, AppointmentActivity.class);
+            startActivity(intent);
+        } else {
+            DoctorList doctorListObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
+            Intent intent = new Intent(HomePageActivity.this, DoctorDescriptionBaseActivity.class);
+            intent.putExtra(getString(R.string.clicked_item_data), doctorListObject);
+            intent.putExtra(getString(R.string.toolbarTitle), value);
+            startActivityForResult(intent, DOCTOR_DATA_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onFavoriteIconClick(boolean isFavouriteStatus, DoctorList doctorListObject, ImageView favorite) {
+        mClickedDoctorListToUpdateFavStatus = doctorListObject;
+
+        this.mCLickedFavDocIDImageView = favorite;
+
+        new DoctorDataHelper(this, this).setFavouriteDoctor(isFavouriteStatus, mClickedDoctorListToUpdateFavStatus.getDocId());
+    }
+
+    @Override
+    public void onClickOfTotalCount(Bundle bundleData) {
+        String nameOfCategoryType = bundleData.getString(getString(R.string.clicked_item_data));
+
+        if (nameOfCategoryType.equalsIgnoreCase(getString(R.string.my_appointments))) {
+            Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
+            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.my_appointments));
+            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(getString(R.string.my_appointments)));
+            startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+        } else if (nameOfCategoryType.equalsIgnoreCase(getString(R.string.favorite))) { // favorite card name
+            Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
+            intent.putExtra(getString(R.string.toolbarTitle), nameOfCategoryType);
+            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getFavouriteDocList());
+            startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+        } else {
+            // for sponcered and recent visited doctor list.
+            Intent intent = new Intent(HomePageActivity.this, DashboardShowCategoryNameByListBaseActivity.class);
+            intent.putExtra(getString(R.string.toolbarTitle), nameOfCategoryType);
+            intent.putExtra(getString(R.string.clicked_item_data), mDashboardDataModel.getCategoryWiseDoctorList(nameOfCategoryType));
+            startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+        }
     }
 }

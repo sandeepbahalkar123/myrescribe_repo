@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.interfaces.IServicesCardViewClickListener;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
@@ -35,7 +36,7 @@ import java.util.Map;
 
 public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
-    private OnViewPagerItemClickListener mOnViewPagerItemClickListener;
+    private IServicesCardViewClickListener mServicesCardViewClickListener;
     private Map<String, Integer> mListSizeWithTypeMap;
     private ArrayList<DoctorList> mDoctorLists;
     private LayoutInflater mInflater;
@@ -45,14 +46,14 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
     private boolean mIsFavAvail = false;
 
 
-    public ShowRecentVisitedDoctorPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, Map<String, Integer> dataMap, ShowRecentVisitedDoctorPagerAdapter.OnViewPagerItemClickListener listener) {
+    public ShowRecentVisitedDoctorPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, Map<String, Integer> dataMap, IServicesCardViewClickListener listener) {
         this.mContext = context;
         this.mDoctorLists = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
         mInflater = LayoutInflater.from(context);
         this.mListSizeWithTypeMap = dataMap;
-        mOnViewPagerItemClickListener = listener;
+        mServicesCardViewClickListener = listener;
         if (mListSizeWithTypeMap.get(mContext.getString(R.string.favorite)) > 0) {
             mIsFavAvail = true;
         }
@@ -166,7 +167,6 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         }
 
 
-
         if (doctorObject.getRating() == 0) {
             doctorRating.setVisibility(View.INVISIBLE);
             ratingBar.setVisibility(View.INVISIBLE);
@@ -178,29 +178,6 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
         }
 
-
-        sizeOfList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
-                b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
-                mOnViewPagerItemClickListener.setOnClickedOfCatTypeTotalCount(b);
-
-            }
-        });
-
-
-        dashBoardCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                mOnViewPagerItemClickListener.setOnClickedOfViewPagerItem(b);
-
-            }
-        });
 
         if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
             feesToPaid.setVisibility(View.INVISIBLE);
@@ -284,7 +261,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 bookAppointmentButton.setVisibility(View.GONE);
             }
 
-        }else if (doctorObject.getCategoryName().equals("")) {
+        } else if (doctorObject.getCategoryName().equals("")) {
             if (doctorObject.getClinicDataList().size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
@@ -336,11 +313,34 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         } else {
             favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
         }
+        //---------
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean status = doctorObject.getFavourite() ? false : true;
-                mOnViewPagerItemClickListener.onFavoriteClick(status,doctorObject, favorite);
+                mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite);
+            }
+        });
+
+        sizeOfList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
+                b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
+                mServicesCardViewClickListener.onClickOfTotalCount(b);
+
+            }
+        });
+
+        dashBoardCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                mServicesCardViewClickListener.onClickOfCardView(b);
+
             }
         });
 
@@ -373,13 +373,4 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         return null;
     }
 
-    public interface OnViewPagerItemClickListener {
-        void setOnClickedOfViewPagerItem(Bundle bundleData);
-
-        //void onFavoriteClick(DoctorList doctorListObject, ImageView favorite);
-
-        void onFavoriteClick(boolean isFavourite, DoctorList doctorListObject, ImageView favorite);
-
-        void setOnClickedOfCatTypeTotalCount(Bundle bundleData);
-    }
 }

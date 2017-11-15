@@ -168,6 +168,7 @@ public class RescribeConstants {
 
     public static final int DOCTOR_DATA_REQUEST_CODE = 1221;
     public static final String DOCTOR_DATA = "doctor_data";
+    public static final int PLACE_PICKER_REQUEST = 99;
 
 
     public static class USER_STATUS {

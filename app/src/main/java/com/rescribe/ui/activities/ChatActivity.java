@@ -45,7 +45,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
@@ -121,6 +120,7 @@ import static com.rescribe.util.RescribeConstants.FAILED;
 import static com.rescribe.util.RescribeConstants.FILE.AUD;
 import static com.rescribe.util.RescribeConstants.FILE.DOC;
 import static com.rescribe.util.RescribeConstants.FILE.IMG;
+import static com.rescribe.util.RescribeConstants.FILE.LOC;
 import static com.rescribe.util.RescribeConstants.MESSAGE_STATUS.REACHED;
 import static com.rescribe.util.RescribeConstants.MESSAGE_STATUS.SEEN;
 import static com.rescribe.util.RescribeConstants.PLACE_PICKER_REQUEST;
@@ -1025,10 +1025,49 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 }
             } else if (requestCode == PLACE_PICKER_REQUEST) {
                 Place place = PlacePicker.getPlace(data, this);
-                String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                String latlong = place.getLatLng().latitude + "," + place.getLatLng().longitude;
+                sendLocation(latlong);
             }
         }
+    }
+
+    private void sendLocation(String latlong) {
+
+        MQTTMessage messageL = new MQTTMessage();
+        messageL.setTopic(MQTTService.TOPIC[0]);
+        messageL.setMsg(latlong);
+
+        String generatedId = patId + "_" + mqttMessage.size() + System.nanoTime();
+
+        messageL.setMsgId(generatedId);
+        messageL.setDocId(chatList.getId());
+        messageL.setPatId(Integer.parseInt(patId));
+
+        messageL.setName(patientName);
+        messageL.setOnlineStatus(ONLINE);
+        messageL.setImageUrl(imageUrl);
+
+        messageL.setFileType(LOC);
+        messageL.setSpecialization("");
+        messageL.setPaidStatus(FREE);
+        messageL.setUploadStatus(COMPLETED);
+
+        messageL.setSender(PATIENT);
+
+        // 2017-10-13 13:08:07
+        String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+        messageL.setMsgTime(msgTime);
+
+        // send msg by mqtt
+        if (NetworkUtil.getConnectivityStatusBoolean(ChatActivity.this)) {
+            if (chatAdapter != null) {
+                mqttService.passMessage(messageL);
+                mqttMessage.add(messageL);
+                chatAdapter.notifyItemInserted(mqttMessage.size() - 1);
+                chatRecyclerView.smoothScrollToPosition(mqttMessage.size() - 1);
+            }
+        } else
+            CommonMethods.showToast(ChatActivity.this, getResources().getString(R.string.internet));
     }
 
     private void uploadFiles(ArrayList<String> files, String fileType) {

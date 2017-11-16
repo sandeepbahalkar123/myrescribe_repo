@@ -59,11 +59,11 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
     private void initialize() {
         doctorList = new ArrayList<>();
         doctorObject = getIntent().getExtras().getParcelable(getString(R.string.clicked_item_data));
-        showlocation.setVisibility(View.VISIBLE);
+        showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
         title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-        showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
+       // showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         Bundle bundle = new Bundle();
         bundle.putParcelable(getString(R.string.clicked_item_data), doctorObject);
         bundle.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));

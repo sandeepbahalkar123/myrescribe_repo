@@ -66,6 +66,8 @@ public class DoctorDataHelper implements ConnectionListener {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_SET_FAVOURITE_DOCTOR) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                }else  if (mOldDataTag == RescribeConstants.TASK_DASHBOARD_API) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:

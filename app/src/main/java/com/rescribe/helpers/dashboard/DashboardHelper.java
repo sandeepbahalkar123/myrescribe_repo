@@ -80,7 +80,7 @@ public class DashboardHelper implements ConnectionListener {
 
     }
 
-    public void doGetDashboard() {
+    public void doGetDashboard(String currentCity) {
       /*try  {
             InputStream is = mContext.getAssets().open("dashboard.json");
             int size = is.available();
@@ -98,10 +98,15 @@ public class DashboardHelper implements ConnectionListener {
             ex.printStackTrace();
         }*/
 
-      String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
+        String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.platform) + mContext.getString(R.string.android) + mContext.getString(R.string.screen_resolution) + screenResolutionValue);
+
+        String url = Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.platform) + mContext.getString(R.string.android) + mContext.getString(R.string.screen_resolution) + screenResolutionValue;
+        if (currentCity != null) {
+            url = url + mContext.getString(R.string.city) + currentCity;
+        }
+        mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);
     }
 }

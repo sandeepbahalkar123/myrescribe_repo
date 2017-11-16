@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -13,11 +16,22 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -29,12 +43,15 @@ import com.rescribe.adapters.dashboard.MenuOptionsDashBoardAdapter;
 import com.rescribe.adapters.dashboard.ShowBackgroundViewPagerAdapter;
 import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.helpers.dashboard.DashboardHelper;
+
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.interfaces.IServicesCardViewClickListener;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.dashboard_api.DashBoardBaseModel;
@@ -59,9 +76,14 @@ import com.rescribe.util.RescribeConstants;
 
 import net.gotev.uploadservice.UploadService;
 
+import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -79,11 +101,14 @@ import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
  */
 
 @RuntimePermissions
-public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, BottomMenuAdapter.onBottomMenuClickListener {
+public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, BottomMenuAdapter.onBottomMenuClickListener, LocationListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private static final long MANAGE_ACCOUNT = 121;
     private static final long ADD_ACCOUNT = 122;
     private static final String TAG = "HomePage";
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 101;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.viewPagerDoctorItem)
@@ -111,25 +136,42 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private int widthPixels;
     DashboardDataModel mDashboardDataModel;
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
+
     //-----------
     private ServicesCardViewImpl mDashboardDataBuilder;
     private AppDBHelper appDBHelper;
     private DashboardHelper mDashboardHelper;
+
+    private static final long INTERVAL = 1000 * 10;
+    private static final long FASTEST_INTERVAL = 1000 * 5;
+    LocationRequest mLocationRequest;
+    GoogleApiClient mGoogleApiClient;
+    Location mCurrentLocation;
+    String mLastUpdateTime;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_dashboard_layout);
         ButterKnife.bind(this);
-
+        createLocationRequest();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        mGoogleApiClient.connect();
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         mContext = HomePageActivity.this;
 
         //-------
         mDashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
+
         mDashboardDataBuilder = new ServicesCardViewImpl(this, this);
         mDashboardHelper = new DashboardHelper(this, this);
-        mDashboardHelper.doGetDashboard();
+        mDashboardHelper.doGetDashboard(null);
+
         //------
         HomePageActivityPermissionsDispatcher.getPermissionWithCheck(HomePageActivity.this);
         appDBHelper = new AppDBHelper(mContext);
@@ -160,6 +202,14 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         HomePageActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+
+    }
+
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     private void notificationForMedicine() {
@@ -479,6 +529,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+
         switch (mOldDataTag) {
             case TASK_DASHBOARD_API:
                 DashBoardBaseModel mDashboardBaseModel = (DashBoardBaseModel) customResponse;
@@ -490,7 +541,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     //----------
                     doConfigureMenuOptions();
                 }
-                //------------
                 break;
             case RescribeConstants.LOGOUT:
                 logout();
@@ -543,7 +593,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
         //------------
         mDashboardDoctorListsToShowDashboardDoctor.addAll(mergeList);
-        mShowDoctorViewPagerAdapter = new ShowDoctorViewPagerAdapter(this, mergeList, mDashboardDataBuilder, dataMap,this);
+        mShowDoctorViewPagerAdapter = new ShowDoctorViewPagerAdapter(this, mergeList, mDashboardDataBuilder, dataMap, this);
         viewPagerDoctorItem.setAdapter(mShowDoctorViewPagerAdapter);
         //-----------
         // Disable clip to padding
@@ -598,10 +648,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     @OnClick({R.id.menuIcon, R.id.locationImageView})
     public void onViewClicked(View view) {
@@ -730,5 +776,143 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
             addBottomMenu(bottomMenu);
         }
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart fired ..............");
+        // mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop fired ..............");
+        mGoogleApiClient.disconnect();
+        Log.d(TAG, "isConnected ...............: " + mGoogleApiClient.isConnected());
+    }
+
+    private boolean isGooglePlayServicesAvailable() {
+        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (ConnectionResult.SUCCESS == status) {
+            return true;
+        } else {
+            GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
+            return false;
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG, "onConnected - isConnected ...............: " + mGoogleApiClient.isConnected());
+        startLocationUpdates();
+    }
+
+    protected void startLocationUpdates() {
+        //  PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
+        //          mGoogleApiClient, mLocationRequest, this);
+
+        Log.d(TAG, "Location update started ..............: ");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG, "Connection failed: " + connectionResult.toString());
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.d(TAG, "Firing onLocationChanged..............................................");
+        mCurrentLocation = location;
+        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+        updateUI();
+    }
+
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(
+                mGoogleApiClient, this);
+        Log.d(TAG, "Location update stopped .......................");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mGoogleApiClient.isConnected()) {
+            //  startLocationUpdates();
+            Log.d(TAG, "Location update resumed .....................");
+        }
+    }
+
+    private void updateUI() {
+        Log.d(TAG, "UI update initiated .............");
+        if (null != mCurrentLocation) {
+            String lat = String.valueOf(mCurrentLocation.getLatitude());
+            String lng = String.valueOf(mCurrentLocation.getLongitude());
+
+            /*tvLocation.setText("At Time: " + mLastUpdateTime + "\n" +
+                    "Latitude: " + lat + "\n" +
+                    "Longitude: " + lng + "\n" +
+                    "Accuracy: " + mCurrentLocation.getAccuracy() + "\n" +
+                    "Provider: " + mCurrentLocation.getProvider());*/
+            Log.e("Latitude Longitude ===============", lat + "///////////" + lng);
+
+            getAddress(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+            stopLocationUpdates();
+        } else {
+            Log.d(TAG, "location is null ...............");
+        }
+    }
+
+    public void getAddress(double lat, double lng) {
+        Geocoder geocoder = new Geocoder(HomePageActivity.this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+
+            if (!addresses.isEmpty()) {
+                Address obj = addresses.get(0);
+
+                System.out.println("obj.getThoroughfare()" + obj.getThoroughfare());
+                System.out.println("obj.getSubLocality()" + obj.getSubLocality());
+                System.out.println("obj.getSubAdminArea()" + obj.getSubAdminArea());
+                System.out.println("obj.getLocality()" + obj.getLocality());
+                System.out.println("obj.getAdminArea()" + obj.getAdminArea());
+                System.out.println("obj.getCountryName()" + obj.getCountryName());
+                LatLng location = new LatLng(lat, lng);
+                DoctorDataHelper.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
+                mDashboardHelper.doGetDashboard(obj.getLocality());
+
+                Log.d("AREA", getArea(obj));
+            } else {
+                Toast.makeText(this, "Address not found.", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getArea(Address obj) {
+
+        if (obj.getThoroughfare() != null)
+            return obj.getThoroughfare();
+        else if (obj.getSubLocality() != null)
+            return obj.getSubLocality();
+        else if (obj.getSubAdminArea() != null)
+            return obj.getSubAdminArea();
+        else if (obj.getLocality() != null)
+            return obj.getLocality();
+        else if (obj.getAdminArea() != null)
+            return obj.getAdminArea();
+        else
+            return obj.getCountryName();
     }
 }

@@ -58,7 +58,7 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
 
     private void initialize() {
         doctorList = new ArrayList<>();
-        showlocation.setVisibility(View.VISIBLE);
+
         locationTextView.setVisibility(View.GONE);
         userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
@@ -69,6 +69,7 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
             title.setText(extras.getString(getString(R.string.toolbarTitle)));
         }
         mBookAppointDoctorDescriptionFragment = BookAppointDoctorDescriptionFragment.newInstance(extras);
+
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.viewContainer, mBookAppointDoctorDescriptionFragment);

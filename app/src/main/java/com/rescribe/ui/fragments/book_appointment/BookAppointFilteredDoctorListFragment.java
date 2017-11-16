@@ -254,7 +254,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 intent.putExtras(bundleData);
                 startActivity(intent);
             }
-
         } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {
             DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
             mClickedDocIdToUpdateFavoriteStatus = mClickedDoctorObject.getDocId();

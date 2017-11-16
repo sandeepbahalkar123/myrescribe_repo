@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -95,7 +96,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         if (intent != null) {
             HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-            locationTextView.setText("" + locationReceived);
+            //locationTextView.setText("" + locationReceived);
             title = intent.getStringExtra(getString(R.string.clicked_item_data));
         }
         //------
@@ -221,6 +222,12 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             return obj.getAdminArea();
         else
             return obj.getCountryName();
+    }
+
+    //TODO: PENDING
+    public DrawerLayout getActivityDrawerLayout() {
+        return null;
+//        return mDrawerLayout;
     }
 
     @Override

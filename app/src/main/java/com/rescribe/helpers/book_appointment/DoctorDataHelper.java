@@ -16,6 +16,7 @@ import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestDoctorListBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestFavouriteDoctorModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
+import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -67,6 +68,8 @@ public class DoctorDataHelper implements ConnectionListener {
                 }else if (mOldDataTag == RescribeConstants.TASK_SET_FAVOURITE_DOCTOR) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }else  if (mOldDataTag == RescribeConstants.TASK_DASHBOARD_API) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                }else  if (mOldDataTag == RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
@@ -308,6 +311,31 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.platform) + mContext.getString(R.string.android) + mContext.getString(R.string.screen_resolution) + screenResolutionValue+mContext.getString(R.string.city)+currentCity);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);
+    }
+
+    public void doGetRecentlyVisitedDoctorPlacesData() {
+    try  {
+            InputStream is = mContext.getAssets().open("spinner_doctor.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+            Log.e(TAG, "dashboard" + json);
+
+            Gson gson = new Gson();
+            RecentVisitedBaseModel mRecentVisitedBaseModel = gson.fromJson(json, RecentVisitedBaseModel.class);
+            onResponse(ConnectionListener.RESPONSE_OK, mRecentVisitedBaseModel, RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA);
+
+        } catch(IOException ex){
+            ex.printStackTrace();
+        }
+
+     /*   String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setUrl(Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.platform) + mContext.getString(R.string.android) + mContext.getString(R.string.screen_resolution) + screenResolutionValue+mContext.getString(R.string.city)+currentCity);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);*/
     }
 
 }

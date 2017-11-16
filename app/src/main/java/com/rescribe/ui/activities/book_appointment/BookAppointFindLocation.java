@@ -15,6 +15,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -41,6 +45,13 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.rescribe.R;
+import com.rescribe.adapters.book_appointment.RecentPlacesAdapter;
+import com.rescribe.adapters.book_appointment.ShowPopularPlacesAdapter;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
+import com.rescribe.model.filter.DoctorData;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.LocationUtil.PermissionUtils;
@@ -53,11 +64,12 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
 
 public class BookAppointFindLocation extends AppCompatActivity implements PlaceSelectionListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ActivityCompat.OnRequestPermissionsResultCallback,
-        PermissionUtils.PermissionResultCallback {
+        PermissionUtils.PermissionResultCallback ,HelperResponse{
 
     public static final String TAG = "BookAppointFindLocation";
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 10;
@@ -65,32 +77,27 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     ImageView bookAppointmentToolbar;
     @BindView(R.id.title)
     CustomTextView title;
-    @BindView(R.id.locationTextView)
-    CustomTextView locationTextView;
     @BindView(R.id.detectLocation)
     CustomTextView detectLocation;
     @BindView(R.id.findLocation)
     CustomTextView findLocation;
+    @BindView(R.id.popularPlacesRecyclerView)
+    RecyclerView popularPlacesRecyclerView;
+    @BindView(R.id.recentlyVisitedRecyclerView)
+    RecyclerView recentlyVisitedRecyclerView;
     private Context mContext;
-
     private final static int PLAY_SERVICES_REQUEST = 1000;
     private final static int REQUEST_CHECK_SETTINGS = 2000;
-
     private Location mLastLocation;
-
-    // Google client to interact with Google API
-
     private GoogleApiClient mGoogleApiClient;
-
     double latitude;
     double longitude;
-
-    // list of permissions
-
     ArrayList<String> permissions = new ArrayList<>();
     PermissionUtils permissionUtils;
-
     boolean isPermissionGranted;
+    DoctorDataHelper mDoctorDataHelper;
+    private ShowPopularPlacesAdapter mShowPopularPlacesAdapter;
+    private RecentPlacesAdapter mRecentPlacesAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,6 +105,8 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         setContentView(R.layout.activity_book_appoint_select_location);
         ButterKnife.bind(this);
         mContext = BookAppointFindLocation.this;
+        init();
+
         permissionUtils = new PermissionUtils(BookAppointFindLocation.this);
 
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -122,6 +131,12 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         // Register a listener to receive callbacks when a place has been selected or an error has
         // occurred.
         autocompleteFragment.setOnPlaceSelectedListener(this);*/
+    }
+
+    private void init() {
+        mDoctorDataHelper = new DoctorDataHelper(this,this);
+        mDoctorDataHelper.doGetRecentlyVisitedDoctorPlacesData();
+
     }
 
     /**
@@ -405,4 +420,44 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     }
 
 
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if(customResponse!=null) {
+            RecentVisitedBaseModel recentVisitedBaseModel = (RecentVisitedBaseModel)customResponse;
+            if(recentVisitedBaseModel.getRecentVisitedModel()!=null) {
+                RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
+                popularPlacesRecyclerView.setLayoutManager(layoutManager);
+                popularPlacesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                int spanCount = 3; // 3 columns
+                int spacing = 20; // 50px
+                boolean includeEdge = true;
+                popularPlacesRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+                mShowPopularPlacesAdapter = new ShowPopularPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getAreaList());
+                popularPlacesRecyclerView.setAdapter(mShowPopularPlacesAdapter);
+                popularPlacesRecyclerView.setNestedScrollingEnabled(false);
+
+                mRecentPlacesAdapter = new RecentPlacesAdapter(mContext,recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList());
+                LinearLayoutManager linearlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                recentlyVisitedRecyclerView.setLayoutManager(linearlayoutManager);
+                recentlyVisitedRecyclerView.setNestedScrollingEnabled(false);
+                recentlyVisitedRecyclerView.setHasFixedSize(true);
+                recentlyVisitedRecyclerView.setAdapter(mRecentPlacesAdapter);
+            }
+        }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
+    }
 }

@@ -128,6 +128,7 @@ public class RescribeConstants {
 
     public static final String TASK_SERVICES_DOC_LIST_FILTER = RescribeConstants.BLANK + 45;
     public static final String TASK_TIME_SLOT_TO_BOOK_APPOINTMENT = RescribeConstants.BLANK + 46;
+    public static final String TASK_RECENT_VISIT_DOCTOR_PLACES_DATA = RescribeConstants.BLANK + 47;
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
@@ -168,6 +169,7 @@ public class RescribeConstants {
 
     public static final int DOCTOR_DATA_REQUEST_CODE = 1221;
     public static final String DOCTOR_DATA = "doctor_data";
+
 
 
     public static class USER_STATUS {

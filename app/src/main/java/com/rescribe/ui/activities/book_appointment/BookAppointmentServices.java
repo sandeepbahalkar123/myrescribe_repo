@@ -83,7 +83,8 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         setContentView(R.layout.activity_book_appointment_services);
         ButterKnife.bind(this);
         title.setText(getString(R.string.services));
-        locationTextView.setText(getString(R.string.location));
+        locationTextView.setVisibility(View.GONE);
+       // locationTextView.setText(getString(R.string.location));
         initialize();
     }
 
@@ -134,9 +135,9 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         super.onResume();
         HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         if (userSelectedLocationInfo.get(getString(R.string.location)) == null) {
-            locationTextView.setText(getString(R.string.location));
+            //locationTextView.setText(getString(R.string.location));
         } else {
-            locationTextView.setText("" + userSelectedLocationInfo.get(getString(R.string.location)));
+           // locationTextView.setText("" + userSelectedLocationInfo.get(getString(R.string.location)));
         }
     }
 
@@ -268,7 +269,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                     //-------
                     DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality + ", " + city);
                     // DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality + ", " + city);
-                    locationTextView.setText(locality + ", " + city);
+                   // locationTextView.setText(locality + ", " + city);
                 }
                 CommonMethods.Log("Address: ", stBuilder.toString());
             }
@@ -308,12 +309,12 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         //TODO : AADED FOR DEVELOPMENT, REMOVE IT IN PRODUCTION.
         //---------
         DoctorDataHelper.setUserSelectedLocationInfo(mContext, new LatLng(18.5074, 73.8077), "kothrud,Pune");
-        locationTextView.setText("kothrud,Pune");
+       // locationTextView.setText("kothrud,Pune");
         //---------
 
-        if (locationTextView.getText().toString().equals(getString(R.string.location))) {
+        /*if (locationTextView.getText().toString().equals(getString(R.string.location))) {
             Toast.makeText(mContext, getString(R.string.please_select_location), Toast.LENGTH_SHORT).show();
-        } else {
+        } else {*/
 
             // TODO, THIS IS ADDED FOR NOW, OPEN ONLY IF clicked value == DOCTOR
             if (servicesObject.getServiceName().equalsIgnoreCase(getString(R.string.doctorss))) {
@@ -324,7 +325,6 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 intent.putExtra(getString(R.string.location), locationTextView.getText().toString());
                 intent.putExtra(getString(R.string.clicked_item_data), servicesObject.getServiceName());
                 startActivityForResult(intent, DOCTOR_DATA_REQUEST_CODE);
-            }
         }
     }
 

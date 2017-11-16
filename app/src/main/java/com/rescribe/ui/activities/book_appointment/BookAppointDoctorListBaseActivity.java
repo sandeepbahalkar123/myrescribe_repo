@@ -72,12 +72,10 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     private Fragment mCurrentlyLoadedFragment; //TODO, fragmentById is not working hence hold this object.
     private BookAppointmentBaseModel mReceivedBookAppointmentBaseModel;
     private BookAppointmentBaseModel mPreviousReqReceivedBookAppointmentBaseModel;
-
     private FragmentManager mSupportFragmentManager;
     private Fragment mDrawerLoadedFragment;
     private int PLACE_PICKER_REQUEST = 1;
     private boolean isLocationChange = false;
-
     private HashMap<String, String> mComplaintsUserSearchFor = new HashMap<>();
 
     //-----

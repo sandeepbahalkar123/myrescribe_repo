@@ -96,9 +96,9 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
             }
         });
         title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
-        showlocation.setVisibility(View.VISIBLE);
-        showlocation.setText(mUserSelectedLocationInfo.get(getString(R.string.location)));
-        locationTextView.setVisibility(View.GONE);
+        showlocation.setVisibility(View.GONE);
+       // showlocation.setText(mUserSelectedLocationInfo.get(getString(R.string.location)));
+        locationTextView.setVisibility(View.VISIBLE);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -133,7 +133,11 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
                         View itemView = getLayoutInflater().inflate(R.layout.custom_marker_map, null);
                         TextView ratingText = (TextView) itemView.findViewById(R.id.ratingText);
                         TextView doctorNameText = (TextView) itemView.findViewById(R.id.doctorNameText);
-                        ratingText.setText(String.valueOf(doctorList.getRating()));
+                        if(doctorList.getRating()==0){
+                            ratingText.setText("");
+                        }else {
+                            ratingText.setText(String.valueOf(doctorList.getRating()));
+                        }
                         doctorNameText.setText(doctorList.getDocName());
 
                         mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(MapActivityPlotNearByDoctor.this, itemView))));
@@ -233,7 +237,8 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
                 doctorList.setAddressOfDoctorString(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAddressOfDoctorString());
                 doctorList.setClinicDataList(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getClinicDataList());
                 doctorList.setNameOfClinicString(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinicString());
-
+                doctorList.setCategoryName(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getCategoryName());
+                doctorList.setCategorySpeciality(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getCategorySpeciality());
                 Intent intent = new Intent(MapActivityPlotNearByDoctor.this, DoctorDescriptionBaseActivity.class);
                 intent.putExtra(getString(R.string.toolbarTitle), title.getText().toString());
                 intent.putExtra(getString(R.string.clicked_item_data), doctorList);
@@ -241,8 +246,16 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
             }
         });
         try {
-            mDoctorRating.setText("" + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
-            mRatingBar.setRating((float) mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
+            if(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating()==0){
+                mDoctorRating.setVisibility(View.GONE);
+                mRatingBar.setVisibility(View.GONE);
+            }else{
+                mDoctorRating.setVisibility(View.VISIBLE);
+                mRatingBar.setVisibility(View.VISIBLE);
+                mDoctorRating.setText("" + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
+                mRatingBar.setRating((float) mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
+            }
+
 
         } catch (NumberFormatException e) {
             e.printStackTrace();

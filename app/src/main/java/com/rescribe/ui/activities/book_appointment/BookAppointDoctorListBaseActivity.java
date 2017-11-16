@@ -150,7 +150,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         if (intent != null) {
             HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-            locationTextView.setText("" + locationReceived);
+            //locationTextView.setText("" + locationReceived);
             title = intent.getStringExtra(getString(R.string.clicked_item_data));
         }
         //------
@@ -479,13 +479,14 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         } else {
             locationTextView.setVisibility(View.GONE);
             showlocation.setVisibility(View.VISIBLE);
-            showlocation.setText(locationTextView.getText().toString());
+          //  showlocation.setText(locationTextView.getText().toString());
         }
     }
 
     public static void setSelectedLocationText(String locationText) {
-        locationTextView.setText("" + locationText);
+       // locationTextView.setText("" + locationText);
     }
+
 
 
     @Override

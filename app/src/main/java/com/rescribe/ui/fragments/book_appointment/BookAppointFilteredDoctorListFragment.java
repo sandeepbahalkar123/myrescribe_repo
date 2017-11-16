@@ -29,6 +29,7 @@ import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
+import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -265,9 +266,12 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 Intent intent = new Intent(getActivity(), AppointmentActivity.class);
                 startActivity(intent);
             } else {
-                bundleData.putString(getString(R.string.toolbarTitle), mSelectedSpeciality);
-                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
+                DoctorList doctorList = (DoctorList) bundleData.getParcelable(getString(R.string.clicked_item_data));
+                Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
+                intent.putExtra(getString(R.string.toolbarTitle),mSelectedSpeciality);
+                intent.putExtra(getString(R.string.clicked_item_data), doctorList);
+                //TODO: This is done as per requirement, need to sgetString(R.string.doctor)et "DOCTOR" as toolbarHeader instead respective doc speciality.
+                startActivity(intent);
             }
 
         } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {

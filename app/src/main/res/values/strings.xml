@@ -355,6 +355,7 @@
     <string name="medicines">MEDICINES</string>
     <string name="lab_test">LAB TEST</string>
     <string name="no_clinic_data_found">No clinic data found</string>
+    <string name="city"><![CDATA[&city=]]></string>
 
 
 </resources>

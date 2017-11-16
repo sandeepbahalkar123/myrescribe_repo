@@ -41,6 +41,7 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
+import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
@@ -443,10 +444,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @Override
     public void onClinicAndDoctorNameSearchRowItem(Bundle bundleData) {
         DoctorList doctorList = (DoctorList) bundleData.getParcelable(getString(R.string.clicked_item_data));
-        //TODO: This is done as per requirement, need to set "DOCTOR" as toolbarHeader instead respective doc speciality.
-        bundleData.putString(getString(R.string.toolbarTitle), getString(R.string.doctor));//doctorList.getSpeciality()
-        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
+        Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
+        intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
+        intent.putExtra(getString(R.string.clicked_item_data), doctorList);
+        //TODO: This is done as per requirement, need to sgetString(R.string.doctor)et "DOCTOR" as toolbarHeader instead respective doc speciality.
+        startActivity(intent);
 
     }
 
@@ -454,10 +456,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     public void onClickOfDoctorRowItem(Bundle bundleData) {
         DoctorList doctorList = (DoctorList) bundleData.getParcelable(getString(R.string.clicked_item_data));
         //TODO: This is done as per requirement, need to set "DOCTOR" as toolbarHeader instead respective doc speciality.
-        bundleData.putString(getString(R.string.toolbarTitle), getString(R.string.doctor));//doctorList.getSpeciality()
+        Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
+        intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
+        intent.putExtra(getString(R.string.clicked_item_data), doctorList);
+        startActivity(intent);
 
-        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
     }
 
     @Override
@@ -468,13 +471,19 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @Override
     public void onClickOfCardView(Bundle bundleData) {
+        DoctorList doctorList = (DoctorList) bundleData.getParcelable(getString(R.string.clicked_item_data));
+
         String value = bundleData.getString(getString(R.string.clicked_item_data_type_value));
         if (value.equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(getActivity(), AppointmentActivity.class);
             startActivity(intent);
         } else {
-            BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-            activity.loadFragment(BookAppointDoctorDescriptionFragment.newInstance(bundleData), false);
+            Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
+            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
+            intent.putExtra(getString(R.string.clicked_item_data), doctorList);
+            //TODO: This is done as per requirement, need to sgetString(R.string.doctor)et "DOCTOR" as toolbarHeader instead respective doc speciality.
+            startActivity(intent);
+
         }
     }
 

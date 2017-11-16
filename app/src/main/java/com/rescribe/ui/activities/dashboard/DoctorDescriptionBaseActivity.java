@@ -59,11 +59,11 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
     private void initialize() {
         doctorList = new ArrayList<>();
         doctorObject = getIntent().getExtras().getParcelable(getString(R.string.clicked_item_data));
-        showlocation.setVisibility(View.VISIBLE);
+        showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
         title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-        showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
+        //showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
       /*  if (doctorList != null)
             for (int i = 0; i < doctorList.size(); i++) {
                 doctorObject = doctorList.get(i);

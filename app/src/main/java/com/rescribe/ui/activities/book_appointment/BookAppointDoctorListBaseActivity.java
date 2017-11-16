@@ -48,7 +48,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
 
-    CustomTextView title;
+    CustomTextView mTitleView;
     CustomTextView locationTextView;
     CustomTextView showlocation;
 
@@ -74,8 +74,6 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     private void initialize() {
-
-        //----------------
         //----------------
         new GoogleApiClient
                 .Builder(this)
@@ -84,27 +82,32 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                 .enableAutoManage(this, this)
                 .build();
         //--------
-        title = (CustomTextView) findViewById(R.id.title);
+        mTitleView = (CustomTextView) findViewById(R.id.title);
         locationTextView = (CustomTextView) findViewById(R.id.locationTextView);
         locationTextView.setVisibility(View.GONE);
         showlocation = (CustomTextView) findViewById(R.id.showlocation);
 
         //------
-        String locationReceived = "";
+        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+        String locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
+        if (locationReceived != null) {
+            locationTextView.setText("" + locationReceived);
+        }
+        //-----
         Intent intent = getIntent();
-        String title = "";
+        Bundle bundle = new Bundle();
         if (intent != null) {
-            HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-            locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-            //locationTextView.setText("" + locationReceived);
-            title = intent.getStringExtra(getString(R.string.clicked_item_data));
+            Bundle extras = intent.getExtras();
+            if (extras != null) {
+                String title = extras.getString(getString(R.string.clicked_item_data));
+                mTitleView.setText(title);
+                bundle.putString(getString(R.string.title), title);
+            }
         }
         //------
-        Bundle bundle = new Bundle();
-        bundle.putString(getString(R.string.title), title);
         mRecentVisitDoctorFragment = RecentVisitDoctorFragment.newInstance(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mRecentVisitDoctorFragment).commit();
-
+        //-----------
     }
 
     @OnClick({R.id.bookAppointmentBackButton, R.id.title, R.id.locationTextView})

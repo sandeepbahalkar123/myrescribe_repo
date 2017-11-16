@@ -16,13 +16,9 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
-import com.rescribe.ui.customesViews.CustomTextView;
+ import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
-import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
-import com.rescribe.ui.fragments.dashboard.MyAppointmentsFragment;
-import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -163,29 +159,6 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
             setResult(DOCTOR_DATA_REQUEST_CODE, intent);
         }
         super.onBackPressed();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RescribeConstants.DOCTOR_DATA_REQUEST_CODE && data != null) {
-            ArrayList<DoctorList> receivedList = data.getParcelableArrayListExtra(DOCTOR_DATA);
-            if (receivedList.size() > 0) {
-                DoctorList docObject = receivedList.get(0);
-                replaceDoctorListById(docObject.getDocId(), docObject, getString(R.string.object_update_common_to_doc));
-            }
-            //mMyAppointmentsFragment.setAdapter(doctorList);
-        }
-    }
-
-    public void replaceDoctorListById(int docId, DoctorList docObjectToReplace, String objectUpdateType) {
-        ArrayList<DoctorList> tempDoctorList = doctorList;
-        for (int i = 0; i < tempDoctorList.size(); i++) {
-            DoctorList tempObject = tempDoctorList.get(i);
-            if (docId == tempObject.getDocId()) {
-                doctorList.set(i, docObjectToReplace);
-            }
-        }
     }
 
     @Override

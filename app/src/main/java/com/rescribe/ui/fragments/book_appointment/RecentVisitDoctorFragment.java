@@ -45,8 +45,8 @@ import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActi
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
- import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
- import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -108,6 +108,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private ServicesCardViewImpl mServiceCardDataViewBuilder;
     private DoctorServicesModel mReceivedDoctorServicesModel;
     private String mReceivedTitle;
+    private ShowRecentVisitedDoctorPagerAdapter mRecentVisitedDoctorPagerAdapter;
 
     public RecentVisitDoctorFragment() {
 
@@ -249,10 +250,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 if (customResponse != null) {
                     CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
                     if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
-                        ImageView imageView = mServiceCardDataViewBuilder.updateFavStatusForDoctorDataObject();
-                        if (imageView != null) {
-                            setUpViewPager();
-                        }
+                        mServiceCardDataViewBuilder.updateFavStatusForDoctorDataObject(mRecentVisitedDoctorPagerAdapter.getRequestedDocListToUpdateFavStatus());
+                        setUpViewPager();
                     }
                     CommonMethods.showToast(getActivity(), responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
                 }
@@ -260,15 +259,14 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             case RescribeConstants.TASK_GET_DOCTOR_DATA:
                 BookAppointmentBaseModel receivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
                 if (receivedBookAppointmentBaseModel != null) {
-                    DoctorServicesModel doctorServicesModel = receivedBookAppointmentBaseModel.getDoctorServicesModel();
-                    if (doctorServicesModel != null) {
-                        for (int i = 0; i < doctorServicesModel.getDoctorList().size(); i++) {
-                            if (!doctorServicesModel.getDoctorList().get(i).getDocName().toLowerCase().contains("dr.")) {
-                                doctorServicesModel.getDoctorList().get(i).setDocName("Dr. " + doctorServicesModel.getDoctorList().get(i).getDocName());
+                    mReceivedDoctorServicesModel = receivedBookAppointmentBaseModel.getDoctorServicesModel();
+                    if (mReceivedDoctorServicesModel != null) {
+                        for (int i = 0; i < mReceivedDoctorServicesModel.getDoctorList().size(); i++) {
+                            if (!mReceivedDoctorServicesModel.getDoctorList().get(i).getDocName().toLowerCase().contains("dr.")) {
+                                mReceivedDoctorServicesModel.getDoctorList().get(i).setDocName("Dr. " + mReceivedDoctorServicesModel.getDoctorList().get(i).getDocName());
                             }
                         }
-                        mReceivedDoctorServicesModel = doctorServicesModel;
-                        mServiceCardDataViewBuilder.setReceivedDoctorDataList(doctorServicesModel.getDoctorList());
+                        mServiceCardDataViewBuilder.setReceivedDoctorDataList(mReceivedDoctorServicesModel.getDoctorList());
                         setDoctorListAdapter();
                     }
                 }
@@ -355,7 +353,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             //mCircleIndicator.setVisibility(View.GONE);
         } else {
             mViewpager.setVisibility(View.VISIBLE);
-            mViewpager.setAdapter(new ShowRecentVisitedDoctorPagerAdapter(getActivity(), mergeList, dataMap, mServiceCardDataViewBuilder,this));
+            mRecentVisitedDoctorPagerAdapter = new ShowRecentVisitedDoctorPagerAdapter(getActivity(), mergeList, dataMap, mServiceCardDataViewBuilder, this);
+            mViewpager.setAdapter(mRecentVisitedDoctorPagerAdapter);
             mViewpager.setClipToPadding(false);
             //------
             int pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
@@ -416,6 +415,15 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (mReceivedDoctorServicesModel != null) {
+            setUpViewPager();
+        }
     }
 
     @Override

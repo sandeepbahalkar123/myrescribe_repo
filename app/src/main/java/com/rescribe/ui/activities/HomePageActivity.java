@@ -552,13 +552,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 if (customResponse != null) {
                     CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
                     if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
-                        ImageView imageView = mDashboardDataBuilder.updateFavStatusForDoctorDataObject();
-                        if (imageView != null) {
-                            setUpViewPager();
-                        }
+                        mDashboardDataBuilder.updateFavStatusForDoctorDataObject(mShowDoctorViewPagerAdapter.getRequestedDocListToUpdateFavStatus());
+                        setUpViewPager();
                     }
                     CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
-
                 }
         }
     }
@@ -734,24 +731,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (RescribeConstants.DOCTOR_DATA_REQUEST_CODE == requestCode && data != null) {
-            ArrayList<DoctorList> doctorLists = data.getParcelableArrayListExtra(DOCTOR_DATA);
-            for (DoctorList doctorList : doctorLists) {
-                for (DoctorList doctorL : mDashboardDataModel.getDoctorList()) {
-                    if (doctorL.getDocId() == doctorList.getDocId())
-                        doctorL.setFavourite(doctorList.getFavourite());
-                }
-            }
-
-            setUpViewPager();
-            // notify UI
-        }
-    }
-
     private void doConfigureMenuOptions() {
 
         mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, mDashboardDataModel.getDashboardMenuList());
@@ -847,6 +826,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         if (mGoogleApiClient.isConnected()) {
             //  startLocationUpdates();
             Log.d(TAG, "Location update resumed .....................");
+        }
+        if (mDashboardDataModel != null) {
+            setUpViewPager();
         }
     }
 

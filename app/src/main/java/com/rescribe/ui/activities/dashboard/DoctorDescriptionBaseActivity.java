@@ -58,21 +58,17 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
 
     private void initialize() {
         doctorList = new ArrayList<>();
-        doctorObject = getIntent().getExtras().getParcelable(getString(R.string.clicked_item_data));
         showlocation.setVisibility(View.VISIBLE);
         locationTextView.setVisibility(View.GONE);
-        title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
-      /*  if (doctorList != null)
-            for (int i = 0; i < doctorList.size(); i++) {
-                doctorObject = doctorList.get(i);
-            }*/
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(getString(R.string.clicked_item_data), doctorObject);
-        bundle.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
-        mBookAppointDoctorDescriptionFragment = BookAppointDoctorDescriptionFragment.newInstance(bundle);
+        //--------
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            doctorObject = extras.getParcelable(getString(R.string.clicked_item_data));
+            title.setText(extras.getString(getString(R.string.toolbarTitle)));
+        }
+        mBookAppointDoctorDescriptionFragment = BookAppointDoctorDescriptionFragment.newInstance(extras);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.viewContainer, mBookAppointDoctorDescriptionFragment);

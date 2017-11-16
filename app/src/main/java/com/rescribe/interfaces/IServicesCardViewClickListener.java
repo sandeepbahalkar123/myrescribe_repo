@@ -12,7 +12,7 @@ public interface IServicesCardViewClickListener {
 
     void onClickOfCardView(Bundle bundleData);
 
-    void onFavoriteIconClick(boolean isFavouriteStatus, DoctorList doctorListObject, ImageView favorite);
+    void onFavoriteIconClick(boolean isFavouriteStatus, DoctorList doctorListObject, ImageView favorite, HelperResponse helperResponse);
 
     void onClickOfTotalCount(Bundle bundleData);
 }

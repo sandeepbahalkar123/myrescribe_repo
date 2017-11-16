@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -49,16 +50,19 @@ import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 //TODO , NNED TO IMPLEMNT AS PER NEW JSON
 
-public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
+public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse  {
 
     //-------------
     @BindView(R.id.doChat)
@@ -120,7 +124,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     private int mImageSize;
     Unbinder unbinder;
     private DoctorList mClickedDoctorObject;
-    public static Bundle args;
+    public Bundle args;
     private DoctorDataHelper mDoctorDataHelper;
 
     public BookAppointDoctorDescriptionFragment() {
@@ -137,22 +141,22 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         return mRootView;
     }
 
+    public static BookAppointDoctorDescriptionFragment newInstance(Bundle b) {
+        BookAppointDoctorDescriptionFragment fragment = new BookAppointDoctorDescriptionFragment();
+        Bundle args = b;
+        if (args == null) {
+            args = new Bundle();
+        }
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public void setFavorite(boolean favorite) {
         if (favorite) {
             mFavorite.setImageResource(R.drawable.fav_icon);
         } else {
             mFavorite.setImageResource(R.drawable.result_line_heart_fav);
         }
-    }
-
-    public static BookAppointDoctorDescriptionFragment newInstance(Bundle b) {
-        BookAppointDoctorDescriptionFragment fragment = new BookAppointDoctorDescriptionFragment();
-        args = b;
-        if (args == null) {
-            args = new Bundle();
-        }
-        fragment.setArguments(args);
-        return fragment;
     }
 
     private void init() {
@@ -162,7 +166,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mClickedDoctorObject = (DoctorList) arguments.getParcelable(getString(R.string.clicked_item_data));
+            mClickedDoctorObject = arguments.getParcelable(getString(R.string.clicked_item_data));
             setDataInViews();
         }
     }
@@ -181,10 +185,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         contentServices.setSpan(new UnderlineSpan(), 0, contentServices.length(), 0);
         mServicesHeaderView.setText(contentServices);
         //-------
-        if(aboutDoctor.getText().equals("")) {
-           aboutLayout.setVisibility(View.INVISIBLE);
+        if (aboutDoctor.getText().equals("")) {
+            aboutLayout.setVisibility(View.INVISIBLE);
             //-------
-        }else{
+        } else {
             aboutLayout.setVisibility(View.VISIBLE);
             SpannableString content = new SpannableString(aboutDoctor.getText());
             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
@@ -329,11 +333,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 if (temp.getCommonRespose().isSuccess()) {
                     boolean status = !mClickedDoctorObject.getFavourite();
                     mClickedDoctorObject.setFavourite(status);
-
-                    if (getActivity() instanceof BookAppointDoctorListBaseActivity) {
-                        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject, getContext().getResources().getString(R.string.object_update_common_to_doc));
-                    } else if (getActivity() instanceof DoctorDescriptionBaseActivity) {
+                    if (getActivity() instanceof DoctorDescriptionBaseActivity) {
                         DoctorDescriptionBaseActivity activity = (DoctorDescriptionBaseActivity) getActivity();
                         activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
                     }
@@ -487,12 +487,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             return view;
         }
     }
-
-    @Override
-    public void updateViewData() {
-
-    }
-
 
     public class DocServicesListAdapter extends BaseAdapter {
         Context mContext;

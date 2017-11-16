@@ -89,10 +89,9 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
     }
 
     private void init() {
-        BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss), true);
+       // BookAppointDoctorListBaseActivity.setToolBarTitle(getString(R.string.doctorss), true);
         doctorDataHelper = new DoctorDataHelper(getActivity(), this);
         doctorDataHelper.doGetComplaintsList();
-
     }
 
     @Override
@@ -115,13 +114,13 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
         switch (mOldDataTag) {
             case RescribeConstants.TASK_GET_DOCTOR_LIST_BY_COMPLAINT:
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                activity.setReceivedBookAppointmentBaseModel((BookAppointmentBaseModel) customResponse);
+              //  activity.setReceivedBookAppointmentBaseModel((BookAppointmentBaseModel) customResponse);
                 //---------------
                 Bundle bundle = new Bundle();
                 bundle.putString(getString(R.string.opening_mode), getString(R.string.complaints));
                 bundle.putString(getString(R.string.complaint1), selectIdComplaint1);
                 bundle.putString(getString(R.string.complaint2), selectIdComplaint2);
-                activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundle), true);
+              //  activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundle), true);
                 //---------------
                 break;
             case RescribeConstants.TASK_GET_COMPLAINTS:

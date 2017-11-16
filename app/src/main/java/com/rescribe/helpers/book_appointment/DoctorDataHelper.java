@@ -64,7 +64,7 @@ public class DoctorDataHelper implements ConnectionListener {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                }else if (mOldDataTag == RescribeConstants.TASK_SET_FAVOURITE_DOCTOR) {
+                } else if (mOldDataTag == RescribeConstants.TASK_SET_FAVOURITE_DOCTOR) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
@@ -97,16 +97,18 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doGetDoctorData(String city, String address, HashMap<String, String> mReceivedComplaintHashMap) {
-       ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_DOCTOR_DATA, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_DOCTOR_DATA, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
         RequestDoctorListBaseModel requestDoctorListBaseModel = new RequestDoctorListBaseModel();
         requestDoctorListBaseModel.setArea(address.trim());
         requestDoctorListBaseModel.setCityName(city.trim());
         requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
         //--------In case of complaint added by user from ComplaintFragment.java---
-        if (mReceivedComplaintHashMap.size() > 0) {
-            requestDoctorListBaseModel.setComplaint1(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint1)));
-            requestDoctorListBaseModel.setComplaint2(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint2)));
+        if (mReceivedComplaintHashMap != null) {
+            if (mReceivedComplaintHashMap.size() > 0) {
+                requestDoctorListBaseModel.setComplaint1(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint1)));
+                requestDoctorListBaseModel.setComplaint2(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint2)));
+            }
         }
         //-----------
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
@@ -247,10 +249,11 @@ public class DoctorDataHelper implements ConnectionListener {
 
         //---------
         String s = DoctorDataHelper.userSelectedLocationInfo.get(mContext.getString(R.string.location));
-
-        String[] split = s.split(",");
-        requestModel.setCityName(split[1].trim());
-        requestModel.setArea(split[0].trim());
+        if (s != null) {
+            String[] split = s.split(",");
+            requestModel.setCityName(split[1].trim());
+            requestModel.setArea(split[0].trim());
+        }
         requestModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
         //---------
 

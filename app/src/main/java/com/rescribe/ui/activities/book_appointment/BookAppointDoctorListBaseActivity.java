@@ -6,11 +6,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -25,20 +21,12 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
-import com.rescribe.interfaces.CustomResponse;
-import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.fragments.book_appointment.BookAppointDoctorDescriptionFragment;
-import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
-import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -49,34 +37,24 @@ import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
-import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
-import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
-
 /**
  * Created by jeetal on 15/9/17.
  */
 @RuntimePermissions
-public class BookAppointDoctorListBaseActivity extends AppCompatActivity implements HelperResponse, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener, GoogleApiClient.OnConnectionFailedListener {
+public class BookAppointDoctorListBaseActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "BookAppointDoctorListBaseActivity";
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
-    static CustomTextView title;
-    static CustomTextView locationTextView;
-    static CustomTextView showlocation;
+
+    CustomTextView title;
+    CustomTextView locationTextView;
+    CustomTextView showlocation;
+
     @BindView(R.id.nav_view)
     FrameLayout mNavView;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
-    private DoctorDataHelper mDoctorDataHelper;
-    private Fragment mCurrentlyLoadedFragment; //TODO, fragmentById is not working hence hold this object.
-    private BookAppointmentBaseModel mReceivedBookAppointmentBaseModel;
-    private BookAppointmentBaseModel mPreviousReqReceivedBookAppointmentBaseModel;
-
-    private FragmentManager mSupportFragmentManager;
-    private Fragment mDrawerLoadedFragment;
+    private RecentVisitDoctorFragment mRecentVisitDoctorFragment;
     private int PLACE_PICKER_REQUEST = 1;
-    private boolean isLocationChange = false;
 
     private HashMap<String, String> mComplaintsUserSearchFor = new HashMap<>();
 
@@ -84,9 +62,6 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     String latitude = "";
     String longitude = "";
     String address;
-
-    private DoctorList object;
-
     //-----
 
     @Override
@@ -95,13 +70,11 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         setContentView(R.layout.activity_book_appoint_doc_base_list);
         ButterKnife.bind(this);
         initialize();
-
     }
 
     private void initialize() {
 
         //----------------
-        mDrawerLayout.setFocusableInTouchMode(false);
         //----------------
         new GoogleApiClient
                 .Builder(this)
@@ -115,34 +88,6 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         locationTextView.setVisibility(View.GONE);
         showlocation = (CustomTextView) findViewById(R.id.showlocation);
 
-        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                //Called when a drawer's position changes.
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                //Called when a drawer has settled in a completely open state.
-                //The drawer is interactive at this point.
-                // If you have 2 drawers (left and right) you can distinguish
-                // them by using id of the drawerView. int id = drawerView.getId();
-                // id will be your layout's id: for example R.id.left_drawer
-                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                // Called when a drawer has settled in a completely closed state.
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
-            }
-        });
-
         //------
         String locationReceived = "";
         Intent intent = getIntent();
@@ -154,105 +99,11 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             title = intent.getStringExtra(getString(R.string.clicked_item_data));
         }
         //------
-        FragmentManager supportFragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-        mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
-        fragmentTransaction.replace(R.id.nav_view, mDrawerLoadedFragment);
-        fragmentTransaction.commit();
         Bundle bundle = new Bundle();
         bundle.putString(getString(R.string.title), title);
-        mCurrentlyLoadedFragment = RecentVisitDoctorFragment.newInstance(bundle);
-        mDoctorDataHelper = new DoctorDataHelper(this, this);
-        //----split based on location------
-        if (locationReceived != null) {
-            String[] split = locationReceived.split(",");
-            if (split.length == 2) {
-                mDoctorDataHelper.doGetDoctorData(split[1], split[0], mComplaintsUserSearchFor);
-            } else {
-                mDoctorDataHelper.doGetDoctorData("", "", mComplaintsUserSearchFor);
-            }
-        }
-        //----------
-    }
+        mRecentVisitDoctorFragment = RecentVisitDoctorFragment.newInstance(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mRecentVisitDoctorFragment).commit();
 
-    @Override
-    public void onSuccess(final String mOldDataTag, final CustomResponse customResponse) {
-
-        mReceivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
-
-        if (mReceivedBookAppointmentBaseModel.getDoctorServicesModel() != null) {
-            for (int i = 0; i < mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().size(); i++) {
-                if (!mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getDocName().toLowerCase().contains("dr.")) {
-                    mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).setDocName("Dr. " + mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList().get(i).getDocName());
-                }
-            }
-            if (isLocationChange) {
-                if (mCurrentlyLoadedFragment instanceof BookAppointFilteredDoctorListFragment) {
-                    BookAppointFilteredDoctorListFragment bookAppointFilteredDoctorListFragment = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
-                    bookAppointFilteredDoctorListFragment.updateViewData();
-                } else if (mCurrentlyLoadedFragment instanceof BookAppointDoctorDescriptionFragment) {
-                    BookAppointDoctorDescriptionFragment bookAppointDoctorDescriptionFragment = (BookAppointDoctorDescriptionFragment) mCurrentlyLoadedFragment;
-                    bookAppointDoctorDescriptionFragment.updateViewData();
-                } else if (mCurrentlyLoadedFragment instanceof RecentVisitDoctorFragment) {
-                    RecentVisitDoctorFragment recentVisitDoctorFragment = (RecentVisitDoctorFragment) mCurrentlyLoadedFragment;
-                    recentVisitDoctorFragment.updateViewData();
-                }
-            } else {
-                loadFragment(mCurrentlyLoadedFragment, false);
-            }
-        }
-    }
-
-    @Override
-    public void onParseError(String mOldDataTag, String errorMessage) {
-
-    }
-
-    @Override
-    public void onServerError(String mOldDataTag, String serverErrorMessage) {
-        loadFragment(mCurrentlyLoadedFragment, false);
-
-    }
-
-    @Override
-    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-
-    }
-
-    @Override
-    public void onApply(Bundle b, boolean drawerRequired) {
-        mDrawerLayout.closeDrawers();
-        doOperationOnDrawer(drawerRequired);
-        if (mCurrentlyLoadedFragment instanceof BookAppointFilteredDoctorListFragment) {
-            BookAppointFilteredDoctorListFragment bookAppointFilteredDoctorListFragment = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
-            if (mDrawerLoadedFragment instanceof DrawerForFilterDoctorBookAppointment) {
-                bookAppointFilteredDoctorListFragment.onApplyClicked(b);
-            }
-        }
-    }
-
-    @Override
-    public void onReset(boolean drawerRequired) {
-        mDrawerLayout.closeDrawers();
-        doOperationOnDrawer(drawerRequired);
-        if (mCurrentlyLoadedFragment instanceof BookAppointFilteredDoctorListFragment) {
-            BookAppointFilteredDoctorListFragment bookAppointFilteredDoctorListFragment = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
-            if (mDrawerLoadedFragment instanceof DrawerForFilterDoctorBookAppointment) {
-                bookAppointFilteredDoctorListFragment.onResetClicked();
-            }
-        }
-    }
-
-    public BookAppointmentBaseModel getReceivedBookAppointmentBaseModel() {
-
-        return mReceivedBookAppointmentBaseModel;
-    }
-
-    public void setReceivedBookAppointmentBaseModel(BookAppointmentBaseModel temp) {
-        if (mPreviousReqReceivedBookAppointmentBaseModel == null) {
-            mPreviousReqReceivedBookAppointmentBaseModel = mReceivedBookAppointmentBaseModel;
-        }
-        this.mReceivedBookAppointmentBaseModel = temp;
     }
 
     @OnClick({R.id.bookAppointmentBackButton, R.id.title, R.id.locationTextView})
@@ -342,35 +193,16 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
                     //-------
                     //DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), placename + ", " + city);
                     DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), locality + ", " + city);
-                    setSelectedLocationText(locality + ", " + city);
                     //-------
                     HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
                     String s = userSelectedLocationInfo.get(getString(R.string.location));
                     if (s != null) {
-                        isLocationChange = true;
                         String[] split = s.split(",");
-                        mDoctorDataHelper.doGetDoctorData(city.trim(), split[0].trim(), mComplaintsUserSearchFor);
+                        mRecentVisitDoctorFragment.doGetLatestDoctorListOnLocationChange(mComplaintsUserSearchFor);
+                        locationTextView.setText("" + city);
                     }
-
                 }
                 CommonMethods.Log("Address: ", stBuilder.toString());
-            }
-        } else if (requestCode == DOCTOR_DATA_REQUEST_CODE && data != null) {
-            ArrayList<DoctorList> doctorLists = data.getParcelableArrayListExtra(DOCTOR_DATA);
-
-            if (!doctorLists.isEmpty()) {
-                if (object != null)
-                    object.setFavourite(doctorLists.get(0).getFavourite());
-                else object = doctorLists.get(0);
-
-                // update ui
-
-                if (mCurrentlyLoadedFragment instanceof BookAppointDoctorDescriptionFragment) {
-                    BookAppointDoctorDescriptionFragment bookAppointDoctorDescriptionFragment = (BookAppointDoctorDescriptionFragment) mCurrentlyLoadedFragment;
-                    bookAppointDoctorDescriptionFragment.setFavorite(doctorLists.get(0).getFavourite());
-                }
-
-                replaceDoctorListById(object.getDocId(), object, getResources().getString(R.string.object_update_common_to_doc));
             }
         }
     }
@@ -391,141 +223,9 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
             return obj.getCountryName();
     }
 
-
-    @Override
-    public void onBackPressed() {
-
-        Intent intent = new Intent();
-        intent.putExtra(DOCTOR_DATA, mReceivedBookAppointmentBaseModel.getDoctorServicesModel().getDoctorList());
-        setResult(DOCTOR_DATA_REQUEST_CODE, intent);
-
-        if (mSupportFragmentManager == null) {
-            finish();
-        } else {
-            if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
-                mDrawerLayout.closeDrawer(GravityCompat.END);
-            } else {
-                int backStackEntryCount = mSupportFragmentManager.getBackStackEntryCount();
-                if (backStackEntryCount == 1) {
-                    finish();
-                } else {
-                    super.onBackPressed();
-                    mCurrentlyLoadedFragment = mSupportFragmentManager.findFragmentById(R.id.viewContainer);
-
-                    // This to recall API when came from ComplaintFragmnet.
-                    if (mCurrentlyLoadedFragment instanceof RecentVisitDoctorFragment) {
-                        if (mComplaintsUserSearchFor.size() > 0) {
-                            // To clear complaints Map, and call API to get data.
-                            mComplaintsUserSearchFor.clear();
-                            HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-                            String s = userSelectedLocationInfo.get(getString(R.string.location));
-                            if (s != null) {
-                                isLocationChange = true;
-                                String[] split = s.split(",");
-                                mDoctorDataHelper.doGetDoctorData(split[1].trim(), split[0].trim(), mComplaintsUserSearchFor);
-                            }
-                            //-------
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void loadFragment(Fragment fragmentToLoad, boolean requiredDrawer) {
-        if (fragmentToLoad != null) {
-            mSupportFragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = mSupportFragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.viewContainer, fragmentToLoad);
-            fragmentTransaction.addToBackStack("");
-            fragmentTransaction.commitAllowingStateLoss();
-            this.mCurrentlyLoadedFragment = fragmentToLoad;
-
-            //----This is done to hold complaints ----
-            Bundle arguments = fragmentToLoad.getArguments();
-            if (arguments != null) {
-                if (getString(R.string.complaints).equalsIgnoreCase(arguments.getString(getString(R.string.opening_mode)))) {
-                    mComplaintsUserSearchFor.put(getString(R.string.complaints), getString(R.string.complaints));
-                    mComplaintsUserSearchFor.put(getString(R.string.complaint1), arguments.getString(getString(R.string.complaint1)));
-                    mComplaintsUserSearchFor.put(getString(R.string.complaint2), arguments.getString(getString(R.string.complaint2)));
-                }
-            }
-            //--------
-            doOperationOnDrawer(requiredDrawer);
-        }
-    }
-
-    public void doOperationOnDrawer(boolean flag) {
-
-        if (flag) { // for open
-            //  The drawer is unlocked.
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        } else {
-            //The drawer is locked closed. The user may not open it, though
-            // the app may open it programmatically.
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        }
-    }
-
-    public DrawerLayout getActivityDrawerLayout() {
-        return mDrawerLayout;
-    }
-
-    public static void setToolBarTitle(String toolbartitle, boolean isLocationVisible) {
-        title.setText("" + toolbartitle);
-        if (isLocationVisible) {
-            locationTextView.setVisibility(View.VISIBLE);
-            showlocation.setVisibility(View.GONE);
-        } else {
-            locationTextView.setVisibility(View.GONE);
-            showlocation.setVisibility(View.VISIBLE);
-            showlocation.setText(locationTextView.getText().toString());
-        }
-    }
-
-    public static void setSelectedLocationText(String locationText) {
-        locationTextView.setText("" + locationText);
-    }
-
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 
-    public void setObject(DoctorList object) {
-        this.object = object;
-    }
-
-    public interface OnActivityDrawerListener {
-        void onApplyClicked(Bundle data);
-
-        void onResetClicked();
-    }
-
-    public interface AddUpdateViewDataListener {
-        void updateViewData();
-    }
-
-
-    public void replaceDoctorListById(int docId, DoctorList docObjectToReplace, String objectUpdateType) {
-        DoctorServicesModel doctorServicesModel = mReceivedBookAppointmentBaseModel.getDoctorServicesModel();
-        if (doctorServicesModel != null) {
-            ArrayList<DoctorList> tempDoctorList = doctorServicesModel.getDoctorList();
-            ArrayList<DoctorList> newListToUpdateTempDoctorList = new ArrayList<>(tempDoctorList);
-            boolean isUpdated = false;
-            for (int i = 0; i < tempDoctorList.size(); i++) {
-                DoctorList tempObject = tempDoctorList.get(i);
-                if (docId == tempObject.getDocId()) {
-                    isUpdated = true;
-                    newListToUpdateTempDoctorList.set(i, docObjectToReplace);
-                }
-            }
-
-            if (isUpdated) {
-                doctorServicesModel.setDoctorList(newListToUpdateTempDoctorList);
-                mReceivedBookAppointmentBaseModel.setDoctorServicesModel(doctorServicesModel);
-            }
-        }
-    }
 }

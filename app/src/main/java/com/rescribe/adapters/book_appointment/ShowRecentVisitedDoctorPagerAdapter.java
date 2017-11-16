@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.interfaces.IServicesCardViewClickListener;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
@@ -36,6 +37,7 @@ import java.util.Map;
 
 public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
+    private HelperResponse mHelperResponse;
     private IServicesCardViewClickListener mServicesCardViewClickListener;
     private Map<String, Integer> mListSizeWithTypeMap;
     private ArrayList<DoctorList> mDoctorLists;
@@ -46,7 +48,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
     private boolean mIsFavAvail = false;
 
 
-    public ShowRecentVisitedDoctorPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, Map<String, Integer> dataMap, IServicesCardViewClickListener listener) {
+    public ShowRecentVisitedDoctorPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, Map<String, Integer> dataMap, IServicesCardViewClickListener listener, HelperResponse mHelperResponse) {
         this.mContext = context;
         this.mDoctorLists = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
@@ -57,6 +59,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         if (mListSizeWithTypeMap.get(mContext.getString(R.string.favorite)) > 0) {
             mIsFavAvail = true;
         }
+        this.mHelperResponse = mHelperResponse;
     }
 
 
@@ -318,7 +321,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 boolean status = doctorObject.getFavourite() ? false : true;
-                mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite);
+                mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite, mHelperResponse);
             }
         });
 

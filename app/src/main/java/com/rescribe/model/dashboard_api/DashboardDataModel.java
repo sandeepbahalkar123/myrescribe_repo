@@ -2,6 +2,7 @@
 package com.rescribe.model.dashboard_api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -107,58 +108,4 @@ public class DashboardDataModel implements Parcelable {
     }
 
 
-    public ArrayList<DoctorList> getCategoryWiseDoctorList(String categoryName) {
-        ArrayList<DoctorList> temp = new ArrayList<>();
-        for (DoctorList docObject :
-                doctorList) {
-            if (categoryName.equalsIgnoreCase(docObject.getCategoryName())) {
-                temp.add(docObject);
-            }
-        }
-    /*    //-------
-        int size = temp.size();
-        for (DoctorList docObject :
-                temp) {
-            docObject.setSizeOfList(size);
-        }
-        //-------*/
-        return temp;
-    }
-
-    public ArrayList<DoctorList> getFavouriteDocList() {
-        ArrayList<DoctorList> temp = new ArrayList<>();
-        for (DoctorList docObject :
-                doctorList) {
-            if (docObject.getFavourite()) {
-                temp.add(docObject);
-            }
-        }
-        return temp;
-    }
-
-    public void replaceDoctorListById(String docId, DoctorList docObjectToReplace, String objectUpdateType) {
-        ArrayList<DoctorList> newListToUpdateTempDoctorList = new ArrayList<>(doctorList);
-        boolean isUpdated = false;
-        for (int i = 0; i < doctorList.size(); i++) {
-            DoctorList tempObject = doctorList.get(i);
-            if (docId.equalsIgnoreCase("" + tempObject.getDocId())) {
-                isUpdated = true;
-                newListToUpdateTempDoctorList.set(i, docObjectToReplace);
-            }
-        }
-
-        if (isUpdated) {
-            setDoctorList(newListToUpdateTempDoctorList);
-        }
-    }
-
-    public DoctorList findDoctorListById(String docId) {
-        for (int i = 0; i < doctorList.size(); i++) {
-            DoctorList tempObject = doctorList.get(i);
-            if (docId.equalsIgnoreCase("" + tempObject.getDocId())) {
-                return tempObject;
-            }
-        }
-        return null;
-    }
 }

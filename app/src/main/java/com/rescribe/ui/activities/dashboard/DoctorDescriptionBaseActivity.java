@@ -85,35 +85,40 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
                 break;
         }
     }
-/*
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RescribeConstants.DOCTOR_DATA_REQUEST_CODE && data != null) {
-            ArrayList<DoctorList> doctorLists = data.getParcelableArrayListExtra(DOCTOR_DATA);
+    /*
 
-            if (!doctorLists.isEmpty()) {
-                doctorObject.setFavourite(doctorLists.get(0).getFavourite());
-                if (doctorList.isEmpty())
-                    doctorList.add(doctorLists.get(0));
-                else doctorList.get(0).setFavourite(doctorLists.get(0).getFavourite());
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == RescribeConstants.DOCTOR_DATA_REQUEST_CODE && data != null) {
+                ArrayList<DoctorList> doctorLists = data.getParcelableArrayListExtra(DOCTOR_DATA);
 
-                mBookAppointDoctorDescriptionFragment.setFavorite(doctorLists.get(0).getFavourite());
-                // update ui
+                if (!doctorLists.isEmpty()) {
+                    doctorObject.setFavourite(doctorLists.get(0).getFavourite());
+                    if (doctorList.isEmpty())
+                        doctorList.add(doctorLists.get(0));
+                    else doctorList.get(0).setFavourite(doctorLists.get(0).getFavourite());
+
+                    mBookAppointDoctorDescriptionFragment.setFavorite(doctorLists.get(0).getFavourite());
+                    // update ui
+                }
             }
         }
-    }
 
+        @Override
+        public void onBackPressed() {
+            if (doctorList != null) {
+                Intent intent = new Intent();
+                intent.putExtra(DOCTOR_DATA, doctorList);
+                setResult(DOCTOR_DATA_REQUEST_CODE, intent);
+            }
+            super.onBackPressed();
+        }
+    */
     @Override
     public void onBackPressed() {
-        if (doctorList != null) {
-            Intent intent = new Intent();
-            intent.putExtra(DOCTOR_DATA, doctorList);
-            setResult(DOCTOR_DATA_REQUEST_CODE, intent);
-        }
         super.onBackPressed();
     }
-*/
 
 }

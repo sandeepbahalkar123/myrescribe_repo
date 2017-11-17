@@ -29,6 +29,7 @@ import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.SelectSlotToBookAppointmentAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -306,7 +307,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         //---------
     }
 
-
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
 
@@ -324,24 +324,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
-                    boolean status = !mClickedDoctorObject.getFavourite();
-                    mClickedDoctorObject.setFavourite(status);
-
-                    if (getActivity() instanceof SelectSlotToBookAppointmentBaseActivity) {
-                        SelectSlotToBookAppointmentBaseActivity activity = (SelectSlotToBookAppointmentBaseActivity) getActivity();
-                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject, mContext.getResources().getString(R.string.object_update_common_to_doc));
-                    } else if (getActivity() instanceof DoctorDescriptionBaseActivity) {
-                        DoctorDescriptionBaseActivity activity = (DoctorDescriptionBaseActivity) getActivity();
-                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
-                    } else if (getActivity() instanceof SelectSlotToBookAppointmentBaseActivity) {
-                        SelectSlotToBookAppointmentBaseActivity activity = (SelectSlotToBookAppointmentBaseActivity) getActivity();
-                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject, mContext.getResources().getString(R.string.object_update_common_to_doc));
-                    }
-
-                    if (mClickedDoctorObject.getFavourite()) {
-                        mFavorite.setImageResource(R.drawable.fav_icon);
-                    } else {
-                        mFavorite.setImageResource(R.drawable.result_line_heart_fav);
+                    if (temp.getCommonRespose().isSuccess()) {
+                        ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
+                        boolean status = !mClickedDoctorObject.getFavourite();
+                        mClickedDoctorObject.setFavourite(status);
+                        if (mClickedDoctorObject.getFavourite()) {
+                            mFavorite.setImageResource(R.drawable.fav_icon);
+                        } else {
+                            mFavorite.setImageResource(R.drawable.result_line_heart_fav);
+                        }
                     }
                 }
                 CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());

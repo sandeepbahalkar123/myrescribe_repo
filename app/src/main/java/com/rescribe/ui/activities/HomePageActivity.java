@@ -79,6 +79,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -123,7 +124,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     String lunchTime = "";
     String dinnerTime = "";
     String snacksTime = "";
-
+    String locationReceived = "";
+    String previousLocationReceived ="";
     private MenuOptionsDashBoardAdapter mMenuOptionsDashBoardAdapter;
     private String patientId;
     private LoginHelper loginHelper;
@@ -162,7 +164,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-        mGoogleApiClient.connect();
+
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         mContext = HomePageActivity.this;
 
@@ -170,8 +172,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         mDashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
 
         mDashboardDataBuilder = new ServicesCardViewImpl(this, this);
-        mDashboardHelper = new DashboardHelper(this, this);
-        mDashboardHelper.doGetDashboard(null);
 
         //------
         HomePageActivityPermissionsDispatcher.getPermissionWithCheck(HomePageActivity.this);
@@ -454,7 +454,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     // startActivity(popup);
                     //----------
                 } else if (id.equalsIgnoreCase(getString(R.string.services))) {
-                    DoctorDataHelper.getUserSelectedLocationInfo().clear();
                     Intent intent = new Intent(mContext, BookAppointmentServices.class);
                     //    Intent intent = new Intent(mContext, DoctorListToBookAppointment.class);
                     startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
@@ -553,13 +552,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 if (customResponse != null) {
                     CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
                     if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
-                        ImageView imageView = mDashboardDataBuilder.updateFavStatusForDoctorDataObject();
-                        if (imageView != null) {
-                            setUpViewPager();
-                        }
+                        mDashboardDataBuilder.updateFavStatusForDoctorDataObject(mShowDoctorViewPagerAdapter.getRequestedDocListToUpdateFavStatus());
+                        setUpViewPager();
                     }
                     CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
-
                 }
         }
     }
@@ -741,24 +737,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (RescribeConstants.DOCTOR_DATA_REQUEST_CODE == requestCode && data != null) {
-            ArrayList<DoctorList> doctorLists = data.getParcelableArrayListExtra(DOCTOR_DATA);
-            for (DoctorList doctorList : doctorLists) {
-                for (DoctorList doctorL : mDashboardDataModel.getDoctorList()) {
-                    if (doctorL.getDocId() == doctorList.getDocId())
-                        doctorL.setFavourite(doctorList.getFavourite());
-                }
-            }
-
-            setUpViewPager();
-            // notify UI
-        }
-    }
-
     private void doConfigureMenuOptions() {
 
         mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, mDashboardDataModel.getDashboardMenuList());
@@ -818,8 +796,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     protected void startLocationUpdates() {
-          PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
-                 mGoogleApiClient, mLocationRequest, this);
+        PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
 
         Log.d(TAG, "Location update started ..............: ");
     }
@@ -855,6 +833,41 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             //  startLocationUpdates();
             Log.d(TAG, "Location update resumed .....................");
         }
+        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+        if(userSelectedLocationInfo.get(getString(R.string.location))!=null) {
+            locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
+        }else{
+            locationReceived = "";
+        }
+        if(DoctorDataHelper.getPreviousUserSelectedLocationInfo()!=null) {
+            HashMap<String, String> userPreviousSelectedLocationInfo = DoctorDataHelper.getPreviousUserSelectedLocationInfo();
+            previousLocationReceived = userPreviousSelectedLocationInfo.get(getString(R.string.location));
+        }else{
+            previousLocationReceived = "";
+        }
+
+        if (locationReceived.equalsIgnoreCase(previousLocationReceived)) {
+            Log.d(TAG, "DASHBOARD API NOT CALLED");
+
+        } else {
+            Log.d(TAG, "DASHBOARD API  CALLED");
+            if(locationReceived.equals("")) {
+                mGoogleApiClient.connect();
+            }else{
+                String[] split = locationReceived.split(",");
+                if (split != null) {
+                    mDashboardHelper = new DashboardHelper(this, this);
+                    mDashboardHelper.doGetDashboard(split[1]);
+                    Double lat = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.latitude)));
+                    Double lng = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.longitude)));
+                    LatLng  latLng     = new LatLng(lat,lng);
+                    DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext,latLng,locationReceived);
+                }
+            }
+        }
+       /* if (mDashboardDataModel != null) {
+            setUpViewPager();
+        }*/
     }
 
     private void updateUI() {
@@ -892,8 +905,15 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 System.out.println("obj.getAdminArea()" + obj.getAdminArea());
                 System.out.println("obj.getCountryName()" + obj.getCountryName());
                 LatLng location = new LatLng(lat, lng);
+                mDashboardHelper = new DashboardHelper(this, this);
                 DoctorDataHelper.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
-                mDashboardHelper.doGetDashboard(obj.getLocality());
+                DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
+                if (obj.getLocality() != null) {
+
+                    mDashboardHelper.doGetDashboard(obj.getLocality());
+                } else {
+                    mDashboardHelper.doGetDashboard("");
+                }
 
                 Log.d("AREA", getArea(obj));
             } else {

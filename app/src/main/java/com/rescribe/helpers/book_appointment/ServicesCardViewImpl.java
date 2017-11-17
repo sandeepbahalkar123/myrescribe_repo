@@ -26,7 +26,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
 
     private Context mContext;
     private AppCompatActivity mParentActivity;
-    private ArrayList<DoctorList> mReceivedDoctorDataList;
+    private static ArrayList<DoctorList> mReceivedDoctorDataList;
     private DoctorList mClickedDoctorListObjectToUpdateFavStatus;
     private ImageView mClickedDoctorListImageView;
 
@@ -85,7 +85,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     }
 
     public void setReceivedDoctorDataList(ArrayList<DoctorList> list) {
-        this.mReceivedDoctorDataList = list;
+        mReceivedDoctorDataList = list;
     }
 
     public ArrayList<DoctorList> getCategoryWiseDoctorList(String categoryName) {
@@ -160,8 +160,17 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         return dataList;
     }
 
-    public ImageView updateFavStatusForDoctorDataObject() {
-        if (mClickedDoctorListObjectToUpdateFavStatus != null) {
+    public static void updateFavStatusForDoctorDataObject(DoctorList updatedObject) {
+        if (updatedObject != null) {
+            for (int i = 0; i < mReceivedDoctorDataList.size(); i++) {
+                DoctorList tempObject = mReceivedDoctorDataList.get(i);
+                if (updatedObject.getDocId() == tempObject.getDocId()) {
+                    tempObject.setFavourite(tempObject.getFavourite() ? false : true);
+                    mReceivedDoctorDataList.set(i, tempObject);
+                }
+            }
+        }
+      /*  else if (mClickedDoctorListObjectToUpdateFavStatus != null) {
             for (int i = 0; i < mReceivedDoctorDataList.size(); i++) {
                 DoctorList tempObject = mReceivedDoctorDataList.get(i);
                 if (mClickedDoctorListObjectToUpdateFavStatus.getDocId() == tempObject.getDocId()) {
@@ -170,7 +179,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
                 }
             }
             return mClickedDoctorListImageView;
-        }
-        return null;
+        }*/
     }
+
 }

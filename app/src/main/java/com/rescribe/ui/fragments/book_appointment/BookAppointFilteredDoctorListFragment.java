@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -61,8 +62,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
 
     private DoctorDataHelper mDoctorDataHelper;
     private String mClickedItemDataTypeValue;
-    private int mClickedDocIdToUpdateFavoriteStatus;
     private String mReceivedTitle;
+    private DoctorList mClickedDocListToUpdateFavStatus;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -147,17 +148,20 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
 
         switch (mOldDataTag) {
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
-                ServicesFilteredDoctorListActivity baseActivity = (ServicesFilteredDoctorListActivity) getActivity();
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
-                CommonMethods.showToast(baseActivity, temp.getCommonRespose().getStatusMessage());
-                for (DoctorList dataObject :
-                        mReceivedList) {
-                    if (dataObject.getDocId() == mClickedDocIdToUpdateFavoriteStatus) {
-                        dataObject.setFavourite(dataObject.getFavourite() ? false : true);
-                        baseActivity.replaceDoctorListById(mClickedDocIdToUpdateFavoriteStatus, dataObject, getString(R.string.object_update_common_to_doc));
+                CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+                if (temp.getCommonRespose().isSuccess()) {
+                    //--------
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDocListToUpdateFavStatus);
+                    //--------
+                    for (DoctorList dataObject :
+                            mReceivedList) {
+                        if (dataObject.getDocId() == mClickedDocListToUpdateFavStatus.getDocId()) {
+                            dataObject.setFavourite(dataObject.getFavourite() ? false : true);
+                        }
                     }
+                    mBookAppointFilteredDocListAdapter.notifyDataSetChanged();
                 }
-                mBookAppointFilteredDocListAdapter.notifyDataSetChanged();
                 break;
             case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:
                 BookAppointmentBaseModel received = (BookAppointmentBaseModel) customResponse;
@@ -255,10 +259,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                 startActivity(intent);
             }
         } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {
-            DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
-            mClickedDocIdToUpdateFavoriteStatus = mClickedDoctorObject.getDocId();
-            boolean status = mClickedDoctorObject.getFavourite() ? false : true;
-            mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
+            mClickedDocListToUpdateFavStatus = bundleData.getParcelable(getString(R.string.clicked_item_data));
+            boolean status = mClickedDocListToUpdateFavStatus.getFavourite() ? false : true;
+            mDoctorDataHelper.setFavouriteDoctor(status, mClickedDocListToUpdateFavStatus.getDocId());
         }
     }
 

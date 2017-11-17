@@ -135,7 +135,7 @@ public class MyAppointmentsFragment extends Fragment implements BookAppointFilte
                         DoctorList tempObject = dashboardDoctorLists.get(i);
                         if (tempObject.getDocId() == mClickedDocListToUpdateFavStatus.getDocId()) {
                             dashboardDoctorLists.set(i, mClickedDocListToUpdateFavStatus);
-                            activity.replaceDoctorListById(mClickedDocListToUpdateFavStatus.getDocId(), mClickedDocListToUpdateFavStatus, getString(R.string.object_update_common_to_doc));
+                            // activity.replaceDoctorListById(mClickedDocListToUpdateFavStatus.getDocId(), mClickedDocListToUpdateFavStatus, getString(R.string.object_update_common_to_doc));
                         }
                     }
                     //-----------

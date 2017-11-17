@@ -49,6 +49,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     private int mImageSize;
     private ServicesCardViewImpl mServicesCardViewClickListener;
     private ColorGenerator mColorGenerator;
+    private ImageView mRequestedViewToUpdateFavStatus = null;
+    private DoctorList mRequestedDocListToUpdateFavStatus;
 
 
     public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, ServicesCardViewImpl mOnClickOfCardOnDashboard, Map<String, Integer> dataMap, HelperResponse helperResponse) {
@@ -307,7 +309,9 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 boolean status = !doctorObject.getFavourite();
-                mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite,mHelperResponse);
+                mRequestedViewToUpdateFavStatus = favorite;
+                mRequestedDocListToUpdateFavStatus = doctorObject;
+                mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite, mHelperResponse);
             }
         });
 
@@ -329,4 +333,12 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         return view.equals(object);
     }
 
+
+    public ImageView getRequestedViewToUpdateFavStatus() {
+        return mRequestedViewToUpdateFavStatus;
+    }
+
+    public DoctorList getRequestedDocListToUpdateFavStatus() {
+        return mRequestedDocListToUpdateFavStatus;
+    }
 }

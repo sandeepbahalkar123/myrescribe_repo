@@ -85,6 +85,7 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
                 break;
         }
     }
+/*
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -113,11 +114,6 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
         }
         super.onBackPressed();
     }
+*/
 
-    public void replaceDoctorListById(int docId, DoctorList mClickedDoctorObject) {
-        doctorObject.setFavourite(mClickedDoctorObject.getFavourite());
-        if (doctorList.isEmpty())
-            doctorList.add(doctorObject);
-        else doctorList.get(0).setFavourite(mClickedDoctorObject.getFavourite());
-    }
 }

@@ -35,6 +35,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -62,7 +63,7 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 //TODO , NNED TO IMPLEMNT AS PER NEW JSON
 
-public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse  {
+public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse {
 
     //-------------
     @BindView(R.id.doChat)
@@ -124,8 +125,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     private int mImageSize;
     Unbinder unbinder;
     private DoctorList mClickedDoctorObject;
-    public Bundle args;
     private DoctorDataHelper mDoctorDataHelper;
+    private String mReceivedTitle;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -167,6 +168,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         Bundle arguments = getArguments();
         if (arguments != null) {
             mClickedDoctorObject = arguments.getParcelable(getString(R.string.clicked_item_data));
+            mReceivedTitle = arguments.getString(getString(R.string.toolbarTitle));
             setDataInViews();
         }
     }
@@ -331,14 +333,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
                     boolean status = !mClickedDoctorObject.getFavourite();
                     mClickedDoctorObject.setFavourite(status);
-                    if (getActivity() instanceof DoctorDescriptionBaseActivity) {
-                        DoctorDescriptionBaseActivity activity = (DoctorDescriptionBaseActivity) getActivity();
-                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
-                    }
                     setFavorite(mClickedDoctorObject.getFavourite());
-
                 }
                 CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;
@@ -374,7 +372,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             case R.id.bookAppointmentButton:
                 Intent intentObject = new Intent(getActivity(), SelectSlotToBookAppointmentBaseActivity.class);
                 intentObject.putExtra(getString(R.string.clicked_item_data), mClickedDoctorObject);
-                intentObject.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
+                intentObject.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
                 getActivity().startActivityForResult(intentObject, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
                 break;
             case R.id.viewAllClinicsOnMap: // on view-all location clicked
@@ -393,7 +391,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 }
                 Intent intentObjectMap = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intentObjectMap.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-                intentObjectMap.putExtra(getString(R.string.toolbarTitle), "");
+                intentObjectMap.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
                 startActivity(intentObjectMap);
                 //--------
                 break;

@@ -69,7 +69,7 @@ import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
 public class BookAppointFindLocation extends AppCompatActivity implements PlaceSelectionListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ActivityCompat.OnRequestPermissionsResultCallback,
-        PermissionUtils.PermissionResultCallback ,HelperResponse{
+        PermissionUtils.PermissionResultCallback, HelperResponse {
 
     public static final String TAG = "BookAppointFindLocation";
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 10;
@@ -95,7 +95,6 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     ArrayList<String> permissions = new ArrayList<>();
     PermissionUtils permissionUtils;
     boolean isPermissionGranted;
-
 
 
     DoctorDataHelper mDoctorDataHelper;
@@ -138,7 +137,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     }
 
     private void init() {
-        mDoctorDataHelper = new DoctorDataHelper(this,this);
+        mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetRecentlyVisitedDoctorPlacesData();
 
     }
@@ -233,12 +232,10 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
                         locality = placename;
                     }
                     String city = addresses.get(0).getLocality();
-                     if(DoctorDataHelper.isFindLocationCalled()){
-                         DoctorDataHelper.setUserSelectedLocationInfo(BookAppointFindLocation.this, place.getLatLng(), locality + ", " + city);
-                     }else{
-                         DoctorDataHelper.setUserSelectedLocationInfo(BookAppointFindLocation.this, place.getLatLng(), locality + ", " + city);
-                         DoctorDataHelper.setIsFindLocationCalled(true);
-                     }
+
+                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointFindLocation.this, place.getLatLng(), locality + ", " + city);
+
+
                 }
                 CommonMethods.Log(TAG, "Place:" + place.toString());
                 setResult(Activity.RESULT_OK, data);
@@ -276,6 +273,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         else
             return obj.getCountryName();
     }
+
     @OnClick({R.id.bookAppointmentToolbar, R.id.detectLocation})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -475,9 +473,9 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if(customResponse!=null) {
-            RecentVisitedBaseModel recentVisitedBaseModel = (RecentVisitedBaseModel)customResponse;
-            if(recentVisitedBaseModel.getRecentVisitedModel()!=null) {
+        if (customResponse != null) {
+            RecentVisitedBaseModel recentVisitedBaseModel = (RecentVisitedBaseModel) customResponse;
+            if (recentVisitedBaseModel.getRecentVisitedModel() != null) {
                 RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
                 popularPlacesRecyclerView.setLayoutManager(layoutManager);
                 popularPlacesRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -489,7 +487,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
                 popularPlacesRecyclerView.setAdapter(mShowPopularPlacesAdapter);
                 popularPlacesRecyclerView.setNestedScrollingEnabled(false);
 
-                mRecentPlacesAdapter = new RecentPlacesAdapter(mContext,recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList());
+                mRecentPlacesAdapter = new RecentPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList());
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 recentlyVisitedRecyclerView.setLayoutManager(linearlayoutManager);
                 recentlyVisitedRecyclerView.setNestedScrollingEnabled(false);

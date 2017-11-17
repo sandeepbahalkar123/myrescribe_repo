@@ -61,14 +61,14 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     private static final String TAG = "BookAppointDoctorListBaseActivity";
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
-
-    CustomTextView title;
+    @BindView(R.id.title)
+    CustomTextView mTitleView;
+    @BindView(R.id.locationTextView)
     CustomTextView locationTextView;
+    @BindView(R.id.showlocation)
     CustomTextView showlocation;
-
     @BindView(R.id.nav_view)
     FrameLayout mNavView;
-
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     private DoctorDataHelper mDoctorDataHelper;
@@ -93,6 +93,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     }
 
     private void initialize() {
+
         if(getIntent().getParcelableArrayListExtra(BOTTOM_MENUS)!=null) {
             dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
             for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
@@ -105,27 +106,30 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             }
         }
 
-        title = (CustomTextView) findViewById(R.id.title);
-        locationTextView = (CustomTextView) findViewById(R.id.locationTextView);
-        locationTextView.setVisibility(View.GONE);
-        showlocation = (CustomTextView) findViewById(R.id.showlocation);
+
+        locationTextView.setVisibility(View.VISIBLE);
 
         //------
-        String locationReceived = "";
+        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+        String locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
+        if (locationReceived != null) {
+           // locationTextView.setText("" + locationReceived);
+        }
+        //-----
         Intent intent = getIntent();
-        String title = "";
+        Bundle bundle = new Bundle();
         if (intent != null) {
-            HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-            locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-            //locationTextView.setText("" + locationReceived);
-            title = intent.getStringExtra(getString(R.string.clicked_item_data));
+            Bundle extras = intent.getExtras();
+            if (extras != null) {
+                String title = extras.getString(getString(R.string.clicked_item_data));
+                mTitleView.setText(title);
+                bundle.putString(getString(R.string.title), title);
+            }
         }
         //------
-        Bundle bundle = new Bundle();
-        bundle.putString(getString(R.string.title), title);
         mRecentVisitDoctorFragment = RecentVisitDoctorFragment.newInstance(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mRecentVisitDoctorFragment).commit();
-
+        //-----------
     }
 
     @OnClick({R.id.bookAppointmentBackButton, R.id.title, R.id.locationTextView})
@@ -143,11 +147,6 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                 break;
         }
     }
-
-
-
-
-
 
     //TODO: PENDING
     public DrawerLayout getActivityDrawerLayout() {

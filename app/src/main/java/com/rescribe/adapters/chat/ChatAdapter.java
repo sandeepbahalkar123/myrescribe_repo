@@ -27,7 +27,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.rescribe.R;
 import com.rescribe.model.chat.MQTTMessage;
-import com.rescribe.services.MQTTService;
 import com.rescribe.ui.activities.ZoomImageViewActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -40,6 +39,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.rescribe.services.MQTTService.PATIENT;
 import static com.rescribe.util.RescribeConstants.COMPLETED;
 import static com.rescribe.util.RescribeConstants.DOWNLOADING;
 import static com.rescribe.util.RescribeConstants.FAILED;
@@ -97,9 +97,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         else holder.dateTextView.setVisibility(View.GONE);
 
         if (message.getFileType().equals(LOC))
-            message.setFileUrl("https://maps.googleapis.com/maps/api/staticmap?center=" + message.getMsg() + "&markers=color:red%7Clabel:C%7C" + message.getMsg() + "&zoom=14&size=400x400");
+            message.setFileUrl("https://maps.googleapis.com/maps/api/staticmap?center=" + message.getMsg() + "&markers=color:red%7Clabel:" + (message.getSender().equals(PATIENT) ? "P" : "D") + "%7C" + message.getMsg() + "&zoom=14&size=300x300");
 
-        if (message.getSender().equals(MQTTService.PATIENT)) {
+        if (message.getSender().equals(PATIENT)) {
 
             // set Time
             holder.senderTimeTextView.setText(timeText);
@@ -137,7 +137,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                 requestOptions.placeholder(mSelfTextDrawable);
                 Glide.with(holder.senderProfilePhoto.getContext())
                         .load(message.getImageUrl())
-                        .apply(requestOptions).thumbnail(0.2f)
+                        .apply(requestOptions).thumbnail(0.5f)
                         .into(holder.senderProfilePhoto);
             } else {
                 holder.senderProfilePhoto.setImageDrawable(mSelfTextDrawable);
@@ -269,7 +269,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
                         if (message.getFileType().equals(LOC)) {
                             // set placeholder for mapview
-                            requestOptions.override(400, 400);
+                            requestOptions.placeholder(R.drawable.staticmap);
+                            requestOptions.error(R.drawable.staticmap);
+                            requestOptions.override(300, 300);
 
                             message.setUploadStatus(COMPLETED);
                             holder.senderMessageWithImage.setVisibility(View.GONE);
@@ -322,7 +324,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                                             return false;
                                         }
                                     })
-                                    .apply(requestOptions).thumbnail(0.2f)
+                                    .apply(requestOptions).thumbnail(0.5f)
                                     .into(holder.senderPhotoThumb);
                         } else {
 
@@ -330,7 +332,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
                             Glide.with(holder.senderPhotoThumb.getContext())
                                     .load(new File(message.getFileUrl()))
-                                    .apply(requestOptions).thumbnail(0.2f)
+                                    .apply(requestOptions).thumbnail(0.5f)
                                     .into(holder.senderPhotoThumb);
                         }
 
@@ -338,7 +340,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                             @Override
                             public void onClick(View v) {
                                 if (message.getFileType().equals(LOC)) {
-                                    Uri gmmIntentUri = Uri.parse("geo:" + message.getMsg());
+                                    Uri gmmIntentUri = Uri.parse("geo:" + message.getMsg() + "?q=(Patient Location)@" + message.getMsg());
                                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                                     mapIntent.setPackage("com.google.android.apps.maps");
                                     if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
@@ -391,7 +393,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                 requestOptions.placeholder(mReceiverTextDrawable);
                 Glide.with(holder.receiverProfilePhoto.getContext())
                         .load(message.getImageUrl())
-                        .apply(requestOptions).thumbnail(0.2f)
+                        .apply(requestOptions).thumbnail(0.5f)
                         .into(holder.receiverProfilePhoto);
             } else {
                 holder.receiverProfilePhoto.setImageDrawable(mReceiverTextDrawable);
@@ -523,11 +525,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                         holder.receiverLayoutChild.setLayoutParams(receiverPhotoLayoutParams);
 
                         RequestOptions requestOptions = new RequestOptions();
-                        requestOptions.override(400, 400);
+                        requestOptions.override(300, 300);
 
                         if (message.getFileType().equals(LOC)) {
                             // set placeholder for mapview
-
+                            requestOptions.placeholder(R.drawable.staticmap);
+                            requestOptions.error(R.drawable.staticmap);
                             holder.receiverPhotoProgressLayout.setVisibility(View.GONE);
                             holder.receiverMessageWithImage.setVisibility(View.GONE);
                         } else {
@@ -562,14 +565,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                                         return false;
                                     }
                                 })
-                                .apply(requestOptions).thumbnail(0.2f)
+                                .apply(requestOptions).thumbnail(0.5f)
                                 .into(holder.receiverPhotoThumb);
 
                         holder.receiverPhotoLayout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 if (message.getFileType().equals(LOC)) {
-                                    Uri gmmIntentUri = Uri.parse("geo:" + message.getMsg());
+                                    Uri gmmIntentUri = Uri.parse("geo:" + message.getMsg() + "?q=(Doctor Location)@" + message.getMsg());
                                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                                     mapIntent.setPackage("com.google.android.apps.maps");
                                     if (mapIntent.resolveActivity(context.getPackageManager()) != null) {

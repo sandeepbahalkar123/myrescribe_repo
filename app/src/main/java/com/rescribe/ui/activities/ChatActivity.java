@@ -3,6 +3,7 @@ package com.rescribe.ui.activities;
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
@@ -225,8 +226,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         }
     };
 
-    private boolean isOpen;
-
     private boolean mPressed = false;
     private SupportAnimator mAnimator;
     private boolean hidden = true;
@@ -412,6 +411,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         }
     }
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

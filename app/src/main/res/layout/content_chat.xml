@@ -28,16 +28,16 @@
         android:id="@+id/dateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="12 September 2017"
-        android:textColor="@color/Gray"
-        android:textSize="@dimen/sp12"
-        android:textAllCaps="true"
-        android:visibility="gone"
-        android:clickable="false"
-        android:padding="@dimen/dp6"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dp6"
         android:background="@drawable/date_time_back"
-        android:layout_centerHorizontal="true"/>
+        android:clickable="false"
+        android:padding="@dimen/dp6"
+        android:textAllCaps="true"
+        android:textColor="@color/Gray"
+        android:textSize="@dimen/sp12"
+        android:visibility="gone"
+        tools:text="12 September 2017" />
 
     <RelativeLayout
         android:id="@+id/messageTypeLayout"
@@ -55,8 +55,8 @@
             app:buttonBackgroundColor="@android:color/transparent"
             app:buttonImage="@drawable/speak"
             app:reverseSlide="true"
-            app:slideText="@string/timing"
             app:slideBackgroundColor="@color/tagColor"
+            app:slideText="@string/timing"
             app:slideTextColor="@android:color/white"
             app:strokeColor="@color/tagColor" />
 
@@ -89,16 +89,19 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:paddingEnd="@dimen/dp10"
-                android:paddingRight="@dimen/dp10">
+                android:layout_centerVertical="true">
 
                 <ImageButton
                     android:id="@+id/attachmentButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
-                    android:padding="@dimen/dp8"
+                    android:paddingBottom="@dimen/dp14"
+                    android:paddingEnd="@dimen/dp8"
+                    android:paddingLeft="@dimen/dp18"
+                    android:paddingRight="@dimen/dp8"
+                    android:paddingStart="@dimen/dp18"
+                    android:paddingTop="@dimen/dp14"
                     android:src="@drawable/attach" />
 
                 <ImageButton
@@ -106,7 +109,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
-                    android:padding="@dimen/dp8"
+                    android:paddingBottom="@dimen/dp14"
+                    android:paddingEnd="@dimen/dp18"
+                    android:paddingLeft="@dimen/dp8"
+                    android:paddingRight="@dimen/dp18"
+                    android:paddingStart="@dimen/dp8"
+                    android:paddingTop="@dimen/dp14"
                     android:src="@drawable/photo_camera" />
 
             </LinearLayout>
@@ -123,8 +131,8 @@
             android:layout_marginEnd="@dimen/dp2"
             android:layout_marginRight="@dimen/dp2"
             android:padding="@dimen/dp6"
-            android:visibility="invisible"
-            android:src="@drawable/send" />
+            android:src="@drawable/send"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 
@@ -133,6 +141,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
+        tools:visibility="gone"
         android:focusable="true" />
 
     <io.codetail.widget.RevealFrameLayout

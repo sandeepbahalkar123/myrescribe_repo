@@ -195,6 +195,13 @@ public class RescribeConstants {
         public static final String LOC = "loc";
     }
 
+    public static class FILE_EMOJI {
+        public static final String IMG_FILE = "🏞 Image";
+        public static final String DOC_FILE = "📒 Document";
+        public static final String VID_FILE = "📹 Video";
+        public static final String AUD_FILE = "🔊 Audio";
+        public static final String LOC_FILE = "📍 Location";
+    }
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 

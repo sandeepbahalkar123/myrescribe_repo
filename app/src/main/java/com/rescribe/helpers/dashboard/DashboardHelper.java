@@ -81,7 +81,7 @@ public class DashboardHelper implements ConnectionListener {
     }
 
     public void doGetDashboard(String currentCity) {
-      /*try  {
+    /*  try  {
             InputStream is = mContext.getAssets().open("dashboard.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -98,7 +98,7 @@ public class DashboardHelper implements ConnectionListener {
             ex.printStackTrace();
         }*/
 
-        String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
+      String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
 

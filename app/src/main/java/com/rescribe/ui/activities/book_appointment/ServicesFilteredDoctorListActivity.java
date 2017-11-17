@@ -71,10 +71,10 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
 
     private void initialize() {
         doctorList = new ArrayList<>();
-        showlocation.setVisibility(View.VISIBLE);
-        locationTextView.setVisibility(View.GONE);
+        showlocation.setVisibility(View.GONE);
+        locationTextView.setVisibility(View.VISIBLE);
         userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-        showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
+      //  showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         //--------
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -124,7 +124,7 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
         if (intent != null) {
             HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-            locationTextView.setText("" + locationReceived);
+          //  locationTextView.setText("" + locationReceived);
         }
         //------
         if (locationReceived != null) {

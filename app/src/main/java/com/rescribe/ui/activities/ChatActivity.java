@@ -64,6 +64,7 @@ import com.rescribe.helpers.chat.ChatHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.chat.SendMessageModel;
@@ -75,6 +76,8 @@ import com.rescribe.notification.MessageNotification;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
 import com.rescribe.singleton.Device;
+import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
+import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
@@ -855,7 +858,13 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
             case R.id.bookAppointmentButton:
                 // call book appointment
-
+                Intent intent = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
+                intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+                DoctorList doctorList = new DoctorList();
+                doctorList.setDocId(chatList.getId());
+                intent.putExtra(getString(R.string.clicked_item_data), doctorList);
+                intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
+                startActivity(intent);
                 break;
 
             case R.id.camera:

@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/popular_places_bg"
     android:gravity="center"
+    android:id="@+id/popularLayout"
     android:orientation="vertical">
 
     <com.rescribe.ui.customesViews.CustomTextView

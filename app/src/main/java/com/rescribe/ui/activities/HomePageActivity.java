@@ -138,8 +138,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private int widthPixels;
     DashboardDataModel mDashboardDataModel;
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
-
-    //-----------
     private ServicesCardViewImpl mDashboardDataBuilder;
     private AppDBHelper appDBHelper;
     private DashboardHelper mDashboardHelper;

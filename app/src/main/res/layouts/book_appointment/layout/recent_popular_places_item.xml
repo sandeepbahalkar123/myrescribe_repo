@@ -5,6 +5,7 @@
     android:paddingLeft="@dimen/sp14"
     android:paddingStart="@dimen/sp14"
     android:paddingBottom="@dimen/dp12"
+    android:id="@+id/recentPlaceLayout"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">

@@ -234,8 +234,10 @@ public class DoctorDataHelper implements ConnectionListener {
 
     public static void setUserSelectedLocationInfo(Context ctx, LatLng data, String locationText) {
         DoctorDataHelper.userSelectedLocationInfo.put(ctx.getString(R.string.location), locationText);
-        DoctorDataHelper.userSelectedLocationInfo.put(ctx.getString(R.string.latitude), "" + data.latitude);
-        DoctorDataHelper.userSelectedLocationInfo.put(ctx.getString(R.string.longitude), "" + data.longitude);
+        if(data!=null) {
+            DoctorDataHelper.userSelectedLocationInfo.put(ctx.getString(R.string.latitude), "" + data.latitude);
+            DoctorDataHelper.userSelectedLocationInfo.put(ctx.getString(R.string.longitude), "" + data.longitude);
+        }
     }
 
     public static HashMap<String, String> getPreviousUserSelectedLocationInfo() {

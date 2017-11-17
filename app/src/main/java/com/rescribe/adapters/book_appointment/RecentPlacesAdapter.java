@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
 import com.rescribe.R;
@@ -25,11 +26,13 @@ import butterknife.ButterKnife;
 public class RecentPlacesAdapter extends RecyclerView.Adapter<RecentPlacesAdapter.ListViewHolder> {
 
     private Context mContext;
+    OnRecentPlacesListener mOnRecentPlacesListener;
     private ArrayList<String> mDataList;
 
-    public RecentPlacesAdapter(Context mContext, ArrayList<String> dataList) {
+    public RecentPlacesAdapter(Context mContext, ArrayList<String> dataList,OnRecentPlacesListener mOnRecentPlacesListener) {
         this.mDataList = dataList;
         this.mContext = mContext;
+        this.mOnRecentPlacesListener = mOnRecentPlacesListener;
 
     }
 
@@ -42,9 +45,15 @@ public class RecentPlacesAdapter extends RecyclerView.Adapter<RecentPlacesAdapte
     }
 
     @Override
-    public void onBindViewHolder(ListViewHolder holder, int position) {
+    public void onBindViewHolder(ListViewHolder holder, final int position) {
 
         holder.recentPlaceName.setText(mDataList.get(position));
+        holder.recentPlaceLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnRecentPlacesListener.onClickOfRecentPlaces(mDataList.get(position));
+            }
+        });
     }
 
     @Override
@@ -56,6 +65,8 @@ public class RecentPlacesAdapter extends RecyclerView.Adapter<RecentPlacesAdapte
 
         @BindView(R.id.recentPlaceName)
         CustomTextView recentPlaceName;
+        @BindView(R.id.recentPlaceLayout)
+        LinearLayout recentPlaceLayout;
 
         View view;
 
@@ -64,5 +75,8 @@ public class RecentPlacesAdapter extends RecyclerView.Adapter<RecentPlacesAdapte
             ButterKnife.bind(this, view);
             this.view = view;
         }
+    }
+    public interface OnRecentPlacesListener {
+        void onClickOfRecentPlaces(String location);
     }
 }

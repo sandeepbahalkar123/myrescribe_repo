@@ -5,14 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RatingBar;
+import android.widget.LinearLayout;
 
 import com.rescribe.R;
-import com.rescribe.model.book_appointment.reviews.Review;
 import com.rescribe.model.book_appointment.search_doctors.AreaList;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.util.CommonMethods;
-import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -25,13 +22,14 @@ import butterknife.ButterKnife;
 
 public class ShowPopularPlacesAdapter extends RecyclerView.Adapter<ShowPopularPlacesAdapter.ListViewHolder> {
 
-
     private Context mContext;
     private ArrayList<AreaList> mDataList;
+    OnPopularPlacesListener mOnPopularPlacesListener;
 
-    public ShowPopularPlacesAdapter(Context mContext, ArrayList<AreaList> dataList) {
+    public ShowPopularPlacesAdapter(Context mContext, ArrayList<AreaList> dataList, OnPopularPlacesListener mOnPopularPlacesListener) {
         this.mDataList = dataList;
         this.mContext = mContext;
+        this.mOnPopularPlacesListener = mOnPopularPlacesListener;
 
     }
 
@@ -48,7 +46,13 @@ public class ShowPopularPlacesAdapter extends RecyclerView.Adapter<ShowPopularPl
 
         final AreaList doctorObject = mDataList.get(position);
         holder.popularPlaceName.setText(doctorObject.getArea());
-        holder.countOfDoctors.setText(""+doctorObject.getDoctorCount());
+        holder.countOfDoctors.setText("" + doctorObject.getDoctorCount());
+        holder.popularLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnPopularPlacesListener.onClickOfPopularPlaces(doctorObject.getArea()+","+doctorObject.getCity());
+            }
+        });
 
     }
 
@@ -62,7 +66,8 @@ public class ShowPopularPlacesAdapter extends RecyclerView.Adapter<ShowPopularPl
         CustomTextView popularPlaceName;
         @BindView(R.id.countOfDoctors)
         CustomTextView countOfDoctors;
-
+        @BindView(R.id.popularLayout)
+        LinearLayout popularLayout;
         View view;
 
         ListViewHolder(View view) {
@@ -70,5 +75,10 @@ public class ShowPopularPlacesAdapter extends RecyclerView.Adapter<ShowPopularPl
             ButterKnife.bind(this, view);
             this.view = view;
         }
+    }
+
+
+    public interface OnPopularPlacesListener {
+        void onClickOfPopularPlaces(String location);
     }
 }

@@ -161,7 +161,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/messageTypeLayout"
-        tools:visibility="gone"
+        tools:visibility="visible"
         android:paddingEnd="@dimen/dp6"
         android:paddingStart="@dimen/dp6">
 
@@ -194,7 +194,7 @@
                         android:id="@+id/camera"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:background="@drawable/camera" />
+                        android:background="@drawable/camera_menu" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -216,8 +216,8 @@
                         android:id="@+id/document"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:background="@drawable/circular_bullet"
-                        android:src="@drawable/attach" />
+                        android:background="@drawable/circular_menu_back"
+                        app:srcCompat="@drawable/attach_file_menu" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -239,7 +239,7 @@
                         android:id="@+id/location"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:background="@drawable/location" />
+                        android:background="@drawable/location_menu" />
 
                     <TextView
                         android:layout_width="wrap_content"

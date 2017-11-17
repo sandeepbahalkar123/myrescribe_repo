@@ -49,7 +49,6 @@ public class HistoryData implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(chatHistory);
         dest.writeValue(userOnlineStatus);
-
     }
 
     public int describeContents() {
@@ -62,30 +61,5 @@ public class HistoryData implements Parcelable {
 
     public void setUserOnlineStatus(UserOnlineStatus userOnlineStatus) {
         this.userOnlineStatus = userOnlineStatus;
-    }
-
-    class UserOnlineStatus {
-        @SerializedName("user2id")
-        @Expose
-        private String user2ID;
-        @SerializedName("onlineStatus")
-        @Expose
-        private String onlineStatus;
-
-        public String getUser2ID() {
-            return user2ID;
-        }
-
-        public void setUser2ID(String user2ID) {
-            this.user2ID = user2ID;
-        }
-
-        public String getOnlineStatus() {
-            return onlineStatus;
-        }
-
-        public void setOnlineStatus(String onlineStatus) {
-            this.onlineStatus = onlineStatus;
-        }
     }
 }

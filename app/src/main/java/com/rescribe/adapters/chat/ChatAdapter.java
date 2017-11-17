@@ -1,8 +1,10 @@
 package com.rescribe.adapters.chat;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +27,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.rescribe.R;
 import com.rescribe.model.chat.MQTTMessage;
-import com.rescribe.services.MQTTService;
 import com.rescribe.ui.activities.ZoomImageViewActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -38,9 +39,11 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.rescribe.services.MQTTService.PATIENT;
 import static com.rescribe.util.RescribeConstants.COMPLETED;
 import static com.rescribe.util.RescribeConstants.DOWNLOADING;
 import static com.rescribe.util.RescribeConstants.FAILED;
+import static com.rescribe.util.RescribeConstants.FILE.LOC;
 import static com.rescribe.util.RescribeConstants.MESSAGE_STATUS.REACHED;
 import static com.rescribe.util.RescribeConstants.MESSAGE_STATUS.SEEN;
 import static com.rescribe.util.RescribeConstants.UPLOADING;
@@ -74,6 +77,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
         return new ListViewHolder(itemView);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(final ListViewHolder holder, final int position) {
         final MQTTMessage message = mqttMessages.get(position);
@@ -92,7 +96,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
             holder.dateTextView.setVisibility(View.VISIBLE);
         else holder.dateTextView.setVisibility(View.GONE);
 
-        if (message.getSender().equals(MQTTService.PATIENT)) {
+        if (message.getFileType().equals(LOC))
+            message.setFileUrl("https://maps.googleapis.com/maps/api/staticmap?center=" + message.getMsg() + "&markers=color:red%7Clabel:" + (message.getSender().equals(PATIENT) ? "P" : "D") + "%7C" + message.getMsg() + "&zoom=14&size=300x300");
+
+        if (message.getSender().equals(PATIENT)) {
 
             // set Time
             holder.senderTimeTextView.setText(timeText);
@@ -130,7 +137,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                 requestOptions.placeholder(mSelfTextDrawable);
                 Glide.with(holder.senderProfilePhoto.getContext())
                         .load(message.getImageUrl())
-                        .apply(requestOptions).thumbnail(0.2f)
+                        .apply(requestOptions).thumbnail(0.5f)
                         .into(holder.senderProfilePhoto);
             } else {
                 holder.senderProfilePhoto.setImageDrawable(mSelfTextDrawable);
@@ -258,6 +265,29 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                         holder.senderPhotoLayout.setVisibility(View.VISIBLE);
                         holder.senderFileLayout.setVisibility(View.GONE);
 
+                        RequestOptions requestOptions = new RequestOptions();
+
+                        if (message.getFileType().equals(LOC)) {
+                            // set placeholder for mapview
+                            requestOptions.placeholder(R.drawable.staticmap);
+                            requestOptions.error(R.drawable.staticmap);
+                            requestOptions.override(300, 300);
+
+                            message.setUploadStatus(COMPLETED);
+                            holder.senderMessageWithImage.setVisibility(View.GONE);
+                        } else {
+                            requestOptions.dontAnimate();
+                            requestOptions.placeholder(R.drawable.image_placeholder);
+                            requestOptions.error(R.drawable.image_placeholder);
+
+                            if (message.getMsg().isEmpty())
+                                holder.senderMessageWithImage.setVisibility(View.GONE);
+                            else {
+                                holder.senderMessageWithImage.setVisibility(View.VISIBLE);
+                                holder.senderMessageWithImage.setText(message.getMsg());
+                            }
+                        }
+
                         if (message.getUploadStatus() == RescribeConstants.UPLOADING) {
                             holder.senderPhotoProgressLayout.setVisibility(View.VISIBLE);
                             holder.senderPhotoUploading.setVisibility(View.VISIBLE);
@@ -271,14 +301,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                             holder.senderPhotoUploading.setVisibility(View.GONE);
                             holder.senderPhotoUploadStopped.setVisibility(View.GONE);
                         }
-
-                        RequestOptions requestOptions = new RequestOptions();
-                        requestOptions.dontAnimate();
-                        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                        requestOptions.skipMemoryCache(true);
-                        requestOptions.override(300, 300);
-                        requestOptions.placeholder(R.drawable.image_placeholder);
-                        requestOptions.error(R.drawable.image_placeholder);
 
                         String filePath = message.getFileUrl().substring(0, 4);
 
@@ -302,7 +324,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                                             return false;
                                         }
                                     })
-                                    .apply(requestOptions).thumbnail(0.2f)
+                                    .apply(requestOptions).thumbnail(0.5f)
                                     .into(holder.senderPhotoThumb);
                         } else {
 
@@ -310,32 +332,37 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
                             Glide.with(holder.senderPhotoThumb.getContext())
                                     .load(new File(message.getFileUrl()))
-                                    .apply(requestOptions).thumbnail(0.2f)
+                                    .apply(requestOptions).thumbnail(0.5f)
                                     .into(holder.senderPhotoThumb);
                         }
 
                         holder.senderPhotoLayout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (message.getUploadStatus() == FAILED) {
-                                    itemListener.uploadFile(message);
-                                    message.setUploadStatus(UPLOADING);
-                                    notifyItemChanged(position);
-                                } else if (message.getUploadStatus() == COMPLETED) {
-                                    Intent intent = new Intent(context, ZoomImageViewActivity.class);
-                                    intent.putExtra(RescribeConstants.DOCUMENTS, message.getFileUrl());
-                                    intent.putExtra(RescribeConstants.IS_URL, isUrl);
-                                    context.startActivity(intent);
+                                if (message.getFileType().equals(LOC)) {
+                                    Uri gmmIntentUri = Uri.parse("geo:" + message.getMsg() + "?q=(Patient Location)@" + message.getMsg());
+                                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                    mapIntent.setPackage("com.google.android.apps.maps");
+                                    if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
+                                        context.startActivity(mapIntent);
+                                    } else {
+                                        CommonMethods.showToast(context, "GoogleMap application not installed on your device.");
+                                    }
+                                } else {
+                                    if (message.getUploadStatus() == FAILED) {
+                                        itemListener.uploadFile(message);
+                                        message.setUploadStatus(UPLOADING);
+                                        notifyItemChanged(position);
+                                    } else if (message.getUploadStatus() == COMPLETED) {
+                                        Intent intent = new Intent(context, ZoomImageViewActivity.class);
+                                        intent.putExtra(RescribeConstants.DOCUMENTS, message.getFileUrl());
+                                        intent.putExtra(RescribeConstants.IS_URL, isUrl);
+                                        context.startActivity(intent);
+                                    }
                                 }
                             }
                         });
 
-                        if (message.getMsg().isEmpty())
-                            holder.senderMessageWithImage.setVisibility(View.GONE);
-                        else {
-                            holder.senderMessageWithImage.setVisibility(View.VISIBLE);
-                            holder.senderMessageWithImage.setText(message.getMsg());
-                        }
                         break;
                 }
             }
@@ -366,7 +393,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                 requestOptions.placeholder(mReceiverTextDrawable);
                 Glide.with(holder.receiverProfilePhoto.getContext())
                         .load(message.getImageUrl())
-                        .apply(requestOptions).thumbnail(0.2f)
+                        .apply(requestOptions).thumbnail(0.5f)
                         .into(holder.receiverProfilePhoto);
             } else {
                 holder.receiverProfilePhoto.setImageDrawable(mReceiverTextDrawable);
@@ -497,23 +524,38 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                         receiverPhotoLayoutParams.setMargins(0, 0, context.getResources().getDimensionPixelOffset(R.dimen.dp68), 0);
                         holder.receiverLayoutChild.setLayoutParams(receiverPhotoLayoutParams);
 
-                        holder.receiverPhotoProgressLayout.setVisibility(View.VISIBLE);
-                        holder.receiverPhotoDownloading.setVisibility(View.VISIBLE);
-                        holder.receiverPhotoDownloadStopped.setVisibility(View.GONE);
-
                         RequestOptions requestOptions = new RequestOptions();
-                        requestOptions.dontAnimate();
-                        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                        requestOptions.skipMemoryCache(true);
                         requestOptions.override(300, 300);
-                        requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
-                        requestOptions.error(droidninja.filepicker.R.drawable.image_placeholder);
+
+                        if (message.getFileType().equals(LOC)) {
+                            // set placeholder for mapview
+                            requestOptions.placeholder(R.drawable.staticmap);
+                            requestOptions.error(R.drawable.staticmap);
+                            holder.receiverPhotoProgressLayout.setVisibility(View.GONE);
+                            holder.receiverMessageWithImage.setVisibility(View.GONE);
+                        } else {
+                            holder.receiverPhotoProgressLayout.setVisibility(View.VISIBLE);
+                            holder.receiverPhotoDownloading.setVisibility(View.VISIBLE);
+                            holder.receiverPhotoDownloadStopped.setVisibility(View.GONE);
+
+                            requestOptions.dontAnimate();
+                            requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+                            requestOptions.error(droidninja.filepicker.R.drawable.image_placeholder);
+
+                            if (message.getMsg().isEmpty())
+                                holder.receiverMessageWithImage.setVisibility(View.GONE);
+                            else {
+                                holder.receiverMessageWithImage.setVisibility(View.VISIBLE);
+                                holder.receiverMessageWithImage.setText(message.getMsg());
+                            }
+                        }
+
                         Glide.with(holder.receiverPhotoThumb.getContext())
                                 .load(message.getFileUrl())
                                 .listener(new RequestListener<Drawable>() {
                                     @Override
                                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                        holder.receiverPhotoProgressLayout.setVisibility(View.GONE);
+                                        holder.receiverPhotoProgressLayout.setVisibility(View.VISIBLE);
                                         return false;
                                     }
 
@@ -523,25 +565,30 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                                         return false;
                                     }
                                 })
-                                .apply(requestOptions).thumbnail(0.2f)
+                                .apply(requestOptions).thumbnail(0.5f)
                                 .into(holder.receiverPhotoThumb);
 
                         holder.receiverPhotoLayout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent = new Intent(context, ZoomImageViewActivity.class);
-                                intent.putExtra(RescribeConstants.DOCUMENTS, message.getFileUrl());
-                                intent.putExtra(RescribeConstants.IS_URL, true);
-                                context.startActivity(intent);
+                                if (message.getFileType().equals(LOC)) {
+                                    Uri gmmIntentUri = Uri.parse("geo:" + message.getMsg() + "?q=(Doctor Location)@" + message.getMsg());
+                                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                    mapIntent.setPackage("com.google.android.apps.maps");
+                                    if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
+                                        context.startActivity(mapIntent);
+                                    } else {
+                                        CommonMethods.showToast(context, "GoogleMap application not installed on your device.");
+                                    }
+                                } else {
+                                    Intent intent = new Intent(context, ZoomImageViewActivity.class);
+                                    intent.putExtra(RescribeConstants.DOCUMENTS, message.getFileUrl());
+                                    intent.putExtra(RescribeConstants.IS_URL, true);
+                                    context.startActivity(intent);
+                                }
                             }
                         });
 
-                        if (message.getMsg().isEmpty())
-                            holder.receiverMessageWithImage.setVisibility(View.GONE);
-                        else {
-                            holder.receiverMessageWithImage.setVisibility(View.VISIBLE);
-                            holder.receiverMessageWithImage.setText(message.getMsg());
-                        }
                         break;
                 }
             }

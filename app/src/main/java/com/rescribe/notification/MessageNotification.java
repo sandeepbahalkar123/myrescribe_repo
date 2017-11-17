@@ -18,8 +18,16 @@ import com.rescribe.R;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.services.MQTTService;
 import com.rescribe.ui.activities.DoctorConnectActivity;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+
+import static com.rescribe.util.RescribeConstants.*;
+import static com.rescribe.util.RescribeConstants.FILE.AUD;
+import static com.rescribe.util.RescribeConstants.FILE.DOC;
+import static com.rescribe.util.RescribeConstants.FILE.IMG;
+import static com.rescribe.util.RescribeConstants.FILE.LOC;
+import static com.rescribe.util.RescribeConstants.FILE.VID;
 
 /**
  * Helper class for showing and canceling new message
@@ -43,7 +51,9 @@ public class MessageNotification {
         // TODO: Remove this if your notification has no relevant thumbnail.
         final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.doctor_speciality);
 
-        final String content = messageContent.get(messageContent.size() - 1).getMsg();
+        MQTTMessage lastMessage = messageContent.get(messageContent.size() - 1);
+        String content = getContent(lastMessage);
+
         String title;
         if (unread > 1)
             title = userName + " (" + unread + " messages)";
@@ -63,7 +73,7 @@ public class MessageNotification {
                 .setSummaryText("New Message");
 
         for (MQTTMessage message : messageContent)
-            inboxStyle.addLine(message.getMsg());
+            inboxStyle.addLine(getContent(message));
 
 // Create the RemoteInput specifying above key
         RemoteInput remoteInput = new RemoteInput.Builder(MQTTService.KEY_REPLY)
@@ -140,5 +150,31 @@ public class MessageNotification {
         final NotificationManager nm = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(NOTIFICATION_TAG, notificationId);
+    }
+
+    private static String getContent(MQTTMessage mqttMessage) {
+        String content;
+        switch (mqttMessage.getFileType()) {
+            case DOC:
+                content = FILE_EMOJI.DOC_FILE;
+                break;
+            case AUD:
+                content = FILE_EMOJI.AUD_FILE;
+                break;
+            case VID:
+                content = FILE_EMOJI.VID_FILE;
+                break;
+            case LOC:
+                content = FILE_EMOJI.LOC_FILE;
+                break;
+            case IMG:
+                content = FILE_EMOJI.IMG_FILE;
+                break;
+            default:
+                content = mqttMessage.getMsg();
+                break;
+        }
+
+        return content;
     }
 }

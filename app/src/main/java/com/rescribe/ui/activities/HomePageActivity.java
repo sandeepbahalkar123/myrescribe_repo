@@ -833,7 +833,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     private void updateUI() {
-        Log.d(TAG, "UI update initiated .............");
+        Log.d(TAG, "UI update initiated.");
         if (null != mCurrentLocation) {
             String lat = String.valueOf(mCurrentLocation.getLatitude());
             String lng = String.valueOf(mCurrentLocation.getLongitude());
@@ -843,7 +843,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     "Longitude: " + lng + "\n" +
                     "Accuracy: " + mCurrentLocation.getAccuracy() + "\n" +
                     "Provider: " + mCurrentLocation.getProvider());*/
-            Log.e("Latitude Longitude ===============", lat + "///////////" + lng);
+            Log.e("Latitude Longitude", lat + "," + lng);
 
             getAddress(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
             stopLocationUpdates();

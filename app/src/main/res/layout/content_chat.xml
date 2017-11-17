@@ -12,7 +12,7 @@
         android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/messageTypeLayout">
+        android:layout_above="@+id/bookAppointmentButton">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/chatList"
@@ -28,15 +28,28 @@
         android:id="@+id/dateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="12 September 2017"
-        android:textColor="@color/Gray"
-        android:textSize="@dimen/sp12"
-        android:textAllCaps="true"
-        android:visibility="gone"
-        android:padding="@dimen/dp6"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dp6"
         android:background="@drawable/date_time_back"
-        android:layout_centerHorizontal="true"/>
+        android:clickable="false"
+        android:padding="@dimen/dp6"
+        android:textAllCaps="true"
+        android:textColor="@color/Gray"
+        android:textSize="@dimen/sp12"
+        android:visibility="gone"
+        tools:text="12 September 2017" />
+
+    <TextView
+        android:id="@+id/bookAppointmentButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/messageTypeLayout"
+        android:text="@string/book_appointment"
+        android:textColor="@color/white"
+        android:padding="@dimen/dp14"
+        android:textAllCaps="true"
+        android:gravity="center"
+        android:background="@color/statusbar"/>
 
     <RelativeLayout
         android:id="@+id/messageTypeLayout"
@@ -54,8 +67,8 @@
             app:buttonBackgroundColor="@android:color/transparent"
             app:buttonImage="@drawable/speak"
             app:reverseSlide="true"
-            app:slideText="@string/timing"
             app:slideBackgroundColor="@color/tagColor"
+            app:slideText="@string/timing"
             app:slideTextColor="@android:color/white"
             app:strokeColor="@color/tagColor" />
 
@@ -88,16 +101,19 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:paddingEnd="@dimen/dp10"
-                android:paddingRight="@dimen/dp10">
+                android:layout_centerVertical="true">
 
                 <ImageButton
                     android:id="@+id/attachmentButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
-                    android:padding="@dimen/dp8"
+                    android:paddingBottom="@dimen/dp14"
+                    android:paddingEnd="@dimen/dp8"
+                    android:paddingLeft="@dimen/dp18"
+                    android:paddingRight="@dimen/dp8"
+                    android:paddingStart="@dimen/dp18"
+                    android:paddingTop="@dimen/dp14"
                     android:src="@drawable/attach" />
 
                 <ImageButton
@@ -105,14 +121,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
-                    android:padding="@dimen/dp8"
+                    android:paddingBottom="@dimen/dp14"
+                    android:paddingEnd="@dimen/dp18"
+                    android:paddingLeft="@dimen/dp8"
+                    android:paddingRight="@dimen/dp18"
+                    android:paddingStart="@dimen/dp8"
+                    android:paddingTop="@dimen/dp14"
                     android:src="@drawable/photo_camera" />
 
             </LinearLayout>
 
         </RelativeLayout>
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/sendButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,9 +143,116 @@
             android:layout_marginEnd="@dimen/dp2"
             android:layout_marginRight="@dimen/dp2"
             android:padding="@dimen/dp6"
-            android:visibility="invisible"
-            android:src="@drawable/send" />
+            android:src="@drawable/send"
+            android:visibility="invisible" />
 
     </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/exitRevealDialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        tools:visibility="gone"
+        android:focusable="true" />
+
+    <io.codetail.widget.RevealFrameLayout
+        android:id="@+id/revealFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/messageTypeLayout"
+        tools:visibility="visible"
+        android:paddingEnd="@dimen/dp6"
+        android:paddingStart="@dimen/dp6">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/reveal_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="@dimen/dp10"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/camera"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/camera_menu" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Camera" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/document"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/circular_menu_back"
+                        app:srcCompat="@drawable/attach_file_menu" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Document" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/location"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/location_menu" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Location" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </io.codetail.widget.RevealFrameLayout>
 
 </RelativeLayout>

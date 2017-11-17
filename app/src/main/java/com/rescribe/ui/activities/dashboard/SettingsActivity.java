@@ -1,39 +1,30 @@
 package com.rescribe.ui.activities.dashboard;
 
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.CompoundButton;
 
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.rescribe.R;
-import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.ui.activities.HomePageActivity;
-import com.rescribe.ui.activities.NotificationActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
-import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.customesViews.NonSwipeableViewPager;
-import com.rescribe.util.CommonMethods;
+import com.rescribe.ui.customesViews.switch_button.SwitchButton;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.view.View.VISIBLE;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
 /**
@@ -44,6 +35,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
 
     @Override
@@ -54,14 +46,15 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         initialize();
 
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
-        for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
-            BottomMenu bottomMenu = new BottomMenu();
-            bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
-            bottomMenu.setMenuName(dashboardBottomMenuList.getName());
-            bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
-            bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.settings)));
-            addBottomMenu(bottomMenu);
-        }
+        if (dashboardBottomMenuLists != null)
+            for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+                BottomMenu bottomMenu = new BottomMenu();
+                bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
+                bottomMenu.setMenuName(dashboardBottomMenuList.getName());
+                bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
+                bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.settings)));
+                addBottomMenu(bottomMenu);
+            }
 
     }
 
@@ -69,6 +62,16 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.settings));
     }
+
+    /*@OnClick({R.id.sb_text})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+
+            case R.id.sb_text:
+
+                break;
+        }
+    }*/
 
     @Override
     public void onBottomMenuClick(BottomMenu bottomMenu) {

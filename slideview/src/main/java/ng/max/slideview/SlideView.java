@@ -3,8 +3,11 @@ package ng.max.slideview;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.RequiresApi;
@@ -23,11 +26,11 @@ public class SlideView extends RelativeLayout implements SeekBar.OnSeekBarChange
 
     protected Slider slider;
     protected Drawable slideBackground;
-    protected Drawable buttonBackground;
+//    protected Drawable buttonBackground;
     protected Drawable buttonImage;
     protected Drawable buttonImageDisabled;
     protected TextView slideTextView;
-    protected LayerDrawable buttonLayers;
+//    protected LayerDrawable buttonLayers;
     protected ColorStateList slideBackgroundColor;
     protected ColorStateList buttonBackgroundColor;
     protected boolean animateSlideText;
@@ -68,8 +71,8 @@ public class SlideView extends RelativeLayout implements SeekBar.OnSeekBarChange
         slider = (Slider) findViewById(R.id.slider);
         slider.setOnSeekBarChangeListener(this);
         slideBackground = getBackground();
-        buttonLayers = (LayerDrawable) slider.getThumb();
-        buttonBackground = buttonLayers.findDrawableByLayerId(R.id.buttonBackground);
+//        buttonLayers = (LayerDrawable) slider.getThumb();
+//        buttonBackground = buttonLayers.findDrawableByLayerId(R.id.buttonBackground);
 
         TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.SlideView,
                 defStyle, defStyle);
@@ -95,7 +98,7 @@ public class SlideView extends RelativeLayout implements SeekBar.OnSeekBarChange
             setText(slideText);
             setTextColor(sliderTextColor == null ? slideTextView.getTextColors() : sliderTextColor);
 
-            int buttonImageId = a.getResourceId(R.styleable.SlideView_buttonImage, R.drawable.ic_chevron_double_right);
+            int buttonImageId = a.getResourceId(R.styleable.SlideView_buttonImage, R.drawable.speak);
             setButtonImage(ContextCompat.getDrawable(getContext(), buttonImageId));
             setButtonImageDisabled(ContextCompat.getDrawable(getContext(), a.getResourceId
                     (R.styleable.SlideView_buttonImageDisabled, buttonImageId)));
@@ -104,7 +107,7 @@ public class SlideView extends RelativeLayout implements SeekBar.OnSeekBarChange
             setSlideBackgroundColor(a.getColorStateList(R.styleable.SlideView_slideBackgroundColor));
 
             if (a.hasValue(R.styleable.SlideView_strokeColor)) {
-                Util.setDrawableStroke(slideBackground, strokeColor);
+                setDrawableStroke(slideBackground, strokeColor);
             }
             if (reverseSlide) {
                 slider.setRotation(180);
@@ -119,6 +122,14 @@ public class SlideView extends RelativeLayout implements SeekBar.OnSeekBarChange
             }
         } finally {
             a.recycle();
+        }
+    }
+
+    private void setDrawableStroke(Drawable drawable, int color) {
+        if (drawable instanceof GradientDrawable) {
+            GradientDrawable gradientDrawable = (GradientDrawable) drawable;
+            gradientDrawable.mutate();
+            gradientDrawable.setStroke(4, color);
         }
     }
 
@@ -140,7 +151,7 @@ public class SlideView extends RelativeLayout implements SeekBar.OnSeekBarChange
 
     public void setButtonImage(Drawable image) {
         buttonImage = image;
-        buttonLayers.setDrawableByLayerId(R.id.buttonImage, image);
+//        buttonLayers.setDrawableByLayerId(R.id.buttonImage, image);
     }
 
     public void setButtonImageDisabled(Drawable image) {
@@ -150,13 +161,28 @@ public class SlideView extends RelativeLayout implements SeekBar.OnSeekBarChange
 
     public void setButtonBackgroundColor(ColorStateList color) {
         buttonBackgroundColor = color;
-        Util.setDrawableColor(buttonBackground, color.getDefaultColor());
+//        setDrawableColor(buttonBackground, color.getDefaultColor());
+    }
+
+    private void setDrawableColor(Drawable drawable, int color) {
+        drawable.mutate();
+        if (drawable instanceof ShapeDrawable) {
+            ShapeDrawable shapeDrawable = (ShapeDrawable) drawable;
+            shapeDrawable.getPaint().setColor(color);
+        } else if (drawable instanceof GradientDrawable) {
+            GradientDrawable gradientDrawable = (GradientDrawable) drawable;
+            gradientDrawable.setColor(color);
+        } else if (drawable instanceof ColorDrawable) {
+            ColorDrawable colorDrawable = (ColorDrawable) drawable;
+            colorDrawable.setColor(color);
+        }
+
     }
 
 
     public void setSlideBackgroundColor(ColorStateList color) {
         slideBackgroundColor = color;
-        Util.setDrawableColor(slideBackground, color.getDefaultColor());
+        setDrawableColor(slideBackground, color.getDefaultColor());
     }
 
     public Slider getSlider() {
@@ -196,12 +222,12 @@ public class SlideView extends RelativeLayout implements SeekBar.OnSeekBarChange
         for (int i = 0; i < getChildCount(); i++) {
             getChildAt(i).setEnabled(enabled);
         }
-        buttonLayers.setDrawableByLayerId(R.id.buttonImage, enabled ? buttonImage :
-                buttonImageDisabled == null ? buttonImage : buttonImageDisabled);
-        Util.setDrawableColor(buttonBackground, buttonBackgroundColor.getColorForState(
+        /*buttonLayers.setDrawableByLayerId(R.id.buttonImage, enabled ? buttonImage :
+                buttonImageDisabled == null ? buttonImage : buttonImageDisabled);*/
+        /*setDrawableColor(buttonBackground, buttonBackgroundColor.getColorForState(
                 enabled ? new int[]{android.R.attr.state_enabled} : new int[]{-android.R.attr.state_enabled}
-                , ContextCompat.getColor(getContext(), R.color.button_color_default)));
-        Util.setDrawableColor(slideBackground, slideBackgroundColor.getColorForState(
+                , ContextCompat.getColor(getContext(), R.color.button_color_default)));*/
+        setDrawableColor(slideBackground, slideBackgroundColor.getColorForState(
                 enabled ? new int[]{android.R.attr.state_enabled} : new int[]{-android.R.attr.state_enabled}
                 , ContextCompat.getColor(getContext(), R.color.button_color_default)));
     }

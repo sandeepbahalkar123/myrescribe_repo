@@ -1060,7 +1060,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
         MQTTMessage messageL = new MQTTMessage();
         messageL.setTopic(MQTTService.TOPIC[0]);
-        messageL.setMsg(latlong);
+        messageL.setMsg("");
+        messageL.setFileUrl(latlong);
 
         String generatedId = patId + "_" + mqttMessage.size() + System.nanoTime();
 

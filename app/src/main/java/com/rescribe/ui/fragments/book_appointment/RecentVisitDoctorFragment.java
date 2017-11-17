@@ -70,6 +70,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
+    @BindView(R.id.filterListLayout)
+    LinearLayout mFilterListLayout;
     @BindView(R.id.pickSpeciality)
     CustomTextView pickSpeciality;
     @BindView(R.id.emptyListView)
@@ -179,6 +181,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             }
         });
 
+        recentDoctorLayout.setVisibility(View.GONE);
+        mFilterListLayout.setVisibility(View.GONE);
         doGetLatestDoctorListOnLocationChange(null);
 
     }
@@ -382,10 +386,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     }
 
-    /*
-     * GENERATE A SINGLE PAGE DATA
-     * PASS US THE CURRENT PAGE POSITION THEN WE GENERATE NECEASSARY DATA
-     */
 
     public void isDataListViewVisible(boolean flag, boolean isShowEmptyListView) {
         if (flag) {

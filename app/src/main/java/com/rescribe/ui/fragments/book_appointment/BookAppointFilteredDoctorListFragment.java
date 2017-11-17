@@ -99,7 +99,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 mReceivedList = new ArrayList<>();
             }
             mClickedItemDataTypeValue = args.getString(getString(R.string.clicked_item_data_type_value));
-            mReceivedTitle = args.getString(getString(R.string.title));
+            mReceivedTitle = args.getString(getString(R.string.toolbarTitle));
             //  BookAppointDoctorListBaseActivity.setToolBarTitle(mReceivedTitle, true);
             if (getString(R.string.doctors_speciality).equalsIgnoreCase(mClickedItemDataTypeValue)) {
                 mLocationFab.setVisibility(View.VISIBLE);
@@ -275,7 +275,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 if (mReceivedList.size() > 0) {
                     if (mClickedDoctorObjectPosition != null)
                         mReceivedList.set(Integer.parseInt(mClickedDoctorObjectPosition), receivedObject);
-
                 }
             }
         }

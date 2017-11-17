@@ -56,8 +56,7 @@ import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
  * Created by jeetal on 15/9/17.
  */
 
-@RuntimePermissions
-public class BookAppointmentServices extends AppCompatActivity implements HelperResponse, ServicesAdapter.OnServicesClickListener, GoogleApiClient.OnConnectionFailedListener, GoogleSettingsApi.LocationSettings {
+public class BookAppointmentServices extends AppCompatActivity implements HelperResponse, ServicesAdapter.OnServicesClickListener,  GoogleSettingsApi.LocationSettings {
     @BindView(R.id.bookAppointmentToolbar)
     ImageView mBookAppointmentToolbar;
     @BindView(R.id.title)
@@ -89,20 +88,12 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     }
 
     private void initialize() {
-        new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
-                .build();
         mContext = BookAppointmentServices.this;
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetServices();
-
-
     }
 
-    public void getAddress(double lat, double lng) {
+  /*  public void getAddress(double lat, double lng) {
         Geocoder geocoder = new Geocoder(BookAppointmentServices.this, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
@@ -117,7 +108,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 System.out.println("obj.getAdminArea()" + obj.getAdminArea());
                 System.out.println("obj.getCountryName()" + obj.getCountryName());
 
-                Log.d("AREA", getArea(obj));
+
             } else {
                 Toast.makeText(this, "Address not found.", Toast.LENGTH_SHORT).show();
             }
@@ -127,7 +118,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
             e.printStackTrace();
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
 
     @Override
@@ -175,17 +166,11 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
 
     }
 
-    @OnClick({R.id.bookAppointmentToolbar, R.id.locationTextView})
+    @OnClick({R.id.bookAppointmentToolbar})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bookAppointmentToolbar:
                 onBackPressed();
-                break;
-            case R.id.locationTextView:
-                //  new GoogleSettingsApi(this);
-
-                Intent start = new Intent(this, BookAppointFindLocation.class);
-                startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
         }
     }
@@ -200,107 +185,6 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         super.onBackPressed();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        BookAppointmentServicesPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
-
-    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION})
-    public void callPickPlace() {
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        try {
-            Intent intentPlace = builder.build(BookAppointmentServices.this);
-            startActivityForResult(intentPlace, PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(this, data);
-                StringBuilder stBuilder = new StringBuilder();
-                String placename = String.format("%s", place.getName());
-                latitude = String.valueOf(place.getLatLng().latitude);
-                longitude = String.valueOf(place.getLatLng().longitude);
-                address = String.format("%s", place.getAddress());
-                stBuilder.append("Name: ");
-                stBuilder.append(placename);
-                stBuilder.append("\n");
-                stBuilder.append("Latitude: ");
-                stBuilder.append(latitude);
-                stBuilder.append("\n");
-                stBuilder.append("Logitude: ");
-                stBuilder.append(longitude);
-                stBuilder.append("\n");
-                stBuilder.append("Address: ");
-                stBuilder.append(address);
-                Geocoder gcd = new Geocoder(this, Locale.getDefault());
-                List<Address> addresses = null;
-                try {
-                    addresses = gcd.getFromLocation(place.getLatLng().latitude, place.getLatLng().longitude, 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (addresses != null && addresses.size() > 0) {
-                    String locality = "";
-                    //-------
-                    if (placename.contains(" ")) {
-                        locality = getArea(addresses.get(0));
-                    } else {
-                        locality = placename;
-                    }
-                    String city = addresses.get(0).getLocality();
-
-                    // Address address = addresses.get(0);
-                    // String addressLine = address.getAddressLine(1);
-                    // String addressLineArray[] = addressLine.split(",");
-                    // addressLine = addressLineArray[addressLineArray.length - 1];
-
-                  /*  if (placename.toLowerCase().contains(addressLine)) {*/
-                    //  locality = addresses.get(0).get;
-                    /*} else if (addressLine.toLowerCase().contains(placename)) {
-                        locality = placename;
-                    }*/
-                    //-------
-                    DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality + ", " + city);
-                    // DoctorDataHelper.setUserSelectedLocationInfo(mContext, place.getLatLng(), locality + ", " + city);
-                   // locationTextView.setText(locality + ", " + city);
-                }
-                CommonMethods.Log("Address: ", stBuilder.toString());
-            }
-        } else if (RescribeConstants.DOCTOR_DATA_REQUEST_CODE == requestCode) {
-
-            if (data != null)
-                doctorLists = data.getParcelableArrayListExtra(DOCTOR_DATA);
-
-        }
-    }
-
-    private String getArea(Address obj) {
-
-        if (obj.getThoroughfare() != null)
-            return obj.getThoroughfare();
-        else if (obj.getSubLocality() != null)
-            return obj.getSubLocality();
-        else if (obj.getSubAdminArea() != null)
-            return obj.getSubAdminArea();
-        else if (obj.getLocality() != null)
-            return obj.getLocality();
-        else if (obj.getAdminArea() != null)
-            return obj.getAdminArea();
-        else
-            return obj.getCountryName();
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 
     @Override
     public void setOnClickOfServices(ServicesList servicesObject) {
@@ -308,7 +192,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
 
         //TODO : AADED FOR DEVELOPMENT, REMOVE IT IN PRODUCTION.
         //---------
-        DoctorDataHelper.setUserSelectedLocationInfo(mContext, new LatLng(18.5074, 73.8077), "kothrud,Pune");
+       /* DoctorDataHelper.setUserSelectedLocationInfo(mContext, new LatLng(18.5074, 73.8077), "kothrud,Pune");*/
        // locationTextView.setText("kothrud,Pune");
         //---------
 
@@ -330,6 +214,6 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
 
     @Override
     public void gpsStatus() {
-        BookAppointmentServicesPermissionsDispatcher.callPickPlaceWithCheck(this);
+       // BookAppointmentServicesPermissionsDispatcher.callPickPlaceWithCheck(this);
     }
 }

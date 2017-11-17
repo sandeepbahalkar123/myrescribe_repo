@@ -2,6 +2,7 @@
 package com.rescribe.model.book_appointment.doctor_data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.os.Parcel;
@@ -43,17 +44,6 @@ public class DoctorServicesModel implements Parcelable, CustomResponse {
         return doctorList;
     }
 
-    public ArrayList<DoctorList> getCategoryWiseDoctorList(String categoryName) {
-        ArrayList<DoctorList> temp = new ArrayList<>();
-        for (DoctorList docObject :
-                doctorList) {
-            if (categoryName.equalsIgnoreCase(docObject.getCategoryName())) {
-                temp.add(docObject);
-            }
-        }
-        return temp;
-    }
-
     public void setDoctorList(ArrayList<DoctorList> doctorList) {
         this.doctorList = doctorList;
     }
@@ -79,16 +69,33 @@ public class DoctorServicesModel implements Parcelable, CustomResponse {
         return 0;
     }
 
-    public ArrayList<DoctorList> getFavouriteDocList() {
+
+    public ArrayList<DoctorList> getCategoryWiseDoctorList(String categoryName) {
         ArrayList<DoctorList> temp = new ArrayList<>();
         for (DoctorList docObject :
                 doctorList) {
-            if (docObject.getFavourite()) {
+            if (categoryName.equalsIgnoreCase(docObject.getCategoryName())) {
                 temp.add(docObject);
             }
         }
         return temp;
     }
+
+    public ArrayList<DoctorList> getFavouriteDocList() {
+        HashMap<Integer, DoctorList> tempMap = new HashMap<>();
+        for (DoctorList docObject :
+                doctorList) {
+            if (docObject.getFavourite()) {
+                DoctorList doctorList = tempMap.get(docObject.getDocId());
+                if (doctorList == null)
+                    tempMap.put(docObject.getDocId(), docObject);
+            }
+        }
+        ArrayList<DoctorList> temp = new ArrayList<>(tempMap.values());
+
+        return temp;
+    }
+
 
     public ArrayList<DoctorList> filterDocListBySpeciality(String selectedSpeciality) {
 
@@ -107,4 +114,5 @@ public class DoctorServicesModel implements Parcelable, CustomResponse {
         }
         return dataList;
     }
+
 }

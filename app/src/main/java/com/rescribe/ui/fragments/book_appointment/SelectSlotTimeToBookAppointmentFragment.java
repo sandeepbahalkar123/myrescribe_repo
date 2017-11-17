@@ -63,7 +63,7 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
  * Created by jeetal on 31/10/17.
  */
 
-public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener, DatePickerDialog.OnDateSetListener {
+public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, DatePickerDialog.OnDateSetListener {
 
     //-------------
     @BindView(R.id.profileImage)
@@ -327,15 +327,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     boolean status = !mClickedDoctorObject.getFavourite();
                     mClickedDoctorObject.setFavourite(status);
 
-                    if (getActivity() instanceof BookAppointDoctorListBaseActivity) {
-                        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject, mContext.getResources().getString(R.string.object_update_common_to_doc));
+                    if (getActivity() instanceof SelectSlotToBookAppointmentBaseActivity) {
+                        SelectSlotToBookAppointmentBaseActivity activity = (SelectSlotToBookAppointmentBaseActivity) getActivity();
+                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject, mContext.getResources().getString(R.string.object_update_common_to_doc));
                     } else if (getActivity() instanceof DoctorDescriptionBaseActivity) {
                         DoctorDescriptionBaseActivity activity = (DoctorDescriptionBaseActivity) getActivity();
                         activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
                     } else if (getActivity() instanceof SelectSlotToBookAppointmentBaseActivity) {
                         SelectSlotToBookAppointmentBaseActivity activity = (SelectSlotToBookAppointmentBaseActivity) getActivity();
-                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
+                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject, mContext.getResources().getString(R.string.object_update_common_to_doc));
                     }
 
                     if (mClickedDoctorObject.getFavourite()) {
@@ -430,11 +430,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 startActivity(intent);
                 break;
         }
-    }
-
-    @Override
-    public void updateViewData() {
-
     }
 
     @Override

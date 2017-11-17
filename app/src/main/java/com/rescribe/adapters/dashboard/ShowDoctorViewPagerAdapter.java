@@ -23,7 +23,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.interfaces.IServicesCardViewClickListener;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
@@ -39,17 +40,18 @@ import java.util.Map;
  */
 
 public class ShowDoctorViewPagerAdapter extends PagerAdapter {
+    private HelperResponse mHelperResponse;
     private boolean mIsFavAvail = false;
     private Map<String, Integer> mListSizeWithTypeMap;
     private ArrayList<DoctorList> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
     private int mImageSize;
-    private IServicesCardViewClickListener mServicesCardViewClickListener;
+    private ServicesCardViewImpl mServicesCardViewClickListener;
     private ColorGenerator mColorGenerator;
 
 
-    public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, IServicesCardViewClickListener mOnClickOfCardOnDashboard, Map<String, Integer> dataMap) {
+    public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, ServicesCardViewImpl mOnClickOfCardOnDashboard, Map<String, Integer> dataMap, HelperResponse helperResponse) {
         this.mContext = context;
         this.mDataList = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
@@ -60,6 +62,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         if (mListSizeWithTypeMap.get(mContext.getString(R.string.favorite)) > 0) {
             mIsFavAvail = true;
         }
+        this.mHelperResponse = helperResponse;
     }
 
     @Override
@@ -304,7 +307,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 boolean status = !doctorObject.getFavourite();
-                mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite);
+                mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite,mHelperResponse);
             }
         });
 

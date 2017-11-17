@@ -95,9 +95,13 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     ArrayList<String> permissions = new ArrayList<>();
     PermissionUtils permissionUtils;
     boolean isPermissionGranted;
+
+
+
     DoctorDataHelper mDoctorDataHelper;
     private ShowPopularPlacesAdapter mShowPopularPlacesAdapter;
     private RecentPlacesAdapter mRecentPlacesAdapter;
+    String address;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -202,6 +206,40 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
+                StringBuilder stBuilder = new StringBuilder();
+                String placename = String.format("%s", place.getName());
+
+                address = String.format("%s", place.getAddress());
+                stBuilder.append("Name: ");
+                stBuilder.append(placename);
+                stBuilder.append("\n");
+                stBuilder.append("Address: ");
+                stBuilder.append(address);
+                Geocoder gcd = new Geocoder(this, Locale.getDefault());
+                List<Address> addresses = null;
+                try {
+                    addresses = gcd.getFromLocation(place.getLatLng().latitude, place.getLatLng().longitude, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if (addresses != null && addresses.size() > 0) {
+                    //-------
+                    String locality = "";
+                    //-------
+                    if (placename.contains(" ")) {
+                        locality = getArea(addresses.get(0));
+                    } else {
+                        locality = placename;
+                    }
+                    String city = addresses.get(0).getLocality();
+                     if(DoctorDataHelper.isFindLocationCalled()){
+                         DoctorDataHelper.setUserSelectedLocationInfo(BookAppointFindLocation.this, place.getLatLng(), locality + ", " + city);
+                     }else{
+                         DoctorDataHelper.setUserSelectedLocationInfo(BookAppointFindLocation.this, place.getLatLng(), locality + ", " + city);
+                         DoctorDataHelper.setIsFindLocationCalled(true);
+                     }
+                }
                 CommonMethods.Log(TAG, "Place:" + place.toString());
                 setResult(Activity.RESULT_OK, data);
                 finish();
@@ -223,6 +261,21 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         }
     }
 
+    private String getArea(Address obj) {
+
+        if (obj.getThoroughfare() != null)
+            return obj.getThoroughfare();
+        else if (obj.getSubLocality() != null)
+            return obj.getSubLocality();
+        else if (obj.getSubAdminArea() != null)
+            return obj.getSubAdminArea();
+        else if (obj.getLocality() != null)
+            return obj.getLocality();
+        else if (obj.getAdminArea() != null)
+            return obj.getAdminArea();
+        else
+            return obj.getCountryName();
+    }
     @OnClick({R.id.bookAppointmentToolbar, R.id.detectLocation})
     public void onViewClicked(View view) {
         switch (view.getId()) {

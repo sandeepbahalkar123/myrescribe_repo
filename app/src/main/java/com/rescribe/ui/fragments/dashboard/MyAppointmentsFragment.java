@@ -2,9 +2,7 @@ package com.rescribe.ui.fragments.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,7 +17,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.AppointmentActivity;
-import com.rescribe.ui.activities.dashboard.DashboardShowCategoryNameByListBaseActivity;
+import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
 import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -88,10 +86,6 @@ public class MyAppointmentsFragment extends Fragment implements BookAppointFilte
         }
     }
 
-    public void objectToUpdateInList() {
-
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -133,7 +127,7 @@ public class MyAppointmentsFragment extends Fragment implements BookAppointFilte
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
-                    DashboardShowCategoryNameByListBaseActivity activity = (DashboardShowCategoryNameByListBaseActivity) getActivity();
+                    ServicesFilteredDoctorListActivity activity = (ServicesFilteredDoctorListActivity) getActivity();
 
                     //---------
                     mClickedDocListToUpdateFavStatus.setFavourite(mClickedDocListToUpdateFavStatus.getFavourite() ? false : true);

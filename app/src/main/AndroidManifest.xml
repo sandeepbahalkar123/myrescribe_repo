@@ -209,7 +209,7 @@
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.dashboard.DashboardShowCategoryNameByListBaseActivity"
+            android:name=".ui.activities.book_appointment.ServicesFilteredDoctorListActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
 

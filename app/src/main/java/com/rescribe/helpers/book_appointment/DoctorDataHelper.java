@@ -38,6 +38,17 @@ public class DoctorDataHelper implements ConnectionListener {
     Context mContext;
     HelperResponse mHelperResponseManager;
     private static HashMap<String, String> userSelectedLocationInfo = new HashMap<>();
+    private static HashMap<String, String> previousUserSelectedLocationInfo = new HashMap<>();
+
+    public static boolean isFindLocationCalled() {
+        return isFindLocationCalled;
+    }
+
+    public static void setIsFindLocationCalled(boolean isFindLocationCalled) {
+        DoctorDataHelper.isFindLocationCalled = isFindLocationCalled;
+    }
+
+    private static boolean isFindLocationCalled = false;
 
     public DoctorDataHelper(Context context, HelperResponse servicesActivity) {
         this.mContext = context;
@@ -65,7 +76,7 @@ public class DoctorDataHelper implements ConnectionListener {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                }else if (mOldDataTag == RescribeConstants.TASK_SET_FAVOURITE_DOCTOR) {
+                } else if (mOldDataTag == RescribeConstants.TASK_SET_FAVOURITE_DOCTOR) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }else  if (mOldDataTag == RescribeConstants.TASK_DASHBOARD_API) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
@@ -102,16 +113,18 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doGetDoctorData(String city, String address, HashMap<String, String> mReceivedComplaintHashMap) {
-       ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_DOCTOR_DATA, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_DOCTOR_DATA, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
         RequestDoctorListBaseModel requestDoctorListBaseModel = new RequestDoctorListBaseModel();
         requestDoctorListBaseModel.setArea(address.trim());
         requestDoctorListBaseModel.setCityName(city.trim());
         requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
         //--------In case of complaint added by user from ComplaintFragment.java---
-        if (mReceivedComplaintHashMap.size() > 0) {
-            requestDoctorListBaseModel.setComplaint1(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint1)));
-            requestDoctorListBaseModel.setComplaint2(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint2)));
+        if (mReceivedComplaintHashMap != null) {
+            if (mReceivedComplaintHashMap.size() > 0) {
+                requestDoctorListBaseModel.setComplaint1(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint1)));
+                requestDoctorListBaseModel.setComplaint2(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint2)));
+            }
         }
         //-----------
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
@@ -225,6 +238,17 @@ public class DoctorDataHelper implements ConnectionListener {
         DoctorDataHelper.userSelectedLocationInfo.put(ctx.getString(R.string.longitude), "" + data.longitude);
     }
 
+    public static HashMap<String, String> getPreviousUserSelectedLocationInfo() {
+        return previousUserSelectedLocationInfo;
+    }
+
+    public static void setPreviousUserSelectedLocationInfo(Context ctx, LatLng data, String locationText) {
+        DoctorDataHelper.previousUserSelectedLocationInfo.put(ctx.getString(R.string.location), locationText);
+        DoctorDataHelper.previousUserSelectedLocationInfo.put(ctx.getString(R.string.latitude), "" + data.latitude);
+        DoctorDataHelper.previousUserSelectedLocationInfo.put(ctx.getString(R.string.longitude), "" + data.longitude);
+    }
+
+
     public void doGetServices() {
 //        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_BOOK_APPOINTMENT_SERVICES, Request.Method.GET, true);
 //        mConnectionFactory.setHeaderParams();
@@ -252,10 +276,11 @@ public class DoctorDataHelper implements ConnectionListener {
 
         //---------
         String s = DoctorDataHelper.userSelectedLocationInfo.get(mContext.getString(R.string.location));
-
-        String[] split = s.split(",");
-        requestModel.setCityName(split[1].trim());
-        requestModel.setArea(split[0].trim());
+        if (s != null) {
+            String[] split = s.split(",");
+            requestModel.setCityName(split[1].trim());
+            requestModel.setArea(split[0].trim());
+        }
         requestModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
         //---------
 
@@ -287,30 +312,6 @@ public class DoctorDataHelper implements ConnectionListener {
         } catch (IOException ex) {
             ex.printStackTrace();
         }*/
-    }
-    public void doGetDashboard(String currentCity) {
-     /* try  {
-            InputStream is = mContext.getAssets().open("dashboard.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "dashboard" + json);
-
-            Gson gson = new Gson();
-            DashBoardBaseModel bookAppointmentBaseModel = gson.fromJson(json, DashBoardBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, RescribeConstants.TASK_DASHBOARD_API);
-
-        } catch(IOException ex){
-            ex.printStackTrace();
-        }*/
-
-        String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
-        mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.platform) + mContext.getString(R.string.android) + mContext.getString(R.string.screen_resolution) + screenResolutionValue+mContext.getString(R.string.city)+currentCity);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);
     }
 
     public void doGetRecentlyVisitedDoctorPlacesData() {

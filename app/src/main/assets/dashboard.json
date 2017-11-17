@@ -59,7 +59,7 @@
       },
       {
         "docId": 8,
-        "categoryName": "Sponsored Doctor",
+        "categoryName": "Sponsored Doctors",
         "categorySpeciality": "Premium",
         "docName": "Dr. Parag Khare",
         "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
@@ -92,7 +92,7 @@
       },
       {
         "docId": 9,
-        "categoryName": "Sponsored Doctor",
+        "categoryName": "Sponsored Doctors",
         "categorySpeciality": "Premium",
         "docName": "Dr. Hemant Pahariya",
         "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
@@ -124,7 +124,7 @@
       },
       {
         "docId": 13,
-        "categoryName": "Sponsored Doctor",
+        "categoryName": "Sponsored Doctors",
         "categorySpeciality": "Premium",
         "docName": "Dr. Kailash Kothari. M.D.",
         "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
@@ -184,7 +184,7 @@
       },
       {
         "docId": 14,
-        "categoryName": "Sponsored Doctor",
+        "categoryName": "Sponsored Doctors",
         "categorySpeciality": "Premium",
         "docName": "Dr. Venkatesh Nevagi M.D.",
         "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
@@ -244,7 +244,7 @@
       },
       {
         "docId": 18,
-        "categoryName": "Sponsored Doctor",
+        "categoryName": "Sponsored Doctors",
         "categorySpeciality": "Premium",
         "docName": "DR. Sandeep",
         "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
@@ -269,7 +269,7 @@
       },
       {
         "docId": 7,
-        "categoryName": "Recently Visited Doctor",
+        "categoryName": "Recently Visited Doctors",
         "categorySpeciality": "Premium",
         "docName": "DR. Amruta Nikam",
         "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
@@ -284,7 +284,7 @@
       },
       {
         "docId": 10,
-        "categoryName": "Recently Visited Doctor",
+        "categoryName": "Recently Visited Doctors",
         "categorySpeciality": "Premium",
         "docName": "Dr. Shalu Gupta",
         "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
@@ -330,7 +330,7 @@
       },
       {
         "docId": 11,
-        "categoryName": "Recently Visited Doctor",
+        "categoryName": "Recently Visited Doctors",
         "categorySpeciality": "Premium",
         "docName": "Dr. Doctor Doctor",
         "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
@@ -391,11 +391,11 @@
     ],
     "dashboardBottomMenuList": [
       {
-        "name": "Alerts",
+        "name": "Home",
         "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xhdpi/alerts.png"
       },
       {
-        "name": "Profile",
+        "name": "Appointment",
         "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xhdpi/profile.png"
       },
       {

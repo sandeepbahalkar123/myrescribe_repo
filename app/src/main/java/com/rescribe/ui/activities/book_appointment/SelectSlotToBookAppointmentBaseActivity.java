@@ -30,7 +30,7 @@ import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
  * Created by jeetal on 1/11/17.
  */
 
-public class SelectSlotToBookAppointmentBaseActivity  extends AppCompatActivity {
+public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
@@ -65,8 +65,8 @@ public class SelectSlotToBookAppointmentBaseActivity  extends AppCompatActivity 
         userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
        // showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         Bundle bundle = new Bundle();
-        bundle.putParcelable(getString(R.string.clicked_item_data),doctorObject);
-        bundle.putString(getString(R.string.toolbarTitle),getIntent().getStringExtra(getString(R.string.toolbarTitle)));
+        bundle.putParcelable(getString(R.string.clicked_item_data), doctorObject);
+        bundle.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         mSelectSlotTimeToBookAppointmentFragment = SelectSlotTimeToBookAppointmentFragment.newInstance(bundle);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
@@ -98,7 +98,7 @@ public class SelectSlotToBookAppointmentBaseActivity  extends AppCompatActivity 
         super.onBackPressed();
     }
 
-    public void replaceDoctorListById(String docId, DoctorList mClickedDoctorObject) {
+    public void replaceDoctorListById(String docId, DoctorList mClickedDoctorObject, String updateTypeParam) {
         doctorObject.setFavourite(mClickedDoctorObject.getFavourite());
         if (doctorList.isEmpty())
             doctorList.add(doctorObject);

@@ -11,7 +11,9 @@ import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
+import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.NotificationActivity;
+import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -123,6 +125,18 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
             finish();
+        }else if (menuName.equalsIgnoreCase(getString(R.string.appointment))) {
+            Intent intent = new Intent(this, BookAppointDoctorListBaseActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            startActivity(intent);
+            finish();
+        } else if (menuName.equalsIgnoreCase(getString(R.string.home))) {
+
+            Intent intent = new Intent(this, HomePageActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            startActivity(intent);
+            finish();
+
         }
     }
 }

@@ -100,12 +100,7 @@
             android:label="@string/log_in"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.activities.book_appointment.ShowMoreInfoBaseActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/log_in"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".ui.activities.health_repository.HealthRepository"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -132,6 +127,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.AppointmentActivity"
+            android:configChanges="orientation|keyboard|screenSize"
+            android:label="@string/appointments"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.dashboard.HealthOffersActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/appointments"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -209,7 +209,7 @@
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.dashboard.DashboardShowCategoryNameByListBaseActivity"
+            android:name=".ui.activities.book_appointment.ServicesFilteredDoctorListActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
 

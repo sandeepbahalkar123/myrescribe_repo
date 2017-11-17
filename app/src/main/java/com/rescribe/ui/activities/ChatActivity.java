@@ -127,6 +127,8 @@ import static com.rescribe.util.RescribeConstants.MESSAGE_STATUS.SEEN;
 import static com.rescribe.util.RescribeConstants.PLACE_PICKER_REQUEST;
 import static com.rescribe.util.RescribeConstants.SEND_MESSAGE;
 import static com.rescribe.util.RescribeConstants.UPLOADING;
+import static com.rescribe.util.RescribeConstants.USER_STATUS.IDLE;
+import static com.rescribe.util.RescribeConstants.USER_STATUS.OFFLINE;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.TYPING;
 
@@ -298,7 +300,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                                     dateTime.setTextColor(Color.WHITE);
                                 } else {
                                     dateTime.setText(chatList.getOnlineStatus());
-                                    dateTime.setTextColor(statusColor);
+                                    setUserStatusColor(chatList.getOnlineStatus());
                                 }
                             } else {
 
@@ -383,7 +385,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private String fileUrl = "";
 
     private ChatDoctor chatList;
-    private static int statusColor;
 
     // Uploading
     private Device device;
@@ -439,10 +440,10 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             chatList.setId(mqttMessage.getPatId());
             chatList.setOnlineStatus(ONLINE);
             chatList.setUnreadMessages(0);
-            statusColor = ContextCompat.getColor(ChatActivity.this, R.color.green_light);
+            setUserStatusColor(ONLINE);
         } else {
             chatList = getIntent().getParcelableExtra(RescribeConstants.DOCTORS_INFO);
-            statusColor = getIntent().getIntExtra(RescribeConstants.STATUS_COLOR, ContextCompat.getColor(ChatActivity.this, R.color.green_light));
+            setUserStatusColor(chatList.getOnlineStatus());
         }
 
         receiverName.setText(chatList.getDoctorName());
@@ -491,7 +492,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         }
 
         dateTime.setText(chatList.getOnlineStatus());
-        dateTime.setTextColor(statusColor);
+        setUserStatusColor(chatList.getOnlineStatus());
 
         if (chatList.getOnlineStatus().equalsIgnoreCase(ONLINE))
             onlineStatusIcon.setVisibility(View.VISIBLE);
@@ -564,12 +565,12 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         chatAdapter = new ChatAdapter(mqttMessage, mSelfDrawable, mReceiverDrawable, ChatActivity.this);
         chatRecyclerView.setAdapter(chatAdapter);
 
-        chatHelper.getChatHistory(next, chatList.getId(), Integer.parseInt(patId));
+        chatHelper.getChatHistory(next, chatList.getId(), Integer.parseInt(patId), PATIENT);
 
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                chatHelper.getChatHistory(next, chatList.getId(), Integer.parseInt(patId));
+                chatHelper.getChatHistory(next, chatList.getId(), Integer.parseInt(patId), PATIENT);
             }
         });
 
@@ -615,6 +616,19 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         uploadInit();
         audioSliderInit();
         //----------
+    }
+
+    private void setUserStatusColor(String onlineStatus) {
+        if (onlineStatus.equalsIgnoreCase(ONLINE)) {
+            onlineStatusIcon.setVisibility(View.VISIBLE);
+            dateTime.setTextColor(ContextCompat.getColor(ChatActivity.this, R.color.green_light));
+        } else if (onlineStatus.equalsIgnoreCase(IDLE)) {
+            dateTime.setTextColor(ContextCompat.getColor(ChatActivity.this, R.color.range_yellow));
+            onlineStatusIcon.setVisibility(View.INVISIBLE);
+        } else if (onlineStatus.equalsIgnoreCase(OFFLINE)) {
+            dateTime.setTextColor(ContextCompat.getColor(ChatActivity.this, R.color.grey_500));
+            onlineStatusIcon.setVisibility(View.INVISIBLE);
+        }
     }
 
     // Audio Code
@@ -835,9 +849,14 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         UploadService.UPLOAD_POOL_SIZE = 10;
     }
 
-    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.sendButton, R.id.exitRevealDialog, R.id.camera, R.id.document, R.id.location})
+    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.sendButton, R.id.exitRevealDialog, R.id.camera, R.id.document, R.id.location, R.id.bookAppointmentButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+
+            case R.id.bookAppointmentButton:
+                // call book appointment
+
+                break;
 
             case R.id.camera:
                 ChatActivityPermissionsDispatcher.onPickPhotoWithCheck(ChatActivity.this);
@@ -1286,6 +1305,11 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         } else if (customResponse instanceof ChatHistoryModel) {
             ChatHistoryModel chatHistoryModel = (ChatHistoryModel) customResponse;
             if (chatHistoryModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
+
+                String onlineStatus = chatHistoryModel.getHistoryData().getUserOnlineStatus().getOnlineStatus();
+                dateTime.setText(onlineStatus);
+                setUserStatusColor(onlineStatus);
+
                 final List<ChatHistory> chatHistory = chatHistoryModel.getHistoryData().getChatHistory();
 
                 DownloadManager.Query query = new DownloadManager.Query();

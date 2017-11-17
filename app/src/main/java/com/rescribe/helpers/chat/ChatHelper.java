@@ -87,10 +87,10 @@ public class ChatHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.SEND_MESSAGE);
     }
 
-    public void getChatHistory(int pgNmbr, int user1id, int user2id) {
+    public void getChatHistory(int pgNmbr, int user1id, int user2id,String sender) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.CHAT_HISTORY, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.CHAT_HISTORY + "user1id=" + user1id + "&user2id=" + user2id + "&pgNmbr=" + pgNmbr);
+        mConnectionFactory.setUrl(Config.CHAT_HISTORY + "user1id=" + user1id + "&user2id=" + user2id + "&pgNmbr=" + pgNmbr+"&sender="+sender);
         mConnectionFactory.createConnection(RescribeConstants.CHAT_HISTORY);
     }
 }

@@ -318,11 +318,13 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
             // TODO, THIS IS ADDED FOR NOW, OPEN ONLY IF clicked value == DOCTOR
             if (servicesObject.getServiceName().equalsIgnoreCase(getString(R.string.doctorss))) {
                 Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
-                intent.putExtra(getString(R.string.location_address), address);
-                intent.putExtra(getString(R.string.latitude), latitude);
-                intent.putExtra(getString(R.string.longitude), longitude);
-                intent.putExtra(getString(R.string.location), locationTextView.getText().toString());
-                intent.putExtra(getString(R.string.clicked_item_data), servicesObject.getServiceName());
+                Bundle bundle = new Bundle();
+                bundle.putString(getString(R.string.location_address), address);
+                bundle.putString(getString(R.string.latitude), latitude);
+                bundle.putString(getString(R.string.longitude), longitude);
+                bundle.putString(getString(R.string.location), locationTextView.getText().toString());
+                bundle.putString(getString(R.string.clicked_item_data), servicesObject.getServiceName());
+                intent.putExtras(bundle);
                 startActivityForResult(intent, DOCTOR_DATA_REQUEST_CODE);
             }
         }

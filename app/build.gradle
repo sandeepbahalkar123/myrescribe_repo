@@ -53,7 +53,8 @@ android {
                             'src/main/res/layouts/book_appointment',
                             'src/main/res/layouts/dashboard',
                             'src/main/res/layouts/find_doctors',
-                            'src/main/res/layouts/health_repository'
+                            'src/main/res/layouts/health_repository',
+                            'src/main/res/layouts/health_offers'
 
                     ]
         }

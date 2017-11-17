@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -28,13 +29,14 @@ import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.SelectSlotToBookAppointmentAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
-import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
+import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
@@ -62,7 +64,7 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
  * Created by jeetal on 31/10/17.
  */
 
-public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener, DatePickerDialog.OnDateSetListener {
+public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, DatePickerDialog.OnDateSetListener {
 
     //-------------
     @BindView(R.id.profileImage)
@@ -104,6 +106,16 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     CustomTextView selectDateTime;
     @BindView(R.id.selectTimeDateExpandableView)
     ExpandableListView selectTimeDateExpandableView;
+    @BindView(R.id.doChat)
+    ImageView doChat;
+    @BindView(R.id.viewAllClinicsOnMap)
+    ImageView viewAllClinicsOnMap;
+    @BindView(R.id.bookingSlotLayout)
+    LinearLayout bookingSlotLayout;
+    @BindView(R.id.bookAppointmentButton)
+    AppCompatButton bookAppointmentButton;
+    @BindView(R.id.no_data_found)
+    LinearLayout noDataFound;
     //--------------
     private View mRootView;
     private int mImageSize;
@@ -195,6 +207,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     }
 
     private void setDataInViews() {
+        if (mClickedDoctorObject.getClinicDataList().size() > 0) {
+            bookingSlotLayout.setVisibility(View.VISIBLE);
+            bookAppointmentButton.setVisibility(View.VISIBLE);
+            noDataFound.setVisibility(View.GONE);
+        } else {
+            bookingSlotLayout.setVisibility(View.GONE);
+            bookAppointmentButton.setVisibility(View.GONE);
+            noDataFound.setVisibility(View.VISIBLE);
+        }
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
@@ -213,13 +234,13 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             mFavorite.setImageResource(R.drawable.result_line_heart_fav);
         }
         //---------------
-        String rating = "" + mClickedDoctorObject.getRating();
-        if (rating == null || RescribeConstants.BLANK.equalsIgnoreCase(rating)) {
+
+        if (mClickedDoctorObject.getRating() == 0) {
             mDocRatingBarLayout.setVisibility(View.INVISIBLE);
         } else {
             mDocRatingBarLayout.setVisibility(View.VISIBLE);
-            mDocRating.setText("" + rating);
-            mDocRatingBar.setRating(Float.parseFloat(rating));
+            mDocRating.setText("" + mClickedDoctorObject.getRating());
+            mDocRatingBar.setRating((float) mClickedDoctorObject.getRating());
         }
         //----------
         mDoctorName.setText("" + mClickedDoctorObject.getDocName());
@@ -286,7 +307,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         //---------
     }
 
-
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
 
@@ -304,24 +324,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
-                    boolean status = !mClickedDoctorObject.getFavourite();
-                    mClickedDoctorObject.setFavourite(status);
-
-                    if (getActivity() instanceof BookAppointDoctorListBaseActivity) {
-                        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject, mContext.getResources().getString(R.string.object_update_common_to_doc));
-                    } else if (getActivity() instanceof DoctorDescriptionBaseActivity) {
-                        DoctorDescriptionBaseActivity activity = (DoctorDescriptionBaseActivity) getActivity();
-                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
-                    }else if (getActivity() instanceof SelectSlotToBookAppointmentBaseActivity) {
-                        SelectSlotToBookAppointmentBaseActivity activity = (SelectSlotToBookAppointmentBaseActivity) getActivity();
-                        activity.replaceDoctorListById("" + mClickedDoctorObject.getDocId(), mClickedDoctorObject);
-                    }
-
-                    if (mClickedDoctorObject.getFavourite()) {
-                        mFavorite.setImageResource(R.drawable.fav_icon);
-                    } else {
-                        mFavorite.setImageResource(R.drawable.result_line_heart_fav);
+                    if (temp.getCommonRespose().isSuccess()) {
+                        ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
+                        boolean status = !mClickedDoctorObject.getFavourite();
+                        mClickedDoctorObject.setFavourite(status);
+                        if (mClickedDoctorObject.getFavourite()) {
+                            mFavorite.setImageResource(R.drawable.fav_icon);
+                        } else {
+                            mFavorite.setImageResource(R.drawable.result_line_heart_fav);
+                        }
                     }
                 }
                 CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
@@ -413,11 +424,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     }
 
     @Override
-    public void updateViewData() {
-
-    }
-
-    @Override
     public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
 
         String dateConverted = "" + dayOfMonth;
@@ -427,5 +433,9 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         mSelectedTimeSlotDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
         selectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, dateConverted + "-" + (monthOfYear + 1) + "-" + year) + "," + getString(R.string.space) + CommonMethods.getFormattedDate(dateConverted + "-" + (monthOfYear + 1) + "-" + year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
         mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate);
+    }
+
+    public DoctorList getClickedDoctorObject() {
+        return mClickedDoctorObject;
     }
 }

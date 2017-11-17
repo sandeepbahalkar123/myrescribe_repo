@@ -1,44 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/sliderView"
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="wrap_content">
 
-        <com.rescribe.ui.customesViews.NonSwipeableViewPager
-            android:id="@+id/viewpager"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewPagerDoctorItem"
-            android:layout_width="wrap_content"
-            android:layout_height="165dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/dp16"
-            android:visibility="visible" />
-    </FrameLayout>
+            <FrameLayout
+                android:focusableInTouchMode="true"
+                android:id="@+id/sliderView"
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
 
-    <View
-        android:id="@+id/dividerView"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/sliderView"
-        android:background="@color/divider" />
+                <com.rescribe.ui.customesViews.NonSwipeableViewPager
+                    android:id="@+id/viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/menuOptionsListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dividerView"
-        android:layout_alignParentBottom="true"
-        android:dividerHeight="1dp">
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewPagerDoctorItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="165dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="@dimen/dp16"
+                    android:visibility="visible" />
+            </FrameLayout>
 
-    </android.support.v7.widget.RecyclerView>
+            <View
+                android:id="@+id/dividerView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/sliderView"
+                android:background="@color/divider" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/menuOptionsListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/dividerView"
+                android:dividerHeight="1dp">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
     <ImageView
         android:id="@+id/menuIcon"
@@ -51,5 +66,15 @@
         android:paddingStart="@dimen/dp12"
         android:paddingTop="@dimen/dp10"
         android:src="@drawable/menu_button_3_x" />
+    <ImageView
+        android:id="@+id/locationImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp10"
+        android:layout_alignParentRight="true"
+        android:paddingEnd="@dimen/dp12"
+        android:paddingRight="@dimen/dp12"
+        android:paddingTop="@dimen/dp10"
+        android:src="@drawable/location_icon" />
 
 </RelativeLayout>

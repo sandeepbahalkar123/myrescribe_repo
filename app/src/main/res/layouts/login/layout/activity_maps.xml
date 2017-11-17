@@ -62,7 +62,7 @@
                             android:layout_gravity="center"
                             android:drawablePadding="@dimen/dp4"
                             android:drawableRight="@drawable/location_icon"
-                            android:text="@string/location"
+                            tools:text="@string/location"
                             android:textColor="@color/white"
                             android:textSize="@dimen/sp12"
                             app:customFont="@string/roboto_bold" />

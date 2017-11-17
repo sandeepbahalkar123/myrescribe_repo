@@ -12,7 +12,7 @@
         android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/messageTypeLayout">
+        android:layout_above="@+id/bookAppointmentButton">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/chatList"
@@ -38,6 +38,18 @@
         android:textSize="@dimen/sp12"
         android:visibility="gone"
         tools:text="12 September 2017" />
+
+    <TextView
+        android:id="@+id/bookAppointmentButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/messageTypeLayout"
+        android:text="@string/book_appointment"
+        android:textColor="@color/white"
+        android:padding="@dimen/dp14"
+        android:textAllCaps="true"
+        android:gravity="center"
+        android:background="@color/statusbar"/>
 
     <RelativeLayout
         android:id="@+id/messageTypeLayout"
@@ -149,6 +161,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/messageTypeLayout"
+        tools:visibility="gone"
         android:paddingEnd="@dimen/dp6"
         android:paddingStart="@dimen/dp6">
 

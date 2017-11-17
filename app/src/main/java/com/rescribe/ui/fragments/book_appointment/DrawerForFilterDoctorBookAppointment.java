@@ -185,9 +185,11 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         configureDrawerFieldsData();
         HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-        String[] split = locationReceived.split(",");
-        doctorDataHelper = new DoctorDataHelper(getActivity(), this);
-        doctorDataHelper.doGetDrawerFilterConfigurationData(split[1].trim());
+        if (locationReceived != null) {
+            String[] split = locationReceived.split(",");
+            doctorDataHelper = new DoctorDataHelper(getActivity(), this);
+            doctorDataHelper.doGetDrawerFilterConfigurationData(split[1].trim());
+        }
 
         mLocationContentRecycleView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
@@ -464,7 +466,8 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                 }
                 bookAppointFilterRequestModel.setAvailability(temp.toArray(new String[temp.size()]));
                 //------
-                bookAppointFilterRequestModel.setLocationList(mFilterSelectLocationsAdapter.getSelectedLocation().toArray(new String[temp.size()]));
+                if (mFilterSelectLocationsAdapter != null)
+                    bookAppointFilterRequestModel.setLocationList(mFilterSelectLocationsAdapter.getSelectedLocation().toArray(new String[temp.size()]));
                 //------
                 if (mSortByPriceNameFilterAdapter != null) {
                     String[] split = mSortByPriceNameFilterAdapter.getSelectedSortedOption().split("\\|");

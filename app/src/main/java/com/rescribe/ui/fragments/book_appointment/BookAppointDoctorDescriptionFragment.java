@@ -35,6 +35,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -45,7 +46,6 @@ import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
-import com.rescribe.ui.activities.book_appointment.ShowMoreInfoBaseActivity;
 import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -63,12 +63,11 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 //TODO , NNED TO IMPLEMNT AS PER NEW JSON
 
-public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse, BookAppointDoctorListBaseActivity.AddUpdateViewDataListener {
+public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse {
 
     //-------------
     @BindView(R.id.doChat)
     ImageView doChat;
-
     @BindView(R.id.profileImage)
     CircularImageView mProfileImage;
     @BindView(R.id.docRating)
@@ -106,7 +105,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     CustomTextView mAboutDoctorDescription;
     @BindView(R.id.aboutDoctor)
     CustomTextView aboutDoctor;
-
     @BindView(R.id.bookAppointmentButton)
     AppCompatButton bookAppointmentButton;
     @BindView(R.id.servicesListView)
@@ -115,13 +113,20 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     CustomTextView mServicesHeaderView;
     @BindView(R.id.readMoreDocServices)
     CustomTextView mReadMoreDocServices;
+    @BindView(R.id.rupeesLayout)
+    LinearLayout rupeesLayout;
+    @BindView(R.id.servicesLayout)
+    LinearLayout servicesLayout;
+    @BindView(R.id.aboutLayout)
+    LinearLayout aboutLayout;
     //-------
+
     private View mRootView;
     private int mImageSize;
     Unbinder unbinder;
     private DoctorList mClickedDoctorObject;
-    public static Bundle args;
     private DoctorDataHelper mDoctorDataHelper;
+    private String mReceivedTitle;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -137,22 +142,22 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         return mRootView;
     }
 
-    public void setFavorite(boolean favorite) {
-        if (favorite) {
-            mFavorite.setImageResource(R.drawable.fav_icon);
-        } else {
-            mFavorite.setImageResource(R.drawable.result_line_heart_fav);
-        }
-    }
-
     public static BookAppointDoctorDescriptionFragment newInstance(Bundle b) {
         BookAppointDoctorDescriptionFragment fragment = new BookAppointDoctorDescriptionFragment();
-        args = b;
+        Bundle args = b;
         if (args == null) {
             args = new Bundle();
         }
         fragment.setArguments(args);
         return fragment;
+    }
+
+    private void setFavorite(boolean favorite) {
+        if (favorite) {
+            mFavorite.setImageResource(R.drawable.fav_icon);
+        } else {
+            mFavorite.setImageResource(R.drawable.result_line_heart_fav);
+        }
     }
 
     private void init() {
@@ -162,12 +167,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mClickedDoctorObject = (DoctorList) arguments.getParcelable(getString(R.string.clicked_item_data));
-            CommonMethods.Log("TAG", " parcelable :" + mClickedDoctorObject.toString());
+            mClickedDoctorObject = arguments.getParcelable(getString(R.string.clicked_item_data));
+            mReceivedTitle = arguments.getString(getString(R.string.toolbarTitle));
             setDataInViews();
         }
-
-
     }
 
     private void setColumnNumber(Context context, int columnNum) {
@@ -184,11 +187,16 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         contentServices.setSpan(new UnderlineSpan(), 0, contentServices.length(), 0);
         mServicesHeaderView.setText(contentServices);
         //-------
-        SpannableString content = new SpannableString(aboutDoctor.getText());
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        aboutDoctor.setText(content);
-        mAboutDoctorDescription.setText("" + mClickedDoctorObject.getAboutDoctor());
-        //-------
+        if (aboutDoctor.getText().equals("")) {
+            aboutLayout.setVisibility(View.INVISIBLE);
+            //-------
+        } else {
+            aboutLayout.setVisibility(View.VISIBLE);
+            SpannableString content = new SpannableString(aboutDoctor.getText());
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            aboutDoctor.setText(content);
+            mAboutDoctorDescription.setText("" + mClickedDoctorObject.getAboutDoctor());
+        }
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
@@ -263,8 +271,19 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                     ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
-                    mClinicName.setText("" + clinicData.getClinicName());
-                    mDoctorFees.setText("" + clinicData.getAmount());
+                    if (clinicData.getClinicName().equals("")) {
+                        mClinicName.setVisibility(View.GONE);
+                    } else {
+                        mClinicName.setVisibility(View.VISIBLE);
+                        mClinicName.setText("" + clinicData.getClinicName());
+
+                    }
+                    if (clinicData.getAmount() == 0) {
+                        rupeesLayout.setVisibility(View.INVISIBLE);
+                    } else {
+                        rupeesLayout.setVisibility(View.VISIBLE);
+                        mDoctorFees.setText("" + clinicData.getAmount());
+                    }
                 }
 
 
@@ -289,6 +308,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         ArrayList<String> receivedDocService = mClickedDoctorObject.getDocServices();
         int receivedDocServiceSize = receivedDocService.size();
         if (receivedDocServiceSize > 0) {
+            servicesLayout.setVisibility(View.VISIBLE);
             ArrayList<String> docListToSend = new ArrayList<>();
             if (receivedDocServiceSize > 5) {
                 docListToSend.addAll(receivedDocService.subList(0, 4));
@@ -301,7 +321,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             mServicesListView.setAdapter(mServicesAdapter);
             CommonMethods.setListViewHeightBasedOnChildren(mServicesListView);
         } else {
-            mReadMoreDocServices.setVisibility(View.GONE);
+            servicesLayout.setVisibility(View.GONE);
         }
 
         //---------
@@ -313,22 +333,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
                     boolean status = !mClickedDoctorObject.getFavourite();
                     mClickedDoctorObject.setFavourite(status);
-
-                    if (getActivity() instanceof BookAppointDoctorListBaseActivity) {
-                        BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject, getContext().getResources().getString(R.string.object_update_common_to_doc));
-                    } else if (getActivity() instanceof DoctorDescriptionBaseActivity) {
-                        DoctorDescriptionBaseActivity activity = (DoctorDescriptionBaseActivity) getActivity();
-                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
-                    } else if (getActivity() instanceof ShowMoreInfoBaseActivity) {
-                        ShowMoreInfoBaseActivity activity = (ShowMoreInfoBaseActivity) getActivity();
-                        activity.replaceDoctorListById(mClickedDoctorObject.getDocId(), mClickedDoctorObject);
-                    }
-
                     setFavorite(mClickedDoctorObject.getFavourite());
-
                 }
                 CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;
@@ -360,18 +368,11 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
-           /* case R.id.locationImage:
-                HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-                Intent intent = new Intent(getActivity(), MapActivityShowDoctorLocation.class);
-                intent.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
-                intent.putExtra(getString(R.string.location), userSelectedLocationInfo.get(getString(R.string.location)));
-                intent.putExtra(getString(R.string.address), mClickedDoctorObject.getAddressOfDoctorString());
-                startActivity(intent);
-                break;*/
+
             case R.id.bookAppointmentButton:
                 Intent intentObject = new Intent(getActivity(), SelectSlotToBookAppointmentBaseActivity.class);
                 intentObject.putExtra(getString(R.string.clicked_item_data), mClickedDoctorObject);
-                intentObject.putExtra(getString(R.string.toolbarTitle), args.getString(getString(R.string.toolbarTitle)));
+                intentObject.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
                 getActivity().startActivityForResult(intentObject, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
                 break;
             case R.id.viewAllClinicsOnMap: // on view-all location clicked
@@ -390,7 +391,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 }
                 Intent intentObjectMap = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intentObjectMap.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-                intentObjectMap.putExtra(getString(R.string.toolbarTitle), "");
+                intentObjectMap.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
                 startActivity(intentObjectMap);
                 //--------
                 break;
@@ -485,12 +486,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         }
     }
 
-    @Override
-    public void updateViewData() {
-
-    }
-
-
     public class DocServicesListAdapter extends BaseAdapter {
         Context mContext;
         private ArrayList<String> mDocServiceList;
@@ -529,5 +524,16 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             dataView.setText("" + data);
             return view;
         }
+    }
+
+    public void updateDataInViews(DoctorList receivedData) {
+        if (receivedData != null) {
+            mClickedDoctorObject = receivedData;
+            setDataInViews();
+        }
+    }
+
+    public DoctorList getClickedDoctorObject() {
+        return mClickedDoctorObject;
     }
 }

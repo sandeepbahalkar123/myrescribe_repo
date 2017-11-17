@@ -207,7 +207,6 @@ public class RescribeConstants {
 
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
-    public static String STATUS_COLOR = "STATUS_COLOR";
     public static String BUTTON_TEXT_COLOR = "#FFFFFF";
     public static String TEXT_COLOR = "#000000";
 

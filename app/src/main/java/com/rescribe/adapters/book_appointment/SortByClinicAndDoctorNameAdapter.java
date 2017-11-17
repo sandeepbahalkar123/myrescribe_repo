@@ -90,7 +90,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
 
         holder.aboutDoctor.setText(doctorObject.getDegree());
-        if (doctorObject.getRating()==0) {
+        if (doctorObject.getRating() == 0) {
             holder.doctorRating.setVisibility(View.GONE);
             holder.ratingBar.setVisibility(View.GONE);
         } else {
@@ -149,15 +149,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.token_no_background));
         }
 
-        holder.dataLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.doctor_details));
-                mOnClinicAndDoctorNameSearchRowItem.onClinicAndDoctorNameSearchRowItem(b);
-            }
-        });
+
         SpannableString spannableStringSearch = null;
         SpannableString spannableClinicNameString = null;
         if ((mSearchString != null) && (!mSearchString.isEmpty())) {
@@ -216,6 +208,15 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 Bundle b = new Bundle();
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.favorite));
+                mOnClinicAndDoctorNameSearchRowItem.onClinicAndDoctorNameSearchRowItem(b);
+            }
+        });
+        holder.dataLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.doctor_details));
                 mOnClinicAndDoctorNameSearchRowItem.onClinicAndDoctorNameSearchRowItem(b);
             }
         });

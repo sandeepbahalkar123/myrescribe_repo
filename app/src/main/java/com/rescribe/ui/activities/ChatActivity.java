@@ -926,9 +926,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
                     messageL.setMsgTime(msgTime);
 
-                    // send msg by http api
-//                        chatHelper.sendMsgToPatient(messageL);
-
                     // send msg by mqtt
                     if (NetworkUtil.getConnectivityStatusBoolean(ChatActivity.this)) {
                         if (chatAdapter != null) {
@@ -1169,9 +1166,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
             messageL.setMsgTime(msgTime);
 
-// send msg by mqtt
-//            mqttService.passMessage(messageL);
-
             mqttMessage.add(messageL);
 
             uploadFile(messageL);
@@ -1198,13 +1192,11 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     ServiceConnection mConnection = new ServiceConnection() {
 
         public void onServiceDisconnected(ComponentName name) {
-//            Toast.makeText(ChatActivity.this, "Service is disconnected", Toast.LENGTH_SHORT).show();
             mBounded = false;
             mqttService = null;
         }
 
         public void onServiceConnected(ComponentName name, IBinder service) {
-//            Toast.makeText(ChatActivity.this, "Service is connected", Toast.LENGTH_SHORT).show();
             mBounded = true;
             MQTTService.LocalBinder mLocalBinder = (MQTTService.LocalBinder) service;
             mqttService = mLocalBinder.getServerInstance();
@@ -1484,27 +1476,17 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     public long downloadFile(MQTTMessage mqttMessage) {
         long downloadReference;
 
-        // For Test Big File Download
-//        mqttMessage.setFileUrl("https://dl.google.com/dl/android/studio/ide-zips/2.3.3.0/android-studio-ide-162.4069837-linux.zip");
-
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(mqttMessage.getFileUrl()));
-
         //Setting title of request
         request.setTitle(mqttMessage.getMsg());
-
         //Setting description of request
         request.setDescription("Rescribe File Downloading");
-
         request.allowScanningByMediaScanner();
-
         //Set the local destination for the downloaded file to a path
         //within the application's external files directory
-
         request.setDestinationInExternalPublicDir(RESCRIBE_FILES, CommonMethods.getFileNameFromPath(mqttMessage.getFileUrl()));
-
         // Keep notification after complete
 //        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
         //Enqueue download and save into referenceId
         downloadReference = downloadManager.enqueue(request);
 
@@ -1573,7 +1555,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 intent.setDataAndType(uri, "video/*");
             } else {
                 //if you want you can also define the intent type for any other file
-
                 //additionally use else clause below, to manage other unknown extensions
                 //in this case, Android will show all applications installed on the device
                 //so you can choose which application to use

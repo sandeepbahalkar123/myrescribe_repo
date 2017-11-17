@@ -14,6 +14,10 @@ public class HistoryData implements Parcelable {
     @SerializedName("chatHistory")
     @Expose
     private List<ChatHistory> chatHistory = new ArrayList<ChatHistory>();
+    @SerializedName("onlineStatus")
+    @Expose
+    private UserOnlineStatus userOnlineStatus;
+
     public final static Parcelable.Creator<HistoryData> CREATOR = new Creator<HistoryData>() {
 
 
@@ -23,6 +27,8 @@ public class HistoryData implements Parcelable {
         public HistoryData createFromParcel(Parcel in) {
             HistoryData instance = new HistoryData();
             in.readList(instance.chatHistory, (ChatHistory.class.getClassLoader()));
+            instance.userOnlineStatus = ((UserOnlineStatus) in.readValue((UserOnlineStatus.class.getClassLoader())));
+
             return instance;
         }
 
@@ -42,10 +48,44 @@ public class HistoryData implements Parcelable {
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(chatHistory);
+        dest.writeValue(userOnlineStatus);
+
     }
 
     public int describeContents() {
         return 0;
     }
 
+    public UserOnlineStatus getUserOnlineStatus() {
+        return userOnlineStatus;
+    }
+
+    public void setUserOnlineStatus(UserOnlineStatus userOnlineStatus) {
+        this.userOnlineStatus = userOnlineStatus;
+    }
+
+    class UserOnlineStatus {
+        @SerializedName("user2id")
+        @Expose
+        private String user2ID;
+        @SerializedName("onlineStatus")
+        @Expose
+        private String onlineStatus;
+
+        public String getUser2ID() {
+            return user2ID;
+        }
+
+        public void setUser2ID(String user2ID) {
+            this.user2ID = user2ID;
+        }
+
+        public String getOnlineStatus() {
+            return onlineStatus;
+        }
+
+        public void setOnlineStatus(String onlineStatus) {
+            this.onlineStatus = onlineStatus;
+        }
+    }
 }

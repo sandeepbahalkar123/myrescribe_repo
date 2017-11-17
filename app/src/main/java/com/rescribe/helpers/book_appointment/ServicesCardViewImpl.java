@@ -27,8 +27,6 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     private Context mContext;
     private AppCompatActivity mParentActivity;
     private static ArrayList<DoctorList> mReceivedDoctorDataList;
-    private DoctorList mClickedDoctorListObjectToUpdateFavStatus;
-    private ImageView mClickedDoctorListImageView;
 
     public ServicesCardViewImpl(Context context, AppCompatActivity parentActivity) {
         this.mContext = context;
@@ -52,8 +50,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
 
     @Override
     public void onFavoriteIconClick(boolean isFavouriteStatus, DoctorList doctorListObject, ImageView favorite, HelperResponse helperResponse) {
-        mClickedDoctorListObjectToUpdateFavStatus = doctorListObject;
-        mClickedDoctorListImageView = favorite;
+
         new DoctorDataHelper(mContext, helperResponse).setFavouriteDoctor(isFavouriteStatus, doctorListObject.getDocId());
     }
 

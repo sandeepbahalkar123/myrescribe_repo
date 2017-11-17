@@ -534,12 +534,12 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         chatAdapter = new ChatAdapter(mqttMessage, mSelfDrawable, mReceiverDrawable, ChatActivity.this);
         chatRecyclerView.setAdapter(chatAdapter);
 
-        chatHelper.getChatHistory(next, chatList.getId(), Integer.parseInt(patId));
+        chatHelper.getChatHistory(next, chatList.getId(), Integer.parseInt(patId), PATIENT);
 
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                chatHelper.getChatHistory(next, chatList.getId(), Integer.parseInt(patId));
+                chatHelper.getChatHistory(next, chatList.getId(), Integer.parseInt(patId), PATIENT);
             }
         });
 
@@ -1442,13 +1442,13 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         @Override
         public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
 
-                String prefix[] = uploadInfo.getUploadId().split("_");
-                if (prefix[0].equals(patId)) {
-                    appDBHelper.updateMessageUpload(uploadInfo.getUploadId(), FAILED);
-                    int position = getPositionById(uploadInfo.getUploadId());
-                    mqttMessage.get(position).setUploadStatus(FAILED);
-                    chatAdapter.notifyItemChanged(position);
-                }
+            String prefix[] = uploadInfo.getUploadId().split("_");
+            if (prefix[0].equals(patId)) {
+                appDBHelper.updateMessageUpload(uploadInfo.getUploadId(), FAILED);
+                int position = getPositionById(uploadInfo.getUploadId());
+                mqttMessage.get(position).setUploadStatus(FAILED);
+                chatAdapter.notifyItemChanged(position);
+            }
 
         }
 
@@ -1466,15 +1466,15 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         @Override
         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
 
-                String prefix[] = uploadInfo.getUploadId().split("_");
-                if (prefix[0].equals(patId)) {
+            String prefix[] = uploadInfo.getUploadId().split("_");
+            if (prefix[0].equals(patId)) {
 //                    appDBHelper.deleteUploadedMessage(uploadInfo.getUploadId());
 
-                    int position = getPositionById(uploadInfo.getUploadId());
+                int position = getPositionById(uploadInfo.getUploadId());
 
-                    mqttMessage.get(position).setUploadStatus(COMPLETED);
-                    chatAdapter.notifyItemChanged(position);
-                }
+                mqttMessage.get(position).setUploadStatus(COMPLETED);
+                chatAdapter.notifyItemChanged(position);
+            }
         }
 
         @Override

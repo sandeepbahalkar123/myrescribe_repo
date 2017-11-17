@@ -152,7 +152,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         return fragment;
     }
 
-    public void setFavorite(boolean favorite) {
+    private void setFavorite(boolean favorite) {
         if (favorite) {
             mFavorite.setImageResource(R.drawable.fav_icon);
         } else {
@@ -523,6 +523,13 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             CustomTextView dataView = (CustomTextView) view.findViewById(R.id.text);
             dataView.setText("" + data);
             return view;
+        }
+    }
+
+    public void updateDataInViews(DoctorList receivedData) {
+        if (receivedData != null) {
+            mClickedDoctorObject = receivedData;
+            setDataInViews();
         }
     }
 }

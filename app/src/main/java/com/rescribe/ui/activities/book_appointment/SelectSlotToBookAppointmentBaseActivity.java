@@ -56,15 +56,17 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
     }
 
     private void initialize() {
+        title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         doctorObject = getIntent().getExtras().getParcelable(getString(R.string.clicked_item_data));
         showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
-        title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
+
         userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         // showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         Bundle bundle = new Bundle();
         bundle.putParcelable(getString(R.string.clicked_item_data), doctorObject);
         bundle.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
+        bundle.putString(getString(R.string.clicked_item_data_type_value), getIntent().getStringExtra(getString(R.string.clicked_item_data_type_value)));
         mSelectSlotTimeToBookAppointmentFragment = SelectSlotTimeToBookAppointmentFragment.newInstance(bundle);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();

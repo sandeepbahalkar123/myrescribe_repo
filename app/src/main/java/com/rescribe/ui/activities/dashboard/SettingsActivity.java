@@ -18,7 +18,9 @@ import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
+import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.NotificationActivity;
+import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.NonSwipeableViewPager;
 import com.rescribe.util.CommonMethods;
@@ -42,7 +44,6 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
 
     @Override
@@ -74,54 +75,9 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
         String menuName = bottomMenu.getMenuName();
 
-        if (menuName.equalsIgnoreCase(getString(R.string.alerts))) {
-
-            AppDBHelper appDBHelper = new AppDBHelper(this);
-            Cursor cursor = appDBHelper.getPreferences("1");
-            String breakFastTime = "";
-            String lunchTime = "";
-            String dinnerTime = "";
-            String snacksTime = "";
-
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    breakFastTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
-                    lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
-                    dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
-                    snacksTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.SNACKS_TIME));
-                    cursor.moveToNext();
-                }
-            }
-            cursor.close();
-
-            Calendar c = Calendar.getInstance();
-            int hour24 = c.get(Calendar.HOUR_OF_DAY);
-            int Min = c.get(Calendar.MINUTE);
-
-            String mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
-            Intent intent = new Intent(this, NotificationActivity.class);
+        if (menuName.equalsIgnoreCase(getString(R.string.home))) {
+            Intent intent = new Intent(this, HomePageActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            intent.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            if (mGetMealTime.equals(getString(R.string.break_fast))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
-                intent.putExtra(RescribeConstants.TIME, breakFastTime);
-            } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
-                intent.putExtra(RescribeConstants.TIME, lunchTime);
-            } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
-                intent.putExtra(RescribeConstants.TIME, snacksTime);
-            } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intent.putExtra(RescribeConstants.TIME, dinnerTime);
-            } else if (mGetMealTime.isEmpty()) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intent.putExtra(RescribeConstants.TIME, dinnerTime);
-            }
-
             startActivity(intent);
             finish();
 
@@ -132,6 +88,11 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             finish();
         }  else if (menuName.equalsIgnoreCase(getString(R.string.support))) {
             Intent intent = new Intent(this, SupportActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            startActivity(intent);
+            finish();
+        } else if (menuName.equalsIgnoreCase(getString(R.string.appointment))) {
+            Intent intent = new Intent(this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
             finish();

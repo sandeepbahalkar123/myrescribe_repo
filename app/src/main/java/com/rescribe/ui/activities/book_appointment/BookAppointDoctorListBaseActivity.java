@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -20,15 +22,25 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
+import com.rescribe.ui.activities.HomePageActivity;
+import com.rescribe.ui.activities.dashboard.SettingsActivity;
+import com.rescribe.ui.activities.dashboard.SupportActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -39,27 +51,30 @@ import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
+
 /**
  * Created by jeetal on 15/9/17.
  */
-@RuntimePermissions
-public class BookAppointDoctorListBaseActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
+
+public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implements BottomMenuAdapter.onBottomMenuClickListener, GoogleApiClient.OnConnectionFailedListener, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
 
     private static final String TAG = "BookAppointDoctorListBaseActivity";
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
-
+    @BindView(R.id.title)
     CustomTextView mTitleView;
+    @BindView(R.id.locationTextView)
     CustomTextView locationTextView;
+    @BindView(R.id.showlocation)
     CustomTextView showlocation;
-
     @BindView(R.id.nav_view)
     FrameLayout mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+
     private RecentVisitDoctorFragment mRecentVisitDoctorFragment;
     private int PLACE_PICKER_REQUEST = 1;
-
     private HashMap<String, String> mComplaintsUserSearchFor = new HashMap<>();
 
     //-----
@@ -67,6 +82,9 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     String longitude = "";
     String address;
     private DrawerForFilterDoctorBookAppointment mDrawerLoadedFragment;
+
+    private ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
+
     //-----
 
     @Override
@@ -78,24 +96,27 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     private void initialize() {
-        //----------------
-        new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
-                .build();
-        //--------
-        mTitleView = (CustomTextView) findViewById(R.id.title);
-        locationTextView = (CustomTextView) findViewById(R.id.locationTextView);
-        locationTextView.setVisibility(View.GONE);
-        showlocation = (CustomTextView) findViewById(R.id.showlocation);
+
+        if (getIntent().getParcelableArrayListExtra(BOTTOM_MENUS) != null) {
+            dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
+            for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+                BottomMenu bottomMenu = new BottomMenu();
+                bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
+                bottomMenu.setMenuName(dashboardBottomMenuList.getName());
+                bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
+                bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.appointment)));
+                addBottomMenu(bottomMenu);
+            }
+        }
+
+
+        locationTextView.setVisibility(View.VISIBLE);
 
         //------
         HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         String locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
         if (locationReceived != null) {
-            locationTextView.setText("" + locationReceived);
+            // locationTextView.setText("" + locationReceived);
         }
         //-----
         Intent intent = getIntent();
@@ -135,114 +156,28 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        BookAppointDoctorListBaseActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
+    public void onBottomMenuClick(BottomMenu bottomMenu) {
+        String menuName = bottomMenu.getMenuName();
 
-    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION})
-    public void callPickPlace() {
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        try {
-            Intent intentPlace = builder.build(BookAppointDoctorListBaseActivity.this);
-            startActivityForResult(intentPlace, PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
+        if (menuName.equalsIgnoreCase(getString(R.string.home))) {
+            Intent intent = new Intent(BookAppointDoctorListBaseActivity.this, HomePageActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            startActivity(intent);
+            finish();
+
+
+        } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
+            Intent intent = new Intent(BookAppointDoctorListBaseActivity.this, SettingsActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            startActivity(intent);
+            finish();
+
+        } else if (menuName.equalsIgnoreCase(getString(R.string.support))) {
+            Intent intent = new Intent(BookAppointDoctorListBaseActivity.this, SupportActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            startActivity(intent);
+            finish();
         }
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(this, data);
-                StringBuilder stBuilder = new StringBuilder();
-                String placename = String.format("%s", place.getName());
-                latitude = String.valueOf(place.getLatLng().latitude);
-                longitude = String.valueOf(place.getLatLng().longitude);
-                address = String.format("%s", place.getAddress());
-                stBuilder.append("Name: ");
-                stBuilder.append(placename);
-                stBuilder.append("\n");
-                stBuilder.append("Latitude: ");
-                stBuilder.append(latitude);
-                stBuilder.append("\n");
-                stBuilder.append("Logitude: ");
-                stBuilder.append(longitude);
-                stBuilder.append("\n");
-                stBuilder.append("Address: ");
-                stBuilder.append(address);
-                Geocoder gcd = new Geocoder(this, Locale.getDefault());
-                List<Address> addresses = null;
-                try {
-                    addresses = gcd.getFromLocation(place.getLatLng().latitude, place.getLatLng().longitude, 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (addresses != null && addresses.size() > 0) {
-                    //-------
-                    String locality = "";
-                    //-------
-                    if (placename.contains(" ")) {
-                        locality = getArea(addresses.get(0));
-                    } else {
-                        locality = placename;
-                    }
-                    String city = addresses.get(0).getLocality();
-
-                   /* Address address = addresses.get(0);
-                    String addressLine = address.getAddressLine(1);
-                    String addressLineArray[] = addressLine.split(",");
-                    addressLine = addressLineArray[addressLineArray.length - 1];
-
-                    if (placename.toLowerCase().contains(addressLine)) {
-                        locality = addressLine;
-                    } else if (addressLine.toLowerCase().contains(placename)) {
-                        locality = placename;
-                    }*/
-                    //-------
-                    //DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), placename + ", " + city);
-                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointDoctorListBaseActivity.this, place.getLatLng(), locality + ", " + city);
-                    //-------
-                    HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-                    String s = userSelectedLocationInfo.get(getString(R.string.location));
-                    if (s != null) {
-                        String[] split = s.split(",");
-                        mRecentVisitDoctorFragment.doGetLatestDoctorListOnLocationChange(mComplaintsUserSearchFor);
-                        locationTextView.setText("" + city);
-                    }
-                }
-                CommonMethods.Log("Address: ", stBuilder.toString());
-            }
-        }
-    }
-
-    private String getArea(Address obj) {
-
-        if (obj.getThoroughfare() != null)
-            return obj.getThoroughfare();
-        else if (obj.getSubLocality() != null)
-            return obj.getSubLocality();
-        else if (obj.getSubAdminArea() != null)
-            return obj.getSubAdminArea();
-        else if (obj.getLocality() != null)
-            return obj.getLocality();
-        else if (obj.getAdminArea() != null)
-            return obj.getAdminArea();
-        else
-            return obj.getCountryName();
-    }
-
-    //TODO: PENDING
-    public DrawerLayout getActivityDrawerLayout() {
-        return mDrawerLayout;
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 
     @Override
@@ -253,6 +188,16 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     @Override
     public void onReset(boolean drawerRequired) {
+
+    }
+
+    //TODO: PENDING
+    public DrawerLayout getActivityDrawerLayout() {
+        return mDrawerLayout;
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 }

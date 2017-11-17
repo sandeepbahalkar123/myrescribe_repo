@@ -24,6 +24,7 @@ import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
 
@@ -42,7 +43,7 @@ import permissions.dispatcher.RuntimePermissions;
  * Created by jeetal on 15/9/17.
  */
 @RuntimePermissions
-public class BookAppointDoctorListBaseActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class BookAppointDoctorListBaseActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
 
     private static final String TAG = "BookAppointDoctorListBaseActivity";
     @BindView(R.id.bookAppointmentBackButton)
@@ -54,6 +55,8 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     @BindView(R.id.nav_view)
     FrameLayout mNavView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
     private RecentVisitDoctorFragment mRecentVisitDoctorFragment;
     private int PLACE_PICKER_REQUEST = 1;
 
@@ -63,6 +66,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
     String latitude = "";
     String longitude = "";
     String address;
+    private DrawerForFilterDoctorBookAppointment mDrawerLoadedFragment;
     //-----
 
     @Override
@@ -108,6 +112,10 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
         mRecentVisitDoctorFragment = RecentVisitDoctorFragment.newInstance(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mRecentVisitDoctorFragment).commit();
         //-----------
+        //----------
+        mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
+
     }
 
     @OnClick({R.id.bookAppointmentBackButton, R.id.title, R.id.locationTextView})
@@ -229,8 +237,7 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     //TODO: PENDING
     public DrawerLayout getActivityDrawerLayout() {
-        return null;
-//        return mDrawerLayout;
+        return mDrawerLayout;
     }
 
     @Override
@@ -238,4 +245,14 @@ public class BookAppointDoctorListBaseActivity extends AppCompatActivity impleme
 
     }
 
+    @Override
+    public void onApply(Bundle b, boolean drawerRequired) {
+        mDrawerLayout.closeDrawers();
+        mRecentVisitDoctorFragment.onApplyClicked(b);
+    }
+
+    @Override
+    public void onReset(boolean drawerRequired) {
+
+    }
 }

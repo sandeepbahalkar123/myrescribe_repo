@@ -16,9 +16,10 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
- import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
     FrameLayout viewContainer;
     ArrayList<DoctorList> doctorList;
     HashMap<String, String> userSelectedLocationInfo;
-    private BookAppointFilteredDoctorListFragment mMyAppointmentsFragment;
+    private BookAppointFilteredDoctorListFragment mBookAppointFilteredDoctorListFragment;
 
     private Fragment mDrawerLoadedFragment;
     private DoctorDataHelper mDoctorDataHelper;
@@ -76,14 +77,14 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
         showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         //--------
         Bundle extras = getIntent().getExtras();
-        if(extras!=null){
+        if (extras != null) {
             doctorList = extras.getParcelableArrayList(getString(R.string.clicked_item_data));
             title.setText(extras.getString(getString(R.string.toolbarTitle)));
         }
 
-        mMyAppointmentsFragment = BookAppointFilteredDoctorListFragment.newInstance(extras);
+        mBookAppointFilteredDoctorListFragment = BookAppointFilteredDoctorListFragment.newInstance(extras);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mMyAppointmentsFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mBookAppointFilteredDoctorListFragment).commit();
 
         //------------
         mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
@@ -120,7 +121,6 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
         //------
         String locationReceived = "";
         Intent intent = getIntent();
-        String title = "";
         if (intent != null) {
             HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
@@ -184,15 +184,27 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
     @Override
     public void onApply(Bundle b, boolean drawerRequired) {
         mDrawerLayout.closeDrawers();
-        mMyAppointmentsFragment.onApplyClicked(b);
+        mBookAppointFilteredDoctorListFragment.onApplyClicked(b);
     }
 
     @Override
     public void onReset(boolean drawerRequired) {
-        mMyAppointmentsFragment.onResetClicked();
+        mBookAppointFilteredDoctorListFragment.onResetClicked();
     }
 
     public DrawerLayout getActivityDrawerLayout() {
         return mDrawerLayout;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RescribeConstants.DOCTOR_DATA_REQUEST_CODE && data != null) {
+            DoctorList mClickedDoctorListObject = data.getParcelableExtra(DOCTOR_DATA);
+            if (mClickedDoctorListObject != null) {
+                mBookAppointFilteredDoctorListFragment.updateDataInViews(mClickedDoctorListObject);
+            }
+        }
     }
 }

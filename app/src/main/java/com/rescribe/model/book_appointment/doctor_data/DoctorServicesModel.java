@@ -99,14 +99,12 @@ public class DoctorServicesModel implements Parcelable, CustomResponse {
 
     public ArrayList<DoctorList> filterDocListBySpeciality(String selectedSpeciality) {
 
-        ArrayList<DoctorList> doctors = this.doctorList;
-
         ArrayList<DoctorList> dataList = new ArrayList<>();
         if (selectedSpeciality == null) {
             return dataList;
         } else {
             for (DoctorList listObject :
-                    doctors) {
+                    doctorList) {
                 if (selectedSpeciality.equalsIgnoreCase(listObject.getDocSpeciality())) {
                     dataList.add(listObject);
                 }

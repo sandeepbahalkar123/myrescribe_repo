@@ -532,4 +532,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             setDataInViews();
         }
     }
+
+    public DoctorList getClickedDoctorObject() {
+        return mClickedDoctorObject;
+    }
 }

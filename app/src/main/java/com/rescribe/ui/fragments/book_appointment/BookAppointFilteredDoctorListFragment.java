@@ -44,7 +44,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class BookAppointFilteredDoctorListFragment extends Fragment implements View.OnClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener {
+public class BookAppointFilteredDoctorListFragment extends Fragment implements HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener {
 
 
     @BindView(R.id.listView)
@@ -64,6 +64,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     private String mClickedItemDataTypeValue;
     private String mReceivedTitle;
     private DoctorList mClickedDocListToUpdateFavStatus;
+    private String mClickedDoctorObjectPosition;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -110,18 +111,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
         }
 
         mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
+        updateDataInViews(null);
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setDoctorListAdapter();
-    }
 
     private void setDoctorListAdapter() {
 
@@ -171,7 +163,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
                         mReceivedList = doctorServices.filterDocListBySpeciality(mReceivedTitle);
                     }
                 }
-                setDoctorListAdapter();
+                updateDataInViews(null);
                 break;
         }
     }
@@ -248,15 +240,17 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
     public void onClickOfDoctorRowItem(Bundle bundleData) {
         if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.doctor_details))) {
             DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
+            mClickedDoctorObjectPosition = bundleData.getString(getString(R.string.clicked_item_data_value_position));
 
             if (mClickedDoctorObject.getCategoryName().equalsIgnoreCase(getString(R.string.my_appointments))) {
                 Intent intent = new Intent(getActivity(), AppointmentActivity.class);
                 startActivity(intent);
             } else {
                 bundleData.putString(getString(R.string.toolbarTitle), mReceivedTitle);
+                mClickedDocListToUpdateFavStatus = mClickedDoctorObject;
                 Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
                 intent.putExtras(bundleData);
-                startActivity(intent);
+                getActivity().startActivityForResult(intent,RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
             }
         } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {
             mClickedDocListToUpdateFavStatus = bundleData.getParcelable(getString(R.string.clicked_item_data));
@@ -273,5 +267,18 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements V
 
     public void onResetClicked() {
 
+    }
+
+    public void updateDataInViews(DoctorList receivedObject) {
+        if (receivedObject != null) {
+            if (mReceivedList != null) {
+                if (mReceivedList.size() > 0) {
+                    if (mClickedDoctorObjectPosition != null)
+                        mReceivedList.set(Integer.parseInt(mClickedDoctorObjectPosition), receivedObject);
+
+                }
+            }
+        }
+        setDoctorListAdapter();
     }
 }

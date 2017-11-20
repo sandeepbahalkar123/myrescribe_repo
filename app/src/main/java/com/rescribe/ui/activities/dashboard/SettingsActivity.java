@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -26,15 +25,11 @@ import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
-
 import net.gotev.uploadservice.UploadService;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
 /**
@@ -45,6 +40,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     @BindView(R.id.settingsMenuList)
     RecyclerView settingsMenuList;
@@ -68,14 +64,15 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         initialize();
 
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
-        for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
-            BottomMenu bottomMenu = new BottomMenu();
-            bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
-            bottomMenu.setMenuName(dashboardBottomMenuList.getName());
-            bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
-            bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.settings)));
-            addBottomMenu(bottomMenu);
-        }
+        if (dashboardBottomMenuLists != null)
+            for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+                BottomMenu bottomMenu = new BottomMenu();
+                bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
+                bottomMenu.setMenuName(dashboardBottomMenuList.getName());
+                bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
+                bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.settings)));
+                addBottomMenu(bottomMenu);
+            }
 
     }
 
@@ -98,6 +95,16 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         settingsMenuList.setNestedScrollingEnabled(false);
         settingsMenuList.setAdapter(mSettingsAdapter);
     }
+
+    /*@OnClick({R.id.sb_text})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+
+            case R.id.sb_text:
+
+                break;
+        }
+    }*/
 
     @Override
     public void onBottomMenuClick(BottomMenu bottomMenu) {

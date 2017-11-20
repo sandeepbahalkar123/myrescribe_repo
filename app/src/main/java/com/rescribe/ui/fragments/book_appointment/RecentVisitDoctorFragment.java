@@ -40,6 +40,7 @@ import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
+import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
@@ -69,6 +70,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
+    @BindView(R.id.filterListLayout)
+    LinearLayout mFilterListLayout;
     @BindView(R.id.pickSpeciality)
     CustomTextView pickSpeciality;
     @BindView(R.id.emptyListView)
@@ -170,6 +173,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
             @Override
             public void afterTextChanged(Editable s) {
+                recentDoctorLayout.setVisibility(View.VISIBLE);
+                mFilterListLayout.setVisibility(View.VISIBLE);
                 if (s.toString().trim().length() > 0) {
                     mSortByClinicAndDoctorNameAdapter.getFilter().filter(s);
                 } else {
@@ -178,6 +183,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             }
         });
 
+        recentDoctorLayout.setVisibility(View.GONE);
+        mFilterListLayout.setVisibility(View.GONE);
         doGetLatestDoctorListOnLocationChange(null);
 
     }
@@ -206,8 +213,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
             case R.id.rightFab:
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                activity = (BookAppointDoctorListBaseActivity) getActivity();
-                //activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);
+                activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);
                 break;
             case R.id.leftFab:
                 if (mSortByClinicAndDoctorNameAdapter.isListByClinicName()) {
@@ -382,10 +388,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     }
 
-    /*
-     * GENERATE A SINGLE PAGE DATA
-     * PASS US THE CURRENT PAGE POSITION THEN WE GENERATE NECEASSARY DATA
-     */
 
     public void isDataListViewVisible(boolean flag, boolean isShowEmptyListView) {
         if (flag) {
@@ -482,6 +484,16 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 mDoctorDataHelper.doGetDoctorData("", "", mComplaintsUserSearchFor);
             }
         }
+    }
+
+    public void onApplyClicked(Bundle data) {
+        BookAppointFilterRequestModel requestModel = data.getParcelable(getString(R.string.filter));
+
+        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel);
+    }
+
+    public void onResetClicked() {
+
     }
 }
 

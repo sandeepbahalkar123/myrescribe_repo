@@ -73,7 +73,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     }
 
     @Override
-    public void onBindViewHolder(final ListViewHolder holder, int position) {
+    public void onBindViewHolder(final ListViewHolder holder, final int position) {
         final DoctorList doctorObject = mDataList.get(position);
         holder.doctorName.setText(doctorObject.getDocName());
         holder.doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
@@ -93,7 +93,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 holder.clinicName.setVisibility(View.VISIBLE);
                 holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
                 holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
-            }else{
+            } else {
                 holder.clinicName.setVisibility(View.GONE);
             }
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
@@ -255,6 +255,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 Bundle b = new Bundle();
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.doctor_details));
+                b.putString(mContext.getString(R.string.clicked_item_data_value_position),""+ position);
 
                 mOnFilterDocListClickListener.onClickOfDoctorRowItem(b);
             }
@@ -267,6 +268,8 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 Bundle b = new Bundle();
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.favorite));
+                b.putString(mContext.getString(R.string.clicked_item_data_value_position),""+ position);
+
                 mOnFilterDocListClickListener.onClickOfDoctorRowItem(b);
             }
         });

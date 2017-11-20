@@ -34,6 +34,7 @@ import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.SupportActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -56,7 +57,7 @@ import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
  * Created by jeetal on 15/9/17.
  */
 
-public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implements BottomMenuAdapter.onBottomMenuClickListener {
+public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implements BottomMenuAdapter.onBottomMenuClickListener, GoogleApiClient.OnConnectionFailedListener, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
 
     private static final String TAG = "BookAppointDoctorListBaseActivity";
     @BindView(R.id.bookAppointmentBackButton)
@@ -71,17 +72,19 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     FrameLayout mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-    private DoctorDataHelper mDoctorDataHelper;
-    private Fragment mCurrentlyLoadedFragment; //TODO, fragmentById is not working hence hold this object.
-    private BookAppointmentBaseModel mReceivedBookAppointmentBaseModel;
-    private BookAppointmentBaseModel mPreviousReqReceivedBookAppointmentBaseModel;
-    private FragmentManager mSupportFragmentManager;
-    private Fragment mDrawerLoadedFragment;
-    private boolean isLocationChange = false;
+
     private RecentVisitDoctorFragment mRecentVisitDoctorFragment;
     private int PLACE_PICKER_REQUEST = 1;
     private HashMap<String, String> mComplaintsUserSearchFor = new HashMap<>();
+
+    //-----
+    String latitude = "";
+    String longitude = "";
+    String address;
+    private DrawerForFilterDoctorBookAppointment mDrawerLoadedFragment;
+
     private ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
+
     //-----
 
     @Override
@@ -94,7 +97,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
     private void initialize() {
 
-        if(getIntent().getParcelableArrayListExtra(BOTTOM_MENUS)!=null) {
+        if (getIntent().getParcelableArrayListExtra(BOTTOM_MENUS) != null) {
             dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
             for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
                 BottomMenu bottomMenu = new BottomMenu();
@@ -113,7 +116,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         String locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
         if (locationReceived != null) {
-           // locationTextView.setText("" + locationReceived);
+            // locationTextView.setText("" + locationReceived);
         }
         //-----
         Intent intent = getIntent();
@@ -130,6 +133,10 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         mRecentVisitDoctorFragment = RecentVisitDoctorFragment.newInstance(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mRecentVisitDoctorFragment).commit();
         //-----------
+        //----------
+        mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
+
     }
 
     @OnClick({R.id.bookAppointmentBackButton, R.id.title, R.id.locationTextView})
@@ -148,26 +155,18 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         }
     }
 
-    //TODO: PENDING
-    public DrawerLayout getActivityDrawerLayout() {
-        return null;
-//        return mDrawerLayout;
-    }
-
-
-
     @Override
     public void onBottomMenuClick(BottomMenu bottomMenu) {
         String menuName = bottomMenu.getMenuName();
 
         if (menuName.equalsIgnoreCase(getString(R.string.home))) {
-
             Intent intent = new Intent(BookAppointDoctorListBaseActivity.this, HomePageActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
             finish();
 
-        }  else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
+
+        } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
             Intent intent = new Intent(BookAppointDoctorListBaseActivity.this, SettingsActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
@@ -178,7 +177,27 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
             finish();
-
         }
+    }
+
+    @Override
+    public void onApply(Bundle b, boolean drawerRequired) {
+        mDrawerLayout.closeDrawers();
+        mRecentVisitDoctorFragment.onApplyClicked(b);
+    }
+
+    @Override
+    public void onReset(boolean drawerRequired) {
+
+    }
+
+    //TODO: PENDING
+    public DrawerLayout getActivityDrawerLayout() {
+        return mDrawerLayout;
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

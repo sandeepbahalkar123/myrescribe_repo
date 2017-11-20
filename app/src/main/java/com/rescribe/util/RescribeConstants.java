@@ -169,6 +169,7 @@ public class RescribeConstants {
 
     public static final int DOCTOR_DATA_REQUEST_CODE = 1221;
     public static final String DOCTOR_DATA = "doctor_data";
+    public static final int PLACE_PICKER_REQUEST = 99;
 
 
 
@@ -188,12 +189,26 @@ public class RescribeConstants {
         public static final String SENT = "sent";
     }
 
+    public static class FILE {
+        public static final String IMG = "img";
+        public static final String DOC = "doc";
+        public static final String VID = "vid";
+        public static final String AUD = "aud";
+        public static final String LOC = "loc";
+    }
+
+    public static class FILE_EMOJI {
+        public static final String IMG_FILE = "🏞 Image";
+        public static final String DOC_FILE = "📒 Document";
+        public static final String VID_FILE = "📹 Video";
+        public static final String AUD_FILE = "🔊 Audio";
+        public static final String LOC_FILE = "📍 Location";
+    }
 
 //    public static final String CANCEL_ALARM = "cancel_alarm";
 
 
     //This is for bydefault textcolor,headercolor,buttoncolor etc.
-    public static String STATUS_COLOR = "STATUS_COLOR";
     public static String BUTTON_TEXT_COLOR = "#FFFFFF";
     public static String TEXT_COLOR = "#000000";
 
@@ -234,13 +249,6 @@ public class RescribeConstants {
         public static int THREE_SECONDS = 3000;
         public static int FIVE_FIFTY = 500;
      }
-
-    public static class FILE {
-        public static final String IMG = "img";
-        public static final String DOC = "doc";
-        public static final String VID = "vid";
-        public static final String AUD = "aud";
-    }
 
     public class INVESTIGATION_KEYS {
         public static final String INVESTIGATION_DATE = "investigation_date";

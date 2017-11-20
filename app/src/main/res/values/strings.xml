@@ -222,6 +222,7 @@
     <string name="dr">Dr.</string>
     <string name="clicked_item_data">clicked_item_data</string>
     <string name="clicked_item_data_type_value">clicked_item_data_type_value</string>
+    <string name="clicked_item_data_value_position">clicked_item_data_value_position</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="type_a_message">Type a message</string>
     <string name="online">Online</string>

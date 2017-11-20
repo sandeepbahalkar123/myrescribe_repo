@@ -165,7 +165,6 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
                 if (chatDoctor.getPaidStatus() != PAID) {
                     Intent intent = new Intent(mContext, ChatActivity.class);
                     intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
-                    intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
                     ((DoctorConnectActivity) mContext).startActivityForResult(intent, 1111);
                 } else
                     CommonMethods.showInfoDialog(mContext.getResources().getString(R.string.paid_doctor_message), mContext, false);

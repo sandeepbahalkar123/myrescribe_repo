@@ -3,6 +3,7 @@ package com.rescribe.ui.fragments.book_appointment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
@@ -123,12 +124,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     private DoctorDataHelper mDoctorDataHelper;
     private DoctorList mClickedDoctorObject;
-    public static Bundle args;
     private Context mContext;
     private int mLastExpandedPosition = -1;
     private SelectSlotToBookAppointmentAdapter mSelectSlotToBookAppointmentAdapter;
     private String mSelectedTimeSlotDate;
     private ClinicData mSelectedClinicDataObject;
+    private String activityOpeningFrom;
 
     public SelectSlotTimeToBookAppointmentFragment() {
         // Required empty public constructor
@@ -146,7 +147,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     public static SelectSlotTimeToBookAppointmentFragment newInstance(Bundle b) {
         SelectSlotTimeToBookAppointmentFragment fragment = new SelectSlotTimeToBookAppointmentFragment();
-        args = b;
+        Bundle args = b;
         if (args == null) {
             args = new Bundle();
         }
@@ -157,7 +158,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private void init() {
         //------------
         Calendar now = Calendar.getInstance();
-        mSelectedTimeSlotDate = now.get(Calendar.YEAR) + "-" + now.get((Calendar.MONTH + 1)) + "-" + now.get(Calendar.DAY_OF_MONTH);
+        mSelectedTimeSlotDate = now.get(Calendar.YEAR) + "-" + now.get(Calendar.MONTH + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
         //----------
 
         String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DD_MM_YYYY, CommonMethods.getCurrentDate());
@@ -166,14 +167,16 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         selectDateTime.setText(dayFromDate + ", " + simpleDateFormat.format(new Date()));
         //----------
         mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
-        // setColumnNumber(getActivity(), 2);
-
-        //     BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
 
         Bundle arguments = getArguments();
         if (arguments != null) {
             mClickedDoctorObject = arguments.getParcelable(getString(R.string.clicked_item_data));
-            setDataInViews();
+            activityOpeningFrom = arguments.getString(getString(R.string.clicked_item_data_type_value));
+            if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom)) {
+                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true);
+            } else {
+                setDataInViews();
+            }
         }
         //--------------
         selectTimeDateExpandableView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -196,14 +199,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         });
         //--------------
 
-    }
-
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     private void setDataInViews() {
@@ -282,7 +277,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     mClinicName.setText("" + mSelectedClinicDataObject.getClinicName());
                     mDoctorFees.setText(
                             "" + mSelectedClinicDataObject.getAmount());
-                    mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate);
+                    mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false);
                 }
 
 
@@ -432,6 +427,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         }
         mSelectedTimeSlotDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
         selectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, dateConverted + "-" + (monthOfYear + 1) + "-" + year) + "," + getString(R.string.space) + CommonMethods.getFormattedDate(dateConverted + "-" + (monthOfYear + 1) + "-" + year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
-        mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate);
+        mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false);
+    }
+
+    public DoctorList getClickedDoctorObject() {
+        return mClickedDoctorObject;
     }
 }

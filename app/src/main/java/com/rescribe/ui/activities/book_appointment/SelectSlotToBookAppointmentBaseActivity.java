@@ -46,7 +46,6 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
     private SelectSlotTimeToBookAppointmentFragment mSelectSlotTimeToBookAppointmentFragment;
 
     private DoctorList doctorObject;
-    ArrayList<DoctorList> doctorList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +56,17 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        doctorList = new ArrayList<>();
+        title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         doctorObject = getIntent().getExtras().getParcelable(getString(R.string.clicked_item_data));
         showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
-        title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
+
         userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-       // showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
+        // showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         Bundle bundle = new Bundle();
         bundle.putParcelable(getString(R.string.clicked_item_data), doctorObject);
         bundle.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
+        bundle.putString(getString(R.string.clicked_item_data_type_value), getIntent().getStringExtra(getString(R.string.clicked_item_data_type_value)));
         mSelectSlotTimeToBookAppointmentFragment = SelectSlotTimeToBookAppointmentFragment.newInstance(bundle);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
@@ -90,19 +90,13 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (doctorList != null) {
+        DoctorList clickedDoctorObject = mSelectSlotTimeToBookAppointmentFragment.getClickedDoctorObject();
+        if (clickedDoctorObject != null) {
             Intent intent = new Intent();
-            intent.putExtra(DOCTOR_DATA, doctorList);
+            intent.putExtra(DOCTOR_DATA, clickedDoctorObject);
             setResult(DOCTOR_DATA_REQUEST_CODE, intent);
         }
         super.onBackPressed();
-    }
-
-    public void replaceDoctorListById(String docId, DoctorList mClickedDoctorObject, String updateTypeParam) {
-        doctorObject.setFavourite(mClickedDoctorObject.getFavourite());
-        if (doctorList.isEmpty())
-            doctorList.add(doctorObject);
-        else doctorList.get(0).setFavourite(mClickedDoctorObject.getFavourite());
     }
 }
 

@@ -147,7 +147,6 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
                 if (doctorConnectChatModel.getPaidStatus() != PAID) {
                     Intent intent = new Intent(mContext, ChatActivity.class);
                     intent.putExtra(RescribeConstants.DOCTORS_INFO, doctorConnectChatModel);
-                    intent.putExtra(RescribeConstants.STATUS_COLOR, holder.onlineStatusTextView.getCurrentTextColor());
                     mContext.startActivity(intent);
                 } else
                     CommonMethods.showInfoDialog(mContext.getResources().getString(R.string.paid_doctor_message), mContext, false);

@@ -40,7 +40,6 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     @BindView(R.id.settingsMenuList)
     RecyclerView settingsMenuList;

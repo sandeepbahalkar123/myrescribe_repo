@@ -3,6 +3,7 @@ package com.rescribe.ui.activities;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,6 +12,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
@@ -92,7 +94,6 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
-import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
 /**
@@ -125,7 +126,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     String dinnerTime = "";
     String snacksTime = "";
     String locationReceived = "";
-    String previousLocationReceived ="";
+    String previousLocationReceived = "";
     private MenuOptionsDashBoardAdapter mMenuOptionsDashBoardAdapter;
     private String patientId;
     private LoginHelper loginHelper;
@@ -172,7 +173,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         mDashboardDataBuilder = new ServicesCardViewImpl(this, this);
 
         //------
-        HomePageActivityPermissionsDispatcher.getPermissionWithCheck(HomePageActivity.this);
         appDBHelper = new AppDBHelper(mContext);
         patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
         loginHelper = new LoginHelper(mContext, HomePageActivity.this);
@@ -193,8 +193,18 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void getPermission() {
-        CommonMethods.Log(TAG, "asked permission");
+    void getWritePermission() {
+        HomePageActivityPermissionsDispatcher.getFineLocationWithCheck(HomePageActivity.this);
+    }
+
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    void getFineLocation() {
+        HomePageActivityPermissionsDispatcher.getCourseLocationWithCheck(HomePageActivity.this);
+    }
+
+    @NeedsPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+    void getCourseLocation() {
+        getLocation();
     }
 
     @Override
@@ -794,6 +804,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     protected void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            CommonMethods.showToast(HomePageActivity.this, "Location Permission Required.");
+            return;
+        }
         PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this);
 
@@ -827,10 +841,16 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     @Override
     public void onResume() {
         super.onResume();
-        if (mGoogleApiClient.isConnected()) {
-            //  startLocationUpdates();
-            Log.d(TAG, "Location update resumed .....................");
-        }
+
+        HomePageActivityPermissionsDispatcher.getWritePermissionWithCheck(HomePageActivity.this);
+
+       /* if (mDashboardDataModel != null) {
+            setUpViewPager();
+        }*/
+
+    }
+
+    private void getLocation() {
         HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
         if(userSelectedLocationInfo.get(getString(R.string.location))!=null) {
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
@@ -863,9 +883,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 }
             }
         }
-       /* if (mDashboardDataModel != null) {
-            setUpViewPager();
-        }*/
     }
 
     private void updateUI() {

@@ -6,12 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
+        android:id="@+id/selectMenuLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <RelativeLayout
-            android:id="@+id/selectMenuLayout"
             android:layout_width="match_parent"
             android:layout_height="56dp">
 
@@ -40,8 +40,8 @@
                 android:paddingStart="@dimen/dp8"
                 tools:text="@string/select_doctors"
                 android:textColor="@color/menu_option_on_dashboard_color"
-                android:textSize="@dimen/sp14"
-                app:customFont="@string/roboto_regular" />
+                android:textSize="@dimen/sp16"
+                app:customFont="@string/roboto_medium" />
 
             <ImageView
                 android:id="@+id/dashboardArrowIcon"
@@ -57,5 +57,8 @@
         </RelativeLayout>
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/divider"
+        android:layout_height="@dimen/dp1"/>
 </LinearLayout>

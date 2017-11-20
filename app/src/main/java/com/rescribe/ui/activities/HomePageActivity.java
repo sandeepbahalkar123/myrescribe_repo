@@ -69,7 +69,9 @@ import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
 import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
+import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.RescribeConstants;
 
 import net.gotev.uploadservice.UploadService;
@@ -92,7 +94,6 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
-import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
 /**
@@ -102,7 +103,7 @@ import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 @RuntimePermissions
 public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, BottomMenuAdapter.onBottomMenuClickListener, LocationListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, GoogleSettingsApi.LocationSettings {
 
     private static final long MANAGE_ACCOUNT = 121;
     private static final long ADD_ACCOUNT = 122;
@@ -125,7 +126,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     String dinnerTime = "";
     String snacksTime = "";
     String locationReceived = "";
-    String previousLocationReceived ="";
+    String previousLocationReceived = "";
     private MenuOptionsDashBoardAdapter mMenuOptionsDashBoardAdapter;
     private String patientId;
     private LoginHelper loginHelper;
@@ -141,7 +142,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private ServicesCardViewImpl mDashboardDataBuilder;
     private AppDBHelper appDBHelper;
     private DashboardHelper mDashboardHelper;
-
+    CustomProgressDialog mCustomProgressDialog;
     private static final long INTERVAL = 1000 * 10;
     private static final long FASTEST_INTERVAL = 1000 * 5;
     LocationRequest mLocationRequest;
@@ -156,7 +157,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_dashboard_layout);
         ButterKnife.bind(this);
+        mCustomProgressDialog = new CustomProgressDialog(HomePageActivity.this);
         createLocationRequest();
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -205,6 +208,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     protected void createLocationRequest() {
+        new GoogleSettingsApi(this);
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
@@ -560,7 +564,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     private void setUpViewPager() {
         //----------
-
+        mCustomProgressDialog.cancel();
         Map<String, Integer> dataMap = new LinkedHashMap<>();
         ArrayList<DoctorList> myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments));
         ArrayList<DoctorList> sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
@@ -630,17 +634,17 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-
+        mCustomProgressDialog.cancel();
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
-
+        mCustomProgressDialog.cancel();
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-
+        mCustomProgressDialog.cancel();
     }
 
 
@@ -832,15 +836,15 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Log.d(TAG, "Location update resumed .....................");
         }
         HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-        if(userSelectedLocationInfo.get(getString(R.string.location))!=null) {
+        if (userSelectedLocationInfo.get(getString(R.string.location)) != null) {
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-        }else{
+        } else {
             locationReceived = "";
         }
-        if(DoctorDataHelper.getPreviousUserSelectedLocationInfo()!=null) {
+        if (DoctorDataHelper.getPreviousUserSelectedLocationInfo() != null) {
             HashMap<String, String> userPreviousSelectedLocationInfo = DoctorDataHelper.getPreviousUserSelectedLocationInfo();
             previousLocationReceived = userPreviousSelectedLocationInfo.get(getString(R.string.location));
-        }else{
+        } else {
             previousLocationReceived = "";
         }
 
@@ -849,21 +853,22 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
         } else {
             Log.d(TAG, "DASHBOARD API  CALLED");
-            if(locationReceived.equals("")) {
+            if (locationReceived.equals("")) {
+                mCustomProgressDialog.show();
                 mGoogleApiClient.connect();
-            }else{
+            } else {
                 String[] split = locationReceived.split(",");
                 if (split != null) {
                     mDashboardHelper = new DashboardHelper(this, this);
                     mDashboardHelper.doGetDashboard(split[1]);
                     Double lat = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.latitude)));
                     Double lng = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.longitude)));
-                    LatLng  latLng     = new LatLng(lat,lng);
-                    DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext,latLng,locationReceived);
+                    LatLng latLng = new LatLng(lat, lng);
+                    DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext, latLng, locationReceived);
                 }
             }
         }
-       if (mDashboardDataModel != null) {
+        if (mDashboardDataModel != null) {
             setUpViewPager();
         }
     }
@@ -939,5 +944,11 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             return obj.getAdminArea();
         else
             return obj.getCountryName();
+    }
+
+    @Override
+    public void gpsStatus() {
+        mCustomProgressDialog.show();
+        mGoogleApiClient.connect();
     }
 }

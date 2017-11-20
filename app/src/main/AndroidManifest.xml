@@ -61,27 +61,33 @@
         <activity
             android:name=".ui.activities.HomePageActivity"
             android:label="@string/app_name"
+            android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.dashboard.ProfileActivity"
             android:label="@string/app_name"
+            android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.dashboard.SettingsActivity"
             android:label="@string/app_name"
+            android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.dashboard.SupportActivity"
             android:label="@string/app_name"
+            android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.dashboard.DoctorDescriptionBaseActivity"
             android:label="@string/app_name"
+            android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".ui.activities.find_doctors.FindDoctorsActivity"
             android:label="@string/app_name"
+            android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.PhoneNoActivity"
@@ -156,6 +162,7 @@
         <activity
             android:name=".ui.activities.book_appointment.BookAppointFindLocation"
             android:label="@string/doctor_connect"
+            android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".services.InvestigationNotificationService" />
@@ -263,6 +270,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.AppGlobalContainerActivity"
+            android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_details" />
         <activity
             android:name=".ui.activities.MapsActivity"
@@ -291,10 +299,12 @@
         <activity
             android:name=".ui.activities.SelectedRecordsGroupActivity"
             android:label="@string/title_activity_report_selection"
+            android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.ShowRecordsActivity"
             android:label="@string/title_activity_reports"
+            android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver
@@ -319,14 +329,17 @@
         <activity
             android:name=".ui.activities.vital_graph.VitalGraphActivity"
             android:label="@string/vital_graph"
+            android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.vital_graph.VitalGraphDetailsActivity"
             android:label="@string/title_activity_vital_graph_details"
+            android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.vital_graph.AddTrackerActivity"
             android:label="@string/title_activity_add_tracker"
+            android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity

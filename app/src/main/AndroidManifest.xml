@@ -212,6 +212,10 @@
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.activities.NotificationSettingActivity"
+            android:configChanges="orientation|keyboard|screenSize"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.activities.SettingActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />

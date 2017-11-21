@@ -115,8 +115,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     ImageView doChat;
     @BindView(R.id.viewAllClinicsOnMap)
     ImageView viewAllClinicsOnMap;
-    @BindView(R.id.bookingSlotLayout)
-    LinearLayout bookingSlotLayout;
     @BindView(R.id.bookAppointmentButton)
     AppCompatButton bookAppointmentButton;
     @BindView(R.id.no_data_found)
@@ -208,11 +206,9 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     private void setDataInViews() {
         if (mClickedDoctorObject.getClinicDataList().size() > 0) {
-            bookingSlotLayout.setVisibility(View.VISIBLE);
             bookAppointmentButton.setVisibility(View.VISIBLE);
             noDataFound.setVisibility(View.GONE);
         } else {
-            bookingSlotLayout.setVisibility(View.GONE);
             bookAppointmentButton.setVisibility(View.GONE);
             noDataFound.setVisibility(View.VISIBLE);
         }

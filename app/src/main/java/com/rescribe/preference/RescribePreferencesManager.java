@@ -222,6 +222,12 @@ public class RescribePreferencesManager {
                 .generateSecret(spec).getEncoded());
     }
 
+    public interface NOTIFICATION_SETTING_KEY {
+        String APPOINTMENT_ALERT = "appointmentAlert";
+        String INVESTIGATION_ALERT = "investigationAlert";
+        String MEDICATION_ALERT = "medicationAlert";
+        String OFFERS_ALERT = "offersAlert";
+    }
 
     public interface RESCRIBE_PREFERENCES_KEY {
         String USER_GENDER = "user_gender";

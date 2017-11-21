@@ -108,6 +108,7 @@ public class GoogleSettingsApi implements GoogleApiClient.ConnectionCallbacks, G
     }
 
     public interface LocationSettings {
+
         void gpsStatus();
     }
 }

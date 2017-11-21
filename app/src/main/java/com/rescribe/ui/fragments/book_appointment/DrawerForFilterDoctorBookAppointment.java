@@ -318,7 +318,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 Rect tr = mDistanceSeekBar.getThumb().getBounds();
-
                 mDistanceSeekBarValueIndicator.setText("" + i);
 
                 if (String.valueOf(i).length() > 2) {

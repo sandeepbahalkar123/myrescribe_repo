@@ -3,6 +3,7 @@ package com.rescribe.ui.activities;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,6 +12,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
@@ -70,7 +72,9 @@ import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
 import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
+import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.RescribeConstants;
 
 import net.gotev.uploadservice.UploadService;
@@ -93,8 +97,6 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
-import static com.rescribe.util.RescribeConstants.BLANK;
-import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
 /**
@@ -104,7 +106,7 @@ import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 @RuntimePermissions
 public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, BottomMenuAdapter.onBottomMenuClickListener, LocationListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, GoogleSettingsApi.LocationSettings {
 
     private static final long MANAGE_ACCOUNT = 121;
     private static final long ADD_ACCOUNT = 122;
@@ -126,7 +128,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     String lunchTime = "";
     String dinnerTime = "";
     String snacksTime = "";
+
     String locationReceived;
+
     private MenuOptionsDashBoardAdapter mMenuOptionsDashBoardAdapter;
     private String patientId;
     private LoginHelper loginHelper;
@@ -142,7 +146,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private ServicesCardViewImpl mDashboardDataBuilder;
     private AppDBHelper appDBHelper;
     private DashboardHelper mDashboardHelper;
-
+    CustomProgressDialog mCustomProgressDialog;
     private static final long INTERVAL = 1000 * 10;
     private static final long FASTEST_INTERVAL = 1000 * 5;
     LocationRequest mLocationRequest;
@@ -157,7 +161,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_dashboard_layout);
         ButterKnife.bind(this);
+        mCustomProgressDialog = new CustomProgressDialog(HomePageActivity.this);
         createLocationRequest();
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -171,9 +177,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         mDashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
 
         mDashboardDataBuilder = new ServicesCardViewImpl(this, this);
+        mDashboardHelper = new DashboardHelper(this, this);
 
         //------
-        HomePageActivityPermissionsDispatcher.getPermissionWithCheck(HomePageActivity.this);
         appDBHelper = new AppDBHelper(mContext);
         patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
         loginHelper = new LoginHelper(mContext, HomePageActivity.this);
@@ -194,8 +200,18 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void getPermission() {
-        CommonMethods.Log(TAG, "asked permission");
+    void getWritePermission() {
+        HomePageActivityPermissionsDispatcher.getFineLocationWithCheck(HomePageActivity.this);
+    }
+
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    void getFineLocation() {
+        HomePageActivityPermissionsDispatcher.getCourseLocationWithCheck(HomePageActivity.this);
+    }
+
+    @NeedsPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+    void getCourseLocation() {
+        mGoogleApiClient.connect();
     }
 
     @Override
@@ -206,6 +222,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     protected void createLocationRequest() {
+        new GoogleSettingsApi(this);
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
@@ -561,7 +578,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     private void setUpViewPager() {
         //----------
-
+        mCustomProgressDialog.cancel();
         Map<String, Integer> dataMap = new LinkedHashMap<>();
         ArrayList<DoctorList> myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments));
         ArrayList<DoctorList> sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
@@ -631,17 +648,17 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-
+        mCustomProgressDialog.cancel();
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
-
+        mCustomProgressDialog.cancel();
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-
+        mCustomProgressDialog.cancel();
     }
 
 
@@ -795,6 +812,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     protected void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            CommonMethods.showToast(HomePageActivity.this, "Location Permission Required.");
+            return;
+        }
         PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this);
 
@@ -832,39 +853,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             //  startLocationUpdates();
             Log.d(TAG, "Location update resumed .....................");
         }
-        String userSelectedLocationReceived;
-        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
-        if (userSelectedLocationInfo.get(getString(R.string.location)) != null) {
-            userSelectedLocationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-        } else {
-            userSelectedLocationReceived = RescribeConstants.BLANK;
-        }
-
-        if (userSelectedLocationReceived.equalsIgnoreCase(locationReceived)) {
-            locationReceived = userSelectedLocationReceived;
-            Log.d(TAG, "DASHBOARD API NOT CALLED");
-        } else {
-            Log.d(TAG, "DASHBOARD API  CALLED");
-            if (RescribeConstants.BLANK.equalsIgnoreCase(locationReceived)) {
-                mGoogleApiClient.connect();
-            } else {
-                locationReceived = userSelectedLocationReceived;
-                String[] split = locationReceived.split(",");
-                if (split != null) {
-                    if (split.length > 1) {
-                        mDashboardHelper = new DashboardHelper(this, this);
-                        mDashboardHelper.doGetDashboard(split[1]);
-                        Double lat = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.latitude)));
-                        Double lng = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.longitude)));
-                        LatLng latLng = new LatLng(lat, lng);
-                        RescribeApplication.setUserSelectedLocationInfo(mContext, latLng, locationReceived);
-                    }
-                }
-            }
-        }
-        if (mDashboardDataModel != null) {
-            setUpViewPager();
-        }
+        HomePageActivityPermissionsDispatcher.getWritePermissionWithCheck(HomePageActivity.this);
     }
 
     private void updateUI() {
@@ -902,21 +891,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 System.out.println("obj.getAdminArea()" + obj.getAdminArea());
                 System.out.println("obj.getCountryName()" + obj.getCountryName());
                 LatLng location = new LatLng(lat, lng);
-                mDashboardHelper = new DashboardHelper(this, this);
                 RescribeApplication.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
-                if (obj.getLocality() != null) {
-                    mDashboardHelper.doGetDashboard(obj.getLocality());
-                } else {
-                    mDashboardHelper.doGetDashboard("");
-                }
-
-                //-----Updated location
-                HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
-                if (userSelectedLocationInfo.get(getString(R.string.location)) != null) {
-                    locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-                }
-                //-----Updated location
-
+                doCallDashBoardAPI();
                 Log.d("AREA", getArea(obj));
             } else {
                 Toast.makeText(this, "Address not found.", Toast.LENGTH_SHORT).show();
@@ -944,4 +920,41 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         else
             return obj.getCountryName();
     }
+
+    @Override
+    public void gpsStatus() {
+        mCustomProgressDialog.show();
+        mGoogleApiClient.connect();
+    }
+
+
+    private void doCallDashBoardAPI() {
+        String userSelectedLocationReceived;
+        //----------
+        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+        if (userSelectedLocationInfo.get(getString(R.string.location)) != null) {
+            userSelectedLocationReceived = userSelectedLocationInfo.get(getString(R.string.location));
+        } else {
+            userSelectedLocationReceived = RescribeConstants.BLANK;
+        }
+        //----------
+
+        if (RescribeConstants.BLANK.equalsIgnoreCase(locationReceived)) {
+            locationReceived = userSelectedLocationReceived;
+            //   mCustomProgressDialog.show();
+        } else {
+            locationReceived = userSelectedLocationReceived;
+            String[] split = locationReceived.split(",");
+            if (split != null) {
+                if (split.length > 1) {
+                    mDashboardHelper.doGetDashboard(split[1]);
+                    Double lat = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.latitude)));
+                    Double lng = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.longitude)));
+                    LatLng latLng = new LatLng(lat, lng);
+                    RescribeApplication.setUserSelectedLocationInfo(mContext, latLng, locationReceived);
+                }
+            }
+        }
+    }
+
 }

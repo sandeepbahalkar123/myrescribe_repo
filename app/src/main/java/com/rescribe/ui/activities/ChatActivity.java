@@ -76,8 +76,7 @@ import com.rescribe.notification.MessageNotification;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
 import com.rescribe.singleton.Device;
-import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
-import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
+ import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
@@ -860,9 +859,9 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 // call book appointment
                 Intent intent = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
                 intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
-                DoctorList doctorList = new DoctorList();
-                doctorList.setDocId(chatList.getId());
-                intent.putExtra(getString(R.string.clicked_item_data), doctorList);
+                DoctorList doctorListData = new DoctorList();
+                doctorListData.setDocId(chatList.getId());
+                intent.putExtra(getString(R.string.clicked_item_data), doctorListData);
                 intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
                 startActivity(intent);
                 break;

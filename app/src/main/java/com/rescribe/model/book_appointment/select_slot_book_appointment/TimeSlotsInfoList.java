@@ -65,6 +65,9 @@ public class TimeSlotsInfoList {
         }
 
         public String getFromTime() {
+            if (fromTime.contains(".")) {
+                fromTime = fromTime.replace(".", ":");
+            }
             return fromTime;
         }
 

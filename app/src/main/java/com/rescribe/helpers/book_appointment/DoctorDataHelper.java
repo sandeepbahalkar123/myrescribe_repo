@@ -80,7 +80,7 @@ public class DoctorDataHelper implements ConnectionListener {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT) {
+                } else if (mOldDataTag == RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT || mOldDataTag == RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT_WITH_DOCTOR_DETAILS) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_SET_FAVOURITE_DOCTOR) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
@@ -276,9 +276,9 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER);
     }
 
-    public void getTimeSlotToBookAppointmentWithDoctor(String docId, String locationID, String date, boolean isReqDoctorData) {
+    public void getTimeSlotToBookAppointmentWithDoctor(String docId, String locationID, String date, boolean isReqDoctorData, String taskID) {
 
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, taskID, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
 
         String url = Config.TIME_SLOT_TO_BOOK_APPOINTMENT + "docId=" + docId + "&locationId=" + locationID + "&date=" + date;
@@ -288,7 +288,7 @@ public class DoctorDataHelper implements ConnectionListener {
         }
 
         mConnectionFactory.setUrl(url);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT);
+        mConnectionFactory.createConnection(taskID);//RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT
 
        /* try {
             InputStream is = mContext.getAssets().open("book_appointment_select_time");

@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
@@ -792,15 +791,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         Log.d(TAG, "isConnected ...............: " + mGoogleApiClient.isConnected());
     }
 
-    private boolean isGooglePlayServicesAvailable() {
-        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (ConnectionResult.SUCCESS == status) {
-            return true;
-        } else {
-            GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
-            return false;
-        }
-    }
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -876,17 +866,17 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Log.d(TAG, "DASHBOARD API  CALLED");
             if (locationReceived.equals("")) {
                 mCustomProgressDialog.show();
-                mGoogleApiClient.connect();
+                if (!mGoogleApiClient.isConnected())
+                    mGoogleApiClient.connect();
+                else startLocationUpdates();
             } else {
                 String[] split = locationReceived.split(",");
-                if (split != null) {
-                    mDashboardHelper = new DashboardHelper(this, this);
-                    mDashboardHelper.doGetDashboard(split[1]);
-                    Double lat = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.latitude)));
-                    Double lng = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.longitude)));
-                    LatLng latLng = new LatLng(lat, lng);
-                    DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext, latLng, locationReceived);
-                }
+                mDashboardHelper = new DashboardHelper(this, this);
+                mDashboardHelper.doGetDashboard(split[1]);
+                Double lat = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.latitude)));
+                Double lng = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.longitude)));
+                LatLng latLng = new LatLng(lat, lng);
+                DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext, latLng, locationReceived);
             }
         }
 
@@ -972,6 +962,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     @Override
     public void gpsStatus() {
         mCustomProgressDialog.show();
-        mGoogleApiClient.connect();
+        if (!mGoogleApiClient.isConnected())
+            mGoogleApiClient.connect();
+        else startLocationUpdates();
     }
 }

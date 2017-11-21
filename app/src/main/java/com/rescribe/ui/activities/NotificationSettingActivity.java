@@ -44,6 +44,7 @@ public class NotificationSettingActivity extends AppCompatActivity {
 
     private void switchListeners() {
 
+        appointmentAlert.setAnimationDuration(250);
         appointmentAlert.setChecked(RescribePreferencesManager.getBoolean(RescribePreferencesManager.NOTIFICATION_SETTING_KEY.APPOINTMENT_ALERT, mContaxt));
         appointmentAlert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -52,6 +53,7 @@ public class NotificationSettingActivity extends AppCompatActivity {
             }
         });
 
+        investigationAlert.setAnimationDuration(250);
         investigationAlert.setChecked(RescribePreferencesManager.getBoolean(RescribePreferencesManager.NOTIFICATION_SETTING_KEY.INVESTIGATION_ALERT, mContaxt));
         investigationAlert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -60,6 +62,7 @@ public class NotificationSettingActivity extends AppCompatActivity {
             }
         });
 
+        medicationAlert.setAnimationDuration(250);
         medicationAlert.setChecked(RescribePreferencesManager.getBoolean(RescribePreferencesManager.NOTIFICATION_SETTING_KEY.MEDICATION_ALERT, mContaxt));
         medicationAlert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -68,6 +71,7 @@ public class NotificationSettingActivity extends AppCompatActivity {
             }
         });
 
+        offersAlert.setAnimationDuration(250);
         offersAlert.setChecked(RescribePreferencesManager.getBoolean(RescribePreferencesManager.NOTIFICATION_SETTING_KEY.OFFERS_ALERT, mContaxt));
         offersAlert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -76,6 +80,7 @@ public class NotificationSettingActivity extends AppCompatActivity {
             }
         });
 
+        appointmentAlert.setAnimationDuration(250);
         allNotifications.setChecked(isAllChecked());
     }
 

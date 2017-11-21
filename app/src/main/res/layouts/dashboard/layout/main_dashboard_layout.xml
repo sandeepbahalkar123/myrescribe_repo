@@ -65,6 +65,7 @@
         android:paddingRight="@dimen/dp12"
         android:paddingStart="@dimen/dp12"
         android:paddingTop="@dimen/dp10"
+        android:visibility="gone"
         android:src="@drawable/menu_button_3_x" />
     <ImageView
         android:id="@+id/locationImageView"
@@ -75,6 +76,6 @@
         android:paddingEnd="@dimen/dp12"
         android:paddingRight="@dimen/dp12"
         android:paddingTop="@dimen/dp10"
-        android:src="@drawable/location_icon" />
+        android:src="@drawable/dashboard_location_icon" />
 
 </RelativeLayout>

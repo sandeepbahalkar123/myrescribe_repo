@@ -308,7 +308,11 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doGetRecentlyVisitedDoctorPlacesData() {
+
+/*    try  {
+=======
         try {
+>>>>>>> riteshP
             InputStream is = mContext.getAssets().open("spinner_doctor.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -323,13 +327,17 @@ public class DoctorDataHelper implements ConnectionListener {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        }*/
 
-     /*   String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
-        mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.platform) + mContext.getString(R.string.android) + mContext.getString(R.string.screen_resolution) + screenResolutionValue+mContext.getString(R.string.city)+currentCity);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);*/
+        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+        if (userSelectedLocationInfo.get(mContext.getString(R.string.location)) != null) {
+            String locationReceived = userSelectedLocationInfo.get(mContext.getString(R.string.location));
+            String[] locationArea = locationReceived.split(",");
+            ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA, Request.Method.GET, true);
+            mConnectionFactory.setHeaderParams();
+            mConnectionFactory.setUrl(Config.GET_TASK_RECENT_VISIT_DOCTOR_PLACES_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.city) + locationArea[1].trim());
+            mConnectionFactory.createConnection(RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA);
+        }
     }
 
     public static DoctorServicesModel getReceivedDoctorServicesModel() {

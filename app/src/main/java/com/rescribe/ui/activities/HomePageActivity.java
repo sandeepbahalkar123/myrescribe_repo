@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
@@ -128,9 +127,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     String lunchTime = "";
     String dinnerTime = "";
     String snacksTime = "";
-
-    String locationReceived;
-
+    String locationReceived = "";
+    String previousLocationReceived = "";
     private MenuOptionsDashBoardAdapter mMenuOptionsDashBoardAdapter;
     private String patientId;
     private LoginHelper loginHelper;
@@ -177,7 +175,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         mDashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
 
         mDashboardDataBuilder = new ServicesCardViewImpl(this, this);
-        mDashboardHelper = new DashboardHelper(this, this);
 
         //------
         appDBHelper = new AppDBHelper(mContext);
@@ -211,7 +208,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @NeedsPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
     void getCourseLocation() {
-        mGoogleApiClient.connect();
+        doCallDashBoardAPI();
     }
 
     @Override
@@ -795,15 +792,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         Log.d(TAG, "isConnected ...............: " + mGoogleApiClient.isConnected());
     }
 
-    private boolean isGooglePlayServicesAvailable() {
-        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (ConnectionResult.SUCCESS == status) {
-            return true;
-        } else {
-            GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
-            return false;
-        }
-    }
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -849,11 +837,54 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     @Override
     public void onResume() {
         super.onResume();
-        if (mGoogleApiClient.isConnected()) {
-            //  startLocationUpdates();
-            Log.d(TAG, "Location update resumed .....................");
-        }
+
         HomePageActivityPermissionsDispatcher.getWritePermissionWithCheck(HomePageActivity.this);
+
+       /* if (mDashboardDataModel != null) {
+            setUpViewPager();
+        }*/
+
+    }
+
+    private void doCallDashBoardAPI() {
+        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+        if (userSelectedLocationInfo.get(getString(R.string.location)) != null) {
+            locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
+        } else {
+            locationReceived = "";
+        }
+        if (RescribeApplication.getPreviousUserSelectedLocationInfo() != null) {
+            HashMap<String, String> userPreviousSelectedLocationInfo = RescribeApplication.getPreviousUserSelectedLocationInfo();
+            previousLocationReceived = userPreviousSelectedLocationInfo.get(getString(R.string.location));
+        } else {
+            previousLocationReceived = "";
+        }
+
+        if (locationReceived.equalsIgnoreCase(previousLocationReceived)) {
+            Log.d(TAG, "DASHBOARD API NOT CALLED");
+
+        } else {
+            Log.d(TAG, "DASHBOARD API  CALLED");
+            if (locationReceived.equals("")) {
+                mCustomProgressDialog.show();
+                if (!mGoogleApiClient.isConnected())
+                    mGoogleApiClient.connect();
+                else startLocationUpdates();
+            } else {
+                String[] split = locationReceived.split(",");
+                mDashboardHelper = new DashboardHelper(this, this);
+                mDashboardHelper.doGetDashboard(split[1]);
+                Double lat = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.latitude)));
+                Double lng = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.longitude)));
+                LatLng latLng = new LatLng(lat, lng);
+                RescribeApplication.setPreviousUserSelectedLocationInfo(mContext, latLng, locationReceived);
+            }
+        }
+
+        if (mDashboardDataModel != null) {
+            setUpViewPager();
+        }
+
     }
 
     private void updateUI() {
@@ -891,8 +922,16 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 System.out.println("obj.getAdminArea()" + obj.getAdminArea());
                 System.out.println("obj.getCountryName()" + obj.getCountryName());
                 LatLng location = new LatLng(lat, lng);
+                mDashboardHelper = new DashboardHelper(this, this);
                 RescribeApplication.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
-                doCallDashBoardAPI();
+                RescribeApplication.setPreviousUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
+                if (obj.getLocality() != null) {
+
+                    mDashboardHelper.doGetDashboard(obj.getLocality());
+                } else {
+                    mDashboardHelper.doGetDashboard("");
+                }
+
                 Log.d("AREA", getArea(obj));
             } else {
                 Toast.makeText(this, "Address not found.", Toast.LENGTH_SHORT).show();
@@ -924,37 +963,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     @Override
     public void gpsStatus() {
         mCustomProgressDialog.show();
-        mGoogleApiClient.connect();
+        if (!mGoogleApiClient.isConnected())
+            mGoogleApiClient.connect();
+        else startLocationUpdates();
     }
-
-
-    private void doCallDashBoardAPI() {
-        String userSelectedLocationReceived;
-        //----------
-        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
-        if (userSelectedLocationInfo.get(getString(R.string.location)) != null) {
-            userSelectedLocationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-        } else {
-            userSelectedLocationReceived = RescribeConstants.BLANK;
-        }
-        //----------
-
-        if (RescribeConstants.BLANK.equalsIgnoreCase(locationReceived)) {
-            locationReceived = userSelectedLocationReceived;
-            //   mCustomProgressDialog.show();
-        } else {
-            locationReceived = userSelectedLocationReceived;
-            String[] split = locationReceived.split(",");
-            if (split != null) {
-                if (split.length > 1) {
-                    mDashboardHelper.doGetDashboard(split[1]);
-                    Double lat = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.latitude)));
-                    Double lng = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.longitude)));
-                    LatLng latLng = new LatLng(lat, lng);
-                    RescribeApplication.setUserSelectedLocationInfo(mContext, latLng, locationReceived);
-                }
-            }
-        }
-    }
-
 }

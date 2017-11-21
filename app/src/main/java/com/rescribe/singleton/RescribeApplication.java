@@ -23,6 +23,7 @@ public class RescribeApplication extends MultiDexApplication {
     private static RescribeApplication singleton;
 
     private static HashMap<String, String> userSelectedLocationInfo = new HashMap<>();
+    private static HashMap<String, String> previousUserSelectedLocationInfo = new HashMap<>();
 
     public static RescribeApplication getInstance() {
         return singleton;
@@ -60,5 +61,14 @@ public class RescribeApplication extends MultiDexApplication {
 
     public static HashMap<String, String> getUserSelectedLocationInfo() {
         return userSelectedLocationInfo;
+    }
+    public static HashMap<String, String> getPreviousUserSelectedLocationInfo() {
+        return previousUserSelectedLocationInfo;
+    }
+
+    public static void setPreviousUserSelectedLocationInfo(Context ctx, LatLng data, String locationText) {
+     previousUserSelectedLocationInfo.put(ctx.getString(R.string.location), locationText);
+      previousUserSelectedLocationInfo.put(ctx.getString(R.string.latitude), "" + data.latitude);
+       previousUserSelectedLocationInfo.put(ctx.getString(R.string.longitude), "" + data.longitude);
     }
 }

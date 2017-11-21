@@ -167,12 +167,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                     //--------
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDocListToUpdateFavStatus);
                     //--------
-                    for (DoctorList dataObject :
-                            mReceivedList) {
-                        if (dataObject.getDocId() == mClickedDocListToUpdateFavStatus.getDocId()) {
-                            dataObject.setFavourite(dataObject.getFavourite() ? false : true);
-                        }
-                    }
                     mBookAppointFilteredDocListAdapter.notifyDataSetChanged();
                 }
                 break;

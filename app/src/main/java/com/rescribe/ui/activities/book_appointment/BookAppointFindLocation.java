@@ -55,6 +55,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
 import com.rescribe.model.filter.DoctorData;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -74,7 +75,7 @@ import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
 
 public class BookAppointFindLocation extends AppCompatActivity implements PlaceSelectionListener, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,LocationListener, HelperResponse ,ShowPopularPlacesAdapter.OnPopularPlacesListener,RecentPlacesAdapter.OnRecentPlacesListener{
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, HelperResponse, ShowPopularPlacesAdapter.OnPopularPlacesListener, RecentPlacesAdapter.OnRecentPlacesListener {
 
     public static final String TAG = "BookAppointFindLocation";
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 10;
@@ -224,7 +225,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
                     }
                     String city = addresses.get(0).getLocality();
 
-                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointFindLocation.this, place.getLatLng(), locality + ", " + city);
+                    RescribeApplication.setUserSelectedLocationInfo(BookAppointFindLocation.this, place.getLatLng(), locality + ", " + city);
                     finish();
 
                 }
@@ -281,6 +282,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
                 break;
         }
     }
+
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "onConnected - isConnected ...............: " + mGoogleApiClient.isConnected());
@@ -317,7 +319,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
                 System.out.println("obj.getCountryName()" + obj.getCountryName());
                 LatLng location = new LatLng(lat, lng);
 
-                DoctorDataHelper.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
+                RescribeApplication.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
                 detectLocation.setText(getArea(obj) + "," + obj.getLocality());
                 finish();
                 //DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
@@ -353,8 +355,6 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
                 + connectionResult.getErrorCode());
     }
 
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -382,11 +382,11 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
                 int spacing = 20; // 50px
                 boolean includeEdge = true;
                 popularPlacesRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-                mShowPopularPlacesAdapter = new ShowPopularPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getAreaList(),this);
+                mShowPopularPlacesAdapter = new ShowPopularPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getAreaList(), this);
                 popularPlacesRecyclerView.setAdapter(mShowPopularPlacesAdapter);
                 popularPlacesRecyclerView.setNestedScrollingEnabled(false);
 
-                mRecentPlacesAdapter = new RecentPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList(),this);
+                mRecentPlacesAdapter = new RecentPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList(), this);
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 recentlyVisitedRecyclerView.setLayoutManager(linearlayoutManager);
                 recentlyVisitedRecyclerView.setNestedScrollingEnabled(false);
@@ -418,6 +418,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         updateUI();
     }
+
     private void updateUI() {
         Log.d(TAG, "UI update initiated .............");
         if (null != mCurrentLocation) {
@@ -437,6 +438,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
             Log.d(TAG, "location is null ...............");
         }
     }
+
     protected void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);
@@ -450,14 +452,14 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
 
     @Override
     public void onClickOfPopularPlaces(String location) {
-        DoctorDataHelper.setUserSelectedLocationInfo(this,null,location);
+        RescribeApplication.setUserSelectedLocationInfo(this, null, location);
         finish();
 
     }
 
     @Override
     public void onClickOfRecentPlaces(String location) {
-        DoctorDataHelper.setUserSelectedLocationInfo(this,null,location);
+        RescribeApplication.setUserSelectedLocationInfo(this, null, location);
         finish();
     }
 }

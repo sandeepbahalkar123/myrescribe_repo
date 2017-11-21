@@ -61,21 +61,22 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         if (nameOfCategoryType.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
             Intent intent = new Intent(mParentActivity, ServicesFilteredDoctorListActivity.class);
             bundleData.putString(mContext.getString(R.string.toolbarTitle), mContext.getString(R.string.my_appointments));
-            bundleData.putParcelableArrayList(mContext.getString(R.string.clicked_item_data), getCategoryWiseDoctorList(mContext.getString(R.string.my_appointments)));
+            //  bundleData.putParcelableArrayList(mContext.getString(R.string.clicked_item_data), getCategoryWiseDoctorList(mContext.getString(R.string.my_appointments)));
             intent.putExtras(bundleData);
             //mParentActivity.startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
             mParentActivity.startActivity(intent);
         } else if (nameOfCategoryType.equalsIgnoreCase(mContext.getString(R.string.favorite))) { // favorite card name
             Intent intent = new Intent(mParentActivity, ServicesFilteredDoctorListActivity.class);
             bundleData.putString(mContext.getString(R.string.toolbarTitle), nameOfCategoryType);
-            bundleData.putParcelableArrayList(mContext.getString(R.string.clicked_item_data), getFavouriteDocList());
+            //    bundleData.putParcelableArrayList(mContext.getString(R.string.clicked_item_data), getFavouriteDocList());
+            bundleData.putBoolean(mContext.getString(R.string.favorite), true);
             intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);
         } else {
             // for sponcered and recent visited doctor list.
             Intent intent = new Intent(mParentActivity, ServicesFilteredDoctorListActivity.class);
             bundleData.putString(mContext.getString(R.string.toolbarTitle), nameOfCategoryType);
-            bundleData.putParcelableArrayList(mContext.getString(R.string.clicked_item_data), getCategoryWiseDoctorList(nameOfCategoryType));
+            //  bundleData.putParcelableArrayList(mContext.getString(R.string.clicked_item_data), getCategoryWiseDoctorList(nameOfCategoryType));
             intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);
         }
@@ -139,24 +140,6 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         return null;
     }
 
-    public ArrayList<DoctorList> filterDocListBySpeciality(String selectedSpeciality) {
-
-        ArrayList<DoctorList> doctors = this.mReceivedDoctorDataList;
-
-        ArrayList<DoctorList> dataList = new ArrayList<>();
-        if (selectedSpeciality == null) {
-            return dataList;
-        } else {
-            for (DoctorList listObject :
-                    doctors) {
-                if (selectedSpeciality.equalsIgnoreCase(listObject.getDocSpeciality())) {
-                    dataList.add(listObject);
-                }
-            }
-        }
-        return dataList;
-    }
-
     public static void updateFavStatusForDoctorDataObject(DoctorList updatedObject) {
         if (updatedObject != null) {
             for (int i = 0; i < mReceivedDoctorDataList.size(); i++) {
@@ -179,4 +162,20 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         }*/
     }
 
+
+    public ArrayList<DoctorList> filterDocListBySpeciality(String selectedSpeciality) {
+
+        ArrayList<DoctorList> dataList = new ArrayList<>();
+        if (selectedSpeciality == null) {
+            return dataList;
+        } else {
+            for (DoctorList listObject :
+                    mReceivedDoctorDataList) {
+                if (selectedSpeciality.equalsIgnoreCase(listObject.getDocSpeciality())) {
+                    dataList.add(listObject);
+                }
+            }
+        }
+        return dataList;
+    }
 }

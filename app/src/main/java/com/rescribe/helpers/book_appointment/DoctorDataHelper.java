@@ -13,6 +13,8 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesModel;
 import com.rescribe.model.book_appointment.complaints.request_complaints.DoctorListByComplaintModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestDoctorListBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestFavouriteDoctorModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
@@ -20,6 +22,7 @@ import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
@@ -37,18 +40,8 @@ public class DoctorDataHelper implements ConnectionListener {
     String TAG = this.getClass().getName();
     Context mContext;
     HelperResponse mHelperResponseManager;
-    private static HashMap<String, String> userSelectedLocationInfo = new HashMap<>();
-    private static HashMap<String, String> previousUserSelectedLocationInfo = new HashMap<>();
 
-    public static boolean isFindLocationCalled() {
-        return isFindLocationCalled;
-    }
-
-    public static void setIsFindLocationCalled(boolean isFindLocationCalled) {
-        DoctorDataHelper.isFindLocationCalled = isFindLocationCalled;
-    }
-
-    private static boolean isFindLocationCalled = false;
+    private static DoctorServicesModel receivedDoctorServicesModel = null;
 
     public DoctorDataHelper(Context context, HelperResponse servicesActivity) {
         this.mContext = context;
@@ -61,6 +54,19 @@ public class DoctorDataHelper implements ConnectionListener {
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag == RescribeConstants.TASK_GET_DOCTOR_DATA) {
+                    BookAppointmentBaseModel receivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
+                    if (receivedBookAppointmentBaseModel != null) {
+                        DoctorServicesModel mReceivedDoctorServicesModel = receivedBookAppointmentBaseModel.getDoctorServicesModel();
+                        if (mReceivedDoctorServicesModel != null) {
+                            receivedDoctorServicesModel = mReceivedDoctorServicesModel;
+                            for (int i = 0; i < receivedDoctorServicesModel.getDoctorList().size(); i++) {
+                                DoctorList doctorList = receivedDoctorServicesModel.getDoctorList().get(i);
+                                if (!doctorList.getDocName().toLowerCase().contains("dr.")) {
+                                    doctorList.setDocName("Dr. " + doctorList.getDocName());
+                                }
+                            }
+                        }
+                    }
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_GET_COMPLAINTS) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
@@ -74,13 +80,13 @@ public class DoctorDataHelper implements ConnectionListener {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT) {
+                } else if (mOldDataTag == RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT || mOldDataTag == RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT_WITH_DOCTOR_DETAILS) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_SET_FAVOURITE_DOCTOR) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_DASHBOARD_API) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                }else  if (mOldDataTag == RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA) {
+                } else if (mOldDataTag == RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
@@ -130,7 +136,7 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_BY_LOCATION);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_DOCTOR_DATA);
-      /*try {
+        /*try {
             InputStream is = mContext.getAssets().open("doctor_data_new_6_nov_2017.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -228,28 +234,6 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_SET_FAVOURITE_DOCTOR);
     }
 
-    public static HashMap<String, String> getUserSelectedLocationInfo() {
-        return userSelectedLocationInfo;
-    }
-
-    public static void setUserSelectedLocationInfo(Context ctx, LatLng data, String locationText) {
-        DoctorDataHelper.userSelectedLocationInfo.put(ctx.getString(R.string.location), locationText);
-        if(data!=null) {
-            DoctorDataHelper.userSelectedLocationInfo.put(ctx.getString(R.string.latitude), "" + data.latitude);
-            DoctorDataHelper.userSelectedLocationInfo.put(ctx.getString(R.string.longitude), "" + data.longitude);
-        }
-    }
-
-    public static HashMap<String, String> getPreviousUserSelectedLocationInfo() {
-        return previousUserSelectedLocationInfo;
-    }
-
-    public static void setPreviousUserSelectedLocationInfo(Context ctx, LatLng data, String locationText) {
-        DoctorDataHelper.previousUserSelectedLocationInfo.put(ctx.getString(R.string.location), locationText);
-        DoctorDataHelper.previousUserSelectedLocationInfo.put(ctx.getString(R.string.latitude), "" + data.latitude);
-        DoctorDataHelper.previousUserSelectedLocationInfo.put(ctx.getString(R.string.longitude), "" + data.longitude);
-    }
-
 
     public void doGetServices() {
 //        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_BOOK_APPOINTMENT_SERVICES, Request.Method.GET, true);
@@ -277,7 +261,7 @@ public class DoctorDataHelper implements ConnectionListener {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER, Request.Method.POST, true);
 
         //---------
-        String s = DoctorDataHelper.userSelectedLocationInfo.get(mContext.getString(R.string.location));
+        String s = RescribeApplication.getUserSelectedLocationInfo().get(mContext.getString(R.string.location));
         if (s != null) {
             String[] split = s.split(",");
             requestModel.setCityName(split[1].trim());
@@ -292,9 +276,9 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER);
     }
 
-    public void getTimeSlotToBookAppointmentWithDoctor(String docId, String locationID, String date, boolean isReqDoctorData) {
+    public void getTimeSlotToBookAppointmentWithDoctor(String docId, String locationID, String date, boolean isReqDoctorData, String taskID) {
 
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, taskID, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
 
         String url = Config.TIME_SLOT_TO_BOOK_APPOINTMENT + "docId=" + docId + "&locationId=" + locationID + "&date=" + date;
@@ -304,7 +288,7 @@ public class DoctorDataHelper implements ConnectionListener {
         }
 
         mConnectionFactory.setUrl(url);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT);
+        mConnectionFactory.createConnection(taskID);//RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT
 
        /* try {
             InputStream is = mContext.getAssets().open("book_appointment_select_time");
@@ -324,7 +308,11 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doGetRecentlyVisitedDoctorPlacesData() {
+
 /*    try  {
+=======
+        try {
+>>>>>>> riteshP
             InputStream is = mContext.getAssets().open("spinner_doctor.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -337,11 +325,11 @@ public class DoctorDataHelper implements ConnectionListener {
             RecentVisitedBaseModel mRecentVisitedBaseModel = gson.fromJson(json, RecentVisitedBaseModel.class);
             onResponse(ConnectionListener.RESPONSE_OK, mRecentVisitedBaseModel, RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA);
 
-        } catch(IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }*/
 
-        HashMap<String, String> userSelectedLocationInfo = getUserSelectedLocationInfo();
+        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         if (userSelectedLocationInfo.get(mContext.getString(R.string.location)) != null) {
             String locationReceived = userSelectedLocationInfo.get(mContext.getString(R.string.location));
             String[] locationArea = locationReceived.split(",");
@@ -352,4 +340,11 @@ public class DoctorDataHelper implements ConnectionListener {
         }
     }
 
+    public static DoctorServicesModel getReceivedDoctorServicesModel() {
+        return receivedDoctorServicesModel;
+    }
+
+    public static void setReceivedDoctorServicesModel(DoctorServicesModel receivedDoctorServicesModel) {
+        DoctorDataHelper.receivedDoctorServicesModel = receivedDoctorServicesModel;
+    }
 }

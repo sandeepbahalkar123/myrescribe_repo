@@ -60,6 +60,7 @@ import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointFindLocation;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
@@ -207,7 +208,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @NeedsPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
     void getCourseLocation() {
-        getLocation();
+        doCallDashBoardAPI();
     }
 
     @Override
@@ -845,15 +846,15 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     }
 
-    private void getLocation() {
-        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+    private void doCallDashBoardAPI() {
+        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         if (userSelectedLocationInfo.get(getString(R.string.location)) != null) {
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
         } else {
             locationReceived = "";
         }
-        if (DoctorDataHelper.getPreviousUserSelectedLocationInfo() != null) {
-            HashMap<String, String> userPreviousSelectedLocationInfo = DoctorDataHelper.getPreviousUserSelectedLocationInfo();
+        if (RescribeApplication.getPreviousUserSelectedLocationInfo() != null) {
+            HashMap<String, String> userPreviousSelectedLocationInfo = RescribeApplication.getPreviousUserSelectedLocationInfo();
             previousLocationReceived = userPreviousSelectedLocationInfo.get(getString(R.string.location));
         } else {
             previousLocationReceived = "";
@@ -876,7 +877,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 Double lat = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.latitude)));
                 Double lng = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.longitude)));
                 LatLng latLng = new LatLng(lat, lng);
-                DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext, latLng, locationReceived);
+                RescribeApplication.setPreviousUserSelectedLocationInfo(mContext, latLng, locationReceived);
             }
         }
 
@@ -922,8 +923,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 System.out.println("obj.getCountryName()" + obj.getCountryName());
                 LatLng location = new LatLng(lat, lng);
                 mDashboardHelper = new DashboardHelper(this, this);
-                DoctorDataHelper.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
-                DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
+                RescribeApplication.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
+                RescribeApplication.setPreviousUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
                 if (obj.getLocality() != null) {
 
                     mDashboardHelper.doGetDashboard(obj.getLocality());

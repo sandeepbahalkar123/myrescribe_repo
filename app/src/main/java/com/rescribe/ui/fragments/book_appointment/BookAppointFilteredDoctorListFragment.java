@@ -65,6 +65,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     private String mReceivedTitle;
     private DoctorList mClickedDocListToUpdateFavStatus;
     private String mClickedDoctorObjectPosition;
+    private String mClickedItemDataValue;
+    private boolean mIsFavoriteList;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -94,24 +96,36 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     private void init(Bundle args) {
         mDoctorListView.setNestedScrollingEnabled(false);
         if (args != null) {
-            mReceivedList = args.getParcelableArrayList(getString(R.string.clicked_item_data));
-            if (mReceivedList == null) {
-                mReceivedList = new ArrayList<>();
-            }
             mClickedItemDataTypeValue = args.getString(getString(R.string.clicked_item_data_type_value));
             mReceivedTitle = args.getString(getString(R.string.toolbarTitle));
-            //  BookAppointDoctorListBaseActivity.setToolBarTitle(mReceivedTitle, true);
-            if (getString(R.string.doctors_speciality).equalsIgnoreCase(mClickedItemDataTypeValue)) {
-                mLocationFab.setVisibility(View.VISIBLE);
-                mFilterFab.setVisibility(View.VISIBLE);
+            mClickedItemDataValue = args.getString(getString(R.string.clicked_item_data));
+            mIsFavoriteList = args.getBoolean(getString(R.string.favorite));
+        }
+        mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
+    }
+
+    private void doGetReceivedListBasedOnClickedItemData() {
+        //------------
+        ServicesCardViewImpl servicesCardViewImpl = new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity());
+
+        if (getString(R.string.doctors_speciality).equalsIgnoreCase(mClickedItemDataTypeValue)) {
+            mReceivedList = servicesCardViewImpl.filterDocListBySpeciality(mClickedItemDataValue);
+            mLocationFab.setVisibility(View.VISIBLE);
+            mFilterFab.setVisibility(View.VISIBLE);
+        } else {
+            mLocationFab.setVisibility(View.GONE);
+            mFilterFab.setVisibility(View.GONE);
+            if (mIsFavoriteList) {
+                mReceivedList = servicesCardViewImpl.getFavouriteDocList();
             } else {
-                mLocationFab.setVisibility(View.GONE);
-                mFilterFab.setVisibility(View.GONE);
+                mReceivedList = servicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataValue);
             }
         }
-
-        mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
-        updateDataInViews(null);
+        //------------
+        if (mReceivedList == null) {
+            mReceivedList = new ArrayList<>();
+        }
+        //-----------
     }
 
 
@@ -136,6 +150,13 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        doGetReceivedListBasedOnClickedItemData();
+        updateDataInViews(null);
+    }
+
+    @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
 
         switch (mOldDataTag) {
@@ -146,12 +167,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                     //--------
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDocListToUpdateFavStatus);
                     //--------
-                    for (DoctorList dataObject :
-                            mReceivedList) {
-                        if (dataObject.getDocId() == mClickedDocListToUpdateFavStatus.getDocId()) {
-                            dataObject.setFavourite(dataObject.getFavourite() ? false : true);
-                        }
-                    }
                     mBookAppointFilteredDocListAdapter.notifyDataSetChanged();
                 }
                 break;
@@ -228,9 +243,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 }
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-                //   intent.putParcelableArrayListExtra(getString(R.string.doctor_data), new ArrayList<DoctorList>());
+                intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.filter));
                 intent.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
-                startActivity(intent);
+                startActivityForResult(intent, RescribeConstants.DOCTOR_LOCATION_CHANGE_FROM_MAP_REQUEST_CODE);
                 break;
         }
     }
@@ -250,7 +265,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 mClickedDocListToUpdateFavStatus = mClickedDoctorObject;
                 Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
                 intent.putExtras(bundleData);
-                getActivity().startActivityForResult(intent,RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+                getActivity().startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
             }
         } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {
             mClickedDocListToUpdateFavStatus = bundleData.getParcelable(getString(R.string.clicked_item_data));

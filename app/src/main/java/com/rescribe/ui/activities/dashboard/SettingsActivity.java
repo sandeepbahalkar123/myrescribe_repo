@@ -22,6 +22,7 @@ import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.LoginSignUpActivity;
+import com.rescribe.ui.activities.NotificationSettingActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
@@ -40,7 +41,6 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     @BindView(R.id.settingsMenuList)
     RecyclerView settingsMenuList;
@@ -138,8 +138,9 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
     @Override
     public void onClickOfSettingMenuOption(String mSettingName) {
-        if(mSettingName.equals(R.string.notification)){
-
+        if(mSettingName.contains(getString(R.string.notification))){
+          Intent intent = new Intent(SettingsActivity.this, NotificationSettingActivity.class);
+            startActivity(intent);
         }
 
     }

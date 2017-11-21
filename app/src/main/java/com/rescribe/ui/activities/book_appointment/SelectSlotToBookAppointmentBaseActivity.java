@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.SelectSlotTimeToBookAppointmentFragment;
 
@@ -61,7 +62,7 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
         showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
 
-        userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+        userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         // showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         Bundle bundle = new Bundle();
         bundle.putParcelable(getString(R.string.clicked_item_data), doctorObject);

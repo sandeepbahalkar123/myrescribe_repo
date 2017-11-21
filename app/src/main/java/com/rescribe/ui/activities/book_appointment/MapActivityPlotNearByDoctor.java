@@ -32,7 +32,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -44,12 +51,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by jeetal on 4/10/17.
  */
 
-public class MapActivityPlotNearByDoctor extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
+public class MapActivityPlotNearByDoctor extends AppCompatActivity implements HelperResponse, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
@@ -73,6 +81,8 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
     ImageView mDirections;
     RatingBar mRatingBar;
     ImageView mMoreInfo;
+    private String isActivityOpenedFromFilterViewMapFAB;
+    private DoctorDataHelper mDoctorDataHelper;
     //----------
 
     @Override
@@ -86,7 +96,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
     private void init() {
         mContext = MapActivityPlotNearByDoctor.this;
         mDoctorLists = new ArrayList<>();
-        mUserSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+        mUserSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         mDoctorLists = getIntent().getExtras().getParcelableArrayList(getString(R.string.doctor_data));
         ;
         bookAppointmentBackButton.setOnClickListener(new View.OnClickListener() {
@@ -96,9 +106,19 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
             }
         });
         title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
+
+        //--------
         showlocation.setVisibility(View.GONE);
-       // showlocation.setText(mUserSelectedLocationInfo.get(getString(R.string.location)));
-        locationTextView.setVisibility(View.VISIBLE);
+        isActivityOpenedFromFilterViewMapFAB = getIntent().getStringExtra(getString(R.string.clicked_item_data_type_value));
+        if (getString(R.string.filter).equalsIgnoreCase(isActivityOpenedFromFilterViewMapFAB)) {
+            locationTextView.setVisibility(View.VISIBLE);
+            mDoctorDataHelper = new DoctorDataHelper(this, this);
+        } else {
+            locationTextView.setVisibility(View.GONE);
+        }
+        //--------
+
+        // showlocation.setText(mUserSelectedLocationInfo.get(getString(R.string.location)));
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -117,6 +137,11 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapClickListener(this);
 
+        drawMarkerOnMapReady();
+
+    }
+
+    private void drawMarkerOnMapReady() {
         //------------
 
         new Handler().postDelayed(new Runnable() {
@@ -133,9 +158,9 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
                         View itemView = getLayoutInflater().inflate(R.layout.custom_marker_map, null);
                         TextView ratingText = (TextView) itemView.findViewById(R.id.ratingText);
                         TextView doctorNameText = (TextView) itemView.findViewById(R.id.doctorNameText);
-                        if(doctorList.getRating()==0){
+                        if (doctorList.getRating() == 0) {
                             ratingText.setText("");
-                        }else {
+                        } else {
                             ratingText.setText(String.valueOf(doctorList.getRating()));
                         }
                         doctorNameText.setText(doctorList.getDocName());
@@ -148,7 +173,6 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
             }
         }, 100);
         //------------
-
     }
 
     public Address getLocationFromAddress(String strAddress) {
@@ -246,10 +270,10 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
             }
         });
         try {
-            if(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating()==0){
+            if (mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating() == 0) {
                 mDoctorRating.setVisibility(View.GONE);
                 mRatingBar.setVisibility(View.GONE);
-            }else{
+            } else {
                 mDoctorRating.setVisibility(View.VISIBLE);
                 mRatingBar.setVisibility(View.VISIBLE);
                 mDoctorRating.setText("" + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
@@ -320,4 +344,75 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements On
 
     }
 
+    @OnClick({R.id.locationTextView})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.locationTextView:
+                Intent start = new Intent(this, BookAppointFindLocation.class);
+                startActivity(start);
+                break;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (getString(R.string.filter).equalsIgnoreCase(isActivityOpenedFromFilterViewMapFAB)) {
+            HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+            String selectedLocation = userSelectedLocationInfo.get(getString(R.string.location));
+            String[] split = selectedLocation.split(",");
+            if (split.length == 2) {
+                mDoctorDataHelper.doGetDoctorData(split[1], split[0], null);
+            } else {
+                mDoctorDataHelper.doGetDoctorData("", "", null);
+            }
+        }
+
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        BookAppointmentBaseModel receivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
+        if (receivedBookAppointmentBaseModel != null) {
+            DoctorServicesModel mReceivedDoctorServicesModel = receivedBookAppointmentBaseModel.getDoctorServicesModel();
+            if (mReceivedDoctorServicesModel != null) {
+                ArrayList<DoctorList> doctorList = mReceivedDoctorServicesModel.getDoctorList();
+                new ServicesCardViewImpl(this, this).setReceivedDoctorDataList(doctorList);
+
+                //--------
+                ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
+                for (DoctorList mainObject :
+                        doctorList) {
+                    ArrayList<ClinicData> clinicDataList = mainObject.getClinicDataList();
+                    for (int i = 0; i < clinicDataList.size(); i++) {
+                        DoctorList doctorListByClinic = new DoctorList();
+                        doctorListByClinic = mainObject;
+                        doctorListByClinic.setAddressOfDoctorString(clinicDataList.get(i).getClinicAddress());
+                        doctorListByClinic.setNameOfClinicString(clinicDataList.get(i).getClinicName());
+                        doctorListByClinics.add(doctorListByClinic);
+                    }
+                }
+
+                // mMap.clear();
+                drawMarkerOnMapReady();
+                //-------------
+            }
+        }
+
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
+    }
 }

@@ -30,6 +30,7 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.SupportActivity;
@@ -77,15 +78,9 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     private int PLACE_PICKER_REQUEST = 1;
     private HashMap<String, String> mComplaintsUserSearchFor = new HashMap<>();
 
-    //-----
-    String latitude = "";
-    String longitude = "";
-    String address;
     private DrawerForFilterDoctorBookAppointment mDrawerLoadedFragment;
 
     private ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
-
-    //-----
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,12 +103,10 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                 addBottomMenu(bottomMenu);
             }
         }
-
-
-        locationTextView.setVisibility(View.VISIBLE);
-
         //------
-        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+        locationTextView.setVisibility(View.VISIBLE);
+        //------
+        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         String locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
         if (locationReceived != null) {
             // locationTextView.setText("" + locationReceived);
@@ -153,6 +146,12 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        DoctorDataHelper.setReceivedDoctorServicesModel(null);
     }
 
     @Override

@@ -67,7 +67,7 @@ public class RescribePreferencesManager {
         } catch (NumberFormatException e) {
             throw new ClassCastException(e.getMessage());
         }*/
-        return getSharedPreference(context).getBoolean(key, false);
+        return getSharedPreference(context).getBoolean(key, true);
 
     }
 

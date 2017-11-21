@@ -47,6 +47,9 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
+import com.rescribe.model.filter.DoctorData;
+import com.rescribe.singleton.RescribeApplication;
+import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.LocationUtil.PermissionUtils;
@@ -64,7 +67,6 @@ import butterknife.OnClick;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
 import static com.github.mikephil.charting.charts.Chart.LOG_TAG;
-
 
 public class BookAppointFindLocation extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, HelperResponse, ShowPopularPlacesAdapter.OnPopularPlacesListener, RecentPlacesAdapter.OnRecentPlacesListener {
@@ -108,8 +110,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
     private GoogleApiClient mGoogleApiClient;
     private PlaceArrayAdapter mPlaceArrayAdapter;
 
-    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
-            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(23.63936, 68.14712), new LatLng(28.20453, 97.34466));
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -170,10 +171,10 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
             // Selecting the first object buffer.
             final Place place = places.get(0);
 
-            CommonMethods.Log(TAG, "Place Selected: " + place.getName());
+            getAddress(place.getLatLng().latitude, place.getLatLng().longitude);
 
             // Format the returned place's details and display them in the TextView.
-            CommonMethods.showToast(mContext, "" + formatPlaceDetails(getResources(), place.getName(), place.getId(),
+           /* CommonMethods.showToast(mContext, "" + formatPlaceDetails(getResources(), place.getName(), place.getId(),
                     place.getAddress(), place.getPhoneNumber(), place.getWebsiteUri()));
 
             CharSequence attributions = place.getAttributions();
@@ -181,7 +182,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                 CommonMethods.showToast(mContext, "" + Html.fromHtml(attributions.toString()));
             } else {
                 CommonMethods.showToast(mContext, "");
-            }
+            }*/
         }
     };
 
@@ -197,66 +198,6 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                 websiteUri));
 
     }
-
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
-        super.onActivityResult(requestCode, resultCode, data);
-        //autocompleteFragment.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(this, data);
-                StringBuilder stBuilder = new StringBuilder();
-                String placename = String.format("%s", place.getName());
-
-                address = String.format("%s", place.getAddress());
-                stBuilder.append("Name: ");
-                stBuilder.append(placename);
-                stBuilder.append("\n");
-                stBuilder.append("Address: ");
-                stBuilder.append(address);
-                Geocoder gcd = new Geocoder(this, Locale.getDefault());
-                List<Address> addresses = null;
-                try {
-                    addresses = gcd.getFromLocation(place.getLatLng().latitude, place.getLatLng().longitude, 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (addresses != null && addresses.size() > 0) {
-                    //-------
-                    String locality = "";
-                    //-------
-                    if (placename.contains(" ")) {
-                        locality = getArea(addresses.get(0));
-                    } else {
-                        locality = placename;
-                    }
-                    String city = addresses.get(0).getLocality();
-
-                    DoctorDataHelper.setUserSelectedLocationInfo(BookAppointFindLocation.this, place.getLatLng(), locality + ", " + city);
-                    finish();
-
-                }
-                CommonMethods.Log(TAG, "Place:" + place.toString());
-                setResult(Activity.RESULT_OK, data);
-                finish();
-            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                Status status = PlaceAutocomplete.getStatus(this, data);
-                CommonMethods.Log(TAG, status.getStatusMessage());
-                setResult(Activity.RESULT_CANCELED, data);
-                finish();
-            } else if (resultCode == RESULT_CANCELED) {
-                setResult(Activity.RESULT_CANCELED, data);
-                finish();
-            }
-        } else if (requestCode == REQUEST_CHECK_SETTINGS) {
-            if (resultCode == RESULT_OK) {
-            } else if (requestCode == RESULT_CANCELED) {
-
-            }
-        }
-    }*/
 
     private String getArea(Address obj) {
 
@@ -330,7 +271,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                 System.out.println("obj.getCountryName()" + obj.getCountryName());
                 LatLng location = new LatLng(lat, lng);
 
-                DoctorDataHelper.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
+                RescribeApplication.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
                 detectLocation.setText(getArea(obj) + "," + obj.getLocality());
                 finish();
                 //DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
@@ -344,13 +285,13 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
 
                 Log.d("AREA", getArea(obj));
             } else {
-                Toast.makeText(this, "Address not found.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Address not found.", Toast.LENGTH_SHORT).show();
             }
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -366,8 +307,6 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
         Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = "
                 + connectionResult.getErrorCode());
     }
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -389,11 +328,11 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                 int spacing = 20; // 50px
                 boolean includeEdge = true;
                 popularPlacesRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-                mShowPopularPlacesAdapter = new ShowPopularPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getAreaList(),this);
+                mShowPopularPlacesAdapter = new ShowPopularPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getAreaList(), this);
                 popularPlacesRecyclerView.setAdapter(mShowPopularPlacesAdapter);
                 popularPlacesRecyclerView.setNestedScrollingEnabled(false);
 
-                mRecentPlacesAdapter = new RecentPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList(),this);
+                mRecentPlacesAdapter = new RecentPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList(), this);
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 recentlyVisitedRecyclerView.setLayoutManager(linearlayoutManager);
                 recentlyVisitedRecyclerView.setNestedScrollingEnabled(false);
@@ -425,6 +364,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         updateUI();
     }
+
     private void updateUI() {
         Log.d(TAG, "UI update initiated .............");
         if (null != mCurrentLocation) {
@@ -437,6 +377,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
             Log.d(TAG, "location is null ...............");
         }
     }
+
     protected void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);
@@ -450,14 +391,14 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
 
     @Override
     public void onClickOfPopularPlaces(String location) {
-        DoctorDataHelper.setUserSelectedLocationInfo(this,null,location);
+        RescribeApplication.setUserSelectedLocationInfo(this, null, location);
         finish();
 
     }
 
     @Override
     public void onClickOfRecentPlaces(String location) {
-        DoctorDataHelper.setUserSelectedLocationInfo(this,null,location);
+        RescribeApplication.setUserSelectedLocationInfo(this, null, location);
         finish();
     }
 }

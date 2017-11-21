@@ -50,8 +50,9 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
         TimeSlotsInfoList.TimeSlotData timeSlotData = mDataList.get(position);
 
         String fromTime = timeSlotData.getFromTime();
+
         //-----------
-        String s = CommonMethods.formatDateTime(fromTime, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.TIME);
+        String s = CommonMethods.formatDateTime(fromTime, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.HH_mm, RescribeConstants.TIME);
         holder.showTime.setText(s);
         //-----------
 

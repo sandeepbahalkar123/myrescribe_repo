@@ -67,6 +67,8 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, DatePickerDialog.OnDateSetListener {
 
+    private final String TASKID_TIME_SLOT_WITH_DOC_DATA = RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT_WITH_DOCTOR_DETAILS;
+    private final String TASKID_TIME_SLOT = RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT;
     //-------------
     @BindView(R.id.profileImage)
     CircularImageView mProfileImage;
@@ -80,6 +82,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     CustomTextView mDoctorName;
     @BindView(R.id.doctorSpecialization)
     CustomTextView mDoctorSpecialization;
+    @BindView(R.id.rupeesLayout)
+    LinearLayout mRupeesLayout;
     @BindView(R.id.doctorFees)
     CustomTextView mDoctorFees;
     @BindView(R.id.clinicName)
@@ -156,9 +160,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     }
 
     private void init() {
+
         //------------
         Calendar now = Calendar.getInstance();
-        mSelectedTimeSlotDate = now.get(Calendar.YEAR) + "-" + now.get(Calendar.MONTH + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
+        mSelectedTimeSlotDate = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
         //----------
 
         String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DD_MM_YYYY, CommonMethods.getCurrentDate());
@@ -173,7 +178,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             mClickedDoctorObject = arguments.getParcelable(getString(R.string.clicked_item_data));
             activityOpeningFrom = arguments.getString(getString(R.string.clicked_item_data_type_value));
             if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom)) {
-                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true);
+                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
             } else {
                 setDataInViews();
             }
@@ -275,11 +280,14 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(position);
                     mClinicName.setText("" + mSelectedClinicDataObject.getClinicName());
-                    mDoctorFees.setText(
-                            "" + mSelectedClinicDataObject.getAmount());
-                    mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false);
+                    if (mSelectedClinicDataObject.getAmount() == 0) {
+                        mRupeesLayout.setVisibility(View.INVISIBLE);
+                    } else {
+                        mRupeesLayout.setVisibility(View.VISIBLE);
+                        mDoctorFees.setText("" + mSelectedClinicDataObject.getAmount());
+                    }
+                    mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
                 }
-
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
@@ -306,11 +314,25 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
 
         switch (mOldDataTag) {
-            case RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT:
+
+            //first & second case are alomst same, only change in doc_data param.
+            case TASKID_TIME_SLOT:
                 TimeSlotListBaseModel slotListBaseModel = (TimeSlotListBaseModel) customResponse;
                 if (slotListBaseModel != null) {
                     TimeSlotListDataModel selectSlotList = slotListBaseModel.getTimeSlotListDataModel();
                     if (selectSlotList != null) {
+                        mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList());
+                        selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
+                    }
+                }
+                break;
+            case TASKID_TIME_SLOT_WITH_DOC_DATA:
+                TimeSlotListBaseModel slotListBase = (TimeSlotListBaseModel) customResponse;
+                if (slotListBase != null) {
+                    TimeSlotListDataModel selectSlotList = slotListBase.getTimeSlotListDataModel();
+                    if (selectSlotList != null) {
+                        mClickedDoctorObject = selectSlotList.getDoctorListData();
+                        setDataInViews();
                         mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList());
                         selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
                     }
@@ -427,7 +449,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         }
         mSelectedTimeSlotDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
         selectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, dateConverted + "-" + (monthOfYear + 1) + "-" + year) + "," + getString(R.string.space) + CommonMethods.getFormattedDate(dateConverted + "-" + (monthOfYear + 1) + "-" + year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
-        mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false);
+        mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
     }
 
     public DoctorList getClickedDoctorObject() {

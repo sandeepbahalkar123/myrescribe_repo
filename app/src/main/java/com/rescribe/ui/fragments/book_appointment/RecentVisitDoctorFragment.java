@@ -41,6 +41,7 @@ import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
@@ -112,6 +113,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private DoctorServicesModel mReceivedDoctorServicesModel;
     private String mReceivedTitle;
     private ShowRecentVisitedDoctorPagerAdapter mRecentVisitedDoctorPagerAdapter;
+    private String mUserSelectedLocation;
 
     public RecentVisitDoctorFragment() {
 
@@ -185,7 +187,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
         recentDoctorLayout.setVisibility(View.GONE);
         mFilterListLayout.setVisibility(View.GONE);
-        doGetLatestDoctorListOnLocationChange(null);
 
     }
 
@@ -263,21 +264,15 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 }
                 break;
             case RescribeConstants.TASK_GET_DOCTOR_DATA:
-                BookAppointmentBaseModel receivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
-                if (receivedBookAppointmentBaseModel != null) {
-                    mReceivedDoctorServicesModel = receivedBookAppointmentBaseModel.getDoctorServicesModel();
-                    if (mReceivedDoctorServicesModel != null) {
-                        for (int i = 0; i < mReceivedDoctorServicesModel.getDoctorList().size(); i++) {
-                            if (!mReceivedDoctorServicesModel.getDoctorList().get(i).getDocName().toLowerCase().contains("dr.")) {
-                                mReceivedDoctorServicesModel.getDoctorList().get(i).setDocName("Dr. " + mReceivedDoctorServicesModel.getDoctorList().get(i).getDocName());
-                            }
-                        }
-                        mServiceCardDataViewBuilder.setReceivedDoctorDataList(mReceivedDoctorServicesModel.getDoctorList());
-                        setDoctorListAdapter();
-                    }
+                DoctorServicesModel receivedDoctorServicesModel = DoctorDataHelper.getReceivedDoctorServicesModel();
+                if (receivedDoctorServicesModel != null) {
+                    mReceivedDoctorServicesModel = receivedDoctorServicesModel;
+                    mServiceCardDataViewBuilder.setReceivedDoctorDataList(mReceivedDoctorServicesModel.getDoctorList());
+                    setDoctorListAdapter();
                 }
                 break;
         }
+
     }
 
     private void setDoctorListAdapter() {
@@ -422,7 +417,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @Override
     public void onResume() {
         super.onResume();
-
+        doGetLatestDoctorListOnLocationChange(null);
         if (mReceivedDoctorServicesModel != null) {
             setUpViewPager();
         }
@@ -459,29 +454,27 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @Override
     public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
-        //BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-        // activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundleData), true);
-
         String specialityName = bundleData.getString(getString(R.string.clicked_item_data));
-
-        ArrayList<DoctorList> doctorLists = mReceivedDoctorServicesModel.filterDocListBySpeciality(specialityName);
         Intent intent = new Intent(getActivity(), ServicesFilteredDoctorListActivity.class);
         bundleData.putString(getString(R.string.toolbarTitle), specialityName);
-        bundleData.putParcelableArrayList(getString(R.string.clicked_item_data), doctorLists);
         intent.putExtras(bundleData);
         startActivity(intent);
-
     }
 
     public void doGetLatestDoctorListOnLocationChange(HashMap<String, String> mComplaintsUserSearchFor) {
-        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-        String s = userSelectedLocationInfo.get(getString(R.string.location));
-        if (s != null) {
-            String[] split = s.split(",");
-            if (split.length == 2) {
-                mDoctorDataHelper.doGetDoctorData(split[1], split[0], mComplaintsUserSearchFor);
+        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+        String selectedLocation = userSelectedLocationInfo.get(getString(R.string.location));
+        if (selectedLocation != null) {
+            if (selectedLocation.equalsIgnoreCase(mUserSelectedLocation)) {
+                mUserSelectedLocation = selectedLocation;
             } else {
-                mDoctorDataHelper.doGetDoctorData("", "", mComplaintsUserSearchFor);
+                mUserSelectedLocation = selectedLocation;
+                String[] split = mUserSelectedLocation.split(",");
+                if (split.length == 2) {
+                    mDoctorDataHelper.doGetDoctorData(split[1], split[0], mComplaintsUserSearchFor);
+                } else {
+                    mDoctorDataHelper.doGetDoctorData("", "", mComplaintsUserSearchFor);
+                }
             }
         }
     }
@@ -495,5 +488,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     public void onResetClicked() {
 
     }
+
 }
 

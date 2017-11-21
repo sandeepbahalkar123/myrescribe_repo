@@ -146,6 +146,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp1"
+                    android:layout_marginBottom="@dimen/dp6"
                     android:background="@color/divider" />
 
                 <android.support.v7.widget.RecyclerView
@@ -155,14 +156,14 @@
                     android:layout_gravity="center"
                     android:divider="@null"
                     android:dividerHeight="0dp"
-                    android:visibility="visible"/>
+                    android:visibility="visible"></android.support.v7.widget.RecyclerView>
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp20"
-                android:background="@color/divider" />
+                android:background="@color/white" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

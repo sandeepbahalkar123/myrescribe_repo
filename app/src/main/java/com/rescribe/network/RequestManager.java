@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -76,8 +77,10 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.NetworkUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -631,6 +634,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         break;
 
                     case RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT: //This is for get archived list
+                    case RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT_WITH_DOCTOR_DETAILS: //This is for get archived list
                         TimeSlotListBaseModel dataTimeSlot = new Gson().fromJson(data, TimeSlotListBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dataTimeSlot, mOldDataTag);
                         break;

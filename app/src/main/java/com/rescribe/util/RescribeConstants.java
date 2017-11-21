@@ -129,6 +129,7 @@ public class RescribeConstants {
     public static final String TASK_SERVICES_DOC_LIST_FILTER = RescribeConstants.BLANK + 45;
     public static final String TASK_TIME_SLOT_TO_BOOK_APPOINTMENT = RescribeConstants.BLANK + 46;
     public static final String TASK_RECENT_VISIT_DOCTOR_PLACES_DATA = RescribeConstants.BLANK + 47;
+    public static final String TASK_TIME_SLOT_TO_BOOK_APPOINTMENT_WITH_DOCTOR_DETAILS = RescribeConstants.BLANK + 48;
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
@@ -168,9 +169,9 @@ public class RescribeConstants {
     public static final String BOTTOM_MENUS = "bottom_menu";
 
     public static final int DOCTOR_DATA_REQUEST_CODE = 1221;
+    public static final int DOCTOR_LOCATION_CHANGE_FROM_MAP_REQUEST_CODE = 1002;
     public static final String DOCTOR_DATA = "doctor_data";
     public static final int PLACE_PICKER_REQUEST = 99;
-
 
 
     public static class USER_STATUS {
@@ -235,7 +236,7 @@ public class RescribeConstants {
         public final static String EEEE_dd_MMM_yyyy_hh_mm_a = "EEEE dd MMM yyyy | hh:mm a";
         public static String HH_mm_ss = "HH:mm:ss";
         public static String DD_MM_YYYY_hh_mm = "dd/MM/yyyy hh:mm aa";
-        public static String HH_MM = "hh:mm";
+        public static String HH_mm = "hh:mm";
         public static String MMM_YYYY = "MMM, yyyy";
         public static String MMM_DD_YYYY = "MMM dd,yyyy";
         public static String DD_MM_YYYY_hh_mm_ss = "dd-MM-yyyy hh:mm:ss";
@@ -248,7 +249,7 @@ public class RescribeConstants {
         public static int TWO_SECONDS = 2000;
         public static int THREE_SECONDS = 3000;
         public static int FIVE_FIFTY = 500;
-     }
+    }
 
     public class INVESTIGATION_KEYS {
         public static final String INVESTIGATION_DATE = "investigation_date";

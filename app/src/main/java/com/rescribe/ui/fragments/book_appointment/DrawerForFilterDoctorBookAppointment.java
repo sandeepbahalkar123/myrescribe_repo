@@ -32,6 +32,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
 import com.rescribe.model.book_appointment.filterdrawer.LocationList;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
@@ -183,13 +184,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         mSelectedDays = new HashMap<>();
 
         configureDrawerFieldsData();
-        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-        locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-        if (locationReceived != null) {
-            String[] split = locationReceived.split(",");
-            doctorDataHelper = new DoctorDataHelper(getActivity(), this);
-            doctorDataHelper.doGetDrawerFilterConfigurationData(split[1].trim());
-        }
 
         mLocationContentRecycleView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
@@ -215,6 +209,17 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+        locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
+        if (locationReceived != null) {
+            String[] split = locationReceived.split(",");
+            doctorDataHelper = new DoctorDataHelper(getActivity(), this);
+            doctorDataHelper.doGetDrawerFilterConfigurationData(split[1].trim());
+        }
+    }
 
     @Override
     public void onDestroyView() {

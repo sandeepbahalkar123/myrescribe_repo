@@ -45,118 +45,124 @@
         </LinearLayout>
 
     </android.support.design.widget.AppBarLayout>
-<android.support.v4.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/divider">
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:orientation="vertical">
 
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/detectLocation"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/dp12"
-                android:background="@drawable/detect_location_box"
-                android:drawableRight="@drawable/icon_gps"
-                android:gravity="center|left"
-                android:padding="@dimen/dp10"
-                android:text="Detect my location"
-                android:textColor="@color/rating_color"
-                android:textSize="@dimen/sp12"
-                app:customFont="@string/roboto_bold" />
+                android:layout_height="wrap_content"
+                android:background="@color/divider">
 
-        </LinearLayout>
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/detectLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/dp12"
+                    android:background="@drawable/detect_location_box"
+                    android:drawableRight="@drawable/icon_gps"
+                    android:gravity="center|left"
+                    android:padding="@dimen/dp10"
+                    android:text="Detect my location"
+                    android:textColor="@color/rating_color"
+                    android:textSize="@dimen/sp12"
+                    app:customFont="@string/roboto_bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            </LinearLayout>
 
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/findLocation"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp30"
-                android:drawableLeft="@drawable/search_grey_icon"
-                android:drawablePadding="@dimen/dp8"
+                android:layout_height="@dimen/dp50"
+                android:background="@color/white"
                 android:gravity="center_vertical"
-                android:onClick="callPlaceAutocompleteActivityIntent"
-                android:paddingLeft="@dimen/dp10"
-                android:text="Start typing locations..."
-                android:textColor="@color/Gray"
-                android:textSize="@dimen/sp12"
-                app:customFont="@string/roboto_regular" />
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/findLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp30"
+                    android:background="@null"
+                    android:drawableLeft="@drawable/search_grey_icon"
+                    android:drawablePadding="@dimen/dp8"
+                    android:drawableStart="@drawable/search_grey_icon"
+                    android:gravity="center_vertical"
+                    android:hint="Start typing locations..."
+                    android:paddingEnd="@dimen/dp10"
+                    android:paddingStart="@dimen/dp10"
+                    android:textColor="@color/Gray"
+                    android:textSize="@dimen/sp12" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/divider"
-            android:orientation="vertical">
+            </LinearLayout>
 
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/dp10"
-                android:textColor="@color/greyshade"
-                app:customFont="@string/roboto_medium"
-                android:text="@string/try_these_locations"
-                android:textSize="@dimen/sp11" />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/popularPlacesRecyclerView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:divider="@null"
-                android:dividerHeight="0dp"
-                android:visibility="visible">
+                android:background="@color/divider"
+                android:orientation="vertical">
 
-            </android.support.v7.widget.RecyclerView>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical">
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp10"
+                    android:text="@string/try_these_locations"
+                    android:textColor="@color/greyshade"
+                    android:textSize="@dimen/sp11"
+                    app:customFont="@string/roboto_medium" />
 
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:layout_width="wrap_content"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/popularPlacesRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:visibility="visible">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/dp10"
-                android:textColor="@color/recent_places"
-                app:customFont="@string/roboto_medium"
-                android:text="@string/recently_visited"
-                android:textSize="@dimen/sp12" />
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp10"
+                    android:text="@string/recently_visited"
+                    android:textColor="@color/recent_places"
+                    android:textSize="@dimen/sp12"
+                    app:customFont="@string/roboto_medium" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
+                    android:background="@color/divider" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recentlyVisitedRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:visibility="visible"/>
+
+            </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp1"
-                android:background="@color/divider"/>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recentlyVisitedRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:divider="@null"
-                android:dividerHeight="0dp"
-                android:visibility="visible">
-            </android.support.v7.widget.RecyclerView>
-
+                android:layout_height="@dimen/dp20"
+                android:background="@color/divider" />
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp20"
-            android:background="@color/divider"/>
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

@@ -1,10 +1,8 @@
 package com.rescribe.ui.activities.book_appointment;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
@@ -12,7 +10,6 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,13 +21,12 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -38,24 +34,19 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStates;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.rescribe.R;
+import com.rescribe.adapters.autocomplete_place.PlaceArrayAdapter;
 import com.rescribe.adapters.book_appointment.RecentPlacesAdapter;
 import com.rescribe.adapters.book_appointment.ShowPopularPlacesAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
-import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
-import com.rescribe.model.filter.DoctorData;
-import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.LocationUtil.PermissionUtils;
@@ -72,20 +63,25 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
+import static com.github.mikephil.charting.charts.Chart.LOG_TAG;
 
-public class BookAppointFindLocation extends AppCompatActivity implements PlaceSelectionListener, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,LocationListener, HelperResponse ,ShowPopularPlacesAdapter.OnPopularPlacesListener,RecentPlacesAdapter.OnRecentPlacesListener{
+
+public class BookAppointFindLocation extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, HelperResponse, ShowPopularPlacesAdapter.OnPopularPlacesListener, RecentPlacesAdapter.OnRecentPlacesListener {
 
     public static final String TAG = "BookAppointFindLocation";
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 10;
+    private static final int GOOGLE_API_CLIENT_ID = 0;
+
     @BindView(R.id.bookAppointmentToolbar)
     ImageView bookAppointmentToolbar;
     @BindView(R.id.title)
     CustomTextView title;
     @BindView(R.id.detectLocation)
     CustomTextView detectLocation;
+
     @BindView(R.id.findLocation)
-    CustomTextView findLocation;
+    AutoCompleteTextView mAutocompleteTextView;
+
     @BindView(R.id.popularPlacesRecyclerView)
     RecyclerView popularPlacesRecyclerView;
     @BindView(R.id.recentlyVisitedRecyclerView)
@@ -94,7 +90,6 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     private final static int PLAY_SERVICES_REQUEST = 1000;
     private final static int REQUEST_CHECK_SETTINGS = 2000;
     private Location mLastLocation;
-    private GoogleApiClient mGoogleApiClient;
     double latitude;
     Location mCurrentLocation;
     String mLastUpdateTime;
@@ -109,6 +104,12 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     private ShowPopularPlacesAdapter mShowPopularPlacesAdapter;
     private RecentPlacesAdapter mRecentPlacesAdapter;
     String address;
+
+    private GoogleApiClient mGoogleApiClient;
+    private PlaceArrayAdapter mPlaceArrayAdapter;
+
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
+            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,40 +129,62 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     }
 
     private void init() {
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(LocationServices.API)
+                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
+        mAutocompleteTextView.setThreshold(2);
+        mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
+        mPlaceArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1,
+                BOUNDS_MOUNTAIN_VIEW, null);
+        mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
+
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetRecentlyVisitedDoctorPlacesData();
 
     }
 
-    /**
-     * Callback invoked when a place has been selected from the PlaceAutocompleteFragment.
-     */
-    @Override
-    public void onPlaceSelected(Place place) {
-        CommonMethods.Log(TAG, "Place Selected: " + place.getName());
-
-        // Format the returned place's details and display them in the TextView.
-        CommonMethods.showToast(this, "" + formatPlaceDetails(getResources(), place.getName(), place.getId(),
-                place.getAddress(), place.getPhoneNumber(), place.getWebsiteUri()));
-
-        CharSequence attributions = place.getAttributions();
-        if (!TextUtils.isEmpty(attributions)) {
-            CommonMethods.showToast(this, "" + Html.fromHtml(attributions.toString()));
-        } else {
-            CommonMethods.showToast(this, "");
+    private AdapterView.OnItemClickListener mAutocompleteClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
+            final String placeId = String.valueOf(item.placeId);
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId);
+            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
         }
-    }
+    };
 
-    /**
-     * Callback invoked when PlaceAutocompleteFragment encounters an error.
-     */
-    @Override
-    public void onError(Status status) {
-        CommonMethods.Log(TAG, "onError: Status = " + status.toString());
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
+                Log.e(LOG_TAG, "Place query did not complete. Error: " +
+                        places.getStatus().toString());
+                return;
+            }
+            // Selecting the first object buffer.
+            final Place place = places.get(0);
 
-        Toast.makeText(this, "Place selection failed: " + status.getStatusMessage(),
-                Toast.LENGTH_SHORT).show();
-    }
+            CommonMethods.Log(TAG, "Place Selected: " + place.getName());
+
+            // Format the returned place's details and display them in the TextView.
+            CommonMethods.showToast(mContext, "" + formatPlaceDetails(getResources(), place.getName(), place.getId(),
+                    place.getAddress(), place.getPhoneNumber(), place.getWebsiteUri()));
+
+            CharSequence attributions = place.getAttributions();
+            if (!TextUtils.isEmpty(attributions)) {
+                CommonMethods.showToast(mContext, "" + Html.fromHtml(attributions.toString()));
+            } else {
+                CommonMethods.showToast(mContext, "");
+            }
+        }
+    };
+
 
     /**
      * Helper method to format information about a place nicely.
@@ -175,20 +198,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
 
     }
 
-    public void callPlaceAutocompleteActivityIntent(View v) {
-        try {
-            Intent intent =
-                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                            .build(this);
-            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-//PLACE_AUTOCOMPLETE_REQUEST_CODE is integer for request code
-        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
-        }
-
-    }
-
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
         super.onActivityResult(requestCode, resultCode, data);
@@ -246,7 +256,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
 
             }
         }
-    }
+    }*/
 
     private String getArea(Address obj) {
 
@@ -271,27 +281,30 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
                 break;
             case R.id.detectLocation:
                 createLocationRequest();
-                mGoogleApiClient = new GoogleApiClient.Builder(this)
-                        .addApi(LocationServices.API)
-                        .addConnectionCallbacks(this)
-                        .addOnConnectionFailedListener(this)
-                        .build();
-                mGoogleApiClient.connect();
-
                 break;
         }
     }
+
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "onConnected - isConnected ...............: " + mGoogleApiClient.isConnected());
+        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
         startLocationUpdates();
     }
 
     protected void startLocationUpdates() {
-        PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
+        if (mLocationRequest == null)
+            createLocationRequest();
+        else {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                CommonMethods.Log(TAG, "Permission not granted");
+                return;
+            }
+            PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
 
-        Log.d(TAG, "Location update started ..............: ");
+            Log.d(TAG, "Location update started ..............: ");
+        }
     }
 
     protected void createLocationRequest() {
@@ -344,6 +357,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
 
     @Override
     public void onConnectionSuspended(int i) {
+        mPlaceArrayAdapter.setGoogleApiClient(null);
         mGoogleApiClient.connect();
     }
 
@@ -360,13 +374,6 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
                                            @NonNull int[] grantResults) {
         // redirects to utils
         permissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
     }
 
@@ -423,13 +430,6 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         if (null != mCurrentLocation) {
             String lat = String.valueOf(mCurrentLocation.getLatitude());
             String lng = String.valueOf(mCurrentLocation.getLongitude());
-
-            /*tvLocation.setText("At Time: " + mLastUpdateTime + "\n" +
-                    "Latitude: " + lat + "\n" +
-                    "Longitude: " + lng + "\n" +
-                    "Accuracy: " + mCurrentLocation.getAccuracy() + "\n" +
-                    "Provider: " + mCurrentLocation.getProvider());*/
-            Log.e("Latitude Longitude ===============", lat + "///////////" + lng);
 
             getAddress(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
             stopLocationUpdates();

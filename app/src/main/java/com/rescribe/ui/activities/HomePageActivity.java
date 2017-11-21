@@ -59,6 +59,7 @@ import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointFindLocation;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
@@ -92,6 +93,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
+import static com.rescribe.util.RescribeConstants.BLANK;
 import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
@@ -124,8 +126,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     String lunchTime = "";
     String dinnerTime = "";
     String snacksTime = "";
-    String locationReceived = "";
-    String previousLocationReceived ="";
+    String locationReceived;
     private MenuOptionsDashBoardAdapter mMenuOptionsDashBoardAdapter;
     private String patientId;
     private LoginHelper loginHelper;
@@ -831,39 +832,37 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             //  startLocationUpdates();
             Log.d(TAG, "Location update resumed .....................");
         }
-        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-        if(userSelectedLocationInfo.get(getString(R.string.location))!=null) {
-            locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-        }else{
-            locationReceived = "";
-        }
-        if(DoctorDataHelper.getPreviousUserSelectedLocationInfo()!=null) {
-            HashMap<String, String> userPreviousSelectedLocationInfo = DoctorDataHelper.getPreviousUserSelectedLocationInfo();
-            previousLocationReceived = userPreviousSelectedLocationInfo.get(getString(R.string.location));
-        }else{
-            previousLocationReceived = "";
+        String userSelectedLocationReceived;
+        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+        if (userSelectedLocationInfo.get(getString(R.string.location)) != null) {
+            userSelectedLocationReceived = userSelectedLocationInfo.get(getString(R.string.location));
+        } else {
+            userSelectedLocationReceived = RescribeConstants.BLANK;
         }
 
-        if (locationReceived.equalsIgnoreCase(previousLocationReceived)) {
+        if (userSelectedLocationReceived.equalsIgnoreCase(locationReceived)) {
+            locationReceived = userSelectedLocationReceived;
             Log.d(TAG, "DASHBOARD API NOT CALLED");
-
         } else {
             Log.d(TAG, "DASHBOARD API  CALLED");
-            if(locationReceived.equals("")) {
+            if (RescribeConstants.BLANK.equalsIgnoreCase(locationReceived)) {
                 mGoogleApiClient.connect();
-            }else{
+            } else {
+                locationReceived = userSelectedLocationReceived;
                 String[] split = locationReceived.split(",");
                 if (split != null) {
-                    mDashboardHelper = new DashboardHelper(this, this);
-                    mDashboardHelper.doGetDashboard(split[1]);
-                    Double lat = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.latitude)));
-                    Double lng = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.longitude)));
-                    LatLng  latLng     = new LatLng(lat,lng);
-                    DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext,latLng,locationReceived);
+                    if (split.length > 1) {
+                        mDashboardHelper = new DashboardHelper(this, this);
+                        mDashboardHelper.doGetDashboard(split[1]);
+                        Double lat = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.latitude)));
+                        Double lng = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.longitude)));
+                        LatLng latLng = new LatLng(lat, lng);
+                        RescribeApplication.setUserSelectedLocationInfo(mContext, latLng, locationReceived);
+                    }
                 }
             }
         }
-       if (mDashboardDataModel != null) {
+        if (mDashboardDataModel != null) {
             setUpViewPager();
         }
     }
@@ -904,14 +903,19 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 System.out.println("obj.getCountryName()" + obj.getCountryName());
                 LatLng location = new LatLng(lat, lng);
                 mDashboardHelper = new DashboardHelper(this, this);
-                DoctorDataHelper.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
-                DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
+                RescribeApplication.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
                 if (obj.getLocality() != null) {
-
                     mDashboardHelper.doGetDashboard(obj.getLocality());
                 } else {
                     mDashboardHelper.doGetDashboard("");
                 }
+
+                //-----Updated location
+                HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+                if (userSelectedLocationInfo.get(getString(R.string.location)) != null) {
+                    locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
+                }
+                //-----Updated location
 
                 Log.d("AREA", getArea(obj));
             } else {

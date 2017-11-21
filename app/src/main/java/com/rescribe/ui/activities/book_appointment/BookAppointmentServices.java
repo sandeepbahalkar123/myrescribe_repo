@@ -32,6 +32,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesList;
 import com.rescribe.model.book_appointment.ServicesModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.GoogleSettingsApi;
@@ -124,7 +125,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     @Override
     protected void onResume() {
         super.onResume();
-        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         if (userSelectedLocationInfo.get(getString(R.string.location)) == null) {
             //locationTextView.setText(getString(R.string.location));
         } else {

@@ -168,9 +168,9 @@ public class RescribeConstants {
     public static final String BOTTOM_MENUS = "bottom_menu";
 
     public static final int DOCTOR_DATA_REQUEST_CODE = 1221;
+    public static final int DOCTOR_LOCATION_CHANGE_FROM_MAP_REQUEST_CODE = 1002;
     public static final String DOCTOR_DATA = "doctor_data";
     public static final int PLACE_PICKER_REQUEST = 99;
-
 
 
     public static class USER_STATUS {
@@ -248,7 +248,7 @@ public class RescribeConstants {
         public static int TWO_SECONDS = 2000;
         public static int THREE_SECONDS = 3000;
         public static int FIVE_FIFTY = 500;
-     }
+    }
 
     public class INVESTIGATION_KEYS {
         public static final String INVESTIGATION_DATE = "investigation_date";

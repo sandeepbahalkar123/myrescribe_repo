@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.BookAppointDoctorDescriptionFragment;
 import com.rescribe.util.RescribeConstants;
@@ -58,7 +59,7 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
     private void initialize() {
 
         locationTextView.setVisibility(View.GONE);
-        userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+        userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         //--------
         Bundle extras = getIntent().getExtras();

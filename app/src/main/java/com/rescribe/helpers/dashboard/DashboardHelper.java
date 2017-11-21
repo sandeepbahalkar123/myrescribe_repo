@@ -30,11 +30,6 @@ public class DashboardHelper implements ConnectionListener {
     Context mContext;
     HelperResponse mHelperResponseManager;
 
-    public DashboardHelper(Context context) {
-        this.mContext = context;
-        this.mHelperResponseManager = (HelperResponse) context;
-    }
-
     public DashboardHelper(Context context, HelperResponse loginActivity) {
         this.mContext = context;
         this.mHelperResponseManager = loginActivity;
@@ -98,13 +93,13 @@ public class DashboardHelper implements ConnectionListener {
             ex.printStackTrace();
         }*/
 
-      String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
+        String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
 
         String url = Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.platform) + mContext.getString(R.string.android) + mContext.getString(R.string.screen_resolution) + screenResolutionValue;
         if (currentCity != null) {
-            url = url + mContext.getString(R.string.city) + currentCity;
+            url = url + mContext.getString(R.string.city) + currentCity.trim();
         }
         mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);

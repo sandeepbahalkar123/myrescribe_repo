@@ -20,6 +20,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.complaints.ComplaintList;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.util.RescribeConstants;
 
@@ -170,7 +171,7 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
                         Toast.makeText(getActivity(), getString(R.string.book_appoint_complaint_same_err), Toast.LENGTH_SHORT).show();
 
                     } else {
-                        HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+                        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
                         locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
                         String[] split = locationReceived.split(",");
                         doctorDataHelper.doGetDoctorListByComplaint(split[1].trim(), split[0].trim(), selectIdComplaint1, selectIdComplaint2);

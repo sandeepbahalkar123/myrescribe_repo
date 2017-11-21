@@ -7,17 +7,22 @@ import android.support.multidex.MultiDexApplication;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.gms.maps.model.LatLng;
+import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 
 /**
  * Created by Sandeep Bahalkar
  */
 public class RescribeApplication extends MultiDexApplication {
-    public  final String TAG = this.getClass().getName();
+    public final String TAG = this.getClass().getName();
     private static final Hashtable<String, Typeface> cache = new Hashtable<String, Typeface>();
     private static RescribeApplication singleton;
+
+    private static HashMap<String, String> userSelectedLocationInfo = new HashMap<>();
 
     public static RescribeApplication getInstance() {
         return singleton;
@@ -43,5 +48,17 @@ public class RescribeApplication extends MultiDexApplication {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         //--------------
+    }
+
+    public static void setUserSelectedLocationInfo(Context ctx, LatLng data, String locationText) {
+        userSelectedLocationInfo.put(ctx.getString(R.string.location), locationText);
+        if (data != null) {
+            userSelectedLocationInfo.put(ctx.getString(R.string.latitude), "" + data.latitude);
+            userSelectedLocationInfo.put(ctx.getString(R.string.longitude), "" + data.longitude);
+        }
+    }
+
+    public static HashMap<String, String> getUserSelectedLocationInfo() {
+        return userSelectedLocationInfo;
     }
 }

@@ -2,6 +2,7 @@ package com.rescribe.ui.activities.book_appointment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +17,7 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
@@ -35,7 +37,7 @@ import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
  * Created by jeetal on 6/11/17.
  */
 
-public class ServicesFilteredDoctorListActivity extends AppCompatActivity implements HelperResponse, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
+public class ServicesFilteredDoctorListActivity extends AppCompatActivity implements DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
 
     @BindView(R.id.nav_view)
     FrameLayout mNavView;
@@ -52,13 +54,10 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
     CustomTextView showlocation;
     @BindView(R.id.viewContainer)
     FrameLayout viewContainer;
-    ArrayList<DoctorList> doctorList;
     HashMap<String, String> userSelectedLocationInfo;
     private BookAppointFilteredDoctorListFragment mBookAppointFilteredDoctorListFragment;
 
     private Fragment mDrawerLoadedFragment;
-    private DoctorDataHelper mDoctorDataHelper;
-    private HashMap<String, String> mComplaintsUserSearchFor = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,20 +69,16 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
     }
 
     private void initialize() {
-        doctorList = new ArrayList<>();
         showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.VISIBLE);
-        userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-      //  showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
+        userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+        //  showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         //--------
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            doctorList = extras.getParcelableArrayList(getString(R.string.clicked_item_data));
             title.setText(extras.getString(getString(R.string.toolbarTitle)));
         }
-
         mBookAppointFilteredDoctorListFragment = BookAppointFilteredDoctorListFragment.newInstance(extras);
-
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mBookAppointFilteredDoctorListFragment).commit();
 
         //------------
@@ -114,30 +109,13 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
                 // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
             }
         });
-
-        //------
-        mDoctorDataHelper = new DoctorDataHelper(this, this);
-        //----split based on location------
-        //------
-        String locationReceived = "";
-        Intent intent = getIntent();
-        if (intent != null) {
-            HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
-            locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-          //  locationTextView.setText("" + locationReceived);
-        }
-        //------
-        if (locationReceived != null) {
-            String[] split = locationReceived.split(",");
-            if (split.length == 2) {
-                mDoctorDataHelper.doGetDoctorData(split[1], split[0], mComplaintsUserSearchFor);
-            } else {
-                mDoctorDataHelper.doGetDoctorData("", "", mComplaintsUserSearchFor);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
             }
-        }
-        //----------
-        mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
-        getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
+        }, 100);
 
     }
 
@@ -153,32 +131,12 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
 
     @Override
     public void onBackPressed() {
-        if (doctorList != null) {
+        /*if (doctorList != null) {
             Intent intent = new Intent();
             intent.putExtra(DOCTOR_DATA, doctorList);
             setResult(DOCTOR_DATA_REQUEST_CODE, intent);
-        }
+        }*/
         super.onBackPressed();
-    }
-
-    @Override
-    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-
-    }
-
-    @Override
-    public void onParseError(String mOldDataTag, String errorMessage) {
-
-    }
-
-    @Override
-    public void onServerError(String mOldDataTag, String serverErrorMessage) {
-
-    }
-
-    @Override
-    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-
     }
 
     @Override

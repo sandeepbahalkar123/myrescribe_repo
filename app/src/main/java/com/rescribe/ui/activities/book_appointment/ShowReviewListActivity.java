@@ -15,6 +15,7 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.reviews.ReviewListBaseModel;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class ShowReviewListActivity extends AppCompatActivity implements HelperR
     }
 
     private void initialize() {
-        userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
+        userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         bookAppointmentBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -67,6 +67,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="@dimen/dp12"
                     android:background="@drawable/detect_location_box"
+                    android:drawableEnd="@drawable/icon_gps"
                     android:drawableRight="@drawable/icon_gps"
                     android:gravity="center|left"
                     android:padding="@dimen/dp10"

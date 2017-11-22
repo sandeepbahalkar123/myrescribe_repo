@@ -58,6 +58,8 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
     private BookAppointFilteredDoctorListFragment mBookAppointFilteredDoctorListFragment;
 
     private Fragment mDrawerLoadedFragment;
+    private int PLACE_PICKER_REQUEST = 1;
+    private boolean isLocationChangeViewClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,18 +127,13 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
             case R.id.bookAppointmentBackButton:
                 onBackPressed();
                 break;
+            case R.id.locationTextView:
+                isLocationChangeViewClicked = true;
+                //    BookAppointDoctorListBaseActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
+                Intent start = new Intent(this, BookAppointFindLocation.class);
+                startActivityForResult(start, PLACE_PICKER_REQUEST);
+                break;
         }
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        /*if (doctorList != null) {
-            Intent intent = new Intent();
-            intent.putExtra(DOCTOR_DATA, doctorList);
-            setResult(DOCTOR_DATA_REQUEST_CODE, intent);
-        }*/
-        super.onBackPressed();
     }
 
     @Override
@@ -154,15 +151,11 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
         return mDrawerLayout;
     }
 
+    public boolean isLocationChangeViewClicked() {
+        return isLocationChangeViewClicked;
+    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RescribeConstants.DOCTOR_DATA_REQUEST_CODE && data != null) {
-            DoctorList mClickedDoctorListObject = data.getParcelableExtra(DOCTOR_DATA);
-            if (mClickedDoctorListObject != null) {
-                mBookAppointFilteredDoctorListFragment.updateDataInViews(mClickedDoctorListObject);
-            }
-        }
+    public void setLocationChangeViewClicked(boolean locationChangeViewClicked) {
+        isLocationChangeViewClicked = locationChangeViewClicked;
     }
 }

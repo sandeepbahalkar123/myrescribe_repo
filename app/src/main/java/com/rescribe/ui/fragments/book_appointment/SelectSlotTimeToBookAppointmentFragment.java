@@ -173,13 +173,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mClickedDoctorObject = arguments.getParcelable(getString(R.string.clicked_item_data));
             activityOpeningFrom = arguments.getString(getString(R.string.clicked_item_data_type_value));
-            if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom)) {
-                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
-            } else {
-                setDataInViews();
-            }
         }
         //--------------
         selectTimeDateExpandableView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -328,6 +322,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     TimeSlotListDataModel selectSlotList = slotListBase.getTimeSlotListDataModel();
                     if (selectSlotList != null) {
                         mClickedDoctorObject = selectSlotList.getDoctorListData();
+                        ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mClickedDoctorObject);
                         setDataInViews();
                         mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList());
                         selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
@@ -337,15 +332,11 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
-                    if (temp.getCommonRespose().isSuccess()) {
-                        ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
-                        boolean status = !mClickedDoctorObject.getFavourite();
-                        mClickedDoctorObject.setFavourite(status);
-                        if (mClickedDoctorObject.getFavourite()) {
-                            mFavorite.setImageResource(R.drawable.fav_icon);
-                        } else {
-                            mFavorite.setImageResource(R.drawable.result_line_heart_fav);
-                        }
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
+                    if (mClickedDoctorObject.getFavourite()) {
+                        mFavorite.setImageResource(R.drawable.fav_icon);
+                    } else {
+                        mFavorite.setImageResource(R.drawable.result_line_heart_fav);
                     }
                 }
                 CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
@@ -372,6 +363,17 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mClickedDoctorObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
+        if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom)) {
+            mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
+        } else {
+            setDataInViews();
+        }
     }
 
     @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat})
@@ -448,7 +450,4 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
     }
 
-    public DoctorList getClickedDoctorObject() {
-        return mClickedDoctorObject;
-    }
 }

@@ -67,7 +67,7 @@ import droidninja.filepicker.utils.GridSpacingItemDecoration;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener, SortByClinicAndDoctorNameAdapter.OnClinicAndDoctorNameSearchRowItem {
+public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, SortByClinicAndDoctorNameAdapter.OnClinicAndDoctorNameSearchRowItem {
 
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
@@ -257,8 +257,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 if (customResponse != null) {
                     CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
                     if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
-                        mServiceCardDataViewBuilder.updateFavStatusForDoctorDataObject(mRecentVisitedDoctorPagerAdapter.getRequestedDocListToUpdateFavStatus());
+                        mServiceCardDataViewBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                         setUpViewPager();
+                        if (showDoctorsRecyclerView.getVisibility() == View.VISIBLE) {
+                            mSortByClinicAndDoctorNameAdapter.notifyDataSetChanged();
+                        }
                     }
                     CommonMethods.showToast(getActivity(), responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
                 }
@@ -283,7 +286,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         if (mReceivedDoctorServicesModel != null) {
             isDataListViewVisible(false, false);
             if (mReceivedDoctorServicesModel.getDoctorList().size() > 0) {
-                mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), mReceivedDoctorServicesModel.getDoctorList(), RecentVisitDoctorFragment.this, RecentVisitDoctorFragment.this);
+                mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), ServicesCardViewImpl.getReceivedDoctorDataList(), RecentVisitDoctorFragment.this, RecentVisitDoctorFragment.this);
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 showDoctorsRecyclerView.setLayoutManager(linearlayoutManager);
                 showDoctorsRecyclerView.setHasFixedSize(true);
@@ -420,36 +423,33 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         doGetLatestDoctorListOnLocationChange(null);
         if (mReceivedDoctorServicesModel != null) {
             setUpViewPager();
+            if (showDoctorsRecyclerView.getVisibility() == View.VISIBLE && mSortByClinicAndDoctorNameAdapter != null) {
+                mSortByClinicAndDoctorNameAdapter.notifyDataSetChanged();
+            }
         }
     }
 
-    @Override
-    public void onClinicAndDoctorNameSearchRowItem(Bundle bundleData) {
-
-        //TODO: This is done as per requirement, need to set "DOCTOR" as toolbarHeader instead respective doc speciality.
-        bundleData.putString(getString(R.string.clicked_item_data_type_value), getString(R.string.doctor));//doctorList.getSpeciality()
-        mServiceCardDataViewBuilder.onClickOfCardView(bundleData);
-
-       /* DoctorList doctorList = (DoctorList) bundleData.getParcelable(getString(R.string.clicked_item_data));
-        Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
-        intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
-        intent.putExtra(getString(R.string.clicked_item_data), doctorList);
-        //TODO: This is done as per requirement, need to sgetString(R.string.doctor)et "DOCTOR" as toolbarHeader instead respective doc speciality.
-        startActivity(intent);
- */
-    }
-
+    // COPIED FROM BookAppointFilteredDoctorListFragment.onClickOfDoctorRowItem();
     @Override
     public void onClickOfDoctorRowItem(Bundle bundleData) {
-        //TODO: This is done as per requirement, need to set "DOCTOR" as toolbarHeader instead respective doc speciality.
+        DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
+        ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mClickedDoctorObject);
+        //------------
+        if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.doctor_details))) {
 
-        bundleData.putString(getString(R.string.toolbarTitle), getString(R.string.doctor));//doctorList.getSpeciality()
-
-        /*Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
-        intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
-        intent.putExtra(getString(R.string.clicked_item_data), doctorList);
-        startActivity(intent);*/
-
+            if (mClickedDoctorObject.getCategoryName().equalsIgnoreCase(getString(R.string.my_appointments))) {
+                Intent intent = new Intent(getActivity(), AppointmentActivity.class);
+                startActivity(intent);
+            } else {
+                bundleData.putString(getString(R.string.toolbarTitle), mReceivedTitle);
+                Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
+                intent.putExtras(bundleData);
+                startActivity(intent);
+            }
+        } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {
+            boolean status = mClickedDoctorObject.getFavourite() ? false : true;
+            mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
+        }
     }
 
     @Override

@@ -84,7 +84,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     }
 
     @Override
-    public void onBindViewHolder(SortByClinicAndDoctorNameAdapter.ListViewHolder holder, int position) {
+    public void onBindViewHolder(SortByClinicAndDoctorNameAdapter.ListViewHolder holder, final int position) {
         final DoctorList doctorObject = mDataList.get(position);
 
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
@@ -208,7 +208,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 Bundle b = new Bundle();
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.favorite));
-                mOnClinicAndDoctorNameSearchRowItem.onClinicAndDoctorNameSearchRowItem(b);
+                b.putString(mContext.getString(R.string.clicked_item_data_value_position), "" + position);
+                mOnClinicAndDoctorNameSearchRowItem.onClickOfDoctorRowItem(b);
             }
         });
         holder.dataLayout.setOnClickListener(new View.OnClickListener() {
@@ -217,7 +218,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 Bundle b = new Bundle();
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.doctor_details));
-                mOnClinicAndDoctorNameSearchRowItem.onClinicAndDoctorNameSearchRowItem(b);
+                b.putString(mContext.getString(R.string.clicked_item_data_value_position), "" + position);
+                mOnClinicAndDoctorNameSearchRowItem.onClickOfDoctorRowItem(b);
             }
         });
     }
@@ -265,9 +267,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         }
     }
 
-    public interface OnClinicAndDoctorNameSearchRowItem {
-        void onClinicAndDoctorNameSearchRowItem(Bundle bundleData);
-    }
 
     @Override
     public Filter getFilter() {
@@ -338,6 +337,10 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
     public void setListByClinicName(boolean listByClinicName) {
         isListByClinicName = listByClinicName;
+    }
+
+    public interface OnClinicAndDoctorNameSearchRowItem {
+        void onClickOfDoctorRowItem(Bundle bundleData);
     }
 
 }

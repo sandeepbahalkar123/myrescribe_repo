@@ -46,8 +46,6 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
     HashMap<String, String> userSelectedLocationInfo;
     private SelectSlotTimeToBookAppointmentFragment mSelectSlotTimeToBookAppointmentFragment;
 
-    private DoctorList doctorObject;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,14 +56,12 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
 
     private void initialize() {
         title.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
-        doctorObject = getIntent().getExtras().getParcelable(getString(R.string.clicked_item_data));
         showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
 
         userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         // showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         Bundle bundle = new Bundle();
-        bundle.putParcelable(getString(R.string.clicked_item_data), doctorObject);
         bundle.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         bundle.putString(getString(R.string.clicked_item_data_type_value), getIntent().getStringExtra(getString(R.string.clicked_item_data_type_value)));
         mSelectSlotTimeToBookAppointmentFragment = SelectSlotTimeToBookAppointmentFragment.newInstance(bundle);
@@ -89,7 +85,7 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+  /*  @Override
     public void onBackPressed() {
         DoctorList clickedDoctorObject = mSelectSlotTimeToBookAppointmentFragment.getClickedDoctorObject();
         if (clickedDoctorObject != null) {
@@ -98,6 +94,6 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
             setResult(DOCTOR_DATA_REQUEST_CODE, intent);
         }
         super.onBackPressed();
-    }
+    }*/
 }
 

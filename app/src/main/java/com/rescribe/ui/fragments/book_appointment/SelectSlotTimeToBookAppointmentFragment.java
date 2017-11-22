@@ -321,8 +321,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 if (slotListBase != null) {
                     TimeSlotListDataModel selectSlotList = slotListBase.getTimeSlotListDataModel();
                     if (selectSlotList != null) {
+                        //----*************----
                         mClickedDoctorObject = selectSlotList.getDoctorListData();
                         ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mClickedDoctorObject);
+                        //----*************----
                         setDataInViews();
                         mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList());
                         selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
@@ -332,7 +334,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
-                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
+                    boolean isUpdated = ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
+                    //----THIS IS DONE FOR, WHEN PAGE OPENED FROM CHAT_ACTIVITY---
+                    if (!isUpdated) {
+                        mClickedDoctorObject.setFavourite(mClickedDoctorObject.getFavourite() ? false : true);
+                    }
+                    //-------
                     if (mClickedDoctorObject.getFavourite()) {
                         mFavorite.setImageResource(R.drawable.fav_icon);
                     } else {

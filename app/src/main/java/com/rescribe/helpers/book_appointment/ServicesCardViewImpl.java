@@ -135,16 +135,19 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         return null;
     }
 
-    public static void updateFavStatusForDoctorDataObject(DoctorList updatedObject) {
+    public static boolean updateFavStatusForDoctorDataObject(DoctorList updatedObject) {
+        boolean status = false;
         if (updatedObject != null) {
             for (int i = 0; i < mReceivedDoctorDataList.size(); i++) {
                 DoctorList tempObject = mReceivedDoctorDataList.get(i);
                 if (updatedObject.getDocId() == tempObject.getDocId()) {
                     tempObject.setFavourite(tempObject.getFavourite() ? false : true);
                     mReceivedDoctorDataList.set(i, tempObject);
+                    status = true;
                 }
             }
         }
+        return status;
     }
 
 

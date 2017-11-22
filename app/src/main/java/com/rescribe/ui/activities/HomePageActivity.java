@@ -565,7 +565,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 if (customResponse != null) {
                     CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
                     if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
-                        mDashboardDataBuilder.updateFavStatusForDoctorDataObject(mShowDoctorViewPagerAdapter.getRequestedDocListToUpdateFavStatus());
+                        mDashboardDataBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                         setUpViewPager();
                     }
                     CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());

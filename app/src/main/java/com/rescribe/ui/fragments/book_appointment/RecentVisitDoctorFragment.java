@@ -28,9 +28,8 @@ import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSpecialistBookAppointmentAdapter;
-import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
-import com.rescribe.adapters.book_appointment.ShowRecentVisitedDoctorPagerAdapter;
-import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
+  import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
+import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
@@ -112,7 +111,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private ServicesCardViewImpl mServiceCardDataViewBuilder;
     private DoctorServicesModel mReceivedDoctorServicesModel;
     private String mReceivedTitle;
-    private ShowRecentVisitedDoctorPagerAdapter mRecentVisitedDoctorPagerAdapter;
+    private ShowDoctorViewPagerAdapter mRecentVisitedDoctorPagerAdapter;
     private String mUserSelectedLocation;
 
     public RecentVisitDoctorFragment() {
@@ -357,7 +356,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             //mCircleIndicator.setVisibility(View.GONE);
         } else {
             mViewpager.setVisibility(View.VISIBLE);
-            mRecentVisitedDoctorPagerAdapter = new ShowRecentVisitedDoctorPagerAdapter(getActivity(), mergeList, dataMap, mServiceCardDataViewBuilder, this);
+            mRecentVisitedDoctorPagerAdapter = new ShowDoctorViewPagerAdapter(getActivity(), mergeList, mServiceCardDataViewBuilder, dataMap, this);
             mViewpager.setAdapter(mRecentVisitedDoctorPagerAdapter);
             mViewpager.setClipToPadding(false);
             //------

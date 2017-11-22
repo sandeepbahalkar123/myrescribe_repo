@@ -8,10 +8,13 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -47,9 +50,11 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import droidninja.filepicker.utils.GridSpacingItemDecoration;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
 import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
 
@@ -68,6 +73,8 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     RecyclerView listView;
     @BindView(R.id.emptyListView)
     RelativeLayout emptyListView;
+    @BindView(R.id.servicesMainLayout)
+    FrameLayout servicesMainLayout;
     ServicesAdapter mServicesAdapter;
     private Context mContext;
     private int PLACE_PICKER_REQUEST = 10;
@@ -137,14 +144,18 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         ServicesModel servicesModel = (ServicesModel) customResponse;
         if (servicesModel.getServicesData() == null) {
-            listView.setVisibility(View.GONE);
+            servicesMainLayout.setVisibility(View.GONE);
             emptyListView.setVisibility(View.VISIBLE);
         } else {
-            listView.setVisibility(View.VISIBLE);
+            servicesMainLayout.setVisibility(View.VISIBLE);
             emptyListView.setVisibility(View.GONE);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
             listView.setLayoutManager(layoutManager);
-            listView.setHasFixedSize(true);
+            listView.setItemAnimator(new DefaultItemAnimator());
+            int spanCount = 2; // 3 columns
+            int spacing = 20; // 50px
+            boolean includeEdge = true;
+            listView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
             mServicesAdapter = new ServicesAdapter(mContext, servicesModel.getServicesData().getServicesList(), this);
             listView.setAdapter(mServicesAdapter);
         }
@@ -162,7 +173,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        listView.setVisibility(View.GONE);
+        servicesMainLayout.setVisibility(View.GONE);
         emptyListView.setVisibility(View.VISIBLE);
 
     }

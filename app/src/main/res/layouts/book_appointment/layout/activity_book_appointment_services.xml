@@ -64,11 +64,12 @@
             </LinearLayout>
         </LinearLayout>
 
-        <include
-            layout="@layout/globle_recycle_viewlist"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </android.support.design.widget.AppBarLayout>
 
+    </android.support.design.widget.AppBarLayout>
+    <include
+
+        layout="@layout/services_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </android.support.design.widget.CoordinatorLayout>

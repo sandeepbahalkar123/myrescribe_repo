@@ -180,7 +180,7 @@
                             android:layout_below="@id/doctorName"
                             android:layout_toRightOf="@+id/thumbnail"
                             android:gravity="right"
-                            android:textColor="@color/dose_completed"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/sp11"
                             app:customFont="@string/roboto_medium"
                             tools:text="Aundh, Pune" />
@@ -274,7 +274,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginEnd="@dimen/dp10"
                 android:layout_marginRight="@dimen/dp10"
-                android:src="@drawable/get_token"
+                android:src="@drawable/get_token_btn"
                 android:visibility="invisible" />
 
             <ImageView

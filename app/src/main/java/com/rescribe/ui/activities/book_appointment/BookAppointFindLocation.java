@@ -1,10 +1,8 @@
 package com.rescribe.ui.activities.book_appointment;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
@@ -12,8 +10,6 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -25,23 +21,19 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
@@ -50,13 +42,10 @@ import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.RecentPlacesAdapter;
 import com.rescribe.adapters.book_appointment.ShowPopularPlacesAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
-import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
-import com.rescribe.model.filter.DoctorData;
 import com.rescribe.singleton.RescribeApplication;
-import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.LocationUtil.PermissionUtils;
@@ -91,6 +80,10 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     RecyclerView popularPlacesRecyclerView;
     @BindView(R.id.recentlyVisitedRecyclerView)
     RecyclerView recentlyVisitedRecyclerView;
+    @BindView(R.id.tryLocations)
+    LinearLayout tryLocations;
+    @BindView(R.id.recentlyVisitedPlaces)
+    LinearLayout recentlyVisitedPlaces;
     private Context mContext;
     private final static int PLAY_SERVICES_REQUEST = 1000;
     private final static int REQUEST_CHECK_SETTINGS = 2000;
@@ -375,6 +368,16 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         if (customResponse != null) {
             RecentVisitedBaseModel recentVisitedBaseModel = (RecentVisitedBaseModel) customResponse;
             if (recentVisitedBaseModel.getRecentVisitedModel() != null) {
+                if(recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList().size()>0){
+                    tryLocations.setVisibility(View.VISIBLE);
+                }else{
+                    tryLocations.setVisibility(View.GONE);
+                }
+                if(recentVisitedBaseModel.getRecentVisitedModel().getAreaList().size()>0){
+                    recentlyVisitedPlaces.setVisibility(View.VISIBLE);
+                }else{
+                    recentlyVisitedPlaces.setVisibility(View.GONE);
+                }
                 RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
                 popularPlacesRecyclerView.setLayoutManager(layoutManager);
                 popularPlacesRecyclerView.setItemAnimator(new DefaultItemAnimator());

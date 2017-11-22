@@ -101,10 +101,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/tryLocations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/divider"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:layout_width="wrap_content"
@@ -128,10 +130,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/recentlyVisitedPlaces"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:layout_width="wrap_content"
@@ -155,7 +159,8 @@
                     android:layout_gravity="center"
                     android:divider="@null"
                     android:dividerHeight="0dp"
-                    android:visibility="visible"></android.support.v7.widget.RecyclerView>
+                    android:visibility="visible">
+                </android.support.v7.widget.RecyclerView>
 
             </LinearLayout>
 

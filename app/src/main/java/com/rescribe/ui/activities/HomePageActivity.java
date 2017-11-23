@@ -456,7 +456,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     Intent intent = new Intent(mContext, DoctorConnectActivity.class);
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.vital_graph))) {
-                    Intent intent = new Intent(mContext, VitalGraphActivity.class);
+                  /*  Intent intent = new Intent(mContext, VitalGraphActivity.class);
+                    startActivity(intent);*/
+                    Intent intent = new Intent(mContext, FindDoctorsActivity.class);
+                    intent.putExtra(getString(R.string.toolbarTitle), "Find Doctors");
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.settings))) {
 

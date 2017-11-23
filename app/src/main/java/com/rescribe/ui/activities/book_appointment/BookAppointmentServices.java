@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.content.ContextCompat;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -33,7 +32,6 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
 import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
 import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
@@ -52,8 +50,8 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     //    @BindView(R.id.servicesMainLayout)
 //    LinearLayout servicesMainLayout;
     ServicesAdapter mServicesAdapter;
- /*   @BindView(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout collapsingToolbar;*/
+    /*   @BindView(R.id.collapsing_toolbar)
+       CollapsingToolbarLayout collapsingToolbar;*/
     @BindView(R.id.servicesBg)
     ImageView servicesBg;
     @BindView(R.id.scroll)
@@ -67,6 +65,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     String address;
     private DoctorDataHelper mDoctorDataHelper;
     private ArrayList<DoctorList> doctorLists;
+    private int dimensionPixelSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +81,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                 onBackPressed();
             }
         });
-      //  collapsingToolbar.setTitle("");
+        //  collapsingToolbar.setTitle("");
         // locationTextView.setText(getString(R.string.location));
         initialize();
     }
@@ -91,6 +90,17 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         mContext = BookAppointmentServices.this;
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetServices();
+
+        dimensionPixelSize = getResources().getDimensionPixelSize(R.dimen.dp56);
+
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(final AppBarLayout appBarLayout, int verticalOffset) {
+                int i = verticalOffset + 400;
+                listView.setPadding(0, i, 0, 0);
+            }
+        });
+
  /*  appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             int scrollRange = -1;
 
@@ -169,13 +179,13 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
             listView.setLayoutManager(layoutManager);
             listView.setItemAnimator(new DefaultItemAnimator());
-            int spanCount = 2; // 3 columns
-            int spacing = 20; // 50px
-            boolean includeEdge = true;
-            listView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+//            int spanCount = 2; // 3 columns
+//            int spacing = 20; // 50px
+//            boolean includeEdge = true;
+//            listView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
             mServicesAdapter = new ServicesAdapter(mContext, servicesModel.getServicesData().getServicesList(), this);
             listView.setAdapter(mServicesAdapter);
-            listView.setNestedScrollingEnabled(false);
+//            listView.setNestedScrollingEnabled(false);
         }
     }
 

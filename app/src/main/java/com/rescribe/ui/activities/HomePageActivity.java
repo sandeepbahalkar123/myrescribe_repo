@@ -144,7 +144,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private ServicesCardViewImpl mDashboardDataBuilder;
     private AppDBHelper appDBHelper;
     private DashboardHelper mDashboardHelper;
-    CustomProgressDialog mCustomProgressDialog;
+   // CustomProgressDialog mCustomProgressDialog;
     private static final long INTERVAL = 1000 * 10;
     private static final long FASTEST_INTERVAL = 1000 * 5;
     LocationRequest mLocationRequest;
@@ -159,7 +159,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_dashboard_layout);
         ButterKnife.bind(this);
-        mCustomProgressDialog = new CustomProgressDialog(HomePageActivity.this);
+       // mCustomProgressDialog = new CustomProgressDialog(HomePageActivity.this);
         createLocationRequest();
 
 
@@ -566,7 +566,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 if (customResponse != null) {
                     CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
                     if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
-                        mDashboardDataBuilder.updateFavStatusForDoctorDataObject(mShowDoctorViewPagerAdapter.getRequestedDocListToUpdateFavStatus());
+                        mDashboardDataBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                         setUpViewPager();
                     }
                     CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
@@ -576,7 +576,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     private void setUpViewPager() {
         //----------
-        mCustomProgressDialog.cancel();
+     //   mCustomProgressDialog.cancel();
         Map<String, Integer> dataMap = new LinkedHashMap<>();
         ArrayList<DoctorList> myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments));
         ArrayList<DoctorList> sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
@@ -646,17 +646,17 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-        mCustomProgressDialog.cancel();
+      ///  mCustomProgressDialog.cancel();
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
-        mCustomProgressDialog.cancel();
+      //  mCustomProgressDialog.cancel();
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        mCustomProgressDialog.cancel();
+       // mCustomProgressDialog.cancel();
     }
 
 
@@ -867,7 +867,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         } else {
             Log.d(TAG, "DASHBOARD API  CALLED");
             if (locationReceived.equals("")) {
-                mCustomProgressDialog.show();
+               // mCustomProgressDialog.show();
                 if (!mGoogleApiClient.isConnected())
                     mGoogleApiClient.connect();
                 else startLocationUpdates();
@@ -963,7 +963,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void gpsStatus() {
-        mCustomProgressDialog.show();
+      //  mCustomProgressDialog.show();
         if (!mGoogleApiClient.isConnected())
             mGoogleApiClient.connect();
         else startLocationUpdates();

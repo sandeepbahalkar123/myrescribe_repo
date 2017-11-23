@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +27,7 @@ import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
@@ -63,10 +65,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     private DoctorDataHelper mDoctorDataHelper;
     private String mClickedItemDataTypeValue;
     private String mReceivedTitle;
-    private DoctorList mClickedDocListToUpdateFavStatus;
-    private String mClickedDoctorObjectPosition;
     private String mClickedItemDataValue;
     private boolean mIsFavoriteList;
+    private String mUserSelectedLocation;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -128,6 +129,24 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         //-----------
     }
 
+    public void doGetLatestDoctorListOnLocationChange(HashMap<String, String> mComplaintsUserSearchFor) {
+        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+        String selectedLocation = userSelectedLocationInfo.get(getString(R.string.location));
+        if (selectedLocation != null) {
+            if (selectedLocation.equalsIgnoreCase(mUserSelectedLocation)) {
+                mUserSelectedLocation = selectedLocation;
+            } else {
+                mUserSelectedLocation = selectedLocation;
+                String[] split = mUserSelectedLocation.split(",");
+                if (split.length == 2) {
+                    mDoctorDataHelper.doGetDoctorData(split[1], split[0], mComplaintsUserSearchFor);
+                } else {
+                    mDoctorDataHelper.doGetDoctorData("", "", mComplaintsUserSearchFor);
+                }
+            }
+        }
+    }
+
 
     private void setDoctorListAdapter() {
 
@@ -143,17 +162,17 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     @Override
     public void onResume() {
         super.onResume();
         doGetReceivedListBasedOnClickedItemData();
-        updateDataInViews(null);
+        setDoctorListAdapter();
+        ServicesFilteredDoctorListActivity activity = (ServicesFilteredDoctorListActivity) getActivity();
+        if (activity.isLocationChangeViewClicked()) {
+            doGetLatestDoctorListOnLocationChange(null);
+            activity.setLocationChangeViewClicked(false);
+        }
     }
 
     @Override
@@ -165,14 +184,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
-                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDocListToUpdateFavStatus);
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                     //--------
-                    for (DoctorList dataObject :
-                            mReceivedList) {
-                        if (dataObject.getDocId() == mClickedDocListToUpdateFavStatus.getDocId()) {
-                            dataObject.setFavourite(dataObject.getFavourite() ? false : true);
-                        }
-                    }
                     mBookAppointFilteredDocListAdapter.notifyDataSetChanged();
                 }
                 break;
@@ -184,7 +197,15 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                         mReceivedList = doctorServices.filterDocListBySpeciality(mReceivedTitle);
                     }
                 }
-                updateDataInViews(null);
+                setDoctorListAdapter();
+                break;
+            case RescribeConstants.TASK_GET_DOCTOR_DATA:
+                DoctorServicesModel receivedDoctorServicesModel = DoctorDataHelper.getReceivedDoctorServicesModel();
+                if (receivedDoctorServicesModel != null) {
+                    new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity()).setReceivedDoctorDataList(receivedDoctorServicesModel.getDoctorList());
+                    doGetReceivedListBasedOnClickedItemData();
+                    setDoctorListAdapter();
+                }
                 break;
         }
     }
@@ -259,30 +280,28 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     // TODO: NEED TO ADD SAME IN RECENT VISIT FILTER
     @Override
     public void onClickOfDoctorRowItem(Bundle bundleData) {
+        DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
+        ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mClickedDoctorObject);
+        //------------
         if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.doctor_details))) {
-            DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
-            mClickedDoctorObjectPosition = bundleData.getString(getString(R.string.clicked_item_data_value_position));
 
             if (mClickedDoctorObject.getCategoryName().equalsIgnoreCase(getString(R.string.my_appointments))) {
                 Intent intent = new Intent(getActivity(), AppointmentActivity.class);
                 startActivity(intent);
             } else {
                 bundleData.putString(getString(R.string.toolbarTitle), mReceivedTitle);
-                mClickedDocListToUpdateFavStatus = mClickedDoctorObject;
                 Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
                 intent.putExtras(bundleData);
-                getActivity().startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+                startActivity(intent);
             }
         } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {
-            mClickedDocListToUpdateFavStatus = bundleData.getParcelable(getString(R.string.clicked_item_data));
-            boolean status = mClickedDocListToUpdateFavStatus.getFavourite() ? false : true;
-            mDoctorDataHelper.setFavouriteDoctor(status, mClickedDocListToUpdateFavStatus.getDocId());
+            boolean status = mClickedDoctorObject.getFavourite() ? false : true;
+            mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
         }
     }
 
     public void onApplyClicked(Bundle data) {
         BookAppointFilterRequestModel requestModel = data.getParcelable(getString(R.string.filter));
-
         mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel);
     }
 
@@ -290,15 +309,10 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
 
     }
 
-    public void updateDataInViews(DoctorList receivedObject) {
-        if (receivedObject != null) {
-            if (mReceivedList != null) {
-                if (mReceivedList.size() > 0) {
-                    if (mClickedDoctorObjectPosition != null)
-                        mReceivedList.set(Integer.parseInt(mClickedDoctorObjectPosition), receivedObject);
-                }
-            }
-        }
-        setDoctorListAdapter();
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
+
 }

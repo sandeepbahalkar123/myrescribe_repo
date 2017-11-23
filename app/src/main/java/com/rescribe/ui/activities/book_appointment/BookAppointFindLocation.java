@@ -1,44 +1,53 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.Spanned;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.rescribe.R;
+import com.rescribe.adapters.autocomplete_place.PlaceArrayAdapter;
 import com.rescribe.adapters.book_appointment.RecentPlacesAdapter;
 import com.rescribe.adapters.book_appointment.ShowPopularPlacesAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
@@ -47,12 +56,9 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.util.CommonMethods;
-import com.rescribe.util.LocationUtil.PermissionUtils;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -62,55 +68,66 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
+import static com.github.mikephil.charting.charts.Chart.LOG_TAG;
 
-public class BookAppointFindLocation extends AppCompatActivity implements PlaceSelectionListener, GoogleApiClient.ConnectionCallbacks,
+public class BookAppointFindLocation extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, HelperResponse, ShowPopularPlacesAdapter.OnPopularPlacesListener, RecentPlacesAdapter.OnRecentPlacesListener {
 
-    public static final String TAG = "BookAppointFindLocation";
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 10;
+    public static final String TAG = "BookApFindLocation";
+    private static final int GOOGLE_API_CLIENT_ID = 0;
+
     @BindView(R.id.bookAppointmentToolbar)
     ImageView bookAppointmentToolbar;
     @BindView(R.id.title)
     CustomTextView title;
     @BindView(R.id.detectLocation)
     CustomTextView detectLocation;
+
     @BindView(R.id.findLocation)
-    CustomTextView findLocation;
+    AutoCompleteTextView mAutocompleteTextView;
+
     @BindView(R.id.popularPlacesRecyclerView)
     RecyclerView popularPlacesRecyclerView;
     @BindView(R.id.recentlyVisitedRecyclerView)
     RecyclerView recentlyVisitedRecyclerView;
-    @BindView(R.id.tryLocations)
-    LinearLayout tryLocations;
-    @BindView(R.id.recentlyVisitedPlaces)
-    LinearLayout recentlyVisitedPlaces;
-    private Context mContext;
-    private final static int PLAY_SERVICES_REQUEST = 1000;
-    private final static int REQUEST_CHECK_SETTINGS = 2000;
-    private Location mLastLocation;
+
+    // For Location things
+
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
+            UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+
+    private final static String LOCATION_KEY = "location-key";
+    private final static String LAST_UPDATED_TIME_STRING_KEY = "last-updated-time-string-key";
+
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private static final int REQUEST_CHECK_SETTINGS = 10;
+
     private GoogleApiClient mGoogleApiClient;
-    double latitude;
-    Location mCurrentLocation;
-    String mLastUpdateTime;
-    double longitude;
-    ArrayList<String> permissions = new ArrayList<>();
-    PermissionUtils permissionUtils;
-    boolean isPermissionGranted;
-    LocationRequest mLocationRequest;
-    private static final long INTERVAL = 1000 * 10;
-    private static final long FASTEST_INTERVAL = 1000 * 5;
+    private LocationRequest mLocationRequest;
+    private Location mCurrentLocation;
+    private String mLastUpdateTime;
+
+    private PlaceArrayAdapter mPlaceArrayAdapter;
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(23.63936, 68.14712), new LatLng(28.20453, 97.34466));
+
+    // Location Things End
+
+    private Context mContext;
+
     DoctorDataHelper mDoctorDataHelper;
     private ShowPopularPlacesAdapter mShowPopularPlacesAdapter;
     private RecentPlacesAdapter mRecentPlacesAdapter;
-    String address;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appoint_select_location);
         ButterKnife.bind(this);
+
         mContext = BookAppointFindLocation.this;
-        init();
+
+        init(savedInstanceState);
 
         findViewById(R.id.bookAppointmentToolbar).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,126 +138,50 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
 
     }
 
-    private void init() {
+    private void init(Bundle savedInstanceState) {
+
+        // Location
+
+        buildGoogleApiClient();
+        updateValuesFromBundle(savedInstanceState);
+
+        mAutocompleteTextView.setThreshold(2);
+        mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
+        mPlaceArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1,
+                BOUNDS_MOUNTAIN_VIEW, null);
+        mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
+
+        // End Location
+
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetRecentlyVisitedDoctorPlacesData();
 
     }
 
-    /**
-     * Callback invoked when a place has been selected from the PlaceAutocompleteFragment.
-     */
-    @Override
-    public void onPlaceSelected(Place place) {
-        CommonMethods.Log(TAG, "Place Selected: " + place.getName());
-
-        // Format the returned place's details and display them in the TextView.
-        CommonMethods.showToast(this, "" + formatPlaceDetails(getResources(), place.getName(), place.getId(),
-                place.getAddress(), place.getPhoneNumber(), place.getWebsiteUri()));
-
-        CharSequence attributions = place.getAttributions();
-        if (!TextUtils.isEmpty(attributions)) {
-            CommonMethods.showToast(this, "" + Html.fromHtml(attributions.toString()));
-        } else {
-            CommonMethods.showToast(this, "");
+    private AdapterView.OnItemClickListener mAutocompleteClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
+            final String placeId = String.valueOf(item.placeId);
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId);
+            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
         }
-    }
+    };
 
-    /**
-     * Callback invoked when PlaceAutocompleteFragment encounters an error.
-     */
-    @Override
-    public void onError(Status status) {
-        CommonMethods.Log(TAG, "onError: Status = " + status.toString());
-
-        Toast.makeText(this, "Place selection failed: " + status.getStatusMessage(),
-                Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Helper method to format information about a place nicely.
-     */
-    private static Spanned formatPlaceDetails(Resources res, CharSequence name, String id,
-                                              CharSequence address, CharSequence phoneNumber, Uri websiteUri) {
-        CommonMethods.Log(TAG, res.getString(R.string.place_details, name, id, address, phoneNumber,
-                websiteUri));
-        return Html.fromHtml(res.getString(R.string.place_details, name, id, address, phoneNumber,
-                websiteUri));
-
-    }
-
-    public void callPlaceAutocompleteActivityIntent(View v) {
-        try {
-            Intent intent =
-                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                            .build(this);
-            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-//PLACE_AUTOCOMPLETE_REQUEST_CODE is integer for request code
-        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
-        }
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
-        super.onActivityResult(requestCode, resultCode, data);
-        //autocompleteFragment.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(this, data);
-                StringBuilder stBuilder = new StringBuilder();
-                String placename = String.format("%s", place.getName());
-
-                address = String.format("%s", place.getAddress());
-                stBuilder.append("Name: ");
-                stBuilder.append(placename);
-                stBuilder.append("\n");
-                stBuilder.append("Address: ");
-                stBuilder.append(address);
-                Geocoder gcd = new Geocoder(this, Locale.getDefault());
-                List<Address> addresses = null;
-                try {
-                    addresses = gcd.getFromLocation(place.getLatLng().latitude, place.getLatLng().longitude, 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (addresses != null && addresses.size() > 0) {
-                    //-------
-                    String locality = "";
-                    //-------
-                    if (placename.contains(" ")) {
-                        locality = getArea(addresses.get(0));
-                    } else {
-                        locality = placename;
-                    }
-                    String city = addresses.get(0).getLocality();
-
-                    RescribeApplication.setUserSelectedLocationInfo(BookAppointFindLocation.this, place.getLatLng(), locality + ", " + city);
-                    finish();
-
-                }
-                CommonMethods.Log(TAG, "Place:" + place.toString());
-                setResult(Activity.RESULT_OK, data);
-                finish();
-            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                Status status = PlaceAutocomplete.getStatus(this, data);
-                CommonMethods.Log(TAG, status.getStatusMessage());
-                setResult(Activity.RESULT_CANCELED, data);
-                finish();
-            } else if (resultCode == RESULT_CANCELED) {
-                setResult(Activity.RESULT_CANCELED, data);
-                finish();
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
+                Log.e(LOG_TAG, "Place query did not complete. Error: " +
+                        places.getStatus().toString());
+                return;
             }
-        } else if (requestCode == REQUEST_CHECK_SETTINGS) {
-            if (resultCode == RESULT_OK) {
-            } else if (requestCode == RESULT_CANCELED) {
+            // Selecting the first object buffer.
+            final Place place = places.get(0);
 
-            }
+            getAddress(place.getLatLng().latitude, place.getLatLng().longitude);
         }
-    }
+    };
 
     private String getArea(Address obj) {
 
@@ -264,36 +205,9 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
             case R.id.bookAppointmentToolbar:
                 break;
             case R.id.detectLocation:
-                createLocationRequest();
-                mGoogleApiClient = new GoogleApiClient.Builder(this)
-                        .addApi(LocationServices.API)
-                        .addConnectionCallbacks(this)
-                        .addOnConnectionFailedListener(this)
-                        .build();
-                mGoogleApiClient.connect();
-
+                startUpdatesButtonHandler();
                 break;
         }
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        Log.d(TAG, "onConnected - isConnected ...............: " + mGoogleApiClient.isConnected());
-        startLocationUpdates();
-    }
-
-    protected void startLocationUpdates() {
-        PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
-
-        Log.d(TAG, "Location update started ..............: ");
-    }
-
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     public void getAddress(double lat, double lng) {
@@ -326,41 +240,14 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
 
                 Log.d("AREA", getArea(obj));
             } else {
-                Toast.makeText(this, "Address not found.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Address not found.", Toast.LENGTH_SHORT).show();
             }
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-    }
-
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = "
-                + connectionResult.getErrorCode());
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        // redirects to utils
-        permissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
     }
 
     @Override
@@ -368,16 +255,6 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         if (customResponse != null) {
             RecentVisitedBaseModel recentVisitedBaseModel = (RecentVisitedBaseModel) customResponse;
             if (recentVisitedBaseModel.getRecentVisitedModel() != null) {
-                if(recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList().size()>0){
-                    tryLocations.setVisibility(View.VISIBLE);
-                }else{
-                    tryLocations.setVisibility(View.GONE);
-                }
-                if(recentVisitedBaseModel.getRecentVisitedModel().getAreaList().size()>0){
-                    recentlyVisitedPlaces.setVisibility(View.VISIBLE);
-                }else{
-                    recentlyVisitedPlaces.setVisibility(View.GONE);
-                }
                 RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
                 popularPlacesRecyclerView.setLayoutManager(layoutManager);
                 popularPlacesRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -415,40 +292,6 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-        Log.d(TAG, "Firing onLocationChanged..............................................");
-        mCurrentLocation = location;
-        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        updateUI();
-    }
-
-    private void updateUI() {
-        Log.d(TAG, "UI update initiated .............");
-        if (null != mCurrentLocation) {
-            String lat = String.valueOf(mCurrentLocation.getLatitude());
-            String lng = String.valueOf(mCurrentLocation.getLongitude());
-
-            /*tvLocation.setText("At Time: " + mLastUpdateTime + "\n" +
-                    "Latitude: " + lat + "\n" +
-                    "Longitude: " + lng + "\n" +
-                    "Accuracy: " + mCurrentLocation.getAccuracy() + "\n" +
-                    "Provider: " + mCurrentLocation.getProvider());*/
-            Log.e("Latitude Longitude ===============", lat + "///////////" + lng);
-
-            getAddress(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
-            stopLocationUpdates();
-        } else {
-            Log.d(TAG, "location is null ...............");
-        }
-    }
-
-    protected void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(
-                mGoogleApiClient, this);
-        Log.d(TAG, "Location update stopped .......................");
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
@@ -465,4 +308,260 @@ public class BookAppointFindLocation extends AppCompatActivity implements PlaceS
         RescribeApplication.setUserSelectedLocationInfo(this, null, location);
         finish();
     }
+
+    // Location Things
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.i(TAG, "onLocationChanged");
+        mCurrentLocation = location;
+        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+        updateUI();
+        stopUpdatesButtonHandler();
+    }
+
+    private void updateValuesFromBundle(Bundle savedInstanceState) {
+        Log.i(TAG, "Updating values from bundle");
+        if (savedInstanceState != null) {
+            if (savedInstanceState.keySet().contains(LOCATION_KEY)) {
+                mCurrentLocation = savedInstanceState.getParcelable(LOCATION_KEY);
+            }
+            if (savedInstanceState.keySet().contains(LAST_UPDATED_TIME_STRING_KEY)) {
+                mLastUpdateTime = savedInstanceState.getString(LAST_UPDATED_TIME_STRING_KEY);
+            }
+            updateUI();
+        }
+    }
+
+    private void updateUI() {
+        if (mCurrentLocation == null) return;
+
+        // update UI
+        getAddress(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        Log.i(TAG, "Building GoogleApiClient");
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
+                .build();
+        createLocationRequest();
+    }
+
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    public void startUpdatesButtonHandler() {
+        if (!isPlayServicesAvailable(this)) return;
+
+        if (Build.VERSION.SDK_INT < 23) {
+            setButtonsEnabledState(false);
+            startLocationUpdates();
+            return;
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            setButtonsEnabledState(false);
+            startLocationUpdates();
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                showRationaleDialog();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            }
+        }
+    }
+
+    public void stopUpdatesButtonHandler() {
+        setButtonsEnabledState(true);
+        stopLocationUpdates();
+    }
+
+    private void startLocationUpdates() {
+        Log.i(TAG, "startLocationUpdates");
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);
+
+        PendingResult<LocationSettingsResult> result =
+                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(@NonNull LocationSettingsResult locationSettingsResult) {
+                final Status status = locationSettingsResult.getStatus();
+
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        if (ContextCompat.checkSelfPermission(BookAppointFindLocation.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, BookAppointFindLocation.this);
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+
+                        try {
+                            status.startResolutionForResult(BookAppointFindLocation.this, REQUEST_CHECK_SETTINGS);
+                        } catch (IntentSender.SendIntentException e) {
+                            // Ignore the error.
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        // Location settings are not satisfied. However, we have no way
+                        // to fix the settings so we won't show the dialog.
+                        break;
+                }
+            }
+        });
+    }
+
+    private void setButtonsEnabledState(boolean isLocationUpdateStopped) {
+        detectLocation.setEnabled(isLocationUpdateStopped);
+    }
+
+    protected void stopLocationUpdates() {
+        Log.i(TAG, "stopLocationUpdates");
+        // The final argument to {@code requestLocationUpdates()} is a LocationListener
+        // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    setButtonsEnabledState(false);
+                    startLocationUpdates();
+                } else {
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        setButtonsEnabledState(true);
+                    } else {
+                        showRationaleDialog();
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    private void showRationaleDialog() {
+        new AlertDialog.Builder(this)
+                .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(BookAppointFindLocation.this,
+                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                    }
+                })
+                .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setButtonsEnabledState(false);
+                    }
+                })
+                .setCancelable(false)
+                .setMessage("Location Permission needed for sharing location.")
+                .show();
+    }
+
+    public static boolean isPlayServicesAvailable(Context context) {
+
+        int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            GoogleApiAvailability.getInstance().getErrorDialog((Activity) context, resultCode, 2).show();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CHECK_SETTINGS:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        startLocationUpdates();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        break;
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isPlayServicesAvailable(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Stop location updates to save battery, but don't disconnect the GoogleApiClient object.
+        if (mGoogleApiClient.isConnected()) {
+            stopLocationUpdates();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        stopLocationUpdates();
+        mGoogleApiClient.disconnect();
+
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.i(TAG, "onConnected");
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        if (mCurrentLocation == null) {
+
+            // take last known location if you want.
+            mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+        }
+
+        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        // The connection to Google Play services was lost for some reason. We call connect() to
+        // attempt to re-establish the connection.
+        Log.i(TAG, "Connection suspended");
+        mPlaceArrayAdapter.setGoogleApiClient(null);
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
+        // onConnectionFailed.
+        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + connectionResult.getErrorCode());
+    }
+
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putParcelable(LOCATION_KEY, mCurrentLocation);
+        savedInstanceState.putString(LAST_UPDATED_TIME_STRING_KEY, mLastUpdateTime);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    // End Location Things
 }

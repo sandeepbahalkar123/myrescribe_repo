@@ -67,6 +67,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="@dimen/dp12"
                     android:background="@drawable/detect_location_box"
+                    android:drawableEnd="@drawable/icon_gps"
                     android:drawableRight="@drawable/icon_gps"
                     android:gravity="center|left"
                     android:padding="@dimen/dp10"
@@ -84,19 +85,20 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.rescribe.ui.customesViews.CustomTextView
+                <AutoCompleteTextView
                     android:id="@+id/findLocation"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp30"
+                    android:background="@null"
                     android:drawableLeft="@drawable/search_grey_icon"
                     android:drawablePadding="@dimen/dp8"
+                    android:drawableStart="@drawable/search_grey_icon"
                     android:gravity="center_vertical"
-                    android:onClick="callPlaceAutocompleteActivityIntent"
-                    android:paddingLeft="@dimen/dp10"
-                    android:text="Start typing locations..."
+                    android:hint="Start typing locations..."
+                    android:paddingEnd="@dimen/dp10"
+                    android:paddingStart="@dimen/dp10"
                     android:textColor="@color/Gray"
-                    android:textSize="@dimen/sp12"
-                    app:customFont="@string/roboto_regular" />
+                    android:textSize="@dimen/sp12" />
 
             </LinearLayout>
 

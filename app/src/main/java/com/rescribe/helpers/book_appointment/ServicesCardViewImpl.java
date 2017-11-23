@@ -27,11 +27,13 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     private Context mContext;
     private AppCompatActivity mParentActivity;
     private static ArrayList<DoctorList> mReceivedDoctorDataList;
+    private static DoctorList userSelectedDoctorListDataObject;
 
     public ServicesCardViewImpl(Context context, AppCompatActivity parentActivity) {
         this.mContext = context;
         this.mParentActivity = parentActivity;
     }
+
 
     @Override
     public void onClickOfCardView(Bundle bundleData) {
@@ -40,9 +42,9 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             Intent intent = new Intent(mParentActivity, AppointmentActivity.class);
             mParentActivity.startActivity(intent);
         } else {
-            DoctorList doctorListObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
+            userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
             Intent intent = new Intent(mParentActivity, DoctorDescriptionBaseActivity.class);
-            intent.putExtra(mContext.getString(R.string.clicked_item_data), doctorListObject);
+            intent.putExtra(mContext.getString(R.string.clicked_item_data), userSelectedDoctorListDataObject);
             intent.putExtra(mContext.getString(R.string.toolbarTitle), value);
             mParentActivity.startActivity(intent);
         }
@@ -50,7 +52,6 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
 
     @Override
     public void onFavoriteIconClick(boolean isFavouriteStatus, DoctorList doctorListObject, ImageView favorite, HelperResponse helperResponse) {
-
         new DoctorDataHelper(mContext, helperResponse).setFavouriteDoctor(isFavouriteStatus, doctorListObject.getDocId());
     }
 
@@ -61,14 +62,12 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         if (nameOfCategoryType.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
             Intent intent = new Intent(mParentActivity, ServicesFilteredDoctorListActivity.class);
             bundleData.putString(mContext.getString(R.string.toolbarTitle), mContext.getString(R.string.my_appointments));
-            //  bundleData.putParcelableArrayList(mContext.getString(R.string.clicked_item_data), getCategoryWiseDoctorList(mContext.getString(R.string.my_appointments)));
             intent.putExtras(bundleData);
             //mParentActivity.startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
             mParentActivity.startActivity(intent);
         } else if (nameOfCategoryType.equalsIgnoreCase(mContext.getString(R.string.favorite))) { // favorite card name
             Intent intent = new Intent(mParentActivity, ServicesFilteredDoctorListActivity.class);
             bundleData.putString(mContext.getString(R.string.toolbarTitle), nameOfCategoryType);
-            //    bundleData.putParcelableArrayList(mContext.getString(R.string.clicked_item_data), getFavouriteDocList());
             bundleData.putBoolean(mContext.getString(R.string.favorite), true);
             intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);
@@ -76,15 +75,11 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             // for sponcered and recent visited doctor list.
             Intent intent = new Intent(mParentActivity, ServicesFilteredDoctorListActivity.class);
             bundleData.putString(mContext.getString(R.string.toolbarTitle), nameOfCategoryType);
-            //  bundleData.putParcelableArrayList(mContext.getString(R.string.clicked_item_data), getCategoryWiseDoctorList(nameOfCategoryType));
             intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);
         }
     }
 
-    public void setReceivedDoctorDataList(ArrayList<DoctorList> list) {
-        mReceivedDoctorDataList = list;
-    }
 
     public ArrayList<DoctorList> getCategoryWiseDoctorList(String categoryName) {
         ArrayList<DoctorList> temp = new ArrayList<>();
@@ -140,26 +135,19 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         return null;
     }
 
-    public static void updateFavStatusForDoctorDataObject(DoctorList updatedObject) {
+    public static boolean updateFavStatusForDoctorDataObject(DoctorList updatedObject) {
+        boolean status = false;
         if (updatedObject != null) {
             for (int i = 0; i < mReceivedDoctorDataList.size(); i++) {
                 DoctorList tempObject = mReceivedDoctorDataList.get(i);
                 if (updatedObject.getDocId() == tempObject.getDocId()) {
                     tempObject.setFavourite(tempObject.getFavourite() ? false : true);
                     mReceivedDoctorDataList.set(i, tempObject);
+                    status = true;
                 }
             }
         }
-      /*  else if (mClickedDoctorListObjectToUpdateFavStatus != null) {
-            for (int i = 0; i < mReceivedDoctorDataList.size(); i++) {
-                DoctorList tempObject = mReceivedDoctorDataList.get(i);
-                if (mClickedDoctorListObjectToUpdateFavStatus.getDocId() == tempObject.getDocId()) {
-                    tempObject.setFavourite(tempObject.getFavourite() ? false : true);
-                    mReceivedDoctorDataList.set(i, tempObject);
-                }
-            }
-            return mClickedDoctorListImageView;
-        }*/
+        return status;
     }
 
 
@@ -177,5 +165,21 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             }
         }
         return dataList;
+    }
+
+    public static DoctorList getUserSelectedDoctorListDataObject() {
+        return userSelectedDoctorListDataObject;
+    }
+
+    public static void setUserSelectedDoctorListDataObject(DoctorList userSelectedDoctorListDataObject) {
+        ServicesCardViewImpl.userSelectedDoctorListDataObject = userSelectedDoctorListDataObject;
+    }
+
+    public void setReceivedDoctorDataList(ArrayList<DoctorList> list) {
+        mReceivedDoctorDataList = list;
+    }
+
+    public static ArrayList<DoctorList> getReceivedDoctorDataList() {
+        return mReceivedDoctorDataList;
     }
 }

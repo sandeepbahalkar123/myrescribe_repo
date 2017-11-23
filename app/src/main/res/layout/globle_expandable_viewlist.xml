@@ -8,33 +8,32 @@
     android:orientation="vertical"
     tools:ignore="MissingTranslation">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/listView"
+    <ExpandableListView
+        android:id="@+id/selectTimeDateExpandableView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null"
-        android:dividerHeight="0dp"
+        android:background="@color/white"
+        android:groupIndicator="@null"
+        android:listSelector="@android:color/transparent"
         android:visibility="visible"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"></ExpandableListView>
 
-    <RelativeLayout
-        android:id="@+id/emptyListView"
+    <LinearLayout
+        android:id="@+id/no_data_found"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="@drawable/no_records_found"
             android:gravity="center"
-            android:orientation="vertical" />
-    </RelativeLayout>
+            android:text="@string/no_clinic_data_found" />
+
+    </LinearLayout>
     <!--  <ImageView
           android:id="@+id/emptyListView"
           android:layout_width="wrap_content"

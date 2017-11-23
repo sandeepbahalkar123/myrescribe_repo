@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -57,8 +58,8 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     ImageView servicesBg;
     @BindView(R.id.scroll)
     NestedScrollView scroll;
-  /*  @BindView(R.id.appBarLayout)
-    AppBarLayout appBarLayout;*/
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout appBarLayout;
     private Context mContext;
     private int PLACE_PICKER_REQUEST = 10;
     String latitude = "";
@@ -70,10 +71,10 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_appointment_services);
+        setContentView(R.layout.services_layout_trial);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getString(R.string.services));
+        getSupportActionBar().setTitle(/*getString(R.string.services)+*/"");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +91,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         mContext = BookAppointmentServices.this;
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetServices();
-   /*     appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+ /*  appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             int scrollRange = -1;
 
             @Override
@@ -104,7 +105,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                     toolbar.setAlpha(transparency / 10);
 
                 //Initialize the size of the scroll
-               *//* if (scrollRange == -1) {
+               if (scrollRange == -1) {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 //Check if the view is collapsed
@@ -112,7 +113,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
                     toolbar.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey));
                 }else{
                     toolbar.setBackgroundColor(ContextCompat.getColor(mContext, R.color.accent));
-                }*//*
+                }
             }
         });*/
     }

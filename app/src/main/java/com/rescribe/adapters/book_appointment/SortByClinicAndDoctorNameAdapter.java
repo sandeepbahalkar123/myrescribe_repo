@@ -25,6 +25,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.ui.customesViews.CircularImageView;
@@ -45,24 +47,27 @@ import butterknife.ButterKnife;
 
 public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortByClinicAndDoctorNameAdapter.ListViewHolder> implements Filterable {
 
+    private final HelperResponse mHelperResponse;
     private Fragment mFragment;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
     private int mImageSize;
     private ArrayList<DoctorList> mArrayList;
-    private OnClinicAndDoctorNameSearchRowItem mOnClinicAndDoctorNameSearchRowItem;
+    private ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem;
     private String mSearchString;
     private ColorGenerator mColorGenerator;
     private String mSearchClinicNameString;
     private boolean isListByClinicName;
 
 
-    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, OnClinicAndDoctorNameSearchRowItem mOnClinicAndDoctorNameSearchRowItem, Fragment m) {
+    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, Fragment m, HelperResponse mHelperResponse) {
         this.mDataList = dataList;
         this.mContext = mContext;
         this.mArrayList = dataList;
         this.mOnClinicAndDoctorNameSearchRowItem = mOnClinicAndDoctorNameSearchRowItem;
         this.mFragment = m;
+        this.mHelperResponse = mHelperResponse;
+
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
     }
@@ -90,6 +95,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
         holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
         holder.aboutDoctor.setText(doctorObject.getDegree());
+        //------------
         if (doctorObject.getRating() == 0) {
             holder.doctorRating.setVisibility(View.GONE);
             holder.ratingBar.setVisibility(View.GONE);
@@ -99,6 +105,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             holder.doctorRating.setText("" + doctorObject.getRating());
             holder.ratingBar.setRating((float) doctorObject.getRating());
         }
+        //------------
 
         //if only one clinic is available then only show doctoraddress otherwise show total locations available
         if (doctorObject.getClinicDataList().size() == 1) {
@@ -106,6 +113,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         } else {
             holder.doctorAddress.setText("" + doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
         }
+        //------------
 
         // holder.doctorFee.setText("" + doctorObject.getAmount());
       /*  SpannableString content = new SpannableString(doctorObject.getDistance());
@@ -142,11 +150,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                     .apply(requestOptions).thumbnail(0.5f)
                     .into(holder.imageURL);
             //--------------
-        }
-        if (doctorObject.getTokenNo().equals("")) {
-            holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.result_book_appointment));
-        } else {
-            holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.token_no_background));
         }
 
 
@@ -195,13 +198,68 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 }
             }
         }
-
+        //--------------
+        if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
+            holder.bookAppointmentButton.setVisibility(View.VISIBLE);
+            holder.tokenNo.setVisibility(View.GONE);
+            //  holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.result_book_appointment));
+        } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.token))) {
+            holder.bookAppointmentButton.setVisibility(View.GONE);
+            holder.tokenNo.setVisibility(View.VISIBLE);
+            // holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.token_no_background));
+        }
+        //---------------
         if (doctorObject.getFavourite()) {
             holder.favoriteView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.result_heart_fav));
         } else {
             holder.favoriteView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.result_line_heart_fav));
         }
 
+        //----*********-------------
+        holder.favoriteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView imageView = (ImageView) v;
+                boolean status = !doctorObject.getFavourite();
+                mOnClinicAndDoctorNameSearchRowItem.onFavoriteIconClick(status, doctorObject, imageView, mHelperResponse);
+            }
+        });
+
+        holder.dataLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.toString());
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                mOnClinicAndDoctorNameSearchRowItem.onClickOfCardView(b);
+            }
+        });
+
+        holder.bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.book_appointment));
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 1);
+
+                mOnClinicAndDoctorNameSearchRowItem.onClickedOfBookButton(b);
+            }
+        });
+
+        holder.tokenNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.token_number));
+                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                mOnClinicAndDoctorNameSearchRowItem.onClickedOfTokenNumber(b);
+            }
+        });
+
+        //----*********-------------
+        /*
         holder.favoriteView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,7 +279,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 b.putString(mContext.getString(R.string.clicked_item_data_value_position), "" + position);
                 mOnClinicAndDoctorNameSearchRowItem.onClickOfDoctorRowItem(b);
             }
-        });
+        });*/
     }
 
     @Override
@@ -251,6 +309,9 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         CustomTextView clinicName;
         @BindView(R.id.tokenNo)
         ImageView tokenNo;
+        @BindView(R.id.bookAppointmentButton)
+        ImageView bookAppointmentButton;
+
         @BindView(R.id.favoriteView)
         ImageView favoriteView;
         @BindView(R.id.imageURL)

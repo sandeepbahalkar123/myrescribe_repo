@@ -60,9 +60,6 @@ public class DoctorList implements Parcelable {
     @SerializedName("waitingTime")
     @Expose
     private String waitingTime = "";
-    @SerializedName("tokenNo")
-    @Expose
-    private String tokenNo = "";
     @SerializedName("aboutDoctor")
     @Expose
     private String aboutDoctor = "";
@@ -111,7 +108,6 @@ public class DoctorList implements Parcelable {
             instance.degree = ((String) in.readValue((String.class.getClassLoader())));
             instance.rating = ((Double) in.readValue((Double.class.getClassLoader())));
             instance.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
-            instance.tokenNo = ((String) in.readValue((String.class.getClassLoader())));
             instance.aboutDoctor = ((String) in.readValue((String.class.getClassLoader())));
             in.readList(instance.docServices, (String.class.getClassLoader()));
             instance.aptDate = ((String) in.readValue((String.class.getClassLoader())));
@@ -251,13 +247,7 @@ public class DoctorList implements Parcelable {
         this.waitingTime = waitingTime;
     }
 
-    public String getTokenNo() {
-        return tokenNo;
-    }
 
-    public void setTokenNo(String tokenNo) {
-        this.tokenNo = tokenNo;
-    }
 
     public ArrayList<ClinicData> getClinicDataList() {
         return clinicDataList;
@@ -330,7 +320,6 @@ public class DoctorList implements Parcelable {
         dest.writeValue(degree);
         dest.writeValue(rating);
         dest.writeValue(waitingTime);
-        dest.writeValue(tokenNo);
         dest.writeValue(aboutDoctor);
         dest.writeList(docServices);
         dest.writeValue(aptDate);

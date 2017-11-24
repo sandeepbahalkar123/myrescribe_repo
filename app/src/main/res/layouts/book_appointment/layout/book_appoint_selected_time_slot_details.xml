@@ -39,23 +39,23 @@
                     android:layout_height="match_parent"
                     android:gravity="center|left"
                     android:paddingLeft="@dimen/dp5"
+                    android:text="@string/appointment"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp14"
-                    app:customFont="@string/roboto_regular"
-                    tools:text="@string/appointment" />
+                    app:customFont="@string/roboto_regular" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center|left"
                     android:paddingLeft="@dimen/dp5"
+                    android:text="@string/schedule_at"
                     android:textColor="@color/Gray"
                     android:textSize="@dimen/sp10"
-                    app:customFont="@string/roboto_regular"
-                    tools:text="@string/schedule_at" />
+                    app:customFont="@string/roboto_regular" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/selectedAppointmentsTimeStamp"
+                    android:id="@+id/scheduledAppointmentsTimeStamp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center|left"
@@ -68,6 +68,7 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/tokenNewTimeStamp"
                 android:layout_width="@dimen/dp20"
                 android:layout_height="@dimen/dp20"
                 android:layout_alignParentRight="true"
@@ -101,10 +102,10 @@
                 android:layout_height="match_parent"
                 android:gravity="center|left"
                 android:paddingLeft="@dimen/dp5"
+                android:text="@string/token_number"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp14"
-                app:customFont="@string/roboto_regular"
-                tools:text="@string/token_number" />
+                app:customFont="@string/roboto_regular" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/receivedTokenNumber"
@@ -145,10 +146,10 @@
                 android:layout_height="match_parent"
                 android:gravity="center|left"
                 android:paddingLeft="@dimen/dp5"
+                android:text="@string/waiting_time"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp14"
-                app:customFont="@string/roboto_regular"
-                tools:text="@string/waiting_time" />
+                app:customFont="@string/roboto_regular" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/waitingTime"

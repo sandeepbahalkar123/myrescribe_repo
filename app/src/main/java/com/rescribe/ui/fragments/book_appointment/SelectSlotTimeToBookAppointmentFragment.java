@@ -35,6 +35,8 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
+import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetails;
+import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
@@ -102,6 +104,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     LinearLayout mClinicNameSpinnerParentLayout;
     @BindView(R.id.allClinicPracticeLocationMainLayout)
     LinearLayout mAllClinicPracticeLocationMainLayout;
+    @BindView(R.id.doChat)
+    ImageView doChat;
+    @BindView(R.id.viewAllClinicsOnMap)
+    ImageView viewAllClinicsOnMap;
     //-------------
     @BindView(R.id.leftArrow)
     ImageView leftArrow;
@@ -109,17 +115,27 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     ImageView rightArrow;
     @BindView(R.id.selectDateTime)
     CustomTextView selectDateTime;
+    //-------------
     @BindView(R.id.selectTimeDateExpandableView)
     ExpandableListView selectTimeDateExpandableView;
-    @BindView(R.id.doChat)
-    ImageView doChat;
-    @BindView(R.id.viewAllClinicsOnMap)
-    ImageView viewAllClinicsOnMap;
     @BindView(R.id.bookAppointmentButton)
     AppCompatButton bookAppointmentButton;
     @BindView(R.id.no_data_found)
     LinearLayout noDataFound;
+    //-------------
+    @BindView(R.id.timeSlotListViewLayout)
+    LinearLayout mTimeSlotListViewLayout;
+    @BindView(R.id.confirmedTokenMainLayout)
+    LinearLayout mConfirmedTokenMainLayout;
     //--------------
+    @BindView(R.id.waitingTime)
+    CustomTextView mWaitingTime;
+    @BindView(R.id.receivedTokenNumber)
+    CustomTextView mReceivedTokenNumber;
+    @BindView(R.id.scheduledAppointmentsTimeStamp)
+    CustomTextView mScheduledAppointmentsTimeStamp;
+    //--------------
+
     private View mRootView;
     private int mImageSize;
     Unbinder unbinder;
@@ -131,6 +147,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private SelectSlotToBookAppointmentAdapter mSelectSlotToBookAppointmentAdapter;
     private String mSelectedTimeSlotDate;
     private ClinicData mSelectedClinicDataObject;
+    private int mSelectedClinicDataPosition = -1;
     private String activityOpeningFrom;
 
     public SelectSlotTimeToBookAppointmentFragment() {
@@ -174,6 +191,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         Bundle arguments = getArguments();
         if (arguments != null) {
             activityOpeningFrom = arguments.getString(getString(R.string.clicked_item_data_type_value));
+            mSelectedClinicDataPosition = arguments.getInt(getString(R.string.selected_clinic_data_position), -1);
         }
         //--------------
         selectTimeDateExpandableView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -265,18 +283,13 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
             ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
             mClinicNameSpinner.setAdapter(arrayAdapter);
+            mClinicNameSpinner.setSelection(mSelectedClinicDataPosition, false);
+
             mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(position);
-                    mClinicName.setText("" + mSelectedClinicDataObject.getClinicName());
-                    if (mSelectedClinicDataObject.getAmount() == 0) {
-                        mRupeesLayout.setVisibility(View.INVISIBLE);
-                    } else {
-                        mRupeesLayout.setVisibility(View.VISIBLE);
-                        mDoctorFees.setText("" + mSelectedClinicDataObject.getAmount());
-                    }
-                    mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+                    changeViewBasedOnAppointmentType();
                 }
 
                 @Override
@@ -348,6 +361,18 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 }
                 CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;
+            case RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS:
+                ClinicTokenDetailsBaseModel clinicTokenDetailsBaseModel = (ClinicTokenDetailsBaseModel) customResponse;
+                if (clinicTokenDetailsBaseModel != null) {
+                    ClinicTokenDetailsBaseModel.ClinicTokenDataModel clinicTokenDataModel = clinicTokenDetailsBaseModel.getClinicTokenDataModel();
+                    if (clinicTokenDataModel != null) {
+                        ClinicTokenDetails clinicTokenDetails = clinicTokenDataModel.getClinicTokenDetails();
+                        mWaitingTime.setText("" + clinicTokenDetails.getWaitingTime());
+                        mScheduledAppointmentsTimeStamp.setText("" + clinicTokenDetails.getScheduledTimeStamp());
+                        mReceivedTokenNumber.setText("" + clinicTokenDetails.getTokenNumber());
+                    }
+                }
+                break;
         }
     }
 
@@ -375,15 +400,24 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+
         mClickedDoctorObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
+        //--------------
+        if (mSelectedClinicDataPosition != -1)
+            mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(mSelectedClinicDataPosition);
+        //--------------
+
         if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom)) {
+            mConfirmedTokenMainLayout.setVisibility(View.GONE);
+            mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
             mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
         } else {
-            setDataInViews();
+            changeViewBasedOnAppointmentType();
         }
+        setDataInViews();
     }
 
-    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat})
+    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat, R.id.tokenNewTimeStamp})
     public void onClickOfView(View view) {
 
         switch (view.getId()) {
@@ -442,6 +476,9 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
                 startActivity(intent);
                 break;
+            case R.id.tokenNewTimeStamp:
+
+                break;
         }
     }
 
@@ -457,4 +494,26 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
     }
 
+    private void changeViewBasedOnAppointmentType() {
+        if (mSelectedClinicDataObject != null) {
+            //----------
+            mClinicName.setText("" + mSelectedClinicDataObject.getClinicName());
+            if (mSelectedClinicDataObject.getAmount() == 0) {
+                mRupeesLayout.setVisibility(View.INVISIBLE);
+            } else {
+                mRupeesLayout.setVisibility(View.VISIBLE);
+                mDoctorFees.setText("" + mSelectedClinicDataObject.getAmount());
+            }
+            //-----------
+            if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.token))) {
+                mConfirmedTokenMainLayout.setVisibility(View.VISIBLE);
+                mTimeSlotListViewLayout.setVisibility(View.GONE);
+                mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
+            } else if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.book))) {
+                mConfirmedTokenMainLayout.setVisibility(View.GONE);
+                mTimeSlotListViewLayout.setVisibility(View.GONE);
+                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+            }
+        }
+    }
 }

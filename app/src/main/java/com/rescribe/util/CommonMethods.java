@@ -116,7 +116,7 @@ public class CommonMethods {
         }
     }
 
-    public static String getCurrentDatemeime() // for enrollmentId
+    public static String getCurrentDateTime() // for enrollmentId
     {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());

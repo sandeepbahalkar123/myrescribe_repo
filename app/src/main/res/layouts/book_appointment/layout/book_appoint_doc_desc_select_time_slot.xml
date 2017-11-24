@@ -22,41 +22,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <RelativeLayout
-                android:id="@+id/dateSelectionHeaderLayout"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:paddingBottom="@dimen/dp10">
 
                 <ImageView
                     android:id="@+id/leftArrow"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/leftArrow"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp4"
-                    android:paddingLeft="@dimen/dp6"
-                    android:paddingStart="@dimen/dp6"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingStart="@dimen/dp10"
                     android:src="@drawable/left_arrow" />
-
-                <ImageView
-                    android:id="@+id/rightArrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginEnd="@dimen/dp6"
-                    android:layout_marginRight="@dimen/dp6"
-                    android:layout_marginTop="@dimen/dp4"
-                    android:src="@drawable/right_arrow_book_appointment" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/selectDateTime"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/leftArrow"
-                    android:layout_toLeftOf="@id/rightArrow"
-                    android:layout_toRightOf="@id/leftArrow"
-                    android:layout_toStartOf="@id/rightArrow"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:hint="Select date"
                     android:padding="@dimen/dp4"
@@ -64,7 +50,18 @@
                     android:textColorHint="@color/grey_300"
                     android:textSize="@dimen/sp17"
                     app:customFont="@string/roboto_medium" />
-            </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/rightArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:layout_marginTop="@dimen/dp4"
+                    android:src="@drawable/right_arrow_book_appointment" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/timeSlotListViewLayout"

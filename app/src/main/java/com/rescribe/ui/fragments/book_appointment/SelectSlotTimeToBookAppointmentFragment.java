@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.format.DateFormat;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -21,12 +22,15 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
+import com.philliphsu.bottomsheetpickers.time.BottomSheetTimePickerDialog;
+import com.philliphsu.bottomsheetpickers.time.grid.GridTimePickerDialog;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.SelectSlotToBookAppointmentAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
@@ -67,7 +71,7 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
  * Created by jeetal on 31/10/17.
  */
 
-public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, DatePickerDialog.OnDateSetListener {
+public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, DatePickerDialog.OnDateSetListener, BottomSheetTimePickerDialog.OnTimeSetListener {
 
     private final String TASKID_TIME_SLOT_WITH_DOC_DATA = RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT_WITH_DOCTOR_DETAILS;
     private final String TASKID_TIME_SLOT = RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT;
@@ -110,11 +114,11 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     ImageView viewAllClinicsOnMap;
     //-------------
     @BindView(R.id.leftArrow)
-    ImageView leftArrow;
+    ImageView mPreviousDayLeftArrow;
     @BindView(R.id.rightArrow)
-    ImageView rightArrow;
+    ImageView mNextDayRightArrow;
     @BindView(R.id.selectDateTime)
-    CustomTextView selectDateTime;
+    CustomTextView mSelectDateTime;
     //-------------
     @BindView(R.id.selectTimeDateExpandableView)
     ExpandableListView selectTimeDateExpandableView;
@@ -184,7 +188,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DD_MM_YYYY, CommonMethods.getCurrentDate());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MMM);
 
-        selectDateTime.setText(dayFromDate + ", " + simpleDateFormat.format(new Date()));
+        mSelectDateTime.setText(dayFromDate + ", " + simpleDateFormat.format(new Date()));
         //----------
         mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
 
@@ -419,11 +423,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat, R.id.tokenNewTimeStamp})
     public void onClickOfView(View view) {
+        Calendar now = Calendar.getInstance();
+
 
         switch (view.getId()) {
             case R.id.selectDateTime:
                 DatePickerDialog datePickerDialog;
-                Calendar now = Calendar.getInstance();
                 // As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
                 datePickerDialog = DatePickerDialog.newInstance(
                         this,
@@ -477,22 +482,19 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 startActivity(intent);
                 break;
             case R.id.tokenNewTimeStamp:
+                GridTimePickerDialog grid = GridTimePickerDialog.newInstance(
+                        this,
+                        now.get(Calendar.HOUR_OF_DAY),
+                        now.get(Calendar.MINUTE),
+                        DateFormat.is24HourFormat(getActivity()));
+                // TODO : NEED TO SET START AND END TIME OVER HERE.
 
+                grid.setAccentColor(getResources().getColor(R.color.tagColor));
+                grid.show(getFragmentManager(), getResources().getString(R.string.select_date_text));
                 break;
         }
     }
 
-    @Override
-    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-
-        String dateConverted = "" + dayOfMonth;
-        if (dayOfMonth < 10) {
-            dateConverted = "0" + dayOfMonth;
-        }
-        mSelectedTimeSlotDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-        selectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, dateConverted + "-" + (monthOfYear + 1) + "-" + year) + "," + getString(R.string.space) + CommonMethods.getFormattedDate(dateConverted + "-" + (monthOfYear + 1) + "-" + year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
-        mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
-    }
 
     private void changeViewBasedOnAppointmentType() {
         if (mSelectedClinicDataObject != null) {
@@ -508,12 +510,37 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.token))) {
                 mConfirmedTokenMainLayout.setVisibility(View.VISIBLE);
                 mTimeSlotListViewLayout.setVisibility(View.GONE);
+                //----
+                mPreviousDayLeftArrow.setVisibility(View.INVISIBLE);
+                mNextDayRightArrow.setVisibility(View.INVISIBLE);
+                mSelectDateTime.setEnabled(false);
                 mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
             } else if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.book))) {
                 mConfirmedTokenMainLayout.setVisibility(View.GONE);
-                mTimeSlotListViewLayout.setVisibility(View.GONE);
+                mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
+                //----
+                mPreviousDayLeftArrow.setVisibility(View.VISIBLE);
+                mNextDayRightArrow.setVisibility(View.VISIBLE);
+                mSelectDateTime.setEnabled(true);
                 mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
             }
         }
+    }
+
+    @Override
+    public void onTimeSet(ViewGroup viewGroup, int hourOfDay, int minute) {
+        mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+        String dateConverted = "" + dayOfMonth;
+        if (dayOfMonth < 10) {
+            dateConverted = "0" + dayOfMonth;
+        }
+        mSelectedTimeSlotDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+        mSelectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, dateConverted + "-" + (monthOfYear + 1) + "-" + year) + "," + getString(R.string.space) + CommonMethods.getFormattedDate(dateConverted + "-" + (monthOfYear + 1) + "-" + year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
+        mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
     }
 }

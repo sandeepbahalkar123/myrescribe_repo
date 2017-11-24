@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.ServicesAdapter;
@@ -45,8 +46,9 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     Toolbar toolbar;
     @BindView(R.id.listView)
     RecyclerView listView;
-    @BindView(R.id.emptyListView)
-    RelativeLayout emptyListView;
+    @BindView(R.id.titleTextView)
+    TextView titleTextView;
+
     //    @BindView(R.id.servicesMainLayout)
 //    LinearLayout servicesMainLayout;
     ServicesAdapter mServicesAdapter;
@@ -73,16 +75,19 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         setContentView(R.layout.services_layout_trial);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(/*getString(R.string.services)+*/"");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("");
+
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        //  collapsingToolbar.setTitle("");
-        // locationTextView.setText(getString(R.string.location));
+
+        titleTextView.setText("Services");
         initialize();
     }
 
@@ -90,42 +95,6 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         mContext = BookAppointmentServices.this;
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetServices();
-
-        dimensionPixelSize = getResources().getDimensionPixelSize(R.dimen.dp56);
-
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(final AppBarLayout appBarLayout, int verticalOffset) {
-                int i = verticalOffset + 400;
-                listView.setPadding(0, i, 0, 0);
-            }
-        });
-
- /*  appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            int scrollRange = -1;
-
-            @Override
-            public void onOffsetChanged(final AppBarLayout appBarLayout, int verticalOffset) {
-
-                float transparency = Math.abs(verticalOffset) / 10;
-
-                Log.d("Value", transparency + "");
-
-                if (transparency >= 0 && transparency <= 100)
-                    toolbar.setAlpha(transparency / 10);
-
-                //Initialize the size of the scroll
-               if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                //Check if the view is collapsed
-                if (scrollRange + verticalOffset == 0) {
-                    toolbar.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey));
-                }else{
-                    toolbar.setBackgroundColor(ContextCompat.getColor(mContext, R.color.accent));
-                }
-            }
-        });*/
     }
 
   /*  public void getAddress(double lat, double lng) {
@@ -170,12 +139,9 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         ServicesModel servicesModel = (ServicesModel) customResponse;
-        if (servicesModel.getServicesData() == null) {
-            //servicesMainLayout.setVisibility(View.GONE);
-            emptyListView.setVisibility(View.VISIBLE);
-        } else {
+        if (servicesModel.getServicesData() != null) {
             //   servicesMainLayout.setVisibility(View.VISIBLE);
-            emptyListView.setVisibility(View.GONE);
+
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
             listView.setLayoutManager(layoutManager);
             listView.setItemAnimator(new DefaultItemAnimator());
@@ -185,7 +151,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
 //            listView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
             mServicesAdapter = new ServicesAdapter(mContext, servicesModel.getServicesData().getServicesList(), this);
             listView.setAdapter(mServicesAdapter);
-//            listView.setNestedScrollingEnabled(false);
+            listView.setNestedScrollingEnabled(false);
         }
     }
 
@@ -202,7 +168,6 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
         // servicesMainLayout.setVisibility(View.GONE);
-        emptyListView.setVisibility(View.VISIBLE);
 
     }
 

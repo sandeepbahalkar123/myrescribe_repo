@@ -56,8 +56,6 @@ public class FindDoctorsActivity extends AppCompatActivity {
     @BindView(R.id.consultOnline)
     LinearLayout consultOnline;*/
 
-    @BindView(R.id.emptyListView)
-    RelativeLayout emptyListView;
     @BindView(R.id.serviceNameTextView)
     CustomTextView serviceNameTextView;
     @BindView(R.id.showVitalUnitNameIconLayout)
@@ -101,6 +99,7 @@ public class FindDoctorsActivity extends AppCompatActivity {
         mContext = FindDoctorsActivity.this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
+
         mDashboardDataModel = getIntent().getExtras().getParcelable(getString(R.string.doctor_data));
         sponsered = getIntent().getExtras().getParcelableArrayList(getString(R.string.sponsered_doctor));
         recently_visit_doctor = getIntent().getExtras().getParcelableArrayList(getString(R.string.recently_visit_doctor));
@@ -110,6 +109,7 @@ public class FindDoctorsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

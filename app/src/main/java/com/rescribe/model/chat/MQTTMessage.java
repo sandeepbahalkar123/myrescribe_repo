@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 import static com.rescribe.services.MQTTService.PATIENT;
 import static com.rescribe.util.RescribeConstants.FAILED;
+import static com.rescribe.util.RescribeConstants.MESSAGE_STATUS.SENT;
 import static com.rescribe.util.RescribeConstants.UPLOADING;
 
 public class MQTTMessage implements Parcelable {
@@ -50,7 +51,7 @@ public class MQTTMessage implements Parcelable {
 
     @SerializedName("msgStatus")
     @Expose
-    private String msgStatus = "";
+    private String msgStatus = SENT;
 
     @SerializedName("paidStatus")
     @Expose

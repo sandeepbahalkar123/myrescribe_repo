@@ -19,17 +19,17 @@
           {
             "clinicName": "Dr. Parag Khare clinic",
             "clinicAddress": "warje, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
             "locationId": 5,
-            "amt": 350,
-            "apptScheduleLmtDays": 7
+            "appointmentType": "token"
           }
         ],
-        "tokenNo": "",
-        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": true,
+        "favorite": true,
         "rating": 4.5,
         "aptDate": "2017-09-17",
-        "aptTime": "15:00:00"
+        "aptTime": "15:00:00",
+        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
       },
       {
         "docId": 10,
@@ -44,18 +44,17 @@
           {
             "clinicName": "Dr. Parag Khare clinic",
             "clinicAddress": "warje, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
             "locationId": 5,
-            "amt": 350,
-            "locationId": 5,
-            "apptScheduleLmtDays": 7
+            "appointmentType": "token"
           }
         ],
-        "tokenNo": "",
-        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": true,
         "rating": 4.5,
         "aptDate": "2017-09-30",
-        "aptTime": "14:00:00"
+        "aptTime": "14:00:00",
+        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
       },
       {
         "docId": 8,
@@ -71,24 +70,24 @@
             "clinicName": "Dr. Parag Khare clinic",
             "clinicAddress": "bhandarkar road, Pune",
             "locationId": 5,
-            "locationId": 5,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "token"
           },
           {
             "clinicName": "Dr. Parag Khare",
             "clinicAddress": "kothrud, Pune",
             "locationId": 20,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           }
         ],
-        "tokenNo": "",
-        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": false,
         "rating": 0,
         "aptDate": "",
-        "aptTime": ""
+        "aptTime": "",
+        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
       },
       {
         "docId": 9,
@@ -105,22 +104,23 @@
             "clinicAddress": "kothrud, Pune",
             "locationId": 6,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           },
           {
             "clinicName": "Dr. Hemant Pahariya",
             "clinicAddress": "kothrud, Pune",
             "locationId": 21,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           }
         ],
-        "tokenNo": "",
-        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": false,
         "rating": 0,
         "aptDate": "",
-        "aptTime": ""
+        "aptTime": "",
+        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
       },
       {
         "docId": 13,
@@ -137,50 +137,55 @@
             "clinicAddress": "kothrud, Pune",
             "locationId": 11,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           },
           {
             "clinicName": "Dr. Kailash Kothari. M.D.",
             "clinicAddress": "kothrud, Pune",
             "locationId": 10,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "mixed"
           },
           {
             "clinicName": "Dr. Kailash Kothari. M.D.",
             "clinicAddress": "kothrud, Pune",
             "locationId": 25,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           },
           {
             "clinicName": "Phoenix Hospital",
             "clinicAddress": "kothrud, Pune",
             "locationId": 29,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "mixed"
           },
           {
             "clinicName": "Phoenix Hospital",
             "clinicAddress": "kothrud, Pune",
             "locationId": 30,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "mixed"
           },
           {
             "clinicName": "Phoenix Hospital",
             "clinicAddress": "kothrud, Pune",
             "locationId": 33,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "mixed"
           }
         ],
-        "tokenNo": "",
-        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": false,
         "rating": 4,
         "aptDate": "",
-        "aptTime": ""
+        "aptTime": "",
+        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
       },
       {
         "docId": 14,
@@ -197,50 +202,55 @@
             "clinicAddress": "kothrud, Pune",
             "locationId": 11,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           },
           {
             "clinicName": "Dr. Manjiri Pandit M.D.",
             "clinicAddress": "kothrud, Pune",
             "locationId": 12,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           },
           {
             "clinicName": "Dr. Venkatesh Nevagi M.D.",
             "clinicAddress": "kothrud, Pune",
             "locationId": 26,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           },
           {
             "clinicName": "Phoenix Hospital",
             "clinicAddress": "kothrud, Pune",
             "locationId": 29,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "mixed"
           },
           {
             "clinicName": "Phoenix Hospital",
             "clinicAddress": "kothrud, Pune",
             "locationId": 30,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "mixed"
           },
           {
             "clinicName": "Phoenix Hospital",
             "clinicAddress": "kothrud, Pune",
             "locationId": 33,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "mixed"
           }
         ],
-        "tokenNo": "",
-        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": false,
         "rating": 0.3,
         "aptDate": "",
-        "aptTime": ""
+        "aptTime": "",
+        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
       },
       {
         "docId": 18,
@@ -257,15 +267,15 @@
             "clinicAddress": "kothrud, Pune",
             "locationId": 15,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           }
         ],
-        "tokenNo": "",
-        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": true,
+        "favorite": false,
         "rating": 0,
         "aptDate": "",
-        "aptTime": ""
+        "aptTime": "",
+        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
       },
       {
         "docId": 7,
@@ -277,10 +287,11 @@
         "speciality": "General Physician",
         "experience": 11,
         "clinicList": [],
-        "favourite": true,
+        "favorite": false,
         "rating": 0,
         "aptDate": "2017-05-17",
-        "aptTime": "19:00:00"
+        "aptTime": "19:00:00",
+        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
       },
       {
         "docId": 10,
@@ -297,36 +308,39 @@
             "clinicAddress": "mulund, Mumbai",
             "locationId": 7,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           },
           {
             "clinicName": "Dr. Shalu Gupta clinic",
             "clinicAddress": "mulund, Mumbai",
             "locationId": 32,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           },
           {
             "clinicName": "Dr. Hemant Pahariya clinic",
             "clinicAddress": "kothrud, Pune",
             "locationId": 6,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           },
           {
             "clinicName": "Dr. Parag Khare clinic",
             "clinicAddress": "bhandarkar road, Pune",
             "locationId": 5,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "token"
           }
         ],
-        "tokenNo": "",
-        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": true,
+        "favorite": true,
         "rating": 4.5,
         "aptDate": "2017-06-17",
-        "aptTime": "19:45:00"
+        "aptTime": "19:45:00",
+        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
       },
       {
         "docId": 11,
@@ -343,102 +357,418 @@
             "clinicAddress": "mulund, Mumbai",
             "locationId": 7,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           },
           {
             "clinicName": "Dr. Shalu Gupta clinic",
             "clinicAddress": "mulund, Mumbai",
             "locationId": 32,
             "amount": 350,
-            "apptScheduleLmtDays": 7
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book"
           }
         ],
-        "tokenNo": "",
-        "aboutDoctor": "doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc doctor information about his/her experience/speciality etc",
-        "favourite": false,
+        "favorite": false,
         "rating": 4,
         "aptDate": "2017-07-21",
-        "aptTime": "09:30:00"
+        "aptTime": "09:30:00",
+        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
       }
     ],
     "cardBgImageUrlList": [
-      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xhdpi/myappointments.png",
-      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xhdpi/sponsored.png",
-      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xhdpi/recentlyvisited.png",
-      "http://192.168.0.182:3003/images/dashboard/cardBgImage/android/xhdpi/recentlyvisited.png"
+      "http://localhost:3003/images/dashboard/cardBgImage/android/hdpi/myappointments.png",
+      "http://localhost:3003/images/dashboard/cardBgImage/android/hdpi/sponsored.png",
+      "http://localhost:3003/images/dashboard/cardBgImage/android/hdpi/recentlyvisited.png",
+      "http://localhost:3003/images/dashboard/cardBgImage/android/hdpi/favorite.png"
     ],
     "dashboardMenuList": [
       {
         "name": "Find Doctors",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xhdpi/finddoctors.png"
+        "iconImageUrl": "http://localhost:3003/images/dashboard/menu/android/hdpi/finddoctor.png",
+        "clickEvent": {
+          "bgImageUrl": "http://localhost:3003/images/dashboard/menu/finddoctors/android/hdpi/finddoctors_bg.png",
+          "clickOptions": [
+            {
+              "name": "Book Appointment",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/finddoctors/android/hdpi/bookappointment.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Consult Online",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/finddoctors/android/hdpi/consultonline.png",
+              "clickEvent": {}
+            }
+          ]
+        }
       },
       {
         "name": "On Going Treatment",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xhdpi/ongoingtreatment.png"
+        "iconImageUrl": "http://localhost:3003/images/dashboard/menu/android/hdpi/ongoingtreatment.png",
+        "clickEvent": {}
       },
       {
         "name": "Health Repository",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xhdpi/healthrepository.png"
+        "iconImageUrl": "http://localhost:3003/images/dashboard/menu/android/hdpi/healthrepository.png",
+        "clickEvent": {
+          "bgImageUrl": "http://localhost:3003/images/dashboard/menu/healthrepository/android/hdpi/healthrepository_bg.png",
+          "clickOptions": [
+            {
+              "name": "My Records",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthrepository/android/hdpi/myrecords.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Vital Graphs",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthrepository/android/hdpi/vitalgraph.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Doctor Visits",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthrepository/android/hdpi/doctorvisit.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Saved Articles",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthrepository/android/hdpi/savedarticle.png",
+              "clickEvent": {}
+            }
+          ]
+        }
       },
       {
         "name": "Health Offers",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xhdpi/healthoffers.png"
+        "iconImageUrl": "http://localhost:3003/images/dashboard/menu/android/hdpi/healthoffers.png",
+        "clickEvent": {}
       },
       {
         "name": "Health Education",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/menu/android/xhdpi/healtheducation.png"
+        "iconImageUrl": "http://localhost:3003/images/dashboard/menu/android/hdpi/healtheducation.png",
+        "clickEvent": {},
+        "healthEducationUrl": "http://blogs.scorgtechnologies.com/"
+      },
+      {
+        "name": "Health Services",
+        "iconImageUrl": "http://localhost:3003/images/dashboard/menu/android/hdpi/healthservices.png",
+        "clickEvent": {
+          "bgImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/healthservices_bg.png",
+          "clickOptions": [
+            {
+              "name": "Doctor",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/doctor.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Pharmacy",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/pharmacy.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Hospital",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/hospital.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Laboratory",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/laboratory.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Palliative Care",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/palliative_care.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Diagnostic Center",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/diagnosticcenter.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Blood Bank",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/bloodbank.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Ambulance",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/ambulance.png",
+              "clickEvent": {}
+            }
+          ]
+        }
       }
     ],
     "dashboardBottomMenuList": [
       {
         "name": "Home",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xhdpi/alerts.png"
+        "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/home.png",
+        "selectedIconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/home_selected.png",
+        "clickEvent": {}
       },
       {
         "name": "Appointment",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xhdpi/profile.png"
+        "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/appointment.png",
+        "selectedIconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/appointment_selected.png",
+        "clickEvent": {}
       },
       {
         "name": "AppLogo",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xhdpi/logo.png"
+        "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/applogo.png",
+        "selectedIconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/applogo_selected.png",
+        "clickEvent": {
+          "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/applogo_bg.png",
+          "clickOptions": [
+            {
+              "name": "Profile",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/profile.png",
+              "clickEvent": {
+                "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/profile_bg.png",
+                "clickOptions": [
+                  {
+                    "name": "Services",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/services.png",
+                    "clickEvent": {}
+                  },
+                  {
+                    "name": "On Going Treatment",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/ongoingtreatment.png",
+                    "clickEvent": {}
+                  },
+                  {
+                    "name": "Appointments",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/appointments.png",
+                    "clickEvent": {}
+                  },
+                  {
+                    "name": "Doctor Visits",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/doctorvisits.png",
+                    "clickEvent": {}
+                  },
+                  {
+                    "name": "Vital Graphs",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/vitalgraphs.png",
+                    "clickEvent": {}
+                  },
+                  {
+                    "name": "Settings",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/settings.png",
+                    "clickEvent": {
+                      "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/settings_bg.png",
+                      "clickOptions": [
+                        {
+                          "name": "Notifications",
+                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/notifications.png",
+                          "clickEvent": {
+                            "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/notifications_bg.png",
+                            "clickOptions": [
+                              {
+                                "name": "All Notifications",
+                                "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/allnotifications.png",
+                                "clickEvent": {}
+                              },
+                              {
+                                "name": "Appointment Alert",
+                                "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/appointmentalert.png",
+                                "clickEvent": {}
+                              },
+                              {
+                                "name": "Investigation Alert",
+                                "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/investigationalert.png",
+                                "clickEvent": {}
+                              },
+                              {
+                                "name": "Medication Alert",
+                                "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/medicationalert.png",
+                                "clickEvent": {}
+                              },
+                              {
+                                "name": "Offers Alert",
+                                "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/offersalert.png",
+                                "clickEvent": {}
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "name": "How It Works?",
+                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/howitworks.png",
+                          "clickEvent": {}
+                        },
+                        {
+                          "name": "Terms of Use",
+                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/termsofuse.png",
+                          "clickEvent": {}
+                        },
+                        {
+                          "name": "Privacy Policy",
+                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/privacypolicy.png",
+                          "clickEvent": {}
+                        },
+                        {
+                          "name": "Recommend Us",
+                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/recommendus.png",
+                          "clickEvent": {}
+                        },
+                        {
+                          "name": "Feedback",
+                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/feedback.png",
+                          "clickEvent": {}
+                        },
+                        {
+                          "name": "Log Out",
+                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/logout.png",
+                          "clickEvent": {}
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "name": "Notifications",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/notifications.png",
+              "clickEvent": {
+                "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/notifications_bg.png",
+                "clickOptions": [
+                  {
+                    "name": "Chat Notifications",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/chatnotification.png",
+                    "clickEvent": {}
+                  },
+                  {
+                    "name": "On Going Treatment Notifications",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/ongoingtreatmentnotification.png",
+                    "clickEvent": {}
+                  },
+                  {
+                    "name": "Appointment Notifications",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/appointmentnotification.png",
+                    "clickEvent": {}
+                  },
+                  {
+                    "name": "Pending Investigation Notifications",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/pendinginvestigationnotification.png",
+                    "clickEvent": {}
+                  }
+                ]
+              }
+            },
+            {
+              "name": "Vitals",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/vitals.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Favorites",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/favorites.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "On Going Treatment",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/ongoingtreatment.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Doctor Visits",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/doctorvisits.png",
+              "clickEvent": {}
+            }
+          ]
+        }
       },
       {
         "name": "Settings",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xhdpi/settings.png"
+        "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/settings.png",
+        "selectedIconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/settings_selected.png",
+        "clickEvent": {
+          "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/settings_bg.png",
+          "clickOptions": [
+            {
+              "name": "Notifications",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/notifications.png",
+              "clickEvent": {
+                "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/notifications_bg.png",
+                "clickOptions": [
+                  {
+                    "name": "All Notifications",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/allnotifications.png",
+                    "clickEvent": {}
+                  },
+                  {
+                    "name": "Appointment Alert",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/appointmentalert.png",
+                    "clickEvent": {}
+                  },
+                  {
+                    "name": "Investigation Alert",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/investigationalert.png",
+                    "clickEvent": {}
+                  },
+                  {
+                    "name": "Medication Alert",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/medicationalert.png",
+                    "clickEvent": {}
+                  },
+                  {
+                    "name": "Offers Alert",
+                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/offersalert.png",
+                    "clickEvent": {}
+                  }
+                ]
+              }
+            },
+            {
+              "name": "How It Works?",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/howitworks.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Terms of Use",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/termsofuse.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Privacy Policy",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/privacypolicy.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Recommend Us",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/recommendus.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Feedback",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/feedback.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Log Out",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/logout.png",
+              "clickEvent": {}
+            }
+          ]
+        }
       },
       {
         "name": "Support",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/bottomMenu/android/xhdpi/support.png"
-      }
-    ],
-    "dashboardLeftSideDrawerMenuList": [
-      {
-        "name": "Services",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/services.png"
-      },
-      {
-        "name": "On Going Treatment",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/ongoingtreatment.png"
-      },
-      {
-        "name": "Appointments",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/appointments.png"
-      },
-      {
-        "name": "Doctor Visits",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/doctorvisits.png"
-      },
-      {
-        "name": "Vital Graphs",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/vitalgraphs.png"
-      },
-      {
-        "name": "Settings",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/settings.png"
-      },
-      {
-        "name": "Logout",
-        "imageUrl": "http://192.168.0.182:3003/images/dashboard/leftSideDrawerMenu/android/xhdpi/logout.png"
+        "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/support.png",
+        "selectedIconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/support_selected.png",
+        "clickEvent": {
+          "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/support/android/hdpi/support_bg.png",
+          "clickOptions": [
+            {
+              "name": "Contact Number",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/support/android/hdpi/contactnumber.png",
+              "clickEvent": {}
+            },
+            {
+              "name": "Support Email Id",
+              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/support/android/hdpi/supportemailid.png",
+              "clickEvent": {}
+            }
+          ]
+        }
       }
     ]
   }

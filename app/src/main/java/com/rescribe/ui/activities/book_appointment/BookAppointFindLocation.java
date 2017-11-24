@@ -112,7 +112,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(23.63936, 68.14712), new LatLng(28.20453, 97.34466));
 
     // Location Things End
-    
+
     private Context mContext;
 
     DoctorDataHelper mDoctorDataHelper;

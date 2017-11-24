@@ -144,7 +144,11 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private ServicesCardViewImpl mDashboardDataBuilder;
     private AppDBHelper appDBHelper;
     private DashboardHelper mDashboardHelper;
-    CustomProgressDialog mCustomProgressDialog;
+    ArrayList<DoctorList> myAppoint;
+    ArrayList<DoctorList> sponsered;
+    ArrayList<DoctorList> recently_visit_doctor;
+    ArrayList<DoctorList> favoriteList;
+    // CustomProgressDialog mCustomProgressDialog;
     private static final long INTERVAL = 1000 * 10;
     private static final long FASTEST_INTERVAL = 1000 * 5;
     LocationRequest mLocationRequest;
@@ -159,14 +163,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_dashboard_layout);
         ButterKnife.bind(this);
-        mCustomProgressDialog = new CustomProgressDialog(HomePageActivity.this);
+        // mCustomProgressDialog = new CustomProgressDialog(HomePageActivity.this);
         createLocationRequest();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
 
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         mContext = HomePageActivity.this;
@@ -224,6 +223,12 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         mLocationRequest.setInterval(INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
     }
 
     private void notificationForMedicine() {
@@ -457,6 +462,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 } else if (id.equalsIgnoreCase(getString(R.string.vital_graph))) {
                     Intent intent = new Intent(mContext, VitalGraphActivity.class);
                     startActivity(intent);
+
                 } else if (id.equalsIgnoreCase(getString(R.string.settings))) {
 
 
@@ -575,12 +581,12 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     private void setUpViewPager() {
         //----------
-        mCustomProgressDialog.cancel();
+        //   mCustomProgressDialog.cancel();
         Map<String, Integer> dataMap = new LinkedHashMap<>();
-        ArrayList<DoctorList> myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments));
-        ArrayList<DoctorList> sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
-        ArrayList<DoctorList> recently_visit_doctor = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor));
-        ArrayList<DoctorList> favoriteList = mDashboardDataBuilder.getFavouriteDocList();
+        myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments));
+        sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
+        recently_visit_doctor = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor));
+        favoriteList = mDashboardDataBuilder.getFavouriteDocList();
 
         dataMap.put(getString(R.string.my_appointments), myAppoint.size());
         dataMap.put(getString(R.string.sponsored_doctor), sponsered.size());
@@ -645,17 +651,17 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-        mCustomProgressDialog.cancel();
+        ///  mCustomProgressDialog.cancel();
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
-        mCustomProgressDialog.cancel();
+        //  mCustomProgressDialog.cancel();
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        mCustomProgressDialog.cancel();
+        // mCustomProgressDialog.cancel();
     }
 
 
@@ -677,6 +683,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     public void onClickOfMenu(String menuName) {
         if (menuName.equals(getString(R.string.find_doctors))) {
             Intent intent = new Intent(mContext, FindDoctorsActivity.class);
+            intent.putExtra(getString(R.string.recently_visit_doctor),recently_visit_doctor);
+            intent.putExtra(getString(R.string.sponsered_doctor),sponsered);
+            intent.putExtra(getString(R.string.favorite),favoriteList);
+            intent.putExtra(getString(R.string.doctor_data), mDashboardDataModel);
             intent.putExtra(getString(R.string.toolbarTitle), menuName);
             startActivity(intent);
         } else if (menuName.equals(getString(R.string.on_going_treatment))) {
@@ -866,7 +876,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         } else {
             Log.d(TAG, "DASHBOARD API  CALLED");
             if (locationReceived.equals("")) {
-                mCustomProgressDialog.show();
+                // mCustomProgressDialog.show();
                 if (!mGoogleApiClient.isConnected())
                     mGoogleApiClient.connect();
                 else startLocationUpdates();
@@ -962,7 +972,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void gpsStatus() {
-        mCustomProgressDialog.show();
+        //  mCustomProgressDialog.show();
         if (!mGoogleApiClient.isConnected())
             mGoogleApiClient.connect();
         else startLocationUpdates();

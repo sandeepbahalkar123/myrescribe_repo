@@ -93,7 +93,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         final DoctorList doctorObject = mDataList.get(position);
 
         holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
-
+        holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
         holder.aboutDoctor.setText(doctorObject.getDegree());
         //------------
         if (doctorObject.getRating() == 0) {
@@ -318,6 +318,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         CircularImageView imageURL;
         @BindView(R.id.dataLayout)
         LinearLayout dataLayout;
+        @BindView(R.id.doctorCategoryType)
+        CustomTextView doctorCategoryType;
 
         View view;
 

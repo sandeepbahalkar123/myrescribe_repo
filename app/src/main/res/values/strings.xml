@@ -362,6 +362,8 @@
     <string name="waiting_time">Waiting Time</string>
     <string name="schedule_at">Schedule at</string>
     <string name="confirm_token">Confirm Token</string>
+    <string name="still_unsure">Still unsure, Use relevant keywords</string>
+    <string name="type_to_select">Type to select your illness, eg. Fever</string>
 
     <string name="selected_clinic_data_position">selected_clinic_data_position</string>
 

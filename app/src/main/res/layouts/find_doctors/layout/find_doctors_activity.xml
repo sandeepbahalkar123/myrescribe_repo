@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_overlay"
     android:orientation="vertical">
 
     <LinearLayout
@@ -11,27 +12,27 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:visibility="gone"
-            android:background="@color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="@color/transparent"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <LinearLayout
 
-                android:layout_marginLeft="@dimen/dp16"
-                android:layout_marginRight="@dimen/dp16"
                 android:id="@+id/bookAppointmentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_marginRight="@dimen/dp16"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <FrameLayout
-                    android:background="@color/transparent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent">
 
                     <LinearLayout
                         android:id="@+id/showVitalUnitNameIconLayout"
@@ -48,10 +49,10 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="@dimen/dp20"
-                            android:textSize="@dimen/sp15"
+                            android:text="@string/book_appointment"
                             android:textColor="@color/black"
-                            app:customFont="@string/roboto_medium"
-                            android:text="@string/book_appointment" />
+                            android:textSize="@dimen/sp15"
+                            app:customFont="@string/roboto_medium" />
 
                     </LinearLayout>
 
@@ -70,20 +71,20 @@
 
             <LinearLayout
 
-                android:layout_marginLeft="@dimen/dp16"
-                android:layout_marginRight="@dimen/dp16"
                 android:id="@+id/consultOnline"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_marginRight="@dimen/dp16"
                 android:layout_weight="1"
                 android:gravity="center"
 
                 android:orientation="vertical">
 
                 <FrameLayout
-                    android:background="@color/transparent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -98,10 +99,10 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="@dimen/dp20"
-                            android:textSize="@dimen/sp15"
+                            android:text="@string/doctor_connect"
                             android:textColor="@color/black"
-                            app:customFont="@string/roboto_medium"
-                            android:text="@string/doctor_connect" />
+                            android:textSize="@dimen/sp15"
+                            app:customFont="@string/roboto_medium" />
 
                     </LinearLayout>
 
@@ -119,19 +120,19 @@
             </LinearLayout>
 
         </LinearLayout>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            />
+            android:clipToPadding="false" />
 
         <com.rescribe.ui.customesViews.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/still_unsure"
             android:layout_marginTop="@dimen/dp20"
+            android:text="@string/still_unsure"
             android:textColor="@color/black"
             android:textSize="@dimen/sp15"
             app:customFont="@string/roboto_medium" />
@@ -190,9 +191,8 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/recentlyViewPager"
                 android:layout_width="wrap_content"
-                android:layout_height="165dp"
+                android:layout_height="160dp"
                 android:layout_gravity="bottom"
-                android:layout_marginBottom="@dimen/dp16"
                 android:visibility="visible" />
 
         </LinearLayout>
@@ -236,9 +236,8 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/sponseredViewPager"
                 android:layout_width="wrap_content"
-                android:layout_height="165dp"
+                android:layout_height="160dp"
                 android:layout_gravity="bottom"
-                android:layout_marginBottom="@dimen/dp16"
                 android:visibility="visible" />
 
         </LinearLayout>
@@ -282,13 +281,15 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/favoriteViewPager"
                 android:layout_width="wrap_content"
-                android:layout_height="165dp"
+                android:layout_height="160dp"
                 android:layout_gravity="bottom"
-                android:layout_marginBottom="@dimen/dp16"
                 android:visibility="visible" />
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp20" />
     </LinearLayout>
 
 </LinearLayout>

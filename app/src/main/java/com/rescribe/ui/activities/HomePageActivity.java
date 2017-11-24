@@ -681,6 +681,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     public void onClickOfMenu(String menuName) {
         if (menuName.equals(getString(R.string.find_doctors))) {
             Intent intent = new Intent(mContext, FindDoctorsActivity.class);
+            intent.putExtra(getString(R.string.doctor_data),mDashboardDataModel);
             intent.putExtra(getString(R.string.toolbarTitle), menuName);
             startActivity(intent);
         } else if (menuName.equals(getString(R.string.on_going_treatment))) {

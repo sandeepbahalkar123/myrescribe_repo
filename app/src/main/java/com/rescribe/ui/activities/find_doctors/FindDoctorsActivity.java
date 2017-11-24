@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,8 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
-import com.rescribe.adapters.book_appointment.ServicesAdapter;
 import com.rescribe.adapters.find_doctors.FindDoctorsAdapter;
+import com.rescribe.adapters.find_doctors.RecentlyVisitedDoctors;
+import com.rescribe.model.dashboard_api.DashBoardBaseModel;
+import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 
 import butterknife.BindView;
@@ -46,12 +49,35 @@ public class FindDoctorsActivity extends AppCompatActivity {
     LinearLayout bookAppointmentLayout;
     @BindView(R.id.consultOnline)
     LinearLayout consultOnline;*/
-    @BindView(R.id.scroll)
-    NestedScrollView scroll;
+
     @BindView(R.id.emptyListView)
     RelativeLayout emptyListView;
+    @BindView(R.id.serviceNameTextView)
+    CustomTextView serviceNameTextView;
+    @BindView(R.id.showVitalUnitNameIconLayout)
+    LinearLayout showVitalUnitNameIconLayout;
+    @BindView(R.id.serviceIcon)
+    ImageView serviceIcon;
+    @BindView(R.id.bookAppointmentLayout)
+    LinearLayout bookAppointmentLayout;
+    @BindView(R.id.recentlyViewPager)
+    ViewPager recentlyViewPager;
+    @BindView(R.id.recentlyVisitedFindDoctorLayout)
+    LinearLayout recentlyVisitedFindDoctorLayout;
+    @BindView(R.id.sponseredViewPager)
+    ViewPager sponseredViewPager;
+    @BindView(R.id.sponseredFindDoctorLayout)
+    LinearLayout sponseredFindDoctorLayout;
+    @BindView(R.id.favoriteViewPager)
+    ViewPager favoriteViewPager;
+    @BindView(R.id.favoriteFindDoctorLayout)
+    LinearLayout favoriteFindDoctorLayout;
+    @BindView(R.id.scroll)
+    NestedScrollView scroll;
     private FindDoctorsAdapter mFindDoctorsAdapter;
     private Context mContext;
+    DashboardDataModel mDashboardDataModel;
+    private RecentlyVisitedDoctors mRecentlyVisitedDoctors;
 
     /*    @BindView(R.id.bookAppointmentLayout)
         LinearLayout bookAppointment;*/
@@ -66,6 +92,7 @@ public class FindDoctorsActivity extends AppCompatActivity {
         mContext = FindDoctorsActivity.this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
+        mDashboardDataModel = getIntent().getExtras().getParcelable(getString(R.string.doctor_data));
         toolbarTitle.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -99,6 +126,31 @@ public class FindDoctorsActivity extends AppCompatActivity {
 //            listView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
         mFindDoctorsAdapter = new FindDoctorsAdapter(mContext);
         listView.setAdapter(mFindDoctorsAdapter);
+        setUpViewPager();
+    }
+
+    private void setUpViewPager() {
+
+       mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this, mDashboardDataModel.getDoctorList());
+        recentlyViewPager.setAdapter(mRecentlyVisitedDoctors);
+        recentlyViewPager.setClipToPadding(false);
+        //------
+        int pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
+        recentlyViewPager.setPadding(pager_padding, 0, pager_padding, 0);
+        int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
+        recentlyViewPager.setPageMargin(pager_margin);
+
+        mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this,mDashboardDataModel.getDoctorList());
+        sponseredViewPager.setAdapter(mRecentlyVisitedDoctors);
+        sponseredViewPager.setClipToPadding(false);
+        sponseredViewPager.setPadding(pager_padding, 0, pager_padding, 0);
+        sponseredViewPager.setPageMargin(pager_margin);
+
+        mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this,mDashboardDataModel.getDoctorList());
+        favoriteViewPager.setAdapter(mRecentlyVisitedDoctors);
+        favoriteViewPager.setClipToPadding(false);
+        favoriteViewPager.setPadding(pager_padding, 0, pager_padding, 0);
+        favoriteViewPager.setPageMargin(pager_margin);
     }
 
 

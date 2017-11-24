@@ -43,7 +43,6 @@
                 android:id="@+id/img_group_photo"
                 android:layout_width="match_parent"
                 android:layout_height="202dp"
-
                 android:src="@drawable/main_image"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax" />
@@ -74,7 +73,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:background="@drawable/bg_overlay"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <include layout="@layout/find_doctors_activity"/>
 

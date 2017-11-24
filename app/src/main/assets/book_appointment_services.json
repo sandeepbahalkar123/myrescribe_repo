@@ -21,34 +21,6 @@
       {
         "id": 4,
         "serviceName": "Pharmacy"
-
-      },
-      {
-        "id": 5,
-        "serviceName": "Diagnostic Centers"
-      },
-      {
-        "id": 6,
-        "serviceName": "Blood Bank"
-      },{
-        "id": 7,
-        "serviceName": "Ambulance"
-      },{
-        "id": 1,
-        "serviceName": "Doctors"
-      },
-      {
-        "id": 2,
-        "serviceName": "Hospitals"
-      },
-      {
-        "id": 3,
-        "serviceName": "Laboratories"
-      },
-      {
-        "id": 4,
-        "serviceName": "Pharmacy"
-
       },
       {
         "id": 5,

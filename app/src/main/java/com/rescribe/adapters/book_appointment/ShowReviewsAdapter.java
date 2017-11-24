@@ -38,7 +38,7 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_doctor_reviews_layout, parent, false);
+                .inflate(R.layout.services_item_layout, parent, false);
 
         return new ListViewHolder(itemView);
     }

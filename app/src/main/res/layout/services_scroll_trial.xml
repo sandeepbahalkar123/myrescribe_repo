@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap|enterAlways">
             <ImageView
                 android:id="@+id/img_group_photo"
                 android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:text="Services"
                     app:customFont="@string/roboto_bold"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="18sp"/>
             </android.support.v7.widget.Toolbar>
 

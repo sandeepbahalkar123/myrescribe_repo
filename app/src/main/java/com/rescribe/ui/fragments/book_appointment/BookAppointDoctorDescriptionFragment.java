@@ -167,9 +167,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mClickedDoctorObject = arguments.getParcelable(getString(R.string.clicked_item_data));
             mReceivedTitle = arguments.getString(getString(R.string.toolbarTitle));
-            setDataInViews();
         }
     }
 
@@ -334,8 +332,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
-                    boolean status = !mClickedDoctorObject.getFavourite();
-                    mClickedDoctorObject.setFavourite(status);
                     setFavorite(mClickedDoctorObject.getFavourite());
                 }
                 CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
@@ -364,6 +360,13 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         unbinder.unbind();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mClickedDoctorObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
+        setDataInViews();
+    }
+
     @OnClick({R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat, R.id.readMoreDocServices})
     public void onClickOfView(View view) {
 
@@ -371,7 +374,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
             case R.id.bookAppointmentButton:
                 Intent intentObject = new Intent(getActivity(), SelectSlotToBookAppointmentBaseActivity.class);
-                intentObject.putExtra(getString(R.string.clicked_item_data), mClickedDoctorObject);
                 intentObject.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
                 getActivity().startActivityForResult(intentObject, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
                 break;
@@ -396,6 +398,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 //--------
                 break;
             case R.id.favorite:
+
                 mDoctorDataHelper.setFavouriteDoctor(!mClickedDoctorObject.getFavourite(), mClickedDoctorObject.getDocId());
                 break;
             case R.id.doChat:
@@ -526,14 +529,4 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         }
     }
 
-    public void updateDataInViews(DoctorList receivedData) {
-        if (receivedData != null) {
-            mClickedDoctorObject = receivedData;
-            setDataInViews();
-        }
-    }
-
-    public DoctorList getClickedDoctorObject() {
-        return mClickedDoctorObject;
-    }
 }

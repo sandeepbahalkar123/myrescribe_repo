@@ -49,9 +49,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     private int mImageSize;
     private ServicesCardViewImpl mServicesCardViewClickListener;
     private ColorGenerator mColorGenerator;
-    private ImageView mRequestedViewToUpdateFavStatus = null;
-    private DoctorList mRequestedDocListToUpdateFavStatus;
-
 
     public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, ServicesCardViewImpl mOnClickOfCardOnDashboard, Map<String, Integer> dataMap, HelperResponse helperResponse) {
         this.mContext = context;
@@ -185,27 +182,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         }
 
 
-        sizeOfList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
-                b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
-                mServicesCardViewClickListener.onClickOfTotalCount(b);
-            }
-        });
-
-
-        dashBoardCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                mServicesCardViewClickListener.onClickOfCardView(b);
-            }
-        });
-
         if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
             feesToPaid.setVisibility(View.INVISIBLE);
             bookAppointmentButton.setVisibility(View.GONE);
@@ -290,6 +266,46 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             }
 
         }
+
+
+        //---------
+
+        if (doctorObject.getFavourite()) {
+            favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_icon));
+        } else {
+            favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
+        }
+        //---------
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean status = !doctorObject.getFavourite();
+                mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite, mHelperResponse);
+            }
+        });
+
+        sizeOfList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
+                b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
+                mServicesCardViewClickListener.onClickOfTotalCount(b);
+
+            }
+        });
+
+
+        dashBoardCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                mServicesCardViewClickListener.onClickOfCardView(b);
+            }
+        });
+
         bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -300,20 +316,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             }
         });
 
-        if (doctorObject.getFavourite()) {
-            favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_icon));
-        } else {
-            favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
-        }
-        favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean status = !doctorObject.getFavourite();
-                mRequestedViewToUpdateFavStatus = favorite;
-                mRequestedDocListToUpdateFavStatus = doctorObject;
-                mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite, mHelperResponse);
-            }
-        });
+        //-----------
 
         view.addView(imageLayout, 0);
 
@@ -333,12 +336,4 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         return view.equals(object);
     }
 
-
-    public ImageView getRequestedViewToUpdateFavStatus() {
-        return mRequestedViewToUpdateFavStatus;
-    }
-
-    public DoctorList getRequestedDocListToUpdateFavStatus() {
-        return mRequestedDocListToUpdateFavStatus;
-    }
 }

@@ -44,7 +44,6 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
     @BindView(R.id.viewContainer)
     FrameLayout viewContainer;
     HashMap<String, String> userSelectedLocationInfo;
-    DoctorList doctorObject;
     private BookAppointDoctorDescriptionFragment mBookAppointDoctorDescriptionFragment;
 
     @Override
@@ -64,7 +63,6 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
         //--------
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            doctorObject = extras.getParcelable(getString(R.string.clicked_item_data));
             title.setText(extras.getString(getString(R.string.toolbarTitle)));
         }
         mBookAppointDoctorDescriptionFragment = BookAppointDoctorDescriptionFragment.newInstance(extras);
@@ -84,7 +82,7 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
                 break;
         }
     }
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -106,6 +104,6 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
             setResult(DOCTOR_DATA_REQUEST_CODE, intent);
         }
         super.onBackPressed();
-    }
+    }*/
 
 }

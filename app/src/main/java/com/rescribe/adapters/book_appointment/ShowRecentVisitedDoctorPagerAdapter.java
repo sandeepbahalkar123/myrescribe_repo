@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.interfaces.IServicesCardViewClickListener;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
@@ -38,7 +39,7 @@ import java.util.Map;
 public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
 
     private HelperResponse mHelperResponse;
-    private IServicesCardViewClickListener mServicesCardViewClickListener;
+    private ServicesCardViewImpl mServicesCardViewClickListener;
     private Map<String, Integer> mListSizeWithTypeMap;
     private ArrayList<DoctorList> mDoctorLists;
     private LayoutInflater mInflater;
@@ -49,7 +50,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
     private ImageView mRequestedViewToUpdateFavStatus = null;
     private DoctorList mRequestedDocListToUpdateFavStatus;
 
-    public ShowRecentVisitedDoctorPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, Map<String, Integer> dataMap, IServicesCardViewClickListener listener, HelperResponse mHelperResponse) {
+    public ShowRecentVisitedDoctorPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, Map<String, Integer> dataMap, ServicesCardViewImpl listener, HelperResponse mHelperResponse) {
         this.mContext = context;
         this.mDoctorLists = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
@@ -300,16 +301,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             }
 
         }
-        bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
-                intent.putExtra(mContext.getString(R.string.clicked_item_data), doctorObject);
-                intent.putExtra(mContext.getString(R.string.toolbarTitle), doctorObject.getCategoryName());
-                mContext.startActivity(intent);
-            }
-        });
-
+      
         //---------
 
         if (doctorObject.getFavourite()) {
@@ -321,7 +313,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean status = doctorObject.getFavourite() ? false : true;
+                boolean status = !doctorObject.getFavourite();
                 mRequestedViewToUpdateFavStatus = favorite;
                 mRequestedDocListToUpdateFavStatus = doctorObject;
                 mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite, mHelperResponse);
@@ -339,6 +331,7 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
             }
         });
 
+
         dashBoardCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -347,6 +340,15 @@ public class ShowRecentVisitedDoctorPagerAdapter extends PagerAdapter {
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 mServicesCardViewClickListener.onClickOfCardView(b);
 
+            }
+        });
+  bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
+                intent.putExtra(mContext.getString(R.string.clicked_item_data), doctorObject);
+                intent.putExtra(mContext.getString(R.string.toolbarTitle), doctorObject.getCategoryName());
+                mContext.startActivity(intent);
             }
         });
 

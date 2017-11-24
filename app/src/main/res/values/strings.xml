@@ -359,6 +359,12 @@
     <string name="city"><![CDATA[&city=]]></string>
     <string name="try_these_locations">TRY THESE POPULAR LOCATIONS</string>
     <string name="recently_visited">RECENTLY VISITED</string>
+    <string name="token_number">Token Number</string>
+    <string name="waiting_time">Waiting Time</string>
+    <string name="schedule_at">Schedule at</string>
+    <string name="confirm_token">Confirm Token</string>
+    <string name="still_unsure">Still unsure, Use relevant keywords</string>
+    <string name="type_to_select">Type to select your illness, eg. Fever</string>
 
 
 </resources>

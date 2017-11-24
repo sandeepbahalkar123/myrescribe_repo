@@ -13,12 +13,12 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesModel;
 import com.rescribe.model.book_appointment.complaints.request_complaints.DoctorListByComplaintModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
+import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestDoctorListBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestFavouriteDoctorModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
-import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -88,6 +88,8 @@ public class DoctorDataHelper implements ConnectionListener {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                } else if (mOldDataTag == RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
@@ -137,13 +139,13 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_BY_LOCATION);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_DOCTOR_DATA);
         /*try {
-            InputStream is = mContext.getAssets().open("doctor_data_new_6_nov_2017.json");
+            InputStream is = mContext.getAssets().open("doctor_data_22_nov_2017.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
             String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "doctor_data_new_6_nov_2017" + json);
+            Log.e(TAG, "doctor_data_22_nov_2017" + json);
 
             Gson gson = new Gson();
             BookAppointmentBaseModel bookAppointmentBaseModel = gson.fromJson(json, BookAppointmentBaseModel.class);
@@ -337,6 +339,26 @@ public class DoctorDataHelper implements ConnectionListener {
             mConnectionFactory.setHeaderParams();
             mConnectionFactory.setUrl(Config.GET_TASK_RECENT_VISIT_DOCTOR_PLACES_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.city) + locationArea[1].trim());
             mConnectionFactory.createConnection(RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA);
+        }
+    }
+
+
+    public void getTokenNumberDetails(String docId, int locationID) {
+
+        try {
+            InputStream is = mContext.getAssets().open("get_token_api_result.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+            Log.e(TAG, "get_token_api_result" + json);
+
+            ClinicTokenDetailsBaseModel slotListBaseModel = new Gson().fromJson(json, ClinicTokenDetailsBaseModel.class);
+            onResponse(ConnectionListener.RESPONSE_OK, slotListBaseModel, RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 

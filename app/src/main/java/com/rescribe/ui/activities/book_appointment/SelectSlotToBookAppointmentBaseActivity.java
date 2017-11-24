@@ -60,11 +60,13 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
         locationTextView.setVisibility(View.GONE);
 
         userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
-        // showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
-        Bundle bundle = new Bundle();
-        bundle.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
-        bundle.putString(getString(R.string.clicked_item_data_type_value), getIntent().getStringExtra(getString(R.string.clicked_item_data_type_value)));
-        mSelectSlotTimeToBookAppointmentFragment = SelectSlotTimeToBookAppointmentFragment.newInstance(bundle);
+        Bundle extras = getIntent().getExtras();
+        if (extras == null) {
+            extras = new Bundle();
+        }
+        extras.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
+        extras.putString(getString(R.string.clicked_item_data_type_value), getIntent().getStringExtra(getString(R.string.clicked_item_data_type_value)));
+        mSelectSlotTimeToBookAppointmentFragment = SelectSlotTimeToBookAppointmentFragment.newInstance(extras);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.viewContainer, mSelectSlotTimeToBookAppointmentFragment);
@@ -85,15 +87,5 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
         }
     }
 
-  /*  @Override
-    public void onBackPressed() {
-        DoctorList clickedDoctorObject = mSelectSlotTimeToBookAppointmentFragment.getClickedDoctorObject();
-        if (clickedDoctorObject != null) {
-            Intent intent = new Intent();
-            intent.putExtra(DOCTOR_DATA, clickedDoctorObject);
-            setResult(DOCTOR_DATA_REQUEST_CODE, intent);
-        }
-        super.onBackPressed();
-    }*/
 }
 

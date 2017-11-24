@@ -1,8 +1,9 @@
-package com.rescribe.interfaces;
+package com.rescribe.interfaces.services;
 
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 
 /**
@@ -15,4 +16,8 @@ public interface IServicesCardViewClickListener {
     void onFavoriteIconClick(boolean isFavouriteStatus, DoctorList doctorListObject, ImageView favorite, HelperResponse helperResponse);
 
     void onClickOfTotalCount(Bundle bundleData);
+
+    void onClickedOfTokenNumber(Bundle bundleData);
+
+    void onClickedOfBookButton(Bundle bundleData);
 }

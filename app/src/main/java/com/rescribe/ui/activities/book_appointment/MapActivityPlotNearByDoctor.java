@@ -254,7 +254,6 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
                 doctorList.setExperience(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getExperience());
                 doctorList.setFavourite(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getFavourite());
                 doctorList.setWaitingTime(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getWaitingTime());
-                doctorList.setTokenNo(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getTokenNo());
                 doctorList.setDocSpeciality(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocSpeciality());
                 doctorList.setLongitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
                 doctorList.setLatitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());

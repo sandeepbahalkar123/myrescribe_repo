@@ -28,6 +28,12 @@ public class ClinicData implements Parcelable {
     @Expose
     private int locationId;
 
+    // not using right now
+    private String tokenNo = "";
+    @SerializedName("appointmentType")
+    @Expose
+    private String appointmentType = "";
+
     public final static Creator<ClinicData> CREATOR = new Creator<ClinicData>() {
 
 
@@ -51,6 +57,7 @@ public class ClinicData implements Parcelable {
         this.amt = ((int) in.readValue((int.class.getClassLoader())));
         this.apptScheduleLmtDays = ((int) in.readValue((int.class.getClassLoader())));
         this.amount = ((int) in.readValue((int.class.getClassLoader())));
+        this.appointmentType = ((String) in.readValue((String.class.getClassLoader())));
     }
 
     public ClinicData() {
@@ -104,6 +111,14 @@ public class ClinicData implements Parcelable {
         this.amount = amount;
     }
 
+    public String getAppointmentType() {
+        return appointmentType;
+    }
+
+    public void setAppointmentType(String appointmentType) {
+        this.appointmentType = appointmentType;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(clinicName);
         dest.writeValue(clinicAddress);
@@ -111,6 +126,7 @@ public class ClinicData implements Parcelable {
         dest.writeValue(amt);
         dest.writeValue(apptScheduleLmtDays);
         dest.writeValue(amount);
+        dest.writeValue(appointmentType);
     }
 
     public int describeContents() {

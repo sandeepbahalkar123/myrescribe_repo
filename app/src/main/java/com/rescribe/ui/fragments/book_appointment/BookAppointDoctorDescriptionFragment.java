@@ -127,6 +127,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     private DoctorList mClickedDoctorObject;
     private DoctorDataHelper mDoctorDataHelper;
     private String mReceivedTitle;
+    private int mSelectedClinicDataPosition;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -282,8 +283,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                         rupeesLayout.setVisibility(View.VISIBLE);
                         mDoctorFees.setText("" + clinicData.getAmount());
                     }
+                    mSelectedClinicDataPosition = position;
                 }
-
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
@@ -293,6 +294,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             if (mClickedDoctorObject.getClinicDataList().size() == 1) {
                 mClinicNameSpinner.setEnabled(false);
                 mClinicNameSpinner.setClickable(false);
+                mSelectedClinicDataPosition = 1;
                 mClinicNameSpinner.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.transparent));
             } else {
                 mClinicNameSpinner.setEnabled(true);
@@ -375,6 +377,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             case R.id.bookAppointmentButton:
                 Intent intentObject = new Intent(getActivity(), SelectSlotToBookAppointmentBaseActivity.class);
                 intentObject.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
+                intentObject.putExtra(getString(R.string.selected_clinic_data_position), mSelectedClinicDataPosition);
                 getActivity().startActivityForResult(intentObject, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
                 break;
             case R.id.viewAllClinicsOnMap: // on view-all location clicked

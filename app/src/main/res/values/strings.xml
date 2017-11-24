@@ -347,7 +347,6 @@
     <string name="evening">Evening</string>
     <string name="night">Night</string>
 
-    <string name="book">Book</string>
 
     <string name="category_name">category_name</string>
     <string name="object_update_common_to_doc">UPDATE COMMON TO ALL DOCTOR</string>
@@ -364,6 +363,11 @@
     <string name="schedule_at">Schedule at</string>
     <string name="confirm_token">Confirm Token</string>
 
+    <string name="selected_clinic_data_position">selected_clinic_data_position</string>
+
+    <string name="book">Book</string>
+    <string name="token">Token</string>
+    <string name="mixed">Mixed</string>
 
 </resources>
 

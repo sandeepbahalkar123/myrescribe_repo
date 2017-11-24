@@ -10,6 +10,7 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
+import com.rescribe.notification.MQTTServiceAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
 import com.rescribe.util.CommonMethods;
@@ -25,13 +26,7 @@ public class StartUpBootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-
-            // start mqtt Service
-            // use this to start and trigger a service
-            Intent serviceIntent = new Intent(context, MQTTService.class);
-            // potentially add data to the serviceIntent
-            serviceIntent.putExtra(MQTTService.IS_MESSAGE, false);
-            context.startService(serviceIntent);
+            new MQTTServiceAlarmTask(context);
 
             if(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, context).equals(RescribeConstants.YES))
                 notificationForMedicine(context);

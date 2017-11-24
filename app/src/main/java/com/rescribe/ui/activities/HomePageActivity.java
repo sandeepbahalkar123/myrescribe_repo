@@ -936,7 +936,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 RescribeApplication.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
                 RescribeApplication.setPreviousUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
                 if (obj.getLocality() != null) {
-
                     mDashboardHelper.doGetDashboard(obj.getLocality());
                 } else {
                     mDashboardHelper.doGetDashboard("");

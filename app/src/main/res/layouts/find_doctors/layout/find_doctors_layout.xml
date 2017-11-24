@@ -34,6 +34,7 @@
             android:fitsSystemWindows="true"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
+            app:contentScrim="@color/alphaTagColor"
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap"
             app:titleEnabled="false">
 
@@ -50,7 +51,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp56"
                 android:layout_marginBottom="64dp"
-                app:contentScrim="@color/colorPrimary"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -58,7 +58,7 @@
                     android:id="@+id/toolbarTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/greyish"
+                    android:textColor="@color/black"
                     android:textSize="18sp"
                     app:customFont="@string/roboto_medium" />
 

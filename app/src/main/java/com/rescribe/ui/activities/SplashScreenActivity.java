@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.rescribe.R;
 import com.rescribe.broadcast_receivers.SnoozeAlarmNotificationReceiver;
+import com.rescribe.notification.MQTTServiceAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
 import com.rescribe.util.RescribeConstants;
@@ -24,15 +25,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-
-        // start mqtt Service
-        // use this to start and trigger a service
-        Intent serviceIntent = new Intent(this, MQTTService.class);
-        // potentially add data to the serviceIntent
-        serviceIntent.putExtra(MQTTService.IS_MESSAGE, false);
-        startService(serviceIntent);
-
         mContext = SplashScreenActivity.this;
+        MQTTServiceAlarmTask.cancelAlarm(mContext);
+        new MQTTServiceAlarmTask(mContext);
         doNext();
 
     }

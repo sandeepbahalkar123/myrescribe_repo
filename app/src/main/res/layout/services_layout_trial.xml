@@ -34,6 +34,7 @@
             android:fitsSystemWindows="true"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
+            app:scrimVisibleHeightTrigger="132dp"
             app:contentScrim="@color/alphaTagColor"
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
             app:titleEnabled="false">

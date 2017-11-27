@@ -133,13 +133,14 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             //--------------
             if (clinicDataList.size() > 0) {
-                if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.token))) {
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
                     holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
                     holder.tokenNo.setVisibility(View.VISIBLE);
-                 } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
+                } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
                     holder.bookAppointmentButton.setVisibility(View.VISIBLE);
                     holder.tokenNo.setVisibility(View.INVISIBLE);
-                 }
+                }
             }
             //---------------
 
@@ -171,7 +172,8 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             }
             //----------
             if (clinicDataList.size() > 0) {
-                if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.token))) {
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
                     holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
                     holder.tokenNo.setVisibility(View.VISIBLE);
                 } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
@@ -209,7 +211,8 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             //----------
             if (clinicDataList.size() > 0) {
-                if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.token))) {
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
                     holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
                     holder.tokenNo.setVisibility(View.VISIBLE);
                 } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
@@ -318,7 +321,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.toString());
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.getDocSpeciality());
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 mOnFilterDocListClickListener.onClickOfCardView(b);
             }

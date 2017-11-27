@@ -1,7 +1,10 @@
 package com.rescribe.ui.fragments.book_appointment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -12,9 +15,11 @@ import android.text.Spanned;
 import android.text.format.DateFormat;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -37,6 +43,7 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.Common;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetails;
@@ -44,6 +51,7 @@ import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseMod
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
+import com.rescribe.model.case_details.Range;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
@@ -59,6 +67,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -153,6 +162,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private ClinicData mSelectedClinicDataObject;
     private int mSelectedClinicDataPosition = -1;
     private String activityOpeningFrom;
+    private String mCurrentDate;
 
     public SelectSlotTimeToBookAppointmentFragment() {
         // Required empty public constructor
@@ -182,7 +192,9 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
         //------------
         Calendar now = Calendar.getInstance();
+
         mSelectedTimeSlotDate = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
+        mCurrentDate = mSelectedTimeSlotDate;
         //----------
 
         String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DD_MM_YYYY, CommonMethods.getCurrentDate());
@@ -368,12 +380,14 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             case RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS:
                 ClinicTokenDetailsBaseModel clinicTokenDetailsBaseModel = (ClinicTokenDetailsBaseModel) customResponse;
                 if (clinicTokenDetailsBaseModel != null) {
-                    ClinicTokenDetailsBaseModel.ClinicTokenDataModel clinicTokenDataModel = clinicTokenDetailsBaseModel.getClinicTokenDataModel();
-                    if (clinicTokenDataModel != null) {
-                        ClinicTokenDetails clinicTokenDetails = clinicTokenDataModel.getClinicTokenDetails();
+                    Common common = clinicTokenDetailsBaseModel.getCommon();
+                    ClinicTokenDetails clinicTokenDetails = clinicTokenDetailsBaseModel.getClinicTokenDetails();
+                    if (clinicTokenDetails != null) {
                         mWaitingTime.setText("" + clinicTokenDetails.getWaitingTime());
                         mScheduledAppointmentsTimeStamp.setText("" + clinicTokenDetails.getScheduledTimeStamp());
                         mReceivedTokenNumber.setText("" + clinicTokenDetails.getTokenNumber());
+                    } else {
+                        showTokenStatusMessageBox(getActivity(), common.getStatusMessage());
                     }
                 }
                 break;
@@ -514,7 +528,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 mPreviousDayLeftArrow.setVisibility(View.INVISIBLE);
                 mNextDayRightArrow.setVisibility(View.INVISIBLE);
                 mSelectDateTime.setEnabled(false);
-                mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
+                mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), null);
             } else if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.book))) {
                 mConfirmedTokenMainLayout.setVisibility(View.GONE);
                 mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
@@ -523,14 +537,34 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 mNextDayRightArrow.setVisibility(View.VISIBLE);
                 mSelectDateTime.setEnabled(true);
                 mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+            } else if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.mixed))) {
+                // IF MIXED, FOR SELECTED DATE == CURRENT DATE --> TOKEN FLOW WILL WORK
+                //  FOR SELECTED DATE OTHER THAN CURRENT DATE--> BOOK FLOW WILL WORK
+                // COPIED ABOVE 2 TOKEN AND BOOK FUNCTIONALITY. (EXCEPT mSelectDateTime.setEnabled);
+                if (mSelectedTimeSlotDate.equalsIgnoreCase(mCurrentDate)) {
+                    mConfirmedTokenMainLayout.setVisibility(View.VISIBLE);
+                    mTimeSlotListViewLayout.setVisibility(View.GONE);
+                    //----
+                    mPreviousDayLeftArrow.setVisibility(View.INVISIBLE);
+                    mNextDayRightArrow.setVisibility(View.INVISIBLE);
+                    mSelectDateTime.setEnabled(true);
+                    mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), null);
+                } else {
+                    mConfirmedTokenMainLayout.setVisibility(View.GONE);
+                    mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
+                    //----
+                    mPreviousDayLeftArrow.setVisibility(View.VISIBLE);
+                    mNextDayRightArrow.setVisibility(View.VISIBLE);
+                    mSelectDateTime.setEnabled(true);
+                    mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+                }
             }
         }
     }
 
     @Override
     public void onTimeSet(ViewGroup viewGroup, int hourOfDay, int minute) {
-        mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
-
+        mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), hourOfDay + ":" + minute);
     }
 
     @Override
@@ -541,6 +575,54 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         }
         mSelectedTimeSlotDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
         mSelectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, dateConverted + "-" + (monthOfYear + 1) + "-" + year) + "," + getString(R.string.space) + CommonMethods.getFormattedDate(dateConverted + "-" + (monthOfYear + 1) + "-" + year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
-        mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+
+        if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.mixed))) {
+            changeViewBasedOnAppointmentType();
+        } else {
+            mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+        }
     }
+
+    public Dialog showTokenStatusMessageBox(Context context, String message) {
+
+        final Dialog dialog = new Dialog(context);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.token_dialog_popup);
+        dialog.setCancelable(true);
+
+        TextView messageView = (TextView) dialog.findViewById(R.id.messageView);
+        messageView.setText(message);
+        //-----------------
+        TextView yesButton = (TextView) dialog.findViewById(R.id.yesButton);
+        yesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                //--- TODO : API SHOULD GET CALLED IN CASE OF THIS FUNCTIONALITY, SPEAK WITH RATIKANT
+            }
+        });
+        //------------
+        TextView noButton = (TextView) dialog.findViewById(R.id.noButton);
+        noButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.CENTER;
+
+        dialog.getWindow().setAttributes(lp);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        return dialog;
+    }
+
 }

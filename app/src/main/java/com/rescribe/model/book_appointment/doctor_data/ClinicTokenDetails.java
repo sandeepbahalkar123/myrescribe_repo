@@ -1,27 +1,24 @@
 package com.rescribe.model.book_appointment.doctor_data;
 
+import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 public class ClinicTokenDetails implements Parcelable {
-    @SerializedName("scheduledTimeStamp")
+    @SerializedName("apmtTime")
     @Expose
     private String scheduledTimeStamp;
-    @SerializedName("tokenNumber")
+    @SerializedName("tokenNo")
     @Expose
-    private String tokenNumber;
+    private int tokenNumber;
     @SerializedName("waitingTime")
     @Expose
-    private String waitingTime;
-
-    public ClinicTokenDetails(String scheduledTimeStamp, String tokenNumber, String waitingTime) {
-        this.scheduledTimeStamp = scheduledTimeStamp;
-        this.tokenNumber = tokenNumber;
-        this.waitingTime = waitingTime;
-    }
+    private int waitingTime;
 
     public final static Parcelable.Creator<ClinicTokenDetails> CREATOR = new Creator<ClinicTokenDetails>() {
 
@@ -41,8 +38,8 @@ public class ClinicTokenDetails implements Parcelable {
 
     protected ClinicTokenDetails(Parcel in) {
         this.scheduledTimeStamp = ((String) in.readValue((String.class.getClassLoader())));
-        this.tokenNumber = ((String) in.readValue((String.class.getClassLoader())));
-        this.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
+        this.tokenNumber = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.waitingTime = ((Integer) in.readValue((Integer.class.getClassLoader())));
     }
 
     public void writeToParcel(Parcel dest, int flags) {
@@ -56,6 +53,14 @@ public class ClinicTokenDetails implements Parcelable {
     }
 
     public String getScheduledTimeStamp() {
+        if (scheduledTimeStamp.contains("T")) {
+            String date[] = scheduledTimeStamp.split("T");
+            if (date[1].contains(":")) {
+                String[] split = date[1].split(":");
+                scheduledTimeStamp = split[0] + ":" + split[1] + ":00";
+                scheduledTimeStamp = CommonMethods.formatDateTime(scheduledTimeStamp, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.HH_mm, RescribeConstants.TIME);
+            }
+        }
         return scheduledTimeStamp;
     }
 
@@ -63,19 +68,19 @@ public class ClinicTokenDetails implements Parcelable {
         this.scheduledTimeStamp = scheduledTimeStamp;
     }
 
-    public String getTokenNumber() {
+    public int getTokenNumber() {
         return tokenNumber;
     }
 
-    public void setTokenNumber(String tokenNumber) {
+    public void setTokenNumber(int tokenNumber) {
         this.tokenNumber = tokenNumber;
     }
 
-    public String getWaitingTime() {
+    public int getWaitingTime() {
         return waitingTime;
     }
 
-    public void setWaitingTime(String waitingTime) {
+    public void setWaitingTime(int waitingTime) {
         this.waitingTime = waitingTime;
     }
 }

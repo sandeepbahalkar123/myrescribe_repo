@@ -227,8 +227,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             //----------
             if (clinicDataList.size() > 0) {
-                if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.token))) {
-                    bookAppointmentButton.setVisibility(View.GONE);
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {                    bookAppointmentButton.setVisibility(View.GONE);
                     tokenNo.setVisibility(View.VISIBLE);
                 } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
                     bookAppointmentButton.setVisibility(View.VISIBLE);
@@ -263,8 +263,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             //---------------
 
             if (clinicDataList.size() > 0) {
-                if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.token))) {
-                    bookAppointmentButton.setVisibility(View.GONE);
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {                    bookAppointmentButton.setVisibility(View.GONE);
                     tokenNo.setVisibility(View.VISIBLE);
                 } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
                     bookAppointmentButton.setVisibility(View.VISIBLE);

@@ -370,6 +370,10 @@
     <string name="book">Book</string>
     <string name="token">Token</string>
     <string name="mixed">Mixed</string>
+    <string name="minutes">Minutes</string>
+    <string name="get_token">Get Token</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 </resources>
 

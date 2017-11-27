@@ -1,28 +1,27 @@
-
-package com.rescribe.model.dashboard_api;
+package com.rescribe.model.dashboard_new_api;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 
-public class DashBoardBaseModel implements Parcelable, CustomResponse
-{
+public class DashBoardBaseModel implements Parcelable, CustomResponse {
 
     @SerializedName("common")
     @Expose
     private Common common;
-    @SerializedName("data")
+    @SerializedName("DashboardDataModel")
     @Expose
-    private DashboardDataModel dashboardModel;
-    public final static Creator<DashBoardBaseModel> CREATOR = new Creator<DashBoardBaseModel>() {
+    private DashboardDataModel dashboardDataModel;
+    public final static Parcelable.Creator<DashBoardBaseModel> CREATOR = new Creator<DashBoardBaseModel>() {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
         public DashBoardBaseModel createFromParcel(Parcel in) {
             return new DashBoardBaseModel(in);
@@ -36,7 +35,7 @@ public class DashBoardBaseModel implements Parcelable, CustomResponse
 
     protected DashBoardBaseModel(Parcel in) {
         this.common = ((Common) in.readValue((Common.class.getClassLoader())));
-        this.dashboardModel = ((DashboardDataModel) in.readValue((DashboardDataModel.class.getClassLoader())));
+        this.dashboardDataModel = ((DashboardDataModel) in.readValue((DashboardDataModel.class.getClassLoader())));
     }
 
     public DashBoardBaseModel() {
@@ -50,21 +49,21 @@ public class DashBoardBaseModel implements Parcelable, CustomResponse
         this.common = common;
     }
 
-    public DashboardDataModel getDashboardModel() {
-        return dashboardModel;
+    public DashboardDataModel getDashboardDataModel() {
+        return dashboardDataModel;
     }
 
-    public void setDashboardModel(DashboardDataModel dashboardModel) {
-        this.dashboardModel = dashboardModel;
+    public void setDashboardDataModel(DashboardDataModel dashboardDataModel) {
+        this.dashboardDataModel = dashboardDataModel;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(common);
-        dest.writeValue(dashboardModel);
+        dest.writeValue(dashboardDataModel);
     }
 
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
 }

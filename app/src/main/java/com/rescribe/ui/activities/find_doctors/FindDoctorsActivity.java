@@ -1,6 +1,7 @@
 package com.rescribe.ui.activities.find_doctors;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -14,20 +15,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.adapters.find_doctors.FindDoctorsAdapter;
 import com.rescribe.adapters.find_doctors.RecentlyVisitedDoctors;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
+import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by jeetal on 13/10/17.
@@ -146,54 +147,54 @@ public class FindDoctorsActivity extends AppCompatActivity {
         int pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
         int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
 ///This done because atleast 3 objects should be visible on FindDoctors Page.
-        if(sponsered.size()>3){
+        if (sponsered.size() > 3) {
             mSponseredAdapterList = new ArrayList<>();
-            for(int i = 0;i<3;i++){
+            for (int i = 0; i < 3; i++) {
                 mSponseredAdapterList.add(sponsered.get(i));
             }
-            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this,mSponseredAdapterList);
+            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this, mSponseredAdapterList);
             sponseredViewPager.setAdapter(mRecentlyVisitedDoctors);
             sponseredViewPager.setClipToPadding(false);
             sponseredViewPager.setPadding(pager_padding, 0, pager_padding, 0);
             sponseredViewPager.setPageMargin(pager_margin);
-        }else{
-            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this,sponsered);
+        } else {
+            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this, sponsered);
             sponseredViewPager.setAdapter(mRecentlyVisitedDoctors);
             sponseredViewPager.setClipToPadding(false);
             sponseredViewPager.setPadding(pager_padding, 0, pager_padding, 0);
             sponseredViewPager.setPageMargin(pager_margin);
         }
 
-        if(recently_visit_doctor.size()>3){
+        if (recently_visit_doctor.size() > 3) {
             mRecentVisitAdapterList = new ArrayList<>();
-            for(int i = 0;i<3;i++){
+            for (int i = 0; i < 3; i++) {
                 mRecentVisitAdapterList.add(recently_visit_doctor.get(i));
             }
-            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this,mRecentVisitAdapterList);
+            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this, mRecentVisitAdapterList);
             recentlyViewPager.setAdapter(mRecentlyVisitedDoctors);
             recentlyViewPager.setClipToPadding(false);
             recentlyViewPager.setPadding(pager_padding, 0, pager_padding, 0);
             recentlyViewPager.setPageMargin(pager_margin);
-        }else{
-            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this,recently_visit_doctor);
+        } else {
+            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this, recently_visit_doctor);
             recentlyViewPager.setAdapter(mRecentlyVisitedDoctors);
             recentlyViewPager.setClipToPadding(false);
             recentlyViewPager.setPadding(pager_padding, 0, pager_padding, 0);
             recentlyViewPager.setPageMargin(pager_margin);
         }
 
-        if(favoriteList.size()>3){
+        if (favoriteList.size() > 3) {
             mFavouriteAdapterList = new ArrayList<>();
-            for(int i = 0;i<3;i++){
+            for (int i = 0; i < 3; i++) {
                 mFavouriteAdapterList.add(favoriteList.get(i));
             }
-            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this,mFavouriteAdapterList);
+            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this, mFavouriteAdapterList);
             favoriteViewPager.setAdapter(mRecentlyVisitedDoctors);
             favoriteViewPager.setClipToPadding(false);
             favoriteViewPager.setPadding(pager_padding, 0, pager_padding, 0);
             favoriteViewPager.setPageMargin(pager_margin);
-        }else{
-            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this,favoriteList);
+        } else {
+            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this, favoriteList);
             favoriteViewPager.setAdapter(mRecentlyVisitedDoctors);
             favoriteViewPager.setClipToPadding(false);
             favoriteViewPager.setPadding(pager_padding, 0, pager_padding, 0);
@@ -212,17 +213,16 @@ public class FindDoctorsActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-
-    //    @OnClick({/*R.id.bookAppointmentLayout,*//* R.id.consultOnline*/})
+    @OnClick({R.id.bookAppointmentButton, R.id.doctorConnectButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-           /* case R.id.bookAppointmentLayout:
+            case R.id.bookAppointmentButton:
 
-                break;*/
-           /* case R.id.consultOnline:
-                Intent intent = new Intent(FindDoctorsActivity.this, DoctorConnectActivity.class);
+                break;
+            case R.id.doctorConnectButton:
+                Intent intent = new Intent(mContext, DoctorConnectActivity.class);
                 startActivity(intent);
-                break;*/
+                break;
         }
     }
 }

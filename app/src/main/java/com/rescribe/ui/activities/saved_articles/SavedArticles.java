@@ -1,4 +1,4 @@
-package com.rescribe.ui.activities.health_repository;
+package com.rescribe.ui.activities.saved_articles;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,19 +10,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.rescribe.R;
-import com.rescribe.adapters.find_doctors.FindDoctorsAdapter;
-import com.rescribe.adapters.health_offers.HealthOffersAdapter;
 import com.rescribe.adapters.health_repository.HealthRepositoryAdapter;
 import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.ui.activities.health_repository.HealthRepository;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by jeetal on 13/10/17.
+ * Created by jeetal on 27/11/17.
  */
 
-public class HealthRepository extends AppCompatActivity {
+public class SavedArticles  extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -44,7 +43,7 @@ public class HealthRepository extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.health_respository_base_layout);
+        setContentView(R.layout.saved_articles_base_layout);
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
@@ -64,8 +63,8 @@ public class HealthRepository extends AppCompatActivity {
     }
 
     private void initialize() {
-        mContext = HealthRepository.this;
-        appDBHelper = new AppDBHelper(HealthRepository.this);
+        mContext = SavedArticles.this;
+        appDBHelper = new AppDBHelper(SavedArticles.this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
         healthRepositoryListView.setLayoutManager(layoutManager);
         healthRepositoryListView.setItemAnimator(new DefaultItemAnimator());

@@ -54,8 +54,8 @@ android {
                             'src/main/res/layouts/dashboard',
                             'src/main/res/layouts/find_doctors',
                             'src/main/res/layouts/health_repository',
-                            'src/main/res/layouts/health_offers'
-
+                            'src/main/res/layouts/health_offers',
+                            'src/main/res/layouts/saved_articles'
                     ]
         }
     }

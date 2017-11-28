@@ -162,7 +162,11 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private ClinicData mSelectedClinicDataObject;
     private int mSelectedClinicDataPosition = -1;
     private String activityOpeningFrom;
+
     private String mCurrentDate;
+    private Date mMaxDateRange;
+    private DatePickerDialog mDatePickerDialog;
+
 
     public SelectSlotTimeToBookAppointmentFragment() {
         // Required empty public constructor
@@ -190,12 +194,30 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     private void init() {
 
-        //------------
         Calendar now = Calendar.getInstance();
+        //---------
+        // As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
+        mDatePickerDialog = DatePickerDialog.newInstance(
+                this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH));
+        //------------
 
-        mSelectedTimeSlotDate = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
-        mCurrentDate = mSelectedTimeSlotDate;
+        //----******************------
+        String monthInt = "" + (now.get(Calendar.MONTH) + 1);
+        if (monthInt.length() == 1) {
+            monthInt = "0" + monthInt;
+        }
         //----------
+        String dayInt = "" + (now.get(Calendar.DAY_OF_MONTH));
+        if (dayInt.length() == 1) {
+            dayInt = "0" + dayInt;
+        }
+        //----------
+        mSelectedTimeSlotDate = now.get(Calendar.YEAR) + "-" + monthInt + "-" + dayInt;
+        mCurrentDate = mSelectedTimeSlotDate;
+        //----******************------
 
         String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DD_MM_YYYY, CommonMethods.getCurrentDate());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MMM);
@@ -435,30 +457,35 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         setDataInViews();
     }
 
-    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat, R.id.tokenNewTimeStamp})
+    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat, R.id.tokenNewTimeStamp, R.id.leftArrow, R.id.rightArrow})
     public void onClickOfView(View view) {
         Calendar now = Calendar.getInstance();
-
-
         switch (view.getId()) {
             case R.id.selectDateTime:
-                DatePickerDialog datePickerDialog;
-                // As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
-                datePickerDialog = DatePickerDialog.newInstance(
+
+                //---------
+                Calendar selectedTimeSlotDateCal = Calendar.getInstance();
+                Date date1 = CommonMethods.convertStringToDate(mSelectedTimeSlotDate, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                selectedTimeSlotDateCal.setTime(date1);
+                mDatePickerDialog = DatePickerDialog.newInstance(
                         this,
-                        now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH),
-                        now.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.setAccentColor(getResources().getColor(R.color.tagColor));
+                        selectedTimeSlotDateCal.get(Calendar.YEAR),
+                        selectedTimeSlotDateCal.get(Calendar.MONTH),
+                        selectedTimeSlotDateCal.get(Calendar.DAY_OF_MONTH));
+                //---------
 
-                datePickerDialog.setMinDate(now);
+                mDatePickerDialog.setAccentColor(getResources().getColor(R.color.tagColor));
+                mDatePickerDialog.setMinDate(now);
+                mDatePickerDialog.show(getFragmentManager(), getResources().getString(R.string.select_date_text));
+                mDatePickerDialog.setOutOfRageInvisible();
 
+                //-------------
                 Calendar calendar = Calendar.getInstance();
                 calendar.add(Calendar.DATE, mSelectedClinicDataObject.getApptScheduleLmtDays());
-                datePickerDialog.setMaxDate(calendar);
+                mMaxDateRange = calendar.getTime();
+                mDatePickerDialog.setMaxDate(calendar);
+                //-------------
 
-                datePickerDialog.show(getFragmentManager(), getResources().getString(R.string.select_date_text));
-                datePickerDialog.setOutOfRageInvisible();
                 break;
             case R.id.bookAppointmentButton:
                 break;
@@ -506,6 +533,25 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 grid.setAccentColor(getResources().getColor(R.color.tagColor));
                 grid.show(getFragmentManager(), getResources().getString(R.string.select_date_text));
                 break;
+            case R.id.leftArrow:
+                Date receivedDate = CommonMethods.convertStringToDate(this.mSelectedTimeSlotDate, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                Calendar cc = Calendar.getInstance();
+                cc.setTime(receivedDate); // Now use today date.
+                cc.add(Calendar.DATE, -1); // Adding 1 days
+                receivedDate = cc.getTime();
+
+                onDateSet(mDatePickerDialog, cc.get(Calendar.YEAR), cc.get(Calendar.MONTH), cc.get(Calendar.DAY_OF_MONTH));
+                break;
+
+            case R.id.rightArrow:
+                Date date = CommonMethods.convertStringToDate(this.mSelectedTimeSlotDate, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                Calendar c = Calendar.getInstance();
+                c.setTime(date); // Now use today date.
+                c.add(Calendar.DATE, 1); // Adding 1 days
+                date = c.getTime();
+
+                onDateSet(mDatePickerDialog, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+                break;
         }
     }
 
@@ -536,25 +582,54 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 mPreviousDayLeftArrow.setVisibility(View.VISIBLE);
                 mNextDayRightArrow.setVisibility(View.VISIBLE);
                 mSelectDateTime.setEnabled(true);
+                //------------
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DATE, mSelectedClinicDataObject.getApptScheduleLmtDays());
+                mMaxDateRange = calendar.getTime();
+                //------------
                 mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
             } else if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.mixed))) {
+                //------------
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DATE, mSelectedClinicDataObject.getApptScheduleLmtDays());
+                mMaxDateRange = calendar.getTime();
+                //------------
+
+                String selectedDate = CommonMethods.getFormattedDate(mSelectedTimeSlotDate, RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                String maxDate = simpleDateFormat.format(mMaxDateRange);
+                //--------
                 // IF MIXED, FOR SELECTED DATE == CURRENT DATE --> TOKEN FLOW WILL WORK
                 //  FOR SELECTED DATE OTHER THAN CURRENT DATE--> BOOK FLOW WILL WORK
                 // COPIED ABOVE 2 TOKEN AND BOOK FUNCTIONALITY. (EXCEPT mSelectDateTime.setEnabled);
                 if (mSelectedTimeSlotDate.equalsIgnoreCase(mCurrentDate)) {
                     mConfirmedTokenMainLayout.setVisibility(View.VISIBLE);
                     mTimeSlotListViewLayout.setVisibility(View.GONE);
-                    //----
-                    mPreviousDayLeftArrow.setVisibility(View.INVISIBLE);
-                    mNextDayRightArrow.setVisibility(View.INVISIBLE);
+
+                    if (selectedDate.equalsIgnoreCase(maxDate)) {
+                        mPreviousDayLeftArrow.setVisibility(View.INVISIBLE);
+                        mNextDayRightArrow.setVisibility(View.INVISIBLE);
+                    } else {
+                        mPreviousDayLeftArrow.setVisibility(View.INVISIBLE);
+                        mNextDayRightArrow.setVisibility(View.VISIBLE);
+                    }
+                    //--------
+
                     mSelectDateTime.setEnabled(true);
                     mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), null);
                 } else {
                     mConfirmedTokenMainLayout.setVisibility(View.GONE);
                     mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
-                    //----
-                    mPreviousDayLeftArrow.setVisibility(View.VISIBLE);
-                    mNextDayRightArrow.setVisibility(View.VISIBLE);
+                    //--------
+                    if (selectedDate.equalsIgnoreCase(maxDate)) {
+                        mPreviousDayLeftArrow.setVisibility(View.VISIBLE);
+                        mNextDayRightArrow.setVisibility(View.INVISIBLE);
+                    } else {
+                        mNextDayRightArrow.setVisibility(View.VISIBLE);
+                        mPreviousDayLeftArrow.setVisibility(View.VISIBLE);
+                    }
+                    //--------
+
                     mSelectDateTime.setEnabled(true);
                     mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
                 }
@@ -573,8 +648,14 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         if (dayOfMonth < 10) {
             dateConverted = "0" + dayOfMonth;
         }
-        mSelectedTimeSlotDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-        mSelectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, dateConverted + "-" + (monthOfYear + 1) + "-" + year) + "," + getString(R.string.space) + CommonMethods.getFormattedDate(dateConverted + "-" + (monthOfYear + 1) + "-" + year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
+
+        String monthOfYearData = "" + (monthOfYear + 1);
+        if (monthOfYearData.length() == 1) {
+            monthOfYearData = "0" + monthOfYearData;
+        }
+
+        mSelectedTimeSlotDate = year + "-" + monthOfYearData + "-" + dateConverted;
+        mSelectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, dateConverted + "-" + monthOfYearData + "-" + year) + "," + getString(R.string.space) + CommonMethods.getFormattedDate(dateConverted + "-" + monthOfYearData + "-" + year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
 
         if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.mixed))) {
             changeViewBasedOnAppointmentType();

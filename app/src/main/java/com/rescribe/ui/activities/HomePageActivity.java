@@ -776,7 +776,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         dashboardBottomMenuLists = mDashboardDataModel.getDashboardBottomMenuList();
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
             BottomMenu bottomMenu = new BottomMenu();
-            bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
+            bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
 
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));

@@ -343,9 +343,21 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
 
-    public void getTokenNumberDetails(String docId, int locationID) {
+    public void getTokenNumberDetails(String docId, int locationID, String selectedTimeStamp) {
 
-        try {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS, Request.Method.GET, true);
+        mConnectionFactory.setHeaderParams();
+
+        String url = Config.GET_TOKEN_NUMBER_OTHER_DETAILS + "docId=" + docId + "&locationId=" + locationID + "&patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+
+        if (selectedTimeStamp != null) {
+            url = url + "&time=" + selectedTimeStamp;
+        }
+
+        mConnectionFactory.setUrl(url);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS);
+
+        /*try {
             InputStream is = mContext.getAssets().open("get_token_api_result.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -359,7 +371,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        }*/
     }
 
     public static DoctorServicesModel getReceivedDoctorServicesModel() {

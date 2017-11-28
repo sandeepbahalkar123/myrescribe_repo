@@ -161,6 +161,16 @@
                 android:textSize="@dimen/sp13"
                 app:customFont="@string/roboto_bold"
                 tools:text="10:30 AM" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center|left"
+                android:paddingLeft="@dimen/dp5"
+                android:text="@string/minutes"
+                android:textColor="@color/Gray"
+                android:textSize="@dimen/sp10"
+                app:customFont="@string/roboto_regular" />
         </LinearLayout>
 
     </LinearLayout>

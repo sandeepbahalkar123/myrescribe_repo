@@ -34,6 +34,7 @@ import com.rescribe.model.Common;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
+import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseModel;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
 import com.rescribe.model.book_appointment.reviews.ReviewListBaseModel;
 import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
@@ -651,7 +652,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         RecentVisitedBaseModel mRecentVisitedBaseModel = new Gson().fromJson(data, RecentVisitedBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, mRecentVisitedBaseModel, mOldDataTag);
                         break;
-
+                    case RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS: //This is for get archived list
+                        ClinicTokenDetailsBaseModel baseModel = new Gson().fromJson(data, ClinicTokenDetailsBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, baseModel, mOldDataTag);
+                        break;
                     default:
                         //This is for get PDF VisitData
                         if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {

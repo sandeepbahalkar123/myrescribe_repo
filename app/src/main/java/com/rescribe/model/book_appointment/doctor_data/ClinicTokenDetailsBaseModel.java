@@ -16,9 +16,8 @@ public class ClinicTokenDetailsBaseModel implements Parcelable, CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private ClinicTokenDataModel clinicTokenDataModel;
+    private ClinicTokenDetails clinicTokenDetails;
     public final static Creator<ClinicTokenDetailsBaseModel> CREATOR = new Creator<ClinicTokenDetailsBaseModel>() {
-
 
         @SuppressWarnings({
                 "unchecked"
@@ -26,7 +25,7 @@ public class ClinicTokenDetailsBaseModel implements Parcelable, CustomResponse {
         public ClinicTokenDetailsBaseModel createFromParcel(Parcel in) {
             ClinicTokenDetailsBaseModel instance = new ClinicTokenDetailsBaseModel();
             instance.common = ((Common) in.readValue((Common.class.getClassLoader())));
-            instance.clinicTokenDataModel = ((ClinicTokenDataModel) in.readValue((ClinicTokenDataModel.class.getClassLoader())));
+            instance.clinicTokenDetails = ((ClinicTokenDetails) in.readValue((ClinicTokenDetails.class.getClassLoader())));
             return instance;
         }
 
@@ -44,17 +43,17 @@ public class ClinicTokenDetailsBaseModel implements Parcelable, CustomResponse {
         this.common = common;
     }
 
-    public ClinicTokenDataModel getClinicTokenDataModel() {
-        return clinicTokenDataModel;
+    public ClinicTokenDetails getClinicTokenDetails() {
+        return clinicTokenDetails;
     }
 
-    public void setClinicTokenDataModel(ClinicTokenDataModel clinicTokenDataModel) {
-        this.clinicTokenDataModel = clinicTokenDataModel;
+    public void setClinicTokenDetails(ClinicTokenDetails clinicTokenDetails) {
+        this.clinicTokenDetails = clinicTokenDetails;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(common);
-        dest.writeValue(clinicTokenDataModel);
+        dest.writeValue(clinicTokenDetails);
     }
 
     public int describeContents() {
@@ -62,9 +61,9 @@ public class ClinicTokenDetailsBaseModel implements Parcelable, CustomResponse {
     }
 
 
-    public class ClinicTokenDataModel implements Parcelable {
+    /*public class ClinicTokenDataModel implements Parcelable {
 
-        @SerializedName("tokenDetails")
+        @SerializedName("data")
         @Expose
         private ClinicTokenDetails clinicTokenDetails;
 
@@ -103,5 +102,7 @@ public class ClinicTokenDetailsBaseModel implements Parcelable, CustomResponse {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeValue(clinicTokenDetails);
         }
-    }
+        }
+    */
+
 }

@@ -1,4 +1,3 @@
-
 package com.rescribe.model.dashboard_api;
 
 import android.os.Parcel;
@@ -7,7 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DashboardMenuList implements Parcelable {
+public class ClickOption implements Parcelable {
 
     @SerializedName("name")
     @Expose
@@ -18,32 +17,29 @@ public class DashboardMenuList implements Parcelable {
     @SerializedName("clickEvent")
     @Expose
     private ClickEvent clickEvent;
-    @SerializedName("healthEducationUrl")
-    @Expose
-    private String healthEducationUrl;
-    public final static Parcelable.Creator<DashboardMenuList> CREATOR = new Creator<DashboardMenuList>() {
+    public final static Parcelable.Creator<ClickOption> CREATOR = new Creator<ClickOption>() {
+
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public DashboardMenuList createFromParcel(Parcel in) {
-            return new DashboardMenuList(in);
+        public ClickOption createFromParcel(Parcel in) {
+            return new ClickOption(in);
         }
 
-        public DashboardMenuList[] newArray(int size) {
-            return (new DashboardMenuList[size]);
+        public ClickOption[] newArray(int size) {
+            return (new ClickOption[size]);
         }
 
     };
 
-    protected DashboardMenuList(Parcel in) {
+    protected ClickOption(Parcel in) {
         this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.iconImageUrl = ((String) in.readValue((String.class.getClassLoader())));
         this.clickEvent = ((ClickEvent) in.readValue((ClickEvent.class.getClassLoader())));
-        this.healthEducationUrl = ((String) in.readValue((String.class.getClassLoader())));
     }
 
-    public DashboardMenuList() {
+    public ClickOption() {
     }
 
     public String getName() {
@@ -70,22 +66,14 @@ public class DashboardMenuList implements Parcelable {
         this.clickEvent = clickEvent;
     }
 
-    public String getHealthEducationUrl() {
-        return healthEducationUrl;
-    }
-
-    public void setHealthEducationUrl(String healthEducationUrl) {
-        this.healthEducationUrl = healthEducationUrl;
-    }
-
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(name);
         dest.writeValue(iconImageUrl);
         dest.writeValue(clickEvent);
-        dest.writeValue(healthEducationUrl);
     }
 
     public int describeContents() {
         return 0;
     }
+
 }

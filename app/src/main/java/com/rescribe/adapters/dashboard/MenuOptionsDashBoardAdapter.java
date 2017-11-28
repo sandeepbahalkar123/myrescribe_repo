@@ -89,7 +89,7 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
         requestOptions.skipMemoryCache(true);
 
         Glide.with(mContext)
-                .load(mDashboardMenuList.get(position).getImageUrl())
+                .load(mDashboardMenuList.get(position).getIconImageUrl())
                 .into(holder.menuIcon);
     }
 

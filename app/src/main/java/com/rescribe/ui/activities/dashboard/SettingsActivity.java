@@ -67,7 +67,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         if (dashboardBottomMenuLists != null)
             for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
                 BottomMenu bottomMenu = new BottomMenu();
-                bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
+                bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
                 bottomMenu.setMenuName(dashboardBottomMenuList.getName());
                 bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
                 bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.settings)));

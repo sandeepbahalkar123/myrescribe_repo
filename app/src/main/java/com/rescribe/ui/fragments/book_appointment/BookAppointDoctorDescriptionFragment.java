@@ -294,7 +294,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             if (mClickedDoctorObject.getClinicDataList().size() == 1) {
                 mClinicNameSpinner.setEnabled(false);
                 mClinicNameSpinner.setClickable(false);
-                mSelectedClinicDataPosition = 1;
+                mSelectedClinicDataPosition = 0;
                 mClinicNameSpinner.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.transparent));
             } else {
                 mClinicNameSpinner.setEnabled(true);
@@ -376,9 +376,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
             case R.id.bookAppointmentButton:
                 Intent intentObject = new Intent(getActivity(), SelectSlotToBookAppointmentBaseActivity.class);
-                intentObject.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
-                intentObject.putExtra(getString(R.string.selected_clinic_data_position), mSelectedClinicDataPosition);
-                getActivity().startActivityForResult(intentObject, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+                Bundle b = new Bundle();
+                b.putString(getString(R.string.toolbarTitle), mReceivedTitle);
+                b.putInt(getString(R.string.selected_clinic_data_position), mSelectedClinicDataPosition);
+                startActivity(intentObject);
                 break;
             case R.id.viewAllClinicsOnMap: // on view-all location clicked
                 //-----Show all doc clinic on map, copied from BookAppointFilteredDoctorListFragment.java----

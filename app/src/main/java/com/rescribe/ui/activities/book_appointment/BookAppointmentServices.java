@@ -54,8 +54,7 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
     ServicesAdapter mServicesAdapter;
     /*   @BindView(R.id.collapsing_toolbar)
        CollapsingToolbarLayout collapsingToolbar;*/
-    @BindView(R.id.servicesBg)
-    ImageView servicesBg;
+
     @BindView(R.id.scroll)
     NestedScrollView scroll;
     @BindView(R.id.app_bar_layout)
@@ -189,7 +188,6 @@ public class BookAppointmentServices extends AppCompatActivity implements Helper
         }
 
         super.onBackPressed();
-
     }
 
 

@@ -9,8 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 
-public class DashBoardBaseModel implements Parcelable, CustomResponse
-{
+public class DashBoardBaseModel implements Parcelable, CustomResponse {
 
     @SerializedName("common")
     @Expose
@@ -20,9 +19,8 @@ public class DashBoardBaseModel implements Parcelable, CustomResponse
     private DashboardDataModel dashboardModel;
     public final static Creator<DashBoardBaseModel> CREATOR = new Creator<DashBoardBaseModel>() {
 
-
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
         public DashBoardBaseModel createFromParcel(Parcel in) {
             return new DashBoardBaseModel(in);
@@ -32,8 +30,7 @@ public class DashBoardBaseModel implements Parcelable, CustomResponse
             return (new DashBoardBaseModel[size]);
         }
 
-    }
-    ;
+    };
 
     protected DashBoardBaseModel(Parcel in) {
         this.common = ((Common) in.readValue((Common.class.getClassLoader())));
@@ -65,7 +62,7 @@ public class DashBoardBaseModel implements Parcelable, CustomResponse
     }
 
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
 }

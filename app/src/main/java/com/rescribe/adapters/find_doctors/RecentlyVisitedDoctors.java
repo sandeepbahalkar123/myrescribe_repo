@@ -219,6 +219,7 @@ public class RecentlyVisitedDoctors extends PagerAdapter {
             } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
             }
+
             //----------
             if (doctorObject.getClinicDataList().size() > 0) {
                 if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.token))) {
@@ -230,6 +231,7 @@ public class RecentlyVisitedDoctors extends PagerAdapter {
                 }
             }
             //---------------
+
 
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
             if (doctorObject.getClinicDataList().size() == 1) {
@@ -258,6 +260,7 @@ public class RecentlyVisitedDoctors extends PagerAdapter {
                 feesToPaid.setVisibility(View.INVISIBLE);
 
             }
+
             //----------
             if (doctorObject.getClinicDataList().size() > 0) {
                 if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.token))) {
@@ -269,6 +272,7 @@ public class RecentlyVisitedDoctors extends PagerAdapter {
                 }
             }
             //---------------
+
 
         }
 

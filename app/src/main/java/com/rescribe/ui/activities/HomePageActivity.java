@@ -776,7 +776,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         dashboardBottomMenuLists = mDashboardDataModel.getDashboardBottomMenuList();
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
             BottomMenu bottomMenu = new BottomMenu();
-            bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
+            bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
 
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
@@ -936,7 +936,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 RescribeApplication.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
                 RescribeApplication.setPreviousUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
                 if (obj.getLocality() != null) {
-
                     mDashboardHelper.doGetDashboard(obj.getLocality());
                 } else {
                     mDashboardHelper.doGetDashboard("");

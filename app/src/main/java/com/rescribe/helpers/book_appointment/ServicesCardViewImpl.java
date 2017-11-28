@@ -17,6 +17,7 @@ import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by riteshpandhurkar on 15/11/17.
@@ -102,7 +103,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     }
 
 
-    public ArrayList<DoctorList> getCategoryWiseDoctorList(String categoryName) {
+    public ArrayList<DoctorList> getCategoryWiseDoctorList(String categoryName, int size) {
         ArrayList<DoctorList> temp = new ArrayList<>();
         for (DoctorList docObject :
                 mReceivedDoctorDataList) {
@@ -110,10 +111,16 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
                 temp.add(docObject);
             }
         }
+        if(size!=-1)
+        if (temp.size() > size) {
+//            ArrayList<String> al2 = new ArrayList<String>(al.subList(1, 4));
+            temp = new ArrayList<DoctorList>(temp.subList(0, size));
+        }
+
         return temp;
     }
 
-    public ArrayList<DoctorList> getFavouriteDocList() {
+    public ArrayList<DoctorList> getFavouriteDocList(int size) {
         HashMap<Integer, DoctorList> tempMap = new HashMap<>();
         for (DoctorList docObject :
                 mReceivedDoctorDataList) {
@@ -124,6 +131,10 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             }
         }
         ArrayList<DoctorList> temp = new ArrayList<>(tempMap.values());
+        if(size!=-1)
+        if (temp.size() > size) {
+            temp = new ArrayList<DoctorList>(temp.subList(0, size));
+        }
 
         return temp;
     }

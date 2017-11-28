@@ -404,6 +404,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         mClickedDoctorObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
         //--------------
         if (mSelectedClinicDataPosition != -1)
+            if(mClickedDoctorObject.getClinicDataList().size()>0)
             mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(mSelectedClinicDataPosition);
         //--------------
 

@@ -320,10 +320,10 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private void setUpViewPager() {
         //------------
         Map<String, Integer> dataMap = new LinkedHashMap<>();
-        ArrayList<DoctorList> myAppoint = mServiceCardDataViewBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments));
-        ArrayList<DoctorList> sponsered = mServiceCardDataViewBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
-        ArrayList<DoctorList> recently_visit_doctor = mServiceCardDataViewBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor));
-        ArrayList<DoctorList> favoriteList = mServiceCardDataViewBuilder.getFavouriteDocList();
+        ArrayList<DoctorList> myAppoint = mServiceCardDataViewBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments),-1);
+        ArrayList<DoctorList> sponsered = mServiceCardDataViewBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor),-1);
+        ArrayList<DoctorList> recently_visit_doctor = mServiceCardDataViewBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor),-1);
+        ArrayList<DoctorList> favoriteList = mServiceCardDataViewBuilder.getFavouriteDocList(-1);
 
         dataMap.put(getString(R.string.my_appointments), myAppoint.size());
         dataMap.put(getString(R.string.sponsored_doctor), sponsered.size());

@@ -43,7 +43,6 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
     FrameLayout mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
     @BindView(R.id.title)

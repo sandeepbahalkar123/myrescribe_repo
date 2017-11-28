@@ -583,10 +583,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         //----------
         //   mCustomProgressDialog.cancel();
         Map<String, Integer> dataMap = new LinkedHashMap<>();
-        myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments));
-        sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
-        recently_visit_doctor = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor));
-        favoriteList = mDashboardDataBuilder.getFavouriteDocList();
+        myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments),-1);
+        sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor),-1);
+        recently_visit_doctor = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor),-1);
+        favoriteList = mDashboardDataBuilder.getFavouriteDocList(-1);
 
         dataMap.put(getString(R.string.my_appointments), myAppoint.size());
         dataMap.put(getString(R.string.sponsored_doctor), sponsered.size());

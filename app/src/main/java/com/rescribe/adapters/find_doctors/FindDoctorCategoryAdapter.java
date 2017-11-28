@@ -39,7 +39,7 @@ import java.util.Map;
  * Created by jeetal on 23/11/17.
  */
 
-public class RecentlyVisitedDoctors extends PagerAdapter {
+public class FindDoctorCategoryAdapter extends PagerAdapter {
     private HelperResponse mHelperResponse;
     private boolean mIsFavAvail = false;
     private Map<String, Integer> mListSizeWithTypeMap;
@@ -50,19 +50,19 @@ public class RecentlyVisitedDoctors extends PagerAdapter {
     private ServicesCardViewImpl mServicesCardViewClickListener;
     private ColorGenerator mColorGenerator;
 
-    public RecentlyVisitedDoctors(Context context, ArrayList<DoctorList> doctorLists/* ServicesCardViewImpl mOnClickOfCardOnDashboard, Map<String, Integer> dataMap,*/ /*HelperResponse helperResponse*/) {
+    public FindDoctorCategoryAdapter(Context context, ArrayList<DoctorList> doctorLists, ServicesCardViewImpl mOnClickOfCardOnDashboard, HelperResponse helperResponse) {
         this.mContext = context;
         this.mDataList = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
-       /* this.mServicesCardViewClickListener = mOnClickOfCardOnDashboard;
-        this.mListSizeWithTypeMap = dataMap;*/
+      this.mServicesCardViewClickListener = mOnClickOfCardOnDashboard;
+         /* this.mListSizeWithTypeMap = dataMap;*/
 
         mInflater = LayoutInflater.from(context);
        /* if (mListSizeWithTypeMap.get(mContext.getString(R.string.favorite)) > 0) {
             mIsFavAvail = true;
         }*/
-       // this.mHelperResponse = helperResponse;
+        this.mHelperResponse = helperResponse;
     }
 
     @Override
@@ -117,6 +117,9 @@ public class RecentlyVisitedDoctors extends PagerAdapter {
                 .findViewById(R.id.ratingBar);
         final ImageView tokenNo = (ImageView) imageLayout
                 .findViewById(R.id.tokenNo);
+        final LinearLayout dataLayout = (LinearLayout) imageLayout
+                .findViewById(R.id.dataLayout);
+
 
         final DoctorList doctorObject = mDataList.get(position);
 
@@ -280,6 +283,15 @@ public class RecentlyVisitedDoctors extends PagerAdapter {
             public void onClick(View v) {
                 boolean status = !doctorObject.getFavourite();
                 mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite, mHelperResponse);
+            }
+        });
+        dataLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.toString());
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                mServicesCardViewClickListener.onClickOfCardView(b);
             }
         });
 

@@ -370,6 +370,10 @@
     <string name="book">Book</string>
     <string name="token">Token</string>
     <string name="mixed">Mixed</string>
+    <string name="need_some_help">Need some help?</string>
+    <string name="feel_free">Feel free to get in touch with us</string>
+    <string name="call">CALL</string>
+    <string name="email">EMAIL</string>
 
 </resources>
 

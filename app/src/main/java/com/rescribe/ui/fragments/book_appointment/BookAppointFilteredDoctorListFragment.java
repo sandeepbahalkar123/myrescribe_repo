@@ -119,9 +119,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             mLocationFab.setVisibility(View.GONE);
             mFilterFab.setVisibility(View.GONE);
             if (mIsFavoriteList) {
-                mReceivedList = mServicesCardViewImpl.getFavouriteDocList();
+                mReceivedList = mServicesCardViewImpl.getFavouriteDocList(-1);
             } else {
-                mReceivedList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataValue);
+                mReceivedList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataValue, -1);
             }
         }
         //------------

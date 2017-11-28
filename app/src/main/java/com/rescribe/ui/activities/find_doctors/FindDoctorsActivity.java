@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -12,17 +11,30 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.rescribe.R;
+import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
 import com.rescribe.adapters.find_doctors.FindDoctorsAdapter;
-import com.rescribe.adapters.find_doctors.RecentlyVisitedDoctors;
+import com.rescribe.adapters.find_doctors.FindDoctorCategoryAdapter;
+import com.rescribe.adapters.find_doctors.ShowDoctorComplaints;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.CommonBaseModelContainer;
+import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -34,16 +46,13 @@ import butterknife.OnClick;
  * Created by jeetal on 13/10/17.
  */
 
-public class FindDoctorsActivity extends AppCompatActivity {
+public class FindDoctorsActivity extends AppCompatActivity implements HelperResponse {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.img_group_photo)
     ImageView imgGroupPhoto;
-    @BindView(R.id.toolbarTitle)
-    CustomTextView toolbarTitle;
-    @BindView(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout collapsingToolbar;
+
     @BindView(R.id.app_bar_layout)
     AppBarLayout appBarLayout;
     @BindView(R.id.listView)
@@ -79,19 +88,28 @@ public class FindDoctorsActivity extends AppCompatActivity {
     LinearLayout favoriteFindDoctorLayout;
     @BindView(R.id.scroll)
     NestedScrollView scroll;
+    @BindView(R.id.viewAllRecentVisited)
+    CustomTextView viewAllRecentVisited;
+    @BindView(R.id.viewAllSponsered)
+    CustomTextView viewAllSponsered;
+    @BindView(R.id.viewAllFavorite)
+    CustomTextView viewAllFavorite;
+    @BindView(R.id.complaintsTextView)
+    AutoCompleteTextView complaintsTextView;
     private FindDoctorsAdapter mFindDoctorsAdapter;
     private Context mContext;
+    int pager_padding;
+    int pager_margin;
     DashboardDataModel mDashboardDataModel;
-    private RecentlyVisitedDoctors mRecentlyVisitedDoctors;
+    private FindDoctorCategoryAdapter mRecentlyVisitedDoctors;
     private ArrayList<DoctorList> mSponseredAdapterList;
     private ArrayList<DoctorList> mRecentVisitAdapterList;
     private ArrayList<DoctorList> mFavouriteAdapterList;
+    private BookAppointFilteredDocList mBookAppointFilteredDocList;
+    private ServicesCardViewImpl mServicesCardViewImpl;
+    private DoctorDataHelper mDoctorDataHelper;
 
-    /*    @BindView(R.id.bookAppointmentLayout)
-        LinearLayout bookAppointment;*/
- /*   @BindView(R.id.consultOnline)
-    LinearLayout consultOnline;
-*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,38 +117,34 @@ public class FindDoctorsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = FindDoctorsActivity.this;
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
 
-        mDashboardDataModel = getIntent().getExtras().getParcelable(getString(R.string.doctor_data));
-        sponsered = getIntent().getExtras().getParcelableArrayList(getString(R.string.sponsered_doctor));
-        recently_visit_doctor = getIntent().getExtras().getParcelableArrayList(getString(R.string.recently_visit_doctor));
-        favoriteList = getIntent().getExtras()
-                .getParcelableArrayList(getString(R.string.favorite));
-        toolbarTitle.setText(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-
-
         initialize();
     }
 
     private void initialize() {
-/*
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(final AppBarLayout appBarLayout, int verticalOffset) {
-                int i = verticalOffset + 400;
-                listView.setPadding(0, i, 0, 0);
-            }
-        });*/
+        pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
+        pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
+        mDoctorDataHelper = new DoctorDataHelper(this, this);
+        mDoctorDataHelper.doGetComplaintsList();
+        SpannableString contentViewAllFavorite = new SpannableString(viewAllFavorite.getText().toString());
+        contentViewAllFavorite.setSpan(new UnderlineSpan(), 0, contentViewAllFavorite.length(), 0);
+        viewAllFavorite.setText(contentViewAllFavorite);
+        SpannableString contentViewAllRecentVisited = new SpannableString(viewAllRecentVisited.getText().toString());
+        contentViewAllRecentVisited.setSpan(new UnderlineSpan(), 0, contentViewAllRecentVisited.length(), 0);
+        viewAllRecentVisited.setText(contentViewAllRecentVisited);
+        SpannableString contentViewAllSponsered = new SpannableString(viewAllSponsered.getText().toString());
+        contentViewAllSponsered.setSpan(new UnderlineSpan(), 0, contentViewAllSponsered.length(), 0);
+        viewAllSponsered.setText(contentViewAllSponsered);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
         listView.setLayoutManager(layoutManager);
         listView.setItemAnimator(new DefaultItemAnimator());
@@ -144,68 +158,45 @@ public class FindDoctorsActivity extends AppCompatActivity {
     }
 
     private void setUpViewPager() {
-        int pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
-        int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
-///This done because atleast 3 objects should be visible on FindDoctors Page.
-        if (sponsered.size() > 3) {
-            mSponseredAdapterList = new ArrayList<>();
-            for (int i = 0; i < 3; i++) {
-                mSponseredAdapterList.add(sponsered.get(i));
-            }
-            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this, mSponseredAdapterList);
-            sponseredViewPager.setAdapter(mRecentlyVisitedDoctors);
-            sponseredViewPager.setClipToPadding(false);
-            sponseredViewPager.setPadding(pager_padding, 0, pager_padding, 0);
-            sponseredViewPager.setPageMargin(pager_margin);
-        } else {
-            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this, sponsered);
-            sponseredViewPager.setAdapter(mRecentlyVisitedDoctors);
-            sponseredViewPager.setClipToPadding(false);
-            sponseredViewPager.setPadding(pager_padding, 0, pager_padding, 0);
-            sponseredViewPager.setPageMargin(pager_margin);
-        }
+        mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (FindDoctorsActivity) mContext);
+        sponsered = mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsered_doctor), 3);
+        recently_visit_doctor = mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), 3);
+        favoriteList = mServicesCardViewImpl.getFavouriteDocList(3);
+        setRecentlyVisitedPager();
+        setSponseredPager();
+        setFavoritePager();
+    }
 
-        if (recently_visit_doctor.size() > 3) {
-            mRecentVisitAdapterList = new ArrayList<>();
-            for (int i = 0; i < 3; i++) {
-                mRecentVisitAdapterList.add(recently_visit_doctor.get(i));
-            }
-            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this, mRecentVisitAdapterList);
-            recentlyViewPager.setAdapter(mRecentlyVisitedDoctors);
-            recentlyViewPager.setClipToPadding(false);
-            recentlyViewPager.setPadding(pager_padding, 0, pager_padding, 0);
-            recentlyViewPager.setPageMargin(pager_margin);
-        } else {
-            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this, recently_visit_doctor);
-            recentlyViewPager.setAdapter(mRecentlyVisitedDoctors);
-            recentlyViewPager.setClipToPadding(false);
-            recentlyViewPager.setPadding(pager_padding, 0, pager_padding, 0);
-            recentlyViewPager.setPageMargin(pager_margin);
-        }
+    private void setRecentlyVisitedPager() {
+        mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, recently_visit_doctor, mServicesCardViewImpl, this);
+        recentlyViewPager.setAdapter(mRecentlyVisitedDoctors);
+        recentlyViewPager.setClipToPadding(false);
+        recentlyViewPager.setPadding(pager_padding, 0, pager_padding, 0);
+        recentlyViewPager.setPageMargin(pager_margin);
 
-        if (favoriteList.size() > 3) {
-            mFavouriteAdapterList = new ArrayList<>();
-            for (int i = 0; i < 3; i++) {
-                mFavouriteAdapterList.add(favoriteList.get(i));
-            }
-            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this, mFavouriteAdapterList);
-            favoriteViewPager.setAdapter(mRecentlyVisitedDoctors);
-            favoriteViewPager.setClipToPadding(false);
-            favoriteViewPager.setPadding(pager_padding, 0, pager_padding, 0);
-            favoriteViewPager.setPageMargin(pager_margin);
-        } else {
-            mRecentlyVisitedDoctors = new RecentlyVisitedDoctors(this, favoriteList);
-            favoriteViewPager.setAdapter(mRecentlyVisitedDoctors);
-            favoriteViewPager.setClipToPadding(false);
-            favoriteViewPager.setPadding(pager_padding, 0, pager_padding, 0);
-            favoriteViewPager.setPageMargin(pager_margin);
-        }
+    }
+
+    private void setFavoritePager() {
+        mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, sponsered, mServicesCardViewImpl, this);
+        sponseredViewPager.setAdapter(mRecentlyVisitedDoctors);
+        sponseredViewPager.setClipToPadding(false);
+        sponseredViewPager.setPadding(pager_padding, 0, pager_padding, 0);
+        sponseredViewPager.setPageMargin(pager_margin);
+    }
+
+    private void setSponseredPager() {
+        mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, favoriteList, mServicesCardViewImpl, this);
+        favoriteViewPager.setAdapter(mRecentlyVisitedDoctors);
+        favoriteViewPager.setClipToPadding(false);
+        favoriteViewPager.setPadding(pager_padding, 0, pager_padding, 0);
+        favoriteViewPager.setPageMargin(pager_margin);
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
+        setUpViewPager();
     }
 
     @Override
@@ -213,7 +204,7 @@ public class FindDoctorsActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    @OnClick({R.id.bookAppointmentButton, R.id.doctorConnectButton})
+    @OnClick({R.id.bookAppointmentButton, R.id.doctorConnectButton, R.id.viewAllFavorite, R.id.viewAllRecentVisited, R.id.viewAllSponsered})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bookAppointmentButton:
@@ -223,6 +214,57 @@ public class FindDoctorsActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext, DoctorConnectActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.viewAllFavorite:
+                Intent viewAllFavorite = new Intent(mContext, ShowCategoryWiseDoctor.class);
+                viewAllFavorite.putExtra(getString(R.string.toolbarTitle), getString(R.string.favorite));
+                startActivity(viewAllFavorite);
+                break;
+            case R.id.viewAllRecentVisited:
+                Intent viewAllRecentVisited = new Intent(mContext, ShowCategoryWiseDoctor.class);
+                viewAllRecentVisited.putExtra(getString(R.string.toolbarTitle), getString(R.string.recently_visit_doctor));
+                startActivity(viewAllRecentVisited);
+                break;
+            case R.id.viewAllSponsered:
+                Intent viewAllSponsered = new Intent(mContext, ShowCategoryWiseDoctor.class);
+                viewAllSponsered.putExtra(getString(R.string.toolbarTitle), getString(R.string.sponsered_doctor));
+                startActivity(viewAllSponsered);
+                break;
         }
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if(mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_COMPLAINTS)) {
+            if (customResponse != null) {
+                ComplaintsBaseModel complaintsBaseModel = (ComplaintsBaseModel) customResponse;
+                ShowDoctorComplaints adapter = new ShowDoctorComplaints(this, R.layout.find_doctors_layout, R.id.custom_spinner_txt_view_Id, complaintsBaseModel.getComplaintsModel().getComplaintList());
+                complaintsTextView.setAdapter(adapter);
+            }
+        }else if(mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_SET_FAVOURITE_DOCTOR)){
+            CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
+            CommonMethods.showToast(this, temp.getCommonRespose().getStatusMessage());
+            if (temp.getCommonRespose().isSuccess()) {
+                //--------
+                ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                //--------
+                setUpViewPager();
+            }
+
+        }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
     }
 }

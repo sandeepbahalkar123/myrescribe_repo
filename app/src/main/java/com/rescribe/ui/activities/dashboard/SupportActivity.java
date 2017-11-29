@@ -57,14 +57,14 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
         initialize();
 
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
-        /*for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+        for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
             BottomMenu bottomMenu = new BottomMenu();
             bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
             bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.support)));
             addBottomMenu(bottomMenu);
-        }*/
+        }
 
     }
 

@@ -10,16 +10,19 @@ import android.view.View;
 
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +41,8 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
     private ServicesCardViewImpl mServicesCardViewImpl;
     private Context mContext;
     private ArrayList<DoctorList> mDoctorCategoryList;
+    private String locationReceived = "";
+    private DoctorDataHelper doctorDataHelper;
 
 
     @Override
@@ -48,6 +53,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         mDoctorCategoryList = getIntent().getExtras().getParcelableArrayList(getString(R.string.clicked_item_data));
         setSupportActionBar(toolbar);
         mContext = ShowCategoryWiseDoctor.this;
+
         getSupportActionBar().setTitle(getIntent().getExtras().getString(getString(R.string.toolbarTitle)));
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -70,7 +76,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
     private void setUpList() {
         mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (ShowCategoryWiseDoctor) mContext);
         if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.favorite))) {
-            mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(getIntent().getExtras().getString(getString(R.string.toolbarTitle)),-1);
+            mDoctorCategoryList = mServicesCardViewImpl.getFavouriteDocList(-1);
             mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             showDoctorList.setLayoutManager(layoutManager);
@@ -90,6 +96,13 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
             showDoctorList.setLayoutManager(layoutManager);
             showDoctorList.setHasFixedSize(true);
             showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
+        }else if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.complaints))){
+           /* HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+            locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
+            String[] split = locationReceived.split(",");
+            doctorDataHelper = new DoctorDataHelper(this,this);
+            doctorDataHelper.doGetDoctorListByComplaint(split[1].trim(), split[0].trim(), selectIdComplaint1, selectIdComplaint2);*/
+
         }
     }
 

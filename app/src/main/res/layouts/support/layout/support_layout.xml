@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/grey_shade"
         android:textSize="@dimen/sp15"
-        android:paddingTop="@dimen/dp14"
+        android:paddingTop="@dimen/dp8"
         app:customFont="@string/roboto_medium"
         android:text="@string/feel_free" />
 
@@ -39,12 +39,12 @@
         android:layout_width="222dp"
         android:layout_height="40dp"
         android:text="@string/call"
-        android:layout_marginTop="@dimen/dp28"
+        android:layout_marginTop="@dimen/dp8"
         android:gravity="center"
         android:id="@+id/callTextView"
         app:customFont="@string/roboto_bold"
         android:textSize="@dimen/sp19"
-        android:background="@color/tagColor"
+        android:background="@drawable/call_bg"
         android:textColor="@color/white"/>
 
     <com.rescribe.ui.customesViews.CustomTextView
@@ -55,7 +55,7 @@
         android:id="@+id/emailtextView"
         app:customFont="@string/roboto_bold"
         android:textSize="@dimen/sp19"
-        android:layout_marginTop="@dimen/dp14"
+        android:layout_marginTop="@dimen/dp10"
         android:background="@drawable/type_here_bg"
         android:textColor="@color/tagColor"/>
 
@@ -64,7 +64,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp24"
+        android:layout_marginBottom="@dimen/dp8"
        android:layout_gravity="center" >
 
         <ImageView

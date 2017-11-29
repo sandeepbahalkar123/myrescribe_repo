@@ -55,6 +55,7 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
+import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
@@ -583,9 +584,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         //----------
         //   mCustomProgressDialog.cancel();
         Map<String, Integer> dataMap = new LinkedHashMap<>();
-        myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments),-1);
-        sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor),-1);
-        recently_visit_doctor = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor),-1);
+        myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments), -1);
+        sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1);
+        recently_visit_doctor = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor), -1);
         favoriteList = mDashboardDataBuilder.getFavouriteDocList(-1);
 
         dataMap.put(getString(R.string.my_appointments), myAppoint.size());
@@ -680,31 +681,38 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     @Override
-    public void onClickOfMenu(String menuName) {
-        if (menuName.equals(getString(R.string.find_doctors))) {
-            Intent intent = new Intent(mContext, FindDoctorsActivity.class);
-            intent.putExtra(getString(R.string.recently_visit_doctor),recently_visit_doctor);
-            intent.putExtra(getString(R.string.sponsered_doctor),sponsered);
-            intent.putExtra(getString(R.string.favorite),favoriteList);
-            intent.putExtra(getString(R.string.doctor_data), mDashboardDataModel);
-            intent.putExtra(getString(R.string.toolbarTitle), menuName);
-            startActivity(intent);
-        } else if (menuName.equals(getString(R.string.on_going_treatment))) {
-            Intent intent = new Intent(mContext, PrescriptionActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle), menuName);
-            startActivity(intent);
-        } else if (menuName.equals(getString(R.string.health_repository))) {
-            Intent intent = new Intent(mContext, HealthRepository.class);
-            intent.putExtra(getString(R.string.toolbarTitle), menuName);
-            startActivity(intent);
-        } else if (menuName.equals(getString(R.string.health_offers))) {
-            Intent intent = new Intent(mContext, HealthOffersActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle), menuName);
-            startActivity(intent);
+    public void onClickOfMenu(DashboardMenuList menu) {
+        Intent intent = null;
+        if (menu.getName().equalsIgnoreCase(getString(R.string.find_doctors))) {
+            intent = new Intent(mContext, FindDoctorsActivity.class);
+            Bundle b = new Bundle();
+            b.putParcelable(getString(R.string.clicked_item_data), menu);
+            intent.putExtras(b);
+        } else if (menu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
+            intent = new Intent(mContext, PrescriptionActivity.class);
+            Bundle b = new Bundle();
+            b.putParcelable(getString(R.string.clicked_item_data), menu);
+            intent.putExtras(b);
+        } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_repository))) {
+            intent = new Intent(mContext, HealthRepository.class);
+            Bundle b = new Bundle();
+            b.putParcelable(getString(R.string.clicked_item_data), menu);
+            intent.putExtras(b);
+        } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_offers))) {
+            intent = new Intent(mContext, HealthOffersActivity.class);
+            Bundle b = new Bundle();
+            b.putParcelable(getString(R.string.clicked_item_data), menu);
+            intent.putExtras(b);
+        } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_education))) {
 
-        } else if (menuName.equals(getString(R.string.health_education))) {
-
+        } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_services))) {
+            intent = new Intent(mContext, BookAppointmentServices.class);
+            Bundle b = new Bundle();
+            b.putParcelable(getString(R.string.clicked_item_data), menu);
+            intent.putExtras(b);
         }
+        if (intent != null)
+            startActivity(intent);
     }
 
     @Override

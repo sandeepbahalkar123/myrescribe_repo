@@ -8,8 +8,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
+import com.rescribe.model.dashboard_api.ClickOption;
+import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,19 +29,14 @@ import butterknife.ButterKnife;
 
 public class HealthRepositoryAdapter extends RecyclerView.Adapter<HealthRepositoryAdapter.ListViewHolder> {
 
+    private final IOnMenuClickListener onMenuClickListener;
+    private ArrayList<ClickOption> mClickOptionList;
     private Context mContext;
-    String[] mFindDoctorOptions = {
-            "My Records",
-            "Vital Graphs",
-            "Doctor Visits",
-            "Saved Articles"
-    };
-    Integer[] mSetIcons = {R.drawable.dashboard_my_records_icon,
-            R.drawable.dashboard_my_records_icon, R.drawable.dashboard_my_records_icon, R.drawable.dashboard_my_records_icon};
 
-    public HealthRepositoryAdapter(Context mContext) {
+    public HealthRepositoryAdapter(Context mContext, ArrayList<ClickOption> clickOptions, IOnMenuClickListener iOnMenuClickListener) {
         this.mContext = mContext;
-
+        this.mClickOptionList = clickOptions;
+        this.onMenuClickListener = iOnMenuClickListener;
     }
 
     @Override
@@ -46,19 +50,36 @@ public class HealthRepositoryAdapter extends RecyclerView.Adapter<HealthReposito
     @Override
     public void onBindViewHolder(HealthRepositoryAdapter.ListViewHolder holder, int position) {
 
-        holder.serviceNameTextView.setText(mFindDoctorOptions[position]);
+
+        final ClickOption clickOption = mClickOptionList.get(position);
+        holder.serviceNameTextView.setText(clickOption.getName());
         holder.recyclerViewClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // onServicesClickListener.setOnClickOfServices(servicesList);
+                onMenuClickListener.onMenuClick(clickOption);
             }
         });
-        holder.serviceIcon.setImageResource(mSetIcons[position]);
+
+        //------------
+        if (clickOption.getIconImageUrl() != null) {
+            int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(mContext, 2);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.dontAnimate();
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
+            requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
+
+            Glide.with(mContext)
+                    .load(clickOption.getIconImageUrl())
+                    .apply(requestOptions).thumbnail(0.5f)
+                    .into(holder.serviceIcon);
+        }
+        //--------------
     }
 
     @Override
     public int getItemCount() {
-        return mFindDoctorOptions.length;
+        return mClickOptionList.size();
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {

@@ -3,6 +3,7 @@ package com.rescribe.ui.activities.find_doctors;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
@@ -18,20 +19,26 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
-import com.rescribe.adapters.find_doctors.FindDoctorsAdapter;
+import com.rescribe.adapters.find_doctors.FindDoctorsMenuListAdapter;
 import com.rescribe.adapters.find_doctors.FindDoctorCategoryAdapter;
 import com.rescribe.adapters.find_doctors.ShowDoctorComplaints;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.dashboard_api.DashboardDataModel;
+import com.rescribe.model.dashboard_api.ClickEvent;
+import com.rescribe.model.dashboard_api.ClickOption;
+import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.ui.activities.DoctorConnectActivity;
+import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -46,7 +53,7 @@ import butterknife.OnClick;
  * Created by jeetal on 13/10/17.
  */
 
-public class FindDoctorsActivity extends AppCompatActivity implements HelperResponse {
+public class FindDoctorsActivity extends AppCompatActivity implements HelperResponse, IOnMenuClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -60,11 +67,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     ArrayList<DoctorList> sponsered;
     ArrayList<DoctorList> recently_visit_doctor;
     ArrayList<DoctorList> favoriteList;
-
-    /*@BindView(R.id.bookAppointmentLayout)
-    LinearLayout bookAppointmentLayout;
-    @BindView(R.id.consultOnline)
-    LinearLayout consultOnline;*/
 
     @BindView(R.id.serviceNameTextView)
     CustomTextView serviceNameTextView;
@@ -96,19 +98,15 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     CustomTextView viewAllFavorite;
     @BindView(R.id.complaintsTextView)
     AutoCompleteTextView complaintsTextView;
-    private FindDoctorsAdapter mFindDoctorsAdapter;
+    private FindDoctorsMenuListAdapter mFindDoctorsAdapter;
     private Context mContext;
     int pager_padding;
     int pager_margin;
-    DashboardDataModel mDashboardDataModel;
     private FindDoctorCategoryAdapter mRecentlyVisitedDoctors;
-    private ArrayList<DoctorList> mSponseredAdapterList;
-    private ArrayList<DoctorList> mRecentVisitAdapterList;
-    private ArrayList<DoctorList> mFavouriteAdapterList;
-    private BookAppointFilteredDocList mBookAppointFilteredDocList;
+
     private ServicesCardViewImpl mServicesCardViewImpl;
     private DoctorDataHelper mDoctorDataHelper;
-
+    private DashboardMenuList mReceivedDashboardMenuListData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +115,12 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         ButterKnife.bind(this);
         mContext = FindDoctorsActivity.this;
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
+            getSupportActionBar().setTitle(mReceivedDashboardMenuListData.getName());
+        }
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -132,6 +135,29 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
     private void initialize() {
+
+        //------Load background image : START------
+        ClickEvent clickEvent1 = mReceivedDashboardMenuListData.getClickEvent();
+        if (clickEvent1 != null) {
+            if (clickEvent1.getBgImageUrl() != null) {
+                int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(this, 2);
+
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.dontAnimate();
+                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.skipMemoryCache(true);
+                requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
+
+                Glide.with(this)
+                        .load(clickEvent1.getBgImageUrl())
+                        .apply(requestOptions).thumbnail(0.5f)
+                        .into(imgGroupPhoto);
+            }
+        }
+        //------Load background image : END------
+
+
+        //------------
         pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
         pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
         mDoctorDataHelper = new DoctorDataHelper(this, this);
@@ -145,6 +171,8 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         SpannableString contentViewAllSponsered = new SpannableString(viewAllSponsered.getText().toString());
         contentViewAllSponsered.setSpan(new UnderlineSpan(), 0, contentViewAllSponsered.length(), 0);
         viewAllSponsered.setText(contentViewAllSponsered);
+
+        //----------------
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
         listView.setLayoutManager(layoutManager);
         listView.setItemAnimator(new DefaultItemAnimator());
@@ -152,8 +180,17 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
 //            int spacing = 20; // 50px
 //            boolean includeEdge = true;
 //            listView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-        mFindDoctorsAdapter = new FindDoctorsAdapter(mContext);
-        listView.setAdapter(mFindDoctorsAdapter);
+
+        //-------------
+        ClickEvent clickEvent = mReceivedDashboardMenuListData.getClickEvent();
+        if (clickEvent != null) {
+            mFindDoctorsAdapter = new FindDoctorsMenuListAdapter(mContext, clickEvent.getClickOptions(), this);
+            listView.setAdapter(mFindDoctorsAdapter);
+
+        }
+        //-------------
+
+        //----------------
         setUpViewPager();
     }
 
@@ -173,7 +210,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         recentlyViewPager.setClipToPadding(false);
         recentlyViewPager.setPadding(pager_padding, 0, pager_padding, 0);
         recentlyViewPager.setPageMargin(pager_margin);
-
     }
 
     private void setFavoritePager() {
@@ -204,16 +240,9 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         super.onBackPressed();
     }
 
-    @OnClick({R.id.bookAppointmentButton, R.id.doctorConnectButton, R.id.viewAllFavorite, R.id.viewAllRecentVisited, R.id.viewAllSponsered})
+    @OnClick({R.id.viewAllFavorite, R.id.viewAllRecentVisited, R.id.viewAllSponsered})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.bookAppointmentButton:
-
-                break;
-            case R.id.doctorConnectButton:
-                Intent intent = new Intent(mContext, DoctorConnectActivity.class);
-                startActivity(intent);
-                break;
             case R.id.viewAllFavorite:
                 Intent viewAllFavorite = new Intent(mContext, ShowCategoryWiseDoctor.class);
                 viewAllFavorite.putExtra(getString(R.string.toolbarTitle), getString(R.string.favorite));
@@ -234,13 +263,13 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if(mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_COMPLAINTS)) {
+        if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_COMPLAINTS)) {
             if (customResponse != null) {
                 ComplaintsBaseModel complaintsBaseModel = (ComplaintsBaseModel) customResponse;
                 ShowDoctorComplaints adapter = new ShowDoctorComplaints(this, R.layout.find_doctors_layout, R.id.custom_spinner_txt_view_Id, complaintsBaseModel.getComplaintsModel().getComplaintList());
                 complaintsTextView.setAdapter(adapter);
             }
-        }else if(mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_SET_FAVOURITE_DOCTOR)){
+        } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_SET_FAVOURITE_DOCTOR)) {
             CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
             CommonMethods.showToast(this, temp.getCommonRespose().getStatusMessage());
             if (temp.getCommonRespose().isSuccess()) {
@@ -266,5 +295,20 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
+    }
+
+    @Override
+    public void onMenuClick(ClickOption data) {
+        if (data.getName().equalsIgnoreCase(getString(R.string.book_appointment))) {
+            Intent intent = new Intent(mContext, BookAppointDoctorListBaseActivity.class);
+            Bundle bundle = new Bundle();
+            // TODO, THIS IS ADDED FOR NOW, OPEN ONLY IF clicked value == DOCTOR
+            bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+            intent.putExtras(bundle);
+            startActivity(intent);
+        } else if (data.getName().equalsIgnoreCase(getString(R.string.consult_online))) {
+            Intent intent = new Intent(mContext, DoctorConnectActivity.class);
+            startActivity(intent);
+        }
     }
 }

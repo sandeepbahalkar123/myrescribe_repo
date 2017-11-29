@@ -1,4 +1,4 @@
-package com.rescribe.adapters.book_appointment;
+package com.rescribe.adapters.find_doctors;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +13,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
-import com.rescribe.model.book_appointment.ServicesList;
 import com.rescribe.model.dashboard_api.ClickOption;
-import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
+import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
@@ -25,38 +24,38 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by jeetal on 15/9/17.
+ * Created by jeetal on 24/11/17.
  */
 
-public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListViewHolder> {
+public class FindDoctorsMenuListAdapter extends RecyclerView.Adapter<FindDoctorsMenuListAdapter.ListViewHolder> {
 
+    private IOnMenuClickListener onMenuClickListener;
+    private ArrayList<ClickOption> mClickOptionList;
     private Context mContext;
-    private ArrayList<ClickOption> clickOptions;
-    IOnMenuClickListener onServicesClickListener;
 
-    public ServicesAdapter(Context mContext, ArrayList<ClickOption> clickOptions, IOnMenuClickListener bookAppointmentServices) {
-        this.onServicesClickListener = bookAppointmentServices;
-        this.clickOptions = clickOptions;
+    public FindDoctorsMenuListAdapter(Context mContext, ArrayList<ClickOption> clickOptions, IOnMenuClickListener onMenuClickListener) {
         this.mContext = mContext;
+        this.mClickOptionList = clickOptions;
+        this.onMenuClickListener = onMenuClickListener;
     }
 
     @Override
-    public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FindDoctorsMenuListAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.services_item_layout, parent, false);
 
-        return new ListViewHolder(itemView);
+        return new FindDoctorsMenuListAdapter.ListViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ListViewHolder holder, int position) {
+    public void onBindViewHolder(FindDoctorsMenuListAdapter.ListViewHolder holder, int position) {
 
-        final ClickOption clickOption = clickOptions.get(position);
+        final ClickOption clickOption = mClickOptionList.get(position);
         holder.serviceNameTextView.setText(clickOption.getName());
         holder.recyclerViewClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onServicesClickListener.onMenuClick(clickOption);
+                onMenuClickListener.onMenuClick(clickOption);
             }
         });
 
@@ -79,7 +78,7 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListVi
 
     @Override
     public int getItemCount() {
-        return clickOptions.size();
+        return mClickOptionList.size();
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
@@ -90,6 +89,7 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListVi
         ImageView serviceIcon;
         @BindView(R.id.recyclerViewClick)
         LinearLayout recyclerViewClick;
+
         View view;
 
         ListViewHolder(View view) {
@@ -98,4 +98,5 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListVi
             this.view = view;
         }
     }
+
 }

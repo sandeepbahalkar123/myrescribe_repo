@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 27/11/17.
  */
 
-public class SavedArticles  extends AppCompatActivity {
+public class SavedArticles extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -72,9 +72,9 @@ public class SavedArticles  extends AppCompatActivity {
 //            int spacing = 20; // 50px
 //            boolean includeEdge = true;
 //            listView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-        mHealthRepositoryAdapter = new HealthRepositoryAdapter(mContext);
-        healthRepositoryListView.setAdapter(mHealthRepositoryAdapter);
-        healthRepositoryListView.setNestedScrollingEnabled(false);
+        // mHealthRepositoryAdapter = new HealthRepositoryAdapter(mContext);
+        //  healthRepositoryListView.setAdapter(mHealthRepositoryAdapter);
+        //  healthRepositoryListView.setNestedScrollingEnabled(false);
 
 
     }

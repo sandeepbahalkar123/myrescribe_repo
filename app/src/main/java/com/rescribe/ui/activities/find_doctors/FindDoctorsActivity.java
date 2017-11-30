@@ -208,27 +208,42 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
     private void setRecentlyVisitedPager() {
-        mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, recently_visit_doctor, mServicesCardViewImpl, this);
-        recentlyViewPager.setAdapter(mRecentlyVisitedDoctors);
-        recentlyViewPager.setClipToPadding(false);
-        recentlyViewPager.setPadding(pager_padding, 0, pager_padding, 0);
-        recentlyViewPager.setPageMargin(pager_margin);
-    }
-
-    private void setFavoritePager() {
-        mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, sponsered, mServicesCardViewImpl, this);
-        sponseredViewPager.setAdapter(mRecentlyVisitedDoctors);
-        sponseredViewPager.setClipToPadding(false);
-        sponseredViewPager.setPadding(pager_padding, 0, pager_padding, 0);
-        sponseredViewPager.setPageMargin(pager_margin);
+        if(recently_visit_doctor.size()>0) {
+            recentlyVisitedFindDoctorLayout.setVisibility(View.VISIBLE);
+            mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, recently_visit_doctor, mServicesCardViewImpl, this);
+            recentlyViewPager.setAdapter(mRecentlyVisitedDoctors);
+            recentlyViewPager.setClipToPadding(false);
+            recentlyViewPager.setPadding(pager_padding, 0, pager_padding, 0);
+            recentlyViewPager.setPageMargin(pager_margin);
+        }else{
+            recentlyVisitedFindDoctorLayout.setVisibility(View.GONE);
+        }
     }
 
     private void setSponseredPager() {
-        mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, favoriteList, mServicesCardViewImpl, this);
-        favoriteViewPager.setAdapter(mRecentlyVisitedDoctors);
-        favoriteViewPager.setClipToPadding(false);
-        favoriteViewPager.setPadding(pager_padding, 0, pager_padding, 0);
-        favoriteViewPager.setPageMargin(pager_margin);
+        if(sponsered.size()>0) {
+            sponseredFindDoctorLayout.setVisibility(View.VISIBLE);
+            mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, sponsered, mServicesCardViewImpl, this);
+            sponseredViewPager.setAdapter(mRecentlyVisitedDoctors);
+            sponseredViewPager.setClipToPadding(false);
+            sponseredViewPager.setPadding(pager_padding, 0, pager_padding, 0);
+            sponseredViewPager.setPageMargin(pager_margin);
+        }else{
+            sponseredFindDoctorLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void setFavoritePager() {
+        if(favoriteList.size()>0) {
+            favoriteFindDoctorLayout.setVisibility(View.VISIBLE);
+            mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, favoriteList, mServicesCardViewImpl, this);
+            favoriteViewPager.setAdapter(mRecentlyVisitedDoctors);
+            favoriteViewPager.setClipToPadding(false);
+            favoriteViewPager.setPadding(pager_padding, 0, pager_padding, 0);
+            favoriteViewPager.setPageMargin(pager_margin);
+        }else{
+            favoriteFindDoctorLayout.setVisibility(View.GONE);
+        }
     }
 
 

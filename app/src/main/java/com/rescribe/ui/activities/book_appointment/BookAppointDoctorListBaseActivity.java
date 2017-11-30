@@ -1,36 +1,22 @@
 package com.rescribe.ui.activities.book_appointment;
 
-import android.Manifest;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
-import com.heinrichreimersoftware.materialdrawer.app_logo.ClickOption;
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
-import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.HomePageActivity;
@@ -39,20 +25,14 @@ import com.rescribe.ui.activities.dashboard.SupportActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
-import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
 
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
@@ -203,7 +183,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     }
 
     @Override
-    public void onBottomSheetMenuClick(ClickOption bottomMenu) {
+    public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
 
     }
 }

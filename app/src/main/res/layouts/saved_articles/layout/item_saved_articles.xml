@@ -108,9 +108,4 @@
         tools:text="@string/read_more_text" />
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp1"
-        android:layout_marginTop="@dimen/dp6"
-        android:background="@color/divider" />
 </LinearLayout>

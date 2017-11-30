@@ -11,7 +11,7 @@ public class ClickEvent implements Parcelable {
 
     private String bgImageUrl;
 
-    private ArrayList<ClickOption> clickOptions = new ArrayList<ClickOption>();
+    private ArrayList<BottomSheetMenu> bottomSheetMenus = new ArrayList<BottomSheetMenu>();
     public final static Creator<ClickEvent> CREATOR = new Creator<ClickEvent>() {
 
 
@@ -30,7 +30,7 @@ public class ClickEvent implements Parcelable {
 
     protected ClickEvent(Parcel in) {
         this.bgImageUrl = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.clickOptions, (ClickOption.class.getClassLoader()));
+        in.readList(this.bottomSheetMenus, (BottomSheetMenu.class.getClassLoader()));
     }
 
     public ClickEvent() {
@@ -44,17 +44,17 @@ public class ClickEvent implements Parcelable {
         this.bgImageUrl = bgImageUrl;
     }
 
-    public ArrayList<ClickOption> getClickOptions() {
-        return clickOptions;
+    public ArrayList<BottomSheetMenu> getBottomSheetMenus() {
+        return bottomSheetMenus;
     }
 
-    public void setClickOptions(ArrayList<ClickOption> clickOptions) {
-        this.clickOptions = clickOptions;
+    public void setBottomSheetMenus(ArrayList<BottomSheetMenu> bottomSheetMenus) {
+        this.bottomSheetMenus = bottomSheetMenus;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(bgImageUrl);
-        dest.writeList(clickOptions);
+        dest.writeList(bottomSheetMenus);
     }
 
     public int describeContents() {

@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
@@ -91,13 +93,6 @@ public class SettingsActivity extends BottomMenuActivity implements BottomSheetM
         appDBHelper = new AppDBHelper(mContext);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.settings));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
 
         ClickEvent clickEvent = mCurrentSelectedBottomMenu.getClickEvent();
         if (clickEvent != null) {
@@ -214,7 +209,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomSheetM
     }
 
     @Override
-    public void onBottomSheetMenuClick(com.heinrichreimersoftware.materialdrawer.app_logo.ClickOption bottomMenu) {
+    public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
 
     }
 }

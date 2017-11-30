@@ -1,30 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
+        android:layout_weight="1"
         android:id="@+id/specialityOfDoctor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/menuImage"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/menuImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ellipse_2" />
+
+            <TextView
+                android:id="@+id/showCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ellipse_3_copy"
+                android:gravity="center"
+                android:padding="@dimen/dp4"
+                android:textColor="@color/white"
+                android:textSize="8sp"
+                android:visibility="gone"
+                tools:text="9" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/menuName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="fdgfdfdgsdf"
             android:paddingTop="10dp"
+            android:gravity="center"
             android:textColor="@color/black"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            tools:text="fdgfdfdgsdf" />
     </LinearLayout>
 </LinearLayout>

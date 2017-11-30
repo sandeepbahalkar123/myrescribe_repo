@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +19,7 @@ import com.heinrichreimersoftware.materialdrawer.R;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jeetal on 29/11/17.
@@ -25,10 +28,13 @@ import java.util.ArrayList;
 public class BottomSheetMenuAdapter extends RecyclerView.Adapter<BottomSheetMenuAdapter.ListViewHolder> {
 
     private onBottomSheetMenuClickListener mBottomMenuListClickListener;
-    private ArrayList<ClickOption> bottomMenus;
+    private ArrayList<BottomSheetMenu> bottomMenus;
+    private int mPosition;
+    private Context mContext;
 
-    public BottomSheetMenuAdapter(Context mContext, ArrayList<ClickOption> bottomMenus) {
+    public BottomSheetMenuAdapter(Context mContext, ArrayList<BottomSheetMenu> bottomMenus) {
         this.bottomMenus = bottomMenus;
+        this.mContext = mContext;
 
         try {
             this.mBottomMenuListClickListener = ((onBottomSheetMenuClickListener) mContext);
@@ -40,7 +46,7 @@ public class BottomSheetMenuAdapter extends RecyclerView.Adapter<BottomSheetMenu
     @Override
     public BottomSheetMenuAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.bottom_sheet_menu_item_list, parent, false);
+                .inflate(R.layout.vitals_main_activity, parent, false);
 
         int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         int width = (widthPixels * 20) / 100;
@@ -54,45 +60,30 @@ public class BottomSheetMenuAdapter extends RecyclerView.Adapter<BottomSheetMenu
 
     @Override
     public void onBindViewHolder(BottomSheetMenuAdapter.ListViewHolder holder, final int position) {
-        final ClickOption bottomMenu = bottomMenus.get(position);
-       holder.bottomMenuName.setText(bottomMenu.getName());
+        final BottomSheetMenu bottomMenu = bottomMenus.get(position);
+        holder.tableLayout.removeAllViews();
 
-        RequestOptions options = new RequestOptions()
-                .centerInside()
-                .priority(Priority.HIGH);
+        mPosition = 0;
+        List<BottomSheetMenu> bottomSheetMenus = new ArrayList<>();
+        int size = bottomMenus.size();
+        int count = 1;
+        int tempSize = size - (size % 3);
+        for (int i = 0; i < size; i++) {
+            bottomSheetMenus.add(bottomMenus.get(position));
+            if (tempSize > i) {
+                if (count == 3) {
+                    holder.tableLayout.addView(addTableRow(bottomSheetMenus, position));
+                    bottomSheetMenus.clear();
+                    count = 1;
+                } else
+                    count++;
+            } else if (count == size % 3) {
+                holder.tableLayout.addView(addTableRow(bottomSheetMenus, position));
+                bottomSheetMenus.clear();
+                count = 1;
+            } else count++;
+        }
 
-        Glide.with(holder.menuBottomIcon.getContext())
-                .load(bottomMenu.getIconImageUrl()).apply(options)
-                .into(holder.menuBottomIcon);
-       /* holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBottomMenuListClickListener.onBottomMenuClick(bottomMenu);
-            }
-        });
-
-        RequestOptions options = new RequestOptions()
-                .centerInside()
-                .priority(Priority.HIGH);
-
-        Glide.with(holder.menuBottomIcon.getContext())
-                .load(bottomMenu.getMenuIcon()).apply(options)
-                .into(holder.menuBottomIcon);
-//for app logo
-        if (bottomMenu.isAppIcon()) {
-            holder.bottomMenuName.setVisibility(View.GONE);
-            holder.bottomMenuTab.setVisibility(View.GONE);
-        } else {
-            if (bottomMenu.isSelected()) {
-                holder.bottomMenuTab.setVisibility(View.VISIBLE);
-                holder.bottomMenuName.setTextColor(holder.bottomMenuName.getContext().getResources().getColor(R.color.tagColor));
-                holder.menuBottomIcon.setColorFilter(ContextCompat.getColor(holder.menuBottomIcon.getContext(), R.color.tagColor), android.graphics.PorterDuff.Mode.MULTIPLY);
-            } else {
-                holder.bottomMenuTab.setVisibility(View.INVISIBLE);
-                holder.bottomMenuName.setTextColor(holder.bottomMenuName.getContext().getResources().getColor(R.color.grey));
-                holder.menuBottomIcon.setColorFilter(ContextCompat.getColor(holder.menuBottomIcon.getContext(), R.color.grey), android.graphics.PorterDuff.Mode.MULTIPLY);
-            }
-        }*/
     }
 
     @Override
@@ -101,21 +92,49 @@ public class BottomSheetMenuAdapter extends RecyclerView.Adapter<BottomSheetMenu
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
-        ImageView menuBottomIcon;
+       /* ImageView menuBottomIcon;
         TextView bottomMenuName;
-
+*/
+       TableLayout tableLayout;
 
         View view;
 
         ListViewHolder(View view) {
             super(view);
             this.view = view;
-            bottomMenuName = (TextView) view.findViewById(R.id.menuName);
-            menuBottomIcon = (ImageView) view.findViewById(R.id.menuImage);
+           tableLayout = (TableLayout) view.findViewById(R.id.table);
+
         }
     }
 
     public interface onBottomSheetMenuClickListener {
-        void onBottomSheetMenuClick(ClickOption bottomMenu);
+        void onBottomSheetMenuClick(BottomSheetMenu bottomMenu);
     }
+    private View addTableRow(final List<BottomSheetMenu> bottomSheetMenus, final int groupPosition) {
+        int i;
+        String categoryForBpMax = "";
+        String categoryForBpMin = "";
+        TableRow tableRow = new TableRow(mContext);
+        for (i = 0; i < bottomSheetMenus.size(); i++) {
+            View item = LayoutInflater.from(mContext)
+                    .inflate(R.layout.bottom_sheet_menu_item_list, tableRow, false);
+            TextView bottomMenuName = (TextView) item.findViewById(R.id.menuName);
+            ImageView menuBottomIcon = (ImageView) item.findViewById(R.id.menuImage);
+
+            final int finali = mPosition;
+              bottomMenuName.setText(bottomSheetMenus.get(i).getName());
+
+            RequestOptions options = new RequestOptions()
+                    .centerInside()
+                    .priority(Priority.HIGH);
+
+            Glide.with(menuBottomIcon.getContext())
+                    .load(bottomSheetMenus.get(i).getIconImageUrl()).apply(options)
+                    .into(menuBottomIcon);
+            tableRow.addView(item);
+            mPosition++;
+        }
+        return tableRow;
+    }
+
 }

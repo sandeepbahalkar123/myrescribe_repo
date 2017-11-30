@@ -2,26 +2,28 @@ package com.heinrichreimersoftware.materialdrawer.bottom_menu;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.heinrichreimersoftware.materialdrawer.R;
-import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
-import com.heinrichreimersoftware.materialdrawer.app_logo.ClickEvent;
-import com.heinrichreimersoftware.materialdrawer.app_logo.ClickOption;
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unused")
 @SuppressLint("Registered")
@@ -31,27 +33,30 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     private RecyclerView bottomMenuListRecyclerView;
     private BottomMenuAdapter bottomMenuAdapter;
     private int widthPixels;
-    private ArrayList<BottomMenu> bottomMenus = new ArrayList<>();
-    private ArrayList<ClickOption> mClickOptions = new ArrayList<>();
+
+    public ArrayList<BottomMenu> bottomMenus = new ArrayList<>();
+    public ArrayList<BottomSheetMenu> bottomSheetMenus = new ArrayList<>();
+
     private RelativeLayout bottomSheetMenu;
     private FrameLayout bottomSheetMenuLayout;
-    private BottomSheetMenuAdapter mBottomSheetMenuAdapter;
-    private RecyclerView mBottomSheetMenuListRecyclerView;
+    //    private BottomSheetMenuAdapter mBottomSheetMenuAdapter;
     public boolean isOpen;
+    private TableLayout tableLayout;
+    private int mPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.bottom_menu_activity);
         mFrame = (FrameLayout) findViewById(R.id.activityView);
-
+        tableLayout = (TableLayout) findViewById(R.id.table);
         bottomSheetMenuLayout = (FrameLayout) findViewById(R.id.bottomSheetMenuLayout);
         bottomSheetMenu = (RelativeLayout) findViewById(R.id.bottomSheetMenu);
         bottomMenuListRecyclerView = (RecyclerView) findViewById(R.id.bottomMenuListRecyclerView);
-        mBottomSheetMenuListRecyclerView = (RecyclerView)findViewById(R.id.bottomSheetMenuListRecyclerView);
+        // mBottomSheetMenuListRecyclerView = (RecyclerView) findViewById(R.id.bottomSheetMenuListRecyclerView);
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         createBottomMenu();
-
+//        mBottomSheetMenuAdapter = new BottomSheetMenuAdapter(this, bottomSheetMenus);
         bottomSheetMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +78,52 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
                 R.anim.slide_up_animation);
         bottomSheetMenuLayout.startAnimation(slideUpAnimation);
         isOpen = true;
+    }
+
+    public void setUpAdapterForBottomSheet() {
+       /* LinearLayoutManager bottomSheetlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mBottomSheetMenuListRecyclerView.setLayoutManager(bottomSheetlayoutManager);
+        mBottomSheetMenuListRecyclerView.setHasFixedSize(true);
+        mBottomSheetMenuListRecyclerView.setAdapter(mBottomSheetMenuAdapter);*/
+        tableLayout.removeAllViews();
+
+        List<BottomSheetMenu> bottomSheetMenus = new ArrayList<>();
+        int size = this.bottomSheetMenus.size();
+
+        for (int position = 0; position < size; position++) {
+            mPosition = position;
+            bottomSheetMenus.add(this.bottomSheetMenus.get(position));
+            if (bottomSheetMenus.size() == 3 && position < 3) {
+                tableLayout.addView(addTableRow(bottomSheetMenus, position));
+                bottomSheetMenus.clear();
+            } else if (bottomSheetMenus.size() == 2 && position >= 3) {
+                tableLayout.addView(addTableRow(bottomSheetMenus, position));
+                bottomSheetMenus.clear();
+            }
+        }
+    }
+
+    private View addTableRow(final List<BottomSheetMenu> bottomSheetMenus, final int groupPosition) {
+        TableRow tableRow = new TableRow(this);
+        for (int i = 0; i < bottomSheetMenus.size(); i++) {
+            View item = LayoutInflater.from(this)
+                    .inflate(R.layout.bottom_sheet_menu_item_list, tableRow, false);
+            TextView bottomMenuName = (TextView) item.findViewById(R.id.menuName);
+            ImageView menuBottomIcon = (ImageView) item.findViewById(R.id.menuImage);
+
+            final int finali = mPosition;
+            bottomMenuName.setText(bottomSheetMenus.get(i).getName());
+
+          /*  RequestOptions options = new RequestOptions()
+                    .centerInside()
+                    .priority(Priority.HIGH);
+
+            Glide.with(menuBottomIcon.getContext())
+                    .load(clickOptions.get(i).getIconImageUrl()).apply(options)
+                    .into(menuBottomIcon);*/
+            tableRow.addView(item);
+        }
+        return tableRow;
     }
 
     public void closeSheet() {
@@ -142,11 +193,6 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         bottomMenuListRecyclerView.setHasFixedSize(true);
         bottomMenuListRecyclerView.setAdapter(bottomMenuAdapter);
 
-      /*  mBottomSheetMenuAdapter = new BottomSheetMenuAdapter(this,mClickOptions);
-        LinearLayoutManager bottomSheetlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mBottomSheetMenuListRecyclerView.setLayoutManager(bottomSheetlayoutManager);
-        mBottomSheetMenuListRecyclerView.setHasFixedSize(true);
-        mBottomSheetMenuListRecyclerView.setAdapter(mBottomSheetMenuAdapter);*/
 
     }
 
@@ -155,11 +201,9 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         bottomMenuAdapter.notifyItemInserted(bottomMenus.size());
     }
 
-    public void addBottomSheetMenu(ClickOption clickOption){
-
-       /* mClickOptions.add(clickOption);
-        mBottomSheetMenuAdapter.notifyItemInserted(mClickOptions.size());
-*/
+    public void addBottomSheetMenu(BottomSheetMenu bottomSheetMenu) {
+        bottomSheetMenus.add(bottomSheetMenu);
+//        mBottomSheetMenuAdapter.notifyItemInserted(bottomSheetMenus.size());
     }
 
     @Override
@@ -167,12 +211,16 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         if (isOpen)
             closeSheet();
         else
-        super.onBackPressed();
+            super.onBackPressed();
     }
 
     @Override
     public void onBottomMenuClick(BottomMenu bottomMenu) {
-
-
+        if (bottomMenu.getMenuName().equalsIgnoreCase(getString(R.string.app_logo))) {
+            if (isOpen)
+                closeSheet();
+            else
+                openSheet();
+        }
     }
 }

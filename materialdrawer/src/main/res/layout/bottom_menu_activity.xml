@@ -29,6 +29,7 @@
         android:layout_alignParentBottom="true"
         android:clickable="true"
         android:visibility="invisible"
+        tools:visibility="visible"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
         <LinearLayout
@@ -92,14 +93,33 @@
                                 android:layout_marginTop="12dp"
                                 android:background="@color/divider" />
 
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/bottomSheetMenuListRecyclerView"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:clipToPadding="false"
-                                android:divider="@null"
-                                android:dividerHeight="0dp" />
+                                android:layout_height="match_parent">
+
+                                <TableLayout
+                                    android:id="@+id/table"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:gravity="center_horizontal"
+                                    android:paddingBottom="16dp"
+                                    android:layout_column="3"
+                                    android:paddingTop="16dp">
+
+
+                                </TableLayout>
+
+                                <View
+                                    android:id="@+id/adapter_divider"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_below="@+id/table"
+                                    android:layout_marginTop="16dp"
+                                    android:background="@color/divider"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
                         </LinearLayout>
                     </LinearLayout>
 

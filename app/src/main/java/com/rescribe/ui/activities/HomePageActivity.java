@@ -26,7 +26,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -38,8 +37,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
-import com.heinrichreimersoftware.materialdrawer.app_logo.ClickEvent;
-import com.heinrichreimersoftware.materialdrawer.app_logo.ClickOption;
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
@@ -123,10 +121,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     ImageView menuIcon;
     @BindView(R.id.locationImageView)
     ImageView locationImageView;
-
     @BindView(R.id.parentLayout)
     RelativeLayout parentLayout;
-
     private Context mContext;
     private String mGetMealTime;
     String breakFastTime = "";
@@ -162,9 +158,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     Location mCurrentLocation;
     String mLastUpdateTime;
     private int PLACE_PICKER_REQUEST = 10;
-    private TextView mPatientName;
-    private TextView mMobileNumber;
-    private ImageView mImageUrl;
+
 
 
     @Override
@@ -760,39 +754,26 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Intent intent = new Intent(HomePageActivity.this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
+            finish();
 
         } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
             Intent intent = new Intent(HomePageActivity.this, SettingsActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
+            finish();
 
         } else if (menuName.equalsIgnoreCase(getString(R.string.support))) {
             Intent intent = new Intent(HomePageActivity.this, SupportActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
-
-        } else if (menuName.equalsIgnoreCase(getString(R.string.app_logo))) {
-            if (isOpen)
-                closeSheet();
-            else
-                openSheet();
-//            openDialog();
+            finish();
 
         }
 
         super.onBottomMenuClick(bottomMenu);
     }
 
-    private void openDialog() {
-        View modalbottomsheet = getLayoutInflater().inflate(R.layout.app_logo_bottom_sheet_layout, null);
-        dialog = new BottomSheetDialog(this, R.style.CoffeeDialog);
-        dialog.setContentView(modalbottomsheet);
-        configureBottomSheetBehavior(modalbottomsheet);
-        mPatientName = (TextView) modalbottomsheet.findViewById(R.id.patientName);
-        mImageUrl = (ImageView) modalbottomsheet.findViewById(R.id.imageUrl);
-        mMobileNumber = (TextView) findViewById(R.id.mobileNumber);
-        dialog.show();
-    }
+
 
     private void configureBottomSheetBehavior(View contentView) {
         BottomSheetBehavior mBottomSheetBehavior = BottomSheetBehavior.from((View) contentView.getParent());
@@ -838,6 +819,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         mMenuOptionsListView.setAdapter(mMenuOptionsDashBoardAdapter);
 
         // add bottom menu
+
+        bottomMenus.clear();
         dashboardBottomMenuLists = mDashboardDataModel.getDashboardBottomMenuList();
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
             BottomMenu bottomMenu = new BottomMenu();
@@ -848,21 +831,25 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.home)));
 
             addBottomMenu(bottomMenu);
-
         }
 
+        // add bottomSheet menu
+        bottomSheetMenus.clear();
         for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
             if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
                 for(int j =0;j<dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size();j++) {
-                    ClickOption clickOption = new ClickOption();
-                    clickOption.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
-                    clickOption.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
+                    BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
+                    bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
+                    bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
 
                     //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
-                    addBottomSheetMenu(clickOption);
+                    addBottomSheetMenu(bottomSheetMenu);
                 }
+                break;
             }
         }
+
+        setUpAdapterForBottomSheet();
     }
 
 
@@ -1059,7 +1046,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
 
     @Override
-    public void onBottomSheetMenuClick(ClickOption bottomMenu) {
+    public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
 
     }
 }

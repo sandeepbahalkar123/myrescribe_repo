@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 
-public class ClickOption implements Parcelable {
+public class BottomSheetMenu implements Parcelable {
 
 
     private String name;
@@ -12,29 +12,29 @@ public class ClickOption implements Parcelable {
     private String iconImageUrl;
 
    // private ClickEvent clickEvent;
-    public final static Creator<ClickOption> CREATOR = new Creator<ClickOption>() {
+    public final static Creator<BottomSheetMenu> CREATOR = new Creator<BottomSheetMenu>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public ClickOption createFromParcel(Parcel in) {
-            return new ClickOption(in);
+        public BottomSheetMenu createFromParcel(Parcel in) {
+            return new BottomSheetMenu(in);
         }
 
-        public ClickOption[] newArray(int size) {
-            return (new ClickOption[size]);
+        public BottomSheetMenu[] newArray(int size) {
+            return (new BottomSheetMenu[size]);
         }
 
     };
 
-    protected ClickOption(Parcel in) {
+    protected BottomSheetMenu(Parcel in) {
         this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.iconImageUrl = ((String) in.readValue((String.class.getClassLoader())));
         //this.clickEvent = ((ClickEvent) in.readValue((ClickEvent.class.getClassLoader())));
     }
 
-    public ClickOption() {
+    public BottomSheetMenu() {
     }
 
     public String getName() {

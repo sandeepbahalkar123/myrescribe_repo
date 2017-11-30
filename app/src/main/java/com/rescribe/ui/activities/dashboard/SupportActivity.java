@@ -11,7 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
-import com.heinrichreimersoftware.materialdrawer.app_logo.ClickOption;
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -195,7 +195,7 @@ public class SupportActivity extends BottomMenuActivity implements BottomSheetMe
     }
 
     @Override
-    public void onBottomSheetMenuClick(ClickOption bottomMenu) {
+    public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
 
     }
 }

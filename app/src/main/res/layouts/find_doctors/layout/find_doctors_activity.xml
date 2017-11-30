@@ -171,7 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dp16"
+                android:layout_marginTop="@dimen/dp26"
                 android:text="@string/recently_visit_doctor"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp14"
@@ -202,6 +202,7 @@
                 android:id="@+id/recentlyViewPager"
                 android:layout_width="wrap_content"
                 android:layout_height="160dp"
+                android:layout_marginTop="@dimen/dp10"
                 android:layout_gravity="bottom"
                 android:visibility="visible" />
 
@@ -217,7 +218,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dp16"
+                android:layout_marginTop="@dimen/dp26"
                 android:text="@string/sponsered_doctor"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp14"
@@ -248,6 +249,7 @@
                 android:id="@+id/sponseredViewPager"
                 android:layout_width="wrap_content"
                 android:layout_height="160dp"
+                android:layout_marginTop="@dimen/dp10"
                 android:layout_gravity="bottom"
                 android:visibility="visible" />
 
@@ -263,7 +265,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dp16"
+                android:layout_marginTop="@dimen/dp26"
                 android:text="@string/favorite"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp14"
@@ -294,6 +296,7 @@
                 android:id="@+id/favoriteViewPager"
                 android:layout_width="wrap_content"
                 android:layout_height="160dp"
+                android:layout_marginTop="@dimen/dp10"
                 android:layout_gravity="bottom"
                 android:visibility="visible" />
 

@@ -48,6 +48,7 @@
             tools:ignore="UnusedAttribute" />
 
         <FrameLayout
+            android:fitsSystemWindows="true"
             android:id="@id/mdFrame"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

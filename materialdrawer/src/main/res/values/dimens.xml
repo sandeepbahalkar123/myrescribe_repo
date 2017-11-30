@@ -29,7 +29,7 @@
 
     <dimen name="md_app_bar_elevation">4dp</dimen>
 
-    <dimen name="md_drawer_max_width">400dp</dimen>
+    <dimen name="md_drawer_max_width">700dp</dimen>
 
     <dimen name="md_drawer_list_margin_vertical">8dp</dimen>
 

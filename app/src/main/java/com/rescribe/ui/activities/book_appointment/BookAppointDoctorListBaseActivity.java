@@ -159,6 +159,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             startActivity(intent);
             finish();
         }
+        super.onBottomMenuClick(bottomMenu);
     }
 
     @Override

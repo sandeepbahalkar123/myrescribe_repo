@@ -133,7 +133,7 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
     @Override
     public void onMenuClick(ClickOption data) {
         // TODO, THIS IS ADDED FOR NOW, OPEN ONLY IF clicked value == DOCTOR
-        if (data.getName().equalsIgnoreCase(getString(R.string.doctorss))) {
+        if (data.getName().equalsIgnoreCase(getString(R.string.doctor))) {
             Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.location_address), address);

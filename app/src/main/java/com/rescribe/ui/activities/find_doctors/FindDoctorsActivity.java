@@ -40,11 +40,14 @@ import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
+import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -178,11 +181,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         listView.setLayoutManager(layoutManager);
         listView.setItemAnimator(new DefaultItemAnimator());
 
-//            int spanCount = 2; // 3 columns
-//            int spacing = 20; // 50px
-//            boolean includeEdge = true;
-//            listView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-
         //-------------
         ClickEvent clickEvent = mReceivedDashboardMenuListData.getClickEvent();
         if (clickEvent != null) {
@@ -191,8 +189,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
 
         }
         //-------------
-
-        //----------------
 
         setUpViewPager();
     }
@@ -259,7 +255,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
 
-    @OnClick({R.id.viewAllFavorite, R.id.viewAllRecentVisited, R.id.viewAllSponsered})
+    @OnClick({R.id.viewAllFavorite, R.id.viewAllRecentVisited, R.id.viewAllSponsered,R.id.complaintsImageView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.viewAllFavorite:
@@ -278,11 +274,16 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 startActivity(viewAllSponsered);
                 break;
             case R.id.complaintsImageView:
-             Intent intentComplaint = new Intent(FindDoctorsActivity.this,ShowCategoryWiseDoctor.class);
-                intentComplaint.putExtra(getString(R.string.toolbarTitle),getString(R.string.complaints));
+                Intent intentComplaint = new Intent(FindDoctorsActivity.this, ServicesFilteredDoctorListActivity.class);
+                Bundle bundleData = new Bundle();
+                bundleData.putString(mContext.getString(R.string.toolbarTitle), mContext.getString(R.string.complaints));
+                HashMap<String, String> h = new HashMap<>();
+                h.put(getString(R.string.complaint1), complaintsTextView.getText().toString());
+                bundleData.putSerializable(getString(R.string.complaints), h);
+                intentComplaint.putExtras(bundleData);
               /*  intentComplaint.putExtra(getString(R.string.))*/
                 startActivity(intentComplaint);
-            break;
+                break;
         }
     }
 

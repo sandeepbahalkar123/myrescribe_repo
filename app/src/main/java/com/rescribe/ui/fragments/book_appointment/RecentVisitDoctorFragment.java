@@ -178,9 +178,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             }
         });
 
-        recentDoctorLayout.setVisibility(View.GONE);
-        mFilterListLayout.setVisibility(View.GONE);
-
     }
 
     public static RecentVisitDoctorFragment newInstance(Bundle b) {

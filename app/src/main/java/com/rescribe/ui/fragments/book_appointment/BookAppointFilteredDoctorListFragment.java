@@ -37,6 +37,7 @@ import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -69,6 +70,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     private boolean mIsFavoriteList;
     private String mUserSelectedLocation;
     private ServicesCardViewImpl mServicesCardViewImpl;
+    private HashMap<String, String> mComplaintHashMap;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -102,10 +104,32 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             mReceivedTitle = args.getString(getString(R.string.toolbarTitle));
             mClickedItemDataValue = args.getString(getString(R.string.clicked_item_data));
             mIsFavoriteList = args.getBoolean(getString(R.string.favorite));
+
+            mComplaintHashMap = (HashMap<String, String>) args.getSerializable(getString(R.string.complaints));
         }
         mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
         mServicesCardViewImpl = new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity());
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        doGetReceivedListBasedOnClickedItemData();
+        setDoctorListAdapter();
+        ServicesFilteredDoctorListActivity activity = (ServicesFilteredDoctorListActivity) getActivity();
+
+        //*****************
+        // THIS IS HACK, TO CALL API IN CASE OF COMAPINT-MAP!=NULL
+        if (mComplaintHashMap != null) {
+            activity.setLocationChangeViewClicked(true);
+        }
+        //*****************
+
+        if (activity.isLocationChangeViewClicked()) {
+            doGetLatestDoctorListOnLocationChange(mComplaintHashMap);
+            activity.setLocationChangeViewClicked(false);
+        }
     }
 
     private void doGetReceivedListBasedOnClickedItemData() {
@@ -120,8 +144,10 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             mFilterFab.setVisibility(View.GONE);
             if (mIsFavoriteList) {
                 mReceivedList = mServicesCardViewImpl.getFavouriteDocList(-1);
-            } else {
+            } else if (mClickedItemDataValue != null) {
                 mReceivedList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataValue, -1);
+            } else {
+                mReceivedList = ServicesCardViewImpl.getReceivedDoctorDataList();
             }
         }
         //------------
@@ -164,18 +190,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         }
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        doGetReceivedListBasedOnClickedItemData();
-        setDoctorListAdapter();
-        ServicesFilteredDoctorListActivity activity = (ServicesFilteredDoctorListActivity) getActivity();
-        if (activity.isLocationChangeViewClicked()) {
-            doGetLatestDoctorListOnLocationChange(null);
-            activity.setLocationChangeViewClicked(false);
-        }
-    }
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {

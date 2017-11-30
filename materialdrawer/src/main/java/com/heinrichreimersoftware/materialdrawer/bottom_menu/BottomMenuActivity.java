@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.request.RequestOptions;
 import com.heinrichreimersoftware.materialdrawer.R;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 
@@ -95,6 +99,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
             bottomSheetMenus.add(this.bottomSheetMenus.get(position));
             if (bottomSheetMenus.size() == 3 && position < 3) {
                 tableLayout.addView(addTableRow(bottomSheetMenus, position));
+
                 bottomSheetMenus.clear();
             } else if (bottomSheetMenus.size() == 2 && position >= 3) {
                 tableLayout.addView(addTableRow(bottomSheetMenus, position));
@@ -114,13 +119,14 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
             final int finali = mPosition;
             bottomMenuName.setText(bottomSheetMenus.get(i).getName());
 
-          /*  RequestOptions options = new RequestOptions()
+            RequestOptions options = new RequestOptions()
                     .centerInside()
                     .priority(Priority.HIGH);
 
             Glide.with(menuBottomIcon.getContext())
-                    .load(clickOptions.get(i).getIconImageUrl()).apply(options)
-                    .into(menuBottomIcon);*/
+                    .load(bottomSheetMenus.get(i).getIconImageUrl()).apply(options)
+                    .into(menuBottomIcon);
+            tableRow.setGravity(Gravity.CENTER);
             tableRow.addView(item);
         }
         return tableRow;

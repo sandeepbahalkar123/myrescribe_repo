@@ -70,6 +70,11 @@ public class SupportActivity extends BottomMenuActivity implements BottomSheetMe
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     private void initialize() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.support));
@@ -90,9 +95,10 @@ public class SupportActivity extends BottomMenuActivity implements BottomSheetMe
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-       SupportActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        SupportActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
 
     }
+
     @Override
     public void onBottomMenuClick(BottomMenu bottomMenu) {
 
@@ -162,6 +168,9 @@ public class SupportActivity extends BottomMenuActivity implements BottomSheetMe
         } else if (menuName.equalsIgnoreCase(getString(R.string.appointment))) {
             Intent intent = new Intent(this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+            intent.putExtras(bundle);
             startActivity(intent);
             finish();
         } else if (menuName.equalsIgnoreCase(getString(R.string.home))) {
@@ -172,6 +181,7 @@ public class SupportActivity extends BottomMenuActivity implements BottomSheetMe
             finish();
 
         }
+        super.onBottomMenuClick(bottomMenu);
     }
 
     @OnClick({R.id.callTextView, R.id.emailtextView})
@@ -181,12 +191,12 @@ public class SupportActivity extends BottomMenuActivity implements BottomSheetMe
                 SupportActivityPermissionsDispatcher.doCallSupportWithCheck(this);
                 break;
             case R.id.emailtextView:
-                try{
-                    Intent intent = new Intent (Intent.ACTION_VIEW , Uri.parse("mailto:" + "your_email"));
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + "your_email"));
                     intent.putExtra(Intent.EXTRA_SUBJECT, "your_subject");
                     intent.putExtra(Intent.EXTRA_TEXT, "your_text");
                     startActivity(intent);
-                }catch(ActivityNotFoundException e){
+                } catch (ActivityNotFoundException e) {
                     //TODO smth
                 }
 

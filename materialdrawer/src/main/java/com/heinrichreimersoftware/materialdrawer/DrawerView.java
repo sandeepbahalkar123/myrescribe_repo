@@ -318,14 +318,13 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
 
         int viewportMin = Math.min(viewportWidth, viewportHeight);
 
-        //App bar size
+       /* //App bar size
         TypedValue typedValue = new TypedValue();
         getContext().getTheme().resolveAttribute(R.attr.actionBarSize, typedValue, true);
         int actionBarSize = TypedValue.complexToDimensionPixelSize(typedValue.data, getResources().getDisplayMetrics());
+        int width = viewportMin - actionBarSize;*/
 
-        int width = viewportMin - actionBarSize;
-
-        getLayoutParams().width = Math.min(width, drawerMaxWidth);
+        getLayoutParams().width = Math.min(viewportMin, drawerMaxWidth);
 
         updateProfileSpacing();
     }

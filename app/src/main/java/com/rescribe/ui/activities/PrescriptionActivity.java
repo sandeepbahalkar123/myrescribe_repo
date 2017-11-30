@@ -2,6 +2,7 @@ package com.rescribe.ui.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -18,6 +19,7 @@ import com.rescribe.helpers.prescription.PrescriptionHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 
+import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.model.prescription_response_model.PrescriptionData;
 import com.rescribe.model.prescription_response_model.PrescriptionBaseModel;
 import com.rescribe.model.prescription_response_model.PrescriptionModel;
@@ -44,6 +46,7 @@ public class PrescriptionActivity extends AppCompatActivity
     @BindView(R.id.noDataView)
     ImageView mNoDataView;
     private PrescriptionHelper mPrescriptionHelper;
+    private DashboardMenuList mReceivedDashboardMenuListData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +72,11 @@ public class PrescriptionActivity extends AppCompatActivity
         mContext = PrescriptionActivity.this;
         mPrescriptionHelper = new PrescriptionHelper(this, this);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
+            getSupportActionBar().setTitle(mReceivedDashboardMenuListData.getName());
+        }
         mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,23 +108,23 @@ public class PrescriptionActivity extends AppCompatActivity
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equals(RescribeConstants.TASK_PRESCRIPTION_LIST)) {
-            PrescriptionBaseModel prescriptionBaseModel = (PrescriptionBaseModel)customResponse;
+            PrescriptionBaseModel prescriptionBaseModel = (PrescriptionBaseModel) customResponse;
             PrescriptionData dataReceived = prescriptionBaseModel.getData();
 
-            if(dataReceived.getPrescriptionModels().size()>0){
+            if (dataReceived.getPrescriptionModels().size() > 0) {
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mNoDataView.setVisibility(View.GONE);
 
-            }else{
+            } else {
                 mRecyclerView.setVisibility(View.GONE);
                 mNoDataView.setVisibility(View.VISIBLE);
             }
 
             List<PrescriptionModel> data = dataReceived.getPrescriptionModels();
-  // Mealtime is set here because according to mealtime doseage is highlighted in UI
+            // Mealtime is set here because according to mealtime doseage is highlighted in UI
             if (data != null) {
                 if (data.size() != 0) {
-                    for(int i = 0;i<data.size();i++){
+                    for (int i = 0; i < data.size(); i++) {
                         data.get(i).setMealTime(mGetMealTime);
                     }
 

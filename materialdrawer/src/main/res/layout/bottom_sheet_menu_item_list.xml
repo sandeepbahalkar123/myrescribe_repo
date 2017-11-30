@@ -6,11 +6,13 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_weight="1"
         android:id="@+id/specialityOfDoctor"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ellipse_2" />
+                tools:src="@drawable/ellipse_2" />
 
             <TextView
                 android:id="@+id/showCount"
@@ -42,8 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingTop="10dp"
             android:gravity="center"
+            android:paddingTop="10dp"
             android:textColor="@color/black"
             android:textSize="10sp"
             tools:text="fdgfdfdgsdf" />

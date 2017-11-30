@@ -80,6 +80,9 @@ public class ProfileActivity extends BottomMenuActivity implements BottomMenuAda
         }else if (menuName.equalsIgnoreCase(getString(R.string.appointment))) {
             Intent intent = new Intent(this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+          Bundle bundle = new Bundle();
+          bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+          intent.putExtras(bundle);
             startActivity(intent);
             finish();
         } else if (menuName.equalsIgnoreCase(getString(R.string.home))) {

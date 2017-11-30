@@ -198,16 +198,20 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 }
             }
         }
+
         //--------------
-        if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
-            holder.bookAppointmentButton.setVisibility(View.VISIBLE);
-            holder.tokenNo.setVisibility(View.GONE);
-            //  holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.result_book_appointment));
-        } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.token))) {
-            holder.bookAppointmentButton.setVisibility(View.GONE);
-            holder.tokenNo.setVisibility(View.VISIBLE);
-            // holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.token_no_background));
+        if (doctorObject.getClinicDataList().size() > 0) {
+            String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+            if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
+                holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
+                holder.tokenNo.setVisibility(View.VISIBLE);
+            } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
+                holder.bookAppointmentButton.setVisibility(View.VISIBLE);
+                holder.tokenNo.setVisibility(View.INVISIBLE);
+            }
         }
+        //---------------
+
         //---------------
         if (doctorObject.getFavourite()) {
             holder.favoriteView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.result_heart_fav));
@@ -350,7 +354,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
                     for (DoctorList doctorConnectModel : mArrayList) {
 
-                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase())) {
+                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(charString.toLowerCase())) {
                             filteredList.add(doctorConnectModel);
                             setListByClinicName(false);
                         } else {

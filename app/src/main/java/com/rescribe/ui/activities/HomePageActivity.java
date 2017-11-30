@@ -753,6 +753,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         } else if (menuName.equalsIgnoreCase(getString(R.string.appointment))) {
             Intent intent = new Intent(HomePageActivity.this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+            intent.putExtras(bundle);
             startActivity(intent);
 
         } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {

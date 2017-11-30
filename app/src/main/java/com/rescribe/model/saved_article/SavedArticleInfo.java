@@ -23,10 +23,10 @@ public class SavedArticleInfo implements Parcelable {
     @SerializedName("articleTitle")
     @Expose
     private String articleTitle;
-    @SerializedName("specialization")
+    @SerializedName("authorSpecialization")
     @Expose
     private String specialization;
-    @SerializedName("address")
+    @SerializedName("authorAddress")
     @Expose
     private String address;
     @SerializedName("authorImageURL")
@@ -35,7 +35,7 @@ public class SavedArticleInfo implements Parcelable {
     @SerializedName("articleUpdatedDate")
     @Expose
     private String articleUpdatedDate;
-    @SerializedName("articleImageURL")
+    @SerializedName("articleFeatureImageURL")
     @Expose
     private String articleImageURL;
     @SerializedName("articleExcerpt")

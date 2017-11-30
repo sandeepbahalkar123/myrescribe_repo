@@ -310,6 +310,7 @@
     <string name="consult_online">Consult Online</string>
     <string name="doctor_visit">Doctor Visits</string>
     <string name="saved_articles">Saved Articles</string>
+    <string name="clicked_saved_articles">clicked_saved_articles</string>
 
     <string name="snooze_interval">Select snooze interval</string>
 
@@ -383,6 +384,7 @@
     <string name="get_token">Get Token</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="url">url</string>
 
     <!--*****************-->
     <string name="appointment_alert">Appointment Alert</string>

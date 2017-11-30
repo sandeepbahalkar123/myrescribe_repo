@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -76,11 +77,14 @@ import com.rescribe.ui.activities.dashboard.SupportActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
 import com.rescribe.ui.activities.health_repository.HealthRepository;
+import com.rescribe.ui.activities.saved_articles.SaveArticleWebViewActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.RescribeConstants;
+
 import net.gotev.uploadservice.UploadService;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -91,11 +95,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
+
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
@@ -663,6 +669,13 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_education))) {
 
+            intent = new Intent(mContext, SaveArticleWebViewActivity.class);
+            Bundle b = new Bundle();
+            b.putString(getString(R.string.url), menu.getHealthEducationUrl());
+            b.putString(getString(R.string.toolbarTitle), menu.getName());
+            b.putString(getString(R.string.clicked_item_data), getString(R.string.saved_articles));
+            b.putBoolean(getString(R.string.save), false);
+            intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_services))) {
             intent = new Intent(mContext, BookAppointmentServices.class);
             Bundle b = new Bundle();
@@ -808,7 +821,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
         for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
             if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
-                for(int j =0;j<dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size();j++) {
+                for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
                     ClickOption clickOption = new ClickOption();
                     clickOption.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
                     clickOption.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
@@ -1010,7 +1023,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             mGoogleApiClient.connect();
         else startLocationUpdates();
     }
-
 
 
     @Override

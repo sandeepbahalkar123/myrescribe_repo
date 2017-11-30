@@ -11,6 +11,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.saved_article.SavedArticleBaseModel;
+import com.rescribe.model.saved_article.request_model.ArticleToSaveReqModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -105,7 +106,7 @@ public class DashboardHelper implements ConnectionListener {
     }
 
     public void doGetSavedArticles() {
-        try {
+        /*try {
             InputStream is = mContext.getAssets().open("saved_article_list.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -120,15 +121,31 @@ public class DashboardHelper implements ConnectionListener {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        }*/
 
-      /*   ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_GET_SAVED_ARTICLES, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_GET_SAVED_ARTICLES, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
 
         String url = Config.TO_GET_SAVED_ARTICLES + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
 
         mConnectionFactory.setUrl(url);
-        mConnectionFactory.createConnection(RescribeConstants.TASK_GET_SAVED_ARTICLES);*/
+        mConnectionFactory.createConnection(RescribeConstants.TASK_GET_SAVED_ARTICLES);
+    }
+
+    public void doSaveArticlesToServer(String url, boolean isBookMarked) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER, Request.Method.POST, true);
+        mConnectionFactory.setHeaderParams();
+
+        ArticleToSaveReqModel reqModel = new ArticleToSaveReqModel();
+        reqModel.setUrl(url);
+        reqModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+
+        int value = isBookMarked ? 0 : 1;
+        reqModel.setRemove(value);
+        mConnectionFactory.setPostParams(reqModel);
+
+        mConnectionFactory.setUrl(Config.TO_SAVE_ARTICLE_TO_SERVER);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER);
     }
 
 

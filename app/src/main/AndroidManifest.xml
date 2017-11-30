@@ -118,6 +118,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.activities.saved_articles.SavedArticles"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/saved_articles"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.activities.book_appointment.BookAppointDoctorListBaseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/doctor_connect"

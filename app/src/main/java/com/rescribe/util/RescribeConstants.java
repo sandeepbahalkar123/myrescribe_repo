@@ -132,6 +132,9 @@ public class RescribeConstants {
     public static final String TASK_TIME_SLOT_TO_BOOK_APPOINTMENT_WITH_DOCTOR_DETAILS = RescribeConstants.BLANK + 48;
     public static final String TASK_GET_TOKEN_NUMBER_OTHER_DETAILS = RescribeConstants.BLANK + 49;
 
+    public static final String TASK_GET_SAVED_ARTICLES = RescribeConstants.BLANK + 50;
+    public static final String TASK_SAVE_ARTICLES_TO_SERVER = RescribeConstants.BLANK + 51;
+
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
     public static final String TAKEN_DATE = "takenDate";

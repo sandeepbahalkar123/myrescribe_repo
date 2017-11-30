@@ -929,9 +929,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
         HomePageActivityPermissionsDispatcher.getWritePermissionWithCheck(HomePageActivity.this);
 
-       /* if (mDashboardDataModel != null) {
+        if (mDashboardDataModel != null) {
             setUpViewPager();
-        }*/
+        }
 
     }
 

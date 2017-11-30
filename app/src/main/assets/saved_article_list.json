@@ -1,0 +1,33 @@
+{
+  "common": {
+    "success": true,
+    "statusCode": 200,
+    "statusMessage": "USER AUTHENTICATED"
+  },
+  "data": {
+    "articleList": [
+      {
+        "authorName": "Arit",
+        "articleTitle":"Tips for getting good sleep!",
+        "specialization":"Neurologist",
+        "address":"Pune",
+        "authorImageURL":"http://blogs.scorgtechnologies.com/user.jpg",
+        "articleUpdatedDate": "2017-10-27T00:30:33.000Z",
+        "articleImageURL":"http://blogs.scorgtechnologies.com/blog_img.jpg",
+        "articleExcerpt": "<p>Aimed to implement agility, efficiency and optimization of resources, automation replaces manual processes through series of programmed instructions. Automation creates a programmed repetitive process through specialized software tools and technology platform with limited manual engagement.It speeds up completion of tasks performed by humans through mechanized procedures. Automation cuts cost and man-hours while enhancing efficiency and accuracy. Covering multiple industries and comprehensive functions in an industry, it encompasses all areas of&hellip; </p>\n",
+        "articleUrl": "http://blogs.scorgtechnologies.com/automation-and-its-importance-in-industries/"
+      },
+      {
+        "authorName": "Arit",
+        "articleTitle":"Diabetes & Weight loss",
+        "specialization":"Neurologist",
+        "address":"Pune",
+        "authorImageURL":"http://blogs.scorgtechnologies.com/user.jpg",
+        "articleUpdatedDate": "2017-10-27T00:30:33.000Z",
+        "articleImageURL":"http://blogs.scorgtechnologies.com/blog_img.jpg",
+        "articleExcerpt": "<p>Aimed to implement agility, efficiency and optimization of resources, automation replaces manual processes through series of programmed instructions. Automation creates a programmed repetitive process through specialized software tools and technology platform with limited manual engagement.It speeds up completion of tasks performed by humans through mechanized procedures. Automation cuts cost and man-hours while enhancing efficiency and accuracy. Covering multiple industries and comprehensive functions in an industry, it encompasses all areas of&hellip; </p>\n",
+        "articleUrl": "http://blogs.scorgtechnologies.com/automation-and-its-importance-in-industries/"
+      }
+    ]
+  }
+}

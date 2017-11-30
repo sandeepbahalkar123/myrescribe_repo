@@ -23,8 +23,11 @@ public class Config {
     public static final String BROKER = "tcp://192.168.0.182:1883";
 
     //---------------------
-      public static String BASE_URL = "http://drrescribe.com:3003/";
- //   public static String BASE_URL = "http://192.168.0.182:3003/";
+
+
+    public static String BASE_URL = "http://drrescribe.com:3003/";
+    // public static String BASE_URL = "http://192.168.0.182:3003/";
+
 
     //---------------------
     public Context mContext;
@@ -78,6 +81,11 @@ public class Config {
     //----- vital graph-------------
     public static final String LOGOUT = "api/patient/logPatientSignOut";
     public static final String ACTIVE = "api/patient/logPatientActivity";
+    //-----------SAVED ARTICLE-----------------------
+    public static final String TO_GET_SAVED_ARTICLES = "api/patient/getArticleList?patientId=";
+    public static final String TO_SAVE_ARTICLE_TO_SERVER = "api/patient/saveArticle";
+
+    //-----------SAVED ARTICLE-----------------------
 
 
 }

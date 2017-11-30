@@ -34,7 +34,7 @@ public class StatusInfo implements Parcelable {
     @Expose
     private String userStatus = "";
 
-    @SerializedName("messageStatus")
+    @SerializedName("msgStatus")
     @Expose
     private String messageStatus = "";
 

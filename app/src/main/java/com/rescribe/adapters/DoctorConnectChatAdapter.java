@@ -1,5 +1,6 @@
 package com.rescribe.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
@@ -88,6 +89,7 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         return new ListViewHolder(itemView);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(final ListViewHolder holder, int position) {
         final ChatDoctor doctorConnectChatModel = chatLists.get(position);
@@ -153,7 +155,8 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
             }
         });
 
-        holder.paidStatusTextView.setVisibility(View.GONE);
+        String time = CommonMethods.formatDateTime(doctorConnectChatModel.getLastChatTime(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.TIME);
+        holder.paidStatusTextView.setText(time);
 
         int count = appDBHelper.unreadMessageCountById(doctorConnectChatModel.getId());
         doctorConnectChatModel.setUnreadMessages(count);

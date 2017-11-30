@@ -27,9 +27,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         mContext = SplashScreenActivity.this;
         MQTTServiceAlarmTask.cancelAlarm(mContext);
-        new MQTTServiceAlarmTask(mContext);
+        new MQTTServiceAlarmTask(mContext).run();
         doNext();
-
     }
 
     private void doNext() {
@@ -51,8 +50,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         //-----------
         Intent alarm = new Intent(SplashScreenActivity.this, SnoozeAlarmNotificationReceiver.class);
         boolean alarmRunning = (PendingIntent.getBroadcast(SplashScreenActivity.this, 0, alarm, PendingIntent.FLAG_NO_CREATE) != null);
-        if (alarmRunning == false) {
-            int timeInterval = 1000 * 1; // After every 1 minutes
+        if (!alarmRunning) {
+            int timeInterval = 1_000; // After every 1 minutes
             PendingIntent pendingIntent = PendingIntent.getBroadcast(SplashScreenActivity.this, 0, alarm, 0);
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), timeInterval, pendingIntent);

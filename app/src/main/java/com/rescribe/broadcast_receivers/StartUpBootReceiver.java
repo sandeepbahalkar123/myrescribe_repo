@@ -26,7 +26,7 @@ public class StartUpBootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            new MQTTServiceAlarmTask(context);
+            new MQTTServiceAlarmTask(context).run();
 
             if(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, context).equals(RescribeConstants.YES))
                 notificationForMedicine(context);

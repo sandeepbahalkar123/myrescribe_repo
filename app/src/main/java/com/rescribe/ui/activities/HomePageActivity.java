@@ -33,6 +33,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -156,6 +157,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     Location mCurrentLocation;
     String mLastUpdateTime;
     private int PLACE_PICKER_REQUEST = 10;
+    private String fcmToken = "";
 
 
     @Override
@@ -164,6 +166,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         setContentView(R.layout.main_dashboard_layout);
         ButterKnife.bind(this);
         // mCustomProgressDialog = new CustomProgressDialog(HomePageActivity.this);
+
+        fcmToken = FirebaseInstanceId.getInstance().getToken();
+
         createLocationRequest();
 
 

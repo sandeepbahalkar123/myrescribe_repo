@@ -107,16 +107,15 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         ArrayList<DoctorList> temp = new ArrayList<>();
         for (DoctorList docObject :
                 mReceivedDoctorDataList) {
-            if (categoryName.equalsIgnoreCase(docObject.getCategoryName())) {
+            if (docObject.getCategoryName().equalsIgnoreCase(categoryName)) {
                 temp.add(docObject);
             }
         }
-        if(size!=-1)
-        if (temp.size() > size) {
-//            ArrayList<String> al2 = new ArrayList<String>(al.subList(1, 4));
-            temp = new ArrayList<DoctorList>(temp.subList(0, size));
+        if (size != -1) {
+            if (temp.size() > size) {
+                temp = new ArrayList<DoctorList>(temp.subList(0, size));
+            }
         }
-
         return temp;
     }
 
@@ -131,10 +130,10 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             }
         }
         ArrayList<DoctorList> temp = new ArrayList<>(tempMap.values());
-        if(size!=-1)
-        if (temp.size() > size) {
-            temp = new ArrayList<DoctorList>(temp.subList(0, size));
-        }
+        if (size != -1)
+            if (temp.size() > size) {
+                temp = new ArrayList<DoctorList>(temp.subList(0, size));
+            }
 
         return temp;
     }

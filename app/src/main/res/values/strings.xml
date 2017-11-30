@@ -14,7 +14,7 @@
     <string name="location">Location</string>
     <string name="snacks_before">snacksBefore</string>
     <string name="investigations">Investigations</string>
-    <string name="visit_details">Single Visit Details</string>
+    <string name="visit_details">Visit Details</string>
     <string name="doctor_details">Doctor Visits</string>
     <string name="before">Before</string>
     <string name="enter_mobile_no">Mobile No.</string>
@@ -46,7 +46,7 @@
     <string name="ok">OK</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_up_confirmation">Sign Up Confirmation</string>
-    <string name="logout">Logout</string>
+    <string name="logout">Log Out</string>
     <string name="log">Log</string>
     <string name="phone_no_activity">Phone No Activity</string>
     <string name="customnotificationticker">Medicine Dose Notification</string>

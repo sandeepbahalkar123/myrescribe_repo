@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
@@ -16,9 +17,13 @@ import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.rescribe.R;
 import com.rescribe.adapters.settings.SettingsAdapter;
 import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.helpers.login.LoginHelper;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.dashboard_api.ClickEvent;
 import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
+import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
@@ -29,18 +34,22 @@ import com.rescribe.ui.activities.NotificationSettingActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
+
 import net.gotev.uploadservice.UploadService;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
 /**
  * Created by jeetal on 3/11/17.
  */
 
-public class SettingsActivity extends BottomMenuActivity implements BottomSheetMenuAdapter.onBottomSheetMenuClickListener,BottomMenuAdapter.onBottomMenuClickListener, SettingsAdapter.OnClickOofSettingItemListener {
+public class SettingsActivity extends BottomMenuActivity implements BottomSheetMenuAdapter.onBottomSheetMenuClickListener, BottomMenuAdapter.onBottomMenuClickListener, SettingsAdapter.OnClickOofSettingItemListener, HelperResponse {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -156,68 +165,92 @@ public class SettingsActivity extends BottomMenuActivity implements BottomSheetM
             b.putParcelable(getString(R.string.clicked_item_data), clickedOption);
             intent.putExtras(b);
             startActivity(intent);
+        } else if (clickedOption.getName().equalsIgnoreCase(getString(R.string.logout))) {
+            ActiveRequest activeRequest = new ActiveRequest();
+            String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+            activeRequest.setId(Integer.parseInt(patientId));
+            new LoginHelper(this, SettingsActivity.this).doLogout(activeRequest);
+            logout();
         }
-
     }
 
-    @OnClick({R.id.menuIcon, R.id.logout, R.id.selectMenuLayout})
+    @OnClick({R.id.menuIcon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.menuIcon:
-                break;
-            case R.id.logout:
-                break;
-            case R.id.selectMenuLayout:
-                ///onClick of logout layout
-                String mobileNoGmail = "";
-                String passwordGmail = "";
-                String mobileNoFacebook = "";
-                String passwordFacebook = "";
-                String gmailLogin = "";
-                String facebookLogin = "";
-
-                // Stop Uploads
-                UploadService.stopAllUploads();
-
-                //Logout functionality
-                if (RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_gmail))) {
-                    gmailLogin = RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext);
-                    mobileNoGmail = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mContext);
-                    passwordGmail = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL, mContext);
-
-                }
-                if (RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_facebook))) {
-                    facebookLogin = RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext);
-                    mobileNoFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mContext);
-                    passwordFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, mContext);
-
-                }
-
-                RescribePreferencesManager.clearSharedPref(mContext);
-                RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN, gmailLogin, mContext);
-                RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN, facebookLogin, mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mobileNoGmail, mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL, passwordGmail, mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mobileNoFacebook, mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, passwordFacebook, mContext);
-                RescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
-
-                appDBHelper.deleteDatabase();
-
-                new DosesAlarmTask(mContext, null, null).run();
-                new AppointmentAlarmTask(mContext, null, null).run();
-                new InvestigationAlarmTask(mContext, null, null).run();
-
-                Intent intent = new Intent(mContext, LoginSignUpActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
                 break;
         }
     }
 
     @Override
     public void onBottomSheetMenuClick(com.heinrichreimersoftware.materialdrawer.app_logo.ClickOption bottomMenu) {
+
+    }
+
+
+    private void logout() {
+        String mobileNoGmail = "";
+        String passwordGmail = "";
+        String mobileNoFacebook = "";
+        String passwordFacebook = "";
+        String gmailLogin = "";
+        String facebookLogin = "";
+
+        // Stop Uploads
+        UploadService.stopAllUploads();
+
+        //Logout functionality
+        if (RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_gmail))) {
+            gmailLogin = RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext);
+            mobileNoGmail = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mContext);
+            passwordGmail = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL, mContext);
+
+        }
+        if (RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_facebook))) {
+            facebookLogin = RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext);
+            mobileNoFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mContext);
+            passwordFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, mContext);
+
+        }
+
+        RescribePreferencesManager.clearSharedPref(mContext);
+        RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN, gmailLogin, mContext);
+        RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN, facebookLogin, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mobileNoGmail, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL, passwordGmail, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mobileNoFacebook, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, passwordFacebook, mContext);
+        RescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
+
+        appDBHelper.deleteDatabase();
+
+        new DosesAlarmTask(mContext, null, null).run();
+        new AppointmentAlarmTask(mContext, null, null).run();
+        new InvestigationAlarmTask(mContext, null, null).run();
+
+        Intent intent = new Intent(mContext, LoginSignUpActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
     }
 }

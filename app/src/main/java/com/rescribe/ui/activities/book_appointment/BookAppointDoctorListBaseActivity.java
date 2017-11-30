@@ -22,6 +22,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
+import com.heinrichreimersoftware.materialdrawer.app_logo.ClickOption;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -58,7 +60,7 @@ import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
  * Created by jeetal on 15/9/17.
  */
 
-public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implements BottomMenuAdapter.onBottomMenuClickListener, GoogleApiClient.OnConnectionFailedListener, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
+public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implements BottomSheetMenuAdapter.onBottomSheetMenuClickListener,BottomMenuAdapter.onBottomMenuClickListener, GoogleApiClient.OnConnectionFailedListener, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
 
     private static final String TAG = "BookAppointDoctorListBaseActivity";
     @BindView(R.id.bookAppointmentBackButton)
@@ -197,6 +199,11 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onBottomSheetMenuClick(ClickOption bottomMenu) {
 
     }
 }

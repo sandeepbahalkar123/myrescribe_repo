@@ -12,6 +12,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -23,8 +25,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -34,6 +37,9 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
+import com.heinrichreimersoftware.materialdrawer.app_logo.ClickEvent;
+import com.heinrichreimersoftware.materialdrawer.app_logo.ClickOption;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
@@ -43,7 +49,6 @@ import com.rescribe.R;
 import com.rescribe.adapters.dashboard.MenuOptionsDashBoardAdapter;
 import com.rescribe.adapters.dashboard.ShowBackgroundViewPagerAdapter;
 import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
-import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -72,13 +77,10 @@ import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
 import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
-import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.RescribeConstants;
-
 import net.gotev.uploadservice.UploadService;
-
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -89,13 +91,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
-
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
@@ -104,7 +104,7 @@ import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
  */
 
 @RuntimePermissions
-public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, BottomMenuAdapter.onBottomMenuClickListener, LocationListener,
+public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, BottomSheetMenuAdapter.onBottomSheetMenuClickListener, BottomMenuAdapter.onBottomMenuClickListener, LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, GoogleSettingsApi.LocationSettings {
 
@@ -112,6 +112,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private static final long ADD_ACCOUNT = 122;
     private static final String TAG = "HomePage";
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 101;
+    BottomSheetDialog dialog;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.viewPagerDoctorItem)
@@ -122,6 +123,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     ImageView menuIcon;
     @BindView(R.id.locationImageView)
     ImageView locationImageView;
+
+    @BindView(R.id.parentLayout)
+    RelativeLayout parentLayout;
+
     private Context mContext;
     private String mGetMealTime;
     String breakFastTime = "";
@@ -157,6 +162,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     Location mCurrentLocation;
     String mLastUpdateTime;
     private int PLACE_PICKER_REQUEST = 10;
+    private TextView mPatientName;
+    private TextView mMobileNumber;
+    private ImageView mImageUrl;
 
 
     @Override
@@ -166,8 +174,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         ButterKnife.bind(this);
         // mCustomProgressDialog = new CustomProgressDialog(HomePageActivity.this);
         createLocationRequest();
-
-
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         mContext = HomePageActivity.this;
 
@@ -768,6 +774,57 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
 
+        } else if (menuName.equalsIgnoreCase(getString(R.string.app_logo))) {
+            if (isOpen)
+                closeSheet();
+            else
+                openSheet();
+//            openDialog();
+
+        }
+
+        super.onBottomMenuClick(bottomMenu);
+    }
+
+    private void openDialog() {
+        View modalbottomsheet = getLayoutInflater().inflate(R.layout.app_logo_bottom_sheet_layout, null);
+        dialog = new BottomSheetDialog(this, R.style.CoffeeDialog);
+        dialog.setContentView(modalbottomsheet);
+        configureBottomSheetBehavior(modalbottomsheet);
+        mPatientName = (TextView) modalbottomsheet.findViewById(R.id.patientName);
+        mImageUrl = (ImageView) modalbottomsheet.findViewById(R.id.imageUrl);
+        mMobileNumber = (TextView) findViewById(R.id.mobileNumber);
+        dialog.show();
+    }
+
+    private void configureBottomSheetBehavior(View contentView) {
+        BottomSheetBehavior mBottomSheetBehavior = BottomSheetBehavior.from((View) contentView.getParent());
+
+        if (mBottomSheetBehavior != null) {
+            mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+
+                @Override
+                public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                    //showing the different states
+                    switch (newState) {
+                        case BottomSheetBehavior.STATE_HIDDEN:
+                            dialog.dismiss(); //if you want the modal to be dismissed when user drags the bottomsheet down
+                            break;
+                        case BottomSheetBehavior.STATE_EXPANDED:
+                            break;
+                        case BottomSheetBehavior.STATE_COLLAPSED:
+                            break;
+                        case BottomSheetBehavior.STATE_DRAGGING:
+                            break;
+                        case BottomSheetBehavior.STATE_SETTLING:
+                            break;
+                    }
+                }
+
+                @Override
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                }
+            });
         }
     }
 
@@ -794,6 +851,20 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.home)));
 
             addBottomMenu(bottomMenu);
+
+        }
+
+        for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
+            if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
+                for(int j =0;j<dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size();j++) {
+                    ClickOption clickOption = new ClickOption();
+                    clickOption.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
+                    clickOption.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
+
+                    //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
+                    addBottomSheetMenu(clickOption);
+                }
+            }
         }
     }
 
@@ -986,5 +1057,12 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         if (!mGoogleApiClient.isConnected())
             mGoogleApiClient.connect();
         else startLocationUpdates();
+    }
+
+
+
+    @Override
+    public void onBottomSheetMenuClick(ClickOption bottomMenu) {
+
     }
 }

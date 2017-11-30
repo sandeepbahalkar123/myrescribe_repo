@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
+import com.heinrichreimersoftware.materialdrawer.app_logo.ClickOption;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -39,7 +41,7 @@ import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
  */
 
 @RuntimePermissions
-public class SupportActivity extends BottomMenuActivity implements BottomMenuAdapter.onBottomMenuClickListener {
+public class SupportActivity extends BottomMenuActivity implements BottomSheetMenuAdapter.onBottomSheetMenuClickListener,BottomMenuAdapter.onBottomMenuClickListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -57,14 +59,14 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
         initialize();
 
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
-        /*for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+        for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
             BottomMenu bottomMenu = new BottomMenu();
             bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
             bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.support)));
             addBottomMenu(bottomMenu);
-        }*/
+        }
 
     }
 
@@ -194,5 +196,10 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
 
                 break;
         }
+    }
+
+    @Override
+    public void onBottomSheetMenuClick(ClickOption bottomMenu) {
+
     }
 }

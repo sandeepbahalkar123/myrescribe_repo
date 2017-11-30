@@ -43,7 +43,6 @@ public class HealthRepository extends AppCompatActivity implements IOnMenuClickL
     ImageView imgGroupPhoto;
     @BindView(R.id.healthRepositoryListView)
     RecyclerView healthRepositoryListView;
-
     private AppDBHelper appDBHelper;
     private Context mContext;
     private HealthRepositoryAdapter mHealthRepositoryAdapter;
@@ -89,7 +88,7 @@ public class HealthRepository extends AppCompatActivity implements IOnMenuClickL
                 requestOptions.dontAnimate();
                 requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
                 requestOptions.skipMemoryCache(true);
-                requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
+                    requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
 
                 Glide.with(this)
                         .load(clickEvent1.getBgImageUrl())

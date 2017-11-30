@@ -53,5 +53,8 @@
     <color name="black">#000000</color>
     <color name="tagColor">#04abdf</color>
     <color name="grey">#b3b3b3</color>
+    <color name="divider">#e5e5e5</color>
+    <color name="transparent">#00000000</color>
+    <color name="menu_scrim_end">#DD000000</color>
 
 </resources>

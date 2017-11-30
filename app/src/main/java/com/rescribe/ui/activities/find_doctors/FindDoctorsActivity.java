@@ -16,6 +16,7 @@ import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -44,7 +45,6 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -59,7 +59,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     Toolbar toolbar;
     @BindView(R.id.img_group_photo)
     ImageView imgGroupPhoto;
-
     @BindView(R.id.app_bar_layout)
     AppBarLayout appBarLayout;
     @BindView(R.id.listView)
@@ -67,7 +66,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     ArrayList<DoctorList> sponsered;
     ArrayList<DoctorList> recently_visit_doctor;
     ArrayList<DoctorList> favoriteList;
-
     @BindView(R.id.serviceNameTextView)
     CustomTextView serviceNameTextView;
     @BindView(R.id.showVitalUnitNameIconLayout)
@@ -98,12 +96,15 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     CustomTextView viewAllFavorite;
     @BindView(R.id.complaintsTextView)
     AutoCompleteTextView complaintsTextView;
+    @BindView(R.id.bookAppointmentButton)
+    FrameLayout bookAppointmentButton;
+    @BindView(R.id.complaintsImageView)
+    ImageView complaintsImageView;
     private FindDoctorsMenuListAdapter mFindDoctorsAdapter;
     private Context mContext;
     int pager_padding;
     int pager_margin;
     private FindDoctorCategoryAdapter mRecentlyVisitedDoctors;
-
     private ServicesCardViewImpl mServicesCardViewImpl;
     private DoctorDataHelper mDoctorDataHelper;
     private DashboardMenuList mReceivedDashboardMenuListData;
@@ -176,6 +177,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
         listView.setLayoutManager(layoutManager);
         listView.setItemAnimator(new DefaultItemAnimator());
+
 //            int spanCount = 2; // 3 columns
 //            int spacing = 20; // 50px
 //            boolean includeEdge = true;
@@ -191,6 +193,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         //-------------
 
         //----------------
+
         setUpViewPager();
     }
 
@@ -240,6 +243,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         super.onBackPressed();
     }
 
+
     @OnClick({R.id.viewAllFavorite, R.id.viewAllRecentVisited, R.id.viewAllSponsered})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -258,6 +262,12 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 viewAllSponsered.putExtra(getString(R.string.toolbarTitle), getString(R.string.sponsered_doctor));
                 startActivity(viewAllSponsered);
                 break;
+            case R.id.complaintsImageView:
+             Intent intentComplaint = new Intent(FindDoctorsActivity.this,ShowCategoryWiseDoctor.class);
+                intentComplaint.putExtra(getString(R.string.toolbarTitle),getString(R.string.complaints));
+              /*  intentComplaint.putExtra(getString(R.string.))*/
+                startActivity(intentComplaint);
+            break;
         }
     }
 

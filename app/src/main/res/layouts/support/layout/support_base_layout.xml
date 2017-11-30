@@ -21,6 +21,6 @@
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
-<include
-    layout="@layout/support_layout"/>
+
+    <include layout="@layout/support_layout" />
 </android.support.design.widget.CoordinatorLayout>

@@ -1,8 +1,7 @@
-package com.heinrichreimersoftware.materialdrawer.bottom_menu;
+package com.heinrichreimersoftware.materialdrawer.app_logo;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,27 +14,33 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.request.RequestOptions;
 import com.heinrichreimersoftware.materialdrawer.R;
 
+
+
 import java.util.ArrayList;
 
-public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.ListViewHolder> {
+/**
+ * Created by jeetal on 29/11/17.
+ */
 
-    private onBottomMenuClickListener mBottomMenuListClickListener;
-    private ArrayList<BottomMenu> bottomMenus;
+public class BottomSheetMenuAdapter extends RecyclerView.Adapter<BottomSheetMenuAdapter.ListViewHolder> {
 
-    BottomMenuAdapter(Context mContext, ArrayList<BottomMenu> bottomMenus) {
+    private onBottomSheetMenuClickListener mBottomMenuListClickListener;
+    private ArrayList<ClickOption> bottomMenus;
+
+    public BottomSheetMenuAdapter(Context mContext, ArrayList<ClickOption> bottomMenus) {
         this.bottomMenus = bottomMenus;
 
         try {
-            this.mBottomMenuListClickListener = ((onBottomMenuClickListener) mContext);
+            this.mBottomMenuListClickListener = ((onBottomSheetMenuClickListener) mContext);
         } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement onBottomMenuListClickListener.");
+            throw new ClassCastException("Activity must implement onBottomSheetMenuListClickListener.");
         }
     }
 
     @Override
-    public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BottomSheetMenuAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.bottom_menu_item, parent, false);
+                .inflate(R.layout.bottom_sheet_menu_item_list, parent, false);
 
         int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         int width = (widthPixels * 20) / 100;
@@ -44,15 +49,22 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
 
         itemView.setLayoutParams(layoutParams);
 
-        return new ListViewHolder(itemView);
+        return new BottomSheetMenuAdapter.ListViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ListViewHolder holder, final int position) {
-        final BottomMenu bottomMenu = bottomMenus.get(position);
-        holder.bottomMenuName.setText(bottomMenu.getMenuName());
+    public void onBindViewHolder(BottomSheetMenuAdapter.ListViewHolder holder, final int position) {
+        final ClickOption bottomMenu = bottomMenus.get(position);
+       holder.bottomMenuName.setText(bottomMenu.getName());
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
+        RequestOptions options = new RequestOptions()
+                .centerInside()
+                .priority(Priority.HIGH);
+
+        Glide.with(holder.menuBottomIcon.getContext())
+                .load(bottomMenu.getIconImageUrl()).apply(options)
+                .into(holder.menuBottomIcon);
+       /* holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mBottomMenuListClickListener.onBottomMenuClick(bottomMenu);
@@ -80,7 +92,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
                 holder.bottomMenuName.setTextColor(holder.bottomMenuName.getContext().getResources().getColor(R.color.grey));
                 holder.menuBottomIcon.setColorFilter(ContextCompat.getColor(holder.menuBottomIcon.getContext(), R.color.grey), android.graphics.PorterDuff.Mode.MULTIPLY);
             }
-        }
+        }*/
     }
 
     @Override
@@ -91,20 +103,19 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
     static class ListViewHolder extends RecyclerView.ViewHolder {
         ImageView menuBottomIcon;
         TextView bottomMenuName;
-        ImageView bottomMenuTab;
+
 
         View view;
 
         ListViewHolder(View view) {
             super(view);
             this.view = view;
-            bottomMenuName = (TextView) view.findViewById(R.id.bottomMenuName);
-            menuBottomIcon = (ImageView) view.findViewById(R.id.menuBottomIcon);
-            bottomMenuTab = (ImageView) view.findViewById(R.id.bottomMenuTab);
+            bottomMenuName = (TextView) view.findViewById(R.id.menuName);
+            menuBottomIcon = (ImageView) view.findViewById(R.id.menuImage);
         }
     }
 
-    public interface onBottomMenuClickListener {
-        void onBottomMenuClick(BottomMenu bottomMenu);
+    public interface onBottomSheetMenuClickListener {
+        void onBottomSheetMenuClick(ClickOption bottomMenu);
     }
 }

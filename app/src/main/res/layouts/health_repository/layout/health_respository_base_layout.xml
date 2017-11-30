@@ -40,8 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/finddoctors_bg" />
+                android:scaleType="fitXY" />
 
             <FrameLayout
                 android:layout_width="match_parent"

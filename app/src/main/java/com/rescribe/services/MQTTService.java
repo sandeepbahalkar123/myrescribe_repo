@@ -68,7 +68,7 @@ public class MQTTService extends Service {
     public static final int USER_TYPING_STATUS_TOPIC = 4;
 
     // change
-    public static final String[] TOPIC = {"chatConnect/message", "chatConnect/userStatus", "chatConnect/messageStatus", "chatConnect/internet", "chatConnect/userTypingStatus"};
+    public static final String[] TOPIC = {"chat/connect/message", "chat/connect/userStatus", "chat/connect/messageStatus", "chat/connect/internet", "chat/connect/userTypingStatus"};
     public static final String DELIVERED = "delivered";
 
     //    public static final String DOCTOR = "user1";
@@ -82,7 +82,7 @@ public class MQTTService extends Service {
     private int[] qos;
 
     private AppDBHelper appDBHelper;
-    private MqttConnectOptions connOpts;
+    private MqttConnectOptions connOpts = new MqttConnectOptions();
 
     @Override
     public void onCreate() {
@@ -154,28 +154,18 @@ public class MQTTService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             if (intent.getBooleanExtra(SEND_MESSAGE, false)) {
-                if (mqttClient != null)
-                    if (!mqttClient.isConnected()) {
-                        try {
-                            mqttClient.reconnect();
-                        } catch (MqttException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        // change
-                        if (intent.getBooleanExtra(MESSAGE, true)) {
-                            passMessage((MQTTMessage) intent.getParcelableExtra(MESSAGE_LIST));
-                        } else messageStatus((StatusInfo) intent.getParcelableExtra(STATUS_INFO));
+                if (!mqttClient.isConnected()) {
+                    try {
+                        mqttClient.reconnect();
+                    } catch (MqttException e) {
+                        e.printStackTrace();
                     }
-            } else {
-                if (mqttClient != null)
-                    if (!mqttClient.isConnected()) {
-                        try {
-                            mqttClient.reconnect();
-                        } catch (MqttException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                } else {
+                    // change
+                    if (intent.getBooleanExtra(MESSAGE, true)) {
+                        passMessage((MQTTMessage) intent.getParcelableExtra(MESSAGE_LIST));
+                    } else messageStatus((StatusInfo) intent.getParcelableExtra(STATUS_INFO));
+                }
             }
         }
         return START_STICKY;
@@ -193,13 +183,13 @@ public class MQTTService extends Service {
                 public void connectComplete(boolean reconnect, String serverURI) {
                     CommonMethods.Log("MqttCallbackExtended", String.valueOf(reconnect));
 
-                    passInternetConnect();
-
                     try {
                         mqttClient.subscribe(TOPIC, qos);
                     } catch (MqttException e) {
                         e.printStackTrace();
                     }
+
+                    passInternetConnect();
                 }
 
                 public void messageArrived(final String topic, final MqttMessage msg) {
@@ -243,12 +233,13 @@ public class MQTTService extends Service {
                                                 statusInfo.setMessageStatus(SEEN);
                                             }
 
-                                            messageStatus(statusInfo);
-
                                             Intent intent = new Intent(NOTIFY);
                                             intent.putExtra(MESSAGE, messageL);
                                             intent.putExtra(TOPIC_KEY, topic);
                                             sendBroadcast(intent);
+
+                                            messageStatus(statusInfo);
+
                                         } else Log.d(TAG + " DOCTOR_MES", payloadString);
                                     } else Log.d(TAG + " OTHERS_MES", payloadString);
                                 } else
@@ -272,16 +263,10 @@ public class MQTTService extends Service {
                 }
 
                 public void connectionLost(Throwable arg0) {
-                    try {
-                        Log.d(TAG, "Connection Lost");
-                        mqttClient.reconnect();
-                    } catch (MqttException e) {
-                        e.printStackTrace();
-                    }
+                    Log.d(TAG, "Connection Lost");
                 }
             });
 
-            connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(false);
             connOpts.setAutomaticReconnect(true);
             connOpts.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1_1);
@@ -360,6 +345,9 @@ public class MQTTService extends Service {
     // change
     public void messageStatus(StatusInfo statusInfo) {
         try {
+            // 2017-10-13 13:08:07
+            String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+            statusInfo.setMsgTime(msgTime);
             String content = gson.toJson(statusInfo, StatusInfo.class);
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(1);

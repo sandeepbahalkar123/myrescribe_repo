@@ -9,6 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
+import com.heinrichreimersoftware.materialdrawer.app_logo.ClickOption;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -37,7 +40,7 @@ import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
  * Created by jeetal on 3/11/17.
  */
 
-public class SettingsActivity extends BottomMenuActivity implements BottomMenuAdapter.onBottomMenuClickListener, SettingsAdapter.OnClickOofSettingItemListener {
+public class SettingsActivity extends BottomMenuActivity implements BottomSheetMenuAdapter.onBottomSheetMenuClickListener,BottomMenuAdapter.onBottomMenuClickListener, SettingsAdapter.OnClickOofSettingItemListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -199,5 +202,10 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void onBottomSheetMenuClick(ClickOption bottomMenu) {
+
     }
 }

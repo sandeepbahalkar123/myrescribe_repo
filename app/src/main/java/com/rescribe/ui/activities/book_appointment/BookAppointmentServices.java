@@ -57,14 +57,7 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
     ImageView imgGroupPhoto;
     @BindView(R.id.listView)
     RecyclerView listView;
-    @BindView(R.id.titleTextView)
-    TextView titleTextView;
-
-    //    @BindView(R.id.servicesMainLayout)
-//    LinearLayout servicesMainLayout;
     ServicesAdapter mServicesAdapter;
-    /*   @BindView(R.id.collapsing_toolbar)
-       CollapsingToolbarLayout collapsingToolbar;*/
 
     @BindView(R.id.scroll)
     NestedScrollView scroll;
@@ -91,7 +84,6 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
             getSupportActionBar().setTitle(mReceivedDashboardMenuListData.getName());
         }
 
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

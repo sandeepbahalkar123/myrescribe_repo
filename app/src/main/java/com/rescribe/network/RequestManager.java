@@ -68,6 +68,7 @@ import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.model.prescription_response_model.PrescriptionBaseModel;
 import com.rescribe.model.requestmodel.login.LoginRequestModel;
 import com.rescribe.model.response_model_notification.NotificationResponseBaseModel;
+import com.rescribe.model.saved_article.SavedArticleBaseModel;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphBaseModel;
 import com.rescribe.model.vital_graph.vital_description.VitalGraphInfoBaseModel;
 import com.rescribe.model.vital_graph.vital_tracker.VitalGraphTrackerBaseModel;
@@ -655,6 +656,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS: //This is for get archived list
                         ClinicTokenDetailsBaseModel baseModel = new Gson().fromJson(data, ClinicTokenDetailsBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, baseModel, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_GET_SAVED_ARTICLES: //This is for get saved article list
+                        SavedArticleBaseModel savedArticleBaseModel = new Gson().fromJson(data, SavedArticleBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, savedArticleBaseModel, mOldDataTag);
                         break;
                     default:
                         //This is for get PDF VisitData

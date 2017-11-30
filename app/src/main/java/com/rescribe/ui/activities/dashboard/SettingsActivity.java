@@ -9,12 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.rescribe.R;
 import com.rescribe.adapters.settings.SettingsAdapter;
 import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.model.dashboard_api.ClickEvent;
+import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
@@ -26,11 +29,15 @@ import com.rescribe.ui.activities.NotificationSettingActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
+
 import net.gotev.uploadservice.UploadService;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
 /**
@@ -56,12 +63,14 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     private Context mContext;
     private AppDBHelper appDBHelper;
 
+    private DashboardBottomMenuList mCurrentSelectedBottomMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_layout);
         ButterKnife.bind(this);
-        initialize();
+
 
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
         if (dashboardBottomMenuLists != null)
@@ -70,10 +79,15 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
                 bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
                 bottomMenu.setMenuName(dashboardBottomMenuList.getName());
                 bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
-                bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.settings)));
+
+                if (dashboardBottomMenuList.getName().equals(getString(R.string.settings))) {
+                    bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.settings)));
+                    mCurrentSelectedBottomMenu = dashboardBottomMenuList;
+                }
                 addBottomMenu(bottomMenu);
             }
 
+        initialize();
     }
 
     private void initialize() {
@@ -88,23 +102,21 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
                 onBackPressed();
             }
         });
-        mSettingsAdapter = new SettingsAdapter(this, this);
-        LinearLayoutManager linearlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        settingsMenuList.setLayoutManager(linearlayoutManager);
-        settingsMenuList.setHasFixedSize(true);
-        settingsMenuList.setNestedScrollingEnabled(false);
-        settingsMenuList.setAdapter(mSettingsAdapter);
-    }
 
-    /*@OnClick({R.id.sb_text})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
+        ClickEvent clickEvent = mCurrentSelectedBottomMenu.getClickEvent();
+        if (clickEvent != null) {
+            ArrayList<ClickOption> clickOptions = clickEvent.getClickOptions();
+            mSettingsAdapter = new SettingsAdapter(this, clickOptions, this);
 
-            case R.id.sb_text:
-
-                break;
+            LinearLayoutManager linearlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            settingsMenuList.setLayoutManager(linearlayoutManager);
+            settingsMenuList.setHasFixedSize(true);
+            settingsMenuList.setNestedScrollingEnabled(false);
+            settingsMenuList.setAdapter(mSettingsAdapter);
         }
-    }*/
+
+
+    }
 
     @Override
     public void onBottomMenuClick(BottomMenu bottomMenu) {
@@ -137,9 +149,13 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     }
 
     @Override
-    public void onClickOfSettingMenuOption(String mSettingName) {
-        if(mSettingName.contains(getString(R.string.notification))){
-          Intent intent = new Intent(SettingsActivity.this, NotificationSettingActivity.class);
+    public void onClickOfSettingMenuOption(ClickOption clickedOption) {
+        //TODO : here 's' is added bcaz API giving notifications as name.
+        if (clickedOption.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
+            Intent intent = new Intent(SettingsActivity.this, NotificationSettingActivity.class);
+            Bundle b = new Bundle();
+            b.putParcelable(getString(R.string.clicked_item_data), clickedOption);
+            intent.putExtras(b);
             startActivity(intent);
         }
 

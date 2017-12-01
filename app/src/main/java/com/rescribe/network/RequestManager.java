@@ -645,10 +645,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         DashBoardBaseModel dashboardBaseModel = new Gson().fromJson(data, DashBoardBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dashboardBaseModel, mOldDataTag);
                         break;
-                    case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR: //This is for get archived list
-                        CommonBaseModelContainer responseFavouriteDoctorBaseModel = new Gson().fromJson(data, CommonBaseModelContainer.class);
-                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseFavouriteDoctorBaseModel, mOldDataTag);
-                        break;
+
                     case RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA: //This is for get archived list
                         RecentVisitedBaseModel mRecentVisitedBaseModel = new Gson().fromJson(data, RecentVisitedBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, mRecentVisitedBaseModel, mOldDataTag);
@@ -661,6 +658,14 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         SavedArticleBaseModel savedArticleBaseModel = new Gson().fromJson(data, SavedArticleBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, savedArticleBaseModel, mOldDataTag);
                         break;
+
+                    //--- API whose reponse is ONLY COMMON CLASS BASE MODEL-------
+                    case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR: //This is for fav doc
+                    case RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER: //This is for save article
+                        CommonBaseModelContainer responseFavouriteDoctorBaseModel = new Gson().fromJson(data, CommonBaseModelContainer.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseFavouriteDoctorBaseModel, mOldDataTag);
+                        break;
+                    //--- API whose reponse is ONLY COMMON CLASS BASE MODEL-------
                     default:
                         //This is for get PDF VisitData
                         if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {

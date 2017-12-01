@@ -58,7 +58,7 @@
                 android:layout_height="250dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/main_image" />
+             />
 
             <FrameLayout
                 android:layout_width="match_parent"

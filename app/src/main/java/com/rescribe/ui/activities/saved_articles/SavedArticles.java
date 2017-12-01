@@ -1,6 +1,7 @@
 package com.rescribe.ui.activities.saved_articles;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -142,6 +143,14 @@ public class SavedArticles extends AppCompatActivity implements HelperResponse, 
     @Override
     public void onArticleClicked(SavedArticleInfo data) {
 
+        Intent intent = new Intent(this, SaveArticleWebViewActivity.class);
+        Bundle b = new Bundle();
+        b.putString(getString(R.string.url), data.getArticleUrl());
+        b.putString(getString(R.string.toolbarTitle), getString(R.string.saved_articles));
+        b.putString(getString(R.string.clicked_item_data), getString(R.string.clicked_saved_articles));
+        b.putBoolean(getString(R.string.save), true);
+        intent.putExtras(b);
+        startActivity(intent);
     }
 
     private void isDataListViewVisible(boolean flag) {

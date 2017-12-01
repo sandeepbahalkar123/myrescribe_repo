@@ -63,7 +63,7 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
     @Override
     public void onBindViewHolder(final SavedArticleListAdapter.ListViewHolder holder, int position) {
 
-        SavedArticleInfo savedArticleInfo = mReceivedSavedArticleList.get(position);
+        final SavedArticleInfo savedArticleInfo = mReceivedSavedArticleList.get(position);
 
         holder.savedArticleTitle.setText(savedArticleInfo.getArticleTitle());
         holder.doctorName.setText(savedArticleInfo.getAuthorName());
@@ -106,7 +106,16 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
                     .apply(requestOptions).thumbnail(0.5f)
 
                     .into(holder.articleImage);
+        } else {
+            holder.articleImage.setVisibility(View.GONE);
         }
+
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMenuClickListener.onArticleClicked(savedArticleInfo);
+            }
+        });
 
         //--------------
     }

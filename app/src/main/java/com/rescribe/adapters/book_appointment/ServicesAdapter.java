@@ -8,8 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
 import com.rescribe.model.book_appointment.ServicesList;
+import com.rescribe.model.dashboard_api.ClickOption;
+import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
@@ -25,12 +31,12 @@ import butterknife.ButterKnife;
 public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListViewHolder> {
 
     private Context mContext;
-    private ArrayList<ServicesList> servicesLists;
-    OnServicesClickListener onServicesClickListener;
+    private ArrayList<ClickOption> clickOptions;
+    IOnMenuClickListener onServicesClickListener;
 
-    public ServicesAdapter(Context mContext, ArrayList<ServicesList> ServicesList, OnServicesClickListener onServicesClickListener) {
-        this.onServicesClickListener = onServicesClickListener;
-        this.servicesLists = ServicesList;
+    public ServicesAdapter(Context mContext, ArrayList<ClickOption> clickOptions, IOnMenuClickListener bookAppointmentServices) {
+        this.onServicesClickListener = bookAppointmentServices;
+        this.clickOptions = clickOptions;
         this.mContext = mContext;
     }
 
@@ -44,21 +50,36 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListVi
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        final ServicesList servicesList = servicesLists.get(position);
-        holder.serviceNameTextView.setText(servicesList.getServiceName());
+
+        final ClickOption clickOption = clickOptions.get(position);
+        holder.serviceNameTextView.setText(clickOption.getName());
         holder.recyclerViewClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onServicesClickListener.setOnClickOfServices(servicesList);
+                onServicesClickListener.onMenuClick(clickOption);
             }
         });
-        holder.serviceIcon.setImageResource(CommonMethods.getServices(servicesList.getServiceName(), mContext));
 
+        //------------
+        if (clickOption.getIconImageUrl() != null) {
+            int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(mContext, 2);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.dontAnimate();
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
+            requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
+
+            Glide.with(mContext)
+                    .load(clickOption.getIconImageUrl())
+                    .apply(requestOptions).thumbnail(0.5f)
+                    .into(holder.serviceIcon);
+        }
+        //--------------
     }
 
     @Override
     public int getItemCount() {
-        return servicesLists.size();
+        return clickOptions.size();
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
@@ -77,9 +98,4 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListVi
             this.view = view;
         }
     }
-
-    public interface OnServicesClickListener {
-        void setOnClickOfServices(ServicesList servicesObject);
-    }
-
 }

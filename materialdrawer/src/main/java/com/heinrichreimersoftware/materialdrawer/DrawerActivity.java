@@ -32,13 +32,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerFragmentItem;
@@ -73,6 +76,8 @@ public class DrawerActivity extends BottomMenuActivity {
         setSupportActionBar(mDefaultToolbar);
 
         mDrawer.closeDrawer();
+
+      //  mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
     }
 
     /**
@@ -525,9 +530,9 @@ public class DrawerActivity extends BottomMenuActivity {
         mDrawer.removeOnProfileItemClickListener();
         return this;
     }
-    
+
     // End Added
-    
+
     /**
      * Gets the profile switch listener of the drawer
      *

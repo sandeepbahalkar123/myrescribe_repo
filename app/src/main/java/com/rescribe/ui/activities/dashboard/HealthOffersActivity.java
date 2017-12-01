@@ -1,6 +1,7 @@
 package com.rescribe.ui.activities.dashboard;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.rescribe.R;
+import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.fragments.AppointmentFragment;
 import com.rescribe.ui.fragments.health_offers.HealthOffersFragment;
@@ -35,6 +37,7 @@ public class HealthOffersActivity extends AppCompatActivity {
     @BindView(R.id.healthOffersViewpager)
     ViewPager healthOffersViewpager;
     String[] mFragmentTitleList = new String[3];
+    private DashboardMenuList mReceivedDashboardMenuListData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,12 @@ public class HealthOffersActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getIntent().getStringExtra(getString(R.string.toolbarTitle)));
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
+            getSupportActionBar().setTitle(mReceivedDashboardMenuListData.getName());
+        }
+
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -77,6 +85,7 @@ public class HealthOffersActivity extends AppCompatActivity {
         }
         healthOffersViewpager.setAdapter(adapter);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -123,6 +132,7 @@ public class HealthOffersActivity extends AppCompatActivity {
                 break;*/
         }
     }
+
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();

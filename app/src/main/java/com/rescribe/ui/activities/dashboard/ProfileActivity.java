@@ -48,7 +48,7 @@ public class ProfileActivity extends BottomMenuActivity implements BottomMenuAda
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
             BottomMenu bottomMenu = new BottomMenu();
-            bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
+            bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
             bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.profile)));
@@ -80,6 +80,9 @@ public class ProfileActivity extends BottomMenuActivity implements BottomMenuAda
         }else if (menuName.equalsIgnoreCase(getString(R.string.appointment))) {
             Intent intent = new Intent(this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+          Bundle bundle = new Bundle();
+          bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+          intent.putExtras(bundle);
             startActivity(intent);
             finish();
         } else if (menuName.equalsIgnoreCase(getString(R.string.home))) {

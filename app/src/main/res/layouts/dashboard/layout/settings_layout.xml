@@ -21,13 +21,16 @@
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/settingsMenuList"
                 android:layout_width="wrap_content"
@@ -35,12 +38,13 @@
                 android:layout_marginTop="?attr/actionBarSize"
                 android:divider="@null"
                 android:dividerHeight="0dp"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RelativeLayout
 
@@ -90,10 +94,11 @@
                 </RelativeLayout>
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
-                android:background="@color/divider"
-                android:layout_height="@dimen/dp1"/>
+                android:layout_height="@dimen/dp1"
+                android:background="@color/divider" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

@@ -24,14 +24,17 @@
 
 package com.heinrichreimersoftware.materialdrawer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
@@ -59,7 +62,6 @@ public class DrawerFrameLayout extends DrawerLayout {
         mDrawer = (DrawerView) findViewById(R.id.mdDrawer);
 
         setDrawerShadow(R.drawable.md_drawer_shadow, GravityCompat.START);
-
 
         TypedArray a = getContext().getTheme().obtainStyledAttributes(new int[]{R.attr.colorPrimaryDark});
 
@@ -331,9 +333,9 @@ public class DrawerFrameLayout extends DrawerLayout {
         mDrawer.removeOnProfileItemClickListener();
         return this;
     }
-    
+
     // End Added
-    
+
     /**
      * Gets the profile switch listener of the drawer
      *

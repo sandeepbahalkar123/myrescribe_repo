@@ -14,17 +14,22 @@ public class Config {
     public static final String SIGN_UP_URL = "authApi/authenticate/patientSignUp";
     public static final String DOCTOR_LIST_BY_LOCATION = "api/doctors/getDoctorListByLocation";
     public static final String REVIEW_URL = "api/doctors/getReviewsForDoctor?docId=10";
-    public static final String GET_DOCTOR_LIST_BY_COMPLAINT = "api/doctors/getDocListByCityAreaComplaint" ;
+    public static final String GET_DOCTOR_LIST_BY_COMPLAINT = "api/doctors/getDocListByCityAreaComplaint";
     public static final Object GET_DASHBOARD_DATA = "api/dashboard/getDashboardDetails?patientId=";
-    public static final String GET_TASK_RECENT_VISIT_DOCTOR_PLACES_DATA ="api/doctors/getDocCountByArea?patientId=" ;
+    public static final String GET_TASK_RECENT_VISIT_DOCTOR_PLACES_DATA = "api/doctors/getDocCountByArea?patientId=";
     public static boolean DEV_BUILD = true;
     //Declared all URL used in app here
     //    public static final String BROKER = "tcp://ec2-13-126-175-156.ap-south-1.compute.amazonaws.com:1883";
     public static final String BROKER = "tcp://192.168.0.182:1883";
 
     //---------------------
-    //  public static String BASE_URL = "http://drrescribe.com:3003/";
-    public static String BASE_URL = "http://192.168.0.182:3003/";
+
+    //public static String BASE_URL = "http://drrescribe.com:3003/";
+     public static String BASE_URL = "http://192.168.0.182:3003/";
+
+
+
+
 
     //---------------------
     public Context mContext;
@@ -66,7 +71,8 @@ public class Config {
     public static final String GET_COMPLAINTS_LIST = "api/doctors/getComplaintList";
 
     public static final String SERVICES_DOC_LIST_FILTER_URL = "api/doctors/filterDoctors";
-    public static final String  TIME_SLOT_TO_BOOK_APPOINTMENT = "api/doctors/getDocOpenTimeSlots?";
+    public static final String TIME_SLOT_TO_BOOK_APPOINTMENT = "api/doctors/getDocOpenTimeSlots?";
+    public static final String GET_TOKEN_NUMBER_OTHER_DETAILS = "api/doctors/getTokenNo?";
 
     //----- vital graph-------------
     public static final String TASK_GET_PATIENT_VITAL_LIST = "api/patient/getPatientVitalList";
@@ -77,6 +83,11 @@ public class Config {
     //----- vital graph-------------
     public static final String LOGOUT = "api/patient/logPatientSignOut";
     public static final String ACTIVE = "api/patient/logPatientActivity";
+    //-----------SAVED ARTICLE-----------------------
+    public static final String TO_GET_SAVED_ARTICLES = "api/patient/getArticleList?patientId=";
+    public static final String TO_SAVE_ARTICLE_TO_SERVER = "api/patient/saveArticle";
+
+    //-----------SAVED ARTICLE-----------------------
 
 
 }

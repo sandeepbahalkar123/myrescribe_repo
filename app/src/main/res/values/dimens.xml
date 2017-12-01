@@ -70,6 +70,8 @@
     <dimen name="ksw_md_thumb_shadow_size">21dp</dimen>
     <dimen name="ksw_md_thumb_shadow_offset">2dp</dimen>
     <dimen name="margin_imageview">70dp</dimen>
+    <dimen name="sp21">21sp</dimen>
+    <dimen name="dp28">28dp</dimen>
 
     <!--End Switch Button-->
 </resources>

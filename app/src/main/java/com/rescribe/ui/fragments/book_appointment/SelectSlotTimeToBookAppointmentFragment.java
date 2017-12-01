@@ -1,7 +1,10 @@
 package com.rescribe.ui.fragments.book_appointment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -9,11 +12,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.format.DateFormat;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,23 +27,31 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
+import com.philliphsu.bottomsheetpickers.time.BottomSheetTimePickerDialog;
+import com.philliphsu.bottomsheetpickers.time.grid.GridTimePickerDialog;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.SelectSlotToBookAppointmentAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.Common;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
+import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetails;
+import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
+import com.rescribe.model.case_details.Range;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
@@ -53,6 +67,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,7 +80,7 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
  * Created by jeetal on 31/10/17.
  */
 
-public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, DatePickerDialog.OnDateSetListener {
+public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, DatePickerDialog.OnDateSetListener, BottomSheetTimePickerDialog.OnTimeSetListener {
 
     private final String TASKID_TIME_SLOT_WITH_DOC_DATA = RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT_WITH_DOCTOR_DETAILS;
     private final String TASKID_TIME_SLOT = RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT;
@@ -102,24 +117,38 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     LinearLayout mClinicNameSpinnerParentLayout;
     @BindView(R.id.allClinicPracticeLocationMainLayout)
     LinearLayout mAllClinicPracticeLocationMainLayout;
-    //-------------
-    @BindView(R.id.leftArrow)
-    ImageView leftArrow;
-    @BindView(R.id.rightArrow)
-    ImageView rightArrow;
-    @BindView(R.id.selectDateTime)
-    CustomTextView selectDateTime;
-    @BindView(R.id.selectTimeDateExpandableView)
-    ExpandableListView selectTimeDateExpandableView;
     @BindView(R.id.doChat)
     ImageView doChat;
     @BindView(R.id.viewAllClinicsOnMap)
     ImageView viewAllClinicsOnMap;
+    //-------------
+    @BindView(R.id.leftArrow)
+    ImageView mPreviousDayLeftArrow;
+    @BindView(R.id.rightArrow)
+    ImageView mNextDayRightArrow;
+    @BindView(R.id.selectDateTime)
+    CustomTextView mSelectDateTime;
+    //-------------
+    @BindView(R.id.selectTimeDateExpandableView)
+    ExpandableListView selectTimeDateExpandableView;
     @BindView(R.id.bookAppointmentButton)
     AppCompatButton bookAppointmentButton;
     @BindView(R.id.no_data_found)
     LinearLayout noDataFound;
+    //-------------
+    @BindView(R.id.timeSlotListViewLayout)
+    LinearLayout mTimeSlotListViewLayout;
+    @BindView(R.id.confirmedTokenMainLayout)
+    LinearLayout mConfirmedTokenMainLayout;
     //--------------
+    @BindView(R.id.waitingTime)
+    CustomTextView mWaitingTime;
+    @BindView(R.id.receivedTokenNumber)
+    CustomTextView mReceivedTokenNumber;
+    @BindView(R.id.scheduledAppointmentsTimeStamp)
+    CustomTextView mScheduledAppointmentsTimeStamp;
+    //--------------
+
     private View mRootView;
     private int mImageSize;
     Unbinder unbinder;
@@ -131,7 +160,13 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private SelectSlotToBookAppointmentAdapter mSelectSlotToBookAppointmentAdapter;
     private String mSelectedTimeSlotDate;
     private ClinicData mSelectedClinicDataObject;
+    private int mSelectedClinicDataPosition = -1;
     private String activityOpeningFrom;
+
+    private String mCurrentDate;
+    private Date mMaxDateRange;
+    private DatePickerDialog mDatePickerDialog;
+
 
     public SelectSlotTimeToBookAppointmentFragment() {
         // Required empty public constructor
@@ -159,21 +194,42 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     private void init() {
 
-        //------------
         Calendar now = Calendar.getInstance();
-        mSelectedTimeSlotDate = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
+        //---------
+        // As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
+        mDatePickerDialog = DatePickerDialog.newInstance(
+                this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH));
+        //------------
+
+        //----******************------
+        String monthInt = "" + (now.get(Calendar.MONTH) + 1);
+        if (monthInt.length() == 1) {
+            monthInt = "0" + monthInt;
+        }
         //----------
+        String dayInt = "" + (now.get(Calendar.DAY_OF_MONTH));
+        if (dayInt.length() == 1) {
+            dayInt = "0" + dayInt;
+        }
+        //----------
+        mSelectedTimeSlotDate = now.get(Calendar.YEAR) + "-" + monthInt + "-" + dayInt;
+        mCurrentDate = mSelectedTimeSlotDate;
+        //----******************------
 
         String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DD_MM_YYYY, CommonMethods.getCurrentDate());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MMM);
 
-        selectDateTime.setText(dayFromDate + ", " + simpleDateFormat.format(new Date()));
+        mSelectDateTime.setText(dayFromDate + ", " + simpleDateFormat.format(new Date()));
         //----------
         mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
 
         Bundle arguments = getArguments();
         if (arguments != null) {
             activityOpeningFrom = arguments.getString(getString(R.string.clicked_item_data_type_value));
+            mSelectedClinicDataPosition = arguments.getInt(getString(R.string.selected_clinic_data_position), -1);
         }
         //--------------
         selectTimeDateExpandableView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -265,18 +321,13 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
             ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
             mClinicNameSpinner.setAdapter(arrayAdapter);
+            mClinicNameSpinner.setSelection(mSelectedClinicDataPosition, false);
+
             mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(position);
-                    mClinicName.setText("" + mSelectedClinicDataObject.getClinicName());
-                    if (mSelectedClinicDataObject.getAmount() == 0) {
-                        mRupeesLayout.setVisibility(View.INVISIBLE);
-                    } else {
-                        mRupeesLayout.setVisibility(View.VISIBLE);
-                        mDoctorFees.setText("" + mSelectedClinicDataObject.getAmount());
-                    }
-                    mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+                    changeViewBasedOnAppointmentType();
                 }
 
                 @Override
@@ -348,6 +399,20 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 }
                 CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;
+            case RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS:
+                ClinicTokenDetailsBaseModel clinicTokenDetailsBaseModel = (ClinicTokenDetailsBaseModel) customResponse;
+                if (clinicTokenDetailsBaseModel != null) {
+                    Common common = clinicTokenDetailsBaseModel.getCommon();
+                    ClinicTokenDetails clinicTokenDetails = clinicTokenDetailsBaseModel.getClinicTokenDetails();
+                    if (clinicTokenDetails != null) {
+                        mWaitingTime.setText("" + clinicTokenDetails.getWaitingTime());
+                        mScheduledAppointmentsTimeStamp.setText("" + clinicTokenDetails.getScheduledTimeStamp());
+                        mReceivedTokenNumber.setText("" + clinicTokenDetails.getTokenNumber());
+                    } else {
+                        showTokenStatusMessageBox(getActivity(), common.getStatusMessage());
+                    }
+                }
+                break;
         }
     }
 
@@ -375,37 +440,53 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+
         mClickedDoctorObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
+        //--------------
+        if (mSelectedClinicDataPosition != -1)
+            if(mClickedDoctorObject.getClinicDataList().size()>0)
+            mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(mSelectedClinicDataPosition);
+        //--------------
+
         if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom)) {
+            mConfirmedTokenMainLayout.setVisibility(View.GONE);
+            mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
             mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
         } else {
-            setDataInViews();
+            changeViewBasedOnAppointmentType();
         }
+        setDataInViews();
     }
 
-    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat})
+    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat, R.id.tokenNewTimeStamp, R.id.leftArrow, R.id.rightArrow})
     public void onClickOfView(View view) {
-
+        Calendar now = Calendar.getInstance();
         switch (view.getId()) {
             case R.id.selectDateTime:
-                DatePickerDialog datePickerDialog;
-                Calendar now = Calendar.getInstance();
-                // As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
-                datePickerDialog = DatePickerDialog.newInstance(
+
+                //---------
+                Calendar selectedTimeSlotDateCal = Calendar.getInstance();
+                Date date1 = CommonMethods.convertStringToDate(mSelectedTimeSlotDate, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                selectedTimeSlotDateCal.setTime(date1);
+                mDatePickerDialog = DatePickerDialog.newInstance(
                         this,
-                        now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH),
-                        now.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.setAccentColor(getResources().getColor(R.color.tagColor));
+                        selectedTimeSlotDateCal.get(Calendar.YEAR),
+                        selectedTimeSlotDateCal.get(Calendar.MONTH),
+                        selectedTimeSlotDateCal.get(Calendar.DAY_OF_MONTH));
+                //---------
 
-                datePickerDialog.setMinDate(now);
+                mDatePickerDialog.setAccentColor(getResources().getColor(R.color.tagColor));
+                mDatePickerDialog.setMinDate(now);
+                mDatePickerDialog.show(getFragmentManager(), getResources().getString(R.string.select_date_text));
+                mDatePickerDialog.setOutOfRageInvisible();
 
+                //-------------
                 Calendar calendar = Calendar.getInstance();
                 calendar.add(Calendar.DATE, mSelectedClinicDataObject.getApptScheduleLmtDays());
-                datePickerDialog.setMaxDate(calendar);
+                mMaxDateRange = calendar.getTime();
+                mDatePickerDialog.setMaxDate(calendar);
+                //-------------
 
-                datePickerDialog.show(getFragmentManager(), getResources().getString(R.string.select_date_text));
-                datePickerDialog.setOutOfRageInvisible();
                 break;
             case R.id.bookAppointmentButton:
                 break;
@@ -442,19 +523,188 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
                 startActivity(intent);
                 break;
+            case R.id.tokenNewTimeStamp:
+                GridTimePickerDialog grid = GridTimePickerDialog.newInstance(
+                        this,
+                        now.get(Calendar.HOUR_OF_DAY),
+                        now.get(Calendar.MINUTE),
+                        DateFormat.is24HourFormat(getActivity()));
+                // TODO : NEED TO SET START AND END TIME OVER HERE.
+
+                grid.setAccentColor(getResources().getColor(R.color.tagColor));
+                grid.show(getFragmentManager(), getResources().getString(R.string.select_date_text));
+                break;
+            case R.id.leftArrow:
+                Date receivedDate = CommonMethods.convertStringToDate(this.mSelectedTimeSlotDate, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                Calendar cc = Calendar.getInstance();
+                cc.setTime(receivedDate); // Now use today date.
+                cc.add(Calendar.DATE, -1); // Adding 1 days
+                receivedDate = cc.getTime();
+
+                onDateSet(mDatePickerDialog, cc.get(Calendar.YEAR), cc.get(Calendar.MONTH), cc.get(Calendar.DAY_OF_MONTH));
+                break;
+
+            case R.id.rightArrow:
+                Date date = CommonMethods.convertStringToDate(this.mSelectedTimeSlotDate, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                Calendar c = Calendar.getInstance();
+                c.setTime(date); // Now use today date.
+                c.add(Calendar.DATE, 1); // Adding 1 days
+                date = c.getTime();
+
+                onDateSet(mDatePickerDialog, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+                break;
+        }
+    }
+
+
+    private void changeViewBasedOnAppointmentType() {
+        if (mSelectedClinicDataObject != null) {
+            //----------
+            mClinicName.setText("" + mSelectedClinicDataObject.getClinicName());
+            if (mSelectedClinicDataObject.getAmount() == 0) {
+                mRupeesLayout.setVisibility(View.INVISIBLE);
+            } else {
+                mRupeesLayout.setVisibility(View.VISIBLE);
+                mDoctorFees.setText("" + mSelectedClinicDataObject.getAmount());
+            }
+            //-----------
+            if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.token))) {
+                mConfirmedTokenMainLayout.setVisibility(View.VISIBLE);
+                mTimeSlotListViewLayout.setVisibility(View.GONE);
+                //----
+                mPreviousDayLeftArrow.setVisibility(View.INVISIBLE);
+                mNextDayRightArrow.setVisibility(View.INVISIBLE);
+                mSelectDateTime.setEnabled(false);
+                mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), null);
+            } else if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.book))) {
+                mConfirmedTokenMainLayout.setVisibility(View.GONE);
+                mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
+                //----
+                mPreviousDayLeftArrow.setVisibility(View.VISIBLE);
+                mNextDayRightArrow.setVisibility(View.VISIBLE);
+                mSelectDateTime.setEnabled(true);
+                //------------
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DATE, mSelectedClinicDataObject.getApptScheduleLmtDays());
+                mMaxDateRange = calendar.getTime();
+                //------------
+                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+            } else if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.mixed))) {
+                //------------
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DATE, mSelectedClinicDataObject.getApptScheduleLmtDays());
+                mMaxDateRange = calendar.getTime();
+                //------------
+
+                String selectedDate = CommonMethods.getFormattedDate(mSelectedTimeSlotDate, RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                String maxDate = simpleDateFormat.format(mMaxDateRange);
+                //--------
+                // IF MIXED, FOR SELECTED DATE == CURRENT DATE --> TOKEN FLOW WILL WORK
+                //  FOR SELECTED DATE OTHER THAN CURRENT DATE--> BOOK FLOW WILL WORK
+                // COPIED ABOVE 2 TOKEN AND BOOK FUNCTIONALITY. (EXCEPT mSelectDateTime.setEnabled);
+                if (mSelectedTimeSlotDate.equalsIgnoreCase(mCurrentDate)) {
+                    mConfirmedTokenMainLayout.setVisibility(View.VISIBLE);
+                    mTimeSlotListViewLayout.setVisibility(View.GONE);
+
+                    if (selectedDate.equalsIgnoreCase(maxDate)) {
+                        mPreviousDayLeftArrow.setVisibility(View.INVISIBLE);
+                        mNextDayRightArrow.setVisibility(View.INVISIBLE);
+                    } else {
+                        mPreviousDayLeftArrow.setVisibility(View.INVISIBLE);
+                        mNextDayRightArrow.setVisibility(View.VISIBLE);
+                    }
+                    //--------
+
+                    mSelectDateTime.setEnabled(true);
+                    mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), null);
+                } else {
+                    mConfirmedTokenMainLayout.setVisibility(View.GONE);
+                    mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
+                    //--------
+                    if (selectedDate.equalsIgnoreCase(maxDate)) {
+                        mPreviousDayLeftArrow.setVisibility(View.VISIBLE);
+                        mNextDayRightArrow.setVisibility(View.INVISIBLE);
+                    } else {
+                        mNextDayRightArrow.setVisibility(View.VISIBLE);
+                        mPreviousDayLeftArrow.setVisibility(View.VISIBLE);
+                    }
+                    //--------
+
+                    mSelectDateTime.setEnabled(true);
+                    mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+                }
+            }
         }
     }
 
     @Override
-    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+    public void onTimeSet(ViewGroup viewGroup, int hourOfDay, int minute) {
+        mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), hourOfDay + ":" + minute);
+    }
 
+    @Override
+    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
         String dateConverted = "" + dayOfMonth;
         if (dayOfMonth < 10) {
             dateConverted = "0" + dayOfMonth;
         }
-        mSelectedTimeSlotDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-        selectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, dateConverted + "-" + (monthOfYear + 1) + "-" + year) + "," + getString(R.string.space) + CommonMethods.getFormattedDate(dateConverted + "-" + (monthOfYear + 1) + "-" + year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
-        mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+
+        String monthOfYearData = "" + (monthOfYear + 1);
+        if (monthOfYearData.length() == 1) {
+            monthOfYearData = "0" + monthOfYearData;
+        }
+
+        mSelectedTimeSlotDate = year + "-" + monthOfYearData + "-" + dateConverted;
+        mSelectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, dateConverted + "-" + monthOfYearData + "-" + year) + "," + getString(R.string.space) + CommonMethods.getFormattedDate(dateConverted + "-" + monthOfYearData + "-" + year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
+
+        if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.mixed))) {
+            changeViewBasedOnAppointmentType();
+        } else {
+            mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+        }
+    }
+
+    public Dialog showTokenStatusMessageBox(Context context, String message) {
+
+        final Dialog dialog = new Dialog(context);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.token_dialog_popup);
+        dialog.setCancelable(true);
+
+        TextView messageView = (TextView) dialog.findViewById(R.id.messageView);
+        messageView.setText(message);
+        //-----------------
+        TextView yesButton = (TextView) dialog.findViewById(R.id.yesButton);
+        yesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                //--- TODO : API SHOULD GET CALLED IN CASE OF THIS FUNCTIONALITY, SPEAK WITH RATIKANT
+            }
+        });
+        //------------
+        TextView noButton = (TextView) dialog.findViewById(R.id.noButton);
+        noButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.CENTER;
+
+        dialog.getWindow().setAttributes(lp);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        return dialog;
     }
 
 }

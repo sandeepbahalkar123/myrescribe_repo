@@ -2,6 +2,7 @@ package com.rescribe.adapters.settings;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -13,43 +14,30 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
+import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by jeetal on 20/11/17.
+ * Created by RiteshP on 29/11/17.
  */
 
 public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ListViewHolder> {
 
+    private ArrayList<ClickOption> mClickOptionList;
     private Context mContext;
-    private int imageSize;
-    OnClickOofSettingItemListener mOnClickOofSettingItemListener;
-    String[] mSettingOptions = {
-            "Notifications",
-            "How it Works ?",
-            "Terms of Use",
-            "Privacy Policy",
-            "Recommend Us",
-            "Feedback"
+    private OnClickOofSettingItemListener mOnClickOofSettingItemListener;
 
-    };
 
-    public SettingsAdapter(final Context mContext,OnClickOofSettingItemListener mOnClickOofSettingItemListener) {
+    public SettingsAdapter(final Context mContext, ArrayList<ClickOption> mClickOption, OnClickOofSettingItemListener mOnClickOofSettingItemListener) {
         this.mOnClickOofSettingItemListener = mOnClickOofSettingItemListener;
         this.mContext = mContext;
-        setColumnNumber(mContext, 2);
-    }
-
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+        this.mClickOptionList = mClickOption;
     }
 
     @Override
@@ -62,19 +50,28 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ListVi
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, final int position) {
-        holder.menuOptionName.setText(mSettingOptions[position]);
+        final ClickOption clickOption = mClickOptionList.get(position);
+        holder.menuOptionName.setText(clickOption.getName());
         holder.selectMenuLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnClickOofSettingItemListener.onClickOfSettingMenuOption(mSettingOptions[position]);
+                mOnClickOofSettingItemListener.onClickOfSettingMenuOption(clickOption);
             }
         });
+
+        if (clickOption.getName().toLowerCase().startsWith(mContext.getString(R.string.log).toLowerCase())) {
+            holder.menuOptionName.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
+            holder.dashboardArrowIcon.setImageResource(R.drawable.logout_settings_icon);
+        } else {
+            holder.menuOptionName.setTextColor(ContextCompat.getColor(mContext, R.color.menu_option_on_dashboard_color));
+            holder.dashboardArrowIcon.setImageResource(R.drawable.dashboard_arrow);
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return mSettingOptions.length;
+        return mClickOptionList.size();
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
@@ -95,8 +92,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ListVi
             this.view = view;
         }
     }
+
     public interface OnClickOofSettingItemListener {
-        void onClickOfSettingMenuOption(String mSettingName);
+        void onClickOfSettingMenuOption(ClickOption mSettingName);
     }
 
 }

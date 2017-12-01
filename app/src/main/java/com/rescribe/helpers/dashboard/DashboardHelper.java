@@ -10,6 +10,8 @@ import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.dashboard_api.DashBoardBaseModel;
+import com.rescribe.model.saved_article.SavedArticleBaseModel;
+import com.rescribe.model.saved_article.request_model.ArticleToSaveReqModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -41,9 +43,7 @@ public class DashboardHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == RescribeConstants.TASK_DASHBOARD_API) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                }
+                mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 break;
             case ConnectionListener.PARSE_ERR0R:
                 CommonMethods.Log(TAG, mContext.getString(R.string.parse_error));
@@ -104,4 +104,49 @@ public class DashboardHelper implements ConnectionListener {
         mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);
     }
+
+    public void doGetSavedArticles() {
+        /*try {
+            InputStream is = mContext.getAssets().open("saved_article_list.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+            Log.e(TAG, "dashboard" + json);
+
+            Gson gson = new Gson();
+            SavedArticleBaseModel bookAppointmentBaseModel = gson.fromJson(json, SavedArticleBaseModel.class);
+            onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, RescribeConstants.TASK_GET_SAVED_ARTICLES);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }*/
+
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_GET_SAVED_ARTICLES, Request.Method.GET, true);
+        mConnectionFactory.setHeaderParams();
+
+        String url = Config.TO_GET_SAVED_ARTICLES + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+
+        mConnectionFactory.setUrl(url);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_GET_SAVED_ARTICLES);
+    }
+
+    public void doSaveArticlesToServer(String url, boolean isBookMarked) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER, Request.Method.POST, true);
+        mConnectionFactory.setHeaderParams();
+
+        ArticleToSaveReqModel reqModel = new ArticleToSaveReqModel();
+        reqModel.setUrl(url);
+        reqModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+
+        int value = isBookMarked ? 0 : 1;
+        reqModel.setRemove(value);
+        mConnectionFactory.setPostParams(reqModel);
+
+        mConnectionFactory.setUrl(Config.TO_SAVE_ARTICLE_TO_SERVER);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER);
+    }
+
+
 }

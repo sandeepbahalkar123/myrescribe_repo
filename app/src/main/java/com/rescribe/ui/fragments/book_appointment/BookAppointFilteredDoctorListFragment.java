@@ -37,6 +37,7 @@ import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -46,7 +47,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class BookAppointFilteredDoctorListFragment extends Fragment implements HelperResponse, BookAppointFilteredDocList.OnFilterDocListClickListener {
+public class BookAppointFilteredDoctorListFragment extends Fragment implements HelperResponse {
 
 
     @BindView(R.id.listView)
@@ -68,6 +69,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     private String mClickedItemDataValue;
     private boolean mIsFavoriteList;
     private String mUserSelectedLocation;
+    private ServicesCardViewImpl mServicesCardViewImpl;
+    private HashMap<String, String> mComplaintHashMap;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -101,25 +104,50 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             mReceivedTitle = args.getString(getString(R.string.toolbarTitle));
             mClickedItemDataValue = args.getString(getString(R.string.clicked_item_data));
             mIsFavoriteList = args.getBoolean(getString(R.string.favorite));
+
+            mComplaintHashMap = (HashMap<String, String>) args.getSerializable(getString(R.string.complaints));
         }
         mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
+        mServicesCardViewImpl = new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity());
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        doGetReceivedListBasedOnClickedItemData();
+        setDoctorListAdapter();
+        ServicesFilteredDoctorListActivity activity = (ServicesFilteredDoctorListActivity) getActivity();
+
+        //*****************
+        // THIS IS HACK, TO CALL API IN CASE OF COMAPINT-MAP!=NULL
+        if (mComplaintHashMap != null) {
+            activity.setLocationChangeViewClicked(true);
+        }
+        //*****************
+
+        if (activity.isLocationChangeViewClicked()) {
+            doGetLatestDoctorListOnLocationChange(mComplaintHashMap);
+            activity.setLocationChangeViewClicked(false);
+        }
     }
 
     private void doGetReceivedListBasedOnClickedItemData() {
         //------------
-        ServicesCardViewImpl servicesCardViewImpl = new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity());
 
         if (getString(R.string.doctors_speciality).equalsIgnoreCase(mClickedItemDataTypeValue)) {
-            mReceivedList = servicesCardViewImpl.filterDocListBySpeciality(mClickedItemDataValue);
+            mReceivedList = mServicesCardViewImpl.filterDocListBySpeciality(mClickedItemDataValue);
             mLocationFab.setVisibility(View.VISIBLE);
             mFilterFab.setVisibility(View.VISIBLE);
         } else {
             mLocationFab.setVisibility(View.GONE);
             mFilterFab.setVisibility(View.GONE);
             if (mIsFavoriteList) {
-                mReceivedList = servicesCardViewImpl.getFavouriteDocList();
+                mReceivedList = mServicesCardViewImpl.getFavouriteDocList(-1);
+            } else if (mClickedItemDataValue != null) {
+                mReceivedList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataValue, -1);
             } else {
-                mReceivedList = servicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataValue);
+                mReceivedList = ServicesCardViewImpl.getReceivedDoctorDataList();
             }
         }
         //------------
@@ -154,7 +182,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             isDataListViewVisible(false);
         } else {
             isDataListViewVisible(true);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), mReceivedList, this, this);
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), mReceivedList, mServicesCardViewImpl, this);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             mDoctorListView.setLayoutManager(layoutManager);
             mDoctorListView.setHasFixedSize(true);
@@ -162,18 +190,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         }
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        doGetReceivedListBasedOnClickedItemData();
-        setDoctorListAdapter();
-        ServicesFilteredDoctorListActivity activity = (ServicesFilteredDoctorListActivity) getActivity();
-        if (activity.isLocationChangeViewClicked()) {
-            doGetLatestDoctorListOnLocationChange(null);
-            activity.setLocationChangeViewClicked(false);
-        }
-    }
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
@@ -277,7 +293,23 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         }
     }
 
-    // TODO: NEED TO ADD SAME IN RECENT VISIT FILTER
+    public void onApplyClicked(Bundle data) {
+        BookAppointFilterRequestModel requestModel = data.getParcelable(getString(R.string.filter));
+        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel);
+    }
+
+    public void onResetClicked() {
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+
+   /* // TODO: NEED TO ADD SAME IN RECENT VISIT FILTER
     @Override
     public void onClickOfDoctorRowItem(Bundle bundleData) {
         DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
@@ -299,20 +331,5 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
         }
     }
-
-    public void onApplyClicked(Bundle data) {
-        BookAppointFilterRequestModel requestModel = data.getParcelable(getString(R.string.filter));
-        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel);
-    }
-
-    public void onResetClicked() {
-
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
+*/
 }

@@ -14,7 +14,7 @@
     <string name="location">Location</string>
     <string name="snacks_before">snacksBefore</string>
     <string name="investigations">Investigations</string>
-    <string name="visit_details">Single Visit Details</string>
+    <string name="visit_details">Visit Details</string>
     <string name="doctor_details">Doctor Visits</string>
     <string name="before">Before</string>
     <string name="enter_mobile_no">Mobile No.</string>
@@ -46,7 +46,8 @@
     <string name="ok">OK</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_up_confirmation">Sign Up Confirmation</string>
-    <string name="logout">Logout</string>
+    <string name="logout">Log Out</string>
+    <string name="log">Log</string>
     <string name="phone_no_activity">Phone No Activity</string>
     <string name="customnotificationticker">Medicine Dose Notification</string>
     <string name="notification">Notification</string>
@@ -67,6 +68,7 @@
     <string name="taken_medicine">Have you taken your medicine?</string>
     <string name="dosage_completed">Dosage completed?</string>
     <string name="read_more"><u>more</u></string>
+    <string name="read_more_text"><u>Read more</u></string>
     <string name="read_less">&#160;<u>
         less</u></string>
     <string name="title_activity_investigation">Investigation</string>
@@ -274,6 +276,7 @@
     <string name="also_practices">Also practices at :</string>
 
     <string name="services">Services</string>
+    <string name="health_services">Health Services</string>
     <string name="doctorss">Doctors</string>
     <string name="years_experience">years of experience</string>
     <string name="toolbarTitle">title</string>
@@ -300,13 +303,14 @@
     <string name="profile">Profile</string>
     <string name="support">Support</string>
     <string name="find_doctors">Find Doctors</string>
-    <string name="on_going_treatment">On Going Treatment</string>
+    <string name="on_going_treatment">OnGoing Medication</string>
     <string name="health_repository">Health Repository</string>
     <string name="health_offers">Health Offers</string>
     <string name="health_education">Health Education</string>
     <string name="consult_online">Consult Online</string>
     <string name="doctor_visit">Doctor Visits</string>
     <string name="saved_articles">Saved Articles</string>
+    <string name="clicked_saved_articles">clicked_saved_articles</string>
 
     <string name="snooze_interval">Select snooze interval</string>
 
@@ -347,7 +351,6 @@
     <string name="evening">Evening</string>
     <string name="night">Night</string>
 
-    <string name="book">Book</string>
 
     <string name="category_name">category_name</string>
     <string name="object_update_common_to_doc">UPDATE COMMON TO ALL DOCTOR</string>
@@ -367,6 +370,29 @@
     <string name="type_to_select">Type to select your illness, eg. Fever</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
+    <string name="selected_clinic_data_position">selected_clinic_data_position</string>
 
+    <string name="book">Book</string>
+    <string name="token">Token</string>
+    <string name="mixed">Mixed</string>
+
+    <string name="need_some_help">Need some help?</string>
+    <string name="feel_free">Feel free to get in touch with us</string>
+    <string name="call">CALL</string>
+    <string name="email">EMAIL</string>
+
+    <string name="minutes">Minutes</string>
+    <string name="get_token">Get Token</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="url">url</string>
+
+    <!--*****************-->
+    <string name="appointment_alert">Appointment Alert</string>
+    <string name="investigation_alert">Investigation Alert</string>
+    <string name="all_notifications">All Notifications</string>
+    <string name="medication_alert">Medication Alert</string>
+    <string name="offers_alert">Offers Alert</string>
+    <!--************************-->
 </resources>
 

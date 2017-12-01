@@ -26,7 +26,9 @@ import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -34,8 +36,8 @@ import butterknife.ButterKnife;
  * Created by jeetal on 7/11/17.
  */
 
-public class MyAppointmentDashBoardAdapter extends RecyclerView.Adapter<MyAppointmentDashBoardAdapter.ListViewHolder> {
-
+public class MyAppointmentDashBoardAdapter {//extends RecyclerView.Adapter<MyAppointmentDashBoardAdapter.ListViewHolder> {
+/*
     private Context mContext;
     private int mImageSize;
     private ColorGenerator mColorGenerator;
@@ -225,11 +227,11 @@ public class MyAppointmentDashBoardAdapter extends RecyclerView.Adapter<MyAppoin
         }
 
 
-      /*  if (doctorObject.do().equals("")) {*/
-       /* } else {
+      *//*  if (doctorObject.do().equals("")) {*//*
+       *//* } else {
             holder.tokenNo.setImageDrawable(mContext.getResources().getDrawable(R.drawable.token_no_background));
         }
-*/
+*//*
     }
 
     private void setColumnNumber(Context context, int columnNum) {
@@ -298,6 +300,6 @@ public class MyAppointmentDashBoardAdapter extends RecyclerView.Adapter<MyAppoin
 
     public interface OnCardOfAppointmentClickListener {
         void onClickOfCard(String menuName);
-    }
+    }*/
 }
 

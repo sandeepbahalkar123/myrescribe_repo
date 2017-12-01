@@ -23,6 +23,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
@@ -41,18 +44,20 @@ import butterknife.ButterKnife;
 
 public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppointFilteredDocList.ListViewHolder> {
 
+    private HelperResponse mHelperResponse;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
     private int mImageSize;
-    private OnFilterDocListClickListener mOnFilterDocListClickListener;
+    private ServicesCardViewImpl mOnFilterDocListClickListener;
 
     private ColorGenerator mColorGenerator;
 
-    public BookAppointFilteredDocList(Context mContext, ArrayList<DoctorList> dataList, OnFilterDocListClickListener mOnFilterDocListClickListener, Fragment m) {
+    public BookAppointFilteredDocList(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnFilterDocListClickListener, HelperResponse helperResponse) {
         this.mDataList = dataList;
         this.mContext = mContext;
         this.mOnFilterDocListClickListener = mOnFilterDocListClickListener;
         mColorGenerator = ColorGenerator.MATERIAL;
+        this.mHelperResponse = helperResponse;
         setColumnNumber(mContext, 2);
     }
 
@@ -80,6 +85,9 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
         holder.aboutDoctor.setText(doctorObject.getDegree());
 /////
+        //-------------
+        ArrayList<ClinicData> clinicDataList = doctorObject.getClinicDataList();
+
         if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
             holder.ruppessIcon.setVisibility(View.INVISIBLE);
             holder.doctorFee.setVisibility(View.INVISIBLE);
@@ -89,23 +97,23 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + ", " + CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a));
             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
             holder.appointmentDate.setText(content);
-            if (doctorObject.getClinicDataList().size() > 0) {
+            if (clinicDataList.size() > 0) {
                 holder.clinicName.setVisibility(View.VISIBLE);
-                holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
-                holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
+                holder.doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                holder.clinicName.setText(clinicDataList.get(0).getClinicName());
             } else {
                 holder.clinicName.setVisibility(View.GONE);
             }
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
 
-            if (doctorObject.getClinicDataList().size() == 1) {
+            if (clinicDataList.size() == 1) {
                 holder.clinicName.setVisibility(View.VISIBLE);
-                holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
-                holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
+                holder.clinicName.setText(clinicDataList.get(0).getClinicName());
+                holder.doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
 
             } else {
-                if (doctorObject.getClinicDataList().size() > 0) {
-                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                if (clinicDataList.size() > 0) {
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     holder.doctorAddress.setText(locationString);
                     holder.clinicName.setVisibility(View.GONE);
@@ -114,32 +122,37 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
             holder.appointmentDate.setVisibility(View.INVISIBLE);
 
-            if (doctorObject.getClinicDataList().size() > 0) {
+            if (clinicDataList.size() > 0) {
                 holder.ruppessIcon.setVisibility(View.VISIBLE);
                 holder.doctorFee.setVisibility(View.VISIBLE);
-                holder.doctorFee.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
+                holder.doctorFee.setText("" + clinicDataList.get(0).getAmount());
             } else {
                 holder.doctorFee.setVisibility(View.INVISIBLE);
                 holder.ruppessIcon.setVisibility(View.INVISIBLE);
+            }
 
+            //--------------
+            if (clinicDataList.size() > 0) {
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
+                    holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
+                    holder.tokenNo.setVisibility(View.VISIBLE);
+                } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
+                    holder.bookAppointmentButton.setVisibility(View.VISIBLE);
+                    holder.tokenNo.setVisibility(View.INVISIBLE);
+                }
             }
-            if (doctorObject.getTokenNo().equals("")) {
-                holder.bookAppointmentButton.setVisibility(View.VISIBLE);
-                holder.tokenNo.setVisibility(View.INVISIBLE);
-            } else {
-                holder.tokenNo.setVisibility(View.VISIBLE);
-                holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
-            }
+            //---------------
 
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
-            if (doctorObject.getClinicDataList().size() == 1) {
+            if (clinicDataList.size() == 1) {
                 holder.clinicName.setVisibility(View.VISIBLE);
-                holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
-                holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
+                holder.clinicName.setText(clinicDataList.get(0).getClinicName());
+                holder.doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
 
             } else {
-                if (doctorObject.getClinicDataList().size() > 0) {
-                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                if (clinicDataList.size() > 0) {
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     holder.doctorAddress.setText(locationString);
                     holder.clinicName.setVisibility(View.GONE);
@@ -148,31 +161,36 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
             holder.appointmentDate.setVisibility(View.INVISIBLE);
 
-            if (doctorObject.getClinicDataList().size() > 0) {
+            //----------
+            if (clinicDataList.size() > 0) {
                 holder.doctorFee.setVisibility(View.VISIBLE);
                 holder.ruppessIcon.setVisibility(View.VISIBLE);
-                holder.doctorFee.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
+                holder.doctorFee.setText("" + clinicDataList.get(0).getAmount());
             } else {
                 holder.doctorFee.setVisibility(View.INVISIBLE);
                 holder.ruppessIcon.setVisibility(View.INVISIBLE);
-
             }
-            if (doctorObject.getTokenNo().equals("")) {
-                holder.bookAppointmentButton.setVisibility(View.VISIBLE);
-                holder.tokenNo.setVisibility(View.INVISIBLE);
-            } else {
-                holder.tokenNo.setVisibility(View.VISIBLE);
-                holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
+            //----------
+            if (clinicDataList.size() > 0) {
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
+                    holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
+                    holder.tokenNo.setVisibility(View.VISIBLE);
+                } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
+                    holder.bookAppointmentButton.setVisibility(View.VISIBLE);
+                    holder.tokenNo.setVisibility(View.INVISIBLE);
+                }
             }
+            //---------------
         } else if (doctorObject.getCategoryName().equals("")) {
-            if (doctorObject.getClinicDataList().size() == 1) {
+            if (clinicDataList.size() == 1) {
                 holder.clinicName.setVisibility(View.VISIBLE);
-                holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
-                holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
+                holder.clinicName.setText(clinicDataList.get(0).getClinicName());
+                holder.doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
 
             } else {
                 if (doctorObject.getClinicDataList().size() > 0) {
-                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     holder.doctorAddress.setText(locationString);
                     holder.clinicName.setVisibility(View.GONE);
@@ -181,22 +199,28 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
             holder.appointmentDate.setVisibility(View.INVISIBLE);
 
-            if (doctorObject.getClinicDataList().size() > 0) {
+            if (clinicDataList.size() > 0) {
                 holder.doctorFee.setVisibility(View.VISIBLE);
                 holder.ruppessIcon.setVisibility(View.VISIBLE);
-                holder.doctorFee.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
+                holder.doctorFee.setText("" + clinicDataList.get(0).getAmount());
             } else {
                 holder.doctorFee.setVisibility(View.INVISIBLE);
                 holder.ruppessIcon.setVisibility(View.INVISIBLE);
 
             }
-            if (doctorObject.getTokenNo().equals("")) {
-                holder.bookAppointmentButton.setVisibility(View.VISIBLE);
-                holder.tokenNo.setVisibility(View.INVISIBLE);
-            } else {
-                holder.tokenNo.setVisibility(View.VISIBLE);
-                holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
+
+            //----------
+            if (clinicDataList.size() > 0) {
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
+                    holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
+                    holder.tokenNo.setVisibility(View.VISIBLE);
+                } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
+                    holder.bookAppointmentButton.setVisibility(View.VISIBLE);
+                    holder.tokenNo.setVisibility(View.INVISIBLE);
+                }
             }
+            //---------------
         }
 
         ////-------------------
@@ -248,19 +272,18 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             //--------------
         }
         //-----------
-
+/*
         holder.dataLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.doctor_details));
-                b.putString(mContext.getString(R.string.clicked_item_data_value_position),""+ position);
+                b.putString(mContext.getString(R.string.clicked_item_data_value_position), "" + position);
 
                 mOnFilterDocListClickListener.onClickOfDoctorRowItem(b);
             }
         });
-
 
         holder.favoriteView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -268,17 +291,12 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 Bundle b = new Bundle();
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.favorite));
-                b.putString(mContext.getString(R.string.clicked_item_data_value_position),""+ position);
+                b.putString(mContext.getString(R.string.clicked_item_data_value_position), "" + position);
 
                 mOnFilterDocListClickListener.onClickOfDoctorRowItem(b);
             }
         });
-        holder.doctorlistCardLinearlayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // mOnCardOfAppointmentClickListener.onClickOfCard(doctorObject.getCategoryName());
-            }
-        });
+
         holder.bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,7 +305,52 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 intent.putExtra(mContext.getString(R.string.toolbarTitle), doctorObject.getCategoryName());
                 mContext.startActivity(intent);
             }
+        });*/
+
+//----*********-------------
+        holder.favoriteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView imageView = (ImageView) v;
+                boolean status = !doctorObject.getFavourite();
+                mOnFilterDocListClickListener.onFavoriteIconClick(status, doctorObject, imageView, mHelperResponse);
+            }
         });
+
+        holder.dataLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.getDocSpeciality());
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                mOnFilterDocListClickListener.onClickOfCardView(b);
+            }
+        });
+
+        holder.bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.book_appointment));
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 1);
+
+                mOnFilterDocListClickListener.onClickedOfBookButton(b);
+            }
+        });
+
+        holder.tokenNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.token_number));
+                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                mOnFilterDocListClickListener.onClickedOfTokenNumber(b);
+            }
+        });
+
+        //----*********-------------
     }
 
     @Override

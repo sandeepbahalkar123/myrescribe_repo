@@ -12,6 +12,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -23,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -35,6 +38,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
@@ -44,7 +49,6 @@ import com.rescribe.R;
 import com.rescribe.adapters.dashboard.MenuOptionsDashBoardAdapter;
 import com.rescribe.adapters.dashboard.ShowBackgroundViewPagerAdapter;
 import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
-import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -56,6 +60,7 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
+import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
@@ -71,8 +76,8 @@ import com.rescribe.ui.activities.dashboard.SupportActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
 import com.rescribe.ui.activities.health_repository.HealthRepository;
+import com.rescribe.ui.activities.saved_articles.SaveArticleWebViewActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
-import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.RescribeConstants;
@@ -104,7 +109,7 @@ import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
  */
 
 @RuntimePermissions
-public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, BottomMenuAdapter.onBottomMenuClickListener, LocationListener,
+public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, BottomSheetMenuAdapter.onBottomSheetMenuClickListener, BottomMenuAdapter.onBottomMenuClickListener, LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, GoogleSettingsApi.LocationSettings {
 
@@ -112,6 +117,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private static final long ADD_ACCOUNT = 122;
     private static final String TAG = "HomePage";
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 101;
+    BottomSheetDialog dialog;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.viewPagerDoctorItem)
@@ -122,6 +128,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     ImageView menuIcon;
     @BindView(R.id.locationImageView)
     ImageView locationImageView;
+    @BindView(R.id.parentLayout)
+    RelativeLayout parentLayout;
     private Context mContext;
     private String mGetMealTime;
     String breakFastTime = "";
@@ -160,6 +168,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private String fcmToken = "";
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,8 +179,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         fcmToken = FirebaseInstanceId.getInstance().getToken();
 
         createLocationRequest();
-
-
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         mContext = HomePageActivity.this;
 
@@ -327,52 +334,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void logout() {
-        String mobileNoGmail = "";
-        String passwordGmail = "";
-        String mobileNoFacebook = "";
-        String passwordFacebook = "";
-        String gmailLogin = "";
-        String facebookLogin = "";
-
-        // Stop Uploads
-        UploadService.stopAllUploads();
-
-        //Logout functionality
-        if (RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_gmail))) {
-            gmailLogin = RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext);
-            mobileNoGmail = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mContext);
-            passwordGmail = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL, mContext);
-
-        }
-        if (RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_facebook))) {
-            facebookLogin = RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext);
-            mobileNoFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mContext);
-            passwordFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, mContext);
-
-        }
-
-        RescribePreferencesManager.clearSharedPref(mContext);
-        RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN, gmailLogin, mContext);
-        RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN, facebookLogin, mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mobileNoGmail, mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL, passwordGmail, mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mobileNoFacebook, mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, passwordFacebook, mContext);
-        RescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
-
-        appDBHelper.deleteDatabase();
-
-        new DosesAlarmTask(mContext, null, null).run();
-        new AppointmentAlarmTask(mContext, null, null).run();
-        new InvestigationAlarmTask(mContext, null, null).run();
-
-        Intent intent = new Intent(mContext, LoginSignUpActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
     }
 
 
@@ -566,9 +527,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                     doConfigureMenuOptions();
                 }
                 break;
-            case RescribeConstants.LOGOUT:
-                logout();
-                break;
+
             case ACTIVE_STATUS:
                 CommonMethods.Log(ACTIVE_STATUS, "active");
                 break;
@@ -588,10 +547,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         //----------
         //   mCustomProgressDialog.cancel();
         Map<String, Integer> dataMap = new LinkedHashMap<>();
-        myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments));
-        sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor));
-        recently_visit_doctor = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor));
-        favoriteList = mDashboardDataBuilder.getFavouriteDocList();
+        myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments), -1);
+        sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1);
+        recently_visit_doctor = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor), -1);
+        favoriteList = mDashboardDataBuilder.getFavouriteDocList(-1);
 
         dataMap.put(getString(R.string.my_appointments), myAppoint.size());
         dataMap.put(getString(R.string.sponsored_doctor), sponsered.size());
@@ -685,31 +644,45 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
     @Override
-    public void onClickOfMenu(String menuName) {
-        if (menuName.equals(getString(R.string.find_doctors))) {
-            Intent intent = new Intent(mContext, FindDoctorsActivity.class);
-            intent.putExtra(getString(R.string.recently_visit_doctor),recently_visit_doctor);
-            intent.putExtra(getString(R.string.sponsered_doctor),sponsered);
-            intent.putExtra(getString(R.string.favorite),favoriteList);
-            intent.putExtra(getString(R.string.doctor_data), mDashboardDataModel);
-            intent.putExtra(getString(R.string.toolbarTitle), menuName);
-            startActivity(intent);
-        } else if (menuName.equals(getString(R.string.on_going_treatment))) {
-            Intent intent = new Intent(mContext, PrescriptionActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle), menuName);
-            startActivity(intent);
-        } else if (menuName.equals(getString(R.string.health_repository))) {
-            Intent intent = new Intent(mContext, HealthRepository.class);
-            intent.putExtra(getString(R.string.toolbarTitle), menuName);
-            startActivity(intent);
-        } else if (menuName.equals(getString(R.string.health_offers))) {
-            Intent intent = new Intent(mContext, HealthOffersActivity.class);
-            intent.putExtra(getString(R.string.toolbarTitle), menuName);
-            startActivity(intent);
+    public void onClickOfMenu(DashboardMenuList menu) {
+        Intent intent = null;
+        if (menu.getName().equalsIgnoreCase(getString(R.string.find_doctors))) {
+            intent = new Intent(mContext, FindDoctorsActivity.class);
+            Bundle b = new Bundle();
+            b.putParcelable(getString(R.string.clicked_item_data), menu);
+            intent.putExtras(b);
+        } else if (menu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
+            intent = new Intent(mContext, PrescriptionActivity.class);
+            Bundle b = new Bundle();
+            b.putParcelable(getString(R.string.clicked_item_data), menu);
+            intent.putExtras(b);
+        } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_repository))) {
+            intent = new Intent(mContext, HealthRepository.class);
+            Bundle b = new Bundle();
+            b.putParcelable(getString(R.string.clicked_item_data), menu);
+            intent.putExtras(b);
+        } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_offers))) {
+            intent = new Intent(mContext, HealthOffersActivity.class);
+            Bundle b = new Bundle();
+            b.putParcelable(getString(R.string.clicked_item_data), menu);
+            intent.putExtras(b);
+        } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_education))) {
 
-        } else if (menuName.equals(getString(R.string.health_education))) {
-
+            intent = new Intent(mContext, SaveArticleWebViewActivity.class);
+            Bundle b = new Bundle();
+            b.putString(getString(R.string.url), menu.getHealthEducationUrl());
+            b.putString(getString(R.string.toolbarTitle), menu.getName());
+            b.putString(getString(R.string.clicked_item_data), getString(R.string.saved_articles));
+            b.putBoolean(getString(R.string.save), false);
+            intent.putExtras(b);
+        } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_services))) {
+            intent = new Intent(mContext, BookAppointmentServices.class);
+            Bundle b = new Bundle();
+            b.putParcelable(getString(R.string.clicked_item_data), menu);
+            intent.putExtras(b);
         }
+        if (intent != null)
+            startActivity(intent);
     }
 
     @Override
@@ -750,20 +723,29 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         } else if (menuName.equalsIgnoreCase(getString(R.string.appointment))) {
             Intent intent = new Intent(HomePageActivity.this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+            intent.putExtras(bundle);
             startActivity(intent);
+            finish();
 
         } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
             Intent intent = new Intent(HomePageActivity.this, SettingsActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
+            finish();
 
         } else if (menuName.equalsIgnoreCase(getString(R.string.support))) {
             Intent intent = new Intent(HomePageActivity.this, SupportActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
+            finish();
 
         }
+
+        super.onBottomMenuClick(bottomMenu);
     }
+
 
     private void doConfigureMenuOptions() {
 
@@ -778,10 +760,12 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         mMenuOptionsListView.setAdapter(mMenuOptionsDashBoardAdapter);
 
         // add bottom menu
+
+        bottomMenus.clear();
         dashboardBottomMenuLists = mDashboardDataModel.getDashboardBottomMenuList();
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
             BottomMenu bottomMenu = new BottomMenu();
-            bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
+            bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
 
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
@@ -789,6 +773,27 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
             addBottomMenu(bottomMenu);
         }
+
+        // add bottomSheet menu
+        bottomSheetMenus.clear();
+        for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
+            if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
+
+                for(int j =0;j<dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size();j++) {
+
+                    BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
+                    bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
+                    bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
+
+
+                    //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
+                    addBottomSheetMenu(bottomSheetMenu);
+                }
+                break;
+            }
+        }
+
+        setUpAdapterForBottomSheet();
     }
 
 
@@ -855,9 +860,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
         HomePageActivityPermissionsDispatcher.getWritePermissionWithCheck(HomePageActivity.this);
 
-       /* if (mDashboardDataModel != null) {
+        if (mDashboardDataModel != null) {
             setUpViewPager();
-        }*/
+        }
 
     }
 
@@ -980,5 +985,11 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         if (!mGoogleApiClient.isConnected())
             mGoogleApiClient.connect();
         else startLocationUpdates();
+    }
+
+
+    @Override
+    public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
+
     }
 }

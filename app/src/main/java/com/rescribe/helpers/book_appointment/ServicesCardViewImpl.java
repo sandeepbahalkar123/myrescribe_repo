@@ -8,15 +8,16 @@ import android.widget.ImageView;
 
 import com.rescribe.R;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.interfaces.IServicesCardViewClickListener;
+import com.rescribe.interfaces.services.IServicesCardViewClickListener;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.AppointmentActivity;
-import com.rescribe.ui.activities.HomePageActivity;
+import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
 import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by riteshpandhurkar on 15/11/17.
@@ -38,11 +39,11 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     @Override
     public void onClickOfCardView(Bundle bundleData) {
         String value = bundleData.getString(mContext.getString(R.string.clicked_item_data_type_value));
+        userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
         if (value.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
             Intent intent = new Intent(mParentActivity, AppointmentActivity.class);
             mParentActivity.startActivity(intent);
         } else {
-            userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
             Intent intent = new Intent(mParentActivity, DoctorDescriptionBaseActivity.class);
             intent.putExtra(mContext.getString(R.string.clicked_item_data), userSelectedDoctorListDataObject);
             intent.putExtra(mContext.getString(R.string.toolbarTitle), value);
@@ -52,6 +53,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
 
     @Override
     public void onFavoriteIconClick(boolean isFavouriteStatus, DoctorList doctorListObject, ImageView favorite, HelperResponse helperResponse) {
+        userSelectedDoctorListDataObject = doctorListObject;
         new DoctorDataHelper(mContext, helperResponse).setFavouriteDoctor(isFavouriteStatus, doctorListObject.getDocId());
     }
 
@@ -80,19 +82,44 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         }
     }
 
+    @Override
+    public void onClickedOfTokenNumber(Bundle bundleData) {
+        userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
 
-    public ArrayList<DoctorList> getCategoryWiseDoctorList(String categoryName) {
+        Intent intent = new Intent(mParentActivity, SelectSlotToBookAppointmentBaseActivity.class);
+        bundleData.putString(mContext.getString(R.string.toolbarTitle), userSelectedDoctorListDataObject.getCategoryName());
+        intent.putExtras(bundleData);
+        mParentActivity.startActivity(intent);
+    }
+
+    @Override
+    public void onClickedOfBookButton(Bundle bundleData) {
+
+        userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
+        Intent intent = new Intent(mParentActivity, SelectSlotToBookAppointmentBaseActivity.class);
+        bundleData.putString(mContext.getString(R.string.toolbarTitle), userSelectedDoctorListDataObject.getCategoryName());
+        intent.putExtras(bundleData);
+        mParentActivity.startActivity(intent);
+    }
+
+
+    public ArrayList<DoctorList> getCategoryWiseDoctorList(String categoryName, int size) {
         ArrayList<DoctorList> temp = new ArrayList<>();
         for (DoctorList docObject :
                 mReceivedDoctorDataList) {
-            if (categoryName.equalsIgnoreCase(docObject.getCategoryName())) {
+            if (docObject.getCategoryName().equalsIgnoreCase(categoryName)) {
                 temp.add(docObject);
+            }
+        }
+        if (size != -1) {
+            if (temp.size() > size) {
+                temp = new ArrayList<DoctorList>(temp.subList(0, size));
             }
         }
         return temp;
     }
 
-    public ArrayList<DoctorList> getFavouriteDocList() {
+    public ArrayList<DoctorList> getFavouriteDocList(int size) {
         HashMap<Integer, DoctorList> tempMap = new HashMap<>();
         for (DoctorList docObject :
                 mReceivedDoctorDataList) {
@@ -103,6 +130,10 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             }
         }
         ArrayList<DoctorList> temp = new ArrayList<>(tempMap.values());
+        if (size != -1)
+            if (temp.size() > size) {
+                temp = new ArrayList<DoctorList>(temp.subList(0, size));
+            }
 
         return temp;
     }

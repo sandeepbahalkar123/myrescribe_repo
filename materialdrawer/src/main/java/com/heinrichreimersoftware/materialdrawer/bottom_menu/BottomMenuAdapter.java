@@ -66,7 +66,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
         Glide.with(holder.menuBottomIcon.getContext())
                 .load(bottomMenu.getMenuIcon()).apply(options)
                 .into(holder.menuBottomIcon);
-
+//for app logo
         if (bottomMenu.isAppIcon()) {
             holder.bottomMenuName.setVisibility(View.GONE);
             holder.bottomMenuTab.setVisibility(View.GONE);

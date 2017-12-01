@@ -76,11 +76,12 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, final int position) {
-        holder.menuOptionName.setText(mDashboardMenuList.get(position).getName());
+        final DashboardMenuList dashboardMenuList = mDashboardMenuList.get(position);
+        holder.menuOptionName.setText(dashboardMenuList.getName());
         holder.selectMenuLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMenuListClickListener.onClickOfMenu(mDashboardMenuList.get(position).getName());
+                mMenuListClickListener.onClickOfMenu(dashboardMenuList);
             }
         });
         RequestOptions requestOptions = new RequestOptions();
@@ -89,7 +90,7 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
         requestOptions.skipMemoryCache(true);
 
         Glide.with(mContext)
-                .load(mDashboardMenuList.get(position).getImageUrl())
+                .load(mDashboardMenuList.get(position).getIconImageUrl())
                 .into(holder.menuIcon);
     }
 
@@ -118,6 +119,6 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
     }
 
     public interface onMenuListClickListener {
-        void onClickOfMenu(String menuName);
+        void onClickOfMenu(DashboardMenuList menu);
     }
 }

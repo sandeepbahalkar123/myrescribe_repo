@@ -25,6 +25,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
@@ -181,6 +182,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
         }
 
+        ArrayList<ClinicData> clinicDataList = doctorObject.getClinicDataList();
 
         if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
             feesToPaid.setVisibility(View.INVISIBLE);
@@ -190,22 +192,22 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + ", " + CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a));
             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
             doctorAppointmentDate.setText(content);
-            if (doctorObject.getClinicDataList().size() > 0) {
-                doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
-                clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
+            if (clinicDataList.size() > 0) {
+                doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                clinicName.setText(clinicDataList.get(0).getClinicName());
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
 
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
 
-            if (doctorObject.getClinicDataList().size() == 1) {
+            if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
-                clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
-                doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
+                clinicName.setText(clinicDataList.get(0).getClinicName());
+                doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
 
             } else {
-                if (doctorObject.getClinicDataList().size() > 0) {
-                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                if (clinicDataList.size() > 0) {
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     doctorAddress.setText(locationString);
                     clinicName.setVisibility(View.INVISIBLE);
@@ -214,62 +216,64 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
             doctorAppointmentDate.setVisibility(View.GONE);
             feesToPaid.setVisibility(View.VISIBLE);
-            if (doctorObject.getClinicDataList().size() > 0) {
+            if (clinicDataList.size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
-                feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
+                feesToPaid.setText("" + clinicDataList.get(0).getAmount());
 
             } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
 
             }
-            if (doctorObject.getTokenNo().equals("")) {
-                bookAppointmentButton.setVisibility(View.VISIBLE);
-                tokenNo.setVisibility(View.GONE);
-            } else {
-                tokenNo.setVisibility(View.VISIBLE);
-                bookAppointmentButton.setVisibility(View.GONE);
+
+            //----------
+            if (clinicDataList.size() > 0) {
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {                    bookAppointmentButton.setVisibility(View.GONE);
+                    tokenNo.setVisibility(View.VISIBLE);
+                } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
+                    bookAppointmentButton.setVisibility(View.VISIBLE);
+                    tokenNo.setVisibility(View.GONE);
+                }
             }
+            //---------------
 
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
-            if (doctorObject.getClinicDataList().size() == 1) {
+            if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
-                clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
-                doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
-
+                clinicName.setText(clinicDataList.get(0).getClinicName());
+                doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
             } else {
-                if (doctorObject.getClinicDataList().size() > 0) {
-                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                if (clinicDataList.size() > 0) {
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     doctorAddress.setText(locationString);
                     clinicName.setVisibility(View.INVISIBLE);
                 }
-
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.desing_line_for_big_name));
             doctorAppointmentDate.setVisibility(View.GONE);
 
-            if (doctorObject.getClinicDataList().size() > 0) {
+            //----------------
+            if (clinicDataList.size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
-
-                feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
-
+                feesToPaid.setText("" + clinicDataList.get(0).getAmount());
             } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
-
             }
-            if (doctorObject.getTokenNo().equals("")) {
-                bookAppointmentButton.setVisibility(View.VISIBLE);
-                tokenNo.setVisibility(View.GONE);
-            } else {
-                tokenNo.setVisibility(View.VISIBLE);
-                bookAppointmentButton.setVisibility(View.GONE);
-            }
+            //---------------
 
+            if (clinicDataList.size() > 0) {
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {                    bookAppointmentButton.setVisibility(View.GONE);
+                    tokenNo.setVisibility(View.VISIBLE);
+                } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
+                    bookAppointmentButton.setVisibility(View.VISIBLE);
+                    tokenNo.setVisibility(View.GONE);
+                }
+            }
+            //---------------
         }
-
-
         //---------
-
         if (doctorObject.getFavourite()) {
             favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_icon));
         } else {
@@ -309,13 +313,26 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
-                intent.putExtra(mContext.getString(R.string.clicked_item_data), doctorObject);
-                intent.putExtra(mContext.getString(R.string.toolbarTitle), doctorObject.getCategoryName());
-                ((Activity) mContext).startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.book_appointment));
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 1);
+
+                mServicesCardViewClickListener.onClickedOfBookButton(b);
             }
         });
 
+
+        tokenNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.token_number));
+                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                mServicesCardViewClickListener.onClickedOfTokenNumber(b);
+            }
+        });
         //-----------
 
         view.addView(imageLayout, 0);

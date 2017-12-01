@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/dp14"
+    android:layout_marginRight="@dimen/dp14"
+    android:orientation="vertical">
+
+    <com.rescribe.ui.customesViews.CustomTextView
+        android:id="@+id/savedArticleTitle"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="left|center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp15"
+        app:customFont="@string/roboto_medium"
+        tools:text="Tips for getting good sleep" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:background="@color/divider" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp8">
+
+        <ImageView
+            android:id="@+id/doctorImage"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_centerVertical="true"
+            tools:src="@drawable/remarks" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/doctorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp8"
+            android:layout_marginStart="@dimen/dp8"
+            android:layout_toRightOf="@id/doctorImage"
+            android:textColor="@color/tagColor"
+            android:textSize="@dimen/sp12"
+            app:customFont="@string/roboto_medium"
+            tools:text="Dr. Nidhi Chavan" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/doctorDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/doctorName"
+            android:layout_marginLeft="@dimen/dp8"
+            android:layout_marginStart="@dimen/dp8"
+            android:layout_toRightOf="@id/doctorImage"
+            android:textColor="@color/grey_shade"
+            android:textSize="@dimen/sp11"
+            app:customFont="@string/roboto_regular"
+            tools:text="Dr. Nidhi Chavan" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true">
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/articleDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/bookmark"
+                android:drawablePadding="@dimen/dp10"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp11"
+                tools:text="Nov 24,2017" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/articleImage"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp120"
+        android:layout_marginTop="@dimen/dp6"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_1" />
+
+    <com.rescribe.ui.customesViews.CustomTextView
+        android:id="@+id/articleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp6"
+        android:ellipsize="end"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp11"
+        app:customFont="@string/roboto_regular"
+        tools:text="sadasasdasdasdasd\nasdasdasd\nasdsadsada\nasdasdas" />
+
+    <com.rescribe.ui.customesViews.CustomTextView
+        android:id="@+id/readMoreView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:textColor="@color/tagColor"
+        android:textSize="@dimen/sp11"
+        app:customFont="@string/roboto_regular"
+        tools:text="@string/read_more_text" />
+
+
+</LinearLayout>

@@ -21,6 +21,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.ListAdapter;
@@ -426,14 +427,14 @@ public class CommonMethods {
     /**
      * This method converts device specific pixels to density independent pixels.
      *
-     * @param px A value in px (pixels) unit. Which we need to convert into db
+     * @param px      A value in px (pixels) unit. Which we need to convert into db
      * @param context Context to get resources and device specific display metrics
      * @return A float value to represent dp equivalent to px value
      */
-    public static float convertPixelsToDp(float px, Context context){
+    public static float convertPixelsToDp(float px, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        return px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
     public static void showInfoDialog(String msg, final Context mContext, final boolean closeActivity) {
@@ -825,6 +826,7 @@ public class CommonMethods {
                 resolution = "xhdpi";
                 break;
             case DisplayMetrics.DENSITY_XXHIGH:
+            case DisplayMetrics.DENSITY_420:
                 resolution = "xxhdpi";
                 break;
             case DisplayMetrics.DENSITY_XXXHIGH:
@@ -832,6 +834,15 @@ public class CommonMethods {
                 break;
         }
         return resolution;
+    }
+
+    public static int getImageSizeToLoadImage(Context context, int columnNum) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        int widthPixels = metrics.widthPixels;
+        int mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+        return mImageSize;
     }
 }
 

@@ -34,6 +34,7 @@ import com.rescribe.model.Common;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
+import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseModel;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
 import com.rescribe.model.book_appointment.reviews.ReviewListBaseModel;
 import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
@@ -67,6 +68,7 @@ import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.model.prescription_response_model.PrescriptionBaseModel;
 import com.rescribe.model.requestmodel.login.LoginRequestModel;
 import com.rescribe.model.response_model_notification.NotificationResponseBaseModel;
+import com.rescribe.model.saved_article.SavedArticleBaseModel;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphBaseModel;
 import com.rescribe.model.vital_graph.vital_description.VitalGraphInfoBaseModel;
 import com.rescribe.model.vital_graph.vital_tracker.VitalGraphTrackerBaseModel;
@@ -643,15 +645,27 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         DashBoardBaseModel dashboardBaseModel = new Gson().fromJson(data, DashBoardBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dashboardBaseModel, mOldDataTag);
                         break;
-                    case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR: //This is for get archived list
-                        CommonBaseModelContainer responseFavouriteDoctorBaseModel = new Gson().fromJson(data, CommonBaseModelContainer.class);
-                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseFavouriteDoctorBaseModel, mOldDataTag);
-                        break;
+
                     case RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA: //This is for get archived list
                         RecentVisitedBaseModel mRecentVisitedBaseModel = new Gson().fromJson(data, RecentVisitedBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, mRecentVisitedBaseModel, mOldDataTag);
                         break;
+                    case RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS: //This is for get archived list
+                        ClinicTokenDetailsBaseModel baseModel = new Gson().fromJson(data, ClinicTokenDetailsBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, baseModel, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_GET_SAVED_ARTICLES: //This is for get saved article list
+                        SavedArticleBaseModel savedArticleBaseModel = new Gson().fromJson(data, SavedArticleBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, savedArticleBaseModel, mOldDataTag);
+                        break;
 
+                    //--- API whose reponse is ONLY COMMON CLASS BASE MODEL-------
+                    case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR: //This is for fav doc
+                    case RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER: //This is for save article
+                        CommonBaseModelContainer responseFavouriteDoctorBaseModel = new Gson().fromJson(data, CommonBaseModelContainer.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseFavouriteDoctorBaseModel, mOldDataTag);
+                        break;
+                    //--- API whose reponse is ONLY COMMON CLASS BASE MODEL-------
                     default:
                         //This is for get PDF VisitData
                         if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {

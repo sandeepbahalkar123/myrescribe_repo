@@ -109,7 +109,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
             BottomMenu bottomMenu = new BottomMenu();
-            bottomMenu.setMenuIcon(dashboardBottomMenuList.getImageUrl());
+            bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
             bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.alerts)));
@@ -198,7 +198,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                     slotMedicine = getString(R.string.smallcasesnacks);
                 }
                 mSlotTextView.setText(mMedicineSlot);
-                mTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, CommonMethods.getCurrentDateTime()));
+                mTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, CommonMethods .getCurrentDateTime()));
                 mDateTextView.setText(mNotificationDate);
                 mDoseCompletedLabel.setText(getString(R.string.dosage_completed));
                 mDividerLineInList.setVisibility(View.VISIBLE);

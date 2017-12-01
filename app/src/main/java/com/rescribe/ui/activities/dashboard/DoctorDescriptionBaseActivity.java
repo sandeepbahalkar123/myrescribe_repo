@@ -82,28 +82,5 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
                 break;
         }
     }
-/*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RescribeConstants.DOCTOR_DATA_REQUEST_CODE && data != null) {
-            DoctorList mClickedDoctorListObject = data.getParcelableExtra(DOCTOR_DATA);
-            if (mClickedDoctorListObject != null) {
-                doctorObject = mClickedDoctorListObject;
-                mBookAppointDoctorDescriptionFragment.updateDataInViews(mClickedDoctorListObject);
-            }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        DoctorList clickedDoctorObject = mBookAppointDoctorDescriptionFragment.getClickedDoctorObject();
-        if (clickedDoctorObject != null) {
-            Intent intent = new Intent();
-            intent.putExtra(DOCTOR_DATA, clickedDoctorObject);
-            setResult(DOCTOR_DATA_REQUEST_CODE, intent);
-        }
-        super.onBackPressed();
-    }*/
 
 }

@@ -11,6 +11,7 @@ android {
     }
     lintOptions {
         disable 'MissingTranslation'
+        abortOnError false
     }
     compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
     buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
@@ -54,8 +55,9 @@ android {
                             'src/main/res/layouts/dashboard',
                             'src/main/res/layouts/find_doctors',
                             'src/main/res/layouts/health_repository',
-                            'src/main/res/layouts/health_offers'
-
+                            'src/main/res/layouts/health_offers',
+                            'src/main/res/layouts/saved_articles',
+                            'src/main/res/layouts/support'
                     ]
         }
     }

@@ -16,10 +16,12 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
 
     <application
         android:name=".singleton.RescribeApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -59,6 +61,11 @@
         </activity>
         <activity
             android:name=".ui.activities.HomePageActivity"
+            android:configChanges="orientation|keyboard|screenSize"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.find_doctors.ShowCategoryWiseDoctor"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -108,6 +115,12 @@
             android:name=".ui.activities.health_repository.HealthRepository"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/log_in"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.saved_articles.SavedArticles"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/saved_articles"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -287,6 +300,11 @@
             android:name=".ui.activities.WebViewActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/select_report"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.saved_articles.SaveArticleWebViewActivity"
+            android:configChanges="orientation|keyboard|screenSize"
+            android:label="@string/health_education"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.SelectedRecordsActivity"

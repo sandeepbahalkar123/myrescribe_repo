@@ -99,6 +99,10 @@ public class NotificationService extends Service implements HelperResponse {
     }
 
     public void customNotification(Intent intentData) {
+
+        int preCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, NotificationService.this);
+        RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, preCount + 1, NotificationService.this);
+
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
                 R.layout.notification_layout);

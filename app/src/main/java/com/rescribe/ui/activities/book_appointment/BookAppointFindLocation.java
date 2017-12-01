@@ -101,7 +101,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
     private final static String LAST_UPDATED_TIME_STRING_KEY = "last-updated-time-string-key";
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private static final int REQUEST_CHECK_SETTINGS = 10;
+    public static final int REQUEST_CHECK_SETTINGS = 10;
 
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -118,6 +118,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
     DoctorDataHelper mDoctorDataHelper;
     private ShowPopularPlacesAdapter mShowPopularPlacesAdapter;
     private RecentPlacesAdapter mRecentPlacesAdapter;
+    private String locationString;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -225,9 +226,13 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                 System.out.println("obj.getAdminArea()" + obj.getAdminArea());
                 System.out.println("obj.getCountryName()" + obj.getCountryName());
                 LatLng location = new LatLng(lat, lng);
-
-                RescribeApplication.setUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
-                detectLocation.setText(getArea(obj) + "," + obj.getLocality());
+               if(obj.getLocality().equals(null)){
+                   locationString = getArea(obj);
+               }else{
+                   locationString = obj.getSubLocality();
+               }
+                RescribeApplication.setUserSelectedLocationInfo(mContext, location,locationString+ "," + obj.getLocality());
+                detectLocation.setText(locationString + "," + obj.getLocality());
                 finish();
                 //DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
                /* mDashboardHelper = new DashboardHelper(this, this);
@@ -414,6 +419,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                         // Location settings are not satisfied. However, we have no way
                         // to fix the settings so we won't show the dialog.
+                        Toast.makeText(BookAppointFindLocation.this, "Please turn on location from settings.", Toast.LENGTH_LONG).show();
                         break;
                 }
             }

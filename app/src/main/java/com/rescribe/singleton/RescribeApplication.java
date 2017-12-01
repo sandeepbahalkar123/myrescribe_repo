@@ -68,7 +68,9 @@ public class RescribeApplication extends MultiDexApplication {
 
     public static void setPreviousUserSelectedLocationInfo(Context ctx, LatLng data, String locationText) {
      previousUserSelectedLocationInfo.put(ctx.getString(R.string.location), locationText);
-      previousUserSelectedLocationInfo.put(ctx.getString(R.string.latitude), "" + data.latitude);
-       previousUserSelectedLocationInfo.put(ctx.getString(R.string.longitude), "" + data.longitude);
+        if (data != null) {
+            previousUserSelectedLocationInfo.put(ctx.getString(R.string.latitude), "" + data.latitude);
+            previousUserSelectedLocationInfo.put(ctx.getString(R.string.longitude), "" + data.longitude);
+        }
     }
 }

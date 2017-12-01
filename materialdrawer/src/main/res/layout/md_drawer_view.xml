@@ -196,6 +196,7 @@
                                     android:contentDescription="@string/md_content_description_open_profile_list"
                                     android:padding="@dimen/md_baseline"
                                     android:scaleType="center"
+                                    android:visibility="invisible"
                                     android:src="@drawable/md_arrow_drop_down" />
 
                             </LinearLayout>

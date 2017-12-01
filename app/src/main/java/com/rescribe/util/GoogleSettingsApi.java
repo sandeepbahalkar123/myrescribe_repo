@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -17,6 +19,10 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.singleton.RescribeApplication;
+
+import static com.rescribe.ui.activities.book_appointment.BookAppointFindLocation.REQUEST_CHECK_SETTINGS;
 
 /**
  * Created by sangcomz on 2015-08-25.
@@ -61,7 +67,6 @@ public class GoogleSettingsApi implements GoogleApiClient.ConnectionCallbacks, G
                     case LocationSettingsStatusCodes.SUCCESS:
                         // All location settings are satisfied. The client can initialize location
                         // requests here.
-                        System.out.println("SUCCESS");
                         locationSettings.gpsStatus();
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
@@ -73,7 +78,7 @@ public class GoogleSettingsApi implements GoogleApiClient.ConnectionCallbacks, G
                             // and check the result in onActivityResult().
                             status.startResolutionForResult(
                                     (Activity) context,
-                                    1);
+                                    REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.
                             System.out.println("Ignore");
@@ -83,6 +88,7 @@ public class GoogleSettingsApi implements GoogleApiClient.ConnectionCallbacks, G
                         System.out.println("SETTINGS_CHANGE_UNAVAILABLE");
                         // Location settings are not satisfied. However, we have no way to fix the
                         // settings so we won't show the dialog.
+                        Toast.makeText(context, "Please turn on location from settings.", Toast.LENGTH_LONG).show();
                         break;
                     default:
                         System.out.println("Default");
@@ -108,7 +114,6 @@ public class GoogleSettingsApi implements GoogleApiClient.ConnectionCallbacks, G
     }
 
     public interface LocationSettings {
-
         void gpsStatus();
     }
 }

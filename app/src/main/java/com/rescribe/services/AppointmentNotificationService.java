@@ -82,6 +82,9 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
     public void customNotification(ArrayList<AppointmentsNotificationData> data, int index) {
 
+        int preCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, AppointmentNotificationService.this);
+        RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, preCount + 1, AppointmentNotificationService.this);
+
         String drName = data.get(index).getDoctorName();
         int subNotificationId = data.get(index).getAptId();
         String date = CommonMethods.getFormattedDate(data.get(index).getAptDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY);

@@ -15,6 +15,7 @@ import com.rescribe.services.MQTTService;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import static com.rescribe.services.MQTTService.MESSAGE_TOPIC;
 import static com.rescribe.services.MQTTService.PATIENT;
 import static com.rescribe.services.MQTTService.REPLY_ACTION;
 import static com.rescribe.services.MQTTService.SEND_MESSAGE;
@@ -49,7 +50,7 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
             this.context = context;
 
             MQTTMessage messageL = new MQTTMessage();
-            messageL.setTopic(MQTTService.TOPIC[0]);
+            messageL.setTopic(MQTTService.TOPIC[MESSAGE_TOPIC]);
             messageL.setMsg(message.toString());
 
             String generatedId = recievedMessage.getPatId() + "_" + 0 + System.nanoTime();

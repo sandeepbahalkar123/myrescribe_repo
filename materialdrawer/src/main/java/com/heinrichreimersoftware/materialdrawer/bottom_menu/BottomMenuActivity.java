@@ -28,7 +28,6 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.request.RequestOptions;
 import com.heinrichreimersoftware.materialdrawer.R;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
-import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +75,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         imageUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 onProfileImageClick();
+                onProfileImageClick();
             }
         });
 //        mBottomSheetMenuAdapter = new BottomSheetMenuAdapter(this, bottomSheetMenus);
@@ -103,12 +102,12 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         isOpen = true;
     }
 
-    public void setUpAdapterForBottomSheet(String patientImageUrl,String patientName,String patientMobileNo) {
+    public void setUpAdapterForBottomSheet(String patientImageUrl, String patientName, String patientMobileNo) {
        /* LinearLayoutManager bottomSheetlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mBottomSheetMenuListRecyclerView.setLayoutManager(bottomSheetlayoutManager);
         mBottomSheetMenuListRecyclerView.setHasFixedSize(true);
         mBottomSheetMenuListRecyclerView.setAdapter(mBottomSheetMenuAdapter);*/
-       mMobileNumber.setText(patientMobileNo);
+        mMobileNumber.setText(patientMobileNo);
         mPatientName.setText(patientName);
        /* RequestOptions options = new RequestOptions()
                 .centerInside()
@@ -239,7 +238,6 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 //        bottomMenuListRecyclerView.setPadding(padding, 0, padding, 0);
 
         bottomMenuListRecyclerView.setLayoutManager(layoutManager);
-        bottomMenuListRecyclerView.setHasFixedSize(true);
         bottomMenuListRecyclerView.setAdapter(bottomMenuAdapter);
 
 
@@ -247,7 +245,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 
     public void addBottomMenu(BottomMenu bottomMenu) {
         bottomMenus.add(bottomMenu);
-        bottomMenuAdapter.notifyItemInserted(bottomMenus.size());
+        bottomMenuAdapter.notifyItemInserted(bottomMenus.size() - 1);
     }
 
     public void addBottomSheetMenu(BottomSheetMenu bottomSheetMenu) {

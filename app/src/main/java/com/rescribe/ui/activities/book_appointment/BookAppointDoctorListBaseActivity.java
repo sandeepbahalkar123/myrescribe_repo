@@ -95,42 +95,9 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         mContext = BookAppointDoctorListBaseActivity.this;
         appDBHelper = new AppDBHelper(mContext);
         if (getIntent().getParcelableArrayListExtra(BOTTOM_MENUS) != null) {
-            bottomMenus.clear();
-            dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
-            for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
-                BottomMenu bottomMenu = new BottomMenu();
-                bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
-                bottomMenu.setMenuName(dashboardBottomMenuList.getName());
-                bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
-                bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.appointment)));
-                addBottomMenu(bottomMenu);
-            }
+            setBottomMenu();
+
         }
-        bottomSheetMenus.clear();
-        for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
-            if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
-
-                for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
-                    if(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile)))
-                    {
-                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
-                    }
-                    if(!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
-                        bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
-                        bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
-
-
-                        //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
-                        addBottomSheetMenu(bottomSheetMenu);
-                    }
-                }
-                break;
-            }
-        }
-
-        setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME,mContext),RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,mContext));
-
         //------
         locationTextView.setVisibility(View.VISIBLE);
         //------
@@ -158,6 +125,44 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
 
+    }
+
+    private void setBottomMenu() {
+        bottomMenus.clear();
+        dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
+        for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+            BottomMenu bottomMenu = new BottomMenu();
+            bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
+            bottomMenu.setMenuName(dashboardBottomMenuList.getName());
+            bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
+            bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.appointment)));
+            addBottomMenu(bottomMenu);
+        }
+
+        bottomSheetMenus.clear();
+        for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
+            if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
+
+                for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
+                    if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
+                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
+                    }
+                    if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
+                        BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
+                        bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
+                        bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
+
+
+                        //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
+                        addBottomSheetMenu(bottomSheetMenu);
+                    }
+                }
+                break;
+            }
+        }
+
+
+        setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
     }
 
     @OnClick({R.id.bookAppointmentBackButton, R.id.title, R.id.locationTextView})
@@ -306,7 +311,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                 intent.putExtra(RescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
             }
             startActivity(intent);
-        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment)+"s")) {
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment) + "s")) {
             Intent intent = new Intent(mContext, PrescriptionActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.clicked_item_data_type_value), bottomMenu.getName());
@@ -319,7 +324,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(mContext, AppointmentActivity.class);
             startActivity(intent);
-        }else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
             Intent intent = new Intent(mContext, SavedArticles.class);
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.clicked_item_data), bottomMenu.getName());

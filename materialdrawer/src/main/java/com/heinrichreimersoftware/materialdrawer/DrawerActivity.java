@@ -77,7 +77,7 @@ public class DrawerActivity extends BottomMenuActivity {
 
         mDrawer.closeDrawer();
 
-       // mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     /**

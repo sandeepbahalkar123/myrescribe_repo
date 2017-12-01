@@ -368,6 +368,7 @@
     <string name="confirm_token">Confirm Token</string>
     <string name="still_unsure">Still unsure, Use relevant keywords</string>
     <string name="type_to_select">Type to select your illness, eg. Fever</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
     <string name="selected_clinic_data_position">selected_clinic_data_position</string>
 

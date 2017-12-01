@@ -57,7 +57,7 @@ public class DoctorConnectSearchAdapter extends RecyclerView.Adapter<DoctorConne
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.bottom_sheet_menu_item_list, parent, false);
+                .inflate(R.layout.doctor_connect_grid_search, parent, false);
 
         return new ListViewHolder(itemView);
     }

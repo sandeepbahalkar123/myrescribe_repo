@@ -190,6 +190,9 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     }
 
     public void addItem(ChatDoctor chatDoctor) {
+        String time = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN);
+        chatDoctor.setLastChatTime(time);
+
         boolean isThere = false;
         for (int index = 0; index < chatDoctors.size(); index++) {
             if (chatDoctors.get(index).getId() == chatDoctor.getId()) {
@@ -198,10 +201,10 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
             }
         }
 
-        if (!isThere) {
+        if (!isThere)
             chatDoctors.add(0, chatDoctor);
-            mDoctorConnectChatAdapter.notifyDataSetChanged();
-        }
+
+        mDoctorConnectChatAdapter.notifyDataSetChanged();
     }
 }
 

@@ -152,15 +152,12 @@ public class CommonMethods {
 
     public static String getCurrentTimeStamp(String expectedFormat) {
         try {
-
             SimpleDateFormat dateFormat = new SimpleDateFormat(expectedFormat, Locale.US);
-            String currentTimeStamp = dateFormat.format(new Date()); // Find todays date
-
-            return currentTimeStamp;
+            return dateFormat.format(new Date());
         } catch (Exception e) {
             e.printStackTrace();
 
-            return null;
+            return "";
         }
     }
 

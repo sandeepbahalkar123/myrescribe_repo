@@ -6,16 +6,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,13 +34,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
-import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
-import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
-import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
-import com.heinrichreimersoftware.materialdrawer.theme.DrawerTheme;
 import com.rescribe.R;
 import com.rescribe.adapters.dashboard.MenuOptionsDashBoardAdapter;
 import com.rescribe.adapters.dashboard.ShowBackgroundViewPagerAdapter;
@@ -51,6 +43,7 @@ import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.helpers.database.MyRecordsData;
 import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
@@ -60,6 +53,7 @@ import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
+import com.rescribe.model.investigation.Image;
 import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
@@ -70,18 +64,18 @@ import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActi
 import com.rescribe.ui.activities.book_appointment.BookAppointFindLocation;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.activities.dashboard.HealthOffersActivity;
+import com.rescribe.ui.activities.dashboard.ProfileActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.SupportActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
 import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.activities.saved_articles.SaveArticleWebViewActivity;
+import com.rescribe.ui.activities.saved_articles.SavedArticles;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.RescribeConstants;
-
-import net.gotev.uploadservice.UploadService;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -108,7 +102,7 @@ import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
  */
 
 @RuntimePermissions
-public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, BottomSheetMenuAdapter.onBottomSheetMenuClickListener, BottomMenuAdapter.onBottomMenuClickListener, LocationListener,
+public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, GoogleSettingsApi.LocationSettings {
 
@@ -164,7 +158,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     Location mCurrentLocation;
     String mLastUpdateTime;
     private int PLACE_PICKER_REQUEST = 10;
-
+    private String profileImageString;
 
 
     @Override
@@ -197,7 +191,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             if (getIntent().getBooleanExtra(RescribeConstants.ALERT, true))
                 notificationForMedicine();
         }
-        drawerConfiguration();
+
         //------
         //  alertTab.setVisibility(View.VISIBLE);
     }
@@ -266,7 +260,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     @Override
     public void onBackPressed() {
 
-        closeDrawer();
         super.onBackPressed();
     }
 
@@ -331,181 +324,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void drawerConfiguration() {
-        setDrawerTheme(
-                new DrawerTheme(this)
-                        .setBackgroundColorRes(R.color.drawer_bg)
-                        .setTextColorPrimaryRes(R.color.drawer_menu_text_color)
-                        .setTextColorSecondaryRes(R.color.drawer_menu_text_color)
-        );
-
-        addItems(new DrawerItem()
-                        .setTextPrimary(getString(R.string.services))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.services)),
-                new DrawerItem()
-                        .setTextPrimary(getString(R.string.on_going_treatment))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_prescription)),
-                new DrawerItem()
-                        .setTextPrimary(getString(R.string.appointments))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_appointments)),
-                new DrawerItem()
-                        .setTextPrimary(getString(R.string.doctor_details))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_doctor_visit)),
-                /*new DrawerItem()
-                        .setTextPrimary(getString(R.string.investigation))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_investigations)),*/
-                new DrawerItem()
-                        .setTextPrimary(getString(R.string.vital_graph))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_vital_graph)),
-               /* new DrawerItem()
-                        .setTextPrimary(getString(R.string.my_records))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_my_records)),*/
-                new DrawerItem()
-                        .setTextPrimary(getString(R.string.settings))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.setting)),
-
-                new DrawerItem()
-                        .setTextPrimary(getString(R.string.logout))
-                        .setImage(ContextCompat.getDrawable(this, R.drawable.menu_logout))
-
-        );
-        setOnItemClickListener(new DrawerItem.OnItemClickListener() {
-            @Override
-            public void onClick(DrawerItem item, long itemID, int position) {
-                //  selectItem(position);
-                String id = item.getTextPrimary();
-                if (id.equalsIgnoreCase(getString(R.string.doctor_details))) {
-                    Intent intent = new Intent(mContext, DoctorListActivity.class);
-                    startActivity(intent);
-                } else if (id.equalsIgnoreCase(getString(R.string.on_going_treatment))) {
-                    Intent intent = new Intent(mContext, PrescriptionActivity.class);
-                    intent.putExtra(getString(R.string.toolbarTitle), id);
-                    startActivity(intent);
-                } else if (id.equalsIgnoreCase(getString(R.string.appointments))) {
-                    Intent intent = new Intent(mContext, AppointmentActivity.class);
-                    startActivity(intent);
-                } /*else if (id.equalsIgnoreCase(getString(R.string.investigation))) {
-                    Intent intent = new Intent(mContext, InvestigationActivity.class);
-                    startActivity(intent);
-                }*//* else if (id.equalsIgnoreCase(getString(R.string.my_records))) {
-                    MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
-                    int completeCount = 0;
-                    for (Image image : myRecordsData.getImageArrayList()) {
-                        if (image.isUploading() == RescribeConstants.COMPLETED)
-                            completeCount++;
-                    }
-                    Intent intent;
-                    if (completeCount == myRecordsData.getImageArrayList().size()) {
-                        appDBHelper.deleteMyRecords();
-                        intent = new Intent(mContext, MyRecordsActivity.class);
-                    } else {
-                        intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
-                        intent.putExtra(RescribeConstants.UPLOADING_STATUS, true);
-                        intent.putExtra(RescribeConstants.VISIT_DATE, myRecordsData.getVisitDate());
-                        intent.putExtra(RescribeConstants.OPD_ID, myRecordsData.getDocId());
-                        intent.putExtra(RescribeConstants.DOCTORS_ID, myRecordsData.getDocId());
-                        intent.putExtra(RescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
-                    }
-                    startActivity(intent);
-
-                }  else if (id.equalsIgnoreCase(getString(R.string.logout))) {
-                    logout();
-
-                }*/ else if (id.equalsIgnoreCase(getString(R.string.logout))) {
-                    ActiveRequest activeRequest = new ActiveRequest();
-                    activeRequest.setId(Integer.parseInt(patientId));
-                    loginHelper.doLogout(activeRequest);
-
-                } else if (id.equalsIgnoreCase(getString(R.string.doctor_connect))) {
-                    Intent intent = new Intent(mContext, DoctorConnectActivity.class);
-                    startActivity(intent);
-                } else if (id.equalsIgnoreCase(getString(R.string.vital_graph))) {
-                    Intent intent = new Intent(mContext, VitalGraphActivity.class);
-                    startActivity(intent);
-
-                } else if (id.equalsIgnoreCase(getString(R.string.settings))) {
-
-
-                    //TODO : added for testing purpose, remove it
-                    //----------
-                    //Intent popup = new Intent(getApplicationContext(), SettingActivity.class);
-                    //     Intent popup = new Intent(getApplicationContext(), BookAppointFindLocation.class);
-                    // startActivity(popup);
-                    //----------
-                } else if (id.equalsIgnoreCase(getString(R.string.services))) {
-                    Intent intent = new Intent(mContext, BookAppointmentServices.class);
-                    //    Intent intent = new Intent(mContext, DoctorListToBookAppointment.class);
-                    startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
-                }
-
-                closeDrawer();
-            }
-        });
-
-        // TODO : HARDEDCODED will get remove once done with APIs.
-        addProfile(new DrawerProfile()
-                .setId(1)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile))
-                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
-                .setName(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext))
-                .setDescription(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_EMAIL, mContext))
-        );
-
-        addProfile(new DrawerProfile()
-                .setId(2)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile))
-                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
-                .setName("Mr.Sandeep Deshmukh ")
-                .setDescription("sandeep_deshmukh@gmail.com")
-        );
-
-        addProfile(new DrawerProfile()
-                .setId(ADD_ACCOUNT)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.add_account))
-                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
-                .setDescription("Add Patient").setProfile(false) // for fixed item set profile false
-        );
-
-        addProfile(new DrawerProfile()
-                .setId(MANAGE_ACCOUNT)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.setting))
-                .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
-                .setDescription("Manage Profile").setProfile(false) // for fixed item set profile false
-        );
-
-        setOnNonProfileClickListener(new DrawerProfile.OnNonProfileClickListener() {
-            @Override
-            public void onProfileItemClick(DrawerProfile profile, long id) {
-                if (id == ADD_ACCOUNT) {
-
-                    // Do stuff here
-
-                    addProfile(new DrawerProfile()
-                            .setId(3)
-                            .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(mContext, R.drawable.profile))
-                            .setBackground(ContextCompat.getDrawable(mContext, R.drawable.group_2))
-                            .setName("Mr.Ganesh Deshmukh")
-                            .setDescription("ganesh_deshmukh@gmail.com")
-                    );
-//                    CommonMethods.showToast(mContext, "Profile Added");
-
-                } else if (id == MANAGE_ACCOUNT) {
-                    // Do stuff here
-//                    CommonMethods.showToast(mContext, profile.getDescription());
-                }
-                closeDrawer();
-            }
-        });
-
-        setOnProfileSwitchListener(new DrawerProfile.OnProfileSwitchListener() {
-            @Override
-            public void onSwitch(DrawerProfile oldProfile, long oldId, DrawerProfile newProfile, long newId) {
-                // do stuff here
-//                CommonMethods.showToast(mContext, "Welcome " + newProfile.getName());
-            }
-        });
-    }
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
@@ -628,7 +446,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.menuIcon:
-                openDrawer();
+
                 break;
             case R.id.locationImageView:
                 Intent start = new Intent(this, BookAppointFindLocation.class);
@@ -645,21 +463,28 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             intent = new Intent(mContext, FindDoctorsActivity.class);
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
+            b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
+
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
             intent = new Intent(mContext, PrescriptionActivity.class);
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
+            b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_repository))) {
             intent = new Intent(mContext, HealthRepository.class);
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
+            b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
+
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_offers))) {
             intent = new Intent(mContext, HealthOffersActivity.class);
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
+            b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
+
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_education))) {
 
@@ -668,12 +493,16 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             b.putString(getString(R.string.url), menu.getHealthEducationUrl());
             b.putString(getString(R.string.toolbarTitle), menu.getName());
             b.putString(getString(R.string.clicked_item_data), getString(R.string.saved_articles));
+            b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
+
             b.putBoolean(getString(R.string.save), false);
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_services))) {
             intent = new Intent(mContext, BookAppointmentServices.class);
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
+            b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
+
             intent.putExtras(b);
         }
         if (intent != null)
@@ -685,37 +514,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
         String menuName = bottomMenu.getMenuName();
 
-        if (menuName.equalsIgnoreCase(getString(R.string.home))) {
-
-
-           /* mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
-            Intent intent = new Intent(HomePageActivity.this, NotificationActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            intent.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            if (mGetMealTime.equals(getString(R.string.break_fast))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
-                intent.putExtra(RescribeConstants.TIME, breakFastTime);
-            } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
-                intent.putExtra(RescribeConstants.TIME, lunchTime);
-            } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
-                intent.putExtra(RescribeConstants.TIME, snacksTime);
-            } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intent.putExtra(RescribeConstants.TIME, dinnerTime);
-            } else if (mGetMealTime.isEmpty()) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intent.putExtra(RescribeConstants.TIME, dinnerTime);
-            }
-
-            startActivity(intent);*/
-
-
-        } else if (menuName.equalsIgnoreCase(getString(R.string.appointment))) {
+        if (menuName.equalsIgnoreCase(getString(R.string.appointment))) {
             Intent intent = new Intent(HomePageActivity.this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             Bundle bundle = new Bundle();
@@ -739,6 +538,12 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         }
 
         super.onBottomMenuClick(bottomMenu);
+    }
+
+    @Override
+    public void onProfileImageClick() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
     }
 
 
@@ -774,21 +579,25 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
             if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
 
-                for(int j =0;j<dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size();j++) {
+                for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
+                    if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
+                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
+                    }
+                    if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
+                        BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
+                        bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
+                        bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
 
-                    BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
-                    bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
-                    bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
 
-
-                    //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
-                    addBottomSheetMenu(bottomSheetMenu);
+                        //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
+                        addBottomSheetMenu(bottomSheetMenu);
+                    }
                 }
                 break;
             }
         }
 
-        setUpAdapterForBottomSheet();
+        setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
     }
 
 
@@ -942,7 +751,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 RescribeApplication.setPreviousUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
                 if (obj.getLocality() != null) {
                     mDashboardHelper.doGetDashboard(obj.getLocality());
-                } else {
                     mDashboardHelper.doGetDashboard("");
                 }
 
@@ -985,6 +793,96 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
+        if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.vital_graph))) {
+            Intent intent = new Intent(this, VitalGraphActivity.class);
+            startActivity(intent);
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
+            AppDBHelper appDBHelper = new AppDBHelper(this);
+            Cursor cursor = appDBHelper.getPreferences("1");
+            String breakFastTime = "";
+            String lunchTime = "";
+            String dinnerTime = "";
+            String snacksTime = "";
 
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    breakFastTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
+                    lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
+                    dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
+                    snacksTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.SNACKS_TIME));
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+
+            Calendar c = Calendar.getInstance();
+            int hour24 = c.get(Calendar.HOUR_OF_DAY);
+            int Min = c.get(Calendar.MINUTE);
+
+            String mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
+            Intent intent = new Intent(this, NotificationActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            intent.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+
+            if (mGetMealTime.equals(getString(R.string.break_fast))) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
+                intent.putExtra(RescribeConstants.TIME, breakFastTime);
+            } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
+                intent.putExtra(RescribeConstants.TIME, lunchTime);
+            } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
+                intent.putExtra(RescribeConstants.TIME, snacksTime);
+            } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
+                intent.putExtra(RescribeConstants.TIME, dinnerTime);
+            } else if (mGetMealTime.isEmpty()) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
+                intent.putExtra(RescribeConstants.TIME, dinnerTime);
+            }
+
+            startActivity(intent);
+
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {
+            MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
+            int completeCount = 0;
+            for (Image image : myRecordsData.getImageArrayList()) {
+                if (image.isUploading() == RescribeConstants.COMPLETED)
+                    completeCount++;
+            }
+            Intent intent;
+            if (completeCount == myRecordsData.getImageArrayList().size()) {
+                appDBHelper.deleteMyRecords();
+                intent = new Intent(mContext, MyRecordsActivity.class);
+            } else {
+                intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
+                intent.putExtra(RescribeConstants.UPLOADING_STATUS, true);
+                intent.putExtra(RescribeConstants.VISIT_DATE, myRecordsData.getVisitDate());
+                intent.putExtra(RescribeConstants.OPD_ID, myRecordsData.getDocId());
+                intent.putExtra(RescribeConstants.DOCTORS_ID, myRecordsData.getDocId());
+                intent.putExtra(RescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
+            }
+            startActivity(intent);
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment) + "s")) {
+            Intent intent = new Intent(mContext, PrescriptionActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.clicked_item_data_type_value), bottomMenu.getName());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+        if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.doctor_details))) {
+            Intent intent = new Intent(mContext, DoctorListActivity.class);
+            startActivity(intent);
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_appointments))) {
+            Intent intent = new Intent(mContext, AppointmentActivity.class);
+            startActivity(intent);
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
+            Intent intent = new Intent(mContext, SavedArticles.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.clicked_item_data), bottomMenu.getName());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+        super.onBottomSheetMenuClick(bottomMenu);
     }
 }

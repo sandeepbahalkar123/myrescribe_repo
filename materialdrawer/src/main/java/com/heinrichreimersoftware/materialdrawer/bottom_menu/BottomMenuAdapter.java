@@ -14,19 +14,20 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.request.RequestOptions;
 import com.heinrichreimersoftware.materialdrawer.R;
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 
 import java.util.ArrayList;
 
 public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.ListViewHolder> {
 
-    private onBottomMenuClickListener mBottomMenuListClickListener;
+    public OnBottomMenuClickListener mBottomMenuListClickListener;
     private ArrayList<BottomMenu> bottomMenus;
 
     BottomMenuAdapter(Context mContext, ArrayList<BottomMenu> bottomMenus) {
         this.bottomMenus = bottomMenus;
 
         try {
-            this.mBottomMenuListClickListener = ((onBottomMenuClickListener) mContext);
+            this.mBottomMenuListClickListener = ((OnBottomMenuClickListener) mContext);
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement onBottomMenuListClickListener.");
         }
@@ -104,7 +105,10 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
         }
     }
 
-    public interface onBottomMenuClickListener {
+    public interface OnBottomMenuClickListener {
+        void onBottomSheetMenuClick(BottomSheetMenu bottomMenu);
         void onBottomMenuClick(BottomMenu bottomMenu);
+        void onProfileImageClick();
     }
+
 }

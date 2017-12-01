@@ -10,17 +10,26 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.helpers.database.MyRecordsData;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
+import com.rescribe.model.investigation.Image;
+import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.HomePageActivity;
+import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.ui.activities.NotificationActivity;
+import com.rescribe.ui.activities.PrescriptionActivity;
+import com.rescribe.ui.activities.SelectedRecordsGroupActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
+import com.rescribe.ui.activities.doctor.DoctorListActivity;
+import com.rescribe.ui.activities.saved_articles.SavedArticles;
+import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -41,7 +50,7 @@ import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
  */
 
 @RuntimePermissions
-public class SupportActivity extends BottomMenuActivity implements BottomSheetMenuAdapter.onBottomSheetMenuClickListener,BottomMenuAdapter.onBottomMenuClickListener {
+public class SupportActivity extends BottomMenuActivity implements BottomMenuAdapter.OnBottomMenuClickListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -50,6 +59,8 @@ public class SupportActivity extends BottomMenuActivity implements BottomSheetMe
     CustomTextView callTextView;
     @BindView(R.id.emailtextView)
     CustomTextView emailtextView;
+    private AppDBHelper appDBHelper;
+    private String profileImageString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +68,7 @@ public class SupportActivity extends BottomMenuActivity implements BottomSheetMe
         setContentView(R.layout.support_base_layout);
         ButterKnife.bind(this);
         initialize();
-
+        bottomMenus.clear();
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
             BottomMenu bottomMenu = new BottomMenu();
@@ -67,6 +78,31 @@ public class SupportActivity extends BottomMenuActivity implements BottomSheetMe
             bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.support)));
             addBottomMenu(bottomMenu);
         }
+        bottomSheetMenus.clear();
+        for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
+            if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
+
+                for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
+                    if(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile)))
+                    {
+                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
+                    }
+                    if(!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
+                        BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
+                        bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
+                        bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
+
+
+                        //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
+                        addBottomSheetMenu(bottomSheetMenu);
+                    }
+                }
+                break;
+            }
+        }
+
+        setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME,this),RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,this));
+
 
     }
 
@@ -76,6 +112,7 @@ public class SupportActivity extends BottomMenuActivity implements BottomSheetMe
     }
 
     private void initialize() {
+        appDBHelper = new AppDBHelper(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.support));
     }
@@ -184,6 +221,11 @@ public class SupportActivity extends BottomMenuActivity implements BottomSheetMe
         super.onBottomMenuClick(bottomMenu);
     }
 
+    @Override
+    public void onProfileImageClick() {
+
+    }
+
     @OnClick({R.id.callTextView, R.id.emailtextView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -206,6 +248,98 @@ public class SupportActivity extends BottomMenuActivity implements BottomSheetMe
 
     @Override
     public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
+        if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.vital_graph))) {
+            Intent intent = new Intent(this, VitalGraphActivity.class);
+            startActivity(intent);
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
+            AppDBHelper appDBHelper = new AppDBHelper(this);
+            Cursor cursor = appDBHelper.getPreferences("1");
+            String breakFastTime = "";
+            String lunchTime = "";
+            String dinnerTime = "";
+            String snacksTime = "";
+
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    breakFastTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
+                    lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
+                    dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
+                    snacksTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.SNACKS_TIME));
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+
+            Calendar c = Calendar.getInstance();
+            int hour24 = c.get(Calendar.HOUR_OF_DAY);
+            int Min = c.get(Calendar.MINUTE);
+
+            String mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
+            Intent intent = new Intent(this, NotificationActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            intent.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+
+            if (mGetMealTime.equals(getString(R.string.break_fast))) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
+                intent.putExtra(RescribeConstants.TIME, breakFastTime);
+            } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
+                intent.putExtra(RescribeConstants.TIME, lunchTime);
+            } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
+                intent.putExtra(RescribeConstants.TIME, snacksTime);
+            } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
+                intent.putExtra(RescribeConstants.TIME, dinnerTime);
+            } else if (mGetMealTime.isEmpty()) {
+                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
+                intent.putExtra(RescribeConstants.TIME, dinnerTime);
+            }
+
+            startActivity(intent);
+
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {
+            MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
+            int completeCount = 0;
+            for (Image image : myRecordsData.getImageArrayList()) {
+                if (image.isUploading() == RescribeConstants.COMPLETED)
+                    completeCount++;
+            }
+            Intent intent;
+            if (completeCount == myRecordsData.getImageArrayList().size()) {
+                appDBHelper.deleteMyRecords();
+                intent = new Intent(this, MyRecordsActivity.class);
+            } else {
+                intent = new Intent(this, SelectedRecordsGroupActivity.class);
+                intent.putExtra(RescribeConstants.UPLOADING_STATUS, true);
+                intent.putExtra(RescribeConstants.VISIT_DATE, myRecordsData.getVisitDate());
+                intent.putExtra(RescribeConstants.OPD_ID, myRecordsData.getDocId());
+                intent.putExtra(RescribeConstants.DOCTORS_ID, myRecordsData.getDocId());
+                intent.putExtra(RescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
+            }
+            startActivity(intent);
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment)+"s")) {
+            Intent intent = new Intent(this, PrescriptionActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.clicked_item_data_type_value), bottomMenu.getName());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+        if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.doctor_details))) {
+            Intent intent = new Intent(this, DoctorListActivity.class);
+            startActivity(intent);
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_appointments))) {
+            Intent intent = new Intent(this, AppointmentActivity.class);
+            startActivity(intent);
+        }else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
+            Intent intent = new Intent(this, SavedArticles.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.clicked_item_data), bottomMenu.getName());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+        super.onBottomSheetMenuClick(bottomMenu);
+
 
     }
 }

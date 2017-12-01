@@ -49,7 +49,12 @@ public class HealthOffersActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
-            getSupportActionBar().setTitle(mReceivedDashboardMenuListData.getName());
+            String value = extras.getString(getString(R.string.clicked_item_data_type_value));
+
+            if (mReceivedDashboardMenuListData != null)
+                getSupportActionBar().setTitle(mReceivedDashboardMenuListData.getName());
+            else if (value != null)
+                getSupportActionBar().setTitle(value);
         }
 
         if (getSupportActionBar() != null)

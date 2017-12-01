@@ -15,23 +15,27 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.request.RequestOptions;
 import com.heinrichreimersoftware.materialdrawer.R;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
 @SuppressLint("Registered")
-public class BottomMenuActivity extends AppCompatActivity implements BottomMenuAdapter.onBottomMenuClickListener {
+public class BottomMenuActivity extends AppCompatActivity implements BottomMenuAdapter.OnBottomMenuClickListener {
 
     private FrameLayout mFrame;
     private RecyclerView bottomMenuListRecyclerView;
@@ -47,6 +51,10 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     public boolean isOpen;
     private TableLayout tableLayout;
     private int mPosition;
+    private ImageView imageUrl;
+    private TextView mPatientName;
+    private TextView mMobileNumber;
+    private ColorGenerator mColorGenerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +64,21 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         tableLayout = (TableLayout) findViewById(R.id.table);
         bottomSheetMenuLayout = (FrameLayout) findViewById(R.id.bottomSheetMenuLayout);
         bottomSheetMenu = (RelativeLayout) findViewById(R.id.bottomSheetMenu);
+        mPatientName = (TextView) findViewById(R.id.patientName);
+        mMobileNumber = (TextView) findViewById(R.id.mobileNumber);
         bottomMenuListRecyclerView = (RecyclerView) findViewById(R.id.bottomMenuListRecyclerView);
+        imageUrl = (ImageView) findViewById(R.id.imageUrl);
         // mBottomSheetMenuListRecyclerView = (RecyclerView) findViewById(R.id.bottomSheetMenuListRecyclerView);
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
+        mColorGenerator = ColorGenerator.MATERIAL;
         createBottomMenu();
+
+        imageUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 onProfileImageClick();
+            }
+        });
 //        mBottomSheetMenuAdapter = new BottomSheetMenuAdapter(this, bottomSheetMenus);
         bottomSheetMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,11 +103,29 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         isOpen = true;
     }
 
-    public void setUpAdapterForBottomSheet() {
+    public void setUpAdapterForBottomSheet(String patientImageUrl,String patientName,String patientMobileNo) {
        /* LinearLayoutManager bottomSheetlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mBottomSheetMenuListRecyclerView.setLayoutManager(bottomSheetlayoutManager);
         mBottomSheetMenuListRecyclerView.setHasFixedSize(true);
         mBottomSheetMenuListRecyclerView.setAdapter(mBottomSheetMenuAdapter);*/
+       mMobileNumber.setText(patientMobileNo);
+        mPatientName.setText(patientName);
+       /* RequestOptions options = new RequestOptions()
+                .centerInside()
+                .priority(Priority.HIGH);
+
+        Glide.with(imageUrl.getContext())
+                .load(patientImageUrl).apply(options)
+                .into(imageUrl);*/
+        int color2 = mColorGenerator.getColor(patientName);
+        TextDrawable drawable = TextDrawable.builder()
+                .beginConfig()
+                .width(Math.round(getResources().getDimension(R.dimen.dp40))) // width in px
+                .height(Math.round(getResources().getDimension(R.dimen.dp40))) // height in px
+                .endConfig()
+                .buildRound(("" + patientName.charAt(0)).toUpperCase(), color2);
+        imageUrl.setImageDrawable(drawable);
+
         tableLayout.removeAllViews();
 
         List<BottomSheetMenu> bottomSheetMenus = new ArrayList<>();
@@ -111,14 +148,20 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     private View addTableRow(final List<BottomSheetMenu> bottomSheetMenus, final int groupPosition) {
         TableRow tableRow = new TableRow(this);
         for (int i = 0; i < bottomSheetMenus.size(); i++) {
+            final BottomSheetMenu bottomSheetMenu = bottomSheetMenus.get(i);
             View item = LayoutInflater.from(this)
                     .inflate(R.layout.bottom_sheet_menu_item_list, tableRow, false);
             TextView bottomMenuName = (TextView) item.findViewById(R.id.menuName);
             ImageView menuBottomIcon = (ImageView) item.findViewById(R.id.menuImage);
-
+            LinearLayout bottomSheetLayout = (LinearLayout) item.findViewById(R.id.bottomSheetLayout);
             final int finali = mPosition;
             bottomMenuName.setText(bottomSheetMenus.get(i).getName());
-
+            bottomSheetLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBottomSheetMenuClick(bottomSheetMenu);
+                }
+            });
             RequestOptions options = new RequestOptions()
                     .centerInside()
                     .priority(Priority.HIGH);
@@ -221,6 +264,12 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     }
 
     @Override
+    public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
+
+
+    }
+
+    @Override
     public void onBottomMenuClick(BottomMenu bottomMenu) {
         if (bottomMenu.getMenuName().equalsIgnoreCase(getString(R.string.app_logo))) {
             if (isOpen)
@@ -228,5 +277,10 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
             else
                 openSheet();
         }
+    }
+
+    @Override
+    public void onProfileImageClick() {
+
     }
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -54,7 +54,7 @@ import butterknife.ButterKnife;
 
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
-public class NotificationActivity extends BottomMenuActivity implements HelperResponse, NotificationAdapter.OnNotificationClickListener, BottomMenuAdapter.onBottomMenuClickListener {
+public class NotificationActivity extends BottomMenuActivity implements HelperResponse, NotificationAdapter.OnNotificationClickListener, BottomMenuAdapter.OnBottomMenuClickListener {
 
     private NotificationAdapter mAdapter;
     private String mMedicineSlot;
@@ -198,7 +198,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                     slotMedicine = getString(R.string.smallcasesnacks);
                 }
                 mSlotTextView.setText(mMedicineSlot);
-                mTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, CommonMethods .getCurrentDateTime()));
+                mTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, CommonMethods.getCurrentDateTime()));
                 mDateTextView.setText(mNotificationDate);
                 mDoseCompletedLabel.setText(getString(R.string.dosage_completed));
                 mDividerLineInList.setVisibility(View.VISIBLE);
@@ -306,7 +306,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
             String[] count = position.split("_");
             String counter = count[1];
             if (responseLogNotificationModel.getCommon().isSuccess()) {
-               // CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
+                // CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
                 mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(true);
                 mTodayDataList.get(Integer.parseInt(counter)).setTabWebService(false);
                 mView.findViewById(R.id.selectViewTab).setEnabled(false);
@@ -316,10 +316,10 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
         } else if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
 
             NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
-            if (prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification().size()!= 0) {
+            if (prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification().size() != 0) {
 
-                    mNotificationLayout.setVisibility(View.VISIBLE);
-                    mNoDataAvailable.setVisibility(View.GONE);
+                mNotificationLayout.setVisibility(View.VISIBLE);
+                mNoDataAvailable.setVisibility(View.GONE);
 
                 List<NotificationData> notificationData = prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification();
                 String date = CommonMethods.getCurrentDateTime();
@@ -423,7 +423,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
             NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
             //onclick of NotificationActivity checkbox of header layout
             if (responseLogNotificationModel.getCommon().isSuccess()) {
-            //    CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
+                //    CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
                 mHeaderLayoutParent.removeView(mHeaderLayout);
             }
             //handled click from NotificationAdapter checkbox in header layout
@@ -530,5 +530,15 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public void onProfileImageClick() {
+
+    }
+
+    @Override
+    public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
+
     }
 }

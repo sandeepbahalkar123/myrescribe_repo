@@ -51,5 +51,6 @@
     <dimen name="dp8">8dp</dimen>
     <dimen name="dp4">4dp</dimen>
     <dimen name="sp10">10sp</dimen>
+    <dimen name="dp40">40dp</dimen>
 
 </resources>

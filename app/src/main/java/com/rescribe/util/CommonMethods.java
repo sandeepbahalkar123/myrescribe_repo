@@ -644,7 +644,7 @@ public class CommonMethods {
         else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.ent)))
             abbreviation = R.drawable.ent;
         else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.dentist)))
-            abbreviation = R.drawable.dentist_health_offers;
+            abbreviation = R.drawable.dentist;
         else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.gynecologist)))
             abbreviation = R.drawable.gynecologist;
         else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.paediatric)))

@@ -176,6 +176,7 @@ public class RescribeConstants {
     public static final int DOCTOR_LOCATION_CHANGE_FROM_MAP_REQUEST_CODE = 1002;
     public static final String DOCTOR_DATA = "doctor_data";
     public static final int PLACE_PICKER_REQUEST = 99;
+    public static final String NOTIFICATION_COUNT = "notification_count";
 
 
     public static class USER_STATUS {

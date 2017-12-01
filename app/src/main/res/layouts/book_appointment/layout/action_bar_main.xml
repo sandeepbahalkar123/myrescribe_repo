@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp16"
+                    android:textSize="@dimen/sp18"
                     android:visibility="visible"
                     app:customFont="@string/roboto_bold" />
 

@@ -331,7 +331,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
             intent.putExtras(bundle);
             startActivity(intent);
-        } else if (data.getName().equalsIgnoreCase(getString(R.string.consult_online))) {
+        } else if (data.getName().equalsIgnoreCase(getString(R.string.doctor_connect))) {
             Intent intent = new Intent(mContext, DoctorConnectActivity.class);
             startActivity(intent);
         }

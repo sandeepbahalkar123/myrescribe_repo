@@ -719,19 +719,19 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
             intent.putExtras(bundle);
             startActivity(intent);
-            finish();
+
 
         } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
             Intent intent = new Intent(HomePageActivity.this, SettingsActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
-            finish();
+
 
         } else if (menuName.equalsIgnoreCase(getString(R.string.support))) {
             Intent intent = new Intent(HomePageActivity.this, SupportActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
-            finish();
+
 
         }
 

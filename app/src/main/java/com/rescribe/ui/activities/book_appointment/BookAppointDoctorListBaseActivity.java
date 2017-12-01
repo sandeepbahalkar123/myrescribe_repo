@@ -40,7 +40,7 @@ import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
  * Created by jeetal on 15/9/17.
  */
 
-public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implements BottomSheetMenuAdapter.onBottomSheetMenuClickListener,BottomMenuAdapter.onBottomMenuClickListener, GoogleApiClient.OnConnectionFailedListener, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
+public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implements BottomSheetMenuAdapter.onBottomSheetMenuClickListener, BottomMenuAdapter.onBottomMenuClickListener, GoogleApiClient.OnConnectionFailedListener, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
 
     private static final String TAG = "BookAppointDoctorListBaseActivity";
     @BindView(R.id.bookAppointmentBackButton)
@@ -84,6 +84,9 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                 bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.appointment)));
                 addBottomMenu(bottomMenu);
             }
+            bookAppointmentBackButton.setVisibility(View.INVISIBLE);
+        } else {
+            bookAppointmentBackButton.setVisibility(View.VISIBLE);
         }
         //------
         locationTextView.setVisibility(View.VISIBLE);

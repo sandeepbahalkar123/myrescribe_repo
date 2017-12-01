@@ -31,7 +31,8 @@
                 android:layout_weight="1"
                 android:gravity="center|left"
                 android:text="asd"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/dp18" />
 
             <ImageView
                 android:id="@+id/bookMarkIcon"

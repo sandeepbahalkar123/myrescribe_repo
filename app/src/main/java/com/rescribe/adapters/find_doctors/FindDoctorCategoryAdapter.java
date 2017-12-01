@@ -53,7 +53,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
         this.mDataList = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
-      this.mServicesCardViewClickListener = mOnClickOfCardOnDashboard;
+        this.mServicesCardViewClickListener = mOnClickOfCardOnDashboard;
          /* this.mListSizeWithTypeMap = dataMap;*/
 
         mInflater = LayoutInflater.from(context);
@@ -299,7 +299,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.toString());
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.getCategoryName());
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 mServicesCardViewClickListener.onClickOfCardView(b);
             }

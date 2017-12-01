@@ -7,6 +7,7 @@ package com.rescribe.network;
 import android.content.Context;
 import android.view.View;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.Connector;
 import com.rescribe.interfaces.CustomResponse;
@@ -49,6 +50,8 @@ public class ConnectionFactory extends ConnectRequest {
         headerParams.put(RescribeConstants.CONTENT_TYPE, RescribeConstants.APPLICATION_JSON);
         headerParams.put(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString);
         headerParams.put(RescribeConstants.DEVICEID, device.getDeviceId());
+        String token = FirebaseInstanceId.getInstance().getToken();
+        headerParams.put(RescribeConstants.DEVICE_TOKEN, token != null ? token : "");
         headerParams.put(RescribeConstants.OS, device.getOS());
         headerParams.put(RescribeConstants.OSVERSION, device.getOSVersion());
         headerParams.put(RescribeConstants.DEVICE_TYPE, device.getDeviceType());

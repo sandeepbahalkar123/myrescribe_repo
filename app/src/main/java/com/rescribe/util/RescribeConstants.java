@@ -17,6 +17,7 @@ public class RescribeConstants {
     public static final String ALERT = "alert";
     public static final String ID = "_id";
     public static final String USER_ID = "User-ID";
+    public static final String DEVICE_TOKEN = "devicetoken";
     public static final String DEVICEID = "Device-Id";
     public static final String OS = "OS";
     public static final String OSVERSION = "OsVersion";

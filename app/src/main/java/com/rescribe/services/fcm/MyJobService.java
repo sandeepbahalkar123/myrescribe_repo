@@ -14,7 +14,7 @@ public class MyJobService extends JobService {
     public boolean onStartJob(JobParameters jobParameters) {
         Log.d(TAG, "Performing long running task in scheduled job");
 
-        Toast.makeText(MyJobService.this, "Job Running", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MyJobService.this, "Job Running", Toast.LENGTH_SHORT).show();
 
         return false;
     }

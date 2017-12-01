@@ -161,6 +161,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     Location mCurrentLocation;
     String mLastUpdateTime;
     private int PLACE_PICKER_REQUEST = 10;
+
     private String profileImageString;
     private String locationString;
 
@@ -174,8 +175,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         mContext = HomePageActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
-
-        // mCustomProgressDialog = new CustomProgressDialog(HomePageActivity.this);
         createLocationRequest();
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
 

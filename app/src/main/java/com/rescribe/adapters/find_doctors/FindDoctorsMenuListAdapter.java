@@ -1,5 +1,6 @@
 package com.rescribe.adapters.find_doctors;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ public class FindDoctorsMenuListAdapter extends RecyclerView.Adapter<FindDoctors
         return new FindDoctorsMenuListAdapter.ListViewHolder(itemView);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(FindDoctorsMenuListAdapter.ListViewHolder holder, int position) {
 

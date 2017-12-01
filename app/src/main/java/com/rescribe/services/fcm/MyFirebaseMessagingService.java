@@ -95,7 +95,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
         Job myJob = dispatcher.newJobBuilder()
                 .setService(MyJobService.class)
-                .setTag("my-job-tag")
+                .setTag("rescribe_job")
                 .build();
         dispatcher.schedule(myJob);
         // [END dispatch_job]

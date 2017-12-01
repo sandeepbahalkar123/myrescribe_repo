@@ -123,7 +123,7 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
     private LinearLayout linearLayoutProfileTextContainer;
     private TextView textViewProfileName;
     private TextView textViewProfileDescription;
-    private ImageView imageViewOpenProfileListIcon;
+//    private ImageView imageViewOpenProfileListIcon;
     private LinearListView linearListViewProfileList;
     private LinearListView linearListView;
     private View fixedShadow;
@@ -215,7 +215,9 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
 
         resetDrawerTheme();
 
-        linearLayoutProfileTextContainer.setOnClickListener(new OnClickListener() {
+        // off toggle
+
+        /*linearLayoutProfileTextContainer.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 toggleProfileList();
@@ -227,7 +229,7 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
             public void onClick(View v) {
                 toggleProfileList();
             }
-        });
+        });*/
 
         frameLayoutProfile.setVisibility(GONE);
         layout.setPadding(0, statusBarHeight, 0, 0);
@@ -254,7 +256,8 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
         linearLayoutProfileTextContainer = (LinearLayout) findViewById(R.id.mdProfileTextContainer);
         textViewProfileName = (TextView) findViewById(R.id.mdProfileName);
         textViewProfileDescription = (TextView) findViewById(R.id.mdProfileDescription);
-        imageViewOpenProfileListIcon = (ImageView) findViewById(R.id.mdOpenProfileListIcon);
+//        imageViewOpenProfileListIcon = (ImageView) findViewById(R.id.mdOpenProfileListIcon);
+
         linearListViewProfileList = (LinearListView) findViewById(R.id.mdProfileList);
 
         linearListView = (LinearListView) findViewById(R.id.mdList);
@@ -293,12 +296,12 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
 
         textViewProfileName.setTextColor(drawerTheme.getTextColorPrimaryInverse());
         textViewProfileDescription.setTextColor(drawerTheme.getTextColorSecondaryInverse());
-        imageViewOpenProfileListIcon.setColorFilter(drawerTheme.getTextColorPrimaryInverse(), PorterDuff.Mode.SRC_IN);
+        /*imageViewOpenProfileListIcon.setColorFilter(drawerTheme.getTextColorPrimaryInverse(), PorterDuff.Mode.SRC_IN);
         if (drawerTheme.isLightTheme()) {
             imageViewOpenProfileListIcon.setBackgroundResource(R.drawable.md_selector_light);
         } else {
             imageViewOpenProfileListIcon.setBackgroundResource(R.drawable.md_selector_dark);
-        }
+        }*/
 
     }
 
@@ -365,8 +368,8 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                 textViewProfileAvatarCount.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        toggleProfileList();
-//                        openProfileList();
+//                        toggleProfileList();
+                        openProfileList();
                     }
                 });
 
@@ -376,8 +379,8 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                 imageViewProfileAvatarSecondary.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        toggleProfileList();
-//                        openProfileList();
+//                        toggleProfileList();
+                        openProfileList();
                     }
                 });
 
@@ -398,7 +401,7 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
 
                 imageViewProfileAvatarSecondary.setVisibility(VISIBLE);  // Change
                 textViewProfileAvatarCount.setVisibility(VISIBLE);
-                imageViewOpenProfileListIcon.setVisibility(VISIBLE);
+//                imageViewOpenProfileListIcon.setVisibility(VISIBLE);
             } else if (mProfileAdapter.getProfileCount() == 2) {
                 /* Two profiles. Should show the second profile avatar. */
                 if (mProfileAdapter.getItem(1).hasAvatar()) {
@@ -414,13 +417,13 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                     imageViewProfileAvatarSecondary.setVisibility(INVISIBLE);
                 }
                 textViewProfileAvatarCount.setVisibility(GONE);
-                imageViewOpenProfileListIcon.setVisibility(VISIBLE);
+//                imageViewOpenProfileListIcon.setVisibility(VISIBLE);
 
-                closeProfileList();
+                openProfileList();
             } else {
                 imageViewProfileAvatarSecondary.setVisibility(INVISIBLE);
                 textViewProfileAvatarCount.setVisibility(GONE);
-                imageViewOpenProfileListIcon.setVisibility(GONE);
+//                imageViewOpenProfileListIcon.setVisibility(GONE);
             }
             if (mProfileAdapter.getItem(0).getAvatar() != null) {
                 imageViewProfileAvatar.setImageDrawable(mProfileAdapter.getItem(0).getAvatar());
@@ -468,7 +471,8 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
 
             updateProfileTheme();
         } else {
-            closeProfileList();
+//            closeProfileList();
+            openProfileList();
         }
     }
 
@@ -796,14 +800,14 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
         }
     }
 
-    private void toggleProfileList() {
+    /*private void toggleProfileList() {
         if (loggingEnabled) Log.d(TAG, "toggleProfileList()");
         if (profileListOpen) {
             closeProfileList();
         } else {
             openProfileList();
         }
-    }
+    }*/
 
     private void openProfileList() {
         if (loggingEnabled) Log.d(TAG, "openProfileList()");
@@ -814,7 +818,7 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                     ObjectAnimator.ofFloat(linearListView, "translationY", 0, getResources().getDimensionPixelSize(R.dimen.md_list_item_height) / 4),
                     ObjectAnimator.ofFloat(linearListViewProfileList, "alpha", 0, 1),
                     ObjectAnimator.ofFloat(linearListViewProfileList, "translationY", -getResources().getDimensionPixelSize(R.dimen.md_list_item_height) / 2, 0),
-                    ObjectAnimator.ofInt(imageViewOpenProfileListIcon.getDrawable(), PROPERTY_LEVEL, 0, 10000),
+//                    ObjectAnimator.ofInt(imageViewOpenProfileListIcon.getDrawable(), PROPERTY_LEVEL, 0, 10000),
                     ObjectAnimator.ofInt(scrollView, PROPERTY_SCROLL_POSITION, 0)
             );
             set.setDuration(getResources().getInteger(R.integer.md_profile_list_open_anim_time));
@@ -822,16 +826,14 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                 @Override
                 public void onAnimationStart(Animator animation) {
                     linearListViewProfileList.setVisibility(VISIBLE);
-
-                    imageViewOpenProfileListIcon.setClickable(false);
+//                    imageViewOpenProfileListIcon.setClickable(false);
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    imageViewOpenProfileListIcon.setClickable(true);
+//                    imageViewOpenProfileListIcon.setClickable(true);
 
                     profileListOpen = true;
-
                     updateListVisibility();
                 }
 
@@ -849,7 +851,7 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
         }
     }
 
-    private void closeProfileList() {
+    /*private void closeProfileList() {
         if (loggingEnabled) Log.d(TAG, "closeProfileList()");
         if (profileListOpen) {
             AnimatorSet set = new AnimatorSet();
@@ -890,7 +892,7 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
         } else {
             updateListVisibility();
         }
-    }
+    }*/
 
     /**
      * Gets whether debug logging is enabled
@@ -1052,7 +1054,8 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
             DrawerProfile oldProfile = mProfileAdapter.getItem(0);
 
             if (mProfileAdapter.getCount() > 1) {
-                closeProfileList();
+//                closeProfileList();
+                openProfileList();
                 animateToProfile(profile);
 
                 mProfileAdapter.remove(profile);
@@ -1768,7 +1771,6 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
         Bundle savedInstanceState = new Bundle();
         savedInstanceState.putParcelable("instanceState", super.onSaveInstanceState());
 
-
         savedInstanceState.putBoolean(STATE_PROFILE_LIST_OPEN, profileListOpen);
         savedInstanceState.putInt(STATE_LIST_SELECTION, mAdapter.getSelectedPosition());
         savedInstanceState.putInt(STATE_FIXED_LIST_SELECTION, mAdapterFixed.getSelectedPosition());
@@ -1786,10 +1788,12 @@ public class DrawerView extends ScrimInsetsFrameLayout implements ScrimInsetsFra
                 if (savedInstanceState.getBoolean(STATE_PROFILE_LIST_OPEN, false)) {
                     openProfileList();
                 } else {
-                    closeProfileList();
+//                    closeProfileList();
+                    openProfileList();
                 }
             } else {
-                closeProfileList();
+//                closeProfileList();
+                openProfileList();
             }
             if (savedInstanceState.containsKey(STATE_LIST_SELECTION)) {
                 int listSelection = savedInstanceState.getInt(STATE_LIST_SELECTION, -1);

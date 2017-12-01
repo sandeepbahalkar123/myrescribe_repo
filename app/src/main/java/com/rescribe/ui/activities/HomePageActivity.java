@@ -151,7 +151,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     DashboardDataModel mDashboardDataModel;
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     private ServicesCardViewImpl mDashboardDataBuilder;
-    private AppDBHelper appDBHelper;
     private DashboardHelper mDashboardHelper;
     ArrayList<DoctorList> myAppoint;
     ArrayList<DoctorList> sponsered;
@@ -165,9 +164,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     Location mCurrentLocation;
     String mLastUpdateTime;
     private int PLACE_PICKER_REQUEST = 10;
-    private String fcmToken = "";
-
-
+//    private String fcmToken = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +173,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         ButterKnife.bind(this);
         // mCustomProgressDialog = new CustomProgressDialog(HomePageActivity.this);
 
-        fcmToken = FirebaseInstanceId.getInstance().getToken();
+//        fcmToken = FirebaseInstanceId.getInstance().getToken();
 
         createLocationRequest();
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -188,7 +185,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         mDashboardDataBuilder = new ServicesCardViewImpl(this, this);
 
         //------
-        appDBHelper = new AppDBHelper(mContext);
         patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
         loginHelper = new LoginHelper(mContext, HomePageActivity.this);
         ActiveRequest activeRequest = new ActiveRequest();
@@ -270,7 +266,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onBackPressed() {
-
         closeDrawer();
         super.onBackPressed();
     }

@@ -252,7 +252,7 @@ public class ProfileActivity extends DrawerActivity implements HelperResponse {
 
         addProfile(new DrawerProfile()
                 .setId(2)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile_icon))
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr.Sandeep Deshmukh ")
                 .setDescription("sandeep_deshmukh@gmail.com")

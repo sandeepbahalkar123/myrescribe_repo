@@ -1,11 +1,11 @@
 
 package com.rescribe.model.book_appointment.select_slot_book_appointment;
 
-import java.util.ArrayList;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+
+import java.util.ArrayList;
 
 public class TimeSlotListDataModel {
 

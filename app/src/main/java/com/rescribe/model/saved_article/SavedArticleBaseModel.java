@@ -8,7 +8,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
-import com.rescribe.model.dashboard_api.DashboardDataModel;
 
 public class SavedArticleBaseModel implements Parcelable, CustomResponse {
 

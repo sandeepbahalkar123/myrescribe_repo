@@ -1,11 +1,10 @@
 package com.rescribe.model.notification;
 
-import android.app.Notification;
-
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
+
+import java.util.List;
 
 public class NotificationPrescriptionModel implements CustomResponse{
 

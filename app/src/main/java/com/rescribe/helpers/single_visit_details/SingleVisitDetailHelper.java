@@ -10,7 +10,6 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.case_details.CaseDetailsModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
-
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;

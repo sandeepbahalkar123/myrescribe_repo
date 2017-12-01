@@ -8,16 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
+
 import com.rescribe.R;
 import com.rescribe.adapters.myrecords.ThreeLevelListAdapter;
 import com.rescribe.helpers.myrecords.MyRecordsHelper;
 import com.rescribe.model.login.Year;
-import com.rescribe.model.my_records.MyRecordDataModel;
 import com.rescribe.model.my_records.MyRecordInfoAndReports;
 import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.util.RescribeConstants;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 

@@ -14,7 +14,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.rescribe.R;
-import com.rescribe.model.vital_graph.vital_all_list.VitalGraphData;
 import com.rescribe.model.vital_graph.vital_tracker.VitalGraphTracker;
 import com.rescribe.ui.activities.vital_graph.AddTrackerActivity;
 

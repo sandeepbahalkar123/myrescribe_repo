@@ -1,22 +1,17 @@
 package com.rescribe.adapters.settings;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 

@@ -8,8 +8,6 @@ import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 
-import java.util.ArrayList;
-
 public class FilterDoctorListModel implements Parcelable, CustomResponse {
 
     @SerializedName("common")

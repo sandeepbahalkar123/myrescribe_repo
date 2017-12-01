@@ -10,7 +10,6 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -265,6 +264,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
                 Intent intent = new Intent(MapActivityPlotNearByDoctor.this, DoctorDescriptionBaseActivity.class);
                 intent.putExtra(getString(R.string.toolbarTitle), title.getText().toString());
                 intent.putExtra(getString(R.string.clicked_item_data), doctorList);
+                ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorList);
                 startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
             }
         });

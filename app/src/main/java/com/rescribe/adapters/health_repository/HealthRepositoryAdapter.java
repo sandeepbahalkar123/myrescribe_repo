@@ -14,7 +14,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
 import com.rescribe.model.dashboard_api.ClickOption;
-import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 

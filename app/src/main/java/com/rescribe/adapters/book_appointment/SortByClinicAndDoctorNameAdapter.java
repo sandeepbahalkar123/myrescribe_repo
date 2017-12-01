@@ -27,8 +27,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
@@ -233,7 +233,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.toString());
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.doctor));
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 mOnClinicAndDoctorNameSearchRowItem.onClickOfCardView(b);
             }

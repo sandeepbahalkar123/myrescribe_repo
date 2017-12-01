@@ -1,7 +1,6 @@
 package com.rescribe.ui.activities;
 
 import android.app.AlarmManager;
-import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import com.rescribe.R;
 import com.rescribe.broadcast_receivers.SnoozeAlarmNotificationReceiver;
 import com.rescribe.notification.MQTTServiceAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.services.MQTTService;
 import com.rescribe.util.RescribeConstants;
 
 public class SplashScreenActivity extends AppCompatActivity {

@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 
-import java.util.List;
-
 /**
  * Created by jeetal on 27/7/17.
  */

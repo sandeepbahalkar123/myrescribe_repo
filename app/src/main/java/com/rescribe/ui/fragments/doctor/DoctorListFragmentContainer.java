@@ -1,7 +1,6 @@
 package com.rescribe.ui.fragments.doctor;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -20,19 +19,15 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.adapters.CustomSpinnerAdapter;
-import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.doctor.DoctorHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.doctors.doctor_info.DoctorBaseModel;
 import com.rescribe.model.doctors.doctor_info.DoctorDataModel;
 import com.rescribe.model.doctors.doctor_info.DoctorDetail;
-import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.login.Year;
-import com.rescribe.model.my_records.new_pojo.NewMyRecordDataModel;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;

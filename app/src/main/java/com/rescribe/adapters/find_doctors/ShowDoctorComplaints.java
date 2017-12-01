@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.complaints.ComplaintList;
+
 import java.util.ArrayList;
 import java.util.List;
 

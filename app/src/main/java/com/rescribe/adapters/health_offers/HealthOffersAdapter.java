@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
 import com.rescribe.R;
 import com.rescribe.util.CommonMethods;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

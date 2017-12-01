@@ -1,7 +1,6 @@
 package com.rescribe.helpers.myrecords;
 
 import android.content.Context;
-import android.view.View;
 
 import com.android.volley.Request;
 import com.rescribe.R;

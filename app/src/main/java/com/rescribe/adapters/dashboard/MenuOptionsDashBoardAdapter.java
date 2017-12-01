@@ -1,7 +1,6 @@
 package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;

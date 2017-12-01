@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MyRecordsDoctorListModel implements CustomResponse {
 
     @SerializedName("common")

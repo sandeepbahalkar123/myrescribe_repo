@@ -4,13 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import com.rescribe.interfaces.CustomResponse;
-import com.rescribe.util.CommonMethods;
-import com.rescribe.util.RescribeConstants;
 
 /**
  * Created by riteshpandhurkar on 16/6/17.

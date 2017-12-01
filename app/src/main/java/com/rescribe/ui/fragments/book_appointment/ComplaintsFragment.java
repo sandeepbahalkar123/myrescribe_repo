@@ -17,14 +17,11 @@ import com.rescribe.adapters.book_appointment.ComplaintsSpinnerAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.book_appointment.complaints.ComplaintList;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
-import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.util.RescribeConstants;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;

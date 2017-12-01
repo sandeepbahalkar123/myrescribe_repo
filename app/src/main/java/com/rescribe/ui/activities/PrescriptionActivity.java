@@ -2,7 +2,6 @@ package com.rescribe.ui.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -18,10 +17,9 @@ import com.rescribe.adapters.PrescriptionListAdapter;
 import com.rescribe.helpers.prescription.PrescriptionHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-
 import com.rescribe.model.dashboard_api.DashboardMenuList;
-import com.rescribe.model.prescription_response_model.PrescriptionData;
 import com.rescribe.model.prescription_response_model.PrescriptionBaseModel;
+import com.rescribe.model.prescription_response_model.PrescriptionData;
 import com.rescribe.model.prescription_response_model.PrescriptionModel;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;

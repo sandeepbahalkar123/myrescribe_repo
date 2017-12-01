@@ -24,8 +24,13 @@ public class Config {
 
     //---------------------
 
+
     //  public static String BASE_URL = "http://drrescribe.com:3003/";
     public static String BASE_URL = "http://192.168.0.182:3003/";
+
+   // public static String BASE_URL = "http://drrescribe.com:3003/";
+    // public static String BASE_URL = "http://192.168.0.182:3003/";
+
 
 
     //---------------------
@@ -69,7 +74,11 @@ public class Config {
 
     public static final String SERVICES_DOC_LIST_FILTER_URL = "api/doctors/filterDoctors";
     public static final String TIME_SLOT_TO_BOOK_APPOINTMENT = "api/doctors/getDocOpenTimeSlots?";
+
+    //------ BOOK_APPONINT_TOKEN
     public static final String GET_TOKEN_NUMBER_OTHER_DETAILS = "api/doctors/getTokenNo?";
+    public static final String TO_SET_TOKEN_NOTIFICATION_REMAINDER_ALERT = "api/patient/addNotificationReminder";
+    //------ BOOK_APPONINT_TOKEN
 
     //----- vital graph-------------
     public static final String TASK_GET_PATIENT_VITAL_LIST = "api/patient/getPatientVitalList";
@@ -83,7 +92,6 @@ public class Config {
     //-----------SAVED ARTICLE-----------------------
     public static final String TO_GET_SAVED_ARTICLES = "api/patient/getArticleList?patientId=";
     public static final String TO_SAVE_ARTICLE_TO_SERVER = "api/patient/saveArticle";
-
     //-----------SAVED ARTICLE-----------------------
 
 

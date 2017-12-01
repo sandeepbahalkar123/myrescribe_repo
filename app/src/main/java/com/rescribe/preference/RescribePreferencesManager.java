@@ -6,8 +6,6 @@ import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 
-import com.rescribe.R;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;

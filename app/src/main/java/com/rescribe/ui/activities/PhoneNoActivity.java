@@ -8,6 +8,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+
 import com.rescribe.R;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.RescribeConstants;

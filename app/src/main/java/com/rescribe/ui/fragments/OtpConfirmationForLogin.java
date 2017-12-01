@@ -21,7 +21,6 @@ import com.rescribe.interfaces.OTPListener;
 import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.login.LoginWithOtp;
 import com.rescribe.model.login.PatientDetail;
-import com.rescribe.model.login.SignUpModel;
 import com.rescribe.model.requestmodel.login.SignUpRequestModel;
 import com.rescribe.model.requestmodel.login.SignUpVerifyOTPRequestModel;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -32,8 +31,6 @@ import com.rescribe.util.RescribeConstants;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.rescribe.util.RescribeConstants.SENDERID;
 
 /**
  * Created by jeetal on 17/8/17.

@@ -3,7 +3,6 @@ package com.rescribe.ui.activities.find_doctors;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
@@ -24,8 +23,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.adapters.find_doctors.FindDoctorsMenuListAdapter;
 import com.rescribe.adapters.find_doctors.FindDoctorCategoryAdapter;
+import com.rescribe.adapters.find_doctors.FindDoctorsMenuListAdapter;
 import com.rescribe.adapters.find_doctors.ShowDoctorComplaints;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
@@ -337,7 +336,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
             intent.putExtras(bundle);
             startActivity(intent);
-        } else if (data.getName().equalsIgnoreCase(getString(R.string.consult_online))) {
+        } else if (data.getName().equalsIgnoreCase(getString(R.string.doctor_connect))) {
             Intent intent = new Intent(mContext, DoctorConnectActivity.class);
             startActivity(intent);
         }

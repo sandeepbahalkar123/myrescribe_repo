@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Rescribe</string>
     <string name="breakfast_after">breakfastAfter</string>
     <string name="breakfast_before">breakfastBefore</string>

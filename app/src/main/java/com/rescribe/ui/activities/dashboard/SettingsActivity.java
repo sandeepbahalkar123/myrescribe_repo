@@ -46,16 +46,12 @@ import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import net.gotev.uploadservice.UploadService;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
 /**

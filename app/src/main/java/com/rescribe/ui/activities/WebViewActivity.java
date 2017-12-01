@@ -1,25 +1,17 @@
 package com.rescribe.ui.activities;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.ui.customesViews.zoomview.ZoomageView;
 import com.rescribe.util.RescribeConstants;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

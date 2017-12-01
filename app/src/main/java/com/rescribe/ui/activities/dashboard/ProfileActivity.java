@@ -1,116 +1,51 @@
 package com.rescribe.ui.activities.dashboard;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
-import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
-import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 import com.heinrichreimersoftware.materialdrawer.theme.DrawerTheme;
 import com.rescribe.R;
-import com.rescribe.adapters.dashboard.MenuOptionsDashBoardAdapter;
-import com.rescribe.adapters.dashboard.ShowBackgroundViewPagerAdapter;
-import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
-import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.model.login.ActiveRequest;
-import com.rescribe.notification.AppointmentAlarmTask;
-import com.rescribe.notification.DosesAlarmTask;
-import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.DoctorConnectActivity;
-import com.rescribe.ui.activities.HomePageActivity;
-import com.rescribe.ui.activities.NotificationActivity;
 import com.rescribe.ui.activities.PrescriptionActivity;
-import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
-import com.rescribe.ui.activities.book_appointment.BookAppointFindLocation;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
-import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
-import com.rescribe.ui.activities.health_repository.HealthRepository;
-import com.rescribe.ui.activities.saved_articles.SaveArticleWebViewActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
-import com.rescribe.util.CommonMethods;
-import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.RescribeConstants;
 
-import java.io.IOException;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import permissions.dispatcher.NeedsPermission;
-
-import static android.view.View.VISIBLE;
-import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
-import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
-import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
 /**
  * Created by jeetal on 3/11/17.
  */
 
-public class ProfileActivity  extends DrawerActivity implements HelperResponse {
+public class ProfileActivity extends DrawerActivity implements HelperResponse {
 
     private static final long MANAGE_ACCOUNT = 121;
     private static final long ADD_ACCOUNT = 122;
@@ -143,7 +78,6 @@ public class ProfileActivity  extends DrawerActivity implements HelperResponse {
     private int PLACE_PICKER_REQUEST = 10;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,9 +100,6 @@ public class ProfileActivity  extends DrawerActivity implements HelperResponse {
         //------
         //  alertTab.setVisibility(View.VISIBLE);
     }
-
-
-
 
 
     @Override
@@ -380,7 +311,6 @@ public class ProfileActivity  extends DrawerActivity implements HelperResponse {
     }
 
 
-
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
         ///  mCustomProgressDialog.cancel();
@@ -395,13 +325,6 @@ public class ProfileActivity  extends DrawerActivity implements HelperResponse {
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
         // mCustomProgressDialog.cancel();
     }
-
-
-
-
-
-
-
 
 
 }

@@ -12,8 +12,8 @@ import android.widget.ImageView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -41,22 +41,21 @@ import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppoi
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
 /**
  * Created by jeetal on 15/9/17.
  */
 
+
 public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implements BottomMenuAdapter.OnBottomMenuClickListener, GoogleApiClient.OnConnectionFailedListener, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
+
 
     private static final String TAG = "BookAppointDoctorListBaseActivity";
     @BindView(R.id.bookAppointmentBackButton)
@@ -96,7 +95,6 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         appDBHelper = new AppDBHelper(mContext);
         if (getIntent().getParcelableArrayListExtra(BOTTOM_MENUS) != null) {
             setBottomMenu();
-
         }
         //------
         locationTextView.setVisibility(View.VISIBLE);

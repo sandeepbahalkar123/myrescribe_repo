@@ -28,7 +28,6 @@ import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

@@ -1,15 +1,14 @@
 
 package com.rescribe.model.dashboard_api;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+
+import java.util.ArrayList;
 
 public class DashboardDataModel implements Parcelable {
 

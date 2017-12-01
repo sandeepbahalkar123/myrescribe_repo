@@ -1,8 +1,9 @@
 package com.rescribe.model.doctors.filter_doctor_list;
 
-import java.util.ArrayList;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 
 public class FilterModel {
 

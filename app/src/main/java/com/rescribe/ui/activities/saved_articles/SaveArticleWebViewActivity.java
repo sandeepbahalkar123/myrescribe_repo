@@ -2,11 +2,9 @@ package com.rescribe.ui.activities.saved_articles;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;

@@ -22,12 +22,12 @@ import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
-import static com.rescribe.util.RescribeConstants.*;
 import static com.rescribe.util.RescribeConstants.FILE.AUD;
 import static com.rescribe.util.RescribeConstants.FILE.DOC;
 import static com.rescribe.util.RescribeConstants.FILE.IMG;
 import static com.rescribe.util.RescribeConstants.FILE.LOC;
 import static com.rescribe.util.RescribeConstants.FILE.VID;
+import static com.rescribe.util.RescribeConstants.FILE_EMOJI;
 
 /**
  * Helper class for showing and canceling new message

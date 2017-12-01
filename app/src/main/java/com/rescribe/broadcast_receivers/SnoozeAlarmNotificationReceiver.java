@@ -3,13 +3,8 @@ package com.rescribe.broadcast_receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.telephony.SmsMessage;
-import android.text.TextUtils;
 
-import com.rescribe.interfaces.OTPListener;
 import com.rescribe.services.SnoozeAlarmPrescriptionService;
-import com.rescribe.util.CommonMethods;
 
 
 /**

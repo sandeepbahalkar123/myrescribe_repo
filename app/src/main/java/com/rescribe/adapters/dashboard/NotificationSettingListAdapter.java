@@ -2,21 +2,16 @@ package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.dashboard_api.ClickOption;
-import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.switch_button.SwitchButton;

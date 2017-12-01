@@ -17,7 +17,6 @@ import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by riteshpandhurkar on 15/11/17.

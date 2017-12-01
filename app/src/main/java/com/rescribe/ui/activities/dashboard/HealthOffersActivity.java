@@ -1,7 +1,6 @@
 package com.rescribe.ui.activities.dashboard;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,8 +12,6 @@ import android.view.View;
 
 import com.rescribe.R;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
-import com.rescribe.ui.activities.AppointmentActivity;
-import com.rescribe.ui.fragments.AppointmentFragment;
 import com.rescribe.ui.fragments.health_offers.HealthOffersFragment;
 
 import java.util.ArrayList;

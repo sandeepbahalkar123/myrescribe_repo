@@ -36,6 +36,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.rescribe.R;
 import com.rescribe.adapters.dashboard.MenuOptionsDashBoardAdapter;
@@ -169,7 +170,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_dashboard_layout);
         ButterKnife.bind(this);
-
+        RescribeApplication.setPreviousUserSelectedLocationInfo(this, null, null);
         mContext = HomePageActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
@@ -279,8 +280,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onBackPressed() {
-
-        super.onBackPressed();
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 
 
@@ -543,19 +546,19 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
             intent.putExtras(bundle);
             startActivity(intent);
-            finish();
+
 
         } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
             Intent intent = new Intent(HomePageActivity.this, SettingsActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
-            finish();
+
 
         } else if (menuName.equalsIgnoreCase(getString(R.string.support))) {
             Intent intent = new Intent(HomePageActivity.this, SupportActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
-            finish();
+
 
         }
 
@@ -932,10 +935,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         }
         super.onBottomSheetMenuClick(bottomMenu);
     }
-
+/*
     @Override
     protected void onDestroy() {
         RescribeApplication.setPreviousUserSelectedLocationInfo(this, null, null);
         super.onDestroy();
-    }
+    }*/
 }

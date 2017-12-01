@@ -1,57 +1,5 @@
 package com.rescribe.ui.activities.book_appointment;
 
-import android.Manifest;
-import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlacePicker;
-import com.rescribe.R;
-import com.rescribe.helpers.book_appointment.DoctorDataHelper;
-import com.rescribe.interfaces.CustomResponse;
-import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
-import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.fragments.book_appointment.BookAppointDoctorDescriptionFragment;
-import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
-import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
-import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
-import com.rescribe.util.CommonMethods;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
-
-import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
-import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
-
 /**
  * Created by jeetal on 15/9/17.
  */

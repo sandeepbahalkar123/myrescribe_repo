@@ -3,47 +3,30 @@ package com.rescribe.ui.activities.book_appointment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.ServicesAdapter;
-import com.rescribe.helpers.book_appointment.DoctorDataHelper;
-import com.rescribe.interfaces.CustomResponse;
-import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
-import com.rescribe.model.book_appointment.ServicesList;
-import com.rescribe.model.book_appointment.ServicesModel;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.dashboard_api.ClickEvent;
 import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
-import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.GoogleSettingsApi;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.rescribe.util.RescribeConstants.DOCTOR_DATA;
 import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
 
 /**

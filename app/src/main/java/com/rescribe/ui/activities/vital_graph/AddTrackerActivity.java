@@ -1,8 +1,5 @@
 package com.rescribe.ui.activities.vital_graph;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,27 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.google.gson.Gson;
 import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 import com.rescribe.R;
 import com.rescribe.adapters.vital_graph.AddTrackerAdapter;
-import com.rescribe.adapters.vital_graph.VitalGraphAdapter;
 import com.rescribe.helpers.vital_graph_helper.VitalGraphHelper;
 import com.rescribe.interfaces.CustomResponse;
-import com.rescribe.interfaces.DatePickerDialogListener;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.Common;
 import com.rescribe.model.CommonBaseModelContainer;
-import com.rescribe.model.vital_graph.vital_all_list.VitalGraphBaseModel;
-import com.rescribe.model.vital_graph.vital_all_list.VitalGraphData;
-import com.rescribe.model.vital_graph.vital_all_list.VitalGraphList;
 import com.rescribe.model.vital_graph.vital_tracker.VitalGraphAddNewTrackerRequestModel;
 import com.rescribe.model.vital_graph.vital_tracker.VitalGraphTracker;
 import com.rescribe.model.vital_graph.vital_tracker.VitalGraphTrackerBaseModel;
@@ -50,9 +39,6 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.R.attr.data;
-import static android.R.attr.mode;
 
 public class AddTrackerActivity extends AppCompatActivity implements AddTrackerAdapter.ItemClickListener, HelperResponse {
 

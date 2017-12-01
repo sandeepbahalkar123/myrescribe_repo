@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
-import com.rescribe.model.vital_graph.vital_description.VitalGraphDetails;
 
 import java.util.ArrayList;
 

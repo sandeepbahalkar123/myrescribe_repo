@@ -77,8 +77,8 @@ import com.rescribe.singleton.Device;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
-import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.NetworkUtil;
+import com.rescribe.util.RescribeConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;

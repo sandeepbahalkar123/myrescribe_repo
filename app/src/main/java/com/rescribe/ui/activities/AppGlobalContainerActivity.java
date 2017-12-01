@@ -8,15 +8,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+
 import com.rescribe.R;
-import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.fragments.ForgotPassword;
 import com.rescribe.ui.fragments.OTPConfirmationForSignUp;
 import com.rescribe.ui.fragments.OtpConfirmationForLogin;
 import com.rescribe.ui.fragments.SocialLoginInputMobileForConfirmation;
-import com.rescribe.util.RescribeConstants;
 
 import java.io.Serializable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

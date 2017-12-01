@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Request;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
@@ -13,7 +12,6 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.ServicesModel;
 import com.rescribe.model.book_appointment.complaints.request_complaints.DoctorListByComplaintModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
-import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.model.book_appointment.doctor_data.RequestDoctorListBaseModel;

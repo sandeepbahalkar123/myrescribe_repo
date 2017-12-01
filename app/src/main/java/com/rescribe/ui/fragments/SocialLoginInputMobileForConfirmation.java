@@ -15,7 +15,6 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.login.SignUpModel;
 import com.rescribe.model.requestmodel.login.SignUpRequestModel;
-import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.AppGlobalContainerActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;

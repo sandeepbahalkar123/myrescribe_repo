@@ -1,10 +1,7 @@
 package com.rescribe.adapters.book_appointment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -27,11 +24,6 @@ import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-
-import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
-
-import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
-
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;

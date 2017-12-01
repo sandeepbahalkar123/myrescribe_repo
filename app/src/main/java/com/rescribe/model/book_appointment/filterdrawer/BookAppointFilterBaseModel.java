@@ -5,9 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
-import com.rescribe.model.book_appointment.ServicesData;
 
-import java.util.ArrayList;
 import java.util.ArrayList;
 
 public class BookAppointFilterBaseModel implements CustomResponse {

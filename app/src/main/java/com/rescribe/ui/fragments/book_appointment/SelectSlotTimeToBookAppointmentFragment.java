@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
@@ -14,7 +13,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.format.DateFormat;
 import android.text.style.ForegroundColorSpan;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +25,6 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -51,13 +48,9 @@ import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseMod
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
-import com.rescribe.model.case_details.Range;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.ChatActivity;
-import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
-import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
-import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -67,7 +60,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -444,8 +436,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         mClickedDoctorObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
         //--------------
         if (mSelectedClinicDataPosition != -1)
-            if(mClickedDoctorObject.getClinicDataList().size()>0)
-            mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(mSelectedClinicDataPosition);
+            if (mClickedDoctorObject.getClinicDataList().size() > 0)
+                mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(mSelectedClinicDataPosition);
         //--------------
 
         if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom)) {

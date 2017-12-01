@@ -1,10 +1,11 @@
 
 package com.rescribe.model.prescription_response_model;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
+
+import java.util.List;
 
 public class PrescriptionData implements CustomResponse{
 

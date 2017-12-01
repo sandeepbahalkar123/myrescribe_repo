@@ -1,12 +1,13 @@
 
 package com.rescribe.model.notification;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
+import java.util.List;
 
 public class NotificationData implements CustomResponse{
 

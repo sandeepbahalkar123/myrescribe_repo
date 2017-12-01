@@ -11,9 +11,10 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.rescribe.R;
-import com.rescribe.model.doctors.filter_doctor_list.DoctorFilteredInfoAndCaseDetails;
 import com.rescribe.model.doctors.filter_doctor_list.DoctorFilteredInfo;
+import com.rescribe.model.doctors.filter_doctor_list.DoctorFilteredInfoAndCaseDetails;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

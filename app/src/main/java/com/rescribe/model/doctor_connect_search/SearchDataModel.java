@@ -8,7 +8,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 
-
 import java.util.ArrayList;
 
 public class SearchDataModel implements Parcelable, CustomResponse {

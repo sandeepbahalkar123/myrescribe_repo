@@ -1,30 +1,23 @@
 package com.rescribe.ui.activities.dashboard;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.rescribe.R;
-import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.ui.activities.HomePageActivity;
-import com.rescribe.ui.activities.NotificationActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
-import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.view.View.VISIBLE;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
 /**

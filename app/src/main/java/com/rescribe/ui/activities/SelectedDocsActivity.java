@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,8 +28,8 @@ import com.rescribe.singleton.Device;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
-import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.NetworkUtil;
+import com.rescribe.util.RescribeConstants;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.ServerResponse;

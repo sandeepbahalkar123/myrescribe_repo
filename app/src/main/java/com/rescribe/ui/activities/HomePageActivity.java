@@ -12,7 +12,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -37,8 +36,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
-import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
@@ -80,8 +79,6 @@ import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.RescribeConstants;
-
-import net.gotev.uploadservice.UploadService;
 
 import java.io.IOException;
 import java.text.DateFormat;

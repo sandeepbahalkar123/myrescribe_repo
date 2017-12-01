@@ -2,13 +2,11 @@ package com.rescribe.ui.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.CompoundButton;
 
 import com.rescribe.R;
 import com.rescribe.adapters.dashboard.NotificationSettingListAdapter;
@@ -16,7 +14,6 @@ import com.rescribe.model.dashboard_api.ClickEvent;
 import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.customesViews.switch_button.SwitchButton;
 
 import java.util.ArrayList;
 

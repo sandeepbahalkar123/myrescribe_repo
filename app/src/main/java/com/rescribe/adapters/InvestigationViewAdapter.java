@@ -2,15 +2,16 @@ package com.rescribe.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
 import com.rescribe.R;
 import com.rescribe.model.investigation.InvestigationData;
 import com.rescribe.util.CommonMethods;
+
 import java.util.ArrayList;
 
 public class InvestigationViewAdapter extends RecyclerView

@@ -1,23 +1,17 @@
 package com.rescribe.helpers.doctor_connect;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
-import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.doctor_connect.DoctorConnectBaseModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Created by jeetal on 6/9/17.

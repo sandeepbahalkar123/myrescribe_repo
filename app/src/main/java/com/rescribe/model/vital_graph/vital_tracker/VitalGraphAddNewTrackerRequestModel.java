@@ -1,11 +1,6 @@
 package com.rescribe.model.vital_graph.vital_tracker;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
-import com.rescribe.model.Common;
-
-import java.util.ArrayList;
 
 public class VitalGraphAddNewTrackerRequestModel implements CustomResponse {
 

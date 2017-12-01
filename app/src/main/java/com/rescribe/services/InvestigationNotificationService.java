@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.google.gson.Gson;

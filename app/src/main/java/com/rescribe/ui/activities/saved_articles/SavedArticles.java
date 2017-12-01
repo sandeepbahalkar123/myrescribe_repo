@@ -1,12 +1,9 @@
 package com.rescribe.ui.activities.saved_articles;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,18 +11,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
-import com.rescribe.adapters.health_repository.HealthRepositoryAdapter;
 import com.rescribe.adapters.saved_article.SavedArticleListAdapter;
 import com.rescribe.helpers.dashboard.DashboardHelper;
-import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
-import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.saved_article.SavedArticleBaseModel;
 import com.rescribe.model.saved_article.SavedArticleDataModel;
 import com.rescribe.model.saved_article.SavedArticleInfo;
-import com.rescribe.ui.activities.health_repository.HealthRepository;
 
 import java.util.ArrayList;
 

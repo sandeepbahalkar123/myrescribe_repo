@@ -14,8 +14,8 @@ import android.support.v7.app.NotificationCompat;
 import android.widget.RemoteViews;
 
 import com.rescribe.R;
-import com.rescribe.broadcast_receivers.ClickOnNotificationReceiver;
 import com.rescribe.broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver;
+import com.rescribe.broadcast_receivers.ClickOnNotificationReceiver;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.notification.NotificationHelper;
 import com.rescribe.interfaces.CustomResponse;

@@ -20,8 +20,8 @@ import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.MapsActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.NetworkUtil;
+import com.rescribe.util.RescribeConstants;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

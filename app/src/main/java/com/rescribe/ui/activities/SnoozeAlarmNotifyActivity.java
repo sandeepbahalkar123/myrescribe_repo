@@ -1,7 +1,6 @@
 package com.rescribe.ui.activities;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,10 +8,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,15 +22,12 @@ import android.widget.TextView;
 import com.rescribe.R;
 import com.rescribe.adapters.SnoozeAlarmTimeSlotAdapter;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;

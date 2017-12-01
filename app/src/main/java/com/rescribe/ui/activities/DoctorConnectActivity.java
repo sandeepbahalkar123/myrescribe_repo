@@ -46,8 +46,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
-
 
 /**
  * Created by jeetal on 5/9/17.

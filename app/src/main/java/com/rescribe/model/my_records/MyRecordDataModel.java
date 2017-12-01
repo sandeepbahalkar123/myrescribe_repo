@@ -4,12 +4,8 @@ package com.rescribe.model.my_records;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
-import com.rescribe.model.YearsMonthsDataList;
 import com.rescribe.model.login.Year;
 import com.rescribe.model.my_records.new_pojo.NewYearsMonthsData;
-import com.rescribe.interfaces.CustomResponse;
-import com.rescribe.model.YearsMonthsDataList;
-import com.rescribe.model.login.Year;
 
 import java.io.Serializable;
 import java.util.ArrayList;

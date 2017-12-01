@@ -21,9 +21,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.rescribe.R;
-import com.rescribe.model.case_details.VisitCommonData;
 import com.rescribe.model.case_details.PatientHistory;
 import com.rescribe.model.case_details.Range;
+import com.rescribe.model.case_details.VisitCommonData;
 import com.rescribe.model.case_details.Vital;
 import com.rescribe.util.CommonMethods;
 

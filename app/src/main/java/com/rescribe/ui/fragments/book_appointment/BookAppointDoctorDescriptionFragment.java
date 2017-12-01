@@ -43,10 +43,8 @@ import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.ChatActivity;
-import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
-import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -379,6 +377,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 Bundle b = new Bundle();
                 b.putString(getString(R.string.toolbarTitle), mReceivedTitle);
                 b.putInt(getString(R.string.selected_clinic_data_position), mSelectedClinicDataPosition);
+                intentObject.putExtras(b);
                 startActivity(intentObject);
                 break;
             case R.id.viewAllClinicsOnMap: // on view-all location clicked

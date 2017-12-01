@@ -10,16 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorConnectSearchAdapter;
 import com.rescribe.model.doctor_connect_search.DoctorSpeciality;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
+
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**

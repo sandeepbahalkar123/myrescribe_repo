@@ -17,8 +17,8 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.InvestigationActivity;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.RescribeConstants;
 import com.rescribe.util.NetworkUtil;
+import com.rescribe.util.RescribeConstants;
 
 /**
  * Created by jeetal on 16/5/17.

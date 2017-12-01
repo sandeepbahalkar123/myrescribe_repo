@@ -11,15 +11,14 @@ import android.os.IBinder;
 import android.widget.RemoteViews;
 
 import com.rescribe.R;
-import com.rescribe.broadcast_receivers.ClickOnNotificationReceiver;
 import com.rescribe.broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver;
+import com.rescribe.broadcast_receivers.ClickOnNotificationReceiver;
 import com.rescribe.helpers.notification.AppointmentHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.notification.AppointmentsNotificationData;
 import com.rescribe.model.notification.AppointmentsNotificationModel;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.ui.activities.SnoozeAlarmNotifyActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 

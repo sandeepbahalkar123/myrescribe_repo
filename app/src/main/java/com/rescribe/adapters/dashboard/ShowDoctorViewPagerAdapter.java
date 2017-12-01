@@ -1,8 +1,6 @@
 package com.rescribe.adapters.dashboard;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
@@ -27,7 +25,6 @@ import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -228,7 +225,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             //----------
             if (clinicDataList.size() > 0) {
                 String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
-                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {                    bookAppointmentButton.setVisibility(View.GONE);
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
+                    bookAppointmentButton.setVisibility(View.GONE);
                     tokenNo.setVisibility(View.VISIBLE);
                 } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
                     bookAppointmentButton.setVisibility(View.VISIBLE);
@@ -264,7 +262,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             if (clinicDataList.size() > 0) {
                 String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
-                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {                    bookAppointmentButton.setVisibility(View.GONE);
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
+                    bookAppointmentButton.setVisibility(View.GONE);
                     tokenNo.setVisibility(View.VISIBLE);
                 } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
                     bookAppointmentButton.setVisibility(View.VISIBLE);

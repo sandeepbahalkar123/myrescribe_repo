@@ -8,12 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
 import com.rescribe.R;
-import com.rescribe.adapters.AppointmentAdapter;
 import com.rescribe.adapters.health_offers.HealthOffersAdapter;
-import com.rescribe.model.doctors.appointments.AptList;
-import com.rescribe.ui.activities.AppointmentActivity;
-import java.util.ArrayList;
 
 /**
  * Created by jeetal on 14/11/17.

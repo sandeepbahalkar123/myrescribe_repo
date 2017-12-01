@@ -6,14 +6,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
-import com.rescribe.model.dashboard_api.DashboardLeftSideDrawerMenuList;
-import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
-import java.util.ArrayList;
 
 public class SavedArticleInfo implements Parcelable {
 

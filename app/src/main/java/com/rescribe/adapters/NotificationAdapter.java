@@ -11,15 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rescribe.R;
-import com.rescribe.helpers.notification.RespondToNotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
-import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.listeners.SwipeDismissTouchListener;
 import com.rescribe.model.notification.AdapterNotificationModel;
 import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.SlotModel;
 import com.rescribe.model.response_model_notification.NotificationResponseBaseModel;
-import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;

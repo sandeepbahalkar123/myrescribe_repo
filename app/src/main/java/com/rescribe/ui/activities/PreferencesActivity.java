@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import com.rescribe.R;
-import com.rescribe.helpers.database.AppDBHelper;
+
 import com.philliphsu.bottomsheetpickers.time.BottomSheetTimePickerDialog;
 import com.philliphsu.bottomsheetpickers.time.grid.GridTimePickerDialog;
+import com.rescribe.R;
+import com.rescribe.helpers.database.AppDBHelper;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

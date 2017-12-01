@@ -233,7 +233,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.toString());
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.doctor));
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 mOnClinicAndDoctorNameSearchRowItem.onClickOfCardView(b);
             }

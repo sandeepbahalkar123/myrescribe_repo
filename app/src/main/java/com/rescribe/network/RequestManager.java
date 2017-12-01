@@ -662,6 +662,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     //--- API whose reponse is ONLY COMMON CLASS BASE MODEL-------
                     case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR: //This is for fav doc
                     case RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER: //This is for save article
+                    case RescribeConstants.TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER: //This is to set alert for book appoint token remainder
                         CommonBaseModelContainer responseFavouriteDoctorBaseModel = new Gson().fromJson(data, CommonBaseModelContainer.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseFavouriteDoctorBaseModel, mOldDataTag);
                         break;

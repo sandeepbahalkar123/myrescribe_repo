@@ -1,4 +1,4 @@
-package com.rescribe.model.book_appointment.doctor_data;
+package com.rescribe.model.book_appointment.doctor_data.request_model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -252,6 +252,13 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             mLocationFab.setVisibility(View.GONE);
             mFilterFab.setVisibility(View.GONE);
         }
+
+        // THIS IS HACK, TO CALL API IN CASE OF COMAPINT-MAP!=NULL
+        if (mComplaintHashMap != null) {
+            mLocationFab.setVisibility(View.VISIBLE);
+            mFilterFab.setVisibility(View.VISIBLE);
+        }
+        //*****************
     }
 
     @OnClick({R.id.rightFab, R.id.leftFab})

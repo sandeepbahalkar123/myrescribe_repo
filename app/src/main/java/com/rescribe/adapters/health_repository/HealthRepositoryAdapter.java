@@ -1,5 +1,6 @@
 package com.rescribe.adapters.health_repository;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ public class HealthRepositoryAdapter extends RecyclerView.Adapter<HealthReposito
         return new HealthRepositoryAdapter.ListViewHolder(itemView);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(HealthRepositoryAdapter.ListViewHolder holder, int position) {
 

@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities.find_doctors;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -138,6 +139,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         initialize();
     }
 
+    @SuppressLint("CheckResult")
     private void initialize() {
 
         //------Load background image : START------

@@ -164,7 +164,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     Location mCurrentLocation;
     String mLastUpdateTime;
     private int PLACE_PICKER_REQUEST = 10;
-//    private String fcmToken = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,8 +171,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         setContentView(R.layout.main_dashboard_layout);
         ButterKnife.bind(this);
         // mCustomProgressDialog = new CustomProgressDialog(HomePageActivity.this);
-
-//        fcmToken = FirebaseInstanceId.getInstance().getToken();
 
         createLocationRequest();
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;

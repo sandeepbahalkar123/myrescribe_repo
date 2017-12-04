@@ -36,4 +36,5 @@
 
     <string name="md_label_plus">+%1$d</string>
     <string name="app_logo">AppLogo</string>
+    <string name="notifications">Notifications</string>
 </resources>

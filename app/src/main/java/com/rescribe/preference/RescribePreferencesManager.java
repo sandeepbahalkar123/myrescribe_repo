@@ -224,7 +224,16 @@ public class RescribePreferencesManager {
         String APPOINTMENT_ALERT = "appointmentAlert";
         String INVESTIGATION_ALERT = "investigationAlert";
         String MEDICATION_ALERT = "medicationAlert";
+        String TOKEN_ALERT = "tokenAlert";
         String OFFERS_ALERT = "offersAlert";
+    }
+
+    public interface NOTIFICATION_COUNT_KEY {
+        String APPOINTMENT_ALERT_COUNT = "appointmentAlertCount";
+        String INVESTIGATION_ALERT_COUNT = "investigationAlertCount";
+        String MEDICATION_ALERT_COUNT = "medicationAlertCount";
+        String TOKEN_ALERT_COUNT = "tokenAlertCount";
+        String OFFERS_ALERT_COUNT = "offersAlertCount";
     }
 
     public interface RESCRIBE_PREFERENCES_KEY {

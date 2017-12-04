@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -10,44 +10,46 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_margin="@dimen/dp12"
         android:gravity="center"
-        android:orientation="vertical"
-        android:padding="5dp">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/menuImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:layout_margin="@dimen/dp12"
                 tools:src="@drawable/ellipse_2" />
 
             <TextView
                 android:id="@+id/showCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ellipse_3_copy"
-                android:padding="@dimen/dp4"
+                android:layout_toEndOf="@id/menuImage"
+                android:layout_toRightOf="@id/menuImage"
+                android:background="@drawable/badge_notification"
+                android:gravity="center"
+                tools:text="19"
                 android:textColor="@color/white"
-                android:textSize="8sp"
-                android:visibility="gone"
-                tools:text="9" />
-        </LinearLayout>
+                android:textSize="9sp"
+                android:visibility="gone" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/menuName"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:paddingTop="10dp"
             android:textColor="@color/black"
             android:textSize="10sp"
-            tools:text="fdgfdfdgsdf" />
+            tools:text="Notification" />
     </LinearLayout>
 </LinearLayout>

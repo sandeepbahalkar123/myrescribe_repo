@@ -32,6 +32,8 @@ import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.appIconIndex;
+
 @SuppressWarnings("unused")
 @SuppressLint("Registered")
 public class BottomMenuActivity extends AppCompatActivity implements BottomMenuAdapter.OnBottomMenuClickListener {
@@ -54,11 +56,14 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     private TextView mPatientName;
     private TextView mMobileNumber;
     private ColorGenerator mColorGenerator;
+    private TextView bottomSheetBadgeView;
+    private TextView bottomMenuBadgeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.bottom_menu_activity);
+
         mFrame = (FrameLayout) findViewById(R.id.activityView);
         tableLayout = (TableLayout) findViewById(R.id.table);
         bottomSheetMenuLayout = (FrameLayout) findViewById(R.id.bottomSheetMenuLayout);
@@ -67,7 +72,6 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         mMobileNumber = (TextView) findViewById(R.id.mobileNumber);
         bottomMenuListRecyclerView = (RecyclerView) findViewById(R.id.bottomMenuListRecyclerView);
         imageUrl = (ImageView) findViewById(R.id.imageUrl);
-        // mBottomSheetMenuListRecyclerView = (RecyclerView) findViewById(R.id.bottomSheetMenuListRecyclerView);
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         mColorGenerator = ColorGenerator.MATERIAL;
         createBottomMenu();
@@ -78,7 +82,14 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
                 onProfileImageClick();
             }
         });
-//        mBottomSheetMenuAdapter = new BottomSheetMenuAdapter(this, bottomSheetMenus);
+
+        bottomSheetMenuLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeSheet();
+            }
+        });
+
         bottomSheetMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +99,6 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     }
 
     public void openSheet() {
-
         bottomSheetMenu.setVisibility(View.VISIBLE);
         bottomSheetMenuLayout.setVisibility(View.VISIBLE);
 
@@ -103,19 +113,10 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     }
 
     public void setUpAdapterForBottomSheet(String patientImageUrl, String patientName, String patientMobileNo) {
-       /* LinearLayoutManager bottomSheetlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mBottomSheetMenuListRecyclerView.setLayoutManager(bottomSheetlayoutManager);
-        mBottomSheetMenuListRecyclerView.setHasFixedSize(true);
-        mBottomSheetMenuListRecyclerView.setAdapter(mBottomSheetMenuAdapter);*/
+
         mMobileNumber.setText(patientMobileNo);
         mPatientName.setText(patientName);
-       /* RequestOptions options = new RequestOptions()
-                .centerInside()
-                .priority(Priority.HIGH);
 
-        Glide.with(imageUrl.getContext())
-                .load(patientImageUrl).apply(options)
-                .into(imageUrl);*/
         int color2 = mColorGenerator.getColor(patientName);
         TextDrawable drawable = TextDrawable.builder()
                 .beginConfig()
@@ -135,7 +136,6 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
             bottomSheetMenus.add(this.bottomSheetMenus.get(position));
             if (bottomSheetMenus.size() == 3 && position < 3) {
                 tableLayout.addView(addTableRow(bottomSheetMenus, position));
-
                 bottomSheetMenus.clear();
             } else if (bottomSheetMenus.size() == 2 && position >= 3) {
                 tableLayout.addView(addTableRow(bottomSheetMenus, position));
@@ -148,13 +148,22 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         TableRow tableRow = new TableRow(this);
         for (int i = 0; i < bottomSheetMenus.size(); i++) {
             final BottomSheetMenu bottomSheetMenu = bottomSheetMenus.get(i);
-            View item = LayoutInflater.from(this)
-                    .inflate(R.layout.bottom_sheet_menu_item_list, tableRow, false);
+            View item = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_menu_item_list, tableRow, false);
             TextView bottomMenuName = (TextView) item.findViewById(R.id.menuName);
             ImageView menuBottomIcon = (ImageView) item.findViewById(R.id.menuImage);
+            TextView badgeView = (TextView) item.findViewById(R.id.showCount);
             LinearLayout bottomSheetLayout = (LinearLayout) item.findViewById(R.id.bottomSheetLayout);
             final int finali = mPosition;
             bottomMenuName.setText(bottomSheetMenus.get(i).getName());
+
+            if (bottomSheetMenus.get(i).getName().equalsIgnoreCase(getResources().getString(R.string.notifications))) {
+                this.bottomSheetBadgeView = badgeView;
+                if (bottomSheetMenus.get(i).getNotificationCount() > 0) {
+                    badgeView.setVisibility(View.VISIBLE);
+                    badgeView.setText(String.valueOf(bottomSheetMenus.get(i).getNotificationCount()));
+                } else badgeView.setVisibility(View.GONE);
+            } else badgeView.setVisibility(View.GONE);
+
             bottomSheetLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -172,6 +181,16 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
             tableRow.addView(item);
         }
         return tableRow;
+    }
+
+    public void setBadgeCount(int count) {
+        if (bottomSheetBadgeView != null && count > 0) {
+            bottomSheetBadgeView.setVisibility(View.VISIBLE);
+            bottomSheetBadgeView.setText(String.valueOf(count));
+        }
+
+        bottomMenus.get(appIconIndex).setNotificationCount(count);
+        bottomMenuAdapter.notifyItemChanged(appIconIndex);
     }
 
     public void closeSheet() {
@@ -233,10 +252,6 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         bottomMenuAdapter = new BottomMenuAdapter(this, bottomMenus);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
-//        set padding BottomMenuListRecyclerView
-//        int padding = Math.round((widthPixels * 2.5f) / 100);
-//        bottomMenuListRecyclerView.setPadding(padding, 0, padding, 0);
-
         bottomMenuListRecyclerView.setLayoutManager(layoutManager);
         bottomMenuListRecyclerView.setAdapter(bottomMenuAdapter);
 
@@ -250,7 +265,6 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 
     public void addBottomSheetMenu(BottomSheetMenu bottomSheetMenu) {
         bottomSheetMenus.add(bottomSheetMenu);
-//        mBottomSheetMenuAdapter.notifyItemInserted(bottomSheetMenus.size());
     }
 
     @Override

@@ -921,4 +921,9 @@ public class DrawerActivity extends BottomMenuActivity {
     public void closeDrawer() {
         mDrawer.closeDrawer();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

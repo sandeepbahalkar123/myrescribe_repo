@@ -37,6 +37,7 @@ import com.rescribe.ui.fragments.doctor_connect.DoctorConnectFragment;
 import com.rescribe.ui.fragments.doctor_connect.DoctorConnectSearchContainerFragment;
 import com.rescribe.ui.fragments.doctor_connect.SearchBySpecializationOfDoctorFragment;
 import com.rescribe.ui.fragments.doctor_connect.SearchDoctorByNameFragment;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -45,6 +46,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.rescribe.services.MQTTService.MESSAGE_TOPIC;
+import static com.rescribe.services.MQTTService.NOTIFY;
+import static com.rescribe.services.MQTTService.TOPIC;
 
 
 /**
@@ -58,17 +63,25 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            boolean delivered = intent.getBooleanExtra(MQTTService.DELIVERED, false);
-            boolean isReceived = intent.getBooleanExtra(MQTTService.IS_MESSAGE, false);
+            if (intent.getAction() != null) {
+                if (intent.getAction().equals(NOTIFY)) {
 
-            if (delivered) {
+                    String topic = intent.getStringExtra(MQTTService.TOPIC_KEY);
 
-                Log.d(TAG, "Delivery Complete");
-                Log.d(TAG, "MESSAGE_ID" + intent.getStringExtra(MQTTService.MESSAGE_ID));
+                    if (intent.getBooleanExtra(MQTTService.DELIVERED, false)) {
 
-            } else if (isReceived) {
-                MQTTMessage message = intent.getParcelableExtra(MQTTService.MESSAGE);
-                doctorConnectChatFragment.notifyCount(message);
+                        Log.d(TAG, "Delivery Complete");
+                        Log.d(TAG + " MSG_ID", intent.getStringExtra(MQTTService.MESSAGE_ID));
+
+                    } else if (topic.equals(TOPIC[MESSAGE_TOPIC])) {
+
+                        // User message
+                        CommonMethods.Log(TAG, "User message");
+                        MQTTMessage message = intent.getParcelableExtra(MQTTService.MESSAGE);
+                        doctorConnectChatFragment.notifyCount(message);
+
+                    }
+                }
             }
         }
     };
@@ -336,8 +349,6 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         super.onResume();
         registerReceiver(receiver, new IntentFilter(
                 MQTTService.NOTIFY));
-
-//        sendUserStatus(ONLINE);
     }
 
     @Override
@@ -354,22 +365,4 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
             doctorConnectChatFragment.addItem(chatDoctor);
         }
     }
-
-    // change
-
-    /*private void sendUserStatus(String userStatus) {
-        // send user status via mqtt
-        StatusInfo statusInfo = new StatusInfo();
-        statusInfo.setPatId(Integer.parseInt(patientId));
-        statusInfo.setDocId(-2);
-        statusInfo.setUserStatus(userStatus);
-        String generatedId = CHAT + 0 + "_" + System.nanoTime();
-        statusInfo.setMsgId(generatedId);
-
-        Intent intentService = new Intent(DoctorConnectActivity.this, MQTTService.class);
-        intentService.putExtra(SEND_MESSAGE, true);
-        intentService.putExtra(MESSAGE, false);
-        intentService.putExtra(STATUS_INFO, statusInfo);
-        startService(intentService);
-    }*/
 }

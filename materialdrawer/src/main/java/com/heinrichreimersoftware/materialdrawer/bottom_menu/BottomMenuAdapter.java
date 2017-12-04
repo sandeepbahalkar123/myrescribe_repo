@@ -20,11 +20,14 @@ import java.util.ArrayList;
 
 public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.ListViewHolder> {
 
+    private final Context mContext;
     public OnBottomMenuClickListener mBottomMenuListClickListener;
     private ArrayList<BottomMenu> bottomMenus;
+    public static int appIconIndex;
 
     BottomMenuAdapter(Context mContext, ArrayList<BottomMenu> bottomMenus) {
         this.bottomMenus = bottomMenus;
+        this.mContext = mContext;
 
         try {
             this.mBottomMenuListClickListener = ((OnBottomMenuClickListener) mContext);
@@ -71,7 +74,17 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
         if (bottomMenu.isAppIcon()) {
             holder.bottomMenuName.setVisibility(View.GONE);
             holder.bottomMenuTab.setVisibility(View.GONE);
+
+            appIconIndex = position;
+            if (bottomMenu.getNotificationCount() > 0) {
+                holder.showCount.setText(String.valueOf(bottomMenu.getNotificationCount()));
+                holder.showCount.setVisibility(View.VISIBLE);
+            } else holder.showCount.setVisibility(View.GONE);
+
         } else {
+
+            holder.showCount.setVisibility(View.GONE);
+
             if (bottomMenu.isSelected()) {
                 holder.bottomMenuTab.setVisibility(View.VISIBLE);
                 holder.bottomMenuName.setTextColor(holder.bottomMenuName.getContext().getResources().getColor(R.color.tagColor));
@@ -82,6 +95,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
                 holder.menuBottomIcon.setColorFilter(ContextCompat.getColor(holder.menuBottomIcon.getContext(), R.color.grey), android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         }
+
     }
 
     @Override
@@ -92,6 +106,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
     static class ListViewHolder extends RecyclerView.ViewHolder {
         ImageView menuBottomIcon;
         TextView bottomMenuName;
+        TextView showCount;
         ImageView bottomMenuTab;
 
         View view;
@@ -102,6 +117,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
             bottomMenuName = (TextView) view.findViewById(R.id.bottomMenuName);
             menuBottomIcon = (ImageView) view.findViewById(R.id.menuBottomIcon);
             bottomMenuTab = (ImageView) view.findViewById(R.id.bottomMenuTab);
+            showCount = (TextView) view.findViewById(R.id.showCountTextView);
         }
     }
 

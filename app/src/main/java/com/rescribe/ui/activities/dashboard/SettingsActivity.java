@@ -86,6 +86,14 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         setContentView(R.layout.settings_layout);
         ButterKnife.bind(this);
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
+
+        int appCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, this);
+        int invCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, this);
+        int medCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, this);
+        int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
+
+        int notificationCount = appCount + invCount + medCount + tokCount;
+
         if (dashboardBottomMenuLists != null)
             bottomSheetMenus.clear();
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
@@ -93,6 +101,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
+            bottomMenu.setNotificationCount(notificationCount);
 
             if (dashboardBottomMenuList.getName().equals(getString(R.string.settings))) {
                 bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.settings)));
@@ -100,6 +109,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             }
             addBottomMenu(bottomMenu);
         }
+
         bottomSheetMenus.clear();
         for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
             if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
@@ -113,7 +123,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                         bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
                         bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
-
+                        bottomSheetMenu.setNotificationCount(notificationCount);
 
                         //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
                         addBottomSheetMenu(bottomSheetMenu);

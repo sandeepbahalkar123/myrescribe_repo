@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -303,7 +304,7 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
             mTabLayout.setupWithViewPager(mViewpager);
             mYearList = recordMainDataModel.getUniqueYears();
-            mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList);
+            mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList, ContextCompat.getColor(getActivity(), R.color.white));
             mYearSpinnerView.setAdapter(mCustomSpinAdapter);
         }
         setupViewPager();
@@ -318,10 +319,10 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             mTabLayout.setVisibility(View.VISIBLE);
         }
 
-        if (mTabLayout != null){
-            if (mTabLayout.getTabCount() > 5){
+        if (mTabLayout != null) {
+            if (mTabLayout.getTabCount() > 5) {
                 mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            }else {
+            } else {
                 mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
                 mTabLayout.setTabMode(TabLayout.MODE_FIXED);
             }

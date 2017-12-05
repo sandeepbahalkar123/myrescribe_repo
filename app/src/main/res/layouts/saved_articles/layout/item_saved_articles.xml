@@ -66,12 +66,20 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true">
 
+            <ImageView
+                android:id="@+id/bookMarkIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/bookmark" />
+
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/articleDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/bookmark"
-                android:drawablePadding="@dimen/dp10"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_toRightOf="@+id/bookMarkIcon"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp11"
                 tools:text="Nov 24,2017" />

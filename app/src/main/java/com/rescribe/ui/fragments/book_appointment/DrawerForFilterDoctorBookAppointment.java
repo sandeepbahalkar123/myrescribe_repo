@@ -405,7 +405,10 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                     mClinicFeesSeekBarMaxValue.setText("" + max);
                     setThumbValue(mLeftThumbView, "" + min);
                     setThumbValue(mRightThumbView, "" + max);
-                    mClinicFeesSeekBar.setMinValue(Float.parseFloat(String.valueOf(min))).setMaxValue(Float.parseFloat(String.valueOf(max))).setMinStartValue(Float.parseFloat(String.valueOf(min))).setMaxStartValue(Float.parseFloat(String.valueOf(max))).apply();
+                    mClinicFeesSeekBar.setMinValue(Float.parseFloat(String.valueOf(min)))
+                            .setMaxValue(Float.parseFloat(String.valueOf(max)))
+                            .setMinStartValue(Float.parseFloat(String.valueOf(min)))
+                            .setMaxStartValue(Float.parseFloat(String.valueOf(max))).apply();
                 }
                 //------
               /*  ArrayList<String> distanceFeesRange = filterConfigData.get();

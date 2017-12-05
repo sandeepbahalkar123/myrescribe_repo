@@ -15,9 +15,12 @@ import com.rescribe.adapters.saved_article.SavedArticleListAdapter;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.saved_article.SavedArticleBaseModel;
 import com.rescribe.model.saved_article.SavedArticleDataModel;
 import com.rescribe.model.saved_article.SavedArticleInfo;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -85,35 +88,47 @@ public class SavedArticles extends AppCompatActivity implements HelperResponse, 
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-
-        SavedArticleBaseModel savedArticleBaseModel = (SavedArticleBaseModel) customResponse;
-        if (savedArticleBaseModel == null) {
-            isDataListViewVisible(false);
-        } else {
-            SavedArticleDataModel savedArticleDataModel = savedArticleBaseModel.getSavedArticleDataModel();
-            if (savedArticleDataModel == null) {
-                isDataListViewVisible(false);
-            } else {
-                mReceivedSavedArticleList = savedArticleDataModel.getSavedArticleList();
-                if (mReceivedSavedArticleList.size() > 0) {
-                    isDataListViewVisible(true);
-
-                    //----------
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-                    mSavedArticleListView.setLayoutManager(layoutManager);
-                    mSavedArticleListView.setHasFixedSize(true);
-                    DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
-                            mSavedArticleListView.getContext(),
-                            layoutManager.getOrientation()
-                    );
-                    mSavedArticleListView.addItemDecoration(mDividerItemDecoration);
-                    //----------
-                    mSavedArticleListAdapter = new SavedArticleListAdapter(this, mReceivedSavedArticleList, this);
-                    mSavedArticleListView.setAdapter(mSavedArticleListAdapter);
-                } else {
+        switch (mOldDataTag) {
+            case RescribeConstants.TASK_GET_SAVED_ARTICLES:
+                SavedArticleBaseModel savedArticleBaseModel = (SavedArticleBaseModel) customResponse;
+                if (savedArticleBaseModel == null) {
                     isDataListViewVisible(false);
+                } else {
+                    SavedArticleDataModel savedArticleDataModel = savedArticleBaseModel.getSavedArticleDataModel();
+                    if (savedArticleDataModel == null) {
+                        isDataListViewVisible(false);
+                    } else {
+                        mReceivedSavedArticleList = savedArticleDataModel.getSavedArticleList();
+                        if (mReceivedSavedArticleList.size() > 0) {
+                            isDataListViewVisible(true);
+
+                            //----------
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                            mSavedArticleListView.setLayoutManager(layoutManager);
+                            mSavedArticleListView.setHasFixedSize(true);
+                            DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
+                                    mSavedArticleListView.getContext(),
+                                    layoutManager.getOrientation()
+                            );
+                            mSavedArticleListView.addItemDecoration(mDividerItemDecoration);
+                            //----------
+                            mSavedArticleListAdapter = new SavedArticleListAdapter(this, mReceivedSavedArticleList, this);
+                            mSavedArticleListView.setAdapter(mSavedArticleListAdapter);
+                        } else {
+                            isDataListViewVisible(false);
+                        }
+                    }
                 }
-            }
+                break;
+
+            case RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER:
+                if (customResponse != null) {
+                    CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
+                    CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
+
+                    mHelper.doGetSavedArticles();
+
+                }
         }
     }
 
@@ -143,6 +158,13 @@ public class SavedArticles extends AppCompatActivity implements HelperResponse, 
         b.putBoolean(getString(R.string.save), true);
         intent.putExtras(b);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBookMarkIconClicked(SavedArticleInfo data) {
+
+        mHelper.doSaveArticlesToServer(data.getArticleUrl(), false);
+
     }
 
     private void isDataListViewVisible(boolean flag) {

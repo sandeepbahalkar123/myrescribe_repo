@@ -485,7 +485,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
 
             intent.putExtras(b);
-        } else if (menu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
+        } else if (menu.getName().toLowerCase().startsWith(getString(R.string.on_going_treatment).toLowerCase())) {
             intent = new Intent(mContext, PrescriptionActivity.class);
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);

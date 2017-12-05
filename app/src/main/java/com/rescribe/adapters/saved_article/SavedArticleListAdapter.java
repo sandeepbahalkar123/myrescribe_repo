@@ -108,6 +108,13 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
             }
         });
 
+        holder.bookMarkIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMenuClickListener.onBookMarkIconClicked(savedArticleInfo);
+            }
+        });
+
         //--------------
     }
 
@@ -132,6 +139,8 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
         ImageView doctorImage;
         @BindView(R.id.articleText)
         CustomTextView articleText;
+        @BindView(R.id.bookMarkIcon)
+        ImageView bookMarkIcon;
 
         View view;
 
@@ -144,6 +153,8 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
 
     public interface OnArticleClickListener {
         public void onArticleClicked(SavedArticleInfo data);
+
+        public void onBookMarkIconClicked(SavedArticleInfo data);
     }
 
     private SpannableString addReadMoreTextToString(String text, int wordSize) {

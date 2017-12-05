@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -102,7 +103,7 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
     private void initialize() {
         mYearList = CommonMethods.getYearForDoctorList();
 
-        mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList);
+        mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList, ContextCompat.getColor(getActivity(),R.color.white));
         mYearSpinnerView.setAdapter(mCustomSpinAdapter);
         YearSpinnerInteractionListener listener = new YearSpinnerInteractionListener();
         mYearSpinnerView.setOnTouchListener(listener);
@@ -289,7 +290,7 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
                     mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
                     mTabLayout.setupWithViewPager(mViewpager);
                     mYearList = doctorDataModel.getUniqueYears();
-                    mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList);
+                    mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList, ContextCompat.getColor(getActivity(),R.color.white));
                     mYearSpinnerView.setAdapter(mCustomSpinAdapter);
                 }
                 if (doctorDataModel.getReceivedYearMap().isEmpty()) {

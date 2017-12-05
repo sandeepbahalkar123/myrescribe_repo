@@ -8,8 +8,8 @@ public class BottomSheetMenu implements Parcelable {
 
 
     private String name;
-
     private String iconImageUrl;
+    private int notificationCount;
 
    // private ClickEvent clickEvent;
     public final static Creator<BottomSheetMenu> CREATOR = new Creator<BottomSheetMenu>() {
@@ -31,6 +31,7 @@ public class BottomSheetMenu implements Parcelable {
     protected BottomSheetMenu(Parcel in) {
         this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.iconImageUrl = ((String) in.readValue((String.class.getClassLoader())));
+        this.notificationCount = ((int) in.readValue((String.class.getClassLoader())));
         //this.clickEvent = ((ClickEvent) in.readValue((ClickEvent.class.getClassLoader())));
     }
 
@@ -53,7 +54,15 @@ public class BottomSheetMenu implements Parcelable {
         this.iconImageUrl = iconImageUrl;
     }
 
-   /* public ClickEvent getClickEvent() {
+    public int getNotificationCount() {
+        return notificationCount;
+    }
+
+    public void setNotificationCount(int notificationCount) {
+        this.notificationCount = notificationCount;
+    }
+
+    /* public ClickEvent getClickEvent() {
         return clickEvent;
     }
 
@@ -64,6 +73,7 @@ public class BottomSheetMenu implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(name);
         dest.writeValue(iconImageUrl);
+        dest.writeValue(notificationCount);
       //  dest.writeValue(clickEvent);
     }
 

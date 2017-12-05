@@ -273,7 +273,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         public void onReceive(Context context, Intent intent) {
 
             if (intent.getAction() != null) {
-
                 if (intent.getAction().equals(NOTIFY)) {
 
                     String topic = intent.getStringExtra(MQTTService.TOPIC_KEY);
@@ -533,7 +532,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 int positionView = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
                 if (prePosition != positionView) {
                     MQTTMessage mqttMessage = ChatActivity.this.mqttMessage.get(positionView);
-                    dateTextView.setText(CommonMethods.getDayFromDateTime(mqttMessage.getMsgTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss, RescribeConstants.DATE_PATTERN.DD_MMMM_YYYY));
+                    dateTextView.setText(CommonMethods.getDayFromDateTime(mqttMessage.getMsgTime(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE_PATTERN.DD_MMMM_YYYY));
 
                     prePosition = positionView;
                 }
@@ -946,7 +945,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     messageL.setSender(PATIENT);
 
                     // 2017-10-13 13:08:07
-                    String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+                    String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN);
                     messageL.setMsgTime(msgTime);
 
                     // send msg by mqtt
@@ -1097,7 +1096,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         messageL.setMsgStatus(SENT);
 
         // 2017-10-13 13:08:07
-        String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+        String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN);
         messageL.setMsgTime(msgTime);
 
         // send msg by mqtt
@@ -1145,7 +1144,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             messageL.setMsgStatus(SENT);
 
             // 2017-10-13 13:08:07
-            String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+            String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN);
             messageL.setMsgTime(msgTime);
 
             // send msg by mqtt
@@ -1193,7 +1192,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             messageL.setMsgStatus(SENT);
 
             // 2017-10-13 13:08:07
-            String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+            String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN);
             messageL.setMsgTime(msgTime);
 
             mqttMessage.add(messageL);

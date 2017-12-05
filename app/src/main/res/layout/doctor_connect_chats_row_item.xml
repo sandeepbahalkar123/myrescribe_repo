@@ -104,7 +104,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_gravity="end"
-            android:background="@drawable/badge"
+            android:background="@drawable/badge_chat"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="@dimen/sp12"

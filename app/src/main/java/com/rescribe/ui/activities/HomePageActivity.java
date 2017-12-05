@@ -12,7 +12,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
@@ -36,7 +35,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
-import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.rescribe.R;
 import com.rescribe.adapters.dashboard.MenuOptionsDashBoardAdapter;
@@ -113,7 +111,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private static final long ADD_ACCOUNT = 122;
     private static final String TAG = "HomePage";
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 101;
-    BottomSheetDialog dialog;
+
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.viewPagerDoctorItem)
@@ -279,10 +277,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onBackPressed() {
-        Intent a = new Intent(Intent.ACTION_MAIN);
-        a.addCategory(Intent.CATEGORY_HOME);
-        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(a);
+        super.onBackPressed();
     }
 
 
@@ -573,6 +568,13 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     private void doConfigureMenuOptions() {
 
+        int appCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, this);
+        int invCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, this);
+        int medCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, this);
+        int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
+
+        int notificationCount = appCount + invCount + medCount + tokCount;
+
         mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, mDashboardDataModel.getDashboardMenuList());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setAutoMeasureEnabled(true);
@@ -589,9 +591,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             BottomMenu bottomMenu = new BottomMenu();
             bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
-
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
             bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.home)));
+            bottomMenu.setNotificationCount(notificationCount);
 
             addBottomMenu(bottomMenu);
         }
@@ -608,7 +610,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                         bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
                         bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
-
+                        bottomSheetMenu.setNotificationCount(notificationCount);
 
                         //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
                         addBottomSheetMenu(bottomSheetMenu);
@@ -619,6 +621,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         }
 
         setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+
+//        setBadgeCount(12);
     }
 
 

@@ -132,6 +132,14 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     }
 
     private void setBottomMenu() {
+
+        int appCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, this);
+        int invCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, this);
+        int medCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, this);
+        int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
+
+        int notificationCount = appCount + invCount + medCount + tokCount;
+
         bottomMenus.clear();
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
@@ -140,6 +148,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
             bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.appointment)));
+            bottomMenu.setNotificationCount(notificationCount);
             addBottomMenu(bottomMenu);
         }
 
@@ -155,7 +164,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                         bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
                         bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
-
+                        bottomSheetMenu.setNotificationCount(notificationCount);
 
                         //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
                         addBottomSheetMenu(bottomSheetMenu);

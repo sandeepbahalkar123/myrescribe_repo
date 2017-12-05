@@ -133,8 +133,8 @@ public class InvestigationNotificationService extends Service implements HelperR
 
     public void customNotification() {
 
-        int preCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, InvestigationNotificationService.this);
-        RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, preCount + 1, InvestigationNotificationService.this);
+        int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, InvestigationNotificationService.this);
+        RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, preCount + 1, InvestigationNotificationService.this);
 
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),

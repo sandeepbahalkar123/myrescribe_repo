@@ -16,7 +16,7 @@ import com.rescribe.util.RescribeConstants;
 
 public class Device {
 
-    private  final String TAG = this.getClass().getName();
+    private final String TAG = this.getClass().getName();
     private Context context;
     private WindowManager windowManager;
 
@@ -90,11 +90,11 @@ public class Device {
     }
 
     public String getOSVersion() {
-        return Build.VERSION.RELEASE;
+        return Build.VERSION.RELEASE + "(" + Build.BRAND + ")";
     }
 
     public String getOS() {
-        return "Android (" + Build.BRAND + ")";
+        return "Android";
     }
 
 

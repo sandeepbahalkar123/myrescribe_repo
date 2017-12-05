@@ -346,23 +346,19 @@ public class CommonMethods {
     }
 
 
-    public static String getFormattedDate(String strDate, String sourceFormat,
-                                          String destinyFormat) {
+    public static String getFormattedDate(String strDate, String sourceFormat, String destinyFormat) {
 
         if (!strDate.equals("")) {
-
             SimpleDateFormat df;
             df = new SimpleDateFormat(sourceFormat, Locale.US);
-            Date date = null;
+            Date date;
             try {
                 date = df.parse(strDate);
-
+                df = new SimpleDateFormat(destinyFormat, Locale.US);
+                return df.format(date);
             } catch (ParseException e) {
-                e.printStackTrace();
+                return "";
             }
-
-            df = new SimpleDateFormat(destinyFormat, Locale.US);
-            return df.format(date);
         } else return "";
     }
 
@@ -375,7 +371,6 @@ public class CommonMethods {
      * @return formated date or time
      */
     public static String formatDateTime(String selectedDateTime, String requestedFormat, String currentDateFormat, String formatString) {
-
 
         if (formatString.equalsIgnoreCase(RescribeConstants.TIME)) {
             // SimpleDateFormat ft = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.HH_MM, Locale.US);

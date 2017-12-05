@@ -41,12 +41,15 @@ import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppoi
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
 /**
@@ -95,6 +98,9 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         appDBHelper = new AppDBHelper(mContext);
         if (getIntent().getParcelableArrayListExtra(BOTTOM_MENUS) != null) {
             setBottomMenu();
+            bookAppointmentBackButton.setVisibility(View.INVISIBLE);
+        } else {
+            bookAppointmentBackButton.setVisibility(View.VISIBLE);
         }
         //------
         locationTextView.setVisibility(View.VISIBLE);

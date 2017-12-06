@@ -11,34 +11,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp24"
-            android:layout_marginLeft="@dimen/dp14"
-            android:layout_marginRight="@dimen/dp24"
-            android:layout_marginStart="@dimen/dp14"
-            android:layout_marginTop="@dimen/dp14">
-
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/doctorConnect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/get_token"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp15"
-                app:customFont="@string/roboto_medium" />
-
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:textColor="@color/grey_shade"
-                android:textSize="@dimen/sp11"
-                app:customFont="@string/roboto_medium"
-                tools:text="2m ago" />
-        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,7 +40,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/dp16"
                     android:layout_marginEnd="@dimen/dp12"
                     android:layout_marginLeft="@dimen/dp6"

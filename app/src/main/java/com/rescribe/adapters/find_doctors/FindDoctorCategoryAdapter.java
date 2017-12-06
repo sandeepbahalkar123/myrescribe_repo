@@ -119,6 +119,8 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 .findViewById(R.id.tokenNo);
         final LinearLayout dataLayout = (LinearLayout) imageLayout
                 .findViewById(R.id.dataLayout);
+        final CustomTextView aboutDoctor = (CustomTextView) imageLayout
+                .findViewById(R.id.aboutDoctor);
 
 
         final DoctorList doctorObject = mDataList.get(position);
@@ -128,7 +130,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
         doctorNameTextView.setText(doctorObject.getDocName());
         //  doctorType.setText(doctorObject.getDegree());
         doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
-
+        aboutDoctor.setText(doctorObject.getDegree() + "");
         //-----THIS IS DONE TO SHOW COUNT OF FAVORITE(CUSTOM CREATED CATEGORY), ASSUME IT WILL COME LAST ALWAYS ----
       /*  int size;
         if (((position == mDataList.size() - 1) && mIsFavAvail)) {

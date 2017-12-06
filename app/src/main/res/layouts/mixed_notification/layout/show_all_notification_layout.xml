@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp24"
+                android:layout_marginLeft="@dimen/dp14"
+                android:layout_marginRight="@dimen/dp24"
+                android:layout_marginStart="@dimen/dp14"
+                android:layout_marginTop="@dimen/dp14">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/doctorConnect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/doctor_connect"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp15"
+                    app:customFont="@string/roboto_medium" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/grey_shade"
+                    android:textSize="@dimen/sp11"
+                    app:customFont="@string/roboto_medium"
+                    tools:text="2m ago" />
+            </RelativeLayout>
+
+            <include layout="@layout/globle_recycle_viewlist" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/divider" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp24"
+                android:layout_marginLeft="@dimen/dp14"
+                android:layout_marginRight="@dimen/dp24"
+                android:layout_marginStart="@dimen/dp14"
+                android:layout_marginTop="@dimen/dp14">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/getToken"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/get_token"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp15"
+                    app:customFont="@string/roboto_medium" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/grey_shade"
+                    android:textSize="@dimen/sp11"
+                    app:customFont="@string/roboto_medium"
+                    tools:text="2m ago" />
+            </RelativeLayout>
+
+            <include layout="@layout/globle_recycle_viewlist" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/divider" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp24"
+                android:layout_marginLeft="@dimen/dp14"
+                android:layout_marginRight="@dimen/dp24"
+                android:layout_marginStart="@dimen/dp14"
+                android:layout_marginTop="@dimen/dp14">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/appointments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/appointments"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp15"
+                    app:customFont="@string/roboto_medium" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/grey_shade"
+                    android:textSize="@dimen/sp11"
+                    app:customFont="@string/roboto_medium"
+                    tools:text="2m ago" />
+            </RelativeLayout>
+
+            <include layout="@layout/globle_recycle_viewlist" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/divider" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp24"
+                android:layout_marginLeft="@dimen/dp14"
+                android:layout_marginRight="@dimen/dp24"
+                android:layout_marginStart="@dimen/dp14"
+                android:layout_marginTop="@dimen/dp14">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/investigations"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/investigations"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp15"
+                    app:customFont="@string/roboto_medium" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/grey_shade"
+                    android:textSize="@dimen/sp11"
+                    app:customFont="@string/roboto_medium"
+                    tools:text="2m ago" />
+            </RelativeLayout>
+
+            <include layout="@layout/globle_recycle_viewlist" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

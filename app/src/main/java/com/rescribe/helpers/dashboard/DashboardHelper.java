@@ -4,9 +4,11 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.rescribe.R;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadNotificationMessageData;
 import com.rescribe.model.saved_article.request_model.ArticleToSaveReqModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
@@ -14,6 +16,8 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
+
+import java.util.ArrayList;
 
 /**
  * Created by riteshpandhurkar on 1/3/17.
@@ -24,6 +28,8 @@ public class DashboardHelper implements ConnectionListener {
     String TAG = this.getClass().getName();
     Context mContext;
     HelperResponse mHelperResponseManager;
+
+    private static ArrayList<UnreadNotificationMessageData> unreadNotificationMessageList = new ArrayList<>();
 
     public DashboardHelper(Context context, HelperResponse loginActivity) {
         this.mContext = context;
@@ -141,5 +147,23 @@ public class DashboardHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER);
     }
 
+    public static ArrayList<UnreadNotificationMessageData> getUnreadNotificationMessageList() {
+        return unreadNotificationMessageList;
+    }
 
+    public static void setUnreadNotificationMessageList(ArrayList<UnreadNotificationMessageData> unreadNotificationMessageList) {
+        DashboardHelper.unreadNotificationMessageList = unreadNotificationMessageList;
+    }
+
+    public static ArrayList<UnreadNotificationMessageData> doFindUnreadNotificationMessageByType(String notificationType) {
+        ArrayList<UnreadNotificationMessageData> receivedNotificationMessageList = new ArrayList<>();
+        //String : id|messageType|message
+        for (UnreadNotificationMessageData object :
+                DashboardHelper.unreadNotificationMessageList) {
+            if (object.getNotificationMessageType().equalsIgnoreCase(notificationType)) {
+                receivedNotificationMessageList.add(object);
+            }
+        }
+        return receivedNotificationMessageList;
+    }
 }

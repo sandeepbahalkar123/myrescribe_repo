@@ -173,6 +173,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         mContext = HomePageActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
+        //----------
+        DashboardHelper.setUnreadNotificationMessageList(new AppDBHelper(this).doGetReceivedNotificationMessage());
+        //----------
         createLocationRequest();
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
 
@@ -568,9 +571,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     private void doConfigureMenuOptions() {
 
-        int appCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, this);
-        int invCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, this);
-        int medCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, this);
+        int appCount = DashboardHelper.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT).size();
+        int invCount = DashboardHelper.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT).size();
+        int medCount = DashboardHelper.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT).size();
         // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
         int notificationCount = appCount + invCount + medCount;// + tokCount;

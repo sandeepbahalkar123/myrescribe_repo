@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.text.SpannableString;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -180,10 +181,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 String unitForBpMin = unitForBp[1];
                 vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getIcon()));
 
-                //---*************** Show vaital_display_name instead of unitName : START
-                //  vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
-                vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getDisplayName());
-                //---*************** Show vaital_display_name instead of unitName : END
+                vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
 
                 noOfVitals.setText(Html.fromHtml(getUnitValueforBp(categoryForBpMin, categoryForBpMax, unitForBpMin, unitForBpMax)));
 
@@ -191,7 +189,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 //TextColor of vital unit is set according to category
                 vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getIcon()));
 
-                //---*************** Show vaital_display_name instead of unitName : START
+                //---*************** Show vaital_display_name instead of unitName (EXCEPT BP CASE) : START
                 //  vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
                 vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getDisplayName());
                 //---*************** Show vaital_display_name instead of unitName : END
@@ -332,7 +330,11 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getCaseStudyIcons(mListDataHeader.get(groupPosition).getCaseDetailName()));
         if (!mListDataHeader.get(groupPosition).getCommonData().equals(null)) {
             mVisitDetailList = mListDataHeader.get(groupPosition).getCommonData();
-            groupViewHolder.mDetailFirstPoint.setText(setStringLength(mVisitDetailList.get(0).getName()));// + ".......");
+
+            SpannableString s = CommonMethods.addTextToStringAtLast( mVisitDetailList.get(0).getName(), 5, "...", ContextCompat.getColor(mContext, R.color.view_detail_color));
+
+            //groupViewHolder.mDetailFirstPoint.setText(setStringLength(mVisitDetailList.get(0).getName()));// + ".......");
+            groupViewHolder.mDetailFirstPoint.setText(s);
         }
         return convertView;
     }
@@ -674,5 +676,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         return range;
     }
 
-
+    public List<PatientHistory> getListDataList() {
+        return mListDataHeader;
+    }
 }

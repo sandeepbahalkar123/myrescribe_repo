@@ -65,7 +65,7 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
         date.setSpan(new UnderlineSpan(), 0, date.length(), 0);
         holder.articleDate.setText(date);
         //-----------
-        SpannableString s = addReadMoreTextToString(savedArticleInfo.getArticleExcerpt(), 20);
+        SpannableString s = CommonMethods.addTextToStringAtLast(savedArticleInfo.getArticleExcerpt(), 20, "... READ MORE", ContextCompat.getColor(mContext, R.color.tagColor));
 
         if (s == null) {
             holder.articleText.setText("" + savedArticleInfo.getArticleExcerpt());
@@ -157,41 +157,5 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
         public void onBookMarkIconClicked(SavedArticleInfo data);
     }
 
-    private SpannableString addReadMoreTextToString(String text, int wordSize) {
-        int spaceCount = 0;
-        int lastIndex = 0;
-        String[] stringSplitted = new String[wordSize];//assuming the sentence has 100 words or less, you can change the value to Integer.MAX_VALUE instead of 10
 
-        String finalString = "";
-        int stringLength = 0;//this will give the character count in the string to be split
-
-        for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) == ' ') {   //check whether the character is a space, if yes then count the words
-                spaceCount++;// increment the count as you have encountered a word
-            }
-            if (spaceCount == wordSize) {     //after encountering 10 words split the sentence from lastIndex to the 10th word. For the first time lastIndex would be zero that is starting position of the string
-                stringSplitted[stringLength++] = text.substring(lastIndex, i);
-                lastIndex = i;// to get the next part of the sentence, set the last index to 10th word
-                spaceCount = 0;//set the number of spaces to zero to starting counting the next 10 words
-                System.out.println(stringSplitted[0]);
-            }
-        }
-        stringSplitted[stringLength++] = text.substring(lastIndex, text.length() - 1);//If the sentence has 14 words, only 10 words would be copied to stringSplitted array, this would copy rest of the 4 words into the string splitted array
-
-        for (int i = 0; i < stringSplitted.length; i++) {
-            if (stringSplitted[i] != null) {
-
-                finalString = stringSplitted[i] + "... READ MORE";
-
-                SpannableString modifiedText = new SpannableString(finalString);
-                modifiedText.setSpan(new ForegroundColorSpan(
-                                ContextCompat.getColor(mContext, R.color.tagColor)),
-                        stringSplitted[i].length() + 4, finalString.length(),
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                Log.e("addReadMoreTextToString", "" + stringSplitted[i]);//Print the splitted strings here
-                return modifiedText;
-            }
-        }
-        return null;
-    }
 }

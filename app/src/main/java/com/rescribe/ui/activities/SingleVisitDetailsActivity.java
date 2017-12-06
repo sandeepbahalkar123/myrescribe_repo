@@ -24,6 +24,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.case_details.PatientHistory;
 import com.rescribe.model.case_details.Range;
+import com.rescribe.model.case_details.VisitCommonData;
 import com.rescribe.model.case_details.VisitData;
 import com.rescribe.model.case_details.Vital;
 import com.rescribe.ui.customesViews.CircularImageView;
@@ -65,6 +66,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     Intent mIntent;
     private String TAG = getClass().getName();
     private SingleVisitDetailHelper mSingleVisitDetailHelper;
+    private SingleVisitAdapter mSingleVisitAdapter;
 
 
     @Override
@@ -132,15 +134,30 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 finish();
             }
         });
-        mHistoryExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+        /*mHistoryExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
             public void onGroupExpand(int groupPosition) {
+
+            }
+        });*/
+
+        mHistoryExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 if (mLastExpandedPosition != -1
                         && groupPosition != mLastExpandedPosition) {
                     mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
                 }
+
                 mLastExpandedPosition = groupPosition;
+
+                List<PatientHistory> listDataList = mSingleVisitAdapter.getListDataList();
+                List<VisitCommonData> childObject = listDataList.get(groupPosition).getCommonData();
+
+                // TODO , CLICK PENDING
+                return false;
             }
         });
         mHistoryExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -219,8 +236,8 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         }
 
 
-        SingleVisitAdapter singleVisitAdapter = new SingleVisitAdapter(this, patientHistoryList);
-        mHistoryExpandableListView.setAdapter(singleVisitAdapter);
+        mSingleVisitAdapter = new SingleVisitAdapter(this, patientHistoryList);
+        mHistoryExpandableListView.setAdapter(mSingleVisitAdapter);
 
 
     }

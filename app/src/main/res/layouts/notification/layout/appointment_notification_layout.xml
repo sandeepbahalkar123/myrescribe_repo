@@ -16,7 +16,7 @@
         android:padding="@dimen/dp2"
         android:layout_marginStart="@dimen/dp4"
         android:layout_marginLeft="@dimen/dp4"
-        android:src="@drawable/notification_icon" />
+        android:src="@drawable/ic_notification_appoinments" />
 
     <LinearLayout
         android:layout_width="match_parent"

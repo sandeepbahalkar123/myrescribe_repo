@@ -277,7 +277,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        finishAffinity();
     }
 
 
@@ -552,8 +552,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Intent intent = new Intent(HomePageActivity.this, SupportActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
-
-
         }
 
         super.onBottomMenuClick(bottomMenu);

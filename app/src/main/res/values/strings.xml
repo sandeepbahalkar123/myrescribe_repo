@@ -76,7 +76,7 @@
     <string name="upload">Upload</string>
     <string name="adddocs">Add Documents</string>
     <string name="title_activity_zoomview">Zoom View</string>
-    <string name="investigation_msg">Have you done the investigations advised by Dr. Shah?</string>
+    <string name="investigation_msg">Have you done the investigations advised by </string>
     <string name="appointment_msg">You have an appointment with Dr. ---- on --th June at --:-- am.</string>
     <string name="appointment">Appointment</string>
     <string name="investigation">Investigation</string>
@@ -393,6 +393,7 @@
     <string name="all_notifications">All Notifications</string>
     <string name="medication_alert">Medication Alert</string>
     <string name="offers_alert">Offers Alert</string>
+    <string name="skip">Skip</string>
     <!--************************-->
 </resources>
 

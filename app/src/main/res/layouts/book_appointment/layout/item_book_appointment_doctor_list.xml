@@ -126,7 +126,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp10"
                         android:layout_toRightOf="@+id/thumbnail"
-                        android:layout_weight="1"
+                        android:layout_weight="1.2"
                         android:gravity="center|left"
                         android:orientation="vertical">
 
@@ -149,10 +149,10 @@
                             android:layout_below="@id/doctorType"
                             android:layout_toRightOf="@+id/thumbnail"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/sp15"
+                            android:textSize="@dimen/sp14"
                             app:customFont="@string/roboto_bold"
                             tools:text="Dr. Sandeep Patil" />
-                        <!-- Title Of Song-->
+
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/aboutDoctor"
                             android:layout_width="wrap_content"

@@ -103,6 +103,12 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     FrameLayout bookAppointmentButton;
     @BindView(R.id.complaintsImageView)
     ImageView complaintsImageView;
+    @BindView(R.id.recentlyvisitedTextView)
+    CustomTextView recentlyvisitedTextView;
+    @BindView(R.id.sponsoredDoctors)
+    CustomTextView sponsoredDoctors;
+    @BindView(R.id.favouriteDoctors)
+    CustomTextView favouriteDoctors;
     private FindDoctorsMenuListAdapter mFindDoctorsAdapter;
     private Context mContext;
     int pager_padding;
@@ -145,7 +151,9 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
 
     @SuppressLint("CheckResult")
     private void initialize() {
-
+        recentlyvisitedTextView.setText(getString(R.string.recently_visit_doctor).toUpperCase());
+        sponsoredDoctors.setText(getString(R.string.sponsered_doctor).toUpperCase());
+        favouriteDoctors.setText(getString(R.string.favorite).toUpperCase());
         //------Load background image : START------
         ClickEvent clickEvent1 = mReceivedDashboardMenuListData.getClickEvent();
         if (clickEvent1 != null) {
@@ -210,40 +218,40 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
     private void setRecentlyVisitedPager() {
-        if(recently_visit_doctor.size()>0) {
+        if (recently_visit_doctor.size() > 0) {
             recentlyVisitedFindDoctorLayout.setVisibility(View.VISIBLE);
             mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, recently_visit_doctor, mServicesCardViewImpl, this);
             recentlyViewPager.setAdapter(mRecentlyVisitedDoctors);
             recentlyViewPager.setClipToPadding(false);
             recentlyViewPager.setPadding(pager_padding, 0, pager_padding, 0);
             recentlyViewPager.setPageMargin(pager_margin);
-        }else{
+        } else {
             recentlyVisitedFindDoctorLayout.setVisibility(View.GONE);
         }
     }
 
     private void setSponseredPager() {
-        if(sponsered.size()>0) {
+        if (sponsered.size() > 0) {
             sponseredFindDoctorLayout.setVisibility(View.VISIBLE);
             mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, sponsered, mServicesCardViewImpl, this);
             sponseredViewPager.setAdapter(mRecentlyVisitedDoctors);
             sponseredViewPager.setClipToPadding(false);
             sponseredViewPager.setPadding(pager_padding, 0, pager_padding, 0);
             sponseredViewPager.setPageMargin(pager_margin);
-        }else{
+        } else {
             sponseredFindDoctorLayout.setVisibility(View.GONE);
         }
     }
 
     private void setFavoritePager() {
-        if(favoriteList.size()>0) {
+        if (favoriteList.size() > 0) {
             favoriteFindDoctorLayout.setVisibility(View.VISIBLE);
             mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, favoriteList, mServicesCardViewImpl, this);
             favoriteViewPager.setAdapter(mRecentlyVisitedDoctors);
             favoriteViewPager.setClipToPadding(false);
             favoriteViewPager.setPadding(pager_padding, 0, pager_padding, 0);
             favoriteViewPager.setPageMargin(pager_margin);
-        }else{
+        } else {
             favoriteFindDoctorLayout.setVisibility(View.GONE);
         }
     }
@@ -261,7 +269,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
 
-    @OnClick({R.id.viewAllFavorite, R.id.viewAllRecentVisited, R.id.viewAllSponsered,R.id.complaintsImageView})
+    @OnClick({R.id.viewAllFavorite, R.id.viewAllRecentVisited, R.id.viewAllSponsered, R.id.complaintsImageView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.viewAllFavorite:

@@ -44,12 +44,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/messageTypeLayout"
-        android:text="@string/book_appointment"
-        android:textColor="@color/white"
-        android:padding="@dimen/dp14"
-        android:textAllCaps="true"
+        android:background="@color/statusbar"
         android:gravity="center"
-        android:background="@color/statusbar"/>
+        android:padding="@dimen/dp14"
+        android:text="@string/book_appointment"
+        android:textAllCaps="true"
+        android:textColor="@color/white" />
 
     <RelativeLayout
         android:id="@+id/messageTypeLayout"
@@ -110,11 +110,11 @@
                     android:background="@color/transparent"
                     android:paddingBottom="@dimen/dp14"
                     android:paddingEnd="@dimen/dp18"
+                    android:paddingLeft="@dimen/dp9"
+                    android:paddingRight="@dimen/dp18"
                     android:paddingStart="@dimen/dp9"
                     android:paddingTop="@dimen/dp14"
-                    android:src="@drawable/attach"
-                    android:paddingLeft="@dimen/dp9"
-                    android:paddingRight="@dimen/dp18" />
+                    android:src="@drawable/attach" />
 
                 <ImageButton
                     android:id="@+id/cameraButton"
@@ -123,11 +123,11 @@
                     android:background="@color/transparent"
                     android:paddingBottom="@dimen/dp14"
                     android:paddingEnd="@dimen/dp18"
+                    android:paddingLeft="@dimen/dp9"
+                    android:paddingRight="@dimen/dp18"
                     android:paddingStart="@dimen/dp9"
                     android:paddingTop="@dimen/dp14"
-                    android:src="@drawable/photo_camera"
-                    android:paddingRight="@dimen/dp18"
-                    android:paddingLeft="@dimen/dp9" />
+                    android:src="@drawable/photo_camera" />
 
             </LinearLayout>
 
@@ -153,17 +153,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
-        tools:visibility="gone"
-        android:focusable="true" />
+        android:focusable="true"
+        tools:visibility="gone" />
 
     <io.codetail.widget.RevealFrameLayout
         android:id="@+id/revealFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/messageTypeLayout"
-        tools:visibility="visible"
         android:paddingEnd="@dimen/dp6"
-        android:paddingStart="@dimen/dp6">
+        android:paddingStart="@dimen/dp6"
+        tools:visibility="visible">
 
         <android.support.v7.widget.CardView
             android:id="@+id/reveal_items"

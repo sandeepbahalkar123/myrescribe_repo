@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/recentblue">
 
     <LinearLayout
@@ -30,7 +31,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center|left"
-                android:text="asd"
+                tools:text="asd"
                 android:textColor="@color/white"
                 android:textSize="@dimen/dp18" />
 
@@ -42,7 +43,7 @@
                 android:gravity="center|right"
                 android:padding="@dimen/dp10"
                 android:src="@drawable/ic_action_bookmark_border"
-                android:visibility="visible" />
+                android:visibility="gone" />
         </LinearLayout>
 
         <WebView

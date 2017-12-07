@@ -113,6 +113,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 }
 
                 if (isLastChild) {
+
                     divider.setVisibility(View.VISIBLE);
                 } else {
                     divider.setVisibility(View.GONE);
@@ -169,7 +170,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
             if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName().equals(mContext.getString(R.string.bp))) {
                 String category = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory();
-                if (!category.equals(":")) {
+                if (!category.contains(":")) {
                     String[] categoryForBp = category.split(":");
 
                     categoryForBpMax = categoryForBp[0];

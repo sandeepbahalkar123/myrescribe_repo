@@ -47,6 +47,7 @@
         android:textColor="@color/white"
         android:padding="@dimen/dp14"
         android:textAllCaps="true"
+        android:windowSoftInputMode="adjustPan"
         android:gravity="center"
         android:background="@color/statusbar"/>
 

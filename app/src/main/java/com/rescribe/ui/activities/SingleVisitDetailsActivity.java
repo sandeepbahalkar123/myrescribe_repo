@@ -135,23 +135,48 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
             }
         });
 
-        /*mHistoryExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+        mHistoryExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
             public void onGroupExpand(int groupPosition) {
 
-            }
-        });*/
+                List<PatientHistory> listDataList = mSingleVisitAdapter.getListDataList();
+                List<VisitCommonData> childObject = listDataList.get(groupPosition).getCommonData();
+                if(childObject.size()==1){
+                    if( mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("advice")){
+                        if (mLastExpandedPosition != -1
+                                && groupPosition != mLastExpandedPosition) {
+                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
+                        }
 
-        mHistoryExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                        mLastExpandedPosition = groupPosition;
+                    }else if( mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")){
+                        if (mLastExpandedPosition != -1
+                                && groupPosition != mLastExpandedPosition) {
+                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
+                        }
+
+                        mLastExpandedPosition = groupPosition;
+                    }else {
+                        mHistoryExpandableListView.collapseGroup(groupPosition);
+                    }
+                }else{
+
+                        if (mLastExpandedPosition != -1
+                                && groupPosition != mLastExpandedPosition) {
+                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
+                        }
+
+                        mLastExpandedPosition = groupPosition;
+
+                }
+            }
+        });
+
+     /*   mHistoryExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (mLastExpandedPosition != -1
-                        && groupPosition != mLastExpandedPosition) {
-                    mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
-                }
 
-                mLastExpandedPosition = groupPosition;
 
                 List<PatientHistory> listDataList = mSingleVisitAdapter.getListDataList();
                 List<VisitCommonData> childObject = listDataList.get(groupPosition).getCommonData();
@@ -159,7 +184,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 // TODO , CLICK PENDING
                 return false;
             }
-        });
+        });*/
         mHistoryExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {

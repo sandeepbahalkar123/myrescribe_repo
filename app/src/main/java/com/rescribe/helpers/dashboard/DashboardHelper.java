@@ -126,7 +126,7 @@ public class DashboardHelper implements ConnectionListener {
     }
 
     public void doSaveArticlesToServer(String url, boolean isBookMarked) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
 
         ArticleToSaveReqModel reqModel = new ArticleToSaveReqModel();

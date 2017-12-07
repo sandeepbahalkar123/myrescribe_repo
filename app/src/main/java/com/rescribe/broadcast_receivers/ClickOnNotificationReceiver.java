@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.rescribe.model.investigation.InvestigationData;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
@@ -14,6 +15,8 @@ import com.rescribe.ui.activities.InvestigationActivity;
 import com.rescribe.ui.activities.NotificationActivity;
 import com.rescribe.ui.activities.SplashScreenActivity;
 import com.rescribe.util.RescribeConstants;
+
+import java.util.ArrayList;
 
 /**
  * Created by jeetal on 16/5/17.
@@ -44,14 +47,15 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver {
                 manager.cancel(notificationId);
             } else if (investigation_notification_id == InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID) {
 
+                ArrayList<InvestigationData> investigationData = intent.getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
                 Intent intentNotification = new Intent(mContext, InvestigationActivity.class);
+                intentNotification.putExtra(RescribeConstants.INVESTIGATION_LIST, investigationData);
                 intentNotification.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
-//            intentNotification.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE, intent.getBundleExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE));
                 intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mContext.startActivity(intentNotification);
 
-                manager.cancel(investigation_notification_id);
+                manager.cancel(investigationData.get(0).getDrId());
             } else if (appointment_notification_id == AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID) {
                 String action = (String) intent.getExtras().get(RescribeConstants.APPOINTMENT_MESSAGE);
                 Toast.makeText(mContext, action + " " + "Not Accepted", Toast.LENGTH_SHORT).show();

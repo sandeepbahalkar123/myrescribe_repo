@@ -61,18 +61,17 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
                 CommonMethods.showToast(mContext, mContext.getString(R.string.internet));
             }
         } else if (investigation_notification_id == InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID) {
-            RescribePreferencesManager.putBoolean(RescribePreferencesManager.NOTIFICATION_SETTING_KEY.INVESTIGATION_ALERT, false, mContext);
-            manager.cancel(investigation_notification_id);
-        } else if (appointment_notification_id == AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID) {
             ArrayList<InvestigationData> investigationData = intent.getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
+            RescribePreferencesManager.putBoolean(RescribePreferencesManager.NOTIFICATION_SETTING_KEY.INVESTIGATION_ALERT, false, mContext);
+            manager.cancel(investigationData.get(0).getDrId());
+        } else if (appointment_notification_id == AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID) {
             Intent intentNotification = new Intent(mContext, AppointmentActivity.class);
-            intentNotification.putExtra(RescribeConstants.INVESTIGATION_LIST, investigationData);
             intentNotification.putExtra(RescribeConstants.APPOINTMENT_TIME, intent.getStringExtra(RescribeConstants.APPOINTMENT_TIME));
             intentNotification.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, intent.getBundleExtra(RescribeConstants.APPOINTMENT_MESSAGE));
             intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                     Intent.FLAG_ACTIVITY_CLEAR_TOP);
             mContext.startActivity(intentNotification);
-            manager.cancel(investigationData.get(0).getDrId());
+            manager.cancel(appointment_notification_id);
         }
 
     }

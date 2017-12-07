@@ -3,19 +3,27 @@ package com.rescribe.ui.activities.dashboard;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
+import com.rescribe.adapters.unread_notification_message_list.UnreadAppointmentNotificationAlert;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadNotificationMessageData;
+import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -28,124 +36,63 @@ import butterknife.ButterKnife;
  * Created by jeetal on 27/11/17.
  */
 
-public class UnreadNotificationMessageActivity extends AppCompatActivity implements HelperResponse {
+public class UnreadNotificationMessageActivity extends AppCompatActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.showDoctorList)
-    RecyclerView showDoctorList;
-    private BookAppointFilteredDocList mBookAppointFilteredDocListAdapter;
-    private ServicesCardViewImpl mServicesCardViewImpl;
-    private Context mContext;
-    private ArrayList<DoctorList> mDoctorCategoryList;
-    private String locationReceived = "";
-    private DoctorDataHelper doctorDataHelper;
-
+    @BindView(R.id.bookAppointmentBackButton)
+    ImageView mBackButton;
+    @BindView(R.id.title)
+    CustomTextView mTitleView;
+    @BindView(R.id.appointmentsListView)
+    RecyclerView mAppointmentAlertList;
+    @BindView(R.id.docConnectListView)
+    RecyclerView mDocConnectListView;
+    @BindView(R.id.investigationsListView)
+    RecyclerView mInvestigationsListView;
+    private UnreadAppointmentNotificationAlert mAppointmentNotificationAlertAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.find_doctors_show_doctor_list);
+        setContentView(R.layout.show_all_unread_notification_layout);
         ButterKnife.bind(this);
-        mDoctorCategoryList = getIntent().getExtras().getParcelableArrayList(getString(R.string.clicked_item_data));
-        setSupportActionBar(toolbar);
-        mContext = UnreadNotificationMessageActivity.this;
 
-        getSupportActionBar().setTitle(getIntent().getExtras().getString(getString(R.string.toolbarTitle)));
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        mTitleView.setText(getString(R.string.notification));
 
         initialize();
     }
 
     private void initialize() {
-        setUpList();
+        ArrayList<UnreadNotificationMessageData> appAlertList = DashboardHelper.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
+        ArrayList<UnreadNotificationMessageData> investigationAlertList = DashboardHelper.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+        ArrayList<UnreadNotificationMessageData> medAlertList = DashboardHelper.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+
+        setAppointmentAlertListAdapter(investigationAlertList);
+        setInvestigationAlertListAdapter(investigationAlertList);
 
     }
 
-    private void setUpList() {
-        mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (UnreadNotificationMessageActivity) mContext);
-        if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.favorite))) {
-            mDoctorCategoryList = mServicesCardViewImpl.getFavouriteDocList(-1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            showDoctorList.setLayoutManager(layoutManager);
-            showDoctorList.setHasFixedSize(true);
-            showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
-        }else if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.recently_visit_doctor))){
-            mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(getIntent().getExtras().getString(getString(R.string.toolbarTitle)),-1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            showDoctorList.setLayoutManager(layoutManager);
-            showDoctorList.setHasFixedSize(true);
-            showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
-        }else if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.sponsered_doctor))){
-            mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(getIntent().getExtras().getString(getString(R.string.toolbarTitle)),-1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            showDoctorList.setLayoutManager(layoutManager);
-            showDoctorList.setHasFixedSize(true);
-            showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
-        }else if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.complaints))){
-           /* HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
-            locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-            String[] split = locationReceived.split(",");
-            doctorDataHelper = new DoctorDataHelper(this,this);
-            doctorDataHelper.doGetDoctorListByComplaint(split[1].trim(), split[0].trim(), selectIdComplaint1, selectIdComplaint2);*/
+    private void setAppointmentAlertListAdapter(ArrayList<UnreadNotificationMessageData> appAlertList) {
+        mAppointmentNotificationAlertAdapter = new UnreadAppointmentNotificationAlert(this, appAlertList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mAppointmentAlertList.setLayoutManager(mLayoutManager);
+        mAppointmentAlertList.setItemAnimator(new DefaultItemAnimator());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mAppointmentAlertList.getContext(),
+                DividerItemDecoration.VERTICAL);
+        mAppointmentAlertList.addItemDecoration(dividerItemDecoration);
+        mAppointmentAlertList.setAdapter(mAppointmentNotificationAlertAdapter);
 
-        }
-    }
-
-
-    @Override
-    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        switch (mOldDataTag) {
-            case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
-                CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
-                CommonMethods.showToast(this, temp.getCommonRespose().getStatusMessage());
-                if (temp.getCommonRespose().isSuccess()) {
-                    //--------
-                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
-                    //--------
-                    mBookAppointFilteredDocListAdapter.notifyDataSetChanged();
-                }
-                break;
-        }
 
     }
 
-    @Override
-    public void onParseError(String mOldDataTag, String errorMessage) {
-
-    }
-
-    @Override
-    public void onServerError(String mOldDataTag, String serverErrorMessage) {
-
-    }
-
-    @Override
-    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setUpList();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    private void setInvestigationAlertListAdapter(ArrayList<UnreadNotificationMessageData> appAlertList) {
+        mAppointmentNotificationAlertAdapter = new UnreadAppointmentNotificationAlert(this, appAlertList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mInvestigationsListView.setLayoutManager(mLayoutManager);
+        mInvestigationsListView.setItemAnimator(new DefaultItemAnimator());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mAppointmentAlertList.getContext(),
+                DividerItemDecoration.VERTICAL);
+        mInvestigationsListView.addItemDecoration(dividerItemDecoration);
+        mInvestigationsListView.setAdapter(mAppointmentNotificationAlertAdapter);
     }
 
 

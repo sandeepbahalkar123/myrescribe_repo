@@ -56,6 +56,17 @@ public class VitalGraphInfoBaseModel implements CustomResponse {
         public void setVitalGraphDetailList(ArrayList<VitalGraphDetails> vitalGraphDetailList) {
             this.vitalGraphDetailList = vitalGraphDetailList;
         }
+
+
+        public ArrayList<VitalGraphDetails> getVitalGraphDetailListBySize(int size) {
+            ArrayList<VitalGraphDetails> temp = new ArrayList<>();
+            if (vitalGraphDetailList.size() > size) {
+                temp.addAll(vitalGraphDetailList.subList(0, size));
+            } else {
+                temp.addAll(vitalGraphDetailList);
+            }
+            return temp;
+        }
     }
 
 }

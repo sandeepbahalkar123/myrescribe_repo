@@ -67,6 +67,7 @@ import com.rescribe.ui.activities.dashboard.HealthOffersActivity;
 import com.rescribe.ui.activities.dashboard.ProfileActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.SupportActivity;
+import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
 import com.rescribe.ui.activities.health_repository.HealthRepository;
@@ -854,7 +855,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Intent intent = new Intent(this, VitalGraphActivity.class);
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
-            Cursor cursor = appDBHelper.getPreferences("1");
+            Intent intent = new Intent(this, UnreadNotificationMessageActivity.class);
+
+          /*  Cursor cursor = appDBHelper.getPreferences("1");
             String breakFastTime = "";
             String lunchTime = "";
             String dinnerTime = "";
@@ -896,7 +899,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
                 intent.putExtra(RescribeConstants.TIME, dinnerTime);
             }
-
+*/
             startActivity(intent);
 
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {

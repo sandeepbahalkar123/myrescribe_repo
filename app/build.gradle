@@ -58,7 +58,7 @@ android {
                             'src/main/res/layouts/health_offers',
                             'src/main/res/layouts/saved_articles',
                             'src/main/res/layouts/support',
-                            'src/main/res/layouts/mixed_notification'
+                            'src/main/res/layouts/unread_notification_message_list'
                     ]
         }
     }

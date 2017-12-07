@@ -142,7 +142,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
     private void plotVitalGraphUsingMpChart() {
 
-        ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailList();
+        //ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailList();
+        ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailListBySize(5);
         if (vitalGraphDetailList.size() != 0) {
 
             // soring for ascending list
@@ -222,7 +223,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
     private void plotVitalGraphUsingMpChartForBloodPressure() {
 
-        ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailList();
+        // ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailList();
+        ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailListBySize(5);
         if (vitalGraphDetailList.size() != 0) {
 
             // soring for ascending list
@@ -459,4 +461,6 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
         });
 
     }
+
+
 }

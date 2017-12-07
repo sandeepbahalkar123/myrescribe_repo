@@ -82,19 +82,21 @@ public class AppointmentNotificationService extends Service implements HelperRes
     }
 
     public void customNotification(AppointmentsNotificationData data, int index) {
-        //---- Save notification in db---
-        AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
-        appDBHelper.insertReceivedNotificationMessage("" + index, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, new Gson().toJson(data), "");
-        //-------
-
-        int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, AppointmentNotificationService.this);
-        RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, preCount + 1, AppointmentNotificationService.this);
 
         String drName = data.getDoctorName();
         int subNotificationId = data.getAptId();
         String date = CommonMethods.getFormattedDate(data.getAptDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY);
         String time = CommonMethods.getFormattedDate(data.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a);
         String message = "You have an appointment with " + drName + " on " + date + " at " + time.toLowerCase() + ".";
+
+        //---- Save notification in db---
+        AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
+        appDBHelper.insertReceivedNotificationMessage("" + index, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message, "");
+        //-------
+
+        int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, AppointmentNotificationService.this);
+        RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, preCount + 1, AppointmentNotificationService.this);
+
 
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),

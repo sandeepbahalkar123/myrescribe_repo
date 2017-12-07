@@ -139,7 +139,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
 
             @Override
             public void onGroupExpand(int groupPosition) {
-
+//this is done because if single element in child list , groupPosition will not expand, it will expand on advice even if it has only one element ,vitals will also expand
                 List<PatientHistory> listDataList = mSingleVisitAdapter.getListDataList();
                 List<VisitCommonData> childObject = listDataList.get(groupPosition).getCommonData();
                 if(childObject.size()==1){
@@ -158,6 +158,12 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
 
                         mLastExpandedPosition = groupPosition;
                     }else {
+                        if (mLastExpandedPosition != -1
+                                && groupPosition != mLastExpandedPosition) {
+                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
+                        }
+
+                        mLastExpandedPosition = groupPosition;
                         mHistoryExpandableListView.collapseGroup(groupPosition);
                     }
                 }else{

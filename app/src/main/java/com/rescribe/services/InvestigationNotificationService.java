@@ -47,6 +47,7 @@ public class InvestigationNotificationService extends Service implements HelperR
     private int notification_id;
     private AppDBHelper appDBHelper;
     private Intent intent;
+    private int idToStoreDataInDB = 0;
 
     @Override
     public void onCreate() {
@@ -119,6 +120,7 @@ public class InvestigationNotificationService extends Service implements HelperR
             }
 
             if (!drName.equals("")) {
+                idToStoreDataInDB = idToStoreDataInDB + 1;
                 intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE, message);
                 customNotification();
             }
@@ -133,6 +135,15 @@ public class InvestigationNotificationService extends Service implements HelperR
 
     public void customNotification() {
 
+        //-------------
+        String time = intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME);
+        String message = intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE);
+        //--------------
+        //---- Save notification in db---
+        AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
+        appDBHelper.insertReceivedNotificationMessage("" + idToStoreDataInDB, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, new Gson().toJson(time + message), "");
+        //-------
+
         int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, InvestigationNotificationService.this);
         RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, preCount + 1, InvestigationNotificationService.this);
 
@@ -140,9 +151,10 @@ public class InvestigationNotificationService extends Service implements HelperR
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
                 R.layout.investigation_notification_layout);
 
+        //---------
         Intent mNotifyYesIntent = new Intent(this, ClickOnCheckBoxOfNotificationReceiver.class);
         mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, notification_id);
-        mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
+        mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, time);
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
 
@@ -163,8 +175,8 @@ public class InvestigationNotificationService extends Service implements HelperR
                 .setStyle(new android.support.v7.app.NotificationCompat.DecoratedCustomViewStyle());
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.investigation));
-        mRemoteViews.setTextViewText(R.id.questionText, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE));
-        mRemoteViews.setTextViewText(R.id.timeText, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
+        mRemoteViews.setTextViewText(R.id.questionText, message);
+        mRemoteViews.setTextViewText(R.id.timeText, time);
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationmanager.notify(notification_id, builder.build());
 

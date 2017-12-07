@@ -187,7 +187,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
                     }
                 } else {
-                    holder.clinicName.setVisibility(View.GONE);
+                    holder.clinicName.setText(spannableClinicNameString);
                     if (doctorObject.getClinicDataList().size() == 1) {
                         holder.clinicName.setVisibility(View.VISIBLE);
                         holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
@@ -245,7 +245,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.book_appointment));
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 1);
+                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
 
                 mOnClinicAndDoctorNameSearchRowItem.onClickedOfBookButton(b);
             }
@@ -354,7 +354,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
                     for (DoctorList doctorConnectModel : mArrayList) {
 
-                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(charString.toLowerCase())) {
+                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase()+mContext.getString(R.string.space)+charString.toLowerCase())) {
                             filteredList.add(doctorConnectModel);
                             setListByClinicName(false);
                         } else {

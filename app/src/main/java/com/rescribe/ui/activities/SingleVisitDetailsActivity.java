@@ -224,7 +224,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 List<Vital> vitalList = patientHistoryList.get(i).getVitals();
                 for (int j = 0; j < vitalList.size(); j++) {
                     Vital dataObject = vitalList.get(j);
-                    if (dataObject.getUnitName().equalsIgnoreCase(getString(R.string.bp_max)) || dataObject.getUnitName().equalsIgnoreCase(getString(R.string.bp_min))) {
+                    if (dataObject.getUnitName().contains(getString(R.string.bp_max)) || dataObject.getUnitName().contains(getString(R.string.bp_min))) {
                         Vital vital = new Vital();
                         if (pos == null) {
                             vital.setUnitName(getString(R.string.bp));

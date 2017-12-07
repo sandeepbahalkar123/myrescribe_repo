@@ -10,9 +10,11 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
+import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver;
 import com.rescribe.broadcast_receivers.ClickOnNotificationReceiver;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.notification.AppointmentHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
@@ -79,16 +81,22 @@ public class AppointmentNotificationService extends Service implements HelperRes
         return mBinder;
     }
 
-    public void customNotification(ArrayList<AppointmentsNotificationData> data, int index) {
+    public void customNotification(AppointmentsNotificationData data, int index) {
+
+        String drName = data.getDoctorName();
+        int subNotificationId = data.getAptId();
+        String date = CommonMethods.getFormattedDate(data.getAptDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY);
+        String time = CommonMethods.getFormattedDate(data.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a);
+        String message = "You have an appointment with " + drName + " on " + date + " at " + time.toLowerCase() + ".";
+
+        //---- Save notification in db---
+        AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
+        appDBHelper.insertReceivedNotificationMessage("" + index, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message, "");
+        //-------
 
         int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, AppointmentNotificationService.this);
         RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, preCount + 1, AppointmentNotificationService.this);
 
-        String drName = data.get(index).getDoctorName();
-        int subNotificationId = data.get(index).getAptId();
-        String date = CommonMethods.getFormattedDate(data.get(index).getAptDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY);
-        String time = CommonMethods.getFormattedDate(data.get(index).getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a);
-        String message = "You have an appointment with " + drName + " on " + date + " at " + time.toLowerCase() + ".";
 
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
@@ -156,9 +164,13 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
         if (customResponse instanceof AppointmentsNotificationModel) {
             AppointmentsNotificationModel appointmentsNotificationModel = (AppointmentsNotificationModel) customResponse;
-            if (!appointmentsNotificationModel.getData().getAptList().isEmpty()) {
-                for (int index = 0; index < appointmentsNotificationModel.getData().getAptList().size(); index++)
-                    customNotification(appointmentsNotificationModel.getData().getAptList(), index);
+            ArrayList<AppointmentsNotificationData> aptList = appointmentsNotificationModel.getData().getAptList();
+            if (!aptList.isEmpty()) {
+                for (int index = 0; index < aptList.size(); index++) {
+                    AppointmentsNotificationData aptListObject = aptList.get(index);
+                    customNotification(aptListObject, index);
+                }
+
             }
         }
 

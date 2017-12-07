@@ -13,7 +13,7 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
-import com.rescribe.ui.activities.dashboard.DoctorDescriptionBaseActivity;
+import com.rescribe.ui.activities.book_appointment.DoctorDescriptionBaseActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

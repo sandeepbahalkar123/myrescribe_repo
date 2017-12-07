@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/notification_bg"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imageIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp12"
+                android:layout_marginRight="@dimen/dp12"
+                android:src="@drawable/my_appointments_icon" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/unread_notification_gray_bg"
+            android:orientation="vertical">
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/textMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp13"
+                app:customFont="@string/roboto_medium"
+                tools:text="Do you want to confirm the token number available with Dr. Sachin Patil for 10:00 pm today?" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/loadMoreItems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:padding="@dimen/dp5"
+                android:text="@string/more"
+                android:textColor="@color/tagColor"
+                app:customFont="@string/roboto_medium" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

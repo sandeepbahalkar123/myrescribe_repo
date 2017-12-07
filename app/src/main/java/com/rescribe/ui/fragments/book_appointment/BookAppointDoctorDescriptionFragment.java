@@ -126,6 +126,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     private DoctorDataHelper mDoctorDataHelper;
     private String mReceivedTitle;
     private int mSelectedClinicDataPosition;
+    private ClinicData clinicData;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -184,8 +185,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         contentServices.setSpan(new UnderlineSpan(), 0, contentServices.length(), 0);
         mServicesHeaderView.setText(contentServices);
         //-------
-        if (aboutDoctor.getText().equals("")) {
-            aboutLayout.setVisibility(View.INVISIBLE);
+        if (mClickedDoctorObject.getAboutDoctor().equals("")) {
+            aboutLayout.setVisibility(View.GONE);
             //-------
         } else {
             aboutLayout.setVisibility(View.VISIBLE);
@@ -267,7 +268,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                    ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
+                     clinicData = mClickedDoctorObject.getClinicDataList().get(position);
                     if (clinicData.getClinicName().equals("")) {
                         mClinicName.setVisibility(View.GONE);
                     } else {
@@ -282,6 +283,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                         mDoctorFees.setText("" + clinicData.getAmount());
                     }
                     mSelectedClinicDataPosition = position;
+
+                    setServicesInView(clinicData.getDocServices());
                 }
 
                 @Override
@@ -302,13 +305,17 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         } else {
             mClinicNameSpinnerParentLayout.setVisibility(View.GONE);
         }
+
+    }
+
+    private void setServicesInView(ArrayList<String> receivedDocService) {
         //---------
-        ArrayList<String> receivedDocService = mClickedDoctorObject.getDocServices();
+
         int receivedDocServiceSize = receivedDocService.size();
         if (receivedDocServiceSize > 0) {
             servicesLayout.setVisibility(View.VISIBLE);
             ArrayList<String> docListToSend = new ArrayList<>();
-            if (receivedDocServiceSize > 5) {
+            if (receivedDocServiceSize > 4) {
                 docListToSend.addAll(receivedDocService.subList(0, 4));
                 mReadMoreDocServices.setVisibility(View.VISIBLE);
             } else {
@@ -443,7 +450,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         });
 
         ListView mServicesListView = (ListView) dialog.findViewById(R.id.servicesListView);
-        DialogServicesListAdapter mServicesAdapter = new DialogServicesListAdapter(getActivity(), mClickedDoctorObject.getDocServices());
+        DialogServicesListAdapter mServicesAdapter = new DialogServicesListAdapter(getActivity(), clinicData.getDocServices());
         mServicesListView.setAdapter(mServicesAdapter);
 
         dialog.show();

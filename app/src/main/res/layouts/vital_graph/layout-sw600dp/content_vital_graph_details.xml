@@ -90,7 +90,7 @@
                 android:layout_weight="1"
                 android:paddingEnd="@dimen/dp24"
                 android:paddingStart="@dimen/dp24"
-                android:text="@string/dummy_full"
+                tools:text="@string/dummy_full"
                 android:textSize="@dimen/sp14"
                 app:customFont="@string/roboto_medium" />
 

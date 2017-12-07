@@ -98,7 +98,9 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         appDBHelper = new AppDBHelper(mContext);
         if (getIntent().getParcelableArrayListExtra(BOTTOM_MENUS) != null) {
             setBottomMenu();
-            bookAppointmentBackButton.setVisibility(View.INVISIBLE);
+            bookAppointmentBackButton.setVisibility(View.GONE);
+
+
         } else {
             bookAppointmentBackButton.setVisibility(View.VISIBLE);
         }

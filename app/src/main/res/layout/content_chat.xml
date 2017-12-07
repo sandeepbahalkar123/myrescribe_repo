@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/contentLayout"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.activities.ChatActivity"
     tools:showIn="@layout/activity_chat">
@@ -18,6 +19,7 @@
             android:id="@+id/chatList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/layer_3"
             android:paddingEnd="@dimen/dp6"
             android:paddingStart="@dimen/dp6" />
 
@@ -38,18 +40,22 @@
         android:visibility="gone"
         tools:text="12 September 2017" />
 
-    <TextView
+    <com.rescribe.ui.customesViews.CustomTextView
         android:id="@+id/bookAppointmentButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/messageTypeLayout"
-        android:text="@string/book_appointment"
-        android:textColor="@color/white"
-        android:padding="@dimen/dp14"
-        android:textAllCaps="true"
-        android:windowSoftInputMode="adjustPan"
+        android:background="@color/clickHere"
         android:gravity="center"
-        android:background="@color/statusbar"/>
+        android:textSize="@dimen/sp16"
+        app:customFont="@string/roboto_medium"
+        android:padding="@dimen/dp14"
+        android:drawableRight="@drawable/arrow_copy"
+        android:text="@string/book_appointment"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:visibility="visible"/>
+
 
     <RelativeLayout
         android:id="@+id/messageTypeLayout"
@@ -80,12 +86,12 @@
             android:layout_marginStart="@dimen/dp4"
             android:layout_toLeftOf="@+id/sendButton"
             android:layout_toStartOf="@+id/sendButton"
-            android:background="@drawable/group_4_copy_2">
+            android:background="@drawable/white_box">
 
             <EditText
                 android:id="@+id/messageType"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp48"
+                android:layout_height="@dimen/dp46"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/buttonLayout"
                 android:layout_toStartOf="@+id/buttonLayout"
@@ -110,11 +116,11 @@
                     android:background="@color/transparent"
                     android:paddingBottom="@dimen/dp14"
                     android:paddingEnd="@dimen/dp18"
+                    android:paddingLeft="@dimen/dp9"
+                    android:paddingRight="@dimen/dp18"
                     android:paddingStart="@dimen/dp9"
                     android:paddingTop="@dimen/dp14"
-                    android:src="@drawable/attach"
-                    android:paddingLeft="@dimen/dp9"
-                    android:paddingRight="@dimen/dp18" />
+                    android:src="@drawable/attach" />
 
                 <ImageButton
                     android:id="@+id/cameraButton"
@@ -123,11 +129,11 @@
                     android:background="@color/transparent"
                     android:paddingBottom="@dimen/dp14"
                     android:paddingEnd="@dimen/dp18"
+                    android:paddingLeft="@dimen/dp9"
+                    android:paddingRight="@dimen/dp18"
                     android:paddingStart="@dimen/dp9"
                     android:paddingTop="@dimen/dp14"
-                    android:src="@drawable/photo_camera"
-                    android:paddingRight="@dimen/dp18"
-                    android:paddingLeft="@dimen/dp9" />
+                    android:src="@drawable/photo_camera" />
 
             </LinearLayout>
 
@@ -153,17 +159,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
-        tools:visibility="gone"
-        android:focusable="true" />
+        android:focusable="true"
+        tools:visibility="gone" />
 
     <io.codetail.widget.RevealFrameLayout
         android:id="@+id/revealFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/messageTypeLayout"
-        tools:visibility="visible"
         android:paddingEnd="@dimen/dp6"
-        android:paddingStart="@dimen/dp6">
+        android:paddingStart="@dimen/dp6"
+        tools:visibility="visible">
 
         <android.support.v7.widget.CardView
             android:id="@+id/reveal_items"

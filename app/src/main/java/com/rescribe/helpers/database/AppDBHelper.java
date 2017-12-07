@@ -8,8 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
+import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
+import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadNotificationMessageData;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.investigation.Images;
 import com.rescribe.model.investigation.InvestigationData;
@@ -30,6 +32,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     private static final String MESSAGE_UPLOAD_STATUS = "message_status";
     private static final String MESSAGE_FILE_UPLOAD = "message_file_data";
     private static final String MESSAGE_UPLOAD_TABLE = "my_message_table";
+    private static final String NOTIFICATION_MESSAGE_TABLE = "notification_message_table";
 
     public static final String CHAT_USER_ID = "user_id";
     public static final String MESSAGE = "message";
@@ -65,6 +68,12 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public static final String LUNCH_TIME = "lunchTime";
     public static final String DINNER_TIME = "dinnerTime";
     public static final String SNACKS_TIME = "snacksTime";
+
+    //---
+    public static final String NOTIFICATION_MSG_TYPE = "notification_msg_type";
+    public static final String TIME_STAMP = "time_stamp";
+
+    //---
 
     static AppDBHelper instance = null;
     private Context mContext;
@@ -322,7 +331,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     // MyRecords
 
-    public boolean insertMyRecordsData(String id, int status, String data, int docId,int opdId, String visitDate) {
+    public boolean insertMyRecordsData(String id, int status, String data, int docId, int opdId, String visitDate) {
         if (MyRecordsDataTableNumberOfRows(id) == 0) {
             SQLiteDatabase db = getWritableDatabase();
             ContentValues contentValues = new ContentValues();
@@ -538,4 +547,53 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }*/
 
     // Chat Upload End
+
+    //----- Notification Storing : START
+
+    public boolean insertReceivedNotificationMessage(String id, String type, String data, String timeStamp) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COLUMN_ID, id);
+        contentValues.put(NOTIFICATION_MSG_TYPE, type);
+        contentValues.put(COLUMN_DATA, data);
+        contentValues.put(TIME_STAMP, timeStamp);
+
+        db.insert(NOTIFICATION_MESSAGE_TABLE, null, contentValues);
+
+        return true;
+    }
+
+    //String : id|messageType|message
+    public ArrayList<UnreadNotificationMessageData> doGetReceivedNotificationMessage() {
+        SQLiteDatabase db = getReadableDatabase();
+        String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE;
+        Cursor cursor = db.rawQuery(countQuery, null);
+        ArrayList<UnreadNotificationMessageData> chatDoctors = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                UnreadNotificationMessageData unreadNotificationMessageData = new UnreadNotificationMessageData();
+                unreadNotificationMessageData.setId(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
+                unreadNotificationMessageData.setNotificationMessageType(cursor.getString(cursor.getColumnIndex(NOTIFICATION_MSG_TYPE)));
+                unreadNotificationMessageData.setNotificationData(cursor.getString(cursor.getColumnIndex(COLUMN_DATA)));
+                unreadNotificationMessageData.setNotificationTimeStamp(cursor.getString(cursor.getColumnIndex(TIME_STAMP)));
+                chatDoctors.add(unreadNotificationMessageData);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+        return chatDoctors;
+    }
+
+    public int deleteReceivedNotificationMessage(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(NOTIFICATION_MESSAGE_TABLE,
+                COLUMN_ID + " = ? ",
+                new String[]{Integer.toString(id)});
+    }
+
+
+    //----- Notification storing : END
 }

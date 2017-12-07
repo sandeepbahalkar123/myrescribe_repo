@@ -325,7 +325,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.book_appointment));
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 1);
+                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
 
                 mOnFilterDocListClickListener.onClickedOfBookButton(b);
             }

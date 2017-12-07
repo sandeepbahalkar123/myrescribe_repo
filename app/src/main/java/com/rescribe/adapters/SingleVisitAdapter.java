@@ -332,10 +332,15 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         if (!mListDataHeader.get(groupPosition).getCommonData().equals(null)) {
             mVisitDetailList = mListDataHeader.get(groupPosition).getCommonData();
 
-            SpannableString s = CommonMethods.addTextToStringAtLast( mVisitDetailList.get(0).getName(), 5, "...", ContextCompat.getColor(mContext, R.color.view_detail_color));
 
+            if (mVisitDetailList.size() > 1) {
+                groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
+            } else {
+                SpannableString s = CommonMethods.addTextToStringAtLast(mVisitDetailList.get(0).getName(), 5, "...", ContextCompat.getColor(mContext, R.color.view_detail_color));
+                groupViewHolder.mDetailFirstPoint.setText(s);
+            }
             //groupViewHolder.mDetailFirstPoint.setText(setStringLength(mVisitDetailList.get(0).getName()));// + ".......");
-            groupViewHolder.mDetailFirstPoint.setText(s);
+
         }
         return convertView;
     }

@@ -7,6 +7,8 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class ClinicData implements Parcelable {
 
     @SerializedName("amount")
@@ -27,12 +29,15 @@ public class ClinicData implements Parcelable {
     @SerializedName("locationId")
     @Expose
     private int locationId;
-
+    @SerializedName("services")
+    @Expose
+    private ArrayList<String> docServices = new ArrayList<>();
     // not using right now
     private String tokenNo = "";
     @SerializedName("appointmentType")
     @Expose
     private String appointmentType = "";
+
 
     public final static Creator<ClinicData> CREATOR = new Creator<ClinicData>() {
 
@@ -51,6 +56,7 @@ public class ClinicData implements Parcelable {
     };
 
     protected ClinicData(Parcel in) {
+        ClinicData instance = new ClinicData();
         this.clinicName = ((String) in.readValue((String.class.getClassLoader())));
         this.clinicAddress = ((String) in.readValue((String.class.getClassLoader())));
         this.locationId = ((int) in.readValue((int.class.getClassLoader())));
@@ -58,6 +64,7 @@ public class ClinicData implements Parcelable {
         this.apptScheduleLmtDays = ((int) in.readValue((int.class.getClassLoader())));
         this.amount = ((int) in.readValue((int.class.getClassLoader())));
         this.appointmentType = ((String) in.readValue((String.class.getClassLoader())));
+        in.readList(instance.docServices, (String.class.getClassLoader()));
     }
 
     public ClinicData() {
@@ -102,6 +109,13 @@ public class ClinicData implements Parcelable {
     public void setApptScheduleLmtDays(int apptScheduleLmtDays) {
         this.apptScheduleLmtDays = apptScheduleLmtDays;
     }
+    public ArrayList<String> getDocServices() {
+        return docServices;
+    }
+
+    public void setDocServices(ArrayList<String> docServices) {
+        this.docServices = docServices;
+    }
 
     public int getAmount() {
         return amount;
@@ -127,6 +141,7 @@ public class ClinicData implements Parcelable {
         dest.writeValue(apptScheduleLmtDays);
         dest.writeValue(amount);
         dest.writeValue(appointmentType);
+        dest.writeList(docServices);
     }
 
     public int describeContents() {

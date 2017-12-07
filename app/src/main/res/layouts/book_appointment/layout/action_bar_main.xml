@@ -35,6 +35,8 @@
                     android:layout_gravity="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp18"
+                    tools:text="sfdfsdgffghghg"
+                    android:paddingLeft="@dimen/dp12"
                     android:visibility="visible"
                     app:customFont="@string/roboto_bold" />
 

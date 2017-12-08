@@ -54,10 +54,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
+                        android:text=""
                         android:textColor="@color/Gray"
                         android:textSize="@dimen/sp13"
-                        app:customFont="@string/roboto_medium"
-                        tools:text="Rantac" />
+                        app:customFont="@string/roboto_medium" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/tabNameTextView"

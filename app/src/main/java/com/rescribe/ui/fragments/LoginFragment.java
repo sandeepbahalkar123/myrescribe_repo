@@ -78,8 +78,8 @@ public class LoginFragment extends Fragment implements HelperResponse {
 
 
         // TODO : this is done for development, remove it----
-        //editTextMobileNo.setText("9833898048");
-        // editTextPassword.setText("uren1234");
+         editTextMobileNo.setText("9833898048");
+        editTextPassword.setText("uren1234");
         // TODO : this is done for development, remove it----
         return rootView;
     }

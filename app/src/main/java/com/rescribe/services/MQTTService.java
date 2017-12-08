@@ -1,17 +1,35 @@
 package com.rescribe.services;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.support.v4.app.RemoteInput;
 import android.util.Log;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.rescribe.R;
 import com.rescribe.broadcast_receivers.ReplayBroadcastReceiver;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.chat.InternetConnect;
@@ -35,6 +53,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import rx.Observable;
 import rx.Subscription;
@@ -223,7 +242,7 @@ public class MQTTService extends Service {
                                                         messagesTemp.add(messages.get(index));
                                                 } else messagesTemp.addAll(messages);
 
-                                                MessageNotification.notify(MQTTService.this, messagesTemp, String.valueOf(messageL.getName()), appDBHelper.unreadMessageCountById(messageL.getDocId()), getReplyPendingIntent(messageL), messageL.getDocId());
+                                                MessageNotification.notify(MQTTService.this, messagesTemp, messageL.getName(), getProfilePhotoBitmap(messageL), appDBHelper.unreadMessageCountById(messageL.getDocId()), getReplyPendingIntent(messageL), messageL.getDocId());
 
                                                 // change
                                                 statusInfo.setMessageStatus(REACHED);
@@ -452,5 +471,70 @@ public class MQTTService extends Service {
             return remoteInput.getCharSequence(KEY_REPLY);
         }
         return null;
+    }
+
+    // getBitmap from message
+
+    @SuppressLint("CheckResult")
+    private Bitmap getProfilePhotoBitmap(final MQTTMessage messageL) {
+
+        TextDrawable mReceiverDrawable = null;
+        String doctorName = messageL.getName();
+        String doctorPhoto = messageL.getImageUrl();
+
+        if (!doctorName.isEmpty()) {
+            doctorName = doctorName.replace("Dr. ", "");
+            int color2 = ColorGenerator.MATERIAL.getColor(doctorName);
+            mReceiverDrawable = TextDrawable.builder()
+                    .beginConfig()
+                    .toUpperCase()
+                    .width(Math.round(getResources().getDimension(R.dimen.dp40)))  // width in px
+                    .height(Math.round(getResources().getDimension(R.dimen.dp40))) // height in px
+                    .endConfig()
+                    .buildRound(("" + doctorName.charAt(0)), color2);
+        }
+
+        if (doctorPhoto != null) {
+            if (!doctorPhoto.isEmpty()) {
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.dontAnimate();
+                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.skipMemoryCache(true);
+                requestOptions.placeholder(mReceiverDrawable);
+                requestOptions.error(mReceiverDrawable);
+
+                try {
+                    return Glide.with(this)
+                            .asBitmap()
+                            .load(doctorPhoto)
+                            .apply(requestOptions)
+                            .submit()
+                            .get();
+
+                } catch (Exception e) {
+                    return drawableToBitmap(mReceiverDrawable);
+                }
+            } else return drawableToBitmap(mReceiverDrawable);
+        } else return drawableToBitmap(mReceiverDrawable);
+    }
+
+    public Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap;
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0)
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        else
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 }

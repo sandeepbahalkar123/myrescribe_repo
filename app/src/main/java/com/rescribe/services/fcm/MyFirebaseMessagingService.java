@@ -115,7 +115,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this)
                         .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
-                                R.drawable.ic_launcher))
+                                R.drawable.ic_notification_gettoken))
                         .setSmallIcon(R.drawable.logosmall)
                         .setContentTitle("Rescribe")
                         .setContentText(messageBody)

@@ -275,7 +275,6 @@ public class RescribeConstants {
         public static final String INVESTIGATION_DATE = "investigation_date";
         public static final String INVESTIGATION_TIME = "investigation_time";
         public static final String INVESTIGATION_TEMP_DATA = "investigation_temp_data";
-        public static final String INVESTIGATION_MESSAGE = "investigation_message";
         public static final String INVESTIGATION_DATA = "investigation_data";
         public static final String INVESTIGATION_NOTIFICATION_ID = "investigation_notification_id";
         public static final String IMAGE_ID = "imgId";

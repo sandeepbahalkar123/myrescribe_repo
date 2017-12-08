@@ -77,7 +77,7 @@
     <string name="upload">Upload</string>
     <string name="adddocs">Add Documents</string>
     <string name="title_activity_zoomview">Zoom View</string>
-    <string name="investigation_msg">Have you done the investigations advised by Dr. Shah?</string>
+    <string name="investigation_msg">Have you done the investigations advised by&#160;</string>
     <string name="appointment_msg">You have an appointment with Dr. ---- on --th June at --:-- am.</string>
     <string name="appointment">Appointment</string>
     <string name="investigation">Investigation</string>
@@ -86,7 +86,7 @@
     <string name="my_appointments">My Appointments</string>
     <string name="one_day_visit_date">VISIT_DATE</string>
     <string name="just_now">Just\nNow</string>
-    <string name="investigation_title">We request you to upload &amp; share the results of the following investigation with Dr. Shah:</string>
+    <string name="investigation_title">We request you to upload &amp; share the results of the following investigation with&#160;</string>
     <string name="gmail">Share With Gmail</string>
     <string name="type">type</string>
     <string name="already_upload">Already Uploaded</string>
@@ -394,8 +394,10 @@
     <string name="all_notifications">All Notifications</string>
     <string name="medication_alert">Medication Alert</string>
     <string name="offers_alert">Offers Alert</string>
+
     <string name="more">MORE</string>
     <string name="skip">SKIP</string>
+
     <!--************************-->
 </resources>
 

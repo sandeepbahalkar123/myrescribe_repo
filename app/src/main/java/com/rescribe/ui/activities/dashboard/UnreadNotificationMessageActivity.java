@@ -26,6 +26,7 @@ import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookAppointTokenNotificationBaseModel;
 import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookAppointTokenNotificationData;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
+import com.rescribe.model.investigation.InvestigationNotification;
 import com.rescribe.model.notification.Medication;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.AppointmentActivity;
@@ -166,6 +167,9 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
             mAppointmentNotificationAlertAdapter.addAllElementToList();
             mAppointmentNotificationAlertAdapter.notifyDataSetChanged();
+        } else if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
+            mInvestigationNotificationAlertAdapter.addAllElementToList();
+            mInvestigationNotificationAlertAdapter.notifyDataSetChanged();
         }
     }
 
@@ -184,7 +188,15 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         } else if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
             new AppDBHelper(this).deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
             DashboardHelper.deleteUnreadNotificationMessageById(unreadNotificationMessageData.getId(), unreadNotificationMessageData.getNotificationMessageType());
-
+            String notificationData = unreadNotificationMessageData.getNotificationData();
+            if (notificationData.contains("|")) {
+                String[] split = notificationData.split("\\|");
+                Intent intentNotification = new Intent(this, InvestigationActivity.class);
+                InvestigationNotification investigationNotification = new Gson().fromJson(split[1], InvestigationNotification.class);
+                intentNotification.putExtra(RescribeConstants.INVESTIGATION_LIST, investigationNotification.getNotifications());
+                intentNotification.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, split[2]);
+                startActivity(intentNotification);
+            }
             // OPEN INVESTIGATION SCREEN, pending for ganesh code
         }
     }
@@ -264,9 +276,9 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             if (isRequiredAllElements && count == 1) {
                 build = new SectionParameters.Builder(R.layout.tablet_notification_item)
                         .headerResourceId(R.layout.tablet_notification_item_header)
-                        .footerResourceId(R.layout.more_item_textview)
+                       // .footerResourceId(R.layout.more_item_textview)
                         .build();
-            } else if (!isRequiredAllElements && strings.size() > 1) {
+            } else if (!isRequiredAllElements) {
                 build = new SectionParameters.Builder(R.layout.tablet_notification_item)
                         .headerResourceId(R.layout.tablet_notification_item_header)
                         .footerResourceId(R.layout.more_item_textview)

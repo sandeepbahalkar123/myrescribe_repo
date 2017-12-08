@@ -54,7 +54,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         // If this service was started by out DosesAlarmTask intent then we want to show our notification
 
         String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this);
-        boolean isNotificationOn = RescribePreferencesManager.getBoolean(RescribePreferencesManager.NOTIFICATION_SETTING_KEY.APPOINTMENT_ALERT, this);
+        boolean isNotificationOn = RescribePreferencesManager.getBoolean(getString(R.string.appointment_alert), this);
 
         if (loginStatus.equals(RescribeConstants.YES) && isNotificationOn) {
 

@@ -22,29 +22,5 @@
                 }
             }
         ]
-    },
-    {
-        "outputFile": "/home/riteshpandhurkar/riteshpandhurkar/Documents/e_book/Libs/Expandable_with_recycle_view/recycle_view_with_section/SectionedRecyclerViewAdapter-master/library/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-h720dp-v13/values-h720dp-v13.xml",
-        "map": [
-            {
-                "to": {
-                    "startLine": 2,
-                    "startColumn": 4,
-                    "startOffset": 55,
-                    "endColumn": 66,
-                    "endOffset": 117
-                },
-                "from": {
-                    "file": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/values-h720dp-v13/values-h720dp-v13.xml",
-                    "position": {
-                        "startLine": 2,
-                        "startColumn": 4,
-                        "startOffset": 55,
-                        "endColumn": 66,
-                        "endOffset": 117
-                    }
-                }
-            }
-        ]
     }
 ]

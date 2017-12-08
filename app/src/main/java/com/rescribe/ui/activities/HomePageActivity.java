@@ -281,7 +281,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        finishAffinity();
     }
 
 
@@ -422,7 +422,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
         mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, mDashboardDataModel.getCardBgImageUrlList());
         viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
-        viewpager.setOffscreenPageLimit(mShowBackgroundViewPagerAdapter.getCount());
 
         final int scrollPixels = widthPixels * mShowDoctorViewPagerAdapter.getCount();
         final int exactScroll = scrollPixels - widthPixels;
@@ -438,7 +437,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
             @Override
             public void onPageSelected(int position) {
-//                        viewpager.setCurrentItem(position, true);
+
             }
 
             @Override
@@ -556,8 +555,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Intent intent = new Intent(HomePageActivity.this, SupportActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
-
-
         }
 
         super.onBottomMenuClick(bottomMenu);

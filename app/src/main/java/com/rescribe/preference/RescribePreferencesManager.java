@@ -220,14 +220,6 @@ public class RescribePreferencesManager {
                 .generateSecret(spec).getEncoded());
     }
 
-    public interface NOTIFICATION_SETTING_KEY {
-        String APPOINTMENT_ALERT = "appointmentAlert";
-        String INVESTIGATION_ALERT = "investigationAlert";
-        String MEDICATION_ALERT = "medicationAlert";
-        String TOKEN_ALERT = "tokenAlert";
-        String OFFERS_ALERT = "offersAlert";
-    }
-
     public interface NOTIFICATION_COUNT_KEY {
         String APPOINTMENT_ALERT_COUNT = "appointmentAlertCount";
         String INVESTIGATION_ALERT_COUNT = "investigationAlertCount";

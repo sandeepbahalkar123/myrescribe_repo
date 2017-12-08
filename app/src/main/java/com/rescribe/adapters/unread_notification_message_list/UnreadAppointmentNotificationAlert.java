@@ -43,7 +43,7 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
     @Override
     public void onBindViewHolder(final UnreadAppointmentNotificationAlert.FileViewHolder holder, final int position) {
         final UnreadSavedNotificationMessageData unreadNotificationMessageData = mListToBeUsed.get(position);
-        holder.text.setText(unreadNotificationMessageData.getNotificationData());
+
 
         //---- To show icon for first element based on notification type----
         if (position == 0) {
@@ -72,6 +72,17 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
             } else {
                 holder.loadMoreItems.setVisibility(View.GONE);
                 holder.skipItems.setVisibility(View.VISIBLE);
+            }
+        }
+        //----------
+
+        if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT)) {
+            holder.text.setText(unreadNotificationMessageData.getNotificationData());
+        } else if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT)) {
+            String notificationData = unreadNotificationMessageData.getNotificationData(); //msg|object|time
+            if (notificationData.contains("|")) {
+                String[] split = notificationData.split("\\|");
+                holder.text.setText(split[0]);
             }
         }
 

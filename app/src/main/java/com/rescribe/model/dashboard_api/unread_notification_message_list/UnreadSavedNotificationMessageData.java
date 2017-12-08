@@ -1,6 +1,6 @@
 package com.rescribe.model.dashboard_api.unread_notification_message_list;
 
-public class UnreadNotificationMessageData {
+public class UnreadSavedNotificationMessageData {
 
 
     private String id;
@@ -10,7 +10,7 @@ public class UnreadNotificationMessageData {
 
     private String buttonToVisible;
 
-    public UnreadNotificationMessageData() {
+    public UnreadSavedNotificationMessageData() {
     }
 
     public String getId() {

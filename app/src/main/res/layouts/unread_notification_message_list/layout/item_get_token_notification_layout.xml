@@ -4,69 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/notification_bg_grey"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp16"
-            android:orientation="horizontal">
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:background="@drawable/notification_bg"
+            android:gravity="center">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/notification_bg"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_marginLeft="@dimen/dp12"
-                    android:layout_marginRight="@dimen/dp12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/notifications_get_token_icon" />
-            </LinearLayout>
-
-            <LinearLayout
+            <ImageView
+                android:id="@+id/imageIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/notification_bg_grey"
+                android:layout_marginLeft="@dimen/dp12"
+                android:layout_marginRight="@dimen/dp12"
+                android:src="@drawable/notifications_get_token_icon" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp16"
-                    android:layout_marginEnd="@dimen/dp12"
-                    android:layout_marginLeft="@dimen/dp6"
-                    android:layout_marginRight="@dimen/dp12"
-                    android:layout_marginStart="@dimen/dp6"
-                    android:layout_marginTop="@dimen/dp16"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dp10"
                     android:orientation="vertical">
 
                     <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/tokenMessage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Do you want to confirm the token number available with Dr. Sachin Patil for 10:00 pm today?"
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp13"
-                        app:customFont="@string/roboto_medium"
-                        tools:text="Do you want to confirm the token number available with Dr. Sachin Patil for 10:00 pm today?" />
+                        app:customFont="@string/roboto_medium" />
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp10">
+                        android:layout_marginTop="@dimen/dp5">
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/yesTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/yes"
+                            android:textAllCaps="true"
                             android:textColor="@color/dark_blue"
                             android:textSize="@dimen/dp13"
                             app:customFont="@string/roboto_medium" />
@@ -78,18 +77,30 @@
                             android:layout_marginLeft="@dimen/dp34"
                             android:layout_toRightOf="@id/yesTextView"
                             android:text="@string/no"
+                            android:textAllCaps="true"
                             android:textColor="@color/no_color"
                             android:textSize="@dimen/dp13"
                             app:customFont="@string/roboto_medium" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/loadMoreUnreadTokenMessage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="right"
+                            android:gravity="right"
+                            android:text="@string/more"
+                            android:textColor="@color/tagColor"
+                            app:customFont="@string/roboto_medium" />
                     </RelativeLayout>
 
+
                 </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp1"
-            android:background="@color/divider" />
     </LinearLayout>
+
 </LinearLayout>

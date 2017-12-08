@@ -74,6 +74,9 @@ public class Config {
     //------ BOOK_APPONINT_TOKEN
     public static final String GET_TOKEN_NUMBER_OTHER_DETAILS = "api/doctors/getTokenNo?";
     public static final String TO_SET_TOKEN_NOTIFICATION_REMAINDER_ALERT = "api/patient/addNotificationReminder";
+    public static final String TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER = "api/patient/rejectTokenNo";
+    public static final String TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS = "api/patient/getTokenUnreadNotifications";
+    public static final String TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION = "api/doctors/confirmTokenNo";
     //------ BOOK_APPONINT_TOKEN
 
     //----- vital graph-------------

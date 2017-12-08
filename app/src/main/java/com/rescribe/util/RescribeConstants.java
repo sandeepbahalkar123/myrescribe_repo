@@ -141,10 +141,13 @@ public class RescribeConstants {
     //-----------
     public static final String TASK_GET_TOKEN_NUMBER_OTHER_DETAILS = RescribeConstants.BLANK + 49;
     public static final String TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER = RescribeConstants.BLANK + 50;
+    public static final String TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER = RescribeConstants.BLANK + 51;
+    public static final String TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS = RescribeConstants.BLANK + 52;
+    public static final String TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION = RescribeConstants.BLANK + 53;
     //-----------
     //------------
-    public static final String TASK_GET_SAVED_ARTICLES = RescribeConstants.BLANK + 51;
-    public static final String TASK_SAVE_ARTICLES_TO_SERVER = RescribeConstants.BLANK + 52;
+    public static final String TASK_GET_SAVED_ARTICLES = RescribeConstants.BLANK + 54;
+    public static final String TASK_SAVE_ARTICLES_TO_SERVER = RescribeConstants.BLANK + 55;
     //-----------------
 
     public static final String DATA = "DATA";

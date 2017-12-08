@@ -73,11 +73,11 @@
 
 
             <LinearLayout
-                android:id="@+id/getTokenListViewLayout"
+                android:id="@+id/unreadTokenNotificationListViewLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -105,7 +105,7 @@
                 </RelativeLayout>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/getTokenListView"
+                    android:id="@+id/unreadTokenNotificationListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:divider="@null"
@@ -124,7 +124,8 @@
                 android:id="@+id/onGoingMedicationListViewLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -165,7 +166,8 @@
                 android:id="@+id/appointmentsListViewLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -212,7 +214,8 @@
                 android:id="@+id/investigationsListViewLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"

@@ -4,10 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +17,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.saved_article.SavedArticleInfo;
-import com.rescribe.ui.activities.saved_articles.SavedArticles;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -31,17 +27,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by RiteshP on 29/11/17.
+ * Created by jeetal on 8/12/17.
  */
 
-public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleListAdapter.ListViewHolder> {
+public class SavedArticleHealthEducationAdapter extends RecyclerView.Adapter<SavedArticleHealthEducationAdapter.ListViewHolder> {
 
-    private final OnArticleClickListener onMenuClickListener;
+    private final SavedArticleHealthEducationAdapter.OnArticleHealthEducationClickListener onMenuClickListener;
     private ArrayList<SavedArticleInfo> mReceivedSavedArticleList;
     private Context mContext;
     private ColorGenerator mColorGenerator;
 
-    public SavedArticleListAdapter(Context mContext, ArrayList<SavedArticleInfo> mReceivedSavedArticleList, OnArticleClickListener savedArticles) {
+
+    public SavedArticleHealthEducationAdapter(Context mContext, ArrayList<SavedArticleInfo> mReceivedSavedArticleList, SavedArticleHealthEducationAdapter.OnArticleHealthEducationClickListener savedArticles) {
         this.mContext = mContext;
         this.mReceivedSavedArticleList = mReceivedSavedArticleList;
         this.onMenuClickListener = savedArticles;
@@ -49,15 +46,15 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
     }
 
     @Override
-    public SavedArticleListAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SavedArticleHealthEducationAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_saved_articles, parent, false);
 
-        return new SavedArticleListAdapter.ListViewHolder(itemView);
+        return new SavedArticleHealthEducationAdapter.ListViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final SavedArticleListAdapter.ListViewHolder holder, int position) {
+    public void onBindViewHolder(final SavedArticleHealthEducationAdapter.ListViewHolder holder, final int position) {
 
         final SavedArticleInfo savedArticleInfo = mReceivedSavedArticleList.get(position);
 
@@ -86,7 +83,6 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
 
             String doctorName = savedArticleInfo.getAuthorName();
 
-
             int color2 = mColorGenerator.getColor(doctorName);
             TextDrawable drawable = TextDrawable.builder()
                     .beginConfig()
@@ -108,6 +104,7 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
         }
 
         if (savedArticleInfo.getArticleImageURL() != null) {
+
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
@@ -135,14 +132,14 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
             @Override
             public void onClick(View v) {
 
-                onMenuClickListener.onBookMarkIconClicked(savedArticleInfo);
+                onMenuClickListener.onBookMarkIconClicked(savedArticleInfo,position);
             }
         });
-     /*   if(savedArticleInfo.getIsSaved()){
+        if (savedArticleInfo.getIsSaved()) {
             holder.bookMarkIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.bookmark));
-        }else{
-            holder.bookMarkIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_action_bookmark_border));
-        }*/
+        } else {
+            holder.bookMarkIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.bookmark_line));
+        }
 
         //--------------
     }
@@ -180,10 +177,10 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
         }
     }
 
-    public interface OnArticleClickListener {
+    public interface OnArticleHealthEducationClickListener {
         public void onArticleClicked(SavedArticleInfo data);
 
-        public void onBookMarkIconClicked(SavedArticleInfo data);
+        public void onBookMarkIconClicked(SavedArticleInfo data,int position);
     }
 
 

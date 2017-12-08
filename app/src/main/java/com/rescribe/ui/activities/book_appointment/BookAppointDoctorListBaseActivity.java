@@ -31,8 +31,10 @@ import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.ui.activities.NotificationActivity;
 import com.rescribe.ui.activities.PrescriptionActivity;
 import com.rescribe.ui.activities.SelectedRecordsGroupActivity;
+import com.rescribe.ui.activities.dashboard.ProfileActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.SupportActivity;
+import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticles;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
@@ -94,6 +96,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     }
 
     private void initialize() {
+
         mContext = BookAppointDoctorListBaseActivity.this;
         appDBHelper = new AppDBHelper(mContext);
         if (getIntent().getParcelableArrayListExtra(BOTTOM_MENUS) != null) {
@@ -230,6 +233,8 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
     @Override
     public void onProfileImageClick() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
 
     }
 
@@ -260,50 +265,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             Intent intent = new Intent(this, VitalGraphActivity.class);
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
-            AppDBHelper appDBHelper = new AppDBHelper(this);
-            Cursor cursor = appDBHelper.getPreferences("1");
-            String breakFastTime = "";
-            String lunchTime = "";
-            String dinnerTime = "";
-            String snacksTime = "";
-
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    breakFastTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
-                    lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
-                    dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
-                    snacksTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.SNACKS_TIME));
-                    cursor.moveToNext();
-                }
-            }
-            cursor.close();
-
-            Calendar c = Calendar.getInstance();
-            int hour24 = c.get(Calendar.HOUR_OF_DAY);
-            int Min = c.get(Calendar.MINUTE);
-
-            String mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
-            Intent intent = new Intent(this, NotificationActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            intent.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-
-            if (mGetMealTime.equals(getString(R.string.break_fast))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
-                intent.putExtra(RescribeConstants.TIME, breakFastTime);
-            } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
-                intent.putExtra(RescribeConstants.TIME, lunchTime);
-            } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
-                intent.putExtra(RescribeConstants.TIME, snacksTime);
-            } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intent.putExtra(RescribeConstants.TIME, dinnerTime);
-            } else if (mGetMealTime.isEmpty()) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intent.putExtra(RescribeConstants.TIME, dinnerTime);
-            }
-
+            Intent intent = new Intent(this, UnreadNotificationMessageActivity.class);
             startActivity(intent);
 
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {

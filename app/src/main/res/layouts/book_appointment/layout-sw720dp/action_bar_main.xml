@@ -64,6 +64,7 @@
                             android:drawablePadding="@dimen/dp4"
                             android:drawableRight="@drawable/location_icon"
                             android:text="@string/location"
+                            android:padding="@dimen/dp6"
                             android:textColor="@color/white"
                             android:textSize="@dimen/sp12"
                             app:customFont="@string/roboto_bold"/>

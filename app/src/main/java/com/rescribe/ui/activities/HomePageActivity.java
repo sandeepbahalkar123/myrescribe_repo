@@ -507,19 +507,13 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
             b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
-
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_education))) {
-
-            intent = new Intent(mContext, SaveArticleWebViewActivity.class);
-            Bundle b = new Bundle();
-            b.putString(getString(R.string.url), menu.getHealthEducationUrl());
-            b.putString(getString(R.string.toolbarTitle), menu.getName());
-            b.putString(getString(R.string.clicked_item_data), getString(R.string.saved_articles));
-            b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
-
-            b.putBoolean(getString(R.string.save), false);
-            intent.putExtras(b);
+            intent = new Intent(mContext, HealthEducation.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.clicked_item_data), menu.getName());
+            intent.putExtras(bundle);
+            startActivity(intent);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_services))) {
             intent = new Intent(mContext, BookAppointmentServices.class);
             Bundle b = new Bundle();
@@ -856,8 +850,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
             Intent intent = new Intent(this, UnreadNotificationMessageActivity.class);
-
-          /*  Cursor cursor = appDBHelper.getPreferences("1");
+            startActivity(intent);
+            /*  Cursor cursor = appDBHelper.getPreferences("1");
             String breakFastTime = "";
             String lunchTime = "";
             String dinnerTime = "";
@@ -900,7 +894,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 intent.putExtra(RescribeConstants.TIME, dinnerTime);
             }
 */
-            startActivity(intent);
 
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {
             MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();

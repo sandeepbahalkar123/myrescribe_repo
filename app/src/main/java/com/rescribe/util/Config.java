@@ -88,7 +88,9 @@ public class Config {
     public static final String LOGOUT = "api/patient/logPatientSignOut";
     public static final String ACTIVE = "api/patient/logPatientActivity";
     //-----------SAVED ARTICLE-----------------------
-    public static final String TO_GET_SAVED_ARTICLES = "api/patient/getArticleList?patientId=";
+    public static final String TO_GET_SAVED_ARTICLES = "api/patient/getSavedArticleList?patientId=";
+    public static final String TO_GET_HEALTH_EDUCATION_SAVED_ARTICLES = "api/patient/getArticleList?patientId=";
+
     public static final String TO_SAVE_ARTICLE_TO_SERVER = "api/patient/saveArticle";
     //-----------SAVED ARTICLE-----------------------
 

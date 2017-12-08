@@ -139,6 +139,7 @@ public class RescribeConstants {
     //------------
     public static final String TASK_GET_SAVED_ARTICLES = RescribeConstants.BLANK + 51;
     public static final String TASK_SAVE_ARTICLES_TO_SERVER = RescribeConstants.BLANK + 52;
+    public static final String TASK_GET_HEALTH_EDUCATION_ARTICLES = RescribeConstants.BLANK + 53;
     //-----------------
 
     public static final String DATA = "DATA";
@@ -183,6 +184,7 @@ public class RescribeConstants {
     public static final String DOCTOR_DATA = "doctor_data";
     public static final int PLACE_PICKER_REQUEST = 99;
     public static final String NOTIFICATION_COUNT = "notification_count";
+
 
 
     public static class USER_STATUS {

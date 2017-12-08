@@ -151,9 +151,11 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
 
     @SuppressLint("CheckResult")
     private void initialize() {
+        mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (FindDoctorsActivity) mContext);
         recentlyvisitedTextView.setText(getString(R.string.recently_visit_doctor).toUpperCase());
         sponsoredDoctors.setText(getString(R.string.sponsered_doctor).toUpperCase());
         favouriteDoctors.setText(getString(R.string.favorite).toUpperCase());
+
         //------Load background image : START------
         ClickEvent clickEvent1 = mReceivedDashboardMenuListData.getClickEvent();
         if (clickEvent1 != null) {
@@ -176,7 +178,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
 
 
         //------------
-        pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
+        pager_padding = getResources().getDimensionPixelSize(R.dimen.dp28);
         pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetComplaintsList();
@@ -208,7 +210,24 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
     private void setUpViewPager() {
-        mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (FindDoctorsActivity) mContext);
+        if (mServicesCardViewImpl.getFavouriteDocList(-1).size() > 3) {
+            viewAllFavorite.setVisibility(View.VISIBLE);
+        } else {
+            viewAllFavorite.setVisibility(View.GONE);
+
+        }
+        if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsered_doctor), -1).size() > 3) {
+            viewAllSponsered.setVisibility(View.VISIBLE);
+        } else {
+            viewAllSponsered.setVisibility(View.GONE);
+        }
+
+        if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), -1).size() > 3) {
+            viewAllRecentVisited.setVisibility(View.VISIBLE);
+        } else {
+            viewAllRecentVisited.setVisibility(View.GONE);
+
+        }
         sponsered = mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsered_doctor), 3);
         recently_visit_doctor = mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), 3);
         favoriteList = mServicesCardViewImpl.getFavouriteDocList(3);

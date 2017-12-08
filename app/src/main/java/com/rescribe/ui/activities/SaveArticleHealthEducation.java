@@ -1,4 +1,4 @@
-package com.rescribe.ui.activities.saved_articles;
+package com.rescribe.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +9,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.rescribe.R;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.interfaces.CustomResponse;
@@ -16,11 +17,16 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SaveArticleWebViewActivity extends AppCompatActivity implements HelperResponse {
+/**
+ * Created by jeetal on 8/12/17.
+ */
+
+public class SaveArticleHealthEducation extends AppCompatActivity implements HelperResponse {
 
     @BindView(R.id.webViewLayout)
     WebView mWebViewObject;
@@ -137,7 +143,7 @@ public class SaveArticleWebViewActivity extends AppCompatActivity implements Hel
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (customResponse != null) {
             CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
-            CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
+           // CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
 
             if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
                 if (mIsSaved) {

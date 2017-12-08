@@ -123,7 +123,13 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         doctorCategory.setText(doctorObject.getCategoryName());
         doctorNameTextView.setText(doctorObject.getDocName());
         doctorType.setText(doctorObject.getDegree());
-        doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
+        if (doctorObject.getExperience() == 0) {
+            doctorExperience.setVisibility(View.GONE);
+        } else {
+            doctorExperience.setVisibility(View.VISIBLE);
+            doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
+
+        }
 
         //-----THIS IS DONE TO SHOW COUNT OF FAVORITE(CUSTOM CREATED CATEGORY), ASSUME IT WILL COME LAST ALWAYS ----
         int size;
@@ -190,6 +196,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
             doctorAppointmentDate.setText(content);
             if (clinicDataList.size() > 0) {
+                doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
                 doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
                 clinicName.setText(clinicDataList.get(0).getClinicName());
             }
@@ -201,12 +208,14 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
                 doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
 
             } else {
                 if (clinicDataList.size() > 0) {
                     SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     doctorAddress.setText(locationString);
+                    doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
                     clinicName.setVisibility(View.INVISIBLE);
                 }
             }
@@ -240,11 +249,14 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
                 doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
+
             } else {
                 if (clinicDataList.size() > 0) {
                     SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     doctorAddress.setText(locationString);
+                    doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
                     clinicName.setVisibility(View.INVISIBLE);
                 }
             }

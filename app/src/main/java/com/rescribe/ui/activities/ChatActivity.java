@@ -190,9 +190,10 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
     @BindView(R.id.contentLayout)
     RelativeLayout contentLayout;
-
     @BindView(R.id.contentCordinatelayout)
     CoordinatorLayout contentCordinatelayout;
+    @BindView(R.id.bookAppointmentLayout)
+    LinearLayout bookAppointmentLayout;
     @BindView(R.id.receiverName)
     CustomTextView receiverName;
     @BindView(R.id.bookAppointmentButton)
@@ -671,7 +672,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                bookAppointmentButton.setVisibility(View.GONE);
+                bookAppointmentLayout.setVisibility(View.GONE);
             }
         });
     }
@@ -680,7 +681,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                bookAppointmentButton.setVisibility(View.VISIBLE);
+                bookAppointmentLayout.setVisibility(View.VISIBLE);
             }
         });
     }

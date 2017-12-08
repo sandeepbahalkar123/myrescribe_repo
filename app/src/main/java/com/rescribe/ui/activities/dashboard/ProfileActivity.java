@@ -272,27 +272,27 @@ public class ProfileActivity extends DrawerActivity implements HelperResponse {
                 .setDescription("Manage Profile").setProfile(false) // for fixed item set profile false
         );
 
-        setOnNonProfileClickListener(new DrawerProfile.OnNonProfileClickListener() {
+       setOnNonProfileClickListener(new DrawerProfile.OnNonProfileClickListener() {
             @Override
             public void onProfileItemClick(DrawerProfile profile, long id) {
                 if (id == ADD_ACCOUNT) {
 
                     // Do stuff here
 
-                    addProfile(new DrawerProfile()
+                   /* addProfile(new DrawerProfile()
                             .setId(3)
                             .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(mContext, R.drawable.profile))
-                            .setBackground(ContextCompat.getDrawable(mContext, R.drawable.group_2))
+                            .setBackground(ContextCompat.getDrawable(mContext, R.drawable.coacmark_gettoken))
                             .setName("Mr.Ganesh Deshmukh")
                             .setDescription("ganesh_deshmukh@gmail.com")
-                    );
+                    );*/
 //                    CommonMethods.showToast(mContext, "Profile Added");
 
                 } else if (id == MANAGE_ACCOUNT) {
                     // Do stuff here
 //                    CommonMethods.showToast(mContext, profile.getDescription());
                 }
-                closeDrawer();
+
             }
         });
 

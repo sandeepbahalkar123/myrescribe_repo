@@ -658,6 +658,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         SavedArticleBaseModel savedArticleBaseModel = new Gson().fromJson(data, SavedArticleBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, savedArticleBaseModel, mOldDataTag);
                         break;
+                    case RescribeConstants.TASK_GET_HEALTH_EDUCATION_ARTICLES: //This is for get saved article list
+                        SavedArticleBaseModel savedHealthEducationArticleBaseModel = new Gson().fromJson(data, SavedArticleBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, savedHealthEducationArticleBaseModel, mOldDataTag);
+                        break;
+
 
                     //--- API whose reponse is ONLY COMMON CLASS BASE MODEL-------
                     case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR: //This is for fav doc

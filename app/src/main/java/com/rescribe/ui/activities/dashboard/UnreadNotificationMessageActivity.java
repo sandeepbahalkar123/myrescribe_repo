@@ -1,36 +1,26 @@
 package com.rescribe.ui.activities.dashboard;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.rescribe.R;
-import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
 import com.rescribe.adapters.unread_notification_message_list.UnreadAppointmentNotificationAlert;
-import com.rescribe.helpers.book_appointment.DoctorDataHelper;
-import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.helpers.dashboard.DashboardHelper;
-import com.rescribe.interfaces.CustomResponse;
-import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.CommonBaseModelContainer;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadNotificationMessageData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.util.CommonMethods;
-import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by jeetal on 27/11/17.
@@ -96,4 +86,14 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity {
     }
 
 
+    @OnClick({R.id.bookAppointmentBackButton, R.id.locationTextView})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bookAppointmentBackButton:
+                onBackPressed();
+                break;
+            case R.id.locationTextView:
+                break;
+        }
+    }
 }

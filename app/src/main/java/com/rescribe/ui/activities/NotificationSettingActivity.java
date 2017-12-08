@@ -27,8 +27,6 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
     CustomTextView title;
     @BindView(R.id.listView)
     RecyclerView listView;
-
-
     private Context mContext;
 
     ClickOption mClickedOptionData;

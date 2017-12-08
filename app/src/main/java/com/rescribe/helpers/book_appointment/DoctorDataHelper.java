@@ -18,6 +18,8 @@ import com.rescribe.model.book_appointment.doctor_data.request_model.BookAppoint
 import com.rescribe.model.book_appointment.doctor_data.request_model.RequestDoctorListBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.request_model.RequestFavouriteDoctorModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
+import com.rescribe.model.dashboard_api.DashBoardBaseModel;
+import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -41,6 +43,7 @@ public class DoctorDataHelper implements ConnectionListener {
     HelperResponse mHelperResponseManager;
 
     private static DoctorServicesModel receivedDoctorServicesModel = null;
+    private static DashboardDataModel mDashboardDataModel = null;
 
     public DoctorDataHelper(Context context, HelperResponse servicesActivity) {
         this.mContext = context;
@@ -84,6 +87,7 @@ public class DoctorDataHelper implements ConnectionListener {
                 } else if (mOldDataTag == RescribeConstants.TASK_SET_FAVOURITE_DOCTOR) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_DASHBOARD_API) {
+
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);

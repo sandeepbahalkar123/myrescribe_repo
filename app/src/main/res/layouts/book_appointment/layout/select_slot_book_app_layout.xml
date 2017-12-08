@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:openDrawer="end">
 
+   <FrameLayout
+       android:id="@+id/coachmarkContainer"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:elevation="10dp"/>
+
     <include
         layout="@layout/action_bar_main"
         android:layout_width="match_parent"

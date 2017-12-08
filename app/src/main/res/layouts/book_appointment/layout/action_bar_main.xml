@@ -62,6 +62,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_gravity="center"
                             android:drawablePadding="@dimen/dp4"
+                            android:padding="@dimen/dp6"
                             android:drawableRight="@drawable/location_icon"
                             tools:text="@string/location"
                             android:visibility="gone"

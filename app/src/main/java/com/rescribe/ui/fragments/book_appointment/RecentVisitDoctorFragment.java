@@ -135,7 +135,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         searchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {
             @Override
             public void onClearButtonClicked() {
-                isDataListViewVisible(false, false);
+              isDataListViewVisible(false, false);
             }
         });
 

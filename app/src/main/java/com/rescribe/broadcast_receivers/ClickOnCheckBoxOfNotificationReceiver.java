@@ -17,6 +17,7 @@ import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.AppointmentActivity;
+import com.rescribe.ui.activities.InvestigationActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.NetworkUtil;
 import com.rescribe.util.RescribeConstants;
@@ -31,8 +32,6 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
     Context mContext;
 
     @Override
-
-
     public void onReceive(Context mContext, Intent intent) {
         Integer medicineID = null;
         String medicineSlot = "";
@@ -61,9 +60,16 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
                 CommonMethods.showToast(mContext, mContext.getString(R.string.internet));
             }
         } else if (investigation_notification_id == InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID) {
+
             ArrayList<InvestigationData> investigationData = intent.getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
-            RescribePreferencesManager.putBoolean(RescribePreferencesManager.NOTIFICATION_SETTING_KEY.INVESTIGATION_ALERT, false, mContext);
+            Intent intentNotification = new Intent(mContext, InvestigationActivity.class);
+            intentNotification.putExtra(RescribeConstants.INVESTIGATION_LIST, investigationData);
+            intentNotification.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
+            intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            mContext.startActivity(intentNotification);
             manager.cancel(investigationData.get(0).getDrId());
+
         } else if (appointment_notification_id == AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID) {
             Intent intentNotification = new Intent(mContext, AppointmentActivity.class);
             intentNotification.putExtra(RescribeConstants.APPOINTMENT_TIME, intent.getStringExtra(RescribeConstants.APPOINTMENT_TIME));

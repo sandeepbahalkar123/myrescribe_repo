@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.rescribe.R;
@@ -59,6 +60,9 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     Button selectUploadedButton;
     @BindView(R.id.gmailButton)
     Button gmailButton;
+
+    @BindView(R.id.title)
+    TextView title;
 
     @BindView(R.id.buttonLayout)
     LinearLayout buttonLayout;
@@ -309,6 +313,11 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     private void getIntentData() {
 
         investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
+
+        String titleText = getResources().getString(R.string.investigation_title);
+        titleText += investigation.get(0).getDoctorName();
+
+        title.setText(titleText);
 
         if (investigation.size() > 0) {
 

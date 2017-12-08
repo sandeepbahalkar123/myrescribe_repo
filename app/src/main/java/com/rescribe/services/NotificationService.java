@@ -69,7 +69,7 @@ public class NotificationService extends Service implements HelperResponse {
         this.intent = intent;
 
         String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this);
-        boolean isNotificationOn = RescribePreferencesManager.getBoolean(RescribePreferencesManager.NOTIFICATION_SETTING_KEY.MEDICATION_ALERT, this);
+        boolean isNotificationOn = RescribePreferencesManager.getBoolean(getString(R.string.appointment_alert), this);
 
         if (loginStatus.equals(RescribeConstants.YES) && isNotificationOn) {
 

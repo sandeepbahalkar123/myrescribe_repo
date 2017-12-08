@@ -45,7 +45,6 @@ public class InvestigationNotificationService extends Service implements HelperR
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
     private int notification_id;
-    private AppDBHelper appDBHelper;
     private Intent intent;
 
     @Override
@@ -58,14 +57,13 @@ public class InvestigationNotificationService extends Service implements HelperR
         this.intent = intent;
 
         String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this);
-        boolean isNotificationOn = RescribePreferencesManager.getBoolean(RescribePreferencesManager.NOTIFICATION_SETTING_KEY.INVESTIGATION_ALERT, this);
+        boolean isNotificationOn = RescribePreferencesManager.getBoolean(getString(R.string.investigation_alert), this);
 
         if (loginStatus.equals(RescribeConstants.YES) && isNotificationOn) {
             notification_id = intent.getIntExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, INVESTIGATION_NOTIFICATION_ID);
             // If this service was started by out DosesAlarmTask intent then we want to show our notification
             InvestigationHelper investigationHelper;
             if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
-                appDBHelper = new AppDBHelper(this);
                 investigationHelper = new InvestigationHelper(this);
                 investigationHelper.getInvestigationList(false);
             } else {
@@ -78,53 +76,6 @@ public class InvestigationNotificationService extends Service implements HelperR
         // We don't care if this service is stopped as we have already delivered our notification
         return START_NOT_STICKY;
     }
-
-    /*private void checkAllUploaded() {
-        String drName = "";
-        Cursor cursor = appDBHelper.getAllInvestigationData();
-        StringBuilder docs = new StringBuilder();
-        int notUploaded = 0;
-        int uploaded = 0;
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                if (cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 0) {
-                    if (docs.toString().equals("")) {
-                        docs.append(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME)));
-                        drName = cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_DR_NAME));
-                    } else {
-                        docs.append(" | ").append(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME)));
-                    }
-                    notUploaded += 1;
-                } else uploaded += 1;
-                cursor.moveToNext();
-            }
-        }
-
-        String message = "";
-        if (cursor.getCount() == uploaded && cursor.getCount() > 0) {
-            // cancel notification
-            AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(this, InvestigationNotificationService.class);
-            PendingIntent pendingIntent = PendingIntent.getService(this, InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID, intent, 0);
-            if (pendingIntent != null) {
-                alarmManager.cancel(pendingIntent);
-                pendingIntent.cancel();
-            }
-        } else {
-            if (cursor.getCount() != notUploaded && cursor.getCount() > 0) {
-                message = "Have you done the " + docs + " investigation advised by " + drName + "?";
-            } else if (cursor.getCount() > 0) {
-                message = "Have you done the investigations advised by " + drName + "?";
-//                message = intentData.getStringExtra(RescribeConstants.INVESTIGATION_MESSAGE);
-            }
-
-            if (!drName.equals("")) {
-                intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE, message);
-                customNotification();
-            }
-        }
-        cursor.close();
-    }*/
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -144,13 +95,13 @@ public class InvestigationNotificationService extends Service implements HelperR
         mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_LIST, value);
         mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, notification_id);
         mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
-        PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyYesIntent, 0);
+        PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, value.get(0).getDrId(), mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
 
         Intent mNotifyNoIntent = new Intent(this, ClickOnNotificationReceiver.class);
         mNotifyNoIntent.putExtra(RescribeConstants.INVESTIGATION_LIST, value);
         mNotifyNoIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, notification_id);
-        PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyNoIntent, 0);
+        PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, value.get(0).getDrId(), mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonSkip, mNoPendingIntent);
 
         android.support.v4.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(this)

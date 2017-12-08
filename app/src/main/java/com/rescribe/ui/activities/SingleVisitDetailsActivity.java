@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -30,10 +29,8 @@ import com.rescribe.model.case_details.Vital;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -135,23 +132,54 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
             }
         });
 
-        /*mHistoryExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+        mHistoryExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
             public void onGroupExpand(int groupPosition) {
+//this is done because if single element in child list , groupPosition will not expand, it will expand on advice even if it has only one element ,vitals will also expand
+                List<PatientHistory> listDataList = mSingleVisitAdapter.getListDataList();
+                List<VisitCommonData> childObject = listDataList.get(groupPosition).getCommonData();
+                if(childObject.size()==1){
+                    if( mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("advice")){
+                        if (mLastExpandedPosition != -1
+                                && groupPosition != mLastExpandedPosition) {
+                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
+                        }
 
+                        mLastExpandedPosition = groupPosition;
+                    }else if( mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")){
+                        if (mLastExpandedPosition != -1
+                                && groupPosition != mLastExpandedPosition) {
+                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
+                        }
+
+                        mLastExpandedPosition = groupPosition;
+                    }else {
+                        if (mLastExpandedPosition != -1
+                                && groupPosition != mLastExpandedPosition) {
+                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
+                        }
+
+                        mLastExpandedPosition = groupPosition;
+                        mHistoryExpandableListView.collapseGroup(groupPosition);
+                    }
+                }else{
+
+                        if (mLastExpandedPosition != -1
+                                && groupPosition != mLastExpandedPosition) {
+                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
+                        }
+
+                        mLastExpandedPosition = groupPosition;
+
+                }
             }
-        });*/
+        });
 
-        mHistoryExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+     /*   mHistoryExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (mLastExpandedPosition != -1
-                        && groupPosition != mLastExpandedPosition) {
-                    mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
-                }
 
-                mLastExpandedPosition = groupPosition;
 
                 List<PatientHistory> listDataList = mSingleVisitAdapter.getListDataList();
                 List<VisitCommonData> childObject = listDataList.get(groupPosition).getCommonData();
@@ -159,7 +187,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 // TODO , CLICK PENDING
                 return false;
             }
-        });
+        });*/
         mHistoryExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
@@ -193,7 +221,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 List<Vital> vitalList = patientHistoryList.get(i).getVitals();
                 for (int j = 0; j < vitalList.size(); j++) {
                     Vital dataObject = vitalList.get(j);
-                    if (dataObject.getUnitName().equalsIgnoreCase(getString(R.string.bp_max)) || dataObject.getUnitName().equalsIgnoreCase(getString(R.string.bp_min))) {
+                    if (dataObject.getUnitName().contains(getString(R.string.bp_max)) || dataObject.getUnitName().contains(getString(R.string.bp_min))) {
                         Vital vital = new Vital();
                         if (pos == null) {
                             vital.setUnitName(getString(R.string.bp));

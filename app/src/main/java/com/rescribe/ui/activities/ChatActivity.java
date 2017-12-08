@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.app.Service;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -13,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -26,6 +28,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -39,6 +42,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -83,6 +87,7 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.NetworkUtil;
 import com.rescribe.util.RescribeConstants;
+import com.rescribe.util.SoftKeyboard;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.ServerResponse;
@@ -174,7 +179,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private String filesUploadFolder;
     private String photosUploadFolder;
     private String audioUploadFolder;
-
+    SoftKeyboard softKeyboard;
     @BindView(R.id.backButton)
     ImageView backButton;
     @BindView(R.id.profilePhoto)
@@ -183,8 +188,16 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     @BindView(R.id.onlineStatusIcon)
     ImageView onlineStatusIcon;
 
+    @BindView(R.id.contentLayout)
+    RelativeLayout contentLayout;
+    @BindView(R.id.contentCordinatelayout)
+    CoordinatorLayout contentCordinatelayout;
+    @BindView(R.id.bookAppointmentLayout)
+    LinearLayout bookAppointmentLayout;
     @BindView(R.id.receiverName)
     CustomTextView receiverName;
+    @BindView(R.id.bookAppointmentButton)
+    CustomTextView bookAppointmentButton;
     @BindView(R.id.dateTime)
     CustomTextView dateTime;
     @BindView(R.id.titleLayout)
@@ -224,7 +237,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     FrameLayout exitRevealDialog;
 
     // Check Typing
-
+    InputMethodManager mInputMethodManager;
     final int TYPING_TIMEOUT = 3000; // 5 seconds timeout
     private static final String TYPING_MESSAGE = "typing...";
     final Handler timeoutHandler = new Handler();
@@ -411,6 +424,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
     @Override
     public void onBackPressed() {
+
         if (mPressed) {
             openBottomSheetMenu();
         } else {
@@ -438,6 +452,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         exitRevealDialog.setVisibility(View.GONE);
 
         appDBHelper = new AppDBHelper(this);
+        mInputMethodManager = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
+        softKeyboard = new SoftKeyboard(contentCordinatelayout, mInputMethodManager);
         patId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this);
         patientName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, this);
         imageUrl = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, this);
@@ -445,6 +461,25 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
         downloadInit();
 
+        softKeyboard.setSoftKeyboardCallback(new SoftKeyboard.SoftKeyboardChanged()
+        {
+
+            @Override
+            public void onSoftKeyboardHide()
+            {
+                showBookAppointmentButton();
+              //  bookAppointmentButton.setVisibility(View.VISIBLE);
+                // Code here
+            }
+
+            @Override
+            public void onSoftKeyboardShow()
+            {
+                doNotShowBookAppointmentButton();
+              //  bookAppointmentButton.setVisibility(View.GONE);
+                // Code here
+            }
+        });
         if (getIntent().getAction() != null) {
             chatList = new ChatDoctor();
             MQTTMessage mqttMessage = getIntent().getParcelableExtra(ReplayBroadcastReceiver.MESSAGE_LIST);
@@ -631,6 +666,24 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         uploadInit();
         audioSliderInit();
         //----------
+    }
+
+    private void doNotShowBookAppointmentButton() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                bookAppointmentLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void showBookAppointmentButton() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                bookAppointmentLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void setUserStatusColor(String onlineStatus) {
@@ -864,7 +917,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         UploadService.UPLOAD_POOL_SIZE = 10;
     }
 
-    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.sendButton, R.id.exitRevealDialog, R.id.camera, R.id.document, R.id.location, R.id.bookAppointmentButton})
+    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.sendButton, R.id.exitRevealDialog, R.id.camera, R.id.document, R.id.location, R.id.bookAppointmentButton,R.id.messageType})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
@@ -915,6 +968,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 break;
             case R.id.cameraButton:
                 ChatActivityPermissionsDispatcher.onPickPhotoWithCheck(ChatActivity.this);
+                break;
+            case R.id.messageType:
                 break;
             case R.id.sendButton:
                 // SendButton
@@ -1692,4 +1747,12 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         }
         return outputPath + inputFile;
     }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        softKeyboard.unRegisterSoftKeyboardCallback();
+    }
+
 }

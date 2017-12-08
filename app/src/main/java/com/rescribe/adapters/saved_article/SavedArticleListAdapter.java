@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -21,6 +23,7 @@ import com.rescribe.model.saved_article.SavedArticleInfo;
 import com.rescribe.ui.activities.saved_articles.SavedArticles;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -36,11 +39,13 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
     private final OnArticleClickListener onMenuClickListener;
     private ArrayList<SavedArticleInfo> mReceivedSavedArticleList;
     private Context mContext;
+    private ColorGenerator mColorGenerator;
 
-    public SavedArticleListAdapter(SavedArticles mContext, ArrayList<SavedArticleInfo> mReceivedSavedArticleList, OnArticleClickListener savedArticles) {
+    public SavedArticleListAdapter(Context mContext, ArrayList<SavedArticleInfo> mReceivedSavedArticleList, OnArticleClickListener savedArticles) {
         this.mContext = mContext;
         this.mReceivedSavedArticleList = mReceivedSavedArticleList;
         this.onMenuClickListener = savedArticles;
+        mColorGenerator = ColorGenerator.MATERIAL;
     }
 
     @Override
@@ -76,13 +81,26 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
         //------------
         int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(mContext, 2);
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.dontAnimate();
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestOptions.skipMemoryCache(true);
-        requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
+        if (!savedArticleInfo.getAuthorImageURL().equals(null)) {
 
-        if (savedArticleInfo.getAuthorImageURL() != null) {
+
+            String doctorName = savedArticleInfo.getAuthorName();
+
+
+            int color2 = mColorGenerator.getColor(doctorName);
+            TextDrawable drawable = TextDrawable.builder()
+                    .beginConfig()
+                    .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                    .endConfig()
+                    .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.dontAnimate();
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
+            requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
+            requestOptions.placeholder(drawable);
+            requestOptions.error(drawable);
             Glide.with(mContext)
                     .load(savedArticleInfo.getAuthorImageURL())
                     .apply(requestOptions).thumbnail(0.5f)
@@ -90,6 +108,11 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
         }
 
         if (savedArticleInfo.getArticleImageURL() != null) {
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.dontAnimate();
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
+            requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
             requestOptions.placeholder(R.drawable.image_1);
 
             Glide.with(mContext)
@@ -111,9 +134,15 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
         holder.bookMarkIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 onMenuClickListener.onBookMarkIconClicked(savedArticleInfo);
             }
         });
+     /*   if(savedArticleInfo.getIsSaved()){
+            holder.bookMarkIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.bookmark));
+        }else{
+            holder.bookMarkIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_action_bookmark_border));
+        }*/
 
         //--------------
     }

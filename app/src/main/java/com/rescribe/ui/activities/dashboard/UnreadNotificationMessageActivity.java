@@ -1,6 +1,7 @@
 package com.rescribe.ui.activities.dashboard;
 
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.adapters.unread_notification_message_list.UnreadAppointmentNotificationAlert;
+
 import com.rescribe.adapters.unread_notification_message_list.UnreadBookAppointTokenNotificationAdapter;
 import com.rescribe.adapters.unread_notification_message_list.UnreadMedicationNotificationAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
@@ -28,6 +30,8 @@ import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookA
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.model.investigation.InvestigationNotification;
 import com.rescribe.model.notification.Medication;
+
+
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.InvestigationActivity;
@@ -43,8 +47,10 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
+
 
 /**
  * Created by jeetal on 27/11/17.
@@ -470,4 +476,16 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     //----************ Token notification :END------------
 
     //------
+
+    @OnClick({R.id.bookAppointmentBackButton, R.id.locationTextView})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bookAppointmentBackButton:
+                onBackPressed();
+                break;
+            case R.id.locationTextView:
+                break;
+        }
+    }
+
 }

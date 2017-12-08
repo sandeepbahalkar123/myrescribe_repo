@@ -31,7 +31,8 @@
                 android:gravity="center|left"
                 android:text="@string/doctor_connect"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp16"
+                android:textSize="@dimen/sp18"
+                android:paddingLeft="@dimen/dp12"
                 android:visibility="visible"
                 app:customFont="@string/roboto_bold" />
 

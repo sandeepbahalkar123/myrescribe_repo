@@ -27,8 +27,6 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
     CustomTextView title;
     @BindView(R.id.listView)
     RecyclerView listView;
-
-
     private Context mContext;
 
     ClickOption mClickedOptionData;
@@ -91,19 +89,19 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
 
         } else if (clickOption.getName().equalsIgnoreCase(mContext.getString(R.string.appointment_alert))) {
             RescribePreferencesManager.putBoolean(mContext.getString(R.string.appointment_alert), isChecked, mContext);
-            RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotification(), mContext);
+           // RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotification(), mContext);
 
         } else if (clickOption.getName().equalsIgnoreCase(mContext.getString(R.string.investigation_alert))) {
             RescribePreferencesManager.putBoolean(mContext.getString(R.string.investigation_alert), isChecked, mContext);
-            RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotification(), mContext);
+            //RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotification(), mContext);
 
         } else if (clickOption.getName().equalsIgnoreCase(mContext.getString(R.string.medication_alert))) {
             RescribePreferencesManager.putBoolean(mContext.getString(R.string.medication_alert), isChecked, mContext);
-            RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotification(), mContext);
+           // RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotification(), mContext);
 
         } else if (clickOption.getName().equalsIgnoreCase(mContext.getString(R.string.offers_alert))) {
             RescribePreferencesManager.putBoolean(mContext.getString(R.string.offers_alert), isChecked, mContext);
-            RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotification(), mContext);
+           // RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotification(), mContext);
 
         }
 

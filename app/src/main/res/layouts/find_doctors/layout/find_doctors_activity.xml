@@ -146,6 +146,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:completionThreshold="1"
+            android:textCursorDrawable="@color/black"
             android:hint="@string/type_to_select"
             android:paddingLeft="@dimen/dp12"
             android:paddingStart="@dimen/dp12"

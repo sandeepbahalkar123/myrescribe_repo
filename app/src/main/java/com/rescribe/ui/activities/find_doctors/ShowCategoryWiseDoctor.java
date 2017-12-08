@@ -80,6 +80,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
             showDoctorList.setHasFixedSize(true);
             showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
         }else if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.recently_visit_doctor))){
+
             mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(getIntent().getExtras().getString(getString(R.string.toolbarTitle)),-1);
             mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -87,6 +88,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
             showDoctorList.setHasFixedSize(true);
             showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
         }else if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.sponsered_doctor))){
+
             mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(getIntent().getExtras().getString(getString(R.string.toolbarTitle)),-1);
             mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

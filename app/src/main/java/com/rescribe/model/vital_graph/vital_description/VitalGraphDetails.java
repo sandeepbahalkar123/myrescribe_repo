@@ -10,9 +10,13 @@ public class VitalGraphDetails implements CustomResponse {
     @SerializedName("vitalValue")
     @Expose
     private String vitalValue;
-    @SerializedName("creation_date")
+    /*  @SerializedName("creation_date")
+      @Expose
+      private String creationDate;*/
+    @SerializedName("OPDDate")
     @Expose
     private String creationDate;
+
     @SerializedName("selfTrackerFlag")
     @Expose
     private String selfTrackerFlag;

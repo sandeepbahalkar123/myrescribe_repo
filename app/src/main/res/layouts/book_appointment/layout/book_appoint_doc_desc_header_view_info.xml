@@ -108,7 +108,7 @@
                         android:layout_width="@dimen/dp80"
                         android:layout_height="@dimen/dp80"
                         android:layout_gravity="center"
-                        android:src="@drawable/layer_12" />
+                        tools:src="@drawable/layer_12" />
 
                 </LinearLayout>
 
@@ -132,7 +132,7 @@
                         tools:text="Cardilogist"
                         android:visibility="gone"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/sp18"
+                        android:textSize="@dimen/sp16"
                         android:textStyle="bold"
                         app:customFont="@string/roboto_bold" />
 
@@ -144,7 +144,7 @@
                         android:layout_toRightOf="@+id/thumbnail"
                         tools:text="Dr. Sandeep Patil"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/sp18"
+                        android:textSize="@dimen/sp16"
                         android:typeface="sans"
                         app:customFont="@string/roboto_bold" />
 

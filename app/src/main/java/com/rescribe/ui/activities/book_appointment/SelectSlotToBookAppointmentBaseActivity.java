@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,9 +10,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.rescribe.R;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.SelectSlotTimeToBookAppointmentFragment;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.HashMap;
 
@@ -37,37 +40,44 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
     FrameLayout viewContainer;
     HashMap<String, String> userSelectedLocationInfo;
     private SelectSlotTimeToBookAppointmentFragment mSelectSlotTimeToBookAppointmentFragment;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_slot_book_app_layout);
         ButterKnife.bind(this);
+
         initialize();
     }
 
     private void initialize() {
+        mContext = SelectSlotToBookAppointmentBaseActivity.this;
         showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
-
+      /*  String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK_GET_TOKEN, mContext);
+        if (coachMarkStatus.equals(RescribeConstants.YES)) {
+            coachmark.setVisibility(View.GONE);
+        }*/
         userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
             extras = new Bundle();
         }
-        title.setText(""+extras.getString(getString(R.string.toolbarTitle)));
+        title.setText("" + extras.getString(getString(R.string.toolbarTitle)));
 
         //extras.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
-       // extras.putString(getString(R.string.clicked_item_data_type_value), getIntent().getStringExtra(getString(R.string.clicked_item_data_type_value)));
+        // extras.putString(getString(R.string.clicked_item_data_type_value), getIntent().getStringExtra(getString(R.string.clicked_item_data_type_value)));
         mSelectSlotTimeToBookAppointmentFragment = SelectSlotTimeToBookAppointmentFragment.newInstance(extras);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.viewContainer, mSelectSlotTimeToBookAppointmentFragment);
         fragmentTransaction.commit();
 
+
     }
 
-    @OnClick({R.id.bookAppointmentBackButton, R.id.locationTextView, R.id.showlocation})
+    @OnClick({R.id.bookAppointmentBackButton, R.id.locationTextView, R.id.showlocation/*R.id.coachmark*/})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bookAppointmentBackButton:
@@ -77,6 +87,10 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
                 break;
             case R.id.showlocation:
                 break;
+           /* case R.id.coachmark:
+                coachmark.setVisibility(View.GONE);
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK_GET_TOKEN, RescribeConstants.YES, mContext);
+                break;*/
         }
     }
 

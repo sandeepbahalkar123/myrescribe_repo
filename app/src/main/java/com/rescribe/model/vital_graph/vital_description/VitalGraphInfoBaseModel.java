@@ -34,20 +34,20 @@ public class VitalGraphInfoBaseModel implements CustomResponse {
     }
 
     public class VitalGraphInfoDataModel {
-        @SerializedName("doAndDonts")
+        /*@SerializedName("doAndDonts")
         @Expose
-        private String description;
+        private String description;*/
         @SerializedName("vitalDetail")
         @Expose
         private ArrayList<VitalGraphDetails> vitalGraphDetailList = new ArrayList<>();
 
-        public String getDescription() {
+       /* public String getDescription() {
             return description;
         }
 
         public void setDescription(String description) {
             this.description = description;
-        }
+        }*/
 
         public ArrayList<VitalGraphDetails> getVitalGraphDetailList() {
             return vitalGraphDetailList;

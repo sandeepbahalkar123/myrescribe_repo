@@ -2,6 +2,7 @@ package com.rescribe.ui.fragments.book_appointment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -24,12 +26,16 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -45,6 +51,7 @@ import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
+import com.rescribe.ui.customesViews.BottomSheetDialog;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -126,6 +133,9 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     private DoctorDataHelper mDoctorDataHelper;
     private String mReceivedTitle;
     private int mSelectedClinicDataPosition;
+    private ClinicData clinicData;
+    private BottomSheetDialog mBottomSheetDialog;
+    private ColorGenerator mColorGenerator;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -161,7 +171,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
     private void init() {
         mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
-
+        mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(getActivity(), 2);
         //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
         Bundle arguments = getArguments();
@@ -184,8 +194,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         contentServices.setSpan(new UnderlineSpan(), 0, contentServices.length(), 0);
         mServicesHeaderView.setText(contentServices);
         //-------
-        if (aboutDoctor.getText().equals("")) {
-            aboutLayout.setVisibility(View.INVISIBLE);
+        if (mClickedDoctorObject.getAboutDoctor().equals("")) {
+            aboutLayout.setVisibility(View.GONE);
             //-------
         } else {
             aboutLayout.setVisibility(View.VISIBLE);
@@ -194,17 +204,34 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             aboutDoctor.setText(content);
             mAboutDoctorDescription.setText("" + mClickedDoctorObject.getAboutDoctor());
         }
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.dontAnimate();
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestOptions.skipMemoryCache(true);
-        requestOptions.override(mImageSize, mImageSize);
+        if (mClickedDoctorObject.getDoctorImageUrl()!=null) {
+
+            String doctorName = mClickedDoctorObject.getDocName();
+            if (doctorName.contains("Dr. ")) {
+                doctorName = doctorName.replace("Dr. ", "");
+            }
+            int color2 = mColorGenerator.getColor(doctorName);
+            TextDrawable drawable = TextDrawable.builder()
+                    .beginConfig()
+                    .width(Math.round(getActivity().getResources().getDimension(R.dimen.dp40))) // width in px
+                    .height(Math.round(getActivity().getResources().getDimension(R.dimen.dp40))) // height in px
+                    .endConfig()
+                    .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.dontAnimate();
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
+            requestOptions.override(mImageSize, mImageSize);
+            requestOptions.placeholder(drawable);
+            requestOptions.error(drawable);
+
+            Glide.with(getActivity())
+                    .load(mClickedDoctorObject.getDoctorImageUrl())
+                    .apply(requestOptions).thumbnail(0.5f)
+                    .into(mProfileImage);
 
 
-        Glide.with(getActivity())
-                .load(mClickedDoctorObject.getDoctorImageUrl())
-                .apply(requestOptions).thumbnail(0.5f)
-                .into(mProfileImage);
+        }
         //-------
         setFavorite(mClickedDoctorObject.getFavourite());
         //---------------
@@ -267,7 +294,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                    ClinicData clinicData = mClickedDoctorObject.getClinicDataList().get(position);
+                    clinicData = mClickedDoctorObject.getClinicDataList().get(position);
                     if (clinicData.getClinicName().equals("")) {
                         mClinicName.setVisibility(View.GONE);
                     } else {
@@ -282,6 +309,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                         mDoctorFees.setText("" + clinicData.getAmount());
                     }
                     mSelectedClinicDataPosition = position;
+
+                    setServicesInView(clinicData.getDocServices());
                 }
 
                 @Override
@@ -302,13 +331,17 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         } else {
             mClinicNameSpinnerParentLayout.setVisibility(View.GONE);
         }
+
+    }
+
+    private void setServicesInView(ArrayList<String> receivedDocService) {
         //---------
-        ArrayList<String> receivedDocService = mClickedDoctorObject.getDocServices();
+
         int receivedDocServiceSize = receivedDocService.size();
         if (receivedDocServiceSize > 0) {
             servicesLayout.setVisibility(View.VISIBLE);
             ArrayList<String> docListToSend = new ArrayList<>();
-            if (receivedDocServiceSize > 5) {
+            if (receivedDocServiceSize > 4) {
                 docListToSend.addAll(receivedDocService.subList(0, 4));
                 mReadMoreDocServices.setVisibility(View.VISIBLE);
             } else {
@@ -428,25 +461,25 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     }
 
     public void showServiceDialog() {
-
-        final Dialog dialog = new Dialog(getContext());
-
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.services_dialog_modal);
-
-        dialog.findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
+        mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.Material_App_BottomSheetDialog);
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.services_dialog_modal, null);
+        ///  CommonMethods.setBackground(v, new ThemeDrawable(R.array.bg_window));
+        mBottomSheetDialog.setTitle("Services");
+        mBottomSheetDialog.heightParam(ViewGroup.LayoutParams.MATCH_PARENT);
+        ListView mServicesListView = (ListView) v.findViewById(R.id.servicesListView);
+        DialogServicesListAdapter mServicesAdapter = new DialogServicesListAdapter(getActivity(), clinicData.getDocServices());
+        mServicesListView.setAdapter(mServicesAdapter);
+        AppCompatImageView closeButton = (AppCompatImageView) v.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                mBottomSheetDialog.dismiss();
             }
         });
 
-        ListView mServicesListView = (ListView) dialog.findViewById(R.id.servicesListView);
-        DialogServicesListAdapter mServicesAdapter = new DialogServicesListAdapter(getActivity(), mClickedDoctorObject.getDocServices());
-        mServicesListView.setAdapter(mServicesAdapter);
+        mBottomSheetDialog.contentView(v)
+                .show();
 
-        dialog.show();
     }
 
     class DialogServicesListAdapter extends BaseAdapter {

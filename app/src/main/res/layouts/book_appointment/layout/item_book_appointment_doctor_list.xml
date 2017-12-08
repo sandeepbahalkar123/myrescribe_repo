@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/dp4"
     android:layout_marginLeft="@dimen/dp6"
+    android:id="@+id/dashBoardCard"
     app:cardUseCompatPadding="true"
     android:background="@drawable/curve_white_back"
     android:layout_marginRight="@dimen/dp6"
@@ -116,7 +117,7 @@
                             android:layout_width="@dimen/dp66"
                             android:layout_height="@dimen/dp66"
                             android:layout_gravity="center_vertical"
-                            android:src="@drawable/layer_12" />
+                            tools:src="@drawable/layer_12" />
 
                     </LinearLayout>
 

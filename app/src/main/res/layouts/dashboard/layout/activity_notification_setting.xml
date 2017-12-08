@@ -31,7 +31,7 @@
                 android:gravity="center|left"
                 android:text="@string/notification"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp16"
+                android:textSize="@dimen/sp18"
                 android:visibility="visible"
                 app:customFont="@string/roboto_bold" />
 

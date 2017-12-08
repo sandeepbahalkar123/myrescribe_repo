@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -72,6 +73,12 @@ public class CommonMethods {
                 return i + sufixes[i % 10];
 
         }
+    }
+    public static void setBackground(View v, Drawable drawable){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            v.setBackground(drawable);
+        else
+            v.setBackgroundDrawable(drawable);
     }
 
     public static int getDocumentIconByExtension(String extension) {
@@ -625,7 +632,7 @@ public class CommonMethods {
     public static int getDoctorSpecialistIcons(String caseStudyName, Context mContext) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
-        int abbreviation = R.drawable.gynecologist;
+        int abbreviation = R.drawable.endocrinologist;
         if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.cardiologist)))
             abbreviation = R.drawable.cardiologist;
         else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.ophthalmologist)))

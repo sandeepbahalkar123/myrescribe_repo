@@ -122,7 +122,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
                 if (customResponse1.getVitalGraphInfoDataModel() != null) {
                     mReceivedVitalGraphDataModel = customResponse1.getVitalGraphInfoDataModel();
-                    mDescriptionText.setText("" + mReceivedVitalGraphDataModel.getDescription());
+                   // mDescriptionText.setText("" + mReceivedVitalGraphDataModel.getDescription());
                     // plotVitalGraph();
                     mGraphCard.invalidate();
                     if (mClickedVitalGraphData.getVitalName().equalsIgnoreCase("Blood Pressure")) {

@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.text.SpannableString;
@@ -28,6 +30,8 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -48,7 +52,9 @@ import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseMod
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
+import com.rescribe.model.case_details.Range;
 import com.rescribe.model.doctor_connect.ChatDoctor;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.customesViews.CircularImageView;
@@ -159,6 +165,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private Date mMaxDateRange;
     private DatePickerDialog mDatePickerDialog;
     private String mSelectedTimeStampForNewToken;
+    private ColorGenerator mColorGenerator;
 
 
     public SelectSlotTimeToBookAppointmentFragment() {
@@ -186,6 +193,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     }
 
     private void init() {
+        mColorGenerator = ColorGenerator.MATERIAL;
+        String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK_GET_TOKEN, mContext);
+        if (!coachMarkStatus.equals(RescribeConstants.YES)) {
+            FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.coachmarkContainer, CoachFragment.newInstance());
+            fragmentTransaction.addToBackStack("Coach");
+            fragmentTransaction.commit();
+        }
 
         Calendar now = Calendar.getInstance();
         //---------
@@ -255,17 +271,36 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             bookAppointmentButton.setVisibility(View.GONE);
             noDataFound.setVisibility(View.VISIBLE);
         }
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.dontAnimate();
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestOptions.skipMemoryCache(true);
-        requestOptions.override(mImageSize, mImageSize);
-        requestOptions.placeholder(R.drawable.layer_12);
 
-        Glide.with(getActivity())
-                .load(mClickedDoctorObject.getDoctorImageUrl())
-                .apply(requestOptions).thumbnail(0.5f)
-                .into(mProfileImage);
+        if (mClickedDoctorObject.getDoctorImageUrl()!=null) {
+
+            String doctorName = mClickedDoctorObject.getDocName();
+            if (doctorName.contains("Dr. ")) {
+                doctorName = doctorName.replace("Dr. ", "");
+            }
+            int color2 = mColorGenerator.getColor(doctorName);
+            TextDrawable drawable = TextDrawable.builder()
+                    .beginConfig()
+                    .width(Math.round(getActivity().getResources().getDimension(R.dimen.dp40))) // width in px
+                    .height(Math.round(getActivity().getResources().getDimension(R.dimen.dp40))) // height in px
+                    .endConfig()
+                    .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.dontAnimate();
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
+            requestOptions.override(mImageSize, mImageSize);
+            requestOptions.placeholder(drawable);
+            requestOptions.error(drawable);
+
+            Glide.with(getActivity())
+                    .load(mClickedDoctorObject.getDoctorImageUrl())
+                    .apply(requestOptions).thumbnail(0.5f)
+                    .into(mProfileImage);
+
+
+        }
+
         //-------
         if (mClickedDoctorObject.getFavourite()) {
             mFavorite.setImageResource(R.drawable.fav_icon);

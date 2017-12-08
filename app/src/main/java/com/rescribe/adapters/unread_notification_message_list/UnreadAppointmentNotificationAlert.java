@@ -21,15 +21,16 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
 
     private final ArrayList<UnreadNotificationMessageData> mOriginalReceivedList;
     private final Context mContext;
+    private final OnNotificationItemClicked listener;
     private ArrayList<UnreadNotificationMessageData> mListToBeUsed;
 
-    public UnreadAppointmentNotificationAlert(Context context, ArrayList<UnreadNotificationMessageData> list) {
+    public UnreadAppointmentNotificationAlert(Context context, ArrayList<UnreadNotificationMessageData> list, OnNotificationItemClicked listener) {
         this.mContext = context;
         this.mOriginalReceivedList = list;
 
         mListToBeUsed = new ArrayList<>();
-        mListToBeUsed.add(mOriginalReceivedList.get(0));
-
+        addSingleElementToList();
+        this.listener = listener;
     }
 
     @Override
@@ -41,7 +42,7 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
 
     @Override
     public void onBindViewHolder(final UnreadAppointmentNotificationAlert.FileViewHolder holder, final int position) {
-        UnreadNotificationMessageData unreadNotificationMessageData = mListToBeUsed.get(position);
+        final UnreadNotificationMessageData unreadNotificationMessageData = mListToBeUsed.get(position);
         holder.text.setText(unreadNotificationMessageData.getNotificationData());
 
         //---- To show icon for first element based on notification type----
@@ -57,25 +58,42 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
         }
         //--------
 
-        //--- TO show more load button or not
-        if (position == 0 & mOriginalReceivedList.size() > 1) {
-            holder.loadMoreItems.setVisibility(View.VISIBLE);
-        } else {
+        //--- TO show more load button or not on appointment_type_notification.
+        if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT)) {
+            if (position == 0 && (mListToBeUsed.size() == 1 && mOriginalReceivedList.size() > 1)) {
+                holder.loadMoreItems.setVisibility(View.VISIBLE);
+                holder.loadLessItems.setVisibility(View.GONE);
+            } else if (position == 0 && mListToBeUsed.size() == mOriginalReceivedList.size()) {
+                holder.loadMoreItems.setVisibility(View.GONE);
+                holder.loadLessItems.setVisibility(View.VISIBLE);
+            } else {
+                holder.loadMoreItems.setVisibility(View.GONE);
+                holder.loadLessItems.setVisibility(View.GONE);
+            }
+        } else if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT)) {
             holder.loadMoreItems.setVisibility(View.GONE);
+            holder.loadLessItems.setVisibility(View.GONE);
+            holder.skipItems.setVisibility(View.VISIBLE);
         }
         //--- TO show more load button or not
 
         holder.rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                listener.onNotificationRowClicked(unreadNotificationMessageData);
             }
         });
 
         holder.loadMoreItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                listener.onMoreClicked(unreadNotificationMessageData);
+            }
+        });
+        holder.loadLessItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onLessClicked(unreadNotificationMessageData);
             }
         });
 
@@ -83,7 +101,7 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
 
     @Override
     public int getItemCount() {
-        return mOriginalReceivedList.size();
+        return mListToBeUsed.size();
     }
 
     static class FileViewHolder extends RecyclerView.ViewHolder {
@@ -92,6 +110,10 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
         CustomTextView text;
         @BindView(R.id.loadMoreItems)
         CustomTextView loadMoreItems;
+        @BindView(R.id.loadLessItems)
+        CustomTextView loadLessItems;
+        @BindView(R.id.skipItems)
+        CustomTextView skipItems;
         @BindView(R.id.imageIcon)
         ImageView imageIcon;
 
@@ -104,5 +126,24 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
         }
     }
 
+    public interface OnNotificationItemClicked {
+        public void onMoreClicked(UnreadNotificationMessageData unreadNotificationMessageData);
+
+        public void onLessClicked(UnreadNotificationMessageData unreadNotificationMessageData);
+
+        public void onSkipClicked();
+
+        public void onNotificationRowClicked(UnreadNotificationMessageData unreadNotificationMessageData);
+    }
+
+    public void addAllElementToList() {
+        mListToBeUsed.clear();
+        mListToBeUsed.addAll(mOriginalReceivedList);
+    }
+
+    public void addSingleElementToList() {
+        mListToBeUsed.clear();
+        mListToBeUsed.add(mOriginalReceivedList.get(0));
+    }
 
 }

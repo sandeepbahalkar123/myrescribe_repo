@@ -1,12 +1,14 @@
 package com.rescribe.model.dashboard_api.unread_notification_message_list;
 
-public class UnreadNotificationMessageData  {
+public class UnreadNotificationMessageData {
 
 
     private String id;
     private String notificationMessageType;
     private String notificationData;
     private String notificationTimeStamp;
+
+    private String buttonToVisible;
 
     public UnreadNotificationMessageData() {
     }
@@ -41,5 +43,13 @@ public class UnreadNotificationMessageData  {
 
     public void setNotificationTimeStamp(String notificationTimeStamp) {
         this.notificationTimeStamp = notificationTimeStamp;
+    }
+
+    public String getButtonToVisible() {
+        return buttonToVisible;
+    }
+
+    public void setButtonToVisible(String buttonToVisible) {
+        this.buttonToVisible = buttonToVisible;
     }
 }

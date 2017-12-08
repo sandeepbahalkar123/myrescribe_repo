@@ -60,9 +60,11 @@ public class NotificationService extends Service implements HelperResponse {
     Calendar c = Calendar.getInstance();
     int hour24 = c.get(Calendar.HOUR_OF_DAY);
     int Min = c.get(Calendar.MINUTE);
+    private boolean isTaskDone;
 
     @Override
     public void onCreate() {
+        isTaskDone = false;
     }
 
     @Override
@@ -99,8 +101,7 @@ public class NotificationService extends Service implements HelperResponse {
         return mBinder;
     }
 
-    public void customNotification(Intent intentData) {
-
+    public void customNotification(Intent intentData, Medication medication) {
         //--------------
         String medicineSlot = intentData.getStringExtra(RescribeConstants.MEDICINE_SLOT);
         String notificationTimeSlot = intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME);
@@ -108,7 +109,10 @@ public class NotificationService extends Service implements HelperResponse {
 
         //---- Save notification in db---
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
-        appDBHelper.insertReceivedNotificationMessage("" + System.currentTimeMillis(), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, new Gson().toJson(medicineSlot + notificationTimeSlot + title), "");
+        int id = (int) System.currentTimeMillis();
+        medication.setUnreadNotificationMessageDataID("" + id);
+        String medicationDataDetails = getText(R.string.have_u_taken).toString() + medicineSlot + "|" + new Gson().toJson(medication);
+        appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, medicationDataDetails, "");
         //-------
 
         int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, NotificationService.this);
@@ -184,53 +188,65 @@ public class NotificationService extends Service implements HelperResponse {
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
             NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
-            if (prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification().size() != 0) {
-                List<Medication> notificationDataList = null;
-                NotificationData notificationDataForHeader = new NotificationData();
-                List<NotificationData> notificationListForHeader = new ArrayList<>();
-                List<NotificationData> notificationData = prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification();
-                String date = CommonMethods.getCurrentDateTime();
-                CommonMethods.Log(TAG, date);
-                //Current date and slot data is sorted to show in header of UI
-                for (int k = 0; k < notificationData.size(); k++) {
-                    if (notificationData.get(k).getPrescriptionDate().equals(CommonMethods.getCurrentDateTime())) {
-                        String prescriptionDate = notificationData.get(k).getPrescriptionDate();
-                        notificationDataList = notificationData.get(k).getMedication();
-                        notificationDataForHeader.setMedication(notificationDataList);
-                        notificationDataForHeader.setPrescriptionDate(prescriptionDate);
-                        notificationListForHeader.add(notificationDataForHeader);
+
+            if (!isTaskDone) {
+                String slot = CommonMethods.getMealTime(hour24, Min, this);
+
+                if (prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification().size() != 0) {
+                    List<Medication> notificationDataList;
+                    NotificationData notificationDataForHeader = new NotificationData();
+                    List<NotificationData> notificationListForHeader = new ArrayList<>();
+                    List<NotificationData> notificationData = prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification();
+                    String date = CommonMethods.getCurrentDateTime();
+                    CommonMethods.Log(TAG, date);
+                    //Current date and slot data is sorted to show in header of UI
+                    for (int k = 0; k < notificationData.size(); k++) {
+                        if (notificationData.get(k).getPrescriptionDate().equals(CommonMethods.getCurrentDateTime())) {
+                            String prescriptionDate = notificationData.get(k).getPrescriptionDate();
+                            notificationDataList = notificationData.get(k).getMedication();
+                            notificationDataForHeader.setMedication(notificationDataList);
+                            notificationDataForHeader.setPrescriptionDate(prescriptionDate);
+                            notificationListForHeader.add(notificationDataForHeader);
+                        }
+                    }
+
+                    if (slot.equals(getString(R.string.break_fast))) {
+                        if (notificationDataForHeader.getMedication() != null)
+                            for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
+                                Medication medication = notificationDataForHeader.getMedication().get(i);
+                                if (medication.getMedicinSlot().equals("breakfastAfter") || medication.getMedicinSlot().equals("breakfastBefore")) {
+                                    customNotification(intent, medication);
+                                }
+                            }
+                    } else if (slot.equals(getString(R.string.mlunch))) {
+                        if (notificationDataForHeader.getMedication() != null)
+                            for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
+                                Medication medication = notificationDataForHeader.getMedication().get(i);
+                                if (medication.getMedicinSlot().equals("lunchAfter") || medication.getMedicinSlot().equals("lunchBefore")) {
+                                    customNotification(intent, medication);
+                                }
+                            }
+                    } else if (slot.equals(getString(R.string.msnacks))) {
+                        if (notificationDataForHeader.getMedication() != null)
+                            for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
+                                Medication medication = notificationDataForHeader.getMedication().get(i);
+                                if (medication.getMedicinSlot().equals("snacksAfter") || medication.getMedicinSlot().equals("snacksBefore")) {
+                                    customNotification(intent, medication);
+                                }
+                            }
+                    } else if (slot.equals(getString(R.string.mdinner))) {
+                        if (notificationDataForHeader.getMedication() != null)
+                            for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
+                                Medication medication = notificationDataForHeader.getMedication().get(i);
+                                if (medication.getMedicinSlot().equals("dinnerAfter") || medication.getMedicinSlot().equals("dinnerBefore")) {
+                                    customNotification(intent, medication);
+                                }
+                            }
                     }
                 }
-                String slot = CommonMethods.getMealTime(hour24, Min, this);
-                if (slot.equals(getString(R.string.break_fast))) {
-                    if (notificationDataForHeader.getMedication() != null)
-                        for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
-                            if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("breakfastAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("breakfastBefore")) {
-                                customNotification(intent);
-                            }
-                        }
-                } else if (slot.equals(getString(R.string.mlunch))) {
-                    if (notificationDataForHeader.getMedication() != null)
-                        for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
-                            if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("lunchAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("lunchBefore")) {
-                                customNotification(intent);
-                            }
-                        }
-                } else if (slot.equals(getString(R.string.msnacks))) {
-                    if (notificationDataForHeader.getMedication() != null)
-                        for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
-                            if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("snacksAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("snacksBefore")) {
-                                customNotification(intent);
-                            }
-                        }
-                } else if (slot.equals(getString(R.string.mdinner))) {
-                    if (notificationDataForHeader.getMedication() != null)
-                        for (int i = 0; i < notificationDataForHeader.getMedication().size(); i++) {
-                            if (notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("dinnerAfter") || notificationDataForHeader.getMedication().get(i).getMedicinSlot().equals("dinnerBefore")) {
-                                customNotification(intent);
-                            }
-                        }
-                }
+
+                stopSelf();
+                isTaskDone = true;
             }
         }
     }

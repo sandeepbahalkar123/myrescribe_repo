@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include
@@ -24,6 +25,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/docConnectListViewLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -62,14 +64,16 @@
                     android:visibility="visible"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
+                    android:background="@color/divider" />
+
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp1"
-                android:background="@color/divider" />
 
             <LinearLayout
+                android:id="@+id/getTokenListViewLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -108,14 +112,57 @@
                     android:dividerHeight="0dp"
                     android:visibility="visible"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
+                    android:background="@color/divider" />
+
             </LinearLayout>
 
-            <View
+            <LinearLayout
+                android:id="@+id/onGoingMedicationListViewLayout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp1"
-                android:background="@color/divider" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:gravity="center_vertical">
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/on_going_treatment"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp15"
+                        app:customFont="@string/roboto_medium" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/grey_shade"
+                        android:textSize="@dimen/sp11"
+                        app:customFont="@string/roboto_medium"
+                        tools:text="2m ago" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/onGoingMedicationListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:visibility="visible"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/appointmentsListViewLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -151,17 +198,18 @@
                     android:layout_height="match_parent"
                     android:divider="@null"
                     android:dividerHeight="0dp"
-                    android:visibility="visible"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
- 
+                    android:visibility="visible"></android.support.v7.widget.RecyclerView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
+                    android:background="@color/divider" />
+
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp1"
-                android:background="@color/divider" />
 
             <LinearLayout
+                android:id="@+id/investigationsListViewLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">

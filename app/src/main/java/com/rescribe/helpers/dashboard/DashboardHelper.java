@@ -166,4 +166,14 @@ public class DashboardHelper implements ConnectionListener {
         }
         return receivedNotificationMessageList;
     }
+
+    public static void deleteUnreadNotificationMessageById(String id, String notificationType) {
+        for (UnreadNotificationMessageData object :
+                DashboardHelper.unreadNotificationMessageList) {
+            if (object.getId().equalsIgnoreCase(id) && object.getNotificationMessageType().equalsIgnoreCase(notificationType)) {
+                DashboardHelper.unreadNotificationMessageList.remove(object);
+                break;
+            }
+        }
+    }
 }

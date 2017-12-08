@@ -175,7 +175,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         appDBHelper = new AppDBHelper(mContext);
 
         //----------
-        DashboardHelper.setUnreadNotificationMessageList(new AppDBHelper(this).doGetReceivedNotificationMessage());
+        DashboardHelper.setUnreadNotificationMessageList(new AppDBHelper(this).doGetUnreadReceivedNotificationMessage());
         //----------
         createLocationRequest();
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;

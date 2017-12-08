@@ -10,7 +10,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
-import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver;
 import com.rescribe.broadcast_receivers.ClickOnNotificationReceiver;
@@ -91,7 +90,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
         //---- Save notification in db---
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
-        appDBHelper.insertReceivedNotificationMessage("" + index, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message, "");
+        appDBHelper.insertUnreadReceivedNotificationMessage("" + index, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message, "");
         //-------
 
         int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, AppointmentNotificationService.this);

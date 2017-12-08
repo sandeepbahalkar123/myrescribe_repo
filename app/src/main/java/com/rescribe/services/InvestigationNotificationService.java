@@ -141,7 +141,7 @@ public class InvestigationNotificationService extends Service implements HelperR
         //--------------
         //---- Save notification in db---
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
-        appDBHelper.insertReceivedNotificationMessage("" + idToStoreDataInDB, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, new Gson().toJson(time + message), "");
+        appDBHelper.insertUnreadReceivedNotificationMessage("" + idToStoreDataInDB, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, message + "|" + time, "");
         //-------
 
         int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, InvestigationNotificationService.this);

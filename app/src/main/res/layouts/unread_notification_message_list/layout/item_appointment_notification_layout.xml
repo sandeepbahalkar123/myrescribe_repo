@@ -4,56 +4,102 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/notification_bg_grey"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/notification_bg"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/imageIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp12"
-                android:layout_marginRight="@dimen/dp12"
-                android:src="@drawable/my_appointments_icon" />
-        </LinearLayout>
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/unread_notification_gray_bg"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/textMessage"
+            <LinearLayout
+                android:id="@+id/imageLayoutView"
                 android:layout_width="wrap_content"
+
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/dp10"
-                android:layout_weight="1"
-                android:gravity="center|left"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp13"
-                app:customFont="@string/roboto_medium"
-                tools:text="Do you want to confirm the token number available with Dr. Sachin Patil for 10:00 pm today?" />
+                android:background="@drawable/notification_bg"
+                android:gravity="center">
 
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/loadMoreItems"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:gravity="right"
-                android:padding="@dimen/dp5"
-                android:text="@string/more"
-                android:textColor="@color/tagColor"
-                app:customFont="@string/roboto_medium" />
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/imageIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp12"
+                    android:layout_marginRight="@dimen/dp12"
+                    android:src="@drawable/my_appointments_icon" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/imageLayoutView"
+                android:orientation="vertical">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/textMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp13"
+                    app:customFont="@string/roboto_medium"
+                    tools:text="Do you want to confirm the token number available with Dr. Sachin Patil for 10:00 pm today?" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mainLayout"
+                    android:layout_gravity="right|center"
+                    android:gravity="right">
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/loadMoreItems"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:padding="@dimen/dp5"
+                        android:text="@string/more"
+                        android:textColor="@color/tagColor"
+                        app:customFont="@string/roboto_medium" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/loadLessItems"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:padding="@dimen/dp5"
+                        android:text="@string/less"
+                        android:textAllCaps="true"
+                        android:textColor="@color/tagColor"
+                        android:visibility="gone"
+                        app:customFont="@string/roboto_medium" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/skipItems"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:padding="@dimen/dp5"
+                        android:text="@string/skip"
+                        android:textColor="@color/tagColor"
+                        android:visibility="gone"
+                        app:customFont="@string/roboto_medium" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+
     </LinearLayout>
 </LinearLayout>

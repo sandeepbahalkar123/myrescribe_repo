@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.rescribe.R;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.health_offers.HealthOffersFragment;
 
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class HealthOffersActivity extends AppCompatActivity {
     @BindView(R.id.healthOffersViewpager)
     ViewPager healthOffersViewpager;
     String[] mFragmentTitleList = new String[3];
+    @BindView(R.id.title)
+    CustomTextView title;
     private DashboardMenuList mReceivedDashboardMenuListData;
 
     @Override
@@ -43,15 +46,16 @@ public class HealthOffersActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
             String value = extras.getString(getString(R.string.clicked_item_data_type_value));
 
             if (mReceivedDashboardMenuListData != null)
-                getSupportActionBar().setTitle(mReceivedDashboardMenuListData.getName());
+                title.setText(mReceivedDashboardMenuListData.getName());
             else if (value != null)
-                getSupportActionBar().setTitle(value);
+               title.setText(value);
         }
 
         if (getSupportActionBar() != null)

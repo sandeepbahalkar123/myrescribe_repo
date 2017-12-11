@@ -55,6 +55,7 @@ import butterknife.Unbinder;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
+import static com.facebook.FacebookSdk.isLegacyTokenUpgradeSupported;
 
 
 public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse {
@@ -104,6 +105,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private String mReceivedTitle;
     private ShowDoctorViewPagerAdapter mRecentVisitedDoctorPagerAdapter;
     private String mUserSelectedLocation;
+    private boolean isLocationChanged;
 
     public RecentVisitDoctorFragment() {
 
@@ -297,10 +299,10 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
                 mBookAppointSpecialityListView.setLayoutManager(layoutManager);
                 mBookAppointSpecialityListView.setItemAnimator(new DefaultItemAnimator());
-                int spanCount = 3; // 3 columns
-                int spacing = 30; // 50px
+                /*int spanCount = 3; // 3 columns
+                int spacing = 30; // 50px*/
                 boolean includeEdge = true;
-                mBookAppointSpecialityListView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+               // mBookAppointSpecialityListView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
                 mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, mReceivedDoctorServicesModel.getDoctorSpecialities());
                 mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
                 pickSpeciality.setVisibility(View.VISIBLE);
@@ -407,11 +409,13 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @Override
     public void onResume() {
         super.onResume();
-        doGetLatestDoctorListOnLocationChange(null);
-        if (mReceivedDoctorServicesModel != null) {
-            setUpViewPager();
-            if (showDoctorsRecyclerView.getVisibility() == View.VISIBLE && mSortByClinicAndDoctorNameAdapter != null) {
-                mSortByClinicAndDoctorNameAdapter.notifyDataSetChanged();
+        isLocationChanged = doGetLatestDoctorListOnLocationChange(null);
+        if(!isLocationChanged) {
+            if (mReceivedDoctorServicesModel != null) {
+                setUpViewPager();
+                if (showDoctorsRecyclerView.getVisibility() == View.VISIBLE && mSortByClinicAndDoctorNameAdapter != null) {
+                    mSortByClinicAndDoctorNameAdapter.notifyDataSetChanged();
+                }
             }
         }
     }
@@ -426,7 +430,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         startActivity(intent);
     }
 
-    public void doGetLatestDoctorListOnLocationChange(HashMap<String, String> mComplaintsUserSearchFor) {
+    public boolean doGetLatestDoctorListOnLocationChange(HashMap<String, String> mComplaintsUserSearchFor) {
         HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         String selectedLocation = userSelectedLocationInfo.get(getString(R.string.location));
         if (selectedLocation != null) {
@@ -437,11 +441,15 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 String[] split = mUserSelectedLocation.split(",");
                 if (split.length == 2) {
                     mDoctorDataHelper.doGetDoctorData(split[1], split[0], mComplaintsUserSearchFor);
+                    return true;
                 } else {
                     mDoctorDataHelper.doGetDoctorData("", "", mComplaintsUserSearchFor);
+                    return true;
+
                 }
             }
         }
+        return false;
     }
 
     public void onApplyClicked(Bundle data) {

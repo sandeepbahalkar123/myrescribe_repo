@@ -34,6 +34,9 @@
     <color name="menu_option_on_dashboard_color">#5b5b5b</color>
     <color name="menu_option_on_dashboard_lower_color">#b3b3b3</color>
     <color name="grey_shade">#878787</color>
+    <color name="line_color">#d5d5d5</color>
+
+
     <color name="dose_completed">#666666</color>
     <color name="recent__visited_places">#565656</color>
     <color name="background_grey">#EDEDED</color>

@@ -19,6 +19,7 @@ import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.saved_article.SavedArticleBaseModel;
 import com.rescribe.model.saved_article.SavedArticleDataModel;
 import com.rescribe.model.saved_article.SavedArticleInfo;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -39,6 +40,8 @@ public class SavedArticles extends AppCompatActivity implements HelperResponse, 
     RecyclerView mSavedArticleListView;
     @BindView(R.id.emptyListView)
     RelativeLayout mEmptyListView;
+    @BindView(R.id.title)
+    CustomTextView title;
 
     private SavedArticleListAdapter mSavedArticleListAdapter;
 
@@ -52,9 +55,10 @@ public class SavedArticles extends AppCompatActivity implements HelperResponse, 
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            getSupportActionBar().setTitle(extras.getString(getString(R.string.clicked_item_data)));
+           title.setText(extras.getString(getString(R.string.clicked_item_data)));
         }
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

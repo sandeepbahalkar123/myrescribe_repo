@@ -57,7 +57,7 @@ public class DoctorSpecialistBookAppointmentAdapter extends RecyclerView.Adapter
     @Override
     public DoctorSpecialistBookAppointmentAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.doctor_connect_grid_search, parent, false);
+                .inflate(R.layout.doctor_connect_grid_search_appointment, parent, false);
 
         return new DoctorSpecialistBookAppointmentAdapter.ListViewHolder(itemView);
     }

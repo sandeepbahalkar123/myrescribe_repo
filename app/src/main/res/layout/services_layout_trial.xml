@@ -16,6 +16,7 @@
 
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -31,8 +32,17 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:layout_collapseMode="pin"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp18"
+                android:visibility="visible"
+                app:customFont="@string/roboto_bold"
+                tools:text="sfdfsdgffghghg" />
 
 
         </android.support.v7.widget.Toolbar>
@@ -47,9 +57,9 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <ImageView
@@ -57,8 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-             />
+                android:scaleType="fitXY" />
 
             <FrameLayout
                 android:layout_width="match_parent"

@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
-
 import com.rescribe.R;
 import com.rescribe.adapters.saved_article.SavedArticleHealthEducationAdapter;
 import com.rescribe.helpers.dashboard.DashboardHelper;
@@ -46,7 +45,6 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
         super.onCreate(savedInstanceState);
         setContentView(R.layout.saved_articles_base_layout);
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -55,15 +53,15 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        initialize();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+               finish();
             }
         });
 
 
-        initialize();
     }
 
     private void initialize() {
@@ -72,15 +70,11 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
     }
 
     @Override
@@ -154,7 +148,7 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
     @Override
     public void onArticleClicked(SavedArticleInfo data) {
 
-        Intent intent = new Intent(this, SaveArticleHealthEducation.class);
+        Intent intent = new Intent(HealthEducation.this, SaveArticleHealthEducation.class);
         Bundle b = new Bundle();
         b.putString(getString(R.string.url), data.getArticleUrl());
         b.putString(getString(R.string.toolbarTitle), getString(R.string.health_education));

@@ -109,6 +109,8 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     CustomTextView sponsoredDoctors;
     @BindView(R.id.favouriteDoctors)
     CustomTextView favouriteDoctors;
+    @BindView(R.id.title)
+    CustomTextView title;
     private FindDoctorsMenuListAdapter mFindDoctorsAdapter;
     private Context mContext;
     int pager_padding;
@@ -125,16 +127,16 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         ButterKnife.bind(this);
         mContext = FindDoctorsActivity.this;
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
             String value = extras.getString(getString(R.string.clicked_item_data_type_value));
 
             if (mReceivedDashboardMenuListData != null)
-                getSupportActionBar().setTitle(mReceivedDashboardMenuListData.getName());
+               title.setText(mReceivedDashboardMenuListData.getName());
             else if (value != null)
-                getSupportActionBar().setTitle(value);
+                title.setText(value);
         }
 
         if (getSupportActionBar() != null)

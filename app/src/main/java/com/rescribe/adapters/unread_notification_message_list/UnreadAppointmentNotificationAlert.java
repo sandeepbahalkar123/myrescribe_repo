@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.rescribe.R;
-import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadNotificationMessageData;
+import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.customesViews.CustomTextView;
 
@@ -19,17 +19,18 @@ import butterknife.ButterKnife;
 
 public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<UnreadAppointmentNotificationAlert.FileViewHolder> {
 
-    private final ArrayList<UnreadNotificationMessageData> mOriginalReceivedList;
+    private final ArrayList<UnreadSavedNotificationMessageData> mOriginalReceivedList;
     private final Context mContext;
-    private ArrayList<UnreadNotificationMessageData> mListToBeUsed;
+    private final OnNotificationItemClicked listener;
+    private ArrayList<UnreadSavedNotificationMessageData> mListToBeUsed;
 
-    public UnreadAppointmentNotificationAlert(Context context, ArrayList<UnreadNotificationMessageData> list) {
+    public UnreadAppointmentNotificationAlert(Context context, ArrayList<UnreadSavedNotificationMessageData> list, OnNotificationItemClicked listener) {
         this.mContext = context;
         this.mOriginalReceivedList = list;
 
         mListToBeUsed = new ArrayList<>();
-        mListToBeUsed.add(mOriginalReceivedList.get(0));
-
+        addSingleElementToList();
+        this.listener = listener;
     }
 
     @Override
@@ -41,8 +42,8 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
 
     @Override
     public void onBindViewHolder(final UnreadAppointmentNotificationAlert.FileViewHolder holder, final int position) {
-        UnreadNotificationMessageData unreadNotificationMessageData = mListToBeUsed.get(position);
-        holder.text.setText(unreadNotificationMessageData.getNotificationData());
+        final UnreadSavedNotificationMessageData unreadNotificationMessageData = mListToBeUsed.get(position);
+
 
         //---- To show icon for first element based on notification type----
         if (position == 0) {
@@ -57,25 +58,45 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
         }
         //--------
 
-        //--- TO show more load button or not
-        if (position == 0 & mOriginalReceivedList.size() > 1) {
-            holder.loadMoreItems.setVisibility(View.VISIBLE);
-        } else {
-            holder.loadMoreItems.setVisibility(View.GONE);
+        //--- TO show more load button or not on appointment_type_notification.
+        if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT)) {
+            if (position == 0 && (mListToBeUsed.size() == 1 && mOriginalReceivedList.size() > 1)) {
+                holder.loadMoreItems.setVisibility(View.VISIBLE);
+            } else {
+                holder.loadMoreItems.setVisibility(View.GONE);
+            }
+        } else if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT)) {
+            if (position == 0 && (mListToBeUsed.size() == 1 && mOriginalReceivedList.size() > 1)) {
+                holder.loadMoreItems.setVisibility(View.VISIBLE);
+                holder.skipItems.setVisibility(View.VISIBLE);
+            } else {
+                holder.loadMoreItems.setVisibility(View.GONE);
+                holder.skipItems.setVisibility(View.VISIBLE);
+            }
         }
-        //--- TO show more load button or not
+        //----------
+
+        if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT)) {
+            holder.text.setText(unreadNotificationMessageData.getNotificationData());
+        } else if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT)) {
+            String notificationData = unreadNotificationMessageData.getNotificationData(); //msg|object|time
+            if (notificationData.contains("|")) {
+                String[] split = notificationData.split("\\|");
+                holder.text.setText(split[0]);
+            }
+        }
 
         holder.rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                listener.onNotificationRowClicked(unreadNotificationMessageData);
             }
         });
 
         holder.loadMoreItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                listener.onMoreClicked(unreadNotificationMessageData);
             }
         });
 
@@ -83,7 +104,7 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
 
     @Override
     public int getItemCount() {
-        return mOriginalReceivedList.size();
+        return mListToBeUsed.size();
     }
 
     static class FileViewHolder extends RecyclerView.ViewHolder {
@@ -92,6 +113,8 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
         CustomTextView text;
         @BindView(R.id.loadMoreItems)
         CustomTextView loadMoreItems;
+        @BindView(R.id.skipItems)
+        CustomTextView skipItems;
         @BindView(R.id.imageIcon)
         ImageView imageIcon;
 
@@ -104,5 +127,22 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
         }
     }
 
+    public interface OnNotificationItemClicked {
+        public void onMoreClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData);
+
+        public void onSkipClicked();
+
+        public void onNotificationRowClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData);
+    }
+
+    public void addAllElementToList() {
+        mListToBeUsed.clear();
+        mListToBeUsed.addAll(mOriginalReceivedList);
+    }
+
+    public void addSingleElementToList() {
+        mListToBeUsed.clear();
+        mListToBeUsed.add(mOriginalReceivedList.get(0));
+    }
 
 }

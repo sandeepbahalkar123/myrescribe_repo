@@ -4,14 +4,16 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.rescribe.R;
-import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+
+import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
+
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
-import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadNotificationMessageData;
+
 import com.rescribe.model.saved_article.request_model.ArticleToSaveReqModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
@@ -32,8 +34,11 @@ public class DashboardHelper implements ConnectionListener {
     Context mContext;
     HelperResponse mHelperResponseManager;
 
-    private static ArrayList<UnreadNotificationMessageData> unreadNotificationMessageList = new ArrayList<>();
+
+    private static ArrayList<UnreadSavedNotificationMessageData> unreadNotificationMessageList = new ArrayList<>();
+
     private DashboardDataModel mDashboardDataModel = null;
+
 
     public DashboardHelper(Context context, HelperResponse loginActivity) {
         this.mContext = context;
@@ -170,23 +175,33 @@ public class DashboardHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER);
     }
 
-    public static ArrayList<UnreadNotificationMessageData> getUnreadNotificationMessageList() {
+    public static ArrayList<UnreadSavedNotificationMessageData> getUnreadNotificationMessageList() {
         return unreadNotificationMessageList;
     }
 
-    public static void setUnreadNotificationMessageList(ArrayList<UnreadNotificationMessageData> unreadNotificationMessageList) {
+    public static void setUnreadNotificationMessageList(ArrayList<UnreadSavedNotificationMessageData> unreadNotificationMessageList) {
         DashboardHelper.unreadNotificationMessageList = unreadNotificationMessageList;
     }
 
-    public static ArrayList<UnreadNotificationMessageData> doFindUnreadNotificationMessageByType(String notificationType) {
-        ArrayList<UnreadNotificationMessageData> receivedNotificationMessageList = new ArrayList<>();
+    public static ArrayList<UnreadSavedNotificationMessageData> doFindUnreadNotificationMessageByType(String notificationType) {
+        ArrayList<UnreadSavedNotificationMessageData> receivedNotificationMessageList = new ArrayList<>();
         //String : id|messageType|message
-        for (UnreadNotificationMessageData object :
+        for (UnreadSavedNotificationMessageData object :
                 DashboardHelper.unreadNotificationMessageList) {
             if (object.getNotificationMessageType().equalsIgnoreCase(notificationType)) {
                 receivedNotificationMessageList.add(object);
             }
         }
         return receivedNotificationMessageList;
+    }
+
+    public static void deleteUnreadNotificationMessageById(String id, String notificationType) {
+        for (UnreadSavedNotificationMessageData object :
+                DashboardHelper.unreadNotificationMessageList) {
+            if (object.getId().equalsIgnoreCase(id) && object.getNotificationMessageType().equalsIgnoreCase(notificationType)) {
+                DashboardHelper.unreadNotificationMessageList.remove(object);
+                break;
+            }
+        }
     }
 }

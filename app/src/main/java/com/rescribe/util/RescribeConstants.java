@@ -62,6 +62,12 @@ public class RescribeConstants {
     public static final String MEDICINE_NAME = "medicine_name";
     public static final String MEDICINE_SLOT = "edicine_slot";
     public static final String MEDICINE_TYPE = "medicine_type";
+    //------------
+    public static final String DINNER = "dinner";
+    public static final String LUNCH = "lunch";
+    public static final String BREAK_FAST = "breakfast";
+    public static final String SNACKS = "snacks";
+    //------------
     public static final String NOTIFICATION_ID = "notification_id";
     public static final String APPOINTMENT_NOTIFICATION_ID = "appointment_notification_id";
     public static final String APPOINTMENT_MESSAGE = "appointment_message";
@@ -135,11 +141,17 @@ public class RescribeConstants {
     //-----------
     public static final String TASK_GET_TOKEN_NUMBER_OTHER_DETAILS = RescribeConstants.BLANK + 49;
     public static final String TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER = RescribeConstants.BLANK + 50;
+    public static final String TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER = RescribeConstants.BLANK + 51;
+    public static final String TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS = RescribeConstants.BLANK + 52;
+    public static final String TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION = RescribeConstants.BLANK + 53;
     //-----------
     //------------
-    public static final String TASK_GET_SAVED_ARTICLES = RescribeConstants.BLANK + 51;
-    public static final String TASK_SAVE_ARTICLES_TO_SERVER = RescribeConstants.BLANK + 52;
-    public static final String TASK_GET_HEALTH_EDUCATION_ARTICLES = RescribeConstants.BLANK + 53;
+
+    public static final String TASK_GET_SAVED_ARTICLES = RescribeConstants.BLANK + 54;
+    public static final String TASK_SAVE_ARTICLES_TO_SERVER = RescribeConstants.BLANK + 55;
+
+    public static final String TASK_GET_HEALTH_EDUCATION_ARTICLES = RescribeConstants.BLANK + 56;
+
     //-----------------
 
     public static final String DATA = "DATA";
@@ -268,7 +280,6 @@ public class RescribeConstants {
         public static final String INVESTIGATION_DATE = "investigation_date";
         public static final String INVESTIGATION_TIME = "investigation_time";
         public static final String INVESTIGATION_TEMP_DATA = "investigation_temp_data";
-        public static final String INVESTIGATION_MESSAGE = "investigation_message";
         public static final String INVESTIGATION_DATA = "investigation_data";
         public static final String INVESTIGATION_NOTIFICATION_ID = "investigation_notification_id";
         public static final String IMAGE_ID = "imgId";

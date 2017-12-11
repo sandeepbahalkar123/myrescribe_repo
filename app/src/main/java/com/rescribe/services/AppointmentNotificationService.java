@@ -10,7 +10,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
-import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver;
 import com.rescribe.broadcast_receivers.ClickOnNotificationReceiver;
@@ -55,7 +54,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         // If this service was started by out DosesAlarmTask intent then we want to show our notification
 
         String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this);
-        boolean isNotificationOn = RescribePreferencesManager.getBoolean(RescribePreferencesManager.NOTIFICATION_SETTING_KEY.APPOINTMENT_ALERT, this);
+        boolean isNotificationOn = RescribePreferencesManager.getBoolean(getString(R.string.appointment_alert), this);
 
         if (loginStatus.equals(RescribeConstants.YES) && isNotificationOn) {
 
@@ -91,7 +90,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
         //---- Save notification in db---
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
-        appDBHelper.insertReceivedNotificationMessage("" + index, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message, "");
+        appDBHelper.insertUnreadReceivedNotificationMessage("" + index, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message, "");
         //-------
 
         int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, AppointmentNotificationService.this);

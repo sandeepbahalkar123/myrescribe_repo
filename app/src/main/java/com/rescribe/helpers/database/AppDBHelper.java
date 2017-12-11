@@ -8,10 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
-import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
-import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadNotificationMessageData;
+import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.investigation.Images;
 import com.rescribe.model.investigation.InvestigationData;
@@ -550,7 +549,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     //----- Notification Storing : START
 
-    public boolean insertReceivedNotificationMessage(String id, String type, String data, String timeStamp) {
+    public boolean insertUnreadReceivedNotificationMessage(String id, String type, String data, String timeStamp) {
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -566,14 +565,14 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     //String : id|messageType|message
-    public ArrayList<UnreadNotificationMessageData> doGetReceivedNotificationMessage() {
+    public ArrayList<UnreadSavedNotificationMessageData> doGetUnreadReceivedNotificationMessage() {
         SQLiteDatabase db = getReadableDatabase();
         String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE;
         Cursor cursor = db.rawQuery(countQuery, null);
-        ArrayList<UnreadNotificationMessageData> chatDoctors = new ArrayList<>();
+        ArrayList<UnreadSavedNotificationMessageData> chatDoctors = new ArrayList<>();
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-                UnreadNotificationMessageData unreadNotificationMessageData = new UnreadNotificationMessageData();
+                UnreadSavedNotificationMessageData unreadNotificationMessageData = new UnreadSavedNotificationMessageData();
                 unreadNotificationMessageData.setId(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
                 unreadNotificationMessageData.setNotificationMessageType(cursor.getString(cursor.getColumnIndex(NOTIFICATION_MSG_TYPE)));
                 unreadNotificationMessageData.setNotificationData(cursor.getString(cursor.getColumnIndex(COLUMN_DATA)));
@@ -587,13 +586,20 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return chatDoctors;
     }
 
-    public int deleteReceivedNotificationMessage(int id) {
+    public int deleteUnreadReceivedNotificationMessage(int id, String notificationType) {
         SQLiteDatabase db = getWritableDatabase();
         return db.delete(NOTIFICATION_MESSAGE_TABLE,
-                COLUMN_ID + " = ? ",
-                new String[]{Integer.toString(id)});
+                COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ",
+                new String[]{Integer.toString(id), notificationType});
     }
 
+    public boolean updateUnreadReceivedNotificationMessage(String dataId, String notificationType, String data) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_DATA, data);
 
+        db.update(NOTIFICATION_MESSAGE_TABLE, contentValues, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ", new String[]{dataId, notificationType});
+        return true;
+    }
     //----- Notification storing : END
 }

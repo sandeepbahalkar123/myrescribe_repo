@@ -29,7 +29,7 @@ import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.AppointmentActivity;
-import com.rescribe.ui.activities.DoctorConnectActivity;
+import com.rescribe.ui.activities.ConnectSplashActivity;
 import com.rescribe.ui.activities.PrescriptionActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
@@ -216,7 +216,7 @@ public class ProfileActivity extends DrawerActivity implements HelperResponse {
                     loginHelper.doLogout(activeRequest);
 
                 } else if (id.equalsIgnoreCase(getString(R.string.doctor_connect))) {
-                    Intent intent = new Intent(mContext, DoctorConnectActivity.class);
+                    Intent intent = new Intent(mContext, ConnectSplashActivity.class);
                     startActivity(intent);
                 } else if (id.equalsIgnoreCase(getString(R.string.vital_graph))) {
                     Intent intent = new Intent(mContext, VitalGraphActivity.class);

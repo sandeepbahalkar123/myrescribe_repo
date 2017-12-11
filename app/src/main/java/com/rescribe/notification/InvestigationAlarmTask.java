@@ -68,7 +68,6 @@ public class InvestigationAlarmTask implements Runnable {
         Intent intent = new Intent(context, InvestigationNotificationService.class);
         intent.putExtra(InvestigationNotificationService.INTENT_NOTIFY, true);
         intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, time);
-        intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_MESSAGE, msg);
         intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, requestCode);
 
         PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent, 0);

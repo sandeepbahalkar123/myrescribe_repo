@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 
-public class Medication implements CustomResponse{
+public class Medication implements CustomResponse {
 
     @SerializedName("id")
     @Expose
@@ -27,6 +27,7 @@ public class Medication implements CustomResponse{
     public void setTabWebService(boolean tabWebService) {
         isTabWebService = tabWebService;
     }
+
     @SerializedName("medicineTypeId")
     @Expose
     private String medicineTypeId;
@@ -40,6 +41,14 @@ public class Medication implements CustomResponse{
     private boolean isSnacksThere = true;
     private boolean isLunchExpanded = false;
     private boolean isDinnerExpanded = false;
+
+
+    //--This is done to fix in unread notification message update
+    // NO USED OF ANYWHERE OTHER THAN THIS--
+    @SerializedName("unreadNotificationMessageDataID")
+    @Expose
+    private String unreadNotificationMessageDataID;
+    //----
 
     public boolean isBreakFastExpanded() {
         return isBreakFastExpanded;
@@ -128,6 +137,7 @@ public class Medication implements CustomResponse{
     public void setTabSelected(boolean tabSelected) {
         isTabSelected = tabSelected;
     }
+
     private boolean isTabWebService = true;
     private boolean isBreakFastExpanded = false;
     private boolean isSnacksExpanded = false;
@@ -194,4 +204,12 @@ public class Medication implements CustomResponse{
         this.quantity = quantity;
     }
 
+
+    public String getUnreadNotificationMessageDataID() {
+        return unreadNotificationMessageDataID;
+    }
+
+    public void setUnreadNotificationMessageDataID(String unreadNotificationMessageDataID) {
+        this.unreadNotificationMessageDataID = unreadNotificationMessageDataID;
+    }
 }

@@ -48,6 +48,9 @@ public class Medication implements CustomResponse {
     @SerializedName("unreadNotificationMessageDataID")
     @Expose
     private String unreadNotificationMessageDataID;
+    @SerializedName("unreadNotificationMessageDataTimeStamp")
+    @Expose
+    private String unreadNotificationMessageDataTimeStamp;
     //----
 
     public boolean isBreakFastExpanded() {
@@ -211,5 +214,13 @@ public class Medication implements CustomResponse {
 
     public void setUnreadNotificationMessageDataID(String unreadNotificationMessageDataID) {
         this.unreadNotificationMessageDataID = unreadNotificationMessageDataID;
+    }
+
+    public String getUnreadNotificationMessageDataTimeStamp() {
+        return unreadNotificationMessageDataTimeStamp;
+    }
+
+    public void setUnreadNotificationMessageDataTimeStamp(String unreadNotificationMessageDataTimeStamp) {
+        this.unreadNotificationMessageDataTimeStamp = unreadNotificationMessageDataTimeStamp;
     }
 }

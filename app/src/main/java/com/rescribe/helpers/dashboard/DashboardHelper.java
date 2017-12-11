@@ -35,8 +35,6 @@ public class DashboardHelper implements ConnectionListener {
     HelperResponse mHelperResponseManager;
 
 
-    private static ArrayList<UnreadSavedNotificationMessageData> unreadNotificationMessageList = new ArrayList<>();
-
     private DashboardDataModel mDashboardDataModel = null;
 
 
@@ -51,7 +49,7 @@ public class DashboardHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if(mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_DASHBOARD_API)) {
+                if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_DASHBOARD_API)) {
                     DashBoardBaseModel dashBoardBaseModel = (DashBoardBaseModel) customResponse;
                     if (dashBoardBaseModel != null) {
                         DashboardDataModel dashboardDataModel = dashBoardBaseModel.getDashboardModel();
@@ -66,12 +64,11 @@ public class DashboardHelper implements ConnectionListener {
                         }
                     }
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                }else if(mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_SAVED_ARTICLES)){
+                } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_SAVED_ARTICLES)) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                }else if(mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER)){
+                } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER)) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                }
-                else if(mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_HEALTH_EDUCATION_ARTICLES)){
+                } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_HEALTH_EDUCATION_ARTICLES)) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;
@@ -175,33 +172,4 @@ public class DashboardHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER);
     }
 
-    public static ArrayList<UnreadSavedNotificationMessageData> getUnreadNotificationMessageList() {
-        return unreadNotificationMessageList;
-    }
-
-    public static void setUnreadNotificationMessageList(ArrayList<UnreadSavedNotificationMessageData> unreadNotificationMessageList) {
-        DashboardHelper.unreadNotificationMessageList = unreadNotificationMessageList;
-    }
-
-    public static ArrayList<UnreadSavedNotificationMessageData> doFindUnreadNotificationMessageByType(String notificationType) {
-        ArrayList<UnreadSavedNotificationMessageData> receivedNotificationMessageList = new ArrayList<>();
-        //String : id|messageType|message
-        for (UnreadSavedNotificationMessageData object :
-                DashboardHelper.unreadNotificationMessageList) {
-            if (object.getNotificationMessageType().equalsIgnoreCase(notificationType)) {
-                receivedNotificationMessageList.add(object);
-            }
-        }
-        return receivedNotificationMessageList;
-    }
-
-    public static void deleteUnreadNotificationMessageById(String id, String notificationType) {
-        for (UnreadSavedNotificationMessageData object :
-                DashboardHelper.unreadNotificationMessageList) {
-            if (object.getId().equalsIgnoreCase(id) && object.getNotificationMessageType().equalsIgnoreCase(notificationType)) {
-                DashboardHelper.unreadNotificationMessageList.remove(object);
-                break;
-            }
-        }
-    }
 }

@@ -295,4 +295,8 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     public void onProfileImageClick() {
 
     }
+
+    public void doNotifyDataSetChanged() {
+        bottomMenuAdapter.notifyDataSetChanged();
+    }
 }

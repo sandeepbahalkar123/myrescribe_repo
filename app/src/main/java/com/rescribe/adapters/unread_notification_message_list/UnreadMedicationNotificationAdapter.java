@@ -80,6 +80,7 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
         Medication item = list.get(position);
 
         itemHolder.tabNameTextView.setText(item.getMedicineName());
+        itemHolder.tabCountTextView.setText(item.getQuantity());
         itemHolder.tabImageView.setImageDrawable(CommonMethods.getMedicineTypeImage(item.getMedicineTypeName(), mContext));
 
         itemHolder.rootView.setOnClickListener(new View.OnClickListener() {
@@ -182,6 +183,7 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
     private class ItemViewHolder extends RecyclerView.ViewHolder {
         private final View rootView;
         CustomTextView tabNameTextView;
+        CustomTextView tabCountTextView;
         CheckBox medicationCheckBox;
         ImageView tabImageView;
 
@@ -190,6 +192,8 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
             rootView = view;
             tabNameTextView = (CustomTextView) view
                     .findViewById(R.id.tabNameTextView);
+            tabCountTextView = (CustomTextView) view
+                    .findViewById(R.id.tabCountTextView);
             medicationCheckBox = (CheckBox) view
                     .findViewById(R.id.medicationCheckBox);
             tabImageView = (ImageView) view
@@ -199,8 +203,6 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
 
     public interface OnMedicationNotificationEventClick {
         public void onMedicationLoadMoreFooterClicked();
-
-        public void onMedicationLoadLessFooterClicked();
 
         public void onMedicationCheckBoxClicked(Medication medication, String title, int position);
     }

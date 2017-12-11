@@ -95,12 +95,9 @@ public class InvestigationNotificationService extends Service implements HelperR
         //--------------
 
         //---- Save notification in db---
-        AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
-        appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, message + "|" + new Gson().toJson(data).toString() + "|" + time, "");
+        AppDBHelper appDBHelper = AppDBHelper.getInstance(getApplicationContext());
+        appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, message + "|" + new Gson().toJson(data).toString(), time);
         //-------
-
-        int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, InvestigationNotificationService.this);
-        RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, preCount + 1, InvestigationNotificationService.this);
 
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
@@ -110,6 +107,7 @@ public class InvestigationNotificationService extends Service implements HelperR
         Intent mNotifyYesIntent = new Intent(this, ClickOnCheckBoxOfNotificationReceiver.class);
         mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_LIST, value);
         mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, notification_id);
+        mNotifyYesIntent.putExtra(getString(R.string.unread_notification_update_received), id);
 
         mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, value.get(0).getDrId(), mNotifyYesIntent, 0);
@@ -119,6 +117,8 @@ public class InvestigationNotificationService extends Service implements HelperR
         Intent mNotifyNoIntent = new Intent(this, ClickOnNotificationReceiver.class);
         mNotifyNoIntent.putExtra(RescribeConstants.INVESTIGATION_LIST, value);
         mNotifyNoIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, notification_id);
+        mNotifyNoIntent.putExtra(getString(R.string.unread_notification_update_received), id);
+
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, value.get(0).getDrId(), mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonSkip, mNoPendingIntent);
 

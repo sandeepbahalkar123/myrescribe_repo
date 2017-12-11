@@ -1,7 +1,9 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -86,6 +88,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     private Context mContext;
     private AppDBHelper appDBHelper;
     private String profileImageString;
+    private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +96,11 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         setContentView(R.layout.activity_book_appoint_doc_base_list);
         ButterKnife.bind(this);
         initialize();
+
+        mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
+
+        registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
+
     }
 
     private void initialize() {
@@ -138,12 +146,12 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
     private void setBottomMenu() {
 
-        int appCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, this);
-        int invCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, this);
-        int medCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, this);
-        int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
+        int appCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT).size();
+        int invCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT).size();
+        int medCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT).size();
+        //int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-        int notificationCount = appCount + invCount + medCount + tokCount;
+        int notificationCount = appCount + invCount + medCount;
 
         bottomMenus.clear();
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
@@ -310,5 +318,48 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         }
         super.onBottomSheetMenuClick(bottomMenu);
 
+    }
+
+    // TODO : THIS IS EXACLTY COPIED FROM HOMEPAGEACTIVITY.java to update count.
+    private class UpdateAppUnreadNotificationCount extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int appCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT).size();
+            int invCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT).size();
+            int medCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT).size();
+            // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
+
+            int notificationCount = appCount + invCount + medCount;// + tokCount;
+            //--- Update count on App_logo
+            for (BottomMenu object :
+                    bottomMenus) {
+                if (object.isAppIcon()) {
+                    object.setNotificationCount(notificationCount);
+                }
+            }
+            doNotifyDataSetChanged();
+            //--------------- :END
+            //---- Update bottom sheet notification_count : START
+            ArrayList<BottomSheetMenu> bottomSheetMenus = BookAppointDoctorListBaseActivity.this.bottomSheetMenus;
+            for (BottomSheetMenu object :
+                    bottomSheetMenus) {
+                if (object.getName().equalsIgnoreCase(getString(R.string.notifications))) {
+                    object.setNotificationCount(notificationCount);
+                }
+            }
+            setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+            //--------------------------
+            //---- Update bottom sheet notification_count : END
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mUpdateAppUnreadNotificationCount != null) {
+            unregisterReceiver(mUpdateAppUnreadNotificationCount);
+            mUpdateAppUnreadNotificationCount = null;
+        }
+        super.onDestroy();
     }
 }

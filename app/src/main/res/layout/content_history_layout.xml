@@ -20,7 +20,6 @@
             android:layout_gravity="right|center_vertical"
             android:layout_marginLeft="@dimen/dp16"
             android:layout_weight="0.5"
-            android:src="@drawable/layer_12"
             android:textColor="@color/white"
             android:textStyle="bold" />
 

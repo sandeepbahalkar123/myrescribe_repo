@@ -21,6 +21,7 @@ import com.rescribe.model.investigation.InvestigationData;
 import com.rescribe.model.investigation.InvestigationListModel;
 import com.rescribe.model.investigation.InvestigationNotification;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -90,7 +91,8 @@ public class InvestigationNotificationService extends Service implements HelperR
         InvestigationNotification data = new InvestigationNotification();
         data.setNotifications(value);
         int id = (int) System.currentTimeMillis();
-        String time = intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME);
+
+        String time = CommonMethods.getCurrentDate() + " " + intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME);
         String message = getText(R.string.investigation_msg) + value.get(0).getDoctorName() + "?";
         //--------------
 

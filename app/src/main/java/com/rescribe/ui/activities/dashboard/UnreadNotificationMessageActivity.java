@@ -24,6 +24,7 @@ import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookAppointTokenNotificationBaseModel;
 import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookAppointTokenNotificationData;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
+import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.model.investigation.InvestigationNotification;
 import com.rescribe.model.notification.Medication;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -46,6 +47,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
+
+import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 
 /**
@@ -188,6 +191,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         } else {
             mAppointmentsFirstMessageTimeStamp.setText(dayFromDate + " " + time);
         }
+        mAppointmentsFirstMessageTimeStamp.setVisibility(View.VISIBLE);
     }
 
     private void setInvestigationAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
@@ -208,6 +212,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         } else {
             mInvestigationFirstMessageTimeStamp.setText(dayFromDate + " " + time);
         }
+        mInvestigationFirstMessageTimeStamp.setVisibility(View.VISIBLE);
+
     }
 
     private void setUnreadChatAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
@@ -228,6 +234,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         } else {
             mDoctorConnectFirstMessageTimeStamp.setText(dayFromDate + " " + time);
         }
+        mDoctorConnectFirstMessageTimeStamp.setVisibility(View.VISIBLE);
+
     }
 
 
@@ -236,9 +244,12 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
             mAppointmentNotificationAlertAdapter.addAllElementToList();
             mAppointmentNotificationAlertAdapter.notifyDataSetChanged();
+            mAppointmentsFirstMessageTimeStamp.setVisibility(View.INVISIBLE);
+
         } else if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
             mInvestigationNotificationAlertAdapter.addAllElementToList();
             mInvestigationNotificationAlertAdapter.notifyDataSetChanged();
+            mInvestigationFirstMessageTimeStamp.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -253,7 +264,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
             instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
             Intent intentNotification = new Intent(this, AppointmentActivity.class);
-            //      startActivity(intentNotification);
+            startActivity(intentNotification);
         } else if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
             instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
             String notificationData = unreadNotificationMessageData.getNotificationData();
@@ -262,7 +273,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             InvestigationNotification investigationNotification = new Gson().fromJson(notificationData, InvestigationNotification.class);
             intentNotification.putExtra(RescribeConstants.INVESTIGATION_LIST, investigationNotification.getNotifications());
             intentNotification.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, unreadNotificationMessageData.getNotificationTimeStamp());
-            //    startActivity(intentNotification);
+            startActivity(intentNotification);
 
             // OPEN INVESTIGATION SCREEN, pending for ganesh code
         }
@@ -288,6 +299,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         doCreateMedicationDataMap(true);
         isMedicationLoadMoreFooterClickedPreviously = true;
         mUnreadMedicationNotificationAdapter.notifyDataSetChanged();
+        mOnGoingMedicationFirstMessageTimeStamp.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -361,7 +373,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
             Medication medication = medications.get(0);
 
-            mUnreadMedicationNotificationAdapter.addSection(new UnreadMedicationNotificationAdapter(build, this, key, medications, !isRequiredAllElements,medication.getUnreadNotificationMessageDataTimeStamp(), this));
+            mUnreadMedicationNotificationAdapter.addSection(new UnreadMedicationNotificationAdapter(build, this, key, medications, !isRequiredAllElements, medication.getUnreadNotificationMessageDataTimeStamp(), this));
             if (!isRequiredAllElements) {
                 break;
             }
@@ -381,6 +393,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                 } else {
                     mOnGoingMedicationFirstMessageTimeStamp.setText(dayFromDate + " " + time);
                 }
+                mOnGoingMedicationFirstMessageTimeStamp.setVisibility(View.VISIBLE);
                 //---------
             }
         }
@@ -537,6 +550,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     @Override
     public void onTokenMoreButtonClicked(UnreadBookAppointTokenNotificationData unreadNotificationMessageData) {
         mUnreadBookAppointTokenNotificationAdapter.addAllElementToList();
+        mGetTokenFirstMessageTimeStamp.setVisibility(View.INVISIBLE);
         mUnreadBookAppointTokenNotificationAdapter.notifyDataSetChanged();
     }
 
@@ -568,6 +582,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
     @Override
     public void onDocConnectMoreClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData) {
+        mDoctorConnectFirstMessageTimeStamp.setVisibility(View.INVISIBLE);
         mUnreadChatNotificationListAdapter.addAllElementToList();
         mUnreadChatNotificationListAdapter.notifyDataSetChanged();
     }
@@ -576,7 +591,13 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     public void onDocConnectRowClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData) {
         AppDBHelper instance = AppDBHelper.getInstance(this);
         instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
-        Intent intentNotification = new Intent(this, ChatActivity.class);
-        // startActivity(intentNotification);
+
+        ChatDoctor chatDoctor = new ChatDoctor();
+        chatDoctor.setId(Integer.parseInt(unreadNotificationMessageData.getId()));
+        chatDoctor.setDoctorName(unreadNotificationMessageData.getNotificationMessage().replace(getString(R.string.message_from), ""));
+        chatDoctor.setOnlineStatus(ONLINE);
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
+        startActivity(intent);
     }
 }

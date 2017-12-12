@@ -28,12 +28,11 @@ public class CustomTabLayout extends TabLayout {
     }
 
     private void init() {
-        mTypeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/roboto_bold.ttf");
+        mTypeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/roboto_regular.ttf");
     }
 
     @Override
     public void addTab(Tab tab) {
-        super.addTab(tab);
 
         ViewGroup mainView = (ViewGroup) getChildAt(0);
         ViewGroup tabView = (ViewGroup) mainView.getChildAt(tab.getPosition());

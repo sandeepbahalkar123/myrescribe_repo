@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -27,7 +28,9 @@ import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -69,13 +72,14 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     public void onBindViewHolder(final ListViewHolder holder, final int position) {
         final DoctorList doctorObject = mDataList.get(position);
         holder.doctorName.setText(doctorObject.getDocName());
-        if(doctorObject.getExperience()==0) {
+        if (doctorObject.getExperience() == 0) {
             holder.doctorExperience.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.doctorExperience.setVisibility(View.VISIBLE);
             holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
 
-        }        holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
+        }
+        holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
         holder.aboutDoctor.setText(doctorObject.getDegree());
 /////
         //-------------
@@ -243,34 +247,34 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             holder.favoriteView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
         }
         //-----------
-        if (doctorObject.getDoctorImageUrl().equals(RescribeConstants.BLANK)) {
-            String doctorName = doctorObject.getDocName();
-            if (doctorName.contains("Dr. ")) {
-                doctorName = doctorName.replace("Dr. ", "");
-            }
-
-            int color2 = mColorGenerator.getColor(doctorName);
-            TextDrawable drawable = TextDrawable.builder()
-                    .beginConfig()
-                    .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
-                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
-                    .endConfig()
-                    .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-            holder.imageURL.setImageDrawable(drawable);
-
-        } else {
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.dontAnimate();
-            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-            requestOptions.skipMemoryCache(true);
-            requestOptions.override(mImageSize, mImageSize);
-
-            Glide.with(mContext)
-                    .load(doctorObject.getDoctorImageUrl())
-                    .apply(requestOptions).thumbnail(0.5f)
-                    .into(holder.imageURL);
-            //--------------
+        String doctorName = doctorObject.getDocName();
+        if (doctorName.contains("Dr. ")) {
+            doctorName = doctorName.replace("Dr. ", "");
         }
+
+        int color2 = mColorGenerator.getColor(doctorName);
+        TextDrawable drawable = TextDrawable.builder()
+                .beginConfig()
+                .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                .endConfig()
+                .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
+
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
+        requestOptions.override(mImageSize, mImageSize);
+        requestOptions.error(drawable);
+        requestOptions.placeholder(drawable);
+
+        Glide.with(mContext)
+                .load(doctorObject.getDoctorImageUrl())
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(holder.imageURL);
+        //--------------
+
         //-----------
 
         holder.favoriteView.setOnClickListener(new View.OnClickListener() {

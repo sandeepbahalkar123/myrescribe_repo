@@ -108,6 +108,9 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         holder.paidStatusTextView.setText(chatDoctor.getPaidStatus() == DoctorConnectActivity.PAID ? "Rs 255/-" : "FREE");
 
         String doctorName = chatDoctor.getDoctorName();
+        if (doctorName.contains("Dr. ")) {
+            doctorName = doctorName.replace("Dr. ", "");
+        }
 
         int color2 = mColorGenerator.getColor(doctorName);
         TextDrawable drawable = TextDrawable.builder()

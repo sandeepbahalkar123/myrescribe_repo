@@ -56,12 +56,12 @@ public class SelectedRecordsAdapter extends RecyclerView.Adapter<SelectedRecords
     public void onBindViewHolder(final SelectedRecordsAdapter.FileViewHolder holder, final int position) {
         final Image image = paths.get(position);
 
+
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.override(imageSize, imageSize);
-        requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
 
         Glide.with(context)
                 .load(new File(image.getImagePath()))

@@ -107,7 +107,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
         ImageView menuBottomIcon;
         TextView bottomMenuName;
         TextView showCount;
-        ImageView bottomMenuTab;
+        TextView     bottomMenuTab;
 
         View view;
 
@@ -116,7 +116,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
             this.view = view;
             bottomMenuName = (TextView) view.findViewById(R.id.bottomMenuName);
             menuBottomIcon = (ImageView) view.findViewById(R.id.menuBottomIcon);
-            bottomMenuTab = (ImageView) view.findViewById(R.id.bottomMenuTab);
+            bottomMenuTab = (TextView) view.findViewById(R.id.bottomMenuTab);
             showCount = (TextView) view.findViewById(R.id.showCountTextView);
         }
     }

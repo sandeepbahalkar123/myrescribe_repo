@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
+
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -64,6 +67,9 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     private String TAG = getClass().getName();
     private SingleVisitDetailHelper mSingleVisitDetailHelper;
     private SingleVisitAdapter mSingleVisitAdapter;
+    private ColorGenerator mColorGenerator;
+    private Context mContext;
+    private String mDocName;
 
 
     @Override
@@ -78,18 +84,30 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
 
 
     private void initialize() {
+
+        mContext = SingleVisitDetailsActivity.this;
+        mColorGenerator = ColorGenerator.MATERIAL;
         mIntent = getIntent();
         setColumnNumber(this, 2);
         if (getIntent().getExtras() != null) {
+            mDocName  = mIntent.getStringExtra(getString(R.string.name));
             mDoctorName.setText(mIntent.getStringExtra(getString(R.string.name)));
             mDoctorSpecialization.setText(mIntent.getStringExtra(getString(R.string.specialization)));
             mDoctor_address.setText(mIntent.getStringExtra(getString(R.string.address)));
+            int color2 = mColorGenerator.getColor(mIntent.getStringExtra(getString(R.string.name)));
+            TextDrawable drawable = TextDrawable.builder()
+                    .beginConfig()
+                    .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                    .endConfig()
+                    .buildRound(""+(mDocName.charAt(0)), color2);
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
             requestOptions.override(imageSize, imageSize);
-            requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+            requestOptions.placeholder(drawable);
+            requestOptions.error(drawable);
 
             Glide.with(this)
                     .load(mIntent.getStringExtra(getString(R.string.doctor_image)))

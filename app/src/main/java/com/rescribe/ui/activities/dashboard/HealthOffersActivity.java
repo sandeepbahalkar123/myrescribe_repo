@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities.dashboard;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
@@ -38,13 +41,14 @@ public class HealthOffersActivity extends AppCompatActivity {
     @BindView(R.id.title)
     CustomTextView title;
     private DashboardMenuList mReceivedDashboardMenuListData;
+    private Typeface mTypeface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.health_offers_base_layout);
         ButterKnife.bind(this);
-
+        mTypeface = Typeface.createFromAsset(getAssets(), "fonts/roboto_bold.ttf");
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
@@ -75,7 +79,18 @@ public class HealthOffersActivity extends AppCompatActivity {
 
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(healthOffersViewpager);
-
+        ViewGroup vg = (ViewGroup) mTabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setTypeface(mTypeface, Typeface.NORMAL);
+                }
+            }
+        }
         initialize();
     }
 

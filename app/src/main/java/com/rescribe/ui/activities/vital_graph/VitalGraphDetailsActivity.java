@@ -201,6 +201,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
                     @Override
                     public String getFormattedValue(float value, AxisBase axis) {
+
                         System.out.println(value);
                         if (((int) value) < tempLabelsArrayList.size()) {
                             return (tempLabelsArrayList.get((int) value));

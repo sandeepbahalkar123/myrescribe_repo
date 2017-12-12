@@ -114,7 +114,9 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         holder.onlineStatusTextView.setText(chatDoctor.getOnlineStatus());
         holder.paidStatusTextView.setText(chatDoctor.getPaidStatus() == DoctorConnectActivity.PAID ? "Rs 255/-" : "FREE");
         String doctorName = chatDoctor.getDoctorName();
-
+        if (doctorName.contains("Dr. ")) {
+            doctorName = doctorName.replace("Dr. ", "");
+        }
         int color2 = mColorGenerator.getColor(doctorName);
         TextDrawable drawable = TextDrawable.builder()
                 .beginConfig()

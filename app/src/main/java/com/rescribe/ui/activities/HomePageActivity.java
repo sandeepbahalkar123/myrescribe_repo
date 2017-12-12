@@ -71,7 +71,6 @@ import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
 import com.rescribe.ui.activities.health_repository.HealthRepository;
-import com.rescribe.ui.activities.saved_articles.SaveArticleWebViewActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticles;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
@@ -499,7 +498,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
             b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
-
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_offers))) {
             intent = new Intent(mContext, HealthOffersActivity.class);
@@ -512,13 +510,11 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.clicked_item_data), menu.getName());
             intent.putExtras(bundle);
-            startActivity(intent);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_services))) {
             intent = new Intent(mContext, BookAppointmentServices.class);
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
             b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
-
             intent.putExtras(b);
         }
         if (intent != null)

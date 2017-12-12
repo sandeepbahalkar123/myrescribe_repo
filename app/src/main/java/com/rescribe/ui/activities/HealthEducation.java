@@ -46,7 +46,6 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
     private DashboardHelper mHelper;
     private ArrayList<SavedArticleInfo> mReceivedSavedArticleList;
     private int pos;
-    private boolean isHealthEducationApiCalled = true;
     private Context mContext;
 
     @Override
@@ -55,7 +54,6 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
         setContentView(R.layout.saved_articles_base_layout);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        initialize();
         getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -64,34 +62,30 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
+        initialize();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
-
     }
 
     private void initialize() {
         mContext = HealthEducation.this;
         mHelper = new DashboardHelper(this, this);
+        mHelper.doHealthEducationGetSavedArticles();
 
-    }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     @Override
     protected void onResume() {
+
+
+
+
         super.onResume();
-        if(isHealthEducationApiCalled) {
-            mHelper.doHealthEducationGetSavedArticles();
-        }
     }
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
@@ -108,7 +102,6 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
                         mReceivedSavedArticleList = savedArticleDataModel.getSavedArticleList();
                         if (mReceivedSavedArticleList.size() > 0) {
                             isDataListViewVisible(true);
-                            isHealthEducationApiCalled = false;
 
                             //----------
                             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -169,8 +162,6 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
         Bundle b = new Bundle();
         b.putString(getString(R.string.url), data.getArticleUrl());
         b.putString(getString(R.string.toolbarTitle), getString(R.string.health_education));
-        b.putString(getString(R.string.clicked_item_data), getString(R.string.clicked_saved_articles));
-        b.putBoolean(getString(R.string.save), true);
         intent.putExtras(b);
         startActivity(intent);
     }

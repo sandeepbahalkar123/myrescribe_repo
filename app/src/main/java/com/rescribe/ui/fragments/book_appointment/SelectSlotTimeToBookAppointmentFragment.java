@@ -133,7 +133,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     AppCompatButton bookAppointmentButton;
     @BindView(R.id.no_data_found)
     LinearLayout noDataFound;
-    //-------------
     @BindView(R.id.timeSlotListViewLayout)
     LinearLayout mTimeSlotListViewLayout;
     @BindView(R.id.confirmedTokenMainLayout)

@@ -1,18 +1,18 @@
 [
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/debug/drawable-v21/abc_edit_text_material.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/drawable-v21/abc_edit_text_material.xml"
+        "merged": "/home/jeetal/jeetal_projects/myrescribe_repo/library/build/intermediates/res/merged/debug/drawable-v21/notification_action_background.xml",
+        "source": "/home/jeetal/.android/build-cache/c2eb696b4ee5c5822fd67ab5fdd972392333276d/output/res/drawable-v21/notification_action_background.xml"
     },
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/debug/drawable-v21/abc_btn_colored_material.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/drawable-v21/abc_btn_colored_material.xml"
+        "merged": "/home/jeetal/jeetal_projects/myrescribe_repo/library/build/intermediates/res/merged/debug/drawable-v21/abc_btn_colored_material.xml",
+        "source": "/home/jeetal/.android/build-cache/c2eb696b4ee5c5822fd67ab5fdd972392333276d/output/res/drawable-v21/abc_btn_colored_material.xml"
     },
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/debug/drawable-v21/notification_action_background.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/drawable-v21/notification_action_background.xml"
+        "merged": "/home/jeetal/jeetal_projects/myrescribe_repo/library/build/intermediates/res/merged/debug/drawable-v21/abc_action_bar_item_background_material.xml",
+        "source": "/home/jeetal/.android/build-cache/c2eb696b4ee5c5822fd67ab5fdd972392333276d/output/res/drawable-v21/abc_action_bar_item_background_material.xml"
     },
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/debug/drawable-v21/abc_action_bar_item_background_material.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/drawable-v21/abc_action_bar_item_background_material.xml"
+        "merged": "/home/jeetal/jeetal_projects/myrescribe_repo/library/build/intermediates/res/merged/debug/drawable-v21/abc_edit_text_material.xml",
+        "source": "/home/jeetal/.android/build-cache/c2eb696b4ee5c5822fd67ab5fdd972392333276d/output/res/drawable-v21/abc_edit_text_material.xml"
     }
 ]

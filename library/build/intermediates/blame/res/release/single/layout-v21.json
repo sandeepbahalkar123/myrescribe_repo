@@ -1,18 +1,18 @@
 [
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v21/notification_action.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/layout-v21/notification_action.xml"
+        "merged": "/home/jeetal/jeetal_projects/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v21/notification_action.xml",
+        "source": "/home/jeetal/.android/build-cache/c2eb696b4ee5c5822fd67ab5fdd972392333276d/output/res/layout-v21/notification_action.xml"
     },
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/layout-v21/notification_action_tombstone.xml"
+        "merged": "/home/jeetal/jeetal_projects/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
+        "source": "/home/jeetal/.android/build-cache/c2eb696b4ee5c5822fd67ab5fdd972392333276d/output/res/layout-v21/notification_template_custom_big.xml"
     },
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/layout-v21/notification_template_custom_big.xml"
+        "merged": "/home/jeetal/jeetal_projects/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
+        "source": "/home/jeetal/.android/build-cache/c2eb696b4ee5c5822fd67ab5fdd972392333276d/output/res/layout-v21/notification_action_tombstone.xml"
     },
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/layout-v21/notification_template_icon_group.xml"
+        "merged": "/home/jeetal/jeetal_projects/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
+        "source": "/home/jeetal/.android/build-cache/c2eb696b4ee5c5822fd67ab5fdd972392333276d/output/res/layout-v21/notification_template_icon_group.xml"
     }
 ]

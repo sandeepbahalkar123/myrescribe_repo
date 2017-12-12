@@ -19,6 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp10"
             android:layout_marginLeft="@dimen/dp16"
             android:layout_marginRight="@dimen/dp16"
             android:focusableInTouchMode="true"
@@ -29,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -46,6 +47,7 @@
                         app:customFont="@string/roboto_medium" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/doctorConnectFirstMessageTimeStamp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

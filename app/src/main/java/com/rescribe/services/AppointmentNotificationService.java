@@ -92,7 +92,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
         int id = (int) System.currentTimeMillis();
         String currentTimeStamp = CommonMethods.getCurrentDate() + " " + time;
-        appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message, currentTimeStamp);
+        appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message,message, currentTimeStamp);
         //-------
 
         // Using RemoteViews to bind custom layouts into Notification

@@ -333,9 +333,10 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
             int appCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT).size();
             int invCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT).size();
             int medCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT).size();
+            int chatCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT).size();
             // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-            int notificationCount = appCount + invCount + medCount;// + tokCount;
+            int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
             //--- Update count on App_logo
             for (BottomMenu object :
                     bottomMenus) {

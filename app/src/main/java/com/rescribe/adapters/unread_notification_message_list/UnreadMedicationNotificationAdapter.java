@@ -17,6 +17,7 @@ import com.rescribe.R;
 import com.rescribe.model.notification.Medication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,18 +30,20 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 public class UnreadMedicationNotificationAdapter extends StatelessSection {
 
     private final OnMedicationNotificationEventClick mListener;
+    private String mTimeStamp;
     private boolean isDisplayMoreElementsView;
     private Context mContext;
     String title;
     ArrayList<Medication> list;
 
-    public UnreadMedicationNotificationAdapter(SectionParameters builder, Context mContext, String groupName, ArrayList<Medication> list, boolean isDisplayMoreElementsView, OnMedicationNotificationEventClick listener) {
+    public UnreadMedicationNotificationAdapter(SectionParameters builder, Context mContext, String groupName, ArrayList<Medication> list, boolean isDisplayMoreElementsView, String timeStamp, OnMedicationNotificationEventClick listener) {
 
         super(builder);
 
         this.mContext = mContext;
         this.isDisplayMoreElementsView = isDisplayMoreElementsView;
         this.mListener = listener;
+        this.mTimeStamp = timeStamp;
         String hveUTaken = mContext.getString(R.string.have_u_taken).toString();
         String dinnerMed = mContext.getString(R.string.dinner_medication).toString();
         String lunchMed = mContext.getString(R.string.lunch_medication).toString();
@@ -113,6 +116,12 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
             itemHolder.medicationCheckBox.setChecked(false);
         }
         //---------------
+        if (position == list.size() - 1) {
+            itemHolder.divider.setVisibility(View.VISIBLE);
+        } else {
+            itemHolder.divider.setVisibility(View.GONE);
+        }
+        //---------------
     }
 
     @Override
@@ -129,6 +138,16 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
                 0, 14,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         headerHolder.mGroupText.setText(modifiedText);
+
+        String formattedDate = CommonMethods.getFormattedDate(mTimeStamp, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+        String time = CommonMethods.formatDateTime(mTimeStamp, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
+        String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
+        if (mContext.getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
+            headerHolder.medicationTimeStamp.setText(time);
+        } else {
+            headerHolder.medicationTimeStamp.setText(dayFromDate + " " + time);
+        }
+
     }
 
     @Override
@@ -158,10 +177,12 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
 
     private class HeaderViewHolder extends RecyclerView.ViewHolder {
         private final TextView mGroupText;
+        private final TextView medicationTimeStamp;
 
         HeaderViewHolder(View view) {
             super(view);
             mGroupText = (TextView) view.findViewById(R.id.tabNameTextView);
+            medicationTimeStamp = (TextView) view.findViewById(R.id.medicationTimeStamp);
         }
     }
 
@@ -184,6 +205,7 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
         private final View rootView;
         CustomTextView tabNameTextView;
         CustomTextView tabCountTextView;
+        TextView divider;
         CheckBox medicationCheckBox;
         ImageView tabImageView;
 
@@ -194,6 +216,8 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
                     .findViewById(R.id.tabNameTextView);
             tabCountTextView = (CustomTextView) view
                     .findViewById(R.id.tabCountTextView);
+            divider = (TextView) view
+                    .findViewById(R.id.divider);
             medicationCheckBox = (CheckBox) view
                     .findViewById(R.id.medicationCheckBox);
             tabImageView = (ImageView) view

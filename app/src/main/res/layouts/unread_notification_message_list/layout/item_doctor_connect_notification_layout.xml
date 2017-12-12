@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/notification_bg_grey"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp16"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -18,6 +19,7 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/imageIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp12"
@@ -34,41 +36,66 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dp16"
-                android:layout_marginEnd="@dimen/dp12"
-                android:layout_marginLeft="@dimen/dp6"
-                android:layout_marginRight="@dimen/dp12"
-                android:layout_marginStart="@dimen/dp6"
-                android:layout_marginTop="@dimen/dp16"
                 android:orientation="vertical">
 
-                <com.rescribe.ui.customesViews.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp13"
-                    app:customFont="@string/roboto_medium"
-                    tools:text="Message from Dr.Rahul Kalyanpur" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dp5"
+                    android:paddingRight="@dimen/dp5">
 
-                <com.rescribe.ui.customesViews.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp8"
-                    android:textColor="@color/grey_shade"
-                    android:textSize="@dimen/sp12"
-                    app:customFont="@string/roboto_medium"
-                    tools:text="Have you submitted reports" />
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/docConnectTimeStamp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:textColor="@color/grey_shade"
+                        android:textSize="@dimen/sp11"
 
-                <com.rescribe.ui.customesViews.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="@dimen/dp9"
-                    android:text="@string/more"
-                    android:textColor="@color/dark_blue"
-                    android:textSize="@dimen/sp12"
-                    app:customFont="@string/roboto_medium" />
+                        app:customFont="@string/roboto_medium"
+                        tools:text="2:00 am" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/docConnectSenderName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp13"
+                        app:customFont="@string/roboto_medium"
+                        tools:text="Message from Dr.Rahul Kalyanpur" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/docConnectReceivedMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp4"
+                        android:textColor="@color/grey_shade"
+                        android:textSize="@dimen/sp12"
+                        app:customFont="@string/roboto_medium"
+                        tools:text="Have you submitted reports" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/docConnectLoadMoreMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:gravity="right|center"
+                        android:paddingTop="@dimen/dp4"
+                        android:text="@string/more"
+                        android:textColor="@color/tagColor"
+                        android:textSize="@dimen/sp12"
+                        android:visibility="visible"
+                        app:customFont="@string/roboto_medium" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
+                    android:background="@color/divider" />
             </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

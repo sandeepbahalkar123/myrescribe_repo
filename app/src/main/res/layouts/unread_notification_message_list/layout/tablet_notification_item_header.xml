@@ -50,7 +50,7 @@
                     android:paddingRight="@dimen/dp5">
 
                     <com.rescribe.ui.customesViews.CustomTextView
-                        android:id="@+id/timeStamp"
+                        android:id="@+id/medicationTimeStamp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"

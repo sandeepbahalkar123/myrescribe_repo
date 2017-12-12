@@ -14,11 +14,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.my_records.MyRecordDoctorInfo;
 import com.rescribe.model.my_records.MyRecordInfoAndReports;
 import com.rescribe.model.my_records.MyRecordReports;
 import com.rescribe.ui.activities.ShowRecordsActivity;
+import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -34,6 +40,8 @@ import butterknife.ButterKnife;
 
 public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
+    private RequestOptions mRequestOptions;
+    private ColorGenerator mColorGenerator;
     private List<MyRecordInfoAndReports> mListDataHeader;// header titles
     // child data in format of header title, child title
     private HashMap<MyRecordInfoAndReports, ArrayList<MyRecordReports>> mListDataChild;
@@ -47,6 +55,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
         this.mListDataHeader = new ArrayList<>();
         this.mListDataChild = new HashMap<>();
+        mColorGenerator = ColorGenerator.MATERIAL;
 
         for (MyRecordInfoAndReports dataObject :
                 mOriginalList) {
@@ -56,6 +65,14 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
             mListDataChild.put(dataObject, myRecordReportInfo);
         }
+
+        int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(context, 2);
+
+        mRequestOptions = new RequestOptions();
+        mRequestOptions.dontAnimate();
+        mRequestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        mRequestOptions.skipMemoryCache(true);
+        mRequestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
     }
 
 
@@ -159,6 +176,27 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         }
         //-------
 
+
+        if (dataObject.getDocImgURL() == null) {
+            int color2 = mColorGenerator.getColor(dataObject.getDoctorName());
+
+            TextDrawable drawable = TextDrawable.builder()
+                    .beginConfig()
+                    .width(Math.round(context.getResources().getDimension(R.dimen.dp40))) // width in px
+                    .height(Math.round(context.getResources().getDimension(R.dimen.dp40))) // height in px
+                    .endConfig()
+                    .buildRound(("" + dataObject.getDoctorName().charAt(0)).toUpperCase(), color2);
+
+            groupViewHolder.docProfileImage.setImageDrawable(drawable);
+        } else {
+            Glide.with(context)
+                    .load(dataObject.getDocImgURL())
+                    .apply(mRequestOptions).thumbnail(0.5f)
+                    .into(groupViewHolder.docProfileImage);
+        }
+
+        //--------------
+
         return convertView;
 
     }
@@ -243,6 +281,8 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
     static class GroupViewHolder {
         @BindView(R.id.date)
         CustomTextView date;
+        @BindView(R.id.docProfileImage)
+        CircularImageView docProfileImage;
 
         @BindView(R.id.clickOnDoctorVisitLinearLayout)
         LinearLayout mClickOnDoctorVisitLinearLayout;

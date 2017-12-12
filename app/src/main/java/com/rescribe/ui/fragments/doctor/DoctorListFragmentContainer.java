@@ -12,6 +12,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +32,7 @@ import com.rescribe.model.doctors.doctor_info.DoctorDataModel;
 import com.rescribe.model.doctors.doctor_info.DoctorDetail;
 import com.rescribe.model.login.Year;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -58,6 +61,8 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
     private CustomSpinnerAdapter mCustomSpinAdapter;
     @BindView(R.id.year)
     Spinner mYearSpinnerView;
+    @BindView(R.id.yearSingleItem)
+    CustomTextView mYearSpinnerSingleItem;
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
@@ -103,11 +108,17 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
     private void initialize() {
         mYearList = CommonMethods.getYearForDoctorList();
 
-        mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList, ContextCompat.getColor(getActivity(),R.color.white));
+        //------------
+
+        mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList, ContextCompat.getColor(getActivity(), R.color.white));
         mYearSpinnerView.setAdapter(mCustomSpinAdapter);
         YearSpinnerInteractionListener listener = new YearSpinnerInteractionListener();
         mYearSpinnerView.setOnTouchListener(listener);
         mYearSpinnerView.setOnItemSelectedListener(listener);
+        mYearSpinnerView.setVisibility(View.VISIBLE);
+        mYearSpinnerSingleItem.setVisibility(View.GONE);
+
+
         //-------
         mDoctorHelper = new DoctorHelper(mContext, this);
         //-------
@@ -167,6 +178,17 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
                         mYearSpinnerView.setSelection(i);
                         break;
                     }
+                }
+
+                if (mYearList.size() == 1) {
+                    mYearSpinnerSingleItem.setVisibility(View.VISIBLE);
+                    mYearSpinnerView.setVisibility(View.GONE);
+                    SpannableString contentViewAllFavorite = new SpannableString(mYearList.get(0).toString());
+                    contentViewAllFavorite.setSpan(new UnderlineSpan(), 0, contentViewAllFavorite.length(), 0);
+                    mYearSpinnerSingleItem.setText(contentViewAllFavorite);
+                } else {
+                    mYearSpinnerSingleItem.setVisibility(View.GONE);
+                    mYearSpinnerView.setVisibility(View.VISIBLE);
                 }
 
                 //-----THis condition calls API only once for that specific year.----
@@ -290,12 +312,13 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
                     mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
                     mTabLayout.setupWithViewPager(mViewpager);
                     mYearList = doctorDataModel.getUniqueYears();
-                    mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList, ContextCompat.getColor(getActivity(),R.color.white));
+                    mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList, ContextCompat.getColor(getActivity(), R.color.white));
                     mYearSpinnerView.setAdapter(mCustomSpinAdapter);
                 }
                 if (doctorDataModel.getReceivedYearMap().isEmpty()) {
                     noRecords.setVisibility(View.VISIBLE);
                     mYearSpinnerView.setVisibility(View.GONE);
+                    mYearSpinnerSingleItem.setVisibility(View.GONE);
                     mTabLayout.setVisibility(View.GONE);
                 } else {
                     noRecords.setVisibility(View.GONE);

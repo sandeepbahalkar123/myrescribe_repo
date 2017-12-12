@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,6 +36,7 @@ import com.rescribe.model.my_records.new_pojo.NewMyRecordDataModel;
 import com.rescribe.model.my_records.new_pojo.NewOriginalData;
 import com.rescribe.ui.activities.AddRecordsActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -62,6 +65,8 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
     private CustomSpinnerAdapter mCustomSpinAdapter;
     @BindView(R.id.year)
     Spinner mYearSpinnerView;
+    @BindView(R.id.yearSingleItem)
+    CustomTextView mYearSpinnerSingleItem;
     @BindView(R.id.noRecords)
     ImageView noRecords;
     private ArrayList<String> mYearList = new ArrayList<>();
@@ -105,6 +110,9 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
         YearSpinnerInteractionListener listener = new YearSpinnerInteractionListener();
         mYearSpinnerView.setOnTouchListener(listener);
         mYearSpinnerView.setOnItemSelectedListener(listener);
+        mYearSpinnerView.setVisibility(View.VISIBLE);
+        mYearSpinnerSingleItem.setVisibility(View.GONE);
+
         //-------
         mMyRecordHelper = new MyRecordsHelper(mContext, this);
         //-------
@@ -161,6 +169,18 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
                         break;
                     }
                 }
+                //-------
+                if (mYearList.size() == 1) {
+                    mYearSpinnerSingleItem.setVisibility(View.VISIBLE);
+                    mYearSpinnerView.setVisibility(View.GONE);
+                    SpannableString contentViewAllFavorite = new SpannableString(mYearList.get(0).toString());
+                    contentViewAllFavorite.setSpan(new UnderlineSpan(), 0, contentViewAllFavorite.length(), 0);
+                    mYearSpinnerSingleItem.setText(contentViewAllFavorite);
+                } else {
+                    mYearSpinnerSingleItem.setVisibility(View.GONE);
+                    mYearSpinnerView.setVisibility(View.VISIBLE);
+                }
+                //-------
 
                 //-----THis condition calls API only once for that specific year.----
                 if (!mGeneratedRequestForYearList.contains(year)) {
@@ -182,15 +202,22 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                boolean flag = false;
+
                 for (int i = 0; i < mTimePeriodList.size(); i++) {
                     Year temp = mTimePeriodList.get(i);
                     if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear()) &&
                             temp.getMonthName().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getMonthName())) {
                         mViewpager.setCurrentItem(i);
+                        flag = true;
                         break;
-                    } else if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear())) {
+                    }
+                    /*else if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear())) {
                         mViewpager.setCurrentItem(i);
                         break;
+                    }*/
+                    if (!flag) {
+                        mViewpager.setCurrentItem(mTimePeriodList.size());
                     }
                 }
             }
@@ -307,7 +334,7 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList, ContextCompat.getColor(getActivity(), R.color.white));
             mYearSpinnerView.setAdapter(mCustomSpinAdapter);
         }
-        setupViewPager();
+
 
         if (newRecordMainDataModel.getYearsMonthsData().isEmpty()) {
             noRecords.setVisibility(View.VISIBLE);
@@ -327,6 +354,8 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
                 mTabLayout.setTabMode(TabLayout.MODE_FIXED);
             }
         }
+
+        setupViewPager();
     }
 
     @Override

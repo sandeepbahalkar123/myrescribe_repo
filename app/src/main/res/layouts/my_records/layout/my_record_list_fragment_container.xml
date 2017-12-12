@@ -48,6 +48,19 @@
 
             </LinearLayout>
 
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/yearSingleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_weight="0.2"
+                android:text="2017"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp16"
+                android:visibility="gone"
+                app:customFont="@string/roboto_medium"
+                app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
+
             <Spinner
                 android:id="@+id/year"
                 android:layout_width="wrap_content"

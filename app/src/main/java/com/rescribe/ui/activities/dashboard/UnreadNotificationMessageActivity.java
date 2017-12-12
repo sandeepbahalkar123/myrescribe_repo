@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.adapters.unread_notification_message_list.UnreadAppointmentNotificationAlert;
 import com.rescribe.adapters.unread_notification_message_list.UnreadBookAppointTokenNotificationAdapter;
+import com.rescribe.adapters.unread_notification_message_list.UnreadChatNotificationList;
 import com.rescribe.adapters.unread_notification_message_list.UnreadMedicationNotificationAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -28,6 +29,7 @@ import com.rescribe.model.notification.Medication;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
+import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.InvestigationActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -50,7 +52,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
  * Created by jeetal on 27/11/17.
  */
 
-public class UnreadNotificationMessageActivity extends AppCompatActivity implements HelperResponse, UnreadAppointmentNotificationAlert.OnNotificationItemClicked, UnreadMedicationNotificationAdapter.OnMedicationNotificationEventClick, UnreadBookAppointTokenNotificationAdapter.OnUnreadTokenNotificationItemClicked {
+public class UnreadNotificationMessageActivity extends AppCompatActivity implements HelperResponse, UnreadAppointmentNotificationAlert.OnNotificationItemClicked, UnreadMedicationNotificationAdapter.OnMedicationNotificationEventClick, UnreadBookAppointTokenNotificationAdapter.OnUnreadTokenNotificationItemClicked, UnreadChatNotificationList.OnDocConnectItemClicked {
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView mBackButton;
@@ -87,9 +89,12 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     CustomTextView mAppointmentsFirstMessageTimeStamp;
     @BindView(R.id.investigationFirstMessageTimeStamp)
     CustomTextView mInvestigationFirstMessageTimeStamp;
+    @BindView(R.id.doctorConnectFirstMessageTimeStamp)
+    CustomTextView mDoctorConnectFirstMessageTimeStamp;
     //-----------
     private UnreadAppointmentNotificationAlert mAppointmentNotificationAlertAdapter;
     private UnreadAppointmentNotificationAlert mInvestigationNotificationAlertAdapter;
+    private UnreadChatNotificationList mUnreadChatNotificationListAdapter;
     private UnreadBookAppointTokenNotificationAdapter mUnreadBookAppointTokenNotificationAdapter;
     private SectionedRecyclerViewAdapter mUnreadMedicationNotificationAdapter;
     private ArrayList<UnreadSavedNotificationMessageData> mUnreadMedicationNotificationMessageDataList;
@@ -119,6 +124,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     private void initialize() {
         ArrayList<UnreadSavedNotificationMessageData> appAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
         ArrayList<UnreadSavedNotificationMessageData> investigationAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+        ArrayList<UnreadSavedNotificationMessageData> chatAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
 
         //----------------
         if (appAlertList.isEmpty()) {
@@ -135,9 +141,16 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             investigationsListViewLayout.setVisibility(View.VISIBLE);
             setInvestigationAlertListAdapter(investigationAlertList);
         }
+        // ----------------
+        if (chatAlertList.isEmpty()) {
+            docConnectListViewLayout.setVisibility(View.GONE);
+        } else {
+            docConnectListViewLayout.setVisibility(View.VISIBLE);
+            setUnreadChatAlertListAdapter(chatAlertList);
+        }
         //--
-        initializeMedicationListView();
 
+        initializeMedicationListView();
     }
 
     private void initializeMedicationListView() {
@@ -165,8 +178,16 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         mAppointmentAlertList.setAdapter(mAppointmentNotificationAlertAdapter);
         UnreadSavedNotificationMessageData unreadSavedNotificationMessageData = appAlertList.get(0);
 
-        mAppointmentsFirstMessageTimeStamp.setText("" + unreadSavedNotificationMessageData.getNotificationTimeStamp());
+        String formattedDate = CommonMethods.getFormattedDate(unreadSavedNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+        String time = CommonMethods.formatDateTime(unreadSavedNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
 
+        String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
+
+        if (getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
+            mAppointmentsFirstMessageTimeStamp.setText(time);
+        } else {
+            mAppointmentsFirstMessageTimeStamp.setText(dayFromDate + " " + time);
+        }
     }
 
     private void setInvestigationAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
@@ -177,7 +198,36 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
         UnreadSavedNotificationMessageData unreadSavedNotificationMessageData = appAlertList.get(0);
 
-        mInvestigationFirstMessageTimeStamp.setText("" + unreadSavedNotificationMessageData.getNotificationTimeStamp());
+        String formattedDate = CommonMethods.getFormattedDate(unreadSavedNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+        String time = CommonMethods.formatDateTime(unreadSavedNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
+
+        String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
+
+        if (getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
+            mInvestigationFirstMessageTimeStamp.setText(time);
+        } else {
+            mInvestigationFirstMessageTimeStamp.setText(dayFromDate + " " + time);
+        }
+    }
+
+    private void setUnreadChatAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
+        mUnreadChatNotificationListAdapter = new UnreadChatNotificationList(this, appAlertList, this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mDocConnectListView.setLayoutManager(mLayoutManager);
+        mDocConnectListView.setAdapter(mUnreadChatNotificationListAdapter);
+
+        UnreadSavedNotificationMessageData unreadSavedNotificationMessageData = appAlertList.get(0);
+
+        String formattedDate = CommonMethods.getFormattedDate(unreadSavedNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+        String time = CommonMethods.formatDateTime(unreadSavedNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.TIME);
+
+        String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
+
+        if (getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
+            mDoctorConnectFirstMessageTimeStamp.setText(time);
+        } else {
+            mDoctorConnectFirstMessageTimeStamp.setText(dayFromDate + " " + time);
+        }
     }
 
 
@@ -207,14 +257,13 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         } else if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
             instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
             String notificationData = unreadNotificationMessageData.getNotificationData();
-            if (notificationData.contains("|")) {
-                String[] split = notificationData.split("\\|");
-                Intent intentNotification = new Intent(this, InvestigationActivity.class);
-                InvestigationNotification investigationNotification = new Gson().fromJson(split[1], InvestigationNotification.class);
-                intentNotification.putExtra(RescribeConstants.INVESTIGATION_LIST, investigationNotification.getNotifications());
-                intentNotification.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, split[2]);
-                //    startActivity(intentNotification);
-            }
+
+            Intent intentNotification = new Intent(this, InvestigationActivity.class);
+            InvestigationNotification investigationNotification = new Gson().fromJson(notificationData, InvestigationNotification.class);
+            intentNotification.putExtra(RescribeConstants.INVESTIGATION_LIST, investigationNotification.getNotifications());
+            intentNotification.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, unreadNotificationMessageData.getNotificationTimeStamp());
+            //    startActivity(intentNotification);
+
             // OPEN INVESTIGATION SCREEN, pending for ganesh code
         }
 
@@ -310,7 +359,9 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
             ArrayList<Medication> medications = stringArrayListHashMap.get(key);
 
-            mUnreadMedicationNotificationAdapter.addSection(new UnreadMedicationNotificationAdapter(build, this, key, medications, !isRequiredAllElements, this));
+            Medication medication = medications.get(0);
+
+            mUnreadMedicationNotificationAdapter.addSection(new UnreadMedicationNotificationAdapter(build, this, key, medications, !isRequiredAllElements,medication.getUnreadNotificationMessageDataTimeStamp(), this));
             if (!isRequiredAllElements) {
                 break;
             }
@@ -320,7 +371,17 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         if (firstElementKey != null) {
             ArrayList<Medication> medications = stringArrayListHashMap.get(firstElementKey);
             if (!medications.isEmpty()) {
-                mOnGoingMedicationFirstMessageTimeStamp.setText(medications.get(0).getUnreadNotificationMessageDataTimeStamp());
+                Medication medication = medications.get(0);
+                //---------
+                String formattedDate = CommonMethods.getFormattedDate(medication.getUnreadNotificationMessageDataTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+                String time = CommonMethods.formatDateTime(medication.getUnreadNotificationMessageDataTimeStamp(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
+                String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
+                if (getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
+                    mOnGoingMedicationFirstMessageTimeStamp.setText(time);
+                } else {
+                    mOnGoingMedicationFirstMessageTimeStamp.setText(dayFromDate + " " + time);
+                }
+                //---------
             }
         }
     }
@@ -335,9 +396,9 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             ArrayList<Medication> temp = new ArrayList<>();
             for (UnreadSavedNotificationMessageData dataObject :
                     dataArrayList) {
-                String[] notificationData = dataObject.getNotificationData().split("\\|");
-                if (notificationData[0].equalsIgnoreCase(groupName)) {
-                    Medication medication = gson.fromJson(notificationData[1], Medication.class);
+                String notificationMessage = dataObject.getNotificationMessage();
+                if (notificationMessage.equalsIgnoreCase(groupName)) {
+                    Medication medication = gson.fromJson(dataObject.getNotificationData(), Medication.class);
                     temp.add(medication);
                 }
             }
@@ -354,8 +415,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         //--- set header data
         for (UnreadSavedNotificationMessageData dataObject :
                 dataArrayList) {
-            String[] notificationData = dataObject.getNotificationData().split("\\|");
-            listDataGroup.add(notificationData[0]);
+            listDataGroup.add(dataObject.getNotificationMessage());
             if (!isRequiredAllElements)
                 break;
         }
@@ -370,7 +430,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             //---- update notification in db---
             AppDBHelper appDBHelper = AppDBHelper.getInstance(this);
             String[] split = mMedicationCheckBoxClickedData.split("\\|");
-            appDBHelper.updateUnreadReceivedNotificationMessage(split[0], RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, split[1] + "|" + split[2]);
+            appDBHelper.updateUnreadReceivedNotificationMessage(split[0], RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, split[2]);
             //----$$$$$$$$$$$$$ Delete medication if all medicines are isTabSelected=true------
 
             ArrayList<UnreadSavedNotificationMessageData> medicationAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
@@ -506,4 +566,17 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         }
     }
 
+    @Override
+    public void onDocConnectMoreClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData) {
+        mUnreadChatNotificationListAdapter.addAllElementToList();
+        mUnreadChatNotificationListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDocConnectRowClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData) {
+        AppDBHelper instance = AppDBHelper.getInstance(this);
+        instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
+        Intent intentNotification = new Intent(this, ChatActivity.class);
+        // startActivity(intentNotification);
+    }
 }

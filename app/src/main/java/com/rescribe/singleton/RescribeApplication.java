@@ -1,6 +1,7 @@
 package com.rescribe.singleton;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
@@ -52,7 +53,7 @@ public class RescribeApplication extends MultiDexApplication {
         AppDBHelper instance = AppDBHelper.getInstance(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-        instance.doGetAppUnreadReceivedNotificationMessage();
+        instance.doMergeUnreadMessageForChatAndOther(null);
         //--------------
     }
 
@@ -84,10 +85,10 @@ public class RescribeApplication extends MultiDexApplication {
         return appUnreadNotificationMessageList;
     }
 
-    public static void setAppUnreadNotificationMessageList(ArrayList<UnreadSavedNotificationMessageData> appUnreadNotificationMessageList) {
+    public static void setAppUnreadNotificationMessageList(Context mContext, ArrayList<UnreadSavedNotificationMessageData> appUnreadNotificationMessageList) {
         RescribeApplication.appUnreadNotificationMessageList = appUnreadNotificationMessageList;
+        mContext.sendBroadcast(new Intent(mContext.getString(R.string.unread_notification_update_received)));
     }
-
 
     public static ArrayList<UnreadSavedNotificationMessageData> doFindUnreadNotificationMessageByType(String notificationType) {
         ArrayList<UnreadSavedNotificationMessageData> receivedNotificationMessageList = new ArrayList<>();

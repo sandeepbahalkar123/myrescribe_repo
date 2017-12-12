@@ -11,6 +11,8 @@ import com.rescribe.R;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -62,14 +64,20 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
         if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT)) {
             if (position == 0 && (mListToBeUsed.size() == 1 && mOriginalReceivedList.size() > 1)) {
                 holder.loadMoreItems.setVisibility(View.VISIBLE);
+                holder.textMessageTimeStamp.setVisibility(View.GONE);
             } else {
+                holder.textMessageTimeStamp.setVisibility(View.VISIBLE);
+
                 holder.loadMoreItems.setVisibility(View.GONE);
             }
         } else if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT)) {
             if (position == 0 && (mListToBeUsed.size() == 1 && mOriginalReceivedList.size() > 1)) {
                 holder.loadMoreItems.setVisibility(View.VISIBLE);
                 holder.skipItems.setVisibility(View.VISIBLE);
+                holder.textMessageTimeStamp.setVisibility(View.GONE);
+
             } else {
+                holder.textMessageTimeStamp.setVisibility(View.VISIBLE);
                 holder.loadMoreItems.setVisibility(View.GONE);
                 holder.skipItems.setVisibility(View.VISIBLE);
             }
@@ -77,12 +85,23 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
         //----------
 
         if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT)) {
-            holder.text.setText(unreadNotificationMessageData.getNotificationData());
+            holder.text.setText(unreadNotificationMessageData.getNotificationMessage());
         } else if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT)) {
-            String notificationData = unreadNotificationMessageData.getNotificationData(); //msg|object|time
-            if (notificationData.contains("|")) {
-                String[] split = notificationData.split("\\|");
-                holder.text.setText(split[0]);
+            holder.text.setText(unreadNotificationMessageData.getNotificationMessage());
+        }
+        //------------
+
+        if (holder.textMessageTimeStamp.getVisibility() == View.VISIBLE) {
+
+            String formattedDate = CommonMethods.getFormattedDate(unreadNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+            String time = CommonMethods.formatDateTime(unreadNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
+
+            String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
+
+            if (mContext.getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
+                holder.textMessageTimeStamp.setText(time);
+            } else {
+                holder.textMessageTimeStamp.setText(dayFromDate + " " + time);
             }
         }
 
@@ -111,6 +130,8 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
 
         @BindView(R.id.textMessage)
         CustomTextView text;
+        @BindView(R.id.textMessageTimeStamp)
+        CustomTextView textMessageTimeStamp;
         @BindView(R.id.loadMoreItems)
         CustomTextView loadMoreItems;
         @BindView(R.id.skipItems)

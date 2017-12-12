@@ -36,6 +36,7 @@ public class MQTTMessage implements Parcelable {
     @SerializedName("user2id")
     @Expose
     private int patId;
+
     @SerializedName("user1id")
     @Expose
     private int docId;

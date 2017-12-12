@@ -6,6 +6,7 @@ public class UnreadSavedNotificationMessageData {
     private String id;
     private String notificationMessageType;
     private String notificationData;
+    private String notificationMessage;
     private String notificationTimeStamp;
 
     private String buttonToVisible;
@@ -51,5 +52,13 @@ public class UnreadSavedNotificationMessageData {
 
     public void setButtonToVisible(String buttonToVisible) {
         this.buttonToVisible = buttonToVisible;
+    }
+
+    public String getNotificationMessage() {
+        return notificationMessage;
+    }
+
+    public void setNotificationMessage(String notificationMessage) {
+        this.notificationMessage = notificationMessage;
     }
 }

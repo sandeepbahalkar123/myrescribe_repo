@@ -273,7 +273,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             noDataFound.setVisibility(View.VISIBLE);
         }
 
-        if (mClickedDoctorObject.getDoctorImageUrl()!=null) {
+        if (mClickedDoctorObject.getDoctorImageUrl() != null) {
 
             String doctorName = mClickedDoctorObject.getDocName();
             if (doctorName.contains("Dr. ")) {
@@ -476,19 +476,21 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
         mClickedDoctorObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
         //--------------
-        if (mSelectedClinicDataPosition != -1)
+        if (mSelectedClinicDataPosition != -1) {
             if (mClickedDoctorObject.getClinicDataList().size() > 0)
                 mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(mSelectedClinicDataPosition);
-        //--------------
+        } //--------------
 
         if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom)) {
             mConfirmedTokenMainLayout.setVisibility(View.GONE);
             mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
             mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
         } else {
+
             changeViewBasedOnAppointmentType();
+            setDataInViews();
         }
-        setDataInViews();
+
     }
 
     @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat, R.id.tokenNewTimeStamp, R.id.leftArrow, R.id.rightArrow})
@@ -705,7 +707,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     public void showTokenStatusMessageBox(Context context, String message) {
 
-         final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context);
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.token_dialog_popup);
@@ -718,7 +720,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-         mDoctorDataHelper.doSetTokenNotificationReminder(mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
+                mDoctorDataHelper.doSetTokenNotificationReminder(mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
                 dialog.cancel();
             }
         });

@@ -108,15 +108,15 @@ public class NotificationService extends Service implements HelperResponse {
         String title = getText(R.string.taken_medicine).toString();
 
         //---- Save notification in db---
+        String timeStamp = CommonMethods.getCurrentDate() + " " + notificationTimeSlot;
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
         int id = (int) System.currentTimeMillis();
         medication.setUnreadNotificationMessageDataID("" + id);
-        String medicationDataDetails = getText(R.string.have_u_taken).toString() + medicineSlot + "|" + new Gson().toJson(medication);
-        appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, medicationDataDetails, "");
-        //-------
+        medication.setUnreadNotificationMessageDataTimeStamp(timeStamp);
 
-        int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, NotificationService.this);
-        RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, preCount + 1, NotificationService.this);
+        String medicationDataDetails = getText(R.string.have_u_taken).toString() + medicineSlot + "|" + new Gson().toJson(medication);
+        appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, medicationDataDetails, timeStamp);
+        //-------
 
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
@@ -125,6 +125,8 @@ public class NotificationService extends Service implements HelperResponse {
         Intent mNotifyYesIntent = new Intent(this.getApplicationContext(), ClickOnCheckBoxOfNotificationReceiver.class);
         mNotifyYesIntent.putExtra(RescribeConstants.MEDICINE_SLOT, medicineSlot);
         mNotifyYesIntent.putExtra(RescribeConstants.NOTIFICATION_ID, notification_id);
+        mNotifyYesIntent.putExtra(getString(R.string.unread_notification_update_received), id);
+
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mYesPendingIntent);
 
@@ -134,6 +136,8 @@ public class NotificationService extends Service implements HelperResponse {
         mNotifyNoIntent.putExtra(RescribeConstants.NOTIFICATION_TIME, notificationTimeSlot);
         mNotifyNoIntent.putExtra(RescribeConstants.MEDICINE_NAME, intentData.getBundleExtra(RescribeConstants.MEDICINE_NAME));
         mNotifyNoIntent.putExtra(RescribeConstants.NOTIFICATION_ID, notification_id);
+        mNotifyNoIntent.putExtra(getString(R.string.unread_notification_update_received), id);
+
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
 

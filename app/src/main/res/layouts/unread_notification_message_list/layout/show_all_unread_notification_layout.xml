@@ -95,6 +95,7 @@
                         app:customFont="@string/roboto_medium" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/getTokenFirstMessageTimeStamp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -126,7 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -142,6 +143,7 @@
                         app:customFont="@string/roboto_medium" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/onGoingMedicationFirstMessageTimeStamp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -168,7 +170,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -185,6 +187,7 @@
                         app:customFont="@string/roboto_medium" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/appointmentsFirstMessageTimeStamp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -216,7 +219,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -233,6 +236,7 @@
                         app:customFont="@string/roboto_medium" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/investigationFirstMessageTimeStamp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

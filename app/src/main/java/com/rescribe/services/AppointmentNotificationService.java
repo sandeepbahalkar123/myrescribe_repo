@@ -90,12 +90,10 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
         //---- Save notification in db---
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
-        appDBHelper.insertUnreadReceivedNotificationMessage("" + index, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message, "");
+        int id = (int) System.currentTimeMillis();
+        String currentTimeStamp = CommonMethods.getCurrentDate() + " " + time;
+        appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message, currentTimeStamp);
         //-------
-
-        int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, AppointmentNotificationService.this);
-        RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, preCount + 1, AppointmentNotificationService.this);
-
 
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
@@ -105,6 +103,8 @@ public class AppointmentNotificationService extends Service implements HelperRes
         mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, subNotificationId);
         mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
         mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, message);
+        mNotifyYesIntent.putExtra(getString(R.string.unread_notification_update_received), id);
+
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, subNotificationId, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
 
@@ -112,6 +112,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, subNotificationId);
         mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
         mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, message);
+        mNotifyNoIntent.putExtra(getString(R.string.unread_notification_update_received), id);
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, subNotificationId, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mNoPendingIntent);
 

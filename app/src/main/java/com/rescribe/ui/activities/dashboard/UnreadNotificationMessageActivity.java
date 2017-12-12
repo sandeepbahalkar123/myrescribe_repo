@@ -1,11 +1,8 @@
 package com.rescribe.ui.activities.dashboard;
 
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,11 +12,9 @@ import android.widget.LinearLayout;
 import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.adapters.unread_notification_message_list.UnreadAppointmentNotificationAlert;
-
 import com.rescribe.adapters.unread_notification_message_list.UnreadBookAppointTokenNotificationAdapter;
 import com.rescribe.adapters.unread_notification_message_list.UnreadMedicationNotificationAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
-import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.notification.RespondToNotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
@@ -30,9 +25,8 @@ import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookA
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.model.investigation.InvestigationNotification;
 import com.rescribe.model.notification.Medication;
-
-
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.InvestigationActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -43,11 +37,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.TreeSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -85,6 +79,14 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     LinearLayout docConnectListViewLayout;
     @BindView(R.id.unreadTokenNotificationListViewLayout)
     LinearLayout unreadTokenNotificationListViewLayout;
+    @BindView(R.id.getTokenFirstMessageTimeStamp)
+    CustomTextView mGetTokenFirstMessageTimeStamp;
+    @BindView(R.id.onGoingMedicationFirstMessageTimeStamp)
+    CustomTextView mOnGoingMedicationFirstMessageTimeStamp;
+    @BindView(R.id.appointmentsFirstMessageTimeStamp)
+    CustomTextView mAppointmentsFirstMessageTimeStamp;
+    @BindView(R.id.investigationFirstMessageTimeStamp)
+    CustomTextView mInvestigationFirstMessageTimeStamp;
     //-----------
     private UnreadAppointmentNotificationAlert mAppointmentNotificationAlertAdapter;
     private UnreadAppointmentNotificationAlert mInvestigationNotificationAlertAdapter;
@@ -94,6 +96,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     private RespondToNotificationHelper mMedicationToNotificationHelper;
     private String mMedicationCheckBoxClickedData;
     private DoctorDataHelper mDoctorDataHelper;
+    private boolean isMedicationLoadMoreFooterClickedPreviously = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,9 +117,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     }
 
     private void initialize() {
-        ArrayList<UnreadSavedNotificationMessageData> appAlertList = DashboardHelper.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
-        ArrayList<UnreadSavedNotificationMessageData> investigationAlertList = DashboardHelper.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
-        ArrayList<UnreadSavedNotificationMessageData> medicationAlertList = DashboardHelper.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+        ArrayList<UnreadSavedNotificationMessageData> appAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
+        ArrayList<UnreadSavedNotificationMessageData> investigationAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
 
         //----------------
         if (appAlertList.isEmpty()) {
@@ -133,38 +135,49 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             investigationsListViewLayout.setVisibility(View.VISIBLE);
             setInvestigationAlertListAdapter(investigationAlertList);
         }
+        //--
+        initializeMedicationListView();
+
+    }
+
+    private void initializeMedicationListView() {
+        ArrayList<UnreadSavedNotificationMessageData> medicationAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+
         //----------------
         if (medicationAlertList.isEmpty()) {
             mOnGoingMedicationListViewLayout.setVisibility(View.GONE);
         } else {
             mMedicationToNotificationHelper = new RespondToNotificationHelper(this, this);
-
             mOnGoingMedicationListViewLayout.setVisibility(View.VISIBLE);
-            setMedicationAlertListAdapter(medicationAlertList);
+            setMedicationAlertListAdapter(medicationAlertList, isMedicationLoadMoreFooterClickedPreviously);
         }
-
     }
 
     private void setAppointmentAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
         mAppointmentNotificationAlertAdapter = new UnreadAppointmentNotificationAlert(this, appAlertList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mAppointmentAlertList.setLayoutManager(mLayoutManager);
-        mAppointmentAlertList.setItemAnimator(new DefaultItemAnimator());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mAppointmentAlertList.getContext(),
-                DividerItemDecoration.VERTICAL);
-        mAppointmentAlertList.addItemDecoration(dividerItemDecoration);
+
+        // mAppointmentAlertList.setItemAnimator(new DefaultItemAnimator());
+        // DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mAppointmentAlertList.getContext(),
+        //         DividerItemDecoration.VERTICAL);
+        //  mAppointmentAlertList.addItemDecoration(dividerItemDecoration);
         mAppointmentAlertList.setAdapter(mAppointmentNotificationAlertAdapter);
+        UnreadSavedNotificationMessageData unreadSavedNotificationMessageData = appAlertList.get(0);
+
+        mAppointmentsFirstMessageTimeStamp.setText("" + unreadSavedNotificationMessageData.getNotificationTimeStamp());
+
     }
 
     private void setInvestigationAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
         mInvestigationNotificationAlertAdapter = new UnreadAppointmentNotificationAlert(this, appAlertList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mInvestigationsListView.setLayoutManager(mLayoutManager);
-        mInvestigationsListView.setItemAnimator(new DefaultItemAnimator());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mInvestigationsListView.getContext(),
-                DividerItemDecoration.VERTICAL);
-        mInvestigationsListView.addItemDecoration(dividerItemDecoration);
         mInvestigationsListView.setAdapter(mInvestigationNotificationAlertAdapter);
+
+        UnreadSavedNotificationMessageData unreadSavedNotificationMessageData = appAlertList.get(0);
+
+        mInvestigationFirstMessageTimeStamp.setText("" + unreadSavedNotificationMessageData.getNotificationTimeStamp());
     }
 
 
@@ -186,14 +199,13 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
     @Override
     public void onNotificationRowClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData) {
+        AppDBHelper instance = AppDBHelper.getInstance(this);
         if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
-            new AppDBHelper(this).deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
-            DashboardHelper.deleteUnreadNotificationMessageById(unreadNotificationMessageData.getId(), unreadNotificationMessageData.getNotificationMessageType());
+            instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
             Intent intentNotification = new Intent(this, AppointmentActivity.class);
-            startActivity(intentNotification);
+            //      startActivity(intentNotification);
         } else if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
-            new AppDBHelper(this).deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
-            DashboardHelper.deleteUnreadNotificationMessageById(unreadNotificationMessageData.getId(), unreadNotificationMessageData.getNotificationMessageType());
+            instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
             String notificationData = unreadNotificationMessageData.getNotificationData();
             if (notificationData.contains("|")) {
                 String[] split = notificationData.split("\\|");
@@ -201,35 +213,31 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                 InvestigationNotification investigationNotification = new Gson().fromJson(split[1], InvestigationNotification.class);
                 intentNotification.putExtra(RescribeConstants.INVESTIGATION_LIST, investigationNotification.getNotifications());
                 intentNotification.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, split[2]);
-                startActivity(intentNotification);
+                //    startActivity(intentNotification);
             }
             // OPEN INVESTIGATION SCREEN, pending for ganesh code
         }
+
     }
 
 
     //&&&&&&&&&&&&************** MEDICATION START------------------
 
-    private void setMedicationAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> dataArrayList) {
+    private void setMedicationAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> dataArrayList, boolean isMedicationLoadMoreFooterClickedPreviously) {
 
         mUnreadMedicationNotificationAdapter = new SectionedRecyclerViewAdapter();
         //------
         mUnreadMedicationNotificationMessageDataList = new ArrayList<UnreadSavedNotificationMessageData>();
         mUnreadMedicationNotificationMessageDataList.addAll(dataArrayList);
         //------
-        doCreateMedicationDataMap(false);
+        doCreateMedicationDataMap(isMedicationLoadMoreFooterClickedPreviously);
         mOnGoingMedicationListView.setAdapter(mUnreadMedicationNotificationAdapter);
     }
 
     @Override
     public void onMedicationLoadMoreFooterClicked() {
         doCreateMedicationDataMap(true);
-        mUnreadMedicationNotificationAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onMedicationLoadLessFooterClicked() {
-        doCreateMedicationDataMap(false);
+        isMedicationLoadMoreFooterClickedPreviously = true;
         mUnreadMedicationNotificationAdapter.notifyDataSetChanged();
     }
 
@@ -270,8 +278,22 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
         mUnreadMedicationNotificationAdapter.removeAllSections();
 
-        HashSet<String> strings = configureHeaderMapList(mUnreadMedicationNotificationMessageDataList, isRequiredAllElements);
-        HashMap<String, ArrayList<Medication>> stringArrayListHashMap = configureGroupChildMapList(strings, mUnreadMedicationNotificationMessageDataList);
+        TreeSet<String> mainActualHeaderList = configureHeaderMapList(mUnreadMedicationNotificationMessageDataList, true);
+
+        String firstElementKey = mainActualHeaderList.first();
+        HashMap<String, ArrayList<Medication>> stringArrayListHashMap = new HashMap<>();
+        //-----if isReqAllElement==false, and find actual size of Group header list-------
+        HashSet<String> formattedSet = new HashSet<>();
+        if (!isRequiredAllElements) {
+            if (!mainActualHeaderList.isEmpty()) {
+                formattedSet.add(mainActualHeaderList.first());
+                stringArrayListHashMap = configureGroupChildMapList(formattedSet, mUnreadMedicationNotificationMessageDataList);
+            }
+        } else {
+            formattedSet.addAll(mainActualHeaderList);
+            stringArrayListHashMap = configureGroupChildMapList(formattedSet, mUnreadMedicationNotificationMessageDataList);
+        }
+        //------------
 
         int count = 0;
         for (String key : stringArrayListHashMap.keySet()) {
@@ -279,23 +301,28 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             SectionParameters build = new SectionParameters.Builder(R.layout.tablet_notification_item)
                     .headerResourceId(R.layout.tablet_notification_item_header)
                     .build();
-            if (isRequiredAllElements && count == 1) {
-                build = new SectionParameters.Builder(R.layout.tablet_notification_item)
-                        .headerResourceId(R.layout.tablet_notification_item_header)
-                       // .footerResourceId(R.layout.more_item_textview)
-                        .build();
-            } else if (!isRequiredAllElements) {
+            if (!isRequiredAllElements && mainActualHeaderList.size() > 1) {
                 build = new SectionParameters.Builder(R.layout.tablet_notification_item)
                         .headerResourceId(R.layout.tablet_notification_item_header)
                         .footerResourceId(R.layout.more_item_textview)
                         .build();
             }
-            mUnreadMedicationNotificationAdapter.addSection(new UnreadMedicationNotificationAdapter(build, this, key, stringArrayListHashMap.get(key), !isRequiredAllElements, this));
+
+            ArrayList<Medication> medications = stringArrayListHashMap.get(key);
+
+            mUnreadMedicationNotificationAdapter.addSection(new UnreadMedicationNotificationAdapter(build, this, key, medications, !isRequiredAllElements, this));
             if (!isRequiredAllElements) {
                 break;
             }
         }
         mOnGoingMedicationListView.setLayoutManager(new LinearLayoutManager(this));
+
+        if (firstElementKey != null) {
+            ArrayList<Medication> medications = stringArrayListHashMap.get(firstElementKey);
+            if (!medications.isEmpty()) {
+                mOnGoingMedicationFirstMessageTimeStamp.setText(medications.get(0).getUnreadNotificationMessageDataTimeStamp());
+            }
+        }
     }
 
 
@@ -320,9 +347,9 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         return listDataChild;
     }
 
-    private HashSet<String> configureHeaderMapList(ArrayList<UnreadSavedNotificationMessageData> dataArrayList, boolean isRequiredAllElements) {
+    private TreeSet<String> configureHeaderMapList(ArrayList<UnreadSavedNotificationMessageData> dataArrayList, boolean isRequiredAllElements) {
 
-        HashSet<String> listDataGroup = new HashSet<>();
+        TreeSet<String> listDataGroup = new TreeSet<>();
 
         //--- set header data
         for (UnreadSavedNotificationMessageData dataObject :
@@ -341,18 +368,16 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
             //---- update notification in db---
-            AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
+            AppDBHelper appDBHelper = AppDBHelper.getInstance(this);
             String[] split = mMedicationCheckBoxClickedData.split("\\|");
             appDBHelper.updateUnreadReceivedNotificationMessage(split[0], RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, split[1] + "|" + split[2]);
             //----$$$$$$$$$$$$$ Delete medication if all medicines are isTabSelected=true------
 
-            ArrayList<UnreadSavedNotificationMessageData> unreadNotificationMessageData = appDBHelper.doGetUnreadReceivedNotificationMessage();
-            DashboardHelper.setUnreadNotificationMessageList(unreadNotificationMessageData);
-            ArrayList<UnreadSavedNotificationMessageData> medicationAlertList = DashboardHelper.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+            ArrayList<UnreadSavedNotificationMessageData> medicationAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
 
             //--******* get keys,value pair for data to delete:START --
-            HashSet<String> groupHeader = configureHeaderMapList(medicationAlertList, true);
-            HashMap<String, ArrayList<Medication>> groupHeaderAndMap = configureGroupChildMapList(groupHeader, medicationAlertList);
+            TreeSet<String> groupHeader = configureHeaderMapList(medicationAlertList, true);
+            HashMap<String, ArrayList<Medication>> groupHeaderAndMap = configureGroupChildMapList(new HashSet<String>(groupHeader), medicationAlertList);
             //--******* get keys,value pair for data to delete:END --
             //--******* ITERATE AND DELETE MEDICATION with isTABselected=true : START
             for (Map.Entry<String, ArrayList<Medication>> entry : groupHeaderAndMap.entrySet()) {
@@ -373,8 +398,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             }
             //--******* ITERATE AND DELETE MEDICATION with isTABselected=true : END
             //--******* RE-INITIALIZE UnreadNotificationMessageList----
-            DashboardHelper.setUnreadNotificationMessageList(appDBHelper.doGetUnreadReceivedNotificationMessage());
-            initialize();
+            initializeMedicationListView();
             //-------
         } else if (mOldDataTag == RescribeConstants.TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS) {
             UnreadBookAppointTokenNotificationBaseModel customResponse1 = (UnreadBookAppointTokenNotificationBaseModel) customResponse;
@@ -446,10 +470,6 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         mUnreadBookAppointTokenNotificationAdapter = new UnreadBookAppointTokenNotificationAdapter(this, appAlertList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mUnreadTokenNotificationListView.setLayoutManager(mLayoutManager);
-        mUnreadTokenNotificationListView.setItemAnimator(new DefaultItemAnimator());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mUnreadTokenNotificationListView.getContext(),
-                DividerItemDecoration.VERTICAL);
-        mUnreadTokenNotificationListView.addItemDecoration(dividerItemDecoration);
         mUnreadTokenNotificationListView.setAdapter(mUnreadBookAppointTokenNotificationAdapter);
     }
 
@@ -477,13 +497,11 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
     //------
 
-    @OnClick({R.id.bookAppointmentBackButton, R.id.locationTextView})
+    @OnClick({R.id.bookAppointmentBackButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bookAppointmentBackButton:
                 onBackPressed();
-                break;
-            case R.id.locationTextView:
                 break;
         }
     }

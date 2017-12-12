@@ -394,6 +394,7 @@
     <string name="all_notifications">All Notifications</string>
     <string name="medication_alert">Medication Alert</string>
     <string name="offers_alert">Offers Alert</string>
+    <string name="unread_notification_update_received">unread_notification_update_received</string>
 
     <string name="more">MORE</string>
     <string name="skip">SKIP</string>

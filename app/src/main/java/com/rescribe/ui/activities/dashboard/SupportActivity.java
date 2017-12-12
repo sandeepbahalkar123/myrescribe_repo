@@ -2,7 +2,10 @@ package com.rescribe.ui.activities.dashboard;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +24,7 @@ import com.rescribe.helpers.database.MyRecordsData;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
@@ -62,6 +66,7 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
     CustomTextView emailtextView;
     private AppDBHelper appDBHelper;
     private String profileImageString;
+    private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +75,12 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
         ButterKnife.bind(this);
         initialize();
 
-        int appCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, this);
-        int invCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, this);
-        int medCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, this);
-        int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
+        int appCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT).size();
+        int invCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT).size();
+        int medCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT).size();
+        //int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-        int notificationCount = appCount + invCount + medCount + tokCount;
-
+        int notificationCount = appCount + invCount + medCount;
         bottomMenus.clear();
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
@@ -93,11 +97,10 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
             if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
 
                 for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
-                    if(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile)))
-                    {
+                    if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
                         profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
                     }
-                    if(!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
+                    if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                         bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
                         bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
@@ -111,7 +114,11 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
             }
         }
 
-        setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME,this),RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,this));
+        setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, this), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, this));
+
+        mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
+        registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
+
     }
 
     @Override
@@ -284,7 +291,7 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
                 intent.putExtra(RescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
             }
             startActivity(intent);
-        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment)+"s")) {
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment) + "s")) {
             Intent intent = new Intent(this, PrescriptionActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.clicked_item_data_type_value), bottomMenu.getName());
@@ -297,7 +304,7 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(this, AppointmentActivity.class);
             startActivity(intent);
-        }else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
             Intent intent = new Intent(this, SavedArticles.class);
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.clicked_item_data), bottomMenu.getName());
@@ -307,5 +314,48 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
         super.onBottomSheetMenuClick(bottomMenu);
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mUpdateAppUnreadNotificationCount != null) {
+            unregisterReceiver(mUpdateAppUnreadNotificationCount);
+            mUpdateAppUnreadNotificationCount = null;
+        }
+        super.onDestroy();
+    }
+
+    // TODO : THIS IS EXACLTY COPIED FROM HOMEPAGEACTIVITY.java to update count.
+    private class UpdateAppUnreadNotificationCount extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int appCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT).size();
+            int invCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT).size();
+            int medCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT).size();
+            // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
+
+            int notificationCount = appCount + invCount + medCount;// + tokCount;
+            //--- Update count on App_logo
+            for (BottomMenu object :
+                    bottomMenus) {
+                if (object.isAppIcon()) {
+                    object.setNotificationCount(notificationCount);
+                }
+            }
+            doNotifyDataSetChanged();
+            //--------------- :END
+            //---- Update bottom sheet notification_count : START
+            ArrayList<BottomSheetMenu> bottomSheetMenus = SupportActivity.this.bottomSheetMenus;
+            for (BottomSheetMenu object :
+                    bottomSheetMenus) {
+                if (object.getName().equalsIgnoreCase(getString(R.string.notifications))) {
+                    object.setNotificationCount(notificationCount);
+                }
+            }
+            setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, context), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, context));
+            //--------------------------
+            //---- Update bottom sheet notification_count : END
+        }
     }
 }

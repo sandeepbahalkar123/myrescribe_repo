@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Parcelable;
 
 import com.rescribe.R;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.notification.RespondToNotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
@@ -40,6 +41,9 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
         int notificationId = intent.getIntExtra(RescribeConstants.NOTIFICATION_ID, -1);
         int investigation_notification_id = intent.getIntExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, -1);
         int appointment_notification_id = intent.getIntExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, -1);
+
+        int unreadMessNotificationID = intent.getIntExtra(mContext.getString(R.string.unread_notification_update_received), -1);
+
         NotificationManager manager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationId == DosesAlarmTask.BREAKFAST_NOTIFICATION_ID || notificationId == DosesAlarmTask.LUNCH_NOTIFICATION_ID || notificationId == DosesAlarmTask.DINNER_NOTIFICATION_ID || notificationId == DosesAlarmTask.EVENING_NOTIFICATION_ID) {
             String slot = (String) intent.getExtras().get(RescribeConstants.MEDICINE_SLOT);
@@ -61,6 +65,9 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
             }
         } else if (investigation_notification_id == InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID) {
 
+            AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(unreadMessNotificationID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+
+
             ArrayList<InvestigationData> investigationData = intent.getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
             Intent intentNotification = new Intent(mContext, InvestigationActivity.class);
             intentNotification.putExtra(RescribeConstants.INVESTIGATION_LIST, investigationData);
@@ -68,15 +75,20 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
             intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                     Intent.FLAG_ACTIVITY_CLEAR_TOP);
             mContext.startActivity(intentNotification);
+
             manager.cancel(investigationData.get(0).getDrId());
 
         } else if (appointment_notification_id == AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID) {
+
+            AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(unreadMessNotificationID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
+
             Intent intentNotification = new Intent(mContext, AppointmentActivity.class);
             intentNotification.putExtra(RescribeConstants.APPOINTMENT_TIME, intent.getStringExtra(RescribeConstants.APPOINTMENT_TIME));
             intentNotification.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, intent.getBundleExtra(RescribeConstants.APPOINTMENT_MESSAGE));
             intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                     Intent.FLAG_ACTIVITY_CLEAR_TOP);
             mContext.startActivity(intentNotification);
+
             manager.cancel(appointment_notification_id);
         }
 

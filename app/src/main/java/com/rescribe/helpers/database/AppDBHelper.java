@@ -2,18 +2,21 @@ package com.rescribe.helpers.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
+import com.rescribe.R;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.investigation.Images;
 import com.rescribe.model.investigation.InvestigationData;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.util.CommonMethods;
 
 import java.io.File;
@@ -561,11 +564,12 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         db.insert(NOTIFICATION_MESSAGE_TABLE, null, contentValues);
 
+        doGetAppUnreadReceivedNotificationMessage();
         return true;
     }
 
     //String : id|messageType|message
-    public ArrayList<UnreadSavedNotificationMessageData> doGetUnreadReceivedNotificationMessage() {
+    public ArrayList<UnreadSavedNotificationMessageData> doGetAppUnreadReceivedNotificationMessage() {
         SQLiteDatabase db = getReadableDatabase();
         String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE;
         Cursor cursor = db.rawQuery(countQuery, null);
@@ -583,15 +587,22 @@ public class AppDBHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
+
+        mContext.sendBroadcast(new Intent(mContext.getString(R.string.unread_notification_update_received)));
+
+        RescribeApplication.setAppUnreadNotificationMessageList(chatDoctors);
         return chatDoctors;
     }
 
     public int deleteUnreadReceivedNotificationMessage(int id, String notificationType) {
         SQLiteDatabase db = getWritableDatabase();
-        return db.delete(NOTIFICATION_MESSAGE_TABLE,
+        int delete = db.delete(NOTIFICATION_MESSAGE_TABLE,
                 COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ",
                 new String[]{Integer.toString(id), notificationType});
+        doGetAppUnreadReceivedNotificationMessage();
+        return delete;
     }
+
 
     public boolean updateUnreadReceivedNotificationMessage(String dataId, String notificationType, String data) {
         SQLiteDatabase db = getWritableDatabase();
@@ -599,6 +610,8 @@ public class AppDBHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_DATA, data);
 
         db.update(NOTIFICATION_MESSAGE_TABLE, contentValues, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ", new String[]{dataId, notificationType});
+        doGetAppUnreadReceivedNotificationMessage();
+
         return true;
     }
     //----- Notification storing : END

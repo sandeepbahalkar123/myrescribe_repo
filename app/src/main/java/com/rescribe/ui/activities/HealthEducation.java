@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +20,11 @@ import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.saved_article.SavedArticleBaseModel;
 import com.rescribe.model.saved_article.SavedArticleDataModel;
 import com.rescribe.model.saved_article.SavedArticleInfo;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -36,45 +40,44 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
     RecyclerView mSavedArticleListView;
     @BindView(R.id.emptyListView)
     RelativeLayout mEmptyListView;
+    @BindView(R.id.title)
+    CustomTextView title;
     private SavedArticleHealthEducationAdapter mSavedArticleListAdapter;
     private DashboardHelper mHelper;
     private ArrayList<SavedArticleInfo> mReceivedSavedArticleList;
     private int pos;
+    private boolean isHealthEducationApiCalled = true;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.saved_articles_base_layout);
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
+        initialize();
+        getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            getSupportActionBar().setTitle(extras.getString(getString(R.string.clicked_item_data)));
+            title.setText(extras.getString(getString(R.string.clicked_item_data)));
         }
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                finish();
             }
         });
 
 
-        initialize();
     }
 
     private void initialize() {
+        mContext = HealthEducation.this;
         mHelper = new DashboardHelper(this, this);
-        mHelper.doHealthEducationGetSavedArticles();
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
     }
 
@@ -83,6 +86,13 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
         super.onBackPressed();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isHealthEducationApiCalled) {
+            mHelper.doHealthEducationGetSavedArticles();
+        }
+    }
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         switch (mOldDataTag) {
@@ -98,9 +108,10 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
                         mReceivedSavedArticleList = savedArticleDataModel.getSavedArticleList();
                         if (mReceivedSavedArticleList.size() > 0) {
                             isDataListViewVisible(true);
+                            isHealthEducationApiCalled = false;
 
                             //----------
-                            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                             mSavedArticleListView.setLayoutManager(layoutManager);
                             mSavedArticleListView.setHasFixedSize(true);
                             DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
@@ -109,7 +120,7 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
                             );
                             mSavedArticleListView.addItemDecoration(mDividerItemDecoration);
                             //----------
-                            mSavedArticleListAdapter = new SavedArticleHealthEducationAdapter(this, mReceivedSavedArticleList, this);
+                            mSavedArticleListAdapter = new SavedArticleHealthEducationAdapter(mContext, mReceivedSavedArticleList, this);
                             mSavedArticleListView.setAdapter(mSavedArticleListAdapter);
                         } else {
                             isDataListViewVisible(false);
@@ -154,7 +165,7 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
     @Override
     public void onArticleClicked(SavedArticleInfo data) {
 
-        Intent intent = new Intent(this, SaveArticleHealthEducation.class);
+        Intent intent = new Intent(HealthEducation.this, SaveArticleHealthEducation.class);
         Bundle b = new Bundle();
         b.putString(getString(R.string.url), data.getArticleUrl());
         b.putString(getString(R.string.toolbarTitle), getString(R.string.health_education));

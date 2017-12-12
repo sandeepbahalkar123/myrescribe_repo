@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:background="@color/line_color" />
+
     <LinearLayout
         android:id="@+id/searchBarLinearLayout"
         android:layout_width="match_parent"

@@ -166,6 +166,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private DatePickerDialog mDatePickerDialog;
     private String mSelectedTimeStampForNewToken;
     private ColorGenerator mColorGenerator;
+    private String toolbarTitle;
 
 
     public SelectSlotTimeToBookAppointmentFragment() {
@@ -239,6 +240,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         if (arguments != null) {
             activityOpeningFrom = arguments.getString(getString(R.string.clicked_item_data_type_value));
             mSelectedClinicDataPosition = arguments.getInt(getString(R.string.selected_clinic_data_position), -1);
+            toolbarTitle = arguments.getString(getString(R.string.toolbarTitle));
         }
         //--------------
         selectTimeDateExpandableView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -536,7 +538,9 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 }
                 Intent intentObjectMap = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intentObjectMap.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-                intentObjectMap.putExtra(getString(R.string.toolbarTitle), "");
+                intentObjectMap.putExtra(getString(R.string.toolbarTitle), toolbarTitle);
+                intentObjectMap.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentObjectMap.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentObjectMap);
                 //--------
                 break;

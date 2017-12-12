@@ -25,6 +25,7 @@ import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticles;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
 import butterknife.BindView;
@@ -42,6 +43,8 @@ public class HealthRepository extends AppCompatActivity implements IOnMenuClickL
     ImageView imgGroupPhoto;
     @BindView(R.id.healthRepositoryListView)
     RecyclerView healthRepositoryListView;
+    @BindView(R.id.title)
+    CustomTextView title;
     private AppDBHelper appDBHelper;
     private Context mContext;
     private HealthRepositoryAdapter mHealthRepositoryAdapter;
@@ -55,15 +58,16 @@ public class HealthRepository extends AppCompatActivity implements IOnMenuClickL
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
             String value = extras.getString(getString(R.string.clicked_item_data_type_value));
 
             if (mReceivedDashboardMenuListData != null)
-                getSupportActionBar().setTitle(mReceivedDashboardMenuListData.getName());
+               title.setText(mReceivedDashboardMenuListData.getName());
             else if (value != null)
-                getSupportActionBar().setTitle(value);
+                title.setText(value);
         }
 
         if (getSupportActionBar() != null)
@@ -92,7 +96,7 @@ public class HealthRepository extends AppCompatActivity implements IOnMenuClickL
                 requestOptions.dontAnimate();
                 requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
                 requestOptions.skipMemoryCache(true);
-                    requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
+                requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
 
                 Glide.with(this)
                         .load(clickEvent1.getBgImageUrl())

@@ -108,14 +108,14 @@ public class NotificationService extends Service implements HelperResponse {
         String title = getText(R.string.taken_medicine).toString();
 
         //---- Save notification in db---
-        String currentTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.hh_mm_a);
+        String timeStamp = CommonMethods.getCurrentDate() + " " + notificationTimeSlot;
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
         int id = (int) System.currentTimeMillis();
         medication.setUnreadNotificationMessageDataID("" + id);
-        medication.setUnreadNotificationMessageDataTimeStamp(notificationTimeSlot);
+        medication.setUnreadNotificationMessageDataTimeStamp(timeStamp);
 
         String medicationDataDetails = getText(R.string.have_u_taken).toString() + medicineSlot + "|" + new Gson().toJson(medication);
-        appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, medicationDataDetails, currentTimeStamp);
+        appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, medicationDataDetails, timeStamp);
         //-------
 
         // Using RemoteViews to bind custom layouts into Notification

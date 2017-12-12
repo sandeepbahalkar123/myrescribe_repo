@@ -91,7 +91,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         //---- Save notification in db---
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
         int id = (int) System.currentTimeMillis();
-        String currentTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.hh_mm_a);
+        String currentTimeStamp = CommonMethods.getCurrentDate() + " " + time;
         appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message, currentTimeStamp);
         //-------
 

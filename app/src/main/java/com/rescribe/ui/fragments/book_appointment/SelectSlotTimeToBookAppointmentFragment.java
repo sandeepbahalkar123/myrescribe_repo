@@ -330,7 +330,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             SpannableString contentExp = new SpannableString(updatedString);
             contentExp.setSpan(new ForegroundColorSpan(
                             ContextCompat.getColor(getActivity(), R.color.tagColor)),
-                    13, 13 + size,//hightlight mSearchString
+                    13, 13 + String.valueOf(size).length(),//hightlight mSearchString
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             mDocPracticesLocationCount.setText(contentExp);
         } else {
@@ -486,9 +486,9 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
             mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
         } else {
-
-            changeViewBasedOnAppointmentType();
             setDataInViews();
+            changeViewBasedOnAppointmentType();
+
         }
 
     }
@@ -597,7 +597,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private void changeViewBasedOnAppointmentType() {
         if (mSelectedClinicDataObject != null) {
             //----------
-            mClinicName.setText("" + mSelectedClinicDataObject.getClinicName());
+            String clinicName = mSelectedClinicDataObject.getClinicName();
+            if (clinicName.equals("")) {
+                mClinicName.setVisibility(View.GONE);
+            } else {
+                mClinicName.setVisibility(View.VISIBLE);
+                mClinicName.setText("" + clinicName);
+            }
+            //----------
+
             if (mSelectedClinicDataObject.getAmount() == 0) {
                 mRupeesLayout.setVisibility(View.INVISIBLE);
             } else {

@@ -49,10 +49,6 @@ public class Config {
     public static final String APPOINTMENTS = "api/patient/appointments";
     public static final String APPOINTMENTS_DETAILS_URL = "api/patient/appointments?patientId=";
 
-    public static final String INVESTIGATION_LIST = "api/patient/getInvestigationNotifications";
-    public static final String INVESTIGATION_UPLOAD_BY_GMAIL = "api/patient/updateGmailInvestigationUploadStatus";
-    public static final String INVESTIGATION_UPLOAD = "api/upload/InvestigationDocs";
-
     public static final String MY_RECORDS_DOCTOR_LIST = "api/doctors/getDoctorsWithPatientVisits";
     public static final String LIST_ALL_MY_RECORD = "api/records/getRecordList?patientId=";
 
@@ -96,7 +92,14 @@ public class Config {
     public static final String TO_GET_HEALTH_EDUCATION_SAVED_ARTICLES = "api/patient/getArticleList?patientId=";
 
     public static final String TO_SAVE_ARTICLE_TO_SERVER = "api/patient/saveArticle";
-    //-----------SAVED ARTICLE-----------------------
+    //-----------INVESTIGATIONS -----------------------
+
+    public static final String INVESTIGATION_LIST = "api/patient/getInvestigationNotifications";
+    public static final String INVESTIGATION_UPLOAD_BY_GMAIL = "api/patient/updateGmailInvestigationUploadStatus";
+    public static final String INVESTIGATION_UPLOAD = "api/upload/InvestigationDocs";
+    public static final String DO_SKIP_INVESTIGATION = "api/patient/skipInvestigationNotification";
+
+    //-----------------------------------------------
 
 
 }

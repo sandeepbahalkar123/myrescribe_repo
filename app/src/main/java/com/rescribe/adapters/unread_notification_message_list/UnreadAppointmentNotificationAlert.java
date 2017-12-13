@@ -118,6 +118,12 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
                 listener.onMoreClicked(unreadNotificationMessageData);
             }
         });
+        holder.skipItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onSkipClicked(unreadNotificationMessageData);
+            }
+        });
 
     }
 
@@ -151,7 +157,7 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
     public interface OnNotificationItemClicked {
         public void onMoreClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData);
 
-        public void onSkipClicked();
+        public void onSkipClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData);
 
         public void onNotificationRowClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData);
     }

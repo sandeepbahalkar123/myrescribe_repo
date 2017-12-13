@@ -22,6 +22,7 @@ import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
 import com.rescribe.model.dashboard_api.ClickEvent;
 import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 
 import butterknife.BindView;
@@ -41,11 +42,12 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
     @BindView(R.id.listView)
     RecyclerView listView;
     ServicesAdapter mServicesAdapter;
-
     @BindView(R.id.scroll)
     NestedScrollView scroll;
     @BindView(R.id.app_bar_layout)
     AppBarLayout appBarLayout;
+    @BindView(R.id.title)
+    CustomTextView title;
     private Context mContext;
     private int PLACE_PICKER_REQUEST = 10;
     String latitude = "";
@@ -61,15 +63,16 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
             String value = extras.getString(getString(R.string.clicked_item_data_type_value));
 
             if (mReceivedDashboardMenuListData != null)
-                getSupportActionBar().setTitle(mReceivedDashboardMenuListData.getName());
+                title.setText(mReceivedDashboardMenuListData.getName());
             else if (value != null)
-                getSupportActionBar().setTitle(value);
+                title.setText(value);
         }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -121,7 +124,7 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
     @Override
     public void onMenuClick(ClickOption data) {
         // TODO, THIS IS ADDED FOR NOW, OPEN ONLY IF clicked value == DOCTOR
-        if (data.getName().equalsIgnoreCase(getString(R.string.doctor))) {
+        if (data.getName().equalsIgnoreCase(getString(R.string.doctorss))) {
             Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.location_address), address);

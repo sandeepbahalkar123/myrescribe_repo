@@ -38,6 +38,9 @@ public class SavedArticleInfo implements Parcelable {
     @SerializedName("articleUrl")
     @Expose
     private String articleUrl;
+    @SerializedName("isSaved")
+    @Expose
+    private Boolean isSaved;
     public final static Creator<SavedArticleInfo> CREATOR = new Creator<SavedArticleInfo>() {
 
 
@@ -55,6 +58,7 @@ public class SavedArticleInfo implements Parcelable {
             instance.articleImageURL = ((String) in.readValue((String.class.getClassLoader())));
             instance.articleExcerpt = ((String) in.readValue((String.class.getClassLoader())));
             instance.articleUrl = ((String) in.readValue((String.class.getClassLoader())));
+            instance.isSaved = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             return instance;
         }
 
@@ -78,6 +82,7 @@ public class SavedArticleInfo implements Parcelable {
         dest.writeValue(articleImageURL);
         dest.writeValue(articleExcerpt);
         dest.writeValue(articleUrl);
+        dest.writeValue(isSaved);
 
     }
 
@@ -136,7 +141,13 @@ public class SavedArticleInfo implements Parcelable {
     public void setArticleUpdatedDate(String articleUpdatedDate) {
         this.articleUpdatedDate = articleUpdatedDate;
     }
+    public Boolean getIsSaved() {
+        return isSaved;
+    }
 
+    public void setIsSaved(Boolean isSaved) {
+        this.isSaved = isSaved;
+    }
     public String getArticleImageURL() {
         return articleImageURL;
     }

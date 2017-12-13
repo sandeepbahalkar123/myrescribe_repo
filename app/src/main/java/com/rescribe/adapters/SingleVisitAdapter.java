@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.text.SpannableString;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,6 +113,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 }
 
                 if (isLastChild) {
+
                     divider.setVisibility(View.VISIBLE);
                 } else {
                     divider.setVisibility(View.GONE);
@@ -156,17 +158,19 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showVitalDialog(mContext, mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitName(),
-                            mListDataHeader.get(groupPosition).getVitals().get(finali).getUnitValue(),
-                            mListDataHeader.get(groupPosition).getVitals().get(finali).getRanges(),
-                            CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(finali).getIcon()),
-                            mListDataHeader.get(groupPosition).getVitals().get(finali).getCategory());
+                    Vital vitalClickedObject = mListDataHeader.get(groupPosition).getVitals().get(finali);
+                    showVitalDialog(mContext, vitalClickedObject.getUnitName(),
+                            vitalClickedObject.getUnitValue(),
+                            vitalClickedObject.getRanges(),
+                            CommonMethods.getVitalIcons(vitalClickedObject.getIcon()),
+                            vitalClickedObject.getCategory(),
+                            vitalClickedObject.getDisplayName());
                 }
             });
 
             if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName().equals(mContext.getString(R.string.bp))) {
                 String category = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory();
-                if (!category.equals(":")) {
+                if (!category.contains(":")) {
                     String[] categoryForBp = category.split(":");
 
                     categoryForBpMax = categoryForBp[0];
@@ -177,13 +181,20 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 String unitForBpMax = unitForBp[0];
                 String unitForBpMin = unitForBp[1];
                 vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getIcon()));
+
                 vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
+
                 noOfVitals.setText(Html.fromHtml(getUnitValueforBp(categoryForBpMin, categoryForBpMax, unitForBpMin, unitForBpMax)));
 
             } else {
                 //TextColor of vital unit is set according to category
                 vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getIcon()));
-                vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
+
+                //---*************** Show vaital_display_name instead of unitName (EXCEPT BP CASE) : START
+                //  vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
+                vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getDisplayName());
+                //---*************** Show vaital_display_name instead of unitName : END
+
                 noOfVitals.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue());
                 if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.severeRange))) {
                     noOfVitals.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
@@ -320,7 +331,16 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getCaseStudyIcons(mListDataHeader.get(groupPosition).getCaseDetailName()));
         if (!mListDataHeader.get(groupPosition).getCommonData().equals(null)) {
             mVisitDetailList = mListDataHeader.get(groupPosition).getCommonData();
-            groupViewHolder.mDetailFirstPoint.setText(setStringLength(mVisitDetailList.get(0).getName()) + ".......");
+
+
+            if (mVisitDetailList.size() > 1) {
+                groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
+            } else {
+                SpannableString s = CommonMethods.addTextToStringAtLast(mVisitDetailList.get(0).getName(), 5, "...", ContextCompat.getColor(mContext, R.color.view_detail_color));
+                groupViewHolder.mDetailFirstPoint.setText(s);
+            }
+            //groupViewHolder.mDetailFirstPoint.setText(setStringLength(mVisitDetailList.get(0).getName()));// + ".......");
+
         }
         return convertView;
     }
@@ -383,7 +403,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         }
     }
 
-    public Dialog showVitalDialog(Context context, String unitName, String unitValue, List<Range> rangeList, Integer drawable, String category) {
+    public Dialog showVitalDialog(Context context, String unitName, String unitValue, List<Range> rangeList, Integer drawable, String category, String vitalDisplayName) {
 
         final Context mContext = context;
         final Dialog dialog = new Dialog(context);
@@ -593,7 +613,10 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             showVitalNameLayout.setVisibility(View.GONE);
             showVitalRangeLayout.setVisibility(View.GONE);
             noOfVitalsDialog.setText(unitValue);
-            vitalName.setText(unitName);
+            //---*************** Show vaital_display_name instead of unitName : START
+            //vitalName.setText(unitName);
+            vitalName.setText(vitalDisplayName);
+            //---*************** Show vaital_display_name instead of unitName : END
             if (category.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
                 noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
             } else if (category.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
@@ -659,5 +682,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         return range;
     }
 
-
+    public List<PatientHistory> getListDataList() {
+        return mListDataHeader;
+    }
 }

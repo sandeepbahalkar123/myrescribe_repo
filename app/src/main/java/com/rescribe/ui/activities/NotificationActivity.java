@@ -107,14 +107,17 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
         initialize();
 
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
-        for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
-            BottomMenu bottomMenu = new BottomMenu();
-            bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
-            bottomMenu.setMenuName(dashboardBottomMenuList.getName());
-            bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
-            bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.alerts)));
-            addBottomMenu(bottomMenu);
+        if (dashboardBottomMenuLists != null) {
+            for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+                BottomMenu bottomMenu = new BottomMenu();
+                bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
+                bottomMenu.setMenuName(dashboardBottomMenuList.getName());
+                bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
+                bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.alerts)));
+                addBottomMenu(bottomMenu);
+            }
         }
+
     }
 
     private void initialize() {

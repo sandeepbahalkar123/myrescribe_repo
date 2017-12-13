@@ -401,11 +401,16 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                 if (clinicFeesRange.size() > 0) {
                     Integer min = clinicFeesRange.get(0);
                     Integer max = clinicFeesRange.get(clinicFeesRange.size() - 1);
-                    mClinicFeesSeekBarMinValue.setText("" + min);
-                    mClinicFeesSeekBarMaxValue.setText("" + max);
-                    setThumbValue(mLeftThumbView, "" + min);
-                    setThumbValue(mRightThumbView, "" + max);
-                    mClinicFeesSeekBar.setMinValue(Float.parseFloat(String.valueOf(min))).setMaxValue(Float.parseFloat(String.valueOf(max))).setMinStartValue(Float.parseFloat(String.valueOf(min))).setMaxStartValue(Float.parseFloat(String.valueOf(max))).apply();
+                    if (min != 0 && max != 0) {
+                        mClinicFeesSeekBarMinValue.setText("" + min);
+                        mClinicFeesSeekBarMaxValue.setText("" + max);
+                        setThumbValue(mLeftThumbView, "" + min);
+                        setThumbValue(mRightThumbView, "" + max);
+                        mClinicFeesSeekBar.setMinValue(Float.parseFloat(String.valueOf(min)))
+                                .setMaxValue(Float.parseFloat(String.valueOf(max)))
+                                .setMinStartValue(Float.parseFloat(String.valueOf(min)))
+                                .setMaxStartValue(Float.parseFloat(String.valueOf(max))).apply();
+                    }
                 }
                 //------
               /*  ArrayList<String> distanceFeesRange = filterConfigData.get();

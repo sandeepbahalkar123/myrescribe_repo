@@ -36,7 +36,8 @@
                     android:layout_gravity="center"
                     android:text="@string/book_appointment"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp16"
+                    android:textSize="@dimen/sp18"
+                    android:paddingLeft="@dimen/dp12"
                     android:visibility="visible"
                     app:customFont="@string/roboto_bold" />
 
@@ -63,6 +64,7 @@
                             android:drawablePadding="@dimen/dp4"
                             android:drawableRight="@drawable/location_icon"
                             android:text="@string/location"
+                            android:padding="@dimen/dp6"
                             android:textColor="@color/white"
                             android:textSize="@dimen/sp12"
                             app:customFont="@string/roboto_bold"/>

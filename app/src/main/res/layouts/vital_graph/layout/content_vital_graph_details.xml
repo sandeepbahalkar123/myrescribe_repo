@@ -101,7 +101,7 @@
                 android:layout_height="@dimen/dp0"
                 android:layout_marginTop="@dimen/dp10"
                 android:layout_weight="1"
-                android:text="@string/dummy_full"
+                tools:text="@string/dummy_full"
                 android:textSize="@dimen/sp14"
                 app:customFont="@string/roboto_medium" />
 

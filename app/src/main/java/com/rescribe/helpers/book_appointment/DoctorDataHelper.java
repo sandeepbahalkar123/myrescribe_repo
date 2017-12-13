@@ -18,6 +18,8 @@ import com.rescribe.model.book_appointment.doctor_data.request_model.BookAppoint
 import com.rescribe.model.book_appointment.doctor_data.request_model.RequestDoctorListBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.request_model.RequestFavouriteDoctorModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
+import com.rescribe.model.dashboard_api.DashBoardBaseModel;
+import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -41,6 +43,7 @@ public class DoctorDataHelper implements ConnectionListener {
     HelperResponse mHelperResponseManager;
 
     private static DoctorServicesModel receivedDoctorServicesModel = null;
+    private static DashboardDataModel mDashboardDataModel = null;
 
     public DoctorDataHelper(Context context, HelperResponse servicesActivity) {
         this.mContext = context;
@@ -84,6 +87,7 @@ public class DoctorDataHelper implements ConnectionListener {
                 } else if (mOldDataTag == RescribeConstants.TASK_SET_FAVOURITE_DOCTOR) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_DASHBOARD_API) {
+
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
@@ -399,4 +403,50 @@ public class DoctorDataHelper implements ConnectionListener {
     public static void setReceivedDoctorServicesModel(DoctorServicesModel receivedDoctorServicesModel) {
         DoctorDataHelper.receivedDoctorServicesModel = receivedDoctorServicesModel;
     }
+
+    public void doGetTokenUnreadNotification() {
+
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS, Request.Method.GET, true);
+        mConnectionFactory.setHeaderParams();
+
+        String url = Config.TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS + "?patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+
+        mConnectionFactory.setUrl(url);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS);
+
+    }
+
+    public void doRejectBookAppointReceivedToken(String time, int docId, int locationID) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER, Request.Method.POST, true);
+        mConnectionFactory.setHeaderParams();
+
+        BookAppointTokenNotifyAlertRequestModel requestDoctorListBaseModel = new BookAppointTokenNotifyAlertRequestModel();
+        requestDoctorListBaseModel.setDocId(docId);
+        requestDoctorListBaseModel.setTime(time);
+        requestDoctorListBaseModel.setLocationId(locationID);
+        requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+
+        mConnectionFactory.setPostParams(requestDoctorListBaseModel);
+        mConnectionFactory.setUrl(Config.TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER);
+
+    }
+
+    public void doConfirmBookAppointReceivedToken(String time, int docId, int locationID, int tokenNumber) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION, Request.Method.POST, true);
+        mConnectionFactory.setHeaderParams();
+
+        BookAppointTokenNotifyAlertRequestModel requestDoctorListBaseModel = new BookAppointTokenNotifyAlertRequestModel();
+        requestDoctorListBaseModel.setDocId(docId);
+        requestDoctorListBaseModel.setTime(time);
+        requestDoctorListBaseModel.setLocationId(locationID);
+        requestDoctorListBaseModel.setTokenNumber(tokenNumber);
+        requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+
+        mConnectionFactory.setPostParams(requestDoctorListBaseModel);
+        mConnectionFactory.setUrl(Config.TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION);
+
+    }
+
 }

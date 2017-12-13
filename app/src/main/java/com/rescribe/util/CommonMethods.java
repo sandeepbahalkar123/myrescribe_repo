@@ -11,9 +11,13 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -69,6 +73,12 @@ public class CommonMethods {
                 return i + sufixes[i % 10];
 
         }
+    }
+    public static void setBackground(View v, Drawable drawable){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            v.setBackground(drawable);
+        else
+            v.setBackgroundDrawable(drawable);
     }
 
     public static int getDocumentIconByExtension(String extension) {
@@ -622,7 +632,7 @@ public class CommonMethods {
     public static int getDoctorSpecialistIcons(String caseStudyName, Context mContext) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
-        int abbreviation = R.drawable.gynecologist;
+        int abbreviation = R.drawable.endocrinologist;
         if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.cardiologist)))
             abbreviation = R.drawable.cardiologist;
         else if (caseStudyName.equalsIgnoreCase(mContext.getString(R.string.ophthalmologist)))
@@ -838,6 +848,55 @@ public class CommonMethods {
         int widthPixels = metrics.widthPixels;
         int mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
         return mImageSize;
+    }
+
+    public static SpannableString addTextToStringAtLast(String text, int wordSize, String addLastString, int addLastStringColor) {
+        boolean isMultiWordText = false;
+        int spaceCount = 0;
+        int lastIndex = 0;
+        String[] stringSplitted = new String[wordSize];//assuming the sentence has 100 words or less, you can change the value to Integer.MAX_VALUE instead of 10
+
+        String finalString = "";
+        int stringLength = 0;//this will give the character count in the string to be split
+
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == ' ') {   //check whether the character is a space, if yes then count the words
+                spaceCount++;// increment the count as you have encountered a word
+
+            }
+            if (spaceCount == wordSize) {
+                isMultiWordText = true;
+                //after encountering 10 words split the sentence from lastIndex to the 10th word. For the first time lastIndex would be zero that is starting position of the string
+                stringSplitted[stringLength++] = text.substring(lastIndex, i);
+                lastIndex = i;// to get the next part of the sentence, set the last index to 10th word
+                spaceCount = 0;//set the number of spaces to zero to starting counting the next 10 words
+                Log.e("addReadMoreTextToString", stringSplitted[0]);
+            }
+        }
+
+        if (isMultiWordText)
+            stringSplitted[stringLength++] = text.substring(lastIndex, text.length() - 1);//If the sentence has 14 words, only 10 words would be copied to stringSplitted array, this would copy rest of the 4 words into the string splitted array
+        else
+            stringSplitted[stringLength++] = text;
+
+        for (int i = 0; i < stringSplitted.length; i++) {
+            if (stringSplitted[i] != null) {
+
+                if (isMultiWordText) {
+                    finalString = stringSplitted[i] + addLastString;
+                } else {
+                    finalString = stringSplitted[i];
+                }
+
+                SpannableString modifiedText = new SpannableString(finalString);
+                modifiedText.setSpan(new ForegroundColorSpan(addLastStringColor),
+                        stringSplitted[i].length(), finalString.length(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                Log.e("addReadMoreTextToString", "" + stringSplitted[i]);//Print the splitted strings here
+                return modifiedText;
+            }
+        }
+        return null;
     }
 }
 

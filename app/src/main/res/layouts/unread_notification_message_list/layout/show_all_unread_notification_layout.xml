@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/action_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp10"
+            android:layout_marginLeft="@dimen/dp16"
+            android:layout_marginRight="@dimen/dp16"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/docConnectListViewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:gravity="center_vertical">
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/doctorConnect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/doctor_connect"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp15"
+                        app:customFont="@string/roboto_medium" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/doctorConnectFirstMessageTimeStamp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/grey_shade"
+                        android:textSize="@dimen/sp11"
+                        app:customFont="@string/roboto_medium"
+                        tools:text="2m ago" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/docConnectListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:visibility="visible"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
+                    android:background="@color/divider" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/unreadTokenNotificationListViewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:gravity="center_vertical">
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/getToken"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/get_token"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp15"
+                        app:customFont="@string/roboto_medium" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/getTokenFirstMessageTimeStamp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/grey_shade"
+                        android:textSize="@dimen/sp11"
+                        app:customFont="@string/roboto_medium"
+                        tools:text="2m ago" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/unreadTokenNotificationListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:visibility="visible"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
+                    android:background="@color/divider" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/onGoingMedicationListViewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:gravity="center_vertical">
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/on_going_treatment"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp15"
+                        app:customFont="@string/roboto_medium" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/onGoingMedicationFirstMessageTimeStamp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/grey_shade"
+                        android:textSize="@dimen/sp11"
+                        app:customFont="@string/roboto_medium"
+                        tools:text="2m ago" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/onGoingMedicationListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:visibility="visible"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/appointmentsListViewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:gravity="center_vertical">
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/appointments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appointments"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp15"
+                        app:customFont="@string/roboto_medium" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/appointmentsFirstMessageTimeStamp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/grey_shade"
+                        android:textSize="@dimen/sp11"
+                        app:customFont="@string/roboto_medium"
+                        tools:text="2m ago" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/appointmentsListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:visibility="visible"></android.support.v7.widget.RecyclerView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
+                    android:background="@color/divider" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/investigationsListViewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:gravity="center_vertical">
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/investigations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/investigations"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp15"
+                        app:customFont="@string/roboto_medium" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/investigationFirstMessageTimeStamp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/grey_shade"
+                        android:textSize="@dimen/sp11"
+                        app:customFont="@string/roboto_medium"
+                        tools:text="2m ago" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/investigationsListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:visibility="visible"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

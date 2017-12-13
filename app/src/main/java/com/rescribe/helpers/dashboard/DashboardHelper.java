@@ -7,6 +7,13 @@ import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+
+import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
+
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.dashboard_api.DashBoardBaseModel;
+import com.rescribe.model.dashboard_api.DashboardDataModel;
+
 import com.rescribe.model.saved_article.request_model.ArticleToSaveReqModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
@@ -14,6 +21,8 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
+
+import java.util.ArrayList;
 
 /**
  * Created by riteshpandhurkar on 1/3/17.
@@ -24,6 +33,10 @@ public class DashboardHelper implements ConnectionListener {
     String TAG = this.getClass().getName();
     Context mContext;
     HelperResponse mHelperResponseManager;
+
+
+    private DashboardDataModel mDashboardDataModel = null;
+
 
     public DashboardHelper(Context context, HelperResponse loginActivity) {
         this.mContext = context;
@@ -36,7 +49,28 @@ public class DashboardHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_DASHBOARD_API)) {
+                    DashBoardBaseModel dashBoardBaseModel = (DashBoardBaseModel) customResponse;
+                    if (dashBoardBaseModel != null) {
+                        DashboardDataModel dashboardDataModel = dashBoardBaseModel.getDashboardModel();
+                        if (dashboardDataModel != null) {
+                            mDashboardDataModel = dashboardDataModel;
+                            for (int i = 0; i < mDashboardDataModel.getDoctorList().size(); i++) {
+                                DoctorList doctorList = mDashboardDataModel.getDoctorList().get(i);
+                                if (!doctorList.getDocName().toLowerCase().contains("dr.")) {
+                                    doctorList.setDocName("Dr. " + doctorList.getDocName());
+                                }
+                            }
+                        }
+                    }
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_SAVED_ARTICLES)) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER)) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_HEALTH_EDUCATION_ARTICLES)) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                }
                 break;
             case ConnectionListener.PARSE_ERR0R:
                 CommonMethods.Log(TAG, mContext.getString(R.string.parse_error));
@@ -99,24 +133,9 @@ public class DashboardHelper implements ConnectionListener {
     }
 
     public void doGetSavedArticles() {
-        /*try {
-            InputStream is = mContext.getAssets().open("saved_article_list.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "dashboard" + json);
 
-            Gson gson = new Gson();
-            SavedArticleBaseModel bookAppointmentBaseModel = gson.fromJson(json, SavedArticleBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, RescribeConstants.TASK_GET_SAVED_ARTICLES);
 
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
-
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_GET_SAVED_ARTICLES, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_SAVED_ARTICLES, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
 
         String url = Config.TO_GET_SAVED_ARTICLES + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
@@ -125,8 +144,20 @@ public class DashboardHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_SAVED_ARTICLES);
     }
 
+
+    public void doHealthEducationGetSavedArticles() {
+
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_HEALTH_EDUCATION_ARTICLES, Request.Method.GET, true);
+        mConnectionFactory.setHeaderParams();
+
+        String url = Config.TO_GET_HEALTH_EDUCATION_SAVED_ARTICLES + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+
+        mConnectionFactory.setUrl(url);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_GET_HEALTH_EDUCATION_ARTICLES);
+    }
+
     public void doSaveArticlesToServer(String url, boolean isBookMarked) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
 
         ArticleToSaveReqModel reqModel = new ArticleToSaveReqModel();
@@ -140,6 +171,5 @@ public class DashboardHelper implements ConnectionListener {
         mConnectionFactory.setUrl(Config.TO_SAVE_ARTICLE_TO_SERVER);
         mConnectionFactory.createConnection(RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER);
     }
-
 
 }

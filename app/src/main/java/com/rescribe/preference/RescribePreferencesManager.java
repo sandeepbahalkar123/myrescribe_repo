@@ -224,6 +224,7 @@ public class RescribePreferencesManager {
         String APPOINTMENT_ALERT_COUNT = "appointmentAlertCount";
         String INVESTIGATION_ALERT_COUNT = "investigationAlertCount";
         String MEDICATION_ALERT_COUNT = "medicationAlertCount";
+        String CHAT_ALERT_COUNT = "chatAlertCount";
         String TOKEN_ALERT_COUNT = "tokenAlertCount";
         String OFFERS_ALERT_COUNT = "offersAlertCount";
     }
@@ -247,5 +248,6 @@ public class RescribePreferencesManager {
         String USER_NAME = "user_name";
         String PROFILE_PHOTO = "profile_photo";
         String USER_EMAIL = "user_email";
+        String COACHMARK_GET_TOKEN = "coachmark_get_token" ;
     }
 }

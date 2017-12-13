@@ -40,7 +40,7 @@ import butterknife.Unbinder;
  * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class LoginFragment extends Fragment implements HelperResponse{
+public class LoginFragment extends Fragment implements HelperResponse {
 
     @BindView(R.id.editTextMobileNo)
     EditText editTextMobileNo;
@@ -75,6 +75,12 @@ public class LoginFragment extends Fragment implements HelperResponse{
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
         unbinder = ButterKnife.bind(this, rootView);
+
+
+        // TODO : this is done for development, remove it----
+        //   editTextMobileNo.setText("9833898048");
+        //editTextPassword.setText("uren1234");
+        // TODO : this is done for development, remove it----
         return rootView;
     }
 
@@ -147,6 +153,7 @@ public class LoginFragment extends Fragment implements HelperResponse{
                 break;
         }
     }
+
     //validation for mobileNo and password on click of Login Button
     private boolean validatePhoneNo(String mobile) {
         String message = null;
@@ -166,6 +173,7 @@ public class LoginFragment extends Fragment implements HelperResponse{
             return false;
         }
     }
+
     //validation for mobileNo on click of otp Button
     private boolean validate(String mobileNo, String password) {
         String message = null;
@@ -198,7 +206,7 @@ public class LoginFragment extends Fragment implements HelperResponse{
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_LOGIN)) {
-             //After login user navigated to HomepageActivity
+            //After login user navigated to HomepageActivity
             LoginModel loginModel = (LoginModel) customResponse;
             if (loginModel.getCommon().isSuccess()) {
                 CommonMethods.Log(TAG + " Token", loginModel.getLoginData().getAuthToken());
@@ -230,7 +238,7 @@ public class LoginFragment extends Fragment implements HelperResponse{
                 RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), getActivity());
                 Intent intent = new Intent(getActivity(), AppGlobalContainerActivity.class);
                 intent.putExtra(getString(R.string.type), getString(R.string.enter_otp_for_login));
-                intent.putExtra(getString(R.string.title),getString(R.string.enter_otp_for_login));
+                intent.putExtra(getString(R.string.title), getString(R.string.enter_otp_for_login));
                 startActivity(intent);
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());

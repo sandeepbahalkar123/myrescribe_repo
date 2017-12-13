@@ -20,13 +20,17 @@ public class Config {
     public static boolean DEV_BUILD = true;
     //Declared all URL used in app here
 //        public static final String BROKER = "tcp://ec2-13-126-175-156.ap-south-1.compute.amazonaws.com:1883";
-        public static final String BROKER = "tcp://13.127.27.202:1883"; // Dr Rescribe IP
-//    public static final String BROKER = "tcp://192.168.0.182:1883";
+
+
+    public static final String BROKER = "tcp://13.127.27.202:1883"; // Dr Rescribe IP
+    //public static final String BROKER = "tcp://192.168.0.182:1883";
 
     //---------------------
 
-          public static String BASE_URL = "http://drrescribe.com:3003/";
+
+    public static String BASE_URL = "http://drrescribe.com:3003/";
 //    public static String BASE_URL = "http://192.168.0.182:3003/";
+
 
     //---------------------
     public Context mContext;
@@ -73,6 +77,9 @@ public class Config {
     //------ BOOK_APPONINT_TOKEN
     public static final String GET_TOKEN_NUMBER_OTHER_DETAILS = "api/doctors/getTokenNo?";
     public static final String TO_SET_TOKEN_NOTIFICATION_REMAINDER_ALERT = "api/patient/addNotificationReminder";
+    public static final String TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER = "api/patient/rejectTokenNo";
+    public static final String TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS = "api/patient/getTokenUnreadNotifications";
+    public static final String TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION = "api/doctors/confirmTokenNo";
     //------ BOOK_APPONINT_TOKEN
 
     //----- vital graph-------------
@@ -85,7 +92,9 @@ public class Config {
     public static final String LOGOUT = "api/patient/logPatientSignOut";
     public static final String ACTIVE = "api/patient/logPatientActivity";
     //-----------SAVED ARTICLE-----------------------
-    public static final String TO_GET_SAVED_ARTICLES = "api/patient/getArticleList?patientId=";
+    public static final String TO_GET_SAVED_ARTICLES = "api/patient/getSavedArticleList?patientId=";
+    public static final String TO_GET_HEALTH_EDUCATION_SAVED_ARTICLES = "api/patient/getArticleList?patientId=";
+
     public static final String TO_SAVE_ARTICLE_TO_SERVER = "api/patient/saveArticle";
     //-----------SAVED ARTICLE-----------------------
 

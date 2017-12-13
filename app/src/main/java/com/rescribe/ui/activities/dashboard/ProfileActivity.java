@@ -103,14 +103,6 @@ public class ProfileActivity extends DrawerActivity implements HelperResponse {
 
 
     @Override
-    public void onBackPressed() {
-
-
-        super.onBackPressed();
-    }
-
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -255,7 +247,7 @@ public class ProfileActivity extends DrawerActivity implements HelperResponse {
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr.Sandeep Deshmukh ")
-                .setDescription("sandeep_deshmukh@gmail.com")
+                .setDescription("8201888897")
         );
 
         addProfile(new DrawerProfile()
@@ -272,27 +264,27 @@ public class ProfileActivity extends DrawerActivity implements HelperResponse {
                 .setDescription("Manage Profile").setProfile(false) // for fixed item set profile false
         );
 
-        setOnNonProfileClickListener(new DrawerProfile.OnNonProfileClickListener() {
+       setOnNonProfileClickListener(new DrawerProfile.OnNonProfileClickListener() {
             @Override
             public void onProfileItemClick(DrawerProfile profile, long id) {
                 if (id == ADD_ACCOUNT) {
 
                     // Do stuff here
 
-                    addProfile(new DrawerProfile()
+                   /* addProfile(new DrawerProfile()
                             .setId(3)
                             .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(mContext, R.drawable.profile))
-                            .setBackground(ContextCompat.getDrawable(mContext, R.drawable.group_2))
+                            .setBackground(ContextCompat.getDrawable(mContext, R.drawable.coacmark_gettoken))
                             .setName("Mr.Ganesh Deshmukh")
                             .setDescription("ganesh_deshmukh@gmail.com")
-                    );
+                    );*/
 //                    CommonMethods.showToast(mContext, "Profile Added");
 
                 } else if (id == MANAGE_ACCOUNT) {
                     // Do stuff here
 //                    CommonMethods.showToast(mContext, profile.getDescription());
                 }
-                closeDrawer();
+
             }
         });
 

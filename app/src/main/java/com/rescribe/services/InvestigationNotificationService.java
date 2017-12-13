@@ -9,6 +9,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
+import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver;
 import com.rescribe.broadcast_receivers.ClickOnNotificationReceiver;
@@ -18,7 +19,9 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.investigation.InvestigationData;
 import com.rescribe.model.investigation.InvestigationListModel;
+import com.rescribe.model.investigation.InvestigationNotification;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -84,23 +87,39 @@ public class InvestigationNotificationService extends Service implements HelperR
 
     public void customNotification(ArrayList<InvestigationData> value) {
 
-        int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, InvestigationNotificationService.this);
-        RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, preCount + 1, InvestigationNotificationService.this);
+        //-------------
+        InvestigationNotification data = new InvestigationNotification();
+        data.setNotifications(value);
+
+        String time = CommonMethods.getCurrentDate() + " " + intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME);
+        String message = getText(R.string.investigation_msg) + value.get(0).getDoctorName() + "?";
+        //--------------
+
+        //---- Save notification in db---
+        AppDBHelper appDBHelper = AppDBHelper.getInstance(getApplicationContext());
+        appDBHelper.insertUnreadReceivedNotificationMessage(String.valueOf(value.get(0).getDrId()), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, message, new Gson().toJson(data).toString(), time);
+        //-------
 
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
                 R.layout.investigation_notification_layout);
 
+        //---------
         Intent mNotifyYesIntent = new Intent(this, ClickOnCheckBoxOfNotificationReceiver.class);
         mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_LIST, value);
         mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, notification_id);
+        mNotifyYesIntent.putExtra(getString(R.string.unread_notification_update_received), value.get(0).getDrId());
+
         mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, value.get(0).getDrId(), mNotifyYesIntent, 0);
+
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
 
         Intent mNotifyNoIntent = new Intent(this, ClickOnNotificationReceiver.class);
         mNotifyNoIntent.putExtra(RescribeConstants.INVESTIGATION_LIST, value);
         mNotifyNoIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, notification_id);
+        mNotifyNoIntent.putExtra(getString(R.string.unread_notification_update_received), value.get(0).getDrId());
+
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, value.get(0).getDrId(), mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonSkip, mNoPendingIntent);
 
@@ -116,8 +135,10 @@ public class InvestigationNotificationService extends Service implements HelperR
                 .setStyle(new android.support.v7.app.NotificationCompat.DecoratedCustomViewStyle());
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.investigation));
+
         mRemoteViews.setTextViewText(R.id.questionText, getText(R.string.investigation_msg) + value.get(0).getDoctorName() + "?");
         mRemoteViews.setTextViewText(R.id.timeText, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
+
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationmanager.notify(value.get(0).getDrId(), builder.build());
 

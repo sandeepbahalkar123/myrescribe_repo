@@ -13,10 +13,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.model.case_details.Range;
 import com.rescribe.model.doctors.doctor_info.DoctorDetail;
 import com.rescribe.ui.activities.SingleVisitDetailsActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
@@ -44,6 +47,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
     ArrayList<DoctorDetail> mDataList;
     private SimpleDateFormat mDateFormat;
     private int imageSize;
+    private ColorGenerator mColorGenerator;
 
 
     public DoctorListAdapter(Context context, ArrayList<DoctorDetail> dataList) {
@@ -51,6 +55,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
         mDataList = dataList;
         mDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, Locale.US);
         setColumnNumber(context, 2);
+        mColorGenerator = ColorGenerator.MATERIAL;
 
     }
 
@@ -143,12 +148,22 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
             }
         });
 
+
+        int color2 = mColorGenerator.getColor(dataObject.getDoctorName());
+        TextDrawable drawable = TextDrawable.builder()
+                .beginConfig()
+                .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                .endConfig()
+                .buildRound(("" + dataObject.getDoctorName().charAt(0)).toUpperCase(), color2);
+
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.override(imageSize, imageSize);
-        requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+        requestOptions.error(drawable);
+        requestOptions.placeholder(drawable);
 
         Glide.with(mContext)
                 .load(dataObject.getDocImg())

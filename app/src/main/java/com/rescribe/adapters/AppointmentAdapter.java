@@ -133,7 +133,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.override(imageSize, imageSize);
-        requestOptions.placeholder(R.drawable.layer_12);
 
         Glide.with(mContext)
                 .load(appointment.getImageUrl())

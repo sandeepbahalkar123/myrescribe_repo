@@ -8,6 +8,7 @@ public class BookAppointTokenNotifyAlertRequestModel implements CustomResponse {
 
 
     private int patientId;
+    private int tokenNumber;
 
     private String time;
 
@@ -51,5 +52,13 @@ public class BookAppointTokenNotifyAlertRequestModel implements CustomResponse {
 
     public void setOs(String os) {
         this.os = os;
+    }
+
+    public int getTokenNumber() {
+        return tokenNumber;
+    }
+
+    public void setTokenNumber(int tokenNumber) {
+        this.tokenNumber = tokenNumber;
     }
 }

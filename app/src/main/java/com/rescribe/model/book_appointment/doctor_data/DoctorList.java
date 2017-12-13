@@ -63,9 +63,7 @@ public class DoctorList implements Parcelable {
     @SerializedName("aboutDoctor")
     @Expose
     private String aboutDoctor = "";
-
-    //------
-    @SerializedName("docServices")
+    @SerializedName("services")
     @Expose
     private ArrayList<String> docServices = new ArrayList<>();
     @SerializedName("aptDate")

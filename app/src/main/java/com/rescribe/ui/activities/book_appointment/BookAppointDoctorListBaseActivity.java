@@ -1,7 +1,9 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,8 +33,10 @@ import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.ui.activities.NotificationActivity;
 import com.rescribe.ui.activities.PrescriptionActivity;
 import com.rescribe.ui.activities.SelectedRecordsGroupActivity;
+import com.rescribe.ui.activities.dashboard.ProfileActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.SupportActivity;
+import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticles;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
@@ -41,12 +45,15 @@ import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppoi
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
 /**
@@ -81,6 +88,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     private Context mContext;
     private AppDBHelper appDBHelper;
     private String profileImageString;
+    private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,13 +96,24 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         setContentView(R.layout.activity_book_appoint_doc_base_list);
         ButterKnife.bind(this);
         initialize();
+
+        mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
+
+        registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
+
     }
 
     private void initialize() {
+
         mContext = BookAppointDoctorListBaseActivity.this;
         appDBHelper = new AppDBHelper(mContext);
         if (getIntent().getParcelableArrayListExtra(BOTTOM_MENUS) != null) {
             setBottomMenu();
+            bookAppointmentBackButton.setVisibility(View.GONE);
+
+
+        } else {
+            bookAppointmentBackButton.setVisibility(View.VISIBLE);
         }
         //------
         locationTextView.setVisibility(View.VISIBLE);
@@ -127,12 +146,12 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
     private void setBottomMenu() {
 
-        int appCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, this);
-        int invCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, this);
-        int medCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, this);
-        int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
+        int appCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT).size();
+        int invCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT).size();
+        int medCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT).size();
+        //int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-        int notificationCount = appCount + invCount + medCount + tokCount;
+        int notificationCount = appCount + invCount + medCount;
 
         bottomMenus.clear();
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
@@ -222,6 +241,8 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
     @Override
     public void onProfileImageClick() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
 
     }
 
@@ -252,50 +273,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             Intent intent = new Intent(this, VitalGraphActivity.class);
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
-            AppDBHelper appDBHelper = new AppDBHelper(this);
-            Cursor cursor = appDBHelper.getPreferences("1");
-            String breakFastTime = "";
-            String lunchTime = "";
-            String dinnerTime = "";
-            String snacksTime = "";
-
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    breakFastTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
-                    lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
-                    dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
-                    snacksTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.SNACKS_TIME));
-                    cursor.moveToNext();
-                }
-            }
-            cursor.close();
-
-            Calendar c = Calendar.getInstance();
-            int hour24 = c.get(Calendar.HOUR_OF_DAY);
-            int Min = c.get(Calendar.MINUTE);
-
-            String mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
-            Intent intent = new Intent(this, NotificationActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            intent.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-
-            if (mGetMealTime.equals(getString(R.string.break_fast))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
-                intent.putExtra(RescribeConstants.TIME, breakFastTime);
-            } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
-                intent.putExtra(RescribeConstants.TIME, lunchTime);
-            } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
-                intent.putExtra(RescribeConstants.TIME, snacksTime);
-            } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intent.putExtra(RescribeConstants.TIME, dinnerTime);
-            } else if (mGetMealTime.isEmpty()) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intent.putExtra(RescribeConstants.TIME, dinnerTime);
-            }
-
+            Intent intent = new Intent(this, UnreadNotificationMessageActivity.class);
             startActivity(intent);
 
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {
@@ -340,5 +318,49 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         }
         super.onBottomSheetMenuClick(bottomMenu);
 
+    }
+
+    // TODO : THIS IS EXACLTY COPIED FROM HOMEPAGEACTIVITY.java to update count.
+    private class UpdateAppUnreadNotificationCount extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int appCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT).size();
+            int invCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT).size();
+            int medCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT).size();
+            int chatCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT).size();
+            // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
+
+            int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
+            //--- Update count on App_logo
+            for (BottomMenu object :
+                    bottomMenus) {
+                if (object.isAppIcon()) {
+                    object.setNotificationCount(notificationCount);
+                }
+            }
+            doNotifyDataSetChanged();
+            //--------------- :END
+            //---- Update bottom sheet notification_count : START
+            ArrayList<BottomSheetMenu> bottomSheetMenus = BookAppointDoctorListBaseActivity.this.bottomSheetMenus;
+            for (BottomSheetMenu object :
+                    bottomSheetMenus) {
+                if (object.getName().equalsIgnoreCase(getString(R.string.notifications))) {
+                    object.setNotificationCount(notificationCount);
+                }
+            }
+            setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+            //--------------------------
+            //---- Update bottom sheet notification_count : END
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mUpdateAppUnreadNotificationCount != null) {
+            unregisterReceiver(mUpdateAppUnreadNotificationCount);
+            mUpdateAppUnreadNotificationCount = null;
+        }
+        super.onDestroy();
     }
 }

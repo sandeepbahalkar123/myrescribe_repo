@@ -91,8 +91,13 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     @Override
     public void onBindViewHolder(SortByClinicAndDoctorNameAdapter.ListViewHolder holder, final int position) {
         final DoctorList doctorObject = mDataList.get(position);
+        if(doctorObject.getExperience()==0) {
+            holder.doctorExperience.setVisibility(View.GONE);
+        }else{
+            holder.doctorExperience.setVisibility(View.VISIBLE);
+            holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
 
-        holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
+        }
         holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
         holder.aboutDoctor.setText(doctorObject.getDegree());
         //------------
@@ -110,7 +115,9 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         //if only one clinic is available then only show doctoraddress otherwise show total locations available
         if (doctorObject.getClinicDataList().size() == 1) {
             holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
+            holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.dose_completed));
         } else {
+            holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
             holder.doctorAddress.setText("" + doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
         }
         //------------
@@ -122,7 +129,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
         //-------Load image-------
 
-        if (doctorObject.getDoctorImageUrl().equals("")) {
+        if (doctorObject.getDoctorImageUrl() !=null) {
             String doctorName = doctorObject.getDocName();
             if (doctorName.contains("Dr. ")) {
                 doctorName = doctorName.replace("Dr. ", "");
@@ -135,15 +142,15 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                     .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
                     .endConfig()
                     .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-            holder.imageURL.setImageDrawable(drawable);
 
-        } else {
+
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
             requestOptions.override(mImageSize, mImageSize);
-            requestOptions.placeholder(R.drawable.layer_12);
+            requestOptions.placeholder(drawable);
+            requestOptions.error(drawable);
 
             Glide.with(mContext)
                     .load(doctorObject.getDoctorImageUrl())
@@ -181,14 +188,15 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                     while (matcher.find()) {
                         spannableClinicNameString.setSpan(new ForegroundColorSpan(
                                         ContextCompat.getColor(mContext, R.color.tagColor)),
-                                0, 0 + mSearchString.length(),
+                                0, 0 + mSearchClinicNameString.length(),
                                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         holder.clinicName.setText(spannableClinicNameString);
 
                     }
                 } else {
                     holder.clinicName.setVisibility(View.GONE);
-                    if (doctorObject.getClinicDataList().size() == 1) {
+                    /*holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());*/
+                   if (doctorObject.getClinicDataList().size() == 1) {
                         holder.clinicName.setVisibility(View.VISIBLE);
                         holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
                     } else {
@@ -245,7 +253,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.book_appointment));
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 1);
+                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
 
                 mOnClinicAndDoctorNameSearchRowItem.onClickedOfBookButton(b);
             }
@@ -262,28 +270,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             }
         });
 
-        //----*********-------------
-        /*
-        holder.favoriteView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.favorite));
-                b.putString(mContext.getString(R.string.clicked_item_data_value_position), "" + position);
-                mOnClinicAndDoctorNameSearchRowItem.onClickOfDoctorRowItem(b);
-            }
-        });
-        holder.dataLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                b.putString(mContext.getString(R.string.do_operation), mContext.getString(R.string.doctor_details));
-                b.putString(mContext.getString(R.string.clicked_item_data_value_position), "" + position);
-                mOnClinicAndDoctorNameSearchRowItem.onClickOfDoctorRowItem(b);
-            }
-        });*/
     }
 
     @Override
@@ -354,7 +340,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
                     for (DoctorList doctorConnectModel : mArrayList) {
 
-                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(charString.toLowerCase())) {
+                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase()+mContext.getString(R.string.space)+charString.toLowerCase())) {
                             filteredList.add(doctorConnectModel);
                             setListByClinicName(false);
                         } else {

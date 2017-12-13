@@ -16,13 +16,15 @@ import java.util.ArrayList;
  * Created by root on 22/6/16.
  */
 public class CustomSpinnerAdapter extends BaseAdapter {
+    private final int mTextColor;
     Context mContext;
     ArrayList<String> mSelectedOption;
 
 
-    public CustomSpinnerAdapter(Context context, ArrayList<String> spinner_data) {
+    public CustomSpinnerAdapter(Context context, ArrayList<String> spinner_data, int textColor) {
         this.mContext = context;
         this.mSelectedOption = spinner_data;
+        this.mTextColor = textColor;
     }
 
     @Override
@@ -52,6 +54,7 @@ public class CustomSpinnerAdapter extends BaseAdapter {
         TextView txt_id = (TextView) view.findViewById(R.id.custom_spinner_txt_view_Id);
         TextView txt_data = (TextView) view.findViewById(R.id.custom_spinner_txt_view_txtField);
 
+        txt_data.setTextColor(mTextColor);
         txt_data.setText(mSelectedOption.get(position));
         txt_id.setVisibility(View.GONE);
         txt_data.setTag(mSelectedOption.get(position));

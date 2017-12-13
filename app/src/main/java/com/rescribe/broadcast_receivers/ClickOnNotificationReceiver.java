@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.rescribe.R;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.investigation.InvestigationData;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
@@ -33,10 +34,16 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver {
         int appointment_notification_id = intent.getIntExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, 10);
         String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, mContext);
 
+        int unreadMessNotificationID = intent.getIntExtra(mContext.getString(R.string.unread_notification_update_received), -1);
+
         NotificationManager manager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (!RescribeConstants.BLANK.equalsIgnoreCase(loginStatus)) {
             if (notificationId == DosesAlarmTask.BREAKFAST_NOTIFICATION_ID || notificationId == DosesAlarmTask.LUNCH_NOTIFICATION_ID || notificationId == DosesAlarmTask.DINNER_NOTIFICATION_ID || notificationId == DosesAlarmTask.EVENING_NOTIFICATION_ID) {
+
+                AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(unreadMessNotificationID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+
+
                 Intent intentNotification = new Intent(mContext, NotificationActivity.class);
                 intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, intent.getStringExtra(RescribeConstants.MEDICINE_SLOT));
                 intentNotification.putExtra(RescribeConstants.NOTIFICATION_DATE, intent.getStringExtra(RescribeConstants.NOTIFICATION_DATE));
@@ -45,6 +52,8 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver {
                 intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mContext.startActivity(intentNotification);
+
+
                 manager.cancel(notificationId);
             } else if (investigation_notification_id == InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID) {
 

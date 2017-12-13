@@ -122,7 +122,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
                 if (customResponse1.getVitalGraphInfoDataModel() != null) {
                     mReceivedVitalGraphDataModel = customResponse1.getVitalGraphInfoDataModel();
-                    mDescriptionText.setText("" + mReceivedVitalGraphDataModel.getDescription());
+                   // mDescriptionText.setText("" + mReceivedVitalGraphDataModel.getDescription());
                     // plotVitalGraph();
                     mGraphCard.invalidate();
                     if (mClickedVitalGraphData.getVitalName().equalsIgnoreCase("Blood Pressure")) {
@@ -142,7 +142,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
     private void plotVitalGraphUsingMpChart() {
 
-        ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailList();
+        //ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailList();
+        ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailListBySize(5);
         if (vitalGraphDetailList.size() != 0) {
 
             // soring for ascending list
@@ -200,6 +201,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
                     @Override
                     public String getFormattedValue(float value, AxisBase axis) {
+
                         System.out.println(value);
                         if (((int) value) < tempLabelsArrayList.size()) {
                             return (tempLabelsArrayList.get((int) value));
@@ -222,7 +224,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
     private void plotVitalGraphUsingMpChartForBloodPressure() {
 
-        ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailList();
+        // ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailList();
+        ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailListBySize(5);
         if (vitalGraphDetailList.size() != 0) {
 
             // soring for ascending list
@@ -459,4 +462,6 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
         });
 
     }
+
+
 }

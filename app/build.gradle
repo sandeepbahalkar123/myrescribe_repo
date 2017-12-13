@@ -57,7 +57,8 @@ android {
                             'src/main/res/layouts/health_repository',
                             'src/main/res/layouts/health_offers',
                             'src/main/res/layouts/saved_articles',
-                            'src/main/res/layouts/support'
+                            'src/main/res/layouts/support',
+                            'src/main/res/layouts/unread_notification_message_list'
                     ]
         }
     }
@@ -95,6 +96,14 @@ dependencies {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"
     }
+
+
+    compile('com.github.ozodrukh:CircularReveal:1.1.1@aar') {
+        transitive = true;
+        exclude group: 'com.nineoldandroids', module: 'library'
+    }
+
+    compile project(':crystalrangeseekbar')
     compile 'com.google.android.gms:play-services-auth:11.0.4'
     compile 'com.google.android.gms:play-services-places:11.0.4'
     compile 'com.google.android.gms:play-services-location:11.0.4'
@@ -114,22 +123,19 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.google.firebase:firebase-messaging:11.0.4'
     compile 'com.firebase:firebase-jobdispatcher:0.6.0'
-
     compile 'com.github.bumptech.glide:glide:4.3.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
-
-    compile('com.github.ozodrukh:CircularReveal:1.1.1@aar') {
-        transitive = true;
-        exclude group: 'com.nineoldandroids', module: 'library'
-    }
-
     testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
+
     compile project(':crystalrangeseekbar')
+    compile project(path: ':library')
+
 }
 
 apply plugin: 'com.google.gms.google-services'
+
 
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->

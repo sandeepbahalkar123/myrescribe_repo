@@ -21,6 +21,7 @@ import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.model.prescription_response_model.PrescriptionBaseModel;
 import com.rescribe.model.prescription_response_model.PrescriptionData;
 import com.rescribe.model.prescription_response_model.PrescriptionModel;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -33,6 +34,8 @@ import butterknife.ButterKnife;
 public class PrescriptionActivity extends AppCompatActivity
         implements HelperResponse, View.OnClickListener {
 
+    @BindView(R.id.title)
+    CustomTextView title;
     private PrescriptionListAdapter prescriptionListAdapter;
     private final String TAG = this.getClass().getName();
     Context mContext;
@@ -70,15 +73,16 @@ public class PrescriptionActivity extends AppCompatActivity
         mContext = PrescriptionActivity.this;
         mPrescriptionHelper = new PrescriptionHelper(this, this);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
             String value = extras.getString(getString(R.string.clicked_item_data_type_value));
 
             if (mReceivedDashboardMenuListData != null)
-                getSupportActionBar().setTitle(mReceivedDashboardMenuListData.getName());
+                title.setText(mReceivedDashboardMenuListData.getName());
             else if (value != null)
-                getSupportActionBar().setTitle(value);
+                title.setText(value);
 
         }
         mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));

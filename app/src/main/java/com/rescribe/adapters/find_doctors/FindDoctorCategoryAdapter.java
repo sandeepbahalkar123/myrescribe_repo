@@ -1,7 +1,9 @@
 package com.rescribe.adapters.find_doctors;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
@@ -25,6 +27,7 @@ import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -80,7 +83,6 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
         View imageLayout = mInflater.inflate(R.layout.item_book_appointment_doctor_list, view, false);
         assert imageLayout != null;
 
-
         final CardView dashBoardCard = (CardView) imageLayout
                 .findViewById(R.id.dashBoardCard);
         final CustomTextView doctorNameTextView = (CustomTextView) imageLayout
@@ -119,6 +121,8 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 .findViewById(R.id.tokenNo);
         final LinearLayout dataLayout = (LinearLayout) imageLayout
                 .findViewById(R.id.dataLayout);
+        final CustomTextView aboutDoctor = (CustomTextView) imageLayout
+                .findViewById(R.id.aboutDoctor);
 
 
         final DoctorList doctorObject = mDataList.get(position);
@@ -128,7 +132,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
         doctorNameTextView.setText(doctorObject.getDocName());
         //  doctorType.setText(doctorObject.getDegree());
         doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
-
+        aboutDoctor.setText(doctorObject.getDegree() + "");
         //-----THIS IS DONE TO SHOW COUNT OF FAVORITE(CUSTOM CREATED CATEGORY), ASSUME IT WILL COME LAST ALWAYS ----
       /*  int size;
         if (((position == mDataList.size() - 1) && mIsFavAvail)) {
@@ -274,13 +278,9 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                     tokenNo.setVisibility(View.INVISIBLE);
                 }
             }
-            //---------------
-
 
         }
 
-
-        //---------
 
         if (doctorObject.getFavourite()) {
             favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_icon));
@@ -295,7 +295,11 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite, mHelperResponse);
             }
         });
-        dataLayout.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+        dashBoardCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
@@ -305,39 +309,27 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             }
         });
 
-      /*  sizeOfList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
-                b.putString(mContext.getString(R.string.clicked_item_data), "");
-                mServicesCardViewClickListener.onClickOfTotalCount(b);
-
-            }
-        });
-
-
-        dashBoardCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                mServicesCardViewClickListener.onClickOfCardView(b);
-            }
-        });
-
         bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
-                intent.putExtra(mContext.getString(R.string.clicked_item_data), doctorObject);
-                intent.putExtra(mContext.getString(R.string.toolbarTitle), doctorObject.getCategoryName());
-                ((Activity) mContext).startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.book_appointment));
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
+                mServicesCardViewClickListener.onClickedOfBookButton(b);
             }
         });
-*/
-        //-----------
+       tokenNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.token_number));
+                b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
+                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                mServicesCardViewClickListener.onClickedOfTokenNumber(b);
+            }
+        });
+
 
         view.addView(imageLayout, 0);
 

@@ -66,8 +66,9 @@
     <string name="lunch_medication">Lunch Medication</string>
     <string name="breakfast_medication">Breakfast Medication</string>
     <string name="taken_medicine">Have you taken your medicine?</string>
+    <string name="have_u_taken">Have you taken &#160;</string>
     <string name="dosage_completed">Dosage completed?</string>
-    <string name="read_more"><u>more</u></string>
+    <string name="read_more"><u>More</u></string>
     <string name="read_more_text"><u>Read more</u></string>
     <string name="read_less">&#160;<u>
         less</u></string>
@@ -335,7 +336,7 @@
         Website: %5$s
     ]]>
     </string>
-    <string name="view_all">View All</string>
+    <string name="view_all">VIEW ALL</string>
     <string name="platform"><![CDATA[&platform=]]></string>
     <string name="android">android</string>
     <string name="screen_resolution"><![CDATA[&screenResolution=]]></string>
@@ -393,7 +394,13 @@
     <string name="all_notifications">All Notifications</string>
     <string name="medication_alert">Medication Alert</string>
     <string name="offers_alert">Offers Alert</string>
-    <string name="skip">Skip</string>
+    <string name="unread_notification_update_received">unread_notification_update_received</string>
+
+    <string name="more">MORE</string>
+    <string name="skip">SKIP</string>
+    <string name="message_from">Message from </string>
+    <string name="today">today</string>
+
     <!--************************-->
 </resources>
 

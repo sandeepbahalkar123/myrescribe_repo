@@ -4,7 +4,7 @@
     android:id="@+id/text"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/dp16"
+    android:padding="@dimen/dp8"
     android:drawablePadding="@dimen/dp16"
     android:textColor="@color/about_doctor_color"
     android:textSize="@dimen/sp16"

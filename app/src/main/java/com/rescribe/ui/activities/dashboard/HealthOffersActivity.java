@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities.dashboard;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,9 +10,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.health_offers.HealthOffersFragment;
 
 import java.util.ArrayList;
@@ -34,24 +38,28 @@ public class HealthOffersActivity extends AppCompatActivity {
     @BindView(R.id.healthOffersViewpager)
     ViewPager healthOffersViewpager;
     String[] mFragmentTitleList = new String[3];
+    @BindView(R.id.title)
+    CustomTextView title;
     private DashboardMenuList mReceivedDashboardMenuListData;
+    private Typeface mTypeface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.health_offers_base_layout);
         ButterKnife.bind(this);
-
+        mTypeface = Typeface.createFromAsset(getAssets(), "fonts/roboto_bold.ttf");
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
             String value = extras.getString(getString(R.string.clicked_item_data_type_value));
 
             if (mReceivedDashboardMenuListData != null)
-                getSupportActionBar().setTitle(mReceivedDashboardMenuListData.getName());
+                title.setText(mReceivedDashboardMenuListData.getName());
             else if (value != null)
-                getSupportActionBar().setTitle(value);
+               title.setText(value);
         }
 
         if (getSupportActionBar() != null)
@@ -71,7 +79,18 @@ public class HealthOffersActivity extends AppCompatActivity {
 
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(healthOffersViewpager);
-
+        ViewGroup vg = (ViewGroup) mTabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setTypeface(mTypeface, Typeface.NORMAL);
+                }
+            }
+        }
         initialize();
     }
 

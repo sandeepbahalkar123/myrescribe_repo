@@ -2,8 +2,10 @@ package com.rescribe.ui.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -49,6 +51,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
@@ -67,10 +70,10 @@ import com.rescribe.ui.activities.dashboard.HealthOffersActivity;
 import com.rescribe.ui.activities.dashboard.ProfileActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.SupportActivity;
+import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
 import com.rescribe.ui.activities.health_repository.HealthRepository;
-import com.rescribe.ui.activities.saved_articles.SaveArticleWebViewActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticles;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
@@ -162,6 +165,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     private String profileImageString;
     private String locationString;
+    private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
 
 
     @Override
@@ -173,6 +177,8 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         mContext = HomePageActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
+        //----------
+        //----------
         createLocationRequest();
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
 
@@ -195,6 +201,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             if (getIntent().getBooleanExtra(RescribeConstants.ALERT, true))
                 notificationForMedicine();
         }
+
+        mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
+
+        registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
 
         //------
         //  alertTab.setVisibility(View.VISIBLE);
@@ -484,7 +494,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
 
             intent.putExtras(b);
-        } else if (menu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
+        } else if (menu.getName().toLowerCase().startsWith(getString(R.string.on_going_treatment).toLowerCase())) {
             intent = new Intent(mContext, PrescriptionActivity.class);
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
@@ -495,32 +505,23 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
             b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
-
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_offers))) {
             intent = new Intent(mContext, HealthOffersActivity.class);
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
             b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
-
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_education))) {
-
-            intent = new Intent(mContext, SaveArticleWebViewActivity.class);
-            Bundle b = new Bundle();
-            b.putString(getString(R.string.url), menu.getHealthEducationUrl());
-            b.putString(getString(R.string.toolbarTitle), menu.getName());
-            b.putString(getString(R.string.clicked_item_data), getString(R.string.saved_articles));
-            b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
-
-            b.putBoolean(getString(R.string.save), false);
-            intent.putExtras(b);
+            intent = new Intent(mContext, HealthEducation.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.clicked_item_data), menu.getName());
+            intent.putExtras(bundle);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_services))) {
             intent = new Intent(mContext, BookAppointmentServices.class);
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
             b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
-
             intent.putExtras(b);
         }
         if (intent != null)
@@ -565,13 +566,15 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     private void doConfigureMenuOptions() {
 
-        int appCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, this);
-        int invCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, this);
-        int medCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, this);
-        int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
+        int appCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT).size();
+        int invCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT).size();
+        int medCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT).size();
+        int chatCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT).size();
+        // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-        int notificationCount = appCount + invCount + medCount + tokCount;
+        int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
 
+        //------- Menus received from server, like find_doc,ongoing_medication : START
         mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, mDashboardDataModel.getDashboardMenuList());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setAutoMeasureEnabled(true);
@@ -581,8 +584,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 linearLayoutManager.getOrientation());
         mMenuOptionsListView.addItemDecoration(dividerItemDecoration);
         mMenuOptionsListView.setAdapter(mMenuOptionsDashBoardAdapter);
+        //------- Menus received from server, like find_doc,ongoing_medication : START
 
-        // add bottom menu
+        // add bottom menu : like home,setting,support
         dashboardBottomMenuLists = mDashboardDataModel.getDashboardBottomMenuList();
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
             BottomMenu bottomMenu = new BottomMenu();
@@ -595,18 +599,19 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             addBottomMenu(bottomMenu);
         }
 
-        // add bottomSheet menu
+        // add bottomSheet menu like notification,my_records etc (on clicked of app_logo)
         for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
             if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
 
                 for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
-                    if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
+                    ClickOption clickOption = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j);
+                    if (clickOption.getName().equalsIgnoreCase(getString(R.string.profile))) {
+                        profileImageString = clickOption.getIconImageUrl();
                     }
-                    if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
+                    if (!clickOption.getName().equalsIgnoreCase(getString(R.string.profile))) {
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
-                        bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
-                        bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
+                        bottomSheetMenu.setName(clickOption.getName());
+                        bottomSheetMenu.setIconImageUrl(clickOption.getIconImageUrl());
                         bottomSheetMenu.setNotificationCount(notificationCount);
 
                         //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
@@ -619,7 +624,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
         setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
 
-//        setBadgeCount(12);
     }
 
 
@@ -848,7 +852,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Intent intent = new Intent(this, VitalGraphActivity.class);
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
-            Cursor cursor = appDBHelper.getPreferences("1");
+            Intent intent = new Intent(this, UnreadNotificationMessageActivity.class);
+            startActivity(intent);
+            /*  Cursor cursor = appDBHelper.getPreferences("1");
             String breakFastTime = "";
             String lunchTime = "";
             String dinnerTime = "";
@@ -890,8 +896,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
                 intent.putExtra(RescribeConstants.TIME, dinnerTime);
             }
-
-            startActivity(intent);
+*/
 
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {
             MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
@@ -935,10 +940,47 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         }
         super.onBottomSheetMenuClick(bottomMenu);
     }
-/*
+
+    private class UpdateAppUnreadNotificationCount extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int appCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT).size();
+            int invCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT).size();
+            int medCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT).size();
+            int chatCount = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT).size();
+            // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
+
+            int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
+            //--- Update count on App_logo
+            for (BottomMenu object :
+                    bottomMenus) {
+                if (object.isAppIcon()) {
+                    object.setNotificationCount(notificationCount);
+                }
+            }
+            doNotifyDataSetChanged();
+            //--------------- :END
+            //---- Update bottom sheet notification_count : START
+            ArrayList<BottomSheetMenu> bottomSheetMenus = HomePageActivity.this.bottomSheetMenus;
+            for (BottomSheetMenu object :
+                    bottomSheetMenus) {
+                if (object.getName().equalsIgnoreCase(getString(R.string.notifications))) {
+                    object.setNotificationCount(notificationCount);
+                }
+            }
+            setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+            //--------------------------
+            //---- Update bottom sheet notification_count : END
+        }
+    }
+
     @Override
     protected void onDestroy() {
-        RescribeApplication.setPreviousUserSelectedLocationInfo(this, null, null);
+        if (mUpdateAppUnreadNotificationCount != null) {
+            unregisterReceiver(mUpdateAppUnreadNotificationCount);
+            mUpdateAppUnreadNotificationCount = null;
+        }
         super.onDestroy();
-    }*/
+    }
 }

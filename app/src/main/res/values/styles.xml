@@ -61,6 +61,9 @@
         <item name="textAllCaps">false</item>
         <item name="android:textSize">@dimen/sp20</item>
     </style>
+    <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+    </style>
 
     <style name="AppLoginMainStyle">
 
@@ -229,5 +232,21 @@
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
     </style>
-
+    <style name="Material"></style>
+    <style name="Material.App"></style>
+    <style name="Material.App.BottomSheetDialog">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="bsd_inDuration">@android:integer/config_mediumAnimTime</item>
+        <item name="bsd_inInterpolator">@android:anim/decelerate_interpolator</item>
+        <item name="bsd_outDuration">@android:integer/config_mediumAnimTime</item>
+        <item name="bsd_outInterpolator">@android:anim/accelerate_interpolator</item>
+        <item name="bsd_cancelable">true</item>
+        <item name="bsd_canceledOnTouchOutside">true</item>
+        <item name="bsd_dimAmount">0.5</item>
+    </style>
+    <style name="DialogNoAnimation">
+        <item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@null</item>
+    </style>
 </resources>

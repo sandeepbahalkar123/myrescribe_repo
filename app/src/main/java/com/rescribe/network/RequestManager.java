@@ -39,6 +39,7 @@ import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseMod
 import com.rescribe.model.book_appointment.reviews.ReviewListBaseModel;
 import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
+import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookAppointTokenNotificationBaseModel;
 import com.rescribe.model.case_details.CaseDetailsModel;
 import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.history.ChatHistoryModel;
@@ -659,10 +660,22 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, savedArticleBaseModel, mOldDataTag);
                         break;
 
+                    case RescribeConstants.TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS: //This is for get saved article list
+                        UnreadBookAppointTokenNotificationBaseModel odel = new Gson().fromJson(data, UnreadBookAppointTokenNotificationBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, odel, mOldDataTag);
+                        break;
+
+                    case RescribeConstants.TASK_GET_HEALTH_EDUCATION_ARTICLES: //This is for get saved article list
+                        SavedArticleBaseModel savedHealthEducationArticleBaseModel = new Gson().fromJson(data, SavedArticleBaseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, savedHealthEducationArticleBaseModel, mOldDataTag);
+                        break;
+
                     //--- API whose reponse is ONLY COMMON CLASS BASE MODEL-------
                     case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR: //This is for fav doc
                     case RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER: //This is for save article
                     case RescribeConstants.TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER: //This is to set alert for book appoint token remainder
+                    case RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER://This is for to patient rejected received notifiation for specific time.
+                    case RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION://This is for to patient confirm received notifiation for specific time.
                         CommonBaseModelContainer responseFavouriteDoctorBaseModel = new Gson().fromJson(data, CommonBaseModelContainer.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseFavouriteDoctorBaseModel, mOldDataTag);
                         break;

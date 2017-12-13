@@ -9,7 +9,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.rescribe.R;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.interfaces.CustomResponse;
@@ -17,7 +16,6 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -111,14 +109,14 @@ public class SaveArticleWebViewActivity extends AppCompatActivity implements Hel
                     // do your stuff here
                     if (getString(R.string.saved_articles).equalsIgnoreCase(mViewOpeningFrom)) {
                         if (mWebViewObject.canGoBack()) {
-                            mBookMarkIcon.setVisibility(View.VISIBLE);
+                            mBookMarkIcon.setVisibility(View.GONE);
                         } else {
                             mBookMarkIcon.setVisibility(View.GONE);
                             mIsSaved = false;
                             mBookMarkIcon.setImageResource(R.drawable.ic_action_bookmark_border);
                         }
                     } else if (getString(R.string.clicked_saved_articles).equalsIgnoreCase(mViewOpeningFrom)) {
-                        mBookMarkIcon.setVisibility(View.VISIBLE);
+                        mBookMarkIcon.setVisibility(View.GONE);
                     }
 
                 }

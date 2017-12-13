@@ -2,17 +2,22 @@ package com.rescribe.helpers.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
+import com.rescribe.R;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
+import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.investigation.Images;
 import com.rescribe.model.investigation.InvestigationData;
+import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.util.CommonMethods;
 
 import java.io.File;
@@ -21,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class AppDBHelper extends SQLiteOpenHelper {
 
@@ -30,6 +36,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     private static final String MESSAGE_UPLOAD_STATUS = "message_status";
     private static final String MESSAGE_FILE_UPLOAD = "message_file_data";
     private static final String MESSAGE_UPLOAD_TABLE = "my_message_table";
+    private static final String NOTIFICATION_MESSAGE_TABLE = "notification_message_table";
 
     public static final String CHAT_USER_ID = "user_id";
     public static final String MESSAGE = "message";
@@ -69,6 +76,12 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public static final String LUNCH_TIME = "lunchTime";
     public static final String DINNER_TIME = "dinnerTime";
     public static final String SNACKS_TIME = "snacksTime";
+
+    //---
+    public static final String NOTIFICATION_MSG_TYPE = "notification_msg_type";
+    public static final String TIME_STAMP = "time_stamp";
+
+    //---
 
     static AppDBHelper instance = null;
     private Context mContext;
@@ -312,7 +325,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return dataObject;
     }
 
-    public Cursor getAllInvestigationData() {
+    /*public Cursor getAllInvestigationData() {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + INVESTIGATION_TABLE, null);
     }
@@ -325,7 +338,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     // Investigation notification skip
-
     public boolean insertDoctorIdToSkip(int docId) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -351,7 +363,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.delete(SKIP_INV_TABLE,
                 SKIP_INV_DOCTOR_ID + " = ? ",
                 new String[]{String.valueOf(docId)});
-    }
+    }*/
 
     // MyRecords
     public boolean insertMyRecordsData(String id, int status, String data, int docId,int opdId, String visitDate) {
@@ -483,16 +495,11 @@ public class AppDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
+        doMergeUnreadMessageForChatAndOther(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
+
         return chatDoctors;
     }
 
-    /*public int unreadMessageUsersCount() {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from " + MESSAGE_TABLE + " group by " + CHAT_USER_ID, null);
-        int cnt = cursor.getCount();
-        cursor.close();
-        return cnt;
-    }*/
 
     // Chat Upload Data
 
@@ -570,4 +577,133 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }*/
 
     // Chat Upload End
+
+    //----- Notification Storing : START
+
+    public boolean insertUnreadReceivedNotificationMessage(String id, String type, String message, String jsonDataObject, String timeStamp) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COLUMN_ID, id);
+        contentValues.put(NOTIFICATION_MSG_TYPE, type);
+        contentValues.put(MESSAGE, message);
+
+        contentValues.put(COLUMN_DATA, jsonDataObject);
+        contentValues.put(TIME_STAMP, timeStamp);
+
+        db.insert(NOTIFICATION_MESSAGE_TABLE, null, contentValues);
+
+        doMergeUnreadMessageForChatAndOther(type);
+        return true;
+    }
+
+
+    public void doMergeUnreadMessageForChatAndOther(String notificationType) {
+
+        if (notificationType == null) {
+            ArrayList<UnreadSavedNotificationMessageData> list = new ArrayList<>();
+
+            ArrayList<UnreadSavedNotificationMessageData> unreadSavedNotificationMessageData = unreadChatMessagesList();
+            ArrayList<UnreadSavedNotificationMessageData> otherMsgList = doGetAppUnreadReceivedNotificationMessage();
+            list.addAll(unreadSavedNotificationMessageData);
+            list.addAll(otherMsgList);
+            RescribeApplication.setAppUnreadNotificationMessageList(mContext, list);
+
+        } else {
+            ArrayList<UnreadSavedNotificationMessageData> receiveList;
+            if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT.equalsIgnoreCase(notificationType)) {
+                receiveList = unreadChatMessagesList();
+            } else {
+                receiveList = doGetAppUnreadReceivedNotificationMessage();
+            }
+            //--------------
+            ArrayList<UnreadSavedNotificationMessageData> mainList = RescribeApplication.getAppUnreadNotificationMessageList();
+            for (Iterator<UnreadSavedNotificationMessageData> iterator = mainList.iterator(); iterator.hasNext(); ) {
+                UnreadSavedNotificationMessageData object = iterator.next();
+                if (notificationType.equalsIgnoreCase(object.getNotificationMessageType())) {
+                    iterator.remove();
+                }
+            }
+            //--------------
+            mainList.addAll(receiveList);
+            RescribeApplication.setAppUnreadNotificationMessageList(mContext, mainList);
+        }
+
+    }
+
+    public ArrayList<UnreadSavedNotificationMessageData> doGetAppUnreadReceivedNotificationMessage() {
+        SQLiteDatabase db = getReadableDatabase();
+        String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE;
+        Cursor cursor = db.rawQuery(countQuery, null);
+        ArrayList<UnreadSavedNotificationMessageData> chatDoctors = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                UnreadSavedNotificationMessageData unreadNotificationMessageData = new UnreadSavedNotificationMessageData();
+                unreadNotificationMessageData.setId(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
+                unreadNotificationMessageData.setNotificationMessageType(cursor.getString(cursor.getColumnIndex(NOTIFICATION_MSG_TYPE)));
+                unreadNotificationMessageData.setNotificationMessage(cursor.getString(cursor.getColumnIndex(MESSAGE)));
+                unreadNotificationMessageData.setNotificationData(cursor.getString(cursor.getColumnIndex(COLUMN_DATA)));
+                unreadNotificationMessageData.setNotificationTimeStamp(cursor.getString(cursor.getColumnIndex(TIME_STAMP)));
+                chatDoctors.add(unreadNotificationMessageData);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+        return chatDoctors;
+    }
+
+    public void deleteUnreadReceivedNotificationMessage(int id, String notificationType) {
+        SQLiteDatabase db = getWritableDatabase();
+        if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT.equalsIgnoreCase(notificationType)) {
+            deleteUnreadMessage(id);
+        } else {
+            int delete = db.delete(NOTIFICATION_MESSAGE_TABLE,
+                    COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ",
+                    new String[]{Integer.toString(id), notificationType});
+        }
+        doMergeUnreadMessageForChatAndOther(notificationType);
+    }
+
+
+    public boolean updateUnreadReceivedNotificationMessage(String dataId, String notificationType, String data) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_DATA, data);
+
+        db.update(NOTIFICATION_MESSAGE_TABLE, contentValues, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ", new String[]{dataId, notificationType});
+        doMergeUnreadMessageForChatAndOther(notificationType);
+
+        return true;
+    }
+
+    public ArrayList<UnreadSavedNotificationMessageData> unreadChatMessagesList() {
+        SQLiteDatabase db = getReadableDatabase();
+        String countQuery = "select * from " + MESSAGE_TABLE;
+        Cursor cursor = db.rawQuery(countQuery, null);
+        ArrayList<UnreadSavedNotificationMessageData> chatDoctors = new ArrayList<>();
+        Gson gson = new Gson();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                String messageJson = cursor.getString(cursor.getColumnIndex(MESSAGE));
+                UnreadSavedNotificationMessageData unreadNotificationMessageData = new UnreadSavedNotificationMessageData();
+
+                MQTTMessage messageObject = gson.fromJson(messageJson, MQTTMessage.class);
+
+                unreadNotificationMessageData.setId("" + messageObject.getDocId());
+                unreadNotificationMessageData.setNotificationMessageType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
+                unreadNotificationMessageData.setNotificationMessage(mContext.getString(R.string.message_from) + " " + messageObject.getName());
+                unreadNotificationMessageData.setNotificationData(messageObject.getMsg());
+                unreadNotificationMessageData.setNotificationTimeStamp(messageObject.getMsgTime());
+                chatDoctors.add(unreadNotificationMessageData);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+
+        return chatDoctors;
+    }
+    //----- Notification storing : END
 }

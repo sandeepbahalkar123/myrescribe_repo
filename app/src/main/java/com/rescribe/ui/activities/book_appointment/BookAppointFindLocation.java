@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -102,6 +103,10 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     public static final int REQUEST_CHECK_SETTINGS = 10;
+    @BindView(R.id.tryLocations)
+    LinearLayout tryLocations;
+    @BindView(R.id.recentlyVisitedPlaces)
+    LinearLayout recentlyVisitedPlaces;
 
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -180,7 +185,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
             // Selecting the first object buffer.
             final Place place = places.get(0);
 
-            getAddress(place.getLatLng().latitude, place.getLatLng().longitude);
+            getAddress(place.getLatLng().latitude, place.getLatLng().longitude, true);
         }
     };
 
@@ -211,7 +216,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
         }
     }
 
-    public void getAddress(double lat, double lng) {
+    public void getAddress(double lat, double lng, boolean isFromAutoCompleteTextLocation) {
         Geocoder geocoder = new Geocoder(BookAppointFindLocation.this, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
@@ -226,13 +231,15 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                 System.out.println("obj.getAdminArea()" + obj.getAdminArea());
                 System.out.println("obj.getCountryName()" + obj.getCountryName());
                 LatLng location = new LatLng(lat, lng);
-               if(obj.getLocality().equals(null)){
-                   locationString = getArea(obj);
-               }else{
-                   locationString = obj.getSubLocality();
-               }
-                RescribeApplication.setUserSelectedLocationInfo(mContext, location,locationString+ "," + obj.getLocality());
-                detectLocation.setText(locationString + "," + obj.getLocality());
+                if (obj.getLocality().equals(null)) {
+                    locationString = getArea(obj);
+                } else {
+                    locationString = obj.getSubLocality();
+                }
+                RescribeApplication.setUserSelectedLocationInfo(mContext, location, locationString + "," + obj.getLocality());
+                if (!isFromAutoCompleteTextLocation) {
+                    detectLocation.setText(locationString + "," + obj.getLocality());
+                }
                 finish();
                 //DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
                /* mDashboardHelper = new DashboardHelper(this, this);
@@ -260,23 +267,32 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
         if (customResponse != null) {
             RecentVisitedBaseModel recentVisitedBaseModel = (RecentVisitedBaseModel) customResponse;
             if (recentVisitedBaseModel.getRecentVisitedModel() != null) {
-                RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
-                popularPlacesRecyclerView.setLayoutManager(layoutManager);
-                popularPlacesRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                int spanCount = 3; // 3 columns
-                int spacing = 20; // 50px
-                boolean includeEdge = true;
-                popularPlacesRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-                mShowPopularPlacesAdapter = new ShowPopularPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getAreaList(), this);
-                popularPlacesRecyclerView.setAdapter(mShowPopularPlacesAdapter);
-                popularPlacesRecyclerView.setNestedScrollingEnabled(false);
-
-                mRecentPlacesAdapter = new RecentPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList(), this);
-                LinearLayoutManager linearlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-                recentlyVisitedRecyclerView.setLayoutManager(linearlayoutManager);
-                recentlyVisitedRecyclerView.setNestedScrollingEnabled(false);
-                recentlyVisitedRecyclerView.setHasFixedSize(true);
-                recentlyVisitedRecyclerView.setAdapter(mRecentPlacesAdapter);
+                if (recentVisitedBaseModel.getRecentVisitedModel().getAreaList().size() > 0) {
+                    tryLocations.setVisibility(View.VISIBLE);
+                    RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
+                    popularPlacesRecyclerView.setLayoutManager(layoutManager);
+                    popularPlacesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                    int spanCount = 3; // 3 columns
+                    int spacing = 20; // 50px
+                    boolean includeEdge = true;
+                    popularPlacesRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+                    mShowPopularPlacesAdapter = new ShowPopularPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getAreaList(), this);
+                    popularPlacesRecyclerView.setAdapter(mShowPopularPlacesAdapter);
+                    popularPlacesRecyclerView.setNestedScrollingEnabled(false);
+                } else {
+                    tryLocations.setVisibility(View.GONE);
+                }
+                if (recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList().size() > 0) {
+                    recentlyVisitedPlaces.setVisibility(View.VISIBLE);
+                    mRecentPlacesAdapter = new RecentPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList(), this);
+                    LinearLayoutManager linearlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                    recentlyVisitedRecyclerView.setLayoutManager(linearlayoutManager);
+                    recentlyVisitedRecyclerView.setNestedScrollingEnabled(false);
+                    recentlyVisitedRecyclerView.setHasFixedSize(true);
+                    recentlyVisitedRecyclerView.setAdapter(mRecentPlacesAdapter);
+                } else {
+                    recentlyVisitedPlaces.setVisibility(View.GONE);
+                }
             }
         }
     }
@@ -342,7 +358,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
         if (mCurrentLocation == null) return;
 
         // update UI
-        getAddress(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+        getAddress(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), false);
     }
 
     protected synchronized void buildGoogleApiClient() {

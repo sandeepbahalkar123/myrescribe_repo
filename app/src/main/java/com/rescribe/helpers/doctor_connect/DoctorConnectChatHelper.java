@@ -72,7 +72,7 @@ public class DoctorConnectChatHelper implements ConnectionListener {
     }
 
     public void doDoctorConnectChat(String patientId) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.CHAT_USERS, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.CHAT_USERS, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.CHAT_USERS + "?user2id=" + patientId);
         mConnectionFactory.createConnection(RescribeConstants.CHAT_USERS);

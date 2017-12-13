@@ -33,6 +33,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.rescribe.R;
 import com.rescribe.interfaces.CheckIpConnection;
 import com.rescribe.interfaces.DatePickerDialogListener;
@@ -74,8 +76,9 @@ public class CommonMethods {
 
         }
     }
-    public static void setBackground(View v, Drawable drawable){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+
+    public static void setBackground(View v, Drawable drawable) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
             v.setBackground(drawable);
         else
             v.setBackgroundDrawable(drawable);
@@ -485,51 +488,117 @@ public class CommonMethods {
 
     // Return medicine Icon's
 
-    public static Drawable getMedicineTypeImage(String medicineTypeName, Context context) {
+    public static Drawable getMedicineTypeImage(String medicineTypeName, Context context, int colorCodeForUnread) {
+
+        boolean isReqUnread = ContextCompat.getColor(context, R.color.white) == colorCodeForUnread ? true : false;
 
         Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.defaulticon);
-        if (medicineTypeName.equalsIgnoreCase("syrup"))
+        if (medicineTypeName.equalsIgnoreCase("syrup")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.syrup);
-        else if (medicineTypeName.equalsIgnoreCase("Tablet"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_syrup);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("Tablet")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.tablet);
-        else if (medicineTypeName.equalsIgnoreCase("Capsule"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_tablet);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("Capsule")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.capsule);
-        else if (medicineTypeName.equalsIgnoreCase("injection"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_capsule);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("injection")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.injection);
-        else if (medicineTypeName.equalsIgnoreCase("insulin"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_injection);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("insulin")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.insulin);
-        else if (medicineTypeName.equalsIgnoreCase("Inhaler"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_insulin);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("Inhaler")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.inhaler);
-        else if (medicineTypeName.equalsIgnoreCase("liquid"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_inhaler);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("liquid")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.liquid); // not found
-        else if (medicineTypeName.equalsIgnoreCase("tan"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_liquid);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("tan")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.tan);// not found
-        else if (medicineTypeName.equalsIgnoreCase("cream"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_tan);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("cream")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.cream);
-        else if (medicineTypeName.equalsIgnoreCase("jelly"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_cream);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("jelly")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.jelly);
-        else if (medicineTypeName.equalsIgnoreCase("local application"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_jelly);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("local application")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.jelly);// not found
-        else if (medicineTypeName.equalsIgnoreCase("ointment"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_jelly);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("ointment")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.ointment);
-        else if (medicineTypeName.equalsIgnoreCase("lotion"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_ointment);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("lotion")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.lotion);
-        else if (medicineTypeName.equalsIgnoreCase("drops"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_lotion);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("drops")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.drop);
-        else if (medicineTypeName.equalsIgnoreCase("eye drops"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_drop);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("eye drops")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.eyedrops);
-        else if (medicineTypeName.equalsIgnoreCase("nasal drops"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_eyedrops);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("nasal drops")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.nasaldrop);
-        else if (medicineTypeName.equalsIgnoreCase("nasal spray"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_nasaldrop);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("nasal spray")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.nasalspray);
-        else if (medicineTypeName.equalsIgnoreCase("ointment/powder"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_nasalspray);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("ointment/powder")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.ointmentpowder);
-        else if (medicineTypeName.equalsIgnoreCase("respules"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_ointmentpowder);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("respules")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.respules);
-        else if (medicineTypeName.equalsIgnoreCase("rotacaps"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_respules);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("rotacaps")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.rotocaps);
-        else if (medicineTypeName.equalsIgnoreCase("sachet"))
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_rotocaps);
+            }
+        } else if (medicineTypeName.equalsIgnoreCase("sachet")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.sachet);
+            if (isReqUnread) {
+                abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_sachet);
+            }
+        }
 
         return abbreviation;
     }
@@ -897,6 +966,18 @@ public class CommonMethods {
             }
         }
         return null;
+    }
+
+    public static TextDrawable getTextDrawable(Context context, String name) {
+        ColorGenerator mColorGenerator = ColorGenerator.MATERIAL;
+        int color2 = mColorGenerator.getColor(name);
+        TextDrawable drawable = TextDrawable.builder()
+                .beginConfig()
+                .width(Math.round(context.getResources().getDimension(R.dimen.dp40))) // width in px
+                .height(Math.round(context.getResources().getDimension(R.dimen.dp40))) // height in px
+                .endConfig()
+                .buildRound(("" + name.charAt(0)).toUpperCase(), color2);
+        return drawable;
     }
 }
 

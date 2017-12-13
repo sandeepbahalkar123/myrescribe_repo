@@ -6,10 +6,11 @@
     android:layout_height="wrap_content"
     android:paddingBottom="@dimen/dp10"
     android:paddingEnd="@dimen/dp16"
+    android:paddingRight="@dimen/dp5"
     android:paddingStart="@dimen/dp16"
     android:paddingTop="@dimen/dp10"
     android:text="@string/select_date_text"
-    android:textSize="@dimen/sp16"
     android:textColor="@color/black"
+    android:textSize="@dimen/sp16"
     app:customFont="@string/roboto_regular"
     tools:ignore="MissingTranslation" />

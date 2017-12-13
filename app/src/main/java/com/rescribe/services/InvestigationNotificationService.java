@@ -90,7 +90,7 @@ public class InvestigationNotificationService extends Service implements HelperR
         //-------------
         InvestigationNotification data = new InvestigationNotification();
         data.setNotifications(value);
-        int id = (int) System.currentTimeMillis();
+        int id = value.get(0).getId();
 
         String time = CommonMethods.getCurrentDate() + " " + intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME);
         String message = getText(R.string.investigation_msg) + value.get(0).getDoctorName() + "?";

@@ -113,35 +113,25 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         //-----------
         holder.onlineStatusTextView.setText(chatDoctor.getOnlineStatus());
         holder.paidStatusTextView.setText(chatDoctor.getPaidStatus() == DoctorConnectActivity.PAID ? "Rs 255/-" : "FREE");
+        //------------------
         String doctorName = chatDoctor.getDoctorName();
         if (doctorName.contains("Dr. ")) {
             doctorName = doctorName.replace("Dr. ", "");
         }
-        int color2 = mColorGenerator.getColor(doctorName);
-        TextDrawable drawable = TextDrawable.builder()
-                .beginConfig()
-                .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
-                .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
-                .endConfig()
-                .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-        holder.imageOfDoctor.setImageDrawable(drawable);
+        TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
 
-        if (chatDoctor.getImageUrl() != null) {
-            if (!chatDoctor.getImageUrl().equals("")) {
-                RequestOptions requestOptions = new RequestOptions();
-                requestOptions.dontAnimate();
-                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                requestOptions.skipMemoryCache(true);
-                requestOptions.override(CommonMethods.convertDpToPixel(40), CommonMethods.convertDpToPixel(40));
-                requestOptions.placeholder(drawable);
-                requestOptions.error(drawable);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
+        requestOptions.override(CommonMethods.convertDpToPixel(40), CommonMethods.convertDpToPixel(40));
+        requestOptions.placeholder(textDrawable);
+        requestOptions.error(textDrawable);
 
-                Glide.with(mContext)
-                        .load(chatDoctor.getImageUrl())
-                        .apply(requestOptions).thumbnail(0.5f)
-                        .into(holder.imageOfDoctor);
-            }
-        }
+        Glide.with(mContext)
+                .load(chatDoctor.getImageUrl())
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(holder.imageOfDoctor);
 
         //Used spannable to show searchtext in different colour
         SpannableString spannableStringSearch = null;

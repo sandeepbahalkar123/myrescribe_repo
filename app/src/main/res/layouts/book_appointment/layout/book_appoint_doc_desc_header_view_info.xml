@@ -277,6 +277,7 @@
                 <Spinner
                     android:id="@+id/clinicNameSpinner"
                     style="@style/SpinnerTheme"
+                    android:popupElevation="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/dp4"

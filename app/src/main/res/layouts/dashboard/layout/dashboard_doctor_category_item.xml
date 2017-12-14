@@ -122,6 +122,8 @@
                     android:layout_toRightOf="@+id/thumbnail"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp12"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     app:customFont="@string/roboto_bold"
                     tools:text="Dr. Sandeep Patil Clinic" />
 
@@ -138,6 +140,8 @@
                         android:layout_weight="0.5"
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp12"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         app:customFont="@string/roboto_bold"
                         tools:text="Dr. Sandeep Patil" />
 

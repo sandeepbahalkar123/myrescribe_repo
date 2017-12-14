@@ -50,6 +50,8 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
     RelativeLayout mEmptyListView;
     @BindView(R.id.searchView)
     EditTextWithDeleteButton mSearchView;
+    @BindView(R.id.title)
+    CustomTextView title;
     private VitalGraphHelper mVitalGraphHelper;
     private ArrayList<VitalGraphTracker> mReceivedTrackerList;
     private AddTrackerAdapter mVitalGraphTrackerAdapter;
@@ -64,7 +66,8 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        title.setText(getString(R.string.add_tracker));
+        getSupportActionBar().setTitle("");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

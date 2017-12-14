@@ -138,7 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/dp11"
-        android:background="@drawable/type_here_bg"
+        android:background="@drawable/box"
         android:orientation="horizontal">
 
         <AutoCompleteTextView

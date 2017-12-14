@@ -107,13 +107,21 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
         mContext = BookAppointDoctorListBaseActivity.this;
         appDBHelper = new AppDBHelper(mContext);
+
         if (getIntent().getParcelableArrayListExtra(BOTTOM_MENUS) != null) {
             setBottomMenu();
+            int paddingPixel = 30;
+            float density = getResources().getDisplayMetrics().density;
+            int paddingDp = (int)(paddingPixel * density);
             bookAppointmentBackButton.setVisibility(View.GONE);
-
+            mTitleView.setPadding(paddingDp,0,0,0);
 
         } else {
+            int paddingPixel = 16;
+            float density = getResources().getDisplayMetrics().density;
+            int paddingDp = (int)(paddingPixel * density);
             bookAppointmentBackButton.setVisibility(View.VISIBLE);
+            mTitleView.setPadding(paddingDp,0,0,0);
         }
         //------
         locationTextView.setVisibility(View.VISIBLE);

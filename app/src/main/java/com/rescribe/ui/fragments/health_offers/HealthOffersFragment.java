@@ -45,7 +45,7 @@ public class HealthOffersFragment  extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.globle_recycle_viewlist, container, false);
+        mRootView = inflater.inflate(R.layout.health_offers_item_layout, container, false);
 
 
 
@@ -73,6 +73,7 @@ public class HealthOffersFragment  extends Fragment {
         LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mAppointmentListView.setLayoutManager(linearlayoutManager);
         mAppointmentListView.setHasFixedSize(true);
+
         mAppointmentListView.setAdapter(mHealthOffersAdapter);
     }
 

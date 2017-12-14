@@ -47,7 +47,7 @@
                     android:layout_height="68dp"
                     android:layout_centerVertical="true"
                     android:padding="@dimen/dp10"
-                    android:src="@drawable/vitals" />
+                    tools:src="@drawable/vitals" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

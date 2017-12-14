@@ -139,12 +139,16 @@
                             android:layout_toRightOf="@+id/thumbnail"
                             android:textColor="@color/black"
                             android:textSize="@dimen/sp15"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:visibility="gone"
                             app:customFont="@string/roboto_bold"
                             tools:text="Neuro Clinic" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/doctorName"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/doctorType"

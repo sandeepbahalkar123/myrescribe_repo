@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
@@ -58,6 +60,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     private ColorGenerator mColorGenerator;
     private String mSearchClinicNameString;
     private boolean isListByClinicName;
+    private String cityname;
 
 
     public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, Fragment m, HelperResponse mHelperResponse) {
@@ -67,7 +70,11 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         this.mOnClinicAndDoctorNameSearchRowItem = mOnClinicAndDoctorNameSearchRowItem;
         this.mFragment = m;
         this.mHelperResponse = mHelperResponse;
-
+        String cityNameString = RescribeApplication.getUserSelectedLocationInfo().get(mContext.getString(R.string.location));
+        if (cityNameString != null) {
+            String[] split = cityNameString.split(",");
+            cityname = split[1].trim();
+        }
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(mContext, 2);
     }
@@ -114,11 +121,31 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
         //if only one clinic is available then only show doctoraddress otherwise show total locations available
         if (doctorObject.getClinicDataList().size() == 1) {
+            if(doctorObject.getClinicDataList().get(0).getAmount()==0){
+                holder.doctorFee.setVisibility(View.INVISIBLE);
+                holder.ruppessIcon.setVisibility(View.INVISIBLE);
+            }else{
+                holder.doctorFee.setVisibility(View.VISIBLE);
+                holder.ruppessIcon.setVisibility(View.VISIBLE);
+                holder.doctorFee.setText(""+doctorObject.getClinicDataList().get(0).getAmount());
+            }
             holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
             holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.dose_completed));
+
         } else {
             holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-            holder.doctorAddress.setText("" + doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+            SpannableString locationString = new SpannableString( doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations)+mContext.getString(R.string.space)+"in"+mContext.getString(R.string.space)+cityname);
+            locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+            holder.doctorAddress.setText(locationString);
+            if(doctorObject.getClinicDataList().get(0).getAmount()==0){
+                holder.doctorFee.setVisibility(View.INVISIBLE);
+                holder.ruppessIcon.setVisibility(View.INVISIBLE);
+            }else{
+                holder.doctorFee.setVisibility(View.VISIBLE);
+                holder.ruppessIcon.setVisibility(View.VISIBLE);
+                holder.doctorFee.setText(""+doctorObject.getClinicDataList().get(0).getAmount());
+            }
+
         }
         //------------
 
@@ -301,7 +328,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         ImageView tokenNo;
         @BindView(R.id.bookAppointmentButton)
         ImageView bookAppointmentButton;
-
+        @BindView(R.id.ruppessIcon)
+        ImageView ruppessIcon;
         @BindView(R.id.favoriteView)
         ImageView favoriteView;
         @BindView(R.id.imageURL)

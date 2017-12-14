@@ -25,6 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp4"
+            android:paddingLeft="@dimen/dp2"
             android:textColor="@color/view_detail_color"
             android:textSize="@dimen/sp18"
             app:customFont="@string/roboto_medium" />

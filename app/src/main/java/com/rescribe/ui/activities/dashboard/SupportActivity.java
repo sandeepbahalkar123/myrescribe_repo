@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
-import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -64,6 +63,8 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
     CustomTextView callTextView;
     @BindView(R.id.emailtextView)
     CustomTextView emailtextView;
+    @BindView(R.id.title)
+    CustomTextView title;
     private AppDBHelper appDBHelper;
     private String profileImageString;
     private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
@@ -129,7 +130,8 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
     private void initialize() {
         appDBHelper = new AppDBHelper(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getString(R.string.support));
+        getSupportActionBar().setTitle("");
+        title.setText(getString(R.string.support));
     }
 
     @NeedsPermission(Manifest.permission.CALL_PHONE)

@@ -34,7 +34,6 @@ public class SaveArticleHealthEducation extends AppCompatActivity implements Hel
     TextView mWebViewTitle;
     @BindView(R.id.bookMarkIcon)
     ImageView mBookMarkIcon;
-
     String mUrl;
     private boolean mIsSaved = false;
     private DashboardHelper mDashBoardHelper;
@@ -87,7 +86,6 @@ public class SaveArticleHealthEducation extends AppCompatActivity implements Hel
                 Log.e("bookMarkIcon", "getUrl:" + mWebViewObject.getUrl());
                 Log.e("bookMarkIcon", "getOriginalUrl : " + mWebViewObject.getOriginalUrl());
                 Log.e("bookMarkIcon", "getTitle" + mWebViewObject.getTitle());
-
                 mDashBoardHelper.doSaveArticlesToServer(mWebViewObject.getUrl(), localSaved);
                 break;
         }

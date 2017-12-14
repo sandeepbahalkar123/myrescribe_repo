@@ -25,6 +25,7 @@ import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -47,6 +48,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     private int mImageSize;
     private ServicesCardViewImpl mServicesCardViewClickListener;
     private ColorGenerator mColorGenerator;
+    private String cityname;
 
     public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, ServicesCardViewImpl mOnClickOfCardOnDashboard, Map<String, Integer> dataMap, HelperResponse helperResponse) {
         this.mContext = context;
@@ -60,6 +62,11 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             mIsFavAvail = true;
         }
         this.mHelperResponse = helperResponse;
+        String cityNameString = RescribeApplication.getUserSelectedLocationInfo().get(mContext.getString(R.string.location));
+        if (cityNameString != null) {
+            String[] split = cityNameString.split(",");
+            cityname = split[1].trim();
+        }
     }
 
     @Override
@@ -253,7 +260,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations)+mContext.getString(R.string.space)+"in"+mContext.getString(R.string.space)+cityname);
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     doctorAddress.setText(locationString);
                     doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));

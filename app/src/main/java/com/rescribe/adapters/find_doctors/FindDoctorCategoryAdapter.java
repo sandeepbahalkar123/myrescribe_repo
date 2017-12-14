@@ -4,6 +4,7 @@ package com.rescribe.adapters.find_doctors;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
@@ -27,6 +28,7 @@ import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -50,6 +52,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
     private int mImageSize;
     private ServicesCardViewImpl mServicesCardViewClickListener;
     private ColorGenerator mColorGenerator;
+    private String cityname;
 
     public FindDoctorCategoryAdapter(Context context, ArrayList<DoctorList> doctorLists, ServicesCardViewImpl mOnClickOfCardOnDashboard, HelperResponse helperResponse) {
         this.mContext = context;
@@ -64,7 +67,11 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             mIsFavAvail = true;
         }*/
         this.mHelperResponse = helperResponse;
-
+        String cityNameString = RescribeApplication.getUserSelectedLocationInfo().get(mContext.getString(R.string.location));
+        if (cityNameString != null) {
+            String[] split = cityNameString.split(",");
+            cityname = split[1].trim();
+        }
 
     }
 
@@ -89,6 +96,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 .findViewById(R.id.doctorName);
        /* final CustomTextView doctorType = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorType);*/
+       final  ImageView ruppessIcon = (ImageView)imageLayout.findViewById(R.id.ruppessIcon);
         final CustomTextView sizeOfList = (CustomTextView) imageLayout
                 .findViewById(R.id.sizeOfList);
         final CustomTextView doctorExperience = (CustomTextView) imageLayout
@@ -126,7 +134,9 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
 
 
         final DoctorList doctorObject = mDataList.get(position);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            dashBoardCard.setBackground(mContext.getDrawable(R.drawable.result_white_box));
+        }
         doctorCategoryType.setText(doctorObject.getCategorySpeciality());
         //doctorCategory.setText(doctorObject.getCategoryName());
         doctorNameTextView.setText(doctorObject.getDocName());
@@ -190,6 +200,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
 
         if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
             feesToPaid.setVisibility(View.INVISIBLE);
+
             bookAppointmentButton.setVisibility(View.GONE);
             doctorAppointmentDate.setVisibility(View.VISIBLE);
             tokenNo.setVisibility(View.GONE);
@@ -219,12 +230,14 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             }
             //  designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
             doctorAppointmentDate.setVisibility(View.GONE);
-            feesToPaid.setVisibility(View.VISIBLE);
+
             if (doctorObject.getClinicDataList().size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
+                ruppessIcon.setVisibility(View.VISIBLE);
                 feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
             } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
+                ruppessIcon.setVisibility(View.INVISIBLE);
             }
 
             //----------
@@ -248,7 +261,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
 
             } else {
                 if (doctorObject.getClinicDataList().size() > 0) {
-                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations)+mContext.getString(R.string.space)+"in"+mContext.getString(R.string.space)+cityname);
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     doctorAddress.setText(locationString);
                     clinicName.setVisibility(View.INVISIBLE);
@@ -260,11 +273,12 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
 
             if (doctorObject.getClinicDataList().size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
-
+                ruppessIcon.setVisibility(View.VISIBLE);
                 feesToPaid.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
 
             } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
+                ruppessIcon.setVisibility(View.INVISIBLE);
 
             }
 

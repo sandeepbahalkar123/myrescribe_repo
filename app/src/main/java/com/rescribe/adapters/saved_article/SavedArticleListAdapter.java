@@ -3,6 +3,7 @@ package com.rescribe.adapters.saved_article;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -73,9 +74,10 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
         SpannableString s = CommonMethods.addTextToStringAtLast(savedArticleInfo.getArticleExcerpt(), 20, "... READ MORE", ContextCompat.getColor(mContext, R.color.tagColor));
 
         if (s == null) {
-            holder.articleText.setText("" + savedArticleInfo.getArticleExcerpt());
+
+            holder.articleText.setText("" + stripHtml(savedArticleInfo.getArticleExcerpt()));
         } else {
-            holder.articleText.setText(s);
+            holder.articleText.setText(stripHtml(""+s));
         }
 
         //------------
@@ -146,7 +148,13 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
 
         //--------------
     }
-
+    public Spanned stripHtml(String html) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            return Html.fromHtml(html);
+        }
+    }
     @Override
     public int getItemCount() {
         return mReceivedSavedArticleList.size();

@@ -67,7 +67,6 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
 
             AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(unreadMessNotificationID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
 
-
             ArrayList<InvestigationData> investigationData = intent.getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
             Intent intentNotification = new Intent(mContext, InvestigationActivity.class);
             intentNotification.putExtra(RescribeConstants.INVESTIGATION_LIST, investigationData);

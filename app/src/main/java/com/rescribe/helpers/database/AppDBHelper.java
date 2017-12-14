@@ -42,6 +42,10 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public static final String MESSAGE = "message";
     public static final String MESSAGE_TABLE = "unread_messages";
 
+    // Skip Function
+    public static final String SKIP_INV_TABLE = "skip_investigation";
+    public static final String SKIP_INV_DOCTOR_ID = "skip_inv_doctor_id";
+
     public static final String INV_ID = "inv_id";
     public static final String INV_NAME = "inv_name";
     public static final String INV_NAME_KEY = "inv_key";
@@ -321,7 +325,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return dataObject;
     }
 
-    public Cursor getAllInvestigationData() {
+    /*public Cursor getAllInvestigationData() {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + INVESTIGATION_TABLE, null);
     }
@@ -333,9 +337,36 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 new String[]{id});
     }
 
-    // MyRecords
+    // Investigation notification skip
+    public boolean insertDoctorIdToSkip(int docId) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SKIP_INV_DOCTOR_ID, docId);
+        db.insert(SKIP_INV_TABLE, null, contentValues);
+        return true;
+    }
 
-    public boolean insertMyRecordsData(String id, int status, String data, int docId, int opdId, String visitDate) {
+    public int getDoctorIdToSkip(int docId) {
+        SQLiteDatabase db = getReadableDatabase();
+        String countQuery = "select * from " + SKIP_INV_TABLE + " where " + SKIP_INV_DOCTOR_ID + " = '" + docId + "'";
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+
+        if (count > 0)
+            return docId;
+        else return -1;
+    }
+
+    public int deleteDoctorIdToSkip(int docId) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(SKIP_INV_TABLE,
+                SKIP_INV_DOCTOR_ID + " = ? ",
+                new String[]{String.valueOf(docId)});
+    }*/
+
+    // MyRecords
+    public boolean insertMyRecordsData(String id, int status, String data, int docId,int opdId, String visitDate) {
         if (MyRecordsDataTableNumberOfRows(id) == 0) {
             SQLiteDatabase db = getWritableDatabase();
             ContentValues contentValues = new ContentValues();
@@ -402,7 +433,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     public Cursor getAllMyRecordsData() {
         SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery("select from " + MY_RECORDS_TABLE, null);
+        return db.rawQuery("select * from " + MY_RECORDS_TABLE, null);
     }
 
     public int deleteMyRecords() {

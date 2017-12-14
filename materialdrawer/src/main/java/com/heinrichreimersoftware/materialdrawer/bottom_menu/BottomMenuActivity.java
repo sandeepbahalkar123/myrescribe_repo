@@ -269,6 +269,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 
     @Override
     public void onBackPressed() {
+
         if (isOpen)
             closeSheet();
         else

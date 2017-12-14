@@ -52,7 +52,6 @@ import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseMod
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
-import com.rescribe.model.case_details.Range;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.ChatActivity;
@@ -144,6 +143,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     CustomTextView mReceivedTokenNumber;
     @BindView(R.id.scheduledAppointmentsTimeStamp)
     CustomTextView mScheduledAppointmentsTimeStamp;
+    @BindView(R.id.selectClinicLine)
+    View selectClinicLine;
+    @BindView(R.id.yearsExperienceLine)
+    View yearsExperienceLine;
     //--------------
 
     private View mRootView;
@@ -193,6 +196,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     }
 
     private void init() {
+        yearsExperienceLine.setVisibility(View.GONE);
+        selectClinicLine.setVisibility(View.GONE);
         mColorGenerator = ColorGenerator.MATERIAL;
         String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK_GET_TOKEN, mContext);
         if (!coachMarkStatus.equals(RescribeConstants.YES)) {
@@ -531,11 +536,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
                 ArrayList<ClinicData> clinicNameList = mClickedDoctorObject.getClinicDataList();
                 for (int i = 0; i < clinicNameList.size(); i++) {
-                    DoctorList doctorListByClinic = new DoctorList();
-                    doctorListByClinic = mClickedDoctorObject;
-                    doctorListByClinic.setAddressOfDoctorString(clinicNameList.get(i).getClinicAddress());
-                    doctorListByClinic.setNameOfClinicString(clinicNameList.get(i).getClinicName());
-                    doctorListByClinics.add(doctorListByClinic);
+                    DoctorList doctorListByClinic;
+                    try {
+                        doctorListByClinic = (DoctorList) mClickedDoctorObject.clone();
+                        doctorListByClinic.setAddressOfDoctorString(clinicNameList.get(i).getClinicAddress());
+                        doctorListByClinic.setNameOfClinicString(clinicNameList.get(i).getClinicName());
+                        doctorListByClinics.add(doctorListByClinic);
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
                 }
                 Intent intentObjectMap = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intentObjectMap.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);

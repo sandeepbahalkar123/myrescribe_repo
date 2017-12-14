@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 
 //TODO : RESPONSE JSON IS GOING TO CHANGE, ONCE RESPONSE FINAL REMOVE UNWANTED VARIABLES.
-public class DoctorList implements Parcelable {
+public class DoctorList implements Parcelable, Cloneable {
 
     @SerializedName("docId")
     @Expose
@@ -330,6 +330,10 @@ public class DoctorList implements Parcelable {
 
     public int describeContents() {
         return 0;
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
 }

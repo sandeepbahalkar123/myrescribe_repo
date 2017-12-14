@@ -47,7 +47,7 @@
                     android:layout_marginBottom="@dimen/dp4"
                     android:layout_marginLeft="@dimen/dp11"
                     android:layout_marginStart="@dimen/dp11"
-                     android:layout_marginTop="3dp"
+                    android:layout_marginTop="3dp"
                     android:layout_toRightOf="@id/doctorCategoryVisit"
                     android:background="@drawable/show_count_bg"
                     android:gravity="center"
@@ -65,18 +65,13 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/dp10"
                     android:layout_marginTop="@dimen/dp9"
-                    android:background="@drawable/rounded_rectangle_8"
+                    android:background="@drawable/premium_doctor_bg"
                     android:drawableLeft="@drawable/premium_icon"
                     android:drawablePadding="@dimen/dp2"
                     android:gravity="center"
-                    android:paddingBottom="@dimen/dp3"
-                    android:paddingEnd="@dimen/dp4"
-                    android:paddingLeft="@dimen/dp4"
-                    android:paddingRight="@dimen/dp4"
-                    android:paddingStart="@dimen/dp4"
-                    android:paddingTop="@dimen/dp3"
+                    android:padding="@dimen/dp4"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp10"
+                    android:textSize="@dimen/sp12"
                     app:customFont="@string/roboto_medium"
                     tools:text="Premium" />
             </RelativeLayout>
@@ -100,9 +95,9 @@
 
                 <com.rescribe.ui.customesViews.CircularImageView
                     android:id="@+id/imageURL"
-                    android:layout_gravity="center_vertical"
                     android:layout_width="@dimen/dp56"
                     android:layout_height="@dimen/dp56"
+                    android:layout_gravity="center_vertical"
                     android:src="@drawable/layer_12" />
             </LinearLayout>
 
@@ -120,10 +115,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/thumbnail"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp12"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp12"
                     app:customFont="@string/roboto_bold"
                     tools:text="Dr. Sandeep Patil Clinic" />
 
@@ -138,10 +133,10 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/thumbnail"
                         android:layout_weight="0.5"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/sp12"
                         android:ellipsize="end"
                         android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp12"
                         app:customFont="@string/roboto_bold"
                         tools:text="Dr. Sandeep Patil" />
 
@@ -166,6 +161,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey_shade"
                     android:textSize="10sp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     app:customFont="@string/roboto_medium"
                     tools:text="Cardilogist" />
 
@@ -217,7 +214,7 @@
                 android:id="@+id/ratingBar"
                 style="@style/customRatingBar"
                 android:layout_width="wrap_content"
-                android:layout_height="9dp"
+                android:layout_height="10dp"
                 android:layout_marginLeft="@dimen/dp6"
                 android:layout_marginTop="@dimen/dp4"
                 android:layout_toRightOf="@id/doctorRating"
@@ -226,11 +223,12 @@
             <LinearLayout
                 android:id="@+id/bookSlot"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginEnd="@dimen/dp10"
-                android:layout_marginRight="@dimen/dp10"
-                android:layout_height="wrap_content">
+                android:layout_marginRight="@dimen/dp10">
+
                 <ImageView
                     android:id="@+id/bookAppointmentButton"
                     android:layout_width="wrap_content"
@@ -238,6 +236,7 @@
                     android:gravity="right"
                     android:src="@drawable/book"
                     android:visibility="gone" />
+
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/doctorAppointmentDate"
                     android:layout_width="wrap_content"
@@ -248,22 +247,24 @@
                     android:visibility="invisible"
                     app:customFont="@string/roboto_medium"
                     tools:text="Oct 18,2017" />
+
                 <ImageView
                     android:id="@+id/tokenNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:src="@drawable/get_token_btn"
+                    android:visibility="gone"
                     tools:src="@drawable/get_token_btn" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_toStartOf="@id/bookSlot"
+                android:layout_toEndOf="@id/ratingBar"
                 android:layout_toLeftOf="@id/bookSlot"
                 android:layout_toRightOf="@id/ratingBar"
-                android:layout_toEndOf="@id/ratingBar"
+                android:layout_toStartOf="@id/bookSlot"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <com.rescribe.ui.customesViews.CustomTextView

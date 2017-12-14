@@ -21,16 +21,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/dp10"
-                android:paddingRight="@dimen/dp10">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/servicesLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingBottom="@dimen/dp10">
+                    android:padding="@dimen/dp10">
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/servicesHeaderView"
@@ -59,13 +57,20 @@
                         app:customFont="@string/roboto_medium" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
+                    android:background="@color/divider"
+                    android:paddingBottom="@dimen/dp10"
+                    android:paddingTop="@dimen/dp10" />
+
                 <LinearLayout
                     android:id="@+id/aboutLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone"
-                    android:paddingBottom="@dimen/dp10">
+                    android:padding="@dimen/dp10"
+                    android:visibility="gone">
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/aboutDoctor"

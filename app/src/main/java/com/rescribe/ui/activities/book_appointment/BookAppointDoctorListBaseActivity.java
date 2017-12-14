@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -152,7 +153,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         int chatCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
         //int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-        int notificationCount = appCount + invCount + medCount+chatCount;
+        int notificationCount = appCount + invCount + medCount + chatCount;
 
         bottomMenus.clear();
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
@@ -210,8 +211,14 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        DoctorDataHelper.setReceivedDoctorServicesModel(null);
+
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+            mDrawerLayout.closeDrawer(GravityCompat.END);
+        } else {
+            super.onBackPressed();
+            DoctorDataHelper.setReceivedDoctorServicesModel(null);
+        }
+
     }
 
     @Override

@@ -135,8 +135,8 @@ public class DoctorDataHelper implements ConnectionListener {
         //--------In case of complaint added by user from ComplaintFragment.java---
         if (mReceivedComplaintHashMap != null) {
             if (mReceivedComplaintHashMap.size() > 0) {
-                requestDoctorListBaseModel.setComplaint1(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint1)));
-                requestDoctorListBaseModel.setComplaint2(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint2)));
+                requestDoctorListBaseModel.setComplaint(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint1)));
+                //requestDoctorListBaseModel.setComplaint2(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint2)));
             }
         }
         //-----------

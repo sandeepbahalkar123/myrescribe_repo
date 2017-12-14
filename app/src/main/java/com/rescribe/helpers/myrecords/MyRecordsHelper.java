@@ -24,6 +24,7 @@ import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
@@ -55,7 +56,7 @@ public class MyRecordsHelper implements ConnectionListener {
             case ConnectionListener.RESPONSE_OK:
                 CommonMethods.Log(TAG, customResponse.getClass() + " success");
 
-                if (customResponse instanceof NewMyRecordBaseModel){
+                if (customResponse instanceof NewMyRecordBaseModel) {
 
                     NewMyRecordBaseModel newModel = (NewMyRecordBaseModel) customResponse;
                     MyRecordBaseModel model = new MyRecordBaseModel();
@@ -72,6 +73,7 @@ public class MyRecordsHelper implements ConnectionListener {
 
                     for (NewMonth newMonth : newOriginalData.getMonths()) {
                         ArrayList<MyRecordInfoAndReports> docVisits = newMonth.getDocVisits();
+                        Collections.sort(docVisits, new DateWiseComparator());
                         String month = newMonth.getMonth();
                         monthWiseSortedMyRecords.put(month, docVisits);
                     }
@@ -83,14 +85,15 @@ public class MyRecordsHelper implements ConnectionListener {
                     MyRecordDataModel recordMainDataModel = model.getRecordMainDataModel();
                     if (recordMainDataModel.getMyRecordInfoMonthContainer() != null) {
                         MyRecordInfoMonthContainer myRecordInfoMonthContainer = recordMainDataModel.getMyRecordInfoMonthContainer();
-                        yearWiseSortedMyRecordInfoAndReports.put(myRecordInfoMonthContainer.getYear(), myRecordInfoMonthContainer.getMonthWiseSortedMyRecords());
+                        Map<String, ArrayList<MyRecordInfoAndReports>> monthWiseSortedMyRecords1 = myRecordInfoMonthContainer.getMonthWiseSortedMyRecords();
+                        yearWiseSortedMyRecordInfoAndReports.put(myRecordInfoMonthContainer.getYear(), monthWiseSortedMyRecords1);
                     }
                 }
 
                 mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 break;
             case ConnectionListener.PARSE_ERR0R:
-                CommonMethods.Log(TAG,  mContext.getString(R.string.parse_error));
+                CommonMethods.Log(TAG, mContext.getString(R.string.parse_error));
                 mHelperResponseManager.onParseError(mOldDataTag, mContext.getString(R.string.parse_error));
                 break;
             case ConnectionListener.SERVER_ERROR:
@@ -98,8 +101,8 @@ public class MyRecordsHelper implements ConnectionListener {
                 mHelperResponseManager.onServerError(mOldDataTag, mContext.getString(R.string.server_error));
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
-                CommonMethods.Log(TAG,mContext.getString(R.string.no_connection_error));
-                mHelperResponseManager.onNoConnectionError(mOldDataTag,mContext.getString(R.string.no_connection_error));
+                CommonMethods.Log(TAG, mContext.getString(R.string.no_connection_error));
+                mHelperResponseManager.onNoConnectionError(mOldDataTag, mContext.getString(R.string.no_connection_error));
                 break;
             default:
                 CommonMethods.Log(TAG, mContext.getString(R.string.default_error));
@@ -122,7 +125,7 @@ public class MyRecordsHelper implements ConnectionListener {
         mConnectionFactory.setUrl(Config.MY_RECORDS_DOCTOR_LIST + "?patientId=" + patientId);
         mConnectionFactory.createConnection(RescribeConstants.MY_RECORDS_DOCTOR_LIST);
     }
-    
+
     public void addDoctor(RequestAddDoctorModel requestAddDoctorModel) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.MY_RECORDS_ADD_DOCTOR, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
@@ -139,14 +142,14 @@ public class MyRecordsHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_ALL_MY_RECORDS);
     }
 
-    private class DateWiseComparator implements Comparator<String> {
+    private class DateWiseComparator implements Comparator<MyRecordInfoAndReports> {
 
-        public int compare(String m1, String m2) {
+        public int compare(MyRecordInfoAndReports m1, MyRecordInfoAndReports m2) {
 
             //possibly check for nulls to avoid NullPointerException
             //  String s = CommonMethods.formatDateTime(m1, RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
-            Date m1Date = CommonMethods.convertStringToDate(m1, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
-            Date m2Date = CommonMethods.convertStringToDate(m2, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            Date m1Date = CommonMethods.convertStringToDate(m1.getMyRecordDoctorInfo().getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            Date m2Date = CommonMethods.convertStringToDate(m2.getMyRecordDoctorInfo().getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
             int i = m2Date.compareTo(m1Date);
             return i;
         }

@@ -259,12 +259,17 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         if (size > 0) {
             mAllClinicPracticeLocationMainLayout.setVisibility(View.VISIBLE);
 
-            String updatedString = getString(R.string.practices_at_locations).replace("$$", "" + size);
+            String mainString = getString(R.string.practices_at_locations);
+            if (size == 1) {
+                mainString = mainString.substring(0, mainString.length() - 1);
+            }
+            String updatedString = mainString.replace("$$", "" + size);
             SpannableString contentExp = new SpannableString(updatedString);
             contentExp.setSpan(new ForegroundColorSpan(
                             ContextCompat.getColor(getActivity(), R.color.tagColor)),
                     13, 13 + String.valueOf(size).length(),//hightlight mSearchString
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
             mDocPracticesLocationCount.setText(contentExp);
         } else {
             mAllClinicPracticeLocationMainLayout.setVisibility(View.GONE);

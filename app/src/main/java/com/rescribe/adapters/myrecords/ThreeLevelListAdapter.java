@@ -167,10 +167,13 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
         if (groupPosition % 2 == 1) {
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
+            dataObject.setRowColor(ContextCompat.getColor(context, R.color.divider));
             groupViewHolder.sideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.darkblue));
             groupViewHolder.footerSideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.darkblue));
         } else {
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            dataObject.setRowColor(ContextCompat.getColor(context, R.color.white));
+
             groupViewHolder.sideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.recentblue));
             groupViewHolder.footerSideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.recentblue));
         }
@@ -210,8 +213,12 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         MyRecordInfoAndReports group = getGroup(groupPosition);
 
         //----------
+        MyRecordDoctorInfo dataObject = group.getMyRecordDoctorInfo();
+
         int color;
+        int bgColor = dataObject.getRowColor();
         if (groupPosition % 2 == 1) {
+
             color = ContextCompat.getColor(context, R.color.darkblue);
         } else {
             color = ContextCompat.getColor(context, R.color.recentblue);
@@ -219,7 +226,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
         //-----------
 
-        secondLevelELV.setAdapter(new SecondLevelAdapter(context, group.getMyRecordReportInfo(), color));
+        secondLevelELV.setAdapter(new SecondLevelAdapter(context, group.getMyRecordReportInfo(), color, bgColor));
 
         secondLevelELV.setGroupIndicator(null);
         secondLevelELV.setChildIndicator(null);

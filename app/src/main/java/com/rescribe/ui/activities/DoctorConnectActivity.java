@@ -213,11 +213,19 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
                             searchDoctorByNameFragment.setOnClickOfSearchBar(mSearchView.getText().toString());
                         }
                     }, 500);
-                } else {
+                } else if (mSearchView.getText().toString().trim().length() == 0) {
+
                     //search Bar Code
-                    if (searchDoctorByNameFragment != null) {
-                        searchDoctorByNameFragment.setOnClickOfSearchBar(mSearchView.getText().toString());
-                    }
+                    //if (searchDoctorByNameFragment != null) {
+                    //     searchDoctorByNameFragment.setOnClickOfSearchBar(mSearchView.getText().toString());
+                    //  }
+
+                    mFragmentLoaded = SPECIALIZATION_DOCTOR_FRAGMENT;
+                    searchBySpecializationOfDoctorFragment = SearchBySpecializationOfDoctorFragment.newInstance(searchDataModel.getDoctorSpecialities());
+                    FragmentManager supportFragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.container, searchBySpecializationOfDoctorFragment);
+                    fragmentTransaction.commit();
                 }
             }
         };

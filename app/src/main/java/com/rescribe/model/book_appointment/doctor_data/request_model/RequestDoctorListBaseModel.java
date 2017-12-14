@@ -18,10 +18,8 @@ public class RequestDoctorListBaseModel implements CustomResponse {
 
     @SerializedName("complaint1")
     @Expose
-    private String complaint1;
-    @SerializedName("complaint2")
-    @Expose
-    private String complaint2;
+    private String complaint;
+
 
     public String getCityName() {
         return cityName;
@@ -47,19 +45,12 @@ public class RequestDoctorListBaseModel implements CustomResponse {
         this.patientId = patientId;
     }
 
-    public String getComplaint1() {
-        return complaint1;
+    public String getComplaint() {
+        return complaint;
     }
 
-    public void setComplaint1(String complaint1) {
-        this.complaint1 = complaint1;
+    public void setComplaint(String complaint1) {
+        this.complaint = complaint1;
     }
 
-    public String getComplaint2() {
-        return complaint2;
-    }
-
-    public void setComplaint2(String complaint2) {
-        this.complaint2 = complaint2;
-    }
 }

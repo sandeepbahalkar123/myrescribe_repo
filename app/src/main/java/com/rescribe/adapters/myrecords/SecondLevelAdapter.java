@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rescribe.R;
@@ -23,16 +24,18 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
 
     private final int mColor;
     private final String mInvestigationText;
+    private int mBgColor;
     private ArrayList<MyRecordReports> mChildOriginalList;
     private ArrayList<MyRecordReports> mChildListDataHeader;
     private HashMap<MyRecordReports, ArrayList<MyRecordReports.MyRecordReportList>> mChildListDataChild;
 
     private Context context;
 
-    public SecondLevelAdapter(Context context, ArrayList<MyRecordReports> mOriginalList, int color) {
+    public SecondLevelAdapter(Context context, ArrayList<MyRecordReports> mOriginalList, int color, int bgColor) {
         this.context = context;
         this.mChildOriginalList = mOriginalList;
         this.mColor = color;
+        this.mBgColor = bgColor;
 
         this.mChildListDataHeader = new ArrayList<>();
         this.mChildListDataChild = new HashMap<>();
@@ -100,7 +103,7 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
             childGroupViewHolder.headerName.setCompoundDrawablePadding(Math.round(context.getResources().getDimension(R.dimen.dp4)));
         */
             if (isExpanded) {
-                childGroupViewHolder.secondLevelUpDownArrow.setImageResource(R.drawable.up_arrow);
+                childGroupViewHolder.secondLevelUpDownArrow.setImageResource(R.drawable.spinner_icon_down);
             } else {
                 childGroupViewHolder.secondLevelUpDownArrow.setImageResource(R.drawable.down_arrow);
             }
@@ -109,6 +112,7 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
             childGroupViewHolder.secondLevelAttachmentIcon.setVisibility(View.VISIBLE);
         }
         childGroupViewHolder.childSideBarView.setBackgroundColor(mColor);
+        childGroupViewHolder.clickOnDoctorVisitLinearLayout.setBackgroundColor(mBgColor);
         return convertView;
     }
 
@@ -136,6 +140,7 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
 
         childViewHolder.childContent.setText(child.getChildCaptionName());
         childViewHolder.childSideBarView.setBackgroundColor(mColor);
+        childViewHolder.childClickOnDoctorVisitLinearLayout.setBackgroundColor(mBgColor);
 
         return convertView;
     }
@@ -163,6 +168,8 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
 
         @BindView(R.id.headerName)
         CustomTextView headerName;
+        @BindView(R.id.clickOnDoctorVisitLinearLayout)
+        LinearLayout clickOnDoctorVisitLinearLayout;
         @BindView(R.id.secondLevelAttachmentIcon)
         ImageView secondLevelAttachmentIcon;
         @BindView(R.id.secondLevelUpDownArrow)
@@ -181,6 +188,8 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
 
         @BindView(R.id.childContent)
         CustomTextView childContent;
+        @BindView(R.id.clickOnDoctorVisitLinearLayout)
+        LinearLayout childClickOnDoctorVisitLinearLayout;
         @BindView(R.id.cardDetailsBullet)
         ImageView cardDetailsBullet;
         @BindView(R.id.childSideBarView)

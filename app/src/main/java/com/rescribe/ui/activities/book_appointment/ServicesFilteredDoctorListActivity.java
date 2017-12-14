@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -122,6 +123,15 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
                 Intent start = new Intent(this, BookAppointFindLocation.class);
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+            mDrawerLayout.closeDrawer(GravityCompat.END);
+        } else {
+            super.onBackPressed();
         }
     }
 

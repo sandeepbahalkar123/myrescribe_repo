@@ -40,6 +40,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
     private ArrayList<DoctorList> mDoctorCategoryList;
     private String locationReceived = "";
     private DoctorDataHelper doctorDataHelper;
+    private String mReceivedTitle;
 
 
     @Override
@@ -51,7 +52,9 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         setSupportActionBar(toolbar);
         mContext = ShowCategoryWiseDoctor.this;
 
-        getSupportActionBar().setTitle(getIntent().getExtras().getString(getString(R.string.toolbarTitle)));
+          mReceivedTitle = getIntent().getExtras().getString(getString(R.string.toolbarTitle));
+
+        getSupportActionBar().setTitle(mReceivedTitle);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -74,7 +77,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (ShowCategoryWiseDoctor) mContext);
         if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.favorite))) {
             mDoctorCategoryList = mServicesCardViewImpl.getFavouriteDocList(-1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this);
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this,mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             showDoctorList.setLayoutManager(layoutManager);
             showDoctorList.setHasFixedSize(true);
@@ -82,7 +85,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         }else if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.recently_visit_doctor))){
 
             mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(getIntent().getExtras().getString(getString(R.string.toolbarTitle)),-1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this);
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this,mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             showDoctorList.setLayoutManager(layoutManager);
             showDoctorList.setHasFixedSize(true);
@@ -90,7 +93,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         }else if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.sponsered_doctor))){
 
             mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(getIntent().getExtras().getString(getString(R.string.toolbarTitle)),-1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this);
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this,mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             showDoctorList.setLayoutManager(layoutManager);
             showDoctorList.setHasFixedSize(true);
@@ -116,7 +119,8 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
                     //--------
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                     //--------
-                    mBookAppointFilteredDocListAdapter.notifyDataSetChanged();
+                    mBookAppointFilteredDocListAdapter.updateClickedItemFavImage();
+
                 }
                 break;
         }

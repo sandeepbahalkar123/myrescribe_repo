@@ -58,6 +58,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     private ColorGenerator mColorGenerator;
     private String mSearchClinicNameString;
     private boolean isListByClinicName;
+    private ImageView mClickedItemFavImageView;
 
 
     public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, Fragment m, HelperResponse mHelperResponse) {
@@ -221,6 +222,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             public void onClick(View v) {
                 ImageView imageView = (ImageView) v;
                 boolean status = !doctorObject.getFavourite();
+                mClickedItemFavImageView = imageView;
+
                 mOnClinicAndDoctorNameSearchRowItem.onFavoriteIconClick(status, doctorObject, imageView, mHelperResponse);
             }
         });
@@ -384,4 +387,13 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         void onClickOfDoctorRowItem(Bundle bundleData);
     }
 
+
+    public void updateClickedItemFavImage() {
+        DoctorList userSelectedDoctorListDataObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
+        if (userSelectedDoctorListDataObject.getFavourite()) {
+            mClickedItemFavImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_icon));
+        } else {
+            mClickedItemFavImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
+        }
+    }
 }

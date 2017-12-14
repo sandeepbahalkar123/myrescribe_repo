@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -174,10 +175,14 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             isDataListViewVisible(false);
         } else {
             isDataListViewVisible(true);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), mReceivedList, mServicesCardViewImpl, this);
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), mReceivedList, mServicesCardViewImpl, this,mClickedItemDataTypeValue);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             mDoctorListView.setLayoutManager(layoutManager);
             mDoctorListView.setHasFixedSize(true);
+            // off recyclerView Animation
+            RecyclerView.ItemAnimator animator = mDoctorListView.getItemAnimator();
+            if (animator instanceof SimpleItemAnimator)
+                ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
             mDoctorListView.setAdapter(mBookAppointFilteredDocListAdapter);
         }
     }
@@ -194,7 +199,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                     //--------
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                     //--------
-                    mBookAppointFilteredDocListAdapter.notifyDataSetChanged();
+                    mBookAppointFilteredDocListAdapter.updateClickedItemFavImage();
                 }
                 break;
             case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:

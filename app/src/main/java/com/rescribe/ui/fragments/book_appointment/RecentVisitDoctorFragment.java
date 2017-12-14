@@ -137,7 +137,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         searchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {
             @Override
             public void onClearButtonClicked() {
-              isDataListViewVisible(false, false);
+                isDataListViewVisible(false, false);
             }
         });
 
@@ -249,7 +249,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                         mServiceCardDataViewBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                         setUpViewPager();
                         if (showDoctorsRecyclerView.getVisibility() == View.VISIBLE) {
-                            mSortByClinicAndDoctorNameAdapter.notifyDataSetChanged();
+                            mSortByClinicAndDoctorNameAdapter.updateClickedItemFavImage();
                         }
                     }
                     CommonMethods.showToast(getActivity(), responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
@@ -302,7 +302,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 /*int spanCount = 3; // 3 columns
                 int spacing = 30; // 50px*/
                 boolean includeEdge = true;
-               // mBookAppointSpecialityListView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+                // mBookAppointSpecialityListView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
                 mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, mReceivedDoctorServicesModel.getDoctorSpecialities());
                 mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
                 pickSpeciality.setVisibility(View.VISIBLE);
@@ -410,7 +410,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     public void onResume() {
         super.onResume();
         isLocationChanged = doGetLatestDoctorListOnLocationChange(null);
-        if(!isLocationChanged) {
+        if (!isLocationChanged) {
             if (mReceivedDoctorServicesModel != null) {
                 setUpViewPager();
                 if (showDoctorsRecyclerView.getVisibility() == View.VISIBLE && mSortByClinicAndDoctorNameAdapter != null) {

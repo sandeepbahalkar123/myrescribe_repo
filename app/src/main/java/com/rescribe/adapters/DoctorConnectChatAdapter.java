@@ -116,32 +116,21 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         if (doctorName.contains("Dr. ")) {
             doctorName = doctorName.replace("Dr. ", "");
         }
+        //---------------
+        TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
+        requestOptions.override(CommonMethods.convertDpToPixel(40), CommonMethods.convertDpToPixel(40));
+        requestOptions.placeholder(textDrawable);
+        requestOptions.error(textDrawable);
 
-        int color2 = mColorGenerator.getColor(doctorName);
-        TextDrawable drawable = TextDrawable.builder()
-                .beginConfig()
-                .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
-                .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
-                .endConfig()
-                .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-        holder.imageOfDoctor.setImageDrawable(drawable);
-
-        if (doctorConnectChatModel.getImageUrl() != null) {
-            if (!doctorConnectChatModel.getImageUrl().equals("")) {
-                RequestOptions requestOptions = new RequestOptions();
-                requestOptions.dontAnimate();
-                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                requestOptions.skipMemoryCache(true);
-                requestOptions.override(CommonMethods.convertDpToPixel(40), CommonMethods.convertDpToPixel(40));
-                requestOptions.placeholder(drawable);
-                requestOptions.error(drawable);
-
-                Glide.with(mContext)
-                        .load(doctorConnectChatModel.getImageUrl())
-                        .apply(requestOptions).thumbnail(0.5f)
-                        .into(holder.imageOfDoctor);
-            }
-        }
+        Glide.with(mContext)
+                .load(doctorConnectChatModel.getImageUrl())
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(holder.imageOfDoctor);
+        //---------------
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

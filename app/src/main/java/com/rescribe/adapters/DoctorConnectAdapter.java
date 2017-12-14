@@ -112,32 +112,23 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
             doctorName = doctorName.replace("Dr. ", "");
         }
 
-        int color2 = mColorGenerator.getColor(doctorName);
-        TextDrawable drawable = TextDrawable.builder()
-                .beginConfig()
-                .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
-                .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
-                .endConfig()
-                .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-        holder.imageOfDoctor.setImageDrawable(drawable);
 
-        if (chatDoctor.getImageUrl() != null) {
-            if (!chatDoctor.getImageUrl().equals("")) {
-                RequestOptions requestOptions = new RequestOptions();
-                requestOptions.dontAnimate();
-                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                requestOptions.skipMemoryCache(true);
-                requestOptions.override(CommonMethods.convertDpToPixel(40), CommonMethods.convertDpToPixel(40));
-                requestOptions.placeholder(drawable);
-                requestOptions.error(drawable);
+        //-------------------
+        TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
 
-                Glide.with(mContext)
-                        .load(chatDoctor.getImageUrl())
-                        .apply(requestOptions).thumbnail(0.5f)
-                        .into(holder.imageOfDoctor);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
+        requestOptions.override(CommonMethods.convertDpToPixel(40), CommonMethods.convertDpToPixel(40));
+        requestOptions.placeholder(textDrawable);
+        requestOptions.error(textDrawable);
 
-            }
-        }
+        Glide.with(mContext)
+                .load(chatDoctor.getImageUrl())
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(holder.imageOfDoctor);
+        //-------------------
 
         holder.doctorName.setText(chatDoctor.getDoctorName());
 

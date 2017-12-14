@@ -1,6 +1,7 @@
 package com.rescribe.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -167,7 +168,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         //holder.mDays.setText(prescriptionDataObject.getDays()+mContext.getString(R.string.space)+mContext.getString(R.string.days));
         holder.mDays.setText(calculateDays(CommonMethods.getCurrentDateTime(),CommonMethods.getFormattedDate(prescriptionDataObject.getEndDate(),RescribeConstants.DATE_PATTERN.UTC_PATTERN,RescribeConstants.DATE_PATTERN.DD_MM_YYYY)));
         holder.mDoseAge.setText(prescriptionDataObject.getDosage());
-        holder.mMedicineType.setBackgroundDrawable(CommonMethods.getMedicineTypeImage(prescriptionDataObject.getMedicineTypeName(), mContext));
+        holder.mMedicineType.setBackgroundDrawable(CommonMethods.getMedicineTypeImage(prescriptionDataObject.getMedicineTypeName(), mContext, ContextCompat.getColor(mContext,R.color.tagColor)));
 
         setPrescriptionDosageData(holder, position);
 

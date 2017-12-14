@@ -84,7 +84,7 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
 
         itemHolder.tabNameTextView.setText(item.getMedicineName());
         itemHolder.tabCountTextView.setText(item.getQuantity());
-        itemHolder.tabImageView.setImageDrawable(CommonMethods.getMedicineTypeImage(item.getMedicineTypeName(), mContext));
+        itemHolder.tabImageView.setImageDrawable(CommonMethods.getMedicineTypeImage(item.getMedicineTypeName(), mContext,ContextCompat.getColor(mContext, R.color.white)));
 
         itemHolder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override

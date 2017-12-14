@@ -16,6 +16,7 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import java.util.Map;
 
 public class InvestigationHelper implements ConnectionListener {
 
+    private HelperResponse mHelperResponseManager;
     private String TAG = this.getClass().getName();
     private Context mContext;
 
@@ -32,6 +34,10 @@ public class InvestigationHelper implements ConnectionListener {
         this.mContext = context;
     }
 
+    public InvestigationHelper(Context context, HelperResponse mHelperResponseManager) {
+        this.mContext = context;
+        this.mHelperResponseManager = mHelperResponseManager;
+    }
 
     @Override
     public void onResponse(int responseResult, CustomResponse customResponse, String mOldDataTag) {
@@ -51,8 +57,8 @@ public class InvestigationHelper implements ConnectionListener {
 
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
-                CommonMethods.Log(TAG,mContext.getString(R.string.no_connection_error));
-                ((HelperResponse) mContext).onNoConnectionError(mOldDataTag,mContext.getString(R.string.no_connection_error));
+                CommonMethods.Log(TAG, mContext.getString(R.string.no_connection_error));
+                ((HelperResponse) mContext).onNoConnectionError(mOldDataTag, mContext.getString(R.string.no_connection_error));
                 break;
             default:
                 CommonMethods.Log(TAG, mContext.getString(R.string.default_error));
@@ -101,4 +107,19 @@ public class InvestigationHelper implements ConnectionListener {
         mConnectionFactory.setUrl(Config.INVESTIGATION_UPLOAD);
         mConnectionFactory.createConnection(RescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED);
     }
+
+    public void doSkipInvestigation(int invID) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DO_SKIP_INVESTIGATION, Request.Method.POST, false);
+        mConnectionFactory.setHeaderParams();
+        String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        InvestigationUploadByGmailRequest obj = new InvestigationUploadByGmailRequest();
+        ArrayList<Integer> integers = new ArrayList<>();
+        integers.add(invID);
+        obj.setInvestigationId(integers);
+        obj.setPatientId(Integer.parseInt(id));
+        mConnectionFactory.setPostParams(obj);
+        mConnectionFactory.setUrl(Config.DO_SKIP_INVESTIGATION);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_DO_SKIP_INVESTIGATION);
+    }
+
 }

@@ -149,37 +149,25 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         }
         sizeOfList.setText("" + size);
 
-        //-----------
-
-        if (doctorObject.getDoctorImageUrl().equals("")) {
-            String doctorName = doctorObject.getDocName();
-            if (doctorName.contains("Dr. ")) {
-                doctorName = doctorName.replace("Dr. ", "");
-            }
-
-            if (doctorName != null) {
-                int color2 = mColorGenerator.getColor(doctorName);
-                TextDrawable drawable = TextDrawable.builder()
-                        .beginConfig()
-                        .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
-                        .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
-                        .endConfig()
-                        .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-                imageURL.setImageDrawable(drawable);
-            }
-        } else {
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.dontAnimate();
-            requestOptions.override(mImageSize, mImageSize);
-            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-            requestOptions.skipMemoryCache(true);
-
-            Glide.with(mContext)
-                    .load(doctorObject.getDoctorImageUrl())
-                    .apply(requestOptions).thumbnail(0.5f)
-                    .into(imageURL);
+        //----------------
+        String doctorName = doctorObject.getDocName();
+        if (doctorName.contains("Dr. ")) {
+            doctorName = doctorName.replace("Dr. ", "");
         }
+        TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.override(mImageSize, mImageSize);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
+        requestOptions.placeholder(textDrawable);
+        requestOptions.error(textDrawable);
 
+        Glide.with(mContext)
+                .load(doctorObject.getDoctorImageUrl())
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(imageURL);
+        //---------------
 
         if (doctorObject.getRating() == 0) {
             doctorRating.setVisibility(View.INVISIBLE);

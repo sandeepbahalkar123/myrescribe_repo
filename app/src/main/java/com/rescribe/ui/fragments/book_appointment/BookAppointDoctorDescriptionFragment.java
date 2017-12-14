@@ -204,7 +204,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             aboutDoctor.setText(content);
             mAboutDoctorDescription.setText("" + mClickedDoctorObject.getAboutDoctor());
         }
-        if (mClickedDoctorObject.getDoctorImageUrl()!=null) {
+        if (mClickedDoctorObject.getDoctorImageUrl() != null) {
 
             String doctorName = mClickedDoctorObject.getDocName();
             if (doctorName.contains("Dr. ")) {
@@ -263,7 +263,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             SpannableString contentExp = new SpannableString(updatedString);
             contentExp.setSpan(new ForegroundColorSpan(
                             ContextCompat.getColor(getActivity(), R.color.tagColor)),
-                    13, 13 + size,//hightlight mSearchString
+                    13, 13 + String.valueOf(size).length(),//hightlight mSearchString
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             mDocPracticesLocationCount.setText(contentExp);
         } else {

@@ -256,23 +256,15 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         if (doctorName.contains("Dr. ")) {
             doctorName = doctorName.replace("Dr. ", "");
         }
-
-        int color2 = mColorGenerator.getColor(doctorName);
-        TextDrawable drawable = TextDrawable.builder()
-                .beginConfig()
-                .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
-                .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
-                .endConfig()
-                .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-
-
+        //----------
+        TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
+        requestOptions.override(mImageSize, mImageSize);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
-        requestOptions.override(mImageSize, mImageSize);
-        requestOptions.error(drawable);
-        requestOptions.placeholder(drawable);
+        requestOptions.placeholder(textDrawable);
+        requestOptions.error(textDrawable);
 
         Glide.with(mContext)
                 .load(doctorObject.getDoctorImageUrl())

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -281,7 +282,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
 
             setDose(tabCountTextView, mTodayDataList.get(i).getQuantity(), mTodayDataList.get(i));
             tabNameTextView.setText(mTodayDataList.get(i).getMedicineName());
-            tabTypeView.setImageDrawable(CommonMethods.getMedicineTypeImage(mTodayDataList.get(i).getMedicineTypeName(), mContext));
+            tabTypeView.setImageDrawable(CommonMethods.getMedicineTypeImage(mTodayDataList.get(i).getMedicineTypeName(), mContext, ContextCompat.getColor(mContext, R.color.tagColor)));
             parent.addView(view);
 
 

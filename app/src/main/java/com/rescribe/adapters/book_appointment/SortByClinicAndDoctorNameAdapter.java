@@ -98,9 +98,9 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     @Override
     public void onBindViewHolder(SortByClinicAndDoctorNameAdapter.ListViewHolder holder, final int position) {
         final DoctorList doctorObject = mDataList.get(position);
-        if(doctorObject.getExperience()==0) {
+        if (doctorObject.getExperience() == 0) {
             holder.doctorExperience.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.doctorExperience.setVisibility(View.VISIBLE);
             holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
 
@@ -155,37 +155,25 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         holder.distance.setText(content);*/
 
         //-------Load image-------
-
-        if (doctorObject.getDoctorImageUrl() !=null) {
-            String doctorName = doctorObject.getDocName();
-            if (doctorName.contains("Dr. ")) {
-                doctorName = doctorName.replace("Dr. ", "");
-            }
-
-            int color2 = mColorGenerator.getColor(doctorName);
-            TextDrawable drawable = TextDrawable.builder()
-                    .beginConfig()
-                    .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
-                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
-                    .endConfig()
-                    .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-
-
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.dontAnimate();
-            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-            requestOptions.skipMemoryCache(true);
-            requestOptions.override(mImageSize, mImageSize);
-            requestOptions.placeholder(drawable);
-            requestOptions.error(drawable);
-
-            Glide.with(mContext)
-                    .load(doctorObject.getDoctorImageUrl())
-                    .apply(requestOptions).thumbnail(0.5f)
-                    .into(holder.imageURL);
-            //--------------
+        //----------------
+        String doctorName = doctorObject.getDocName();
+        if (doctorName.contains("Dr. ")) {
+            doctorName = doctorName.replace("Dr. ", "");
         }
+        TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.override(mImageSize, mImageSize);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
+        requestOptions.placeholder(textDrawable);
+        requestOptions.error(textDrawable);
 
+        Glide.with(mContext)
+                .load(doctorObject.getDoctorImageUrl())
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(holder.imageURL);
+        //---------------
 
         SpannableString spannableStringSearch = null;
         SpannableString spannableClinicNameString = null;
@@ -223,7 +211,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 } else {
                     holder.clinicName.setVisibility(View.GONE);
                     /*holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());*/
-                   if (doctorObject.getClinicDataList().size() == 1) {
+                    if (doctorObject.getClinicDataList().size() == 1) {
                         holder.clinicName.setVisibility(View.VISIBLE);
                         holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
                     } else {
@@ -368,7 +356,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
                     for (DoctorList doctorConnectModel : mArrayList) {
 
-                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase()+mContext.getString(R.string.space)+charString.toLowerCase())) {
+                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase())) {
                             filteredList.add(doctorConnectModel);
                             setListByClinicName(false);
                         } else {

@@ -105,7 +105,6 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
         }
 
-        // Glide.with(mContext).load(dataObject.getDocImg()).into(holder.docProfileImage);
         holder.doctorName.setText(dataObject.getDoctorName());
         holder.doctorAddress.setText(dataObject.getAddress());
         holder.doctorType.setText(dataObject.getSpecialization());
@@ -139,39 +138,29 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
                 intent.putExtra(mContext.getString(R.string.name), dataObject.getDoctorName());
                 intent.putExtra(mContext.getString(R.string.specialization), dataObject.getSpecialization());
                 intent.putExtra(mContext.getString(R.string.address), dataObject.getAddress());
-                intent.putExtra(mContext.getString(R.string.doctor_image),dataObject.getDocImg());
+                intent.putExtra(mContext.getString(R.string.doctor_image), dataObject.getDocImg());
 
                 intent.putExtra(mContext.getString(R.string.one_day_visit_date), toDisplay);
                 intent.putExtra(mContext.getString(R.string.opd_id), dataObject.getOpdId());
-                intent.putExtra(mContext.getString(R.string.doctor_image),dataObject.getDocImg());
+                intent.putExtra(mContext.getString(R.string.doctor_image), dataObject.getDocImg());
                 mContext.startActivity(intent);
             }
         });
 
-
-        int color2 = mColorGenerator.getColor(dataObject.getDoctorName());
-        TextDrawable drawable = TextDrawable.builder()
-                .beginConfig()
-                .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
-                .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
-                .endConfig()
-                .buildRound(("" + dataObject.getDoctorName().charAt(0)).toUpperCase(), color2);
+        TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, dataObject.getDoctorName());
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.override(imageSize, imageSize);
-        requestOptions.error(drawable);
-        requestOptions.placeholder(drawable);
+        requestOptions.error(textDrawable);
+        requestOptions.placeholder(textDrawable);
 
         Glide.with(mContext)
                 .load(dataObject.getDocImg())
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(holder.docProfileImage);
-
-
-
     }
 
     @Override

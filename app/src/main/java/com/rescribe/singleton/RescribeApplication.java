@@ -12,10 +12,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
+import com.rescribe.preference.RescribePreferencesManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.TreeSet;
 
 /**
  * Created by Sandeep Bahalkar
@@ -100,6 +102,32 @@ public class RescribeApplication extends MultiDexApplication {
             }
         }
         return receivedNotificationMessageList;
+    }
+
+    public static int doGetUnreadNotificationCount(String notificationType) {
+        ArrayList<UnreadSavedNotificationMessageData> receivedNotificationMessageList = new ArrayList<>();
+        int size = receivedNotificationMessageList.size();
+        if (notificationType.equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT)) {
+            TreeSet<String> listDataGroup = new TreeSet<>();
+            //--- set header data
+            for (UnreadSavedNotificationMessageData dataObject :
+                    appUnreadNotificationMessageList) {
+                if (dataObject.getNotificationMessageType().equalsIgnoreCase(notificationType)) {
+                    listDataGroup.add(dataObject.getNotificationMessage());
+                }
+            }
+            size = listDataGroup.size();
+        } else {
+            //String : id|messageType|message
+            for (UnreadSavedNotificationMessageData object :
+                    appUnreadNotificationMessageList) {
+                if (object.getNotificationMessageType().equalsIgnoreCase(notificationType)) {
+                    receivedNotificationMessageList.add(object);
+                }
+            }
+            size = receivedNotificationMessageList.size();
+        }
+        return size;
     }
 
 }

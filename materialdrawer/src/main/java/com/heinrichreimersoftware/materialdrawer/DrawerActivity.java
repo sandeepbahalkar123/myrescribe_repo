@@ -34,14 +34,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerFragmentItem;
@@ -140,18 +137,17 @@ public class DrawerActivity extends BottomMenuActivity {
         }
     }
 
-    private void switchFragment(Fragment fragment){
+    private void switchFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        if(fragmentManager.findFragmentById(R.id.mdFrame) == fragment) return;
+        if (fragmentManager.findFragmentById(R.id.mdFrame) == fragment) return;
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_NONE);
         if (fragmentManager.findFragmentById(R.id.mdFrame) != null) {
             fragmentTransaction.replace(R.id.mdFrame, fragment);
-        }
-        else {
-            ((ViewGroup)findViewById(R.id.mdFrame)).removeAllViews();
+        } else {
+            ((ViewGroup) findViewById(R.id.mdFrame)).removeAllViews();
             fragmentTransaction.add(R.id.mdFrame, fragment);
         }
         fragmentTransaction.commit();
@@ -920,10 +916,5 @@ public class DrawerActivity extends BottomMenuActivity {
      */
     public void closeDrawer() {
         mDrawer.closeDrawer();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 }

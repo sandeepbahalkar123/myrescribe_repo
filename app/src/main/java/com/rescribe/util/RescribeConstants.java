@@ -153,6 +153,9 @@ public class RescribeConstants {
     public static final String TASK_GET_HEALTH_EDUCATION_ARTICLES = RescribeConstants.BLANK + 56;
 
     //-----------------
+    public static final String TASK_DO_SKIP_INVESTIGATION = RescribeConstants.BLANK + 57;
+
+    //-----------------
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
@@ -196,7 +199,6 @@ public class RescribeConstants {
     public static final String DOCTOR_DATA = "doctor_data";
     public static final int PLACE_PICKER_REQUEST = 99;
     public static final String NOTIFICATION_COUNT = "notification_count";
-
 
 
     public static class USER_STATUS {

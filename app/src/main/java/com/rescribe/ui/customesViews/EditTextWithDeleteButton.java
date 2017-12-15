@@ -72,9 +72,7 @@ public class EditTextWithDeleteButton extends LinearLayout {
         this.addView(clearTextButton);
         editText.addTextChangedListener(txtEntered());
 
-
-        editText.setOnFocusChangeListener(new OnFocusChangeListener() {
-
+        /*editText.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus && editText.getText().toString().length() > 0)
@@ -83,7 +81,8 @@ public class EditTextWithDeleteButton extends LinearLayout {
                     clearTextButton.setVisibility(View.GONE);
 
             }
-        });
+        });*/
+
         clearTextButton.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -121,10 +120,10 @@ public class EditTextWithDeleteButton extends LinearLayout {
             public void afterTextChanged(Editable s) {
                 if (editTextListener != null)
                     editTextListener.afterTextChanged(s);
-                if (editText.getText().toString().length() > 0)
+                /*if (editText.getText().toString().length() > 0)
                     clearTextButton.setVisibility(View.VISIBLE);
                 else
-                    clearTextButton.setVisibility(View.GONE);
+                    clearTextButton.setVisibility(View.GONE);*/
             }
 
             @Override
@@ -168,7 +167,7 @@ public class EditTextWithDeleteButton extends LinearLayout {
         clearTextButton.setLayoutParams(params);
         clearTextButton.setPadding(CommonMethods.convertDpToPixel(6), CommonMethods.convertDpToPixel(6), CommonMethods.convertDpToPixel(6), CommonMethods.convertDpToPixel(6));
         clearTextButton.setBackgroundResource(deleteButtonRes);
-        clearTextButton.setVisibility(View.GONE);
+//        clearTextButton.setVisibility(View.GONE);
         return clearTextButton;
     }
 

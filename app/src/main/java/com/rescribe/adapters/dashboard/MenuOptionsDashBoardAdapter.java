@@ -32,37 +32,11 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
     private onMenuListClickListener mMenuListClickListener;
     private ArrayList<DashboardMenuList> mDashboardMenuList;
     private Context mContext;
-    private int mImageSize;
-  /*  String[] menuOptions = new String[]{"Find Doctors",
-            "On Going Treatment",
-            "Health Repository",
-            "Health Offers",
-            "Health Education"
-    };
-    Integer[] mImageMenuICons = {
-            R.drawable.dashboard_find_doctor,
-            R.drawable.dashboard_on_going_treatment,
-            R.drawable.dashboard_health_repository,
-            R.drawable.dashboard_health_offers,
-            R.drawable.dashboard_health_education
-
-    };*/
 
     public MenuOptionsDashBoardAdapter(Context mContext, onMenuListClickListener mMenuListClickListener, ArrayList<DashboardMenuList> mDashboardMenuList) {
         this.mContext = mContext;
-        setColumnNumber(mContext, 2);
         this.mMenuListClickListener = mMenuListClickListener;
         this.mDashboardMenuList = mDashboardMenuList;
-
-
-    }
-
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     @Override

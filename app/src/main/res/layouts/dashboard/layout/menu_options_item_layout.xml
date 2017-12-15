@@ -1,61 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/selectMenuLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <LinearLayout
-        android:layout_width="match_parent"
+    android:layout_height="@dimen/dp56">
+
+    <ImageView
+        android:id="@+id/menuIcon"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dp8"
+        android:layout_marginStart="@dimen/dp8"
+        android:adjustViewBounds="true"
+        android:padding="@dimen/dp8"
+        tools:src="@drawable/select_doctor" />
 
-        <RelativeLayout
-            android:id="@+id/selectMenuLayout"
-            android:layout_width="match_parent"
-            android:layout_height="56dp">
+    <com.rescribe.ui.customesViews.CustomTextView
+        android:id="@+id/menuOptionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/menuIcon"
+        android:layout_toLeftOf="@+id/arrowIcon1"
+        android:layout_toRightOf="@+id/menuIcon"
+        android:layout_toStartOf="@+id/arrowIcon1"
+        android:paddingEnd="@dimen/dp8"
+        android:paddingStart="@dimen/dp8"
+        android:textColor="@color/menu_option_on_dashboard_color"
+        android:textSize="@dimen/sp14"
+        app:customFont="@string/roboto_regular"
+        tools:text="@string/select_doctors" />
 
-            <ImageView
-                android:id="@+id/menuIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dp8"
-                android:layout_marginStart="@dimen/dp8"
-                android:adjustViewBounds="true"
-                android:padding="@dimen/dp8"
-                tools:src="@drawable/select_doctor" />
+    <ImageView
+        android:id="@+id/dashboardArrowIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
+        android:src="@drawable/dashboard_arrow" />
 
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/menuOptionName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/menuIcon"
-                android:layout_toLeftOf="@+id/arrowIcon1"
-                android:layout_toRightOf="@+id/menuIcon"
-                android:layout_toStartOf="@+id/arrowIcon1"
-                android:paddingEnd="@dimen/dp8"
-                android:paddingStart="@dimen/dp8"
-                tools:text="@string/select_doctors"
-                android:textColor="@color/menu_option_on_dashboard_color"
-                android:textSize="@dimen/sp14"
-                app:customFont="@string/roboto_regular" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider"/>
 
-            <ImageView
-                android:id="@+id/dashboardArrowIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="18dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/dp16"
-                android:layout_marginRight="@dimen/dp16"
-                android:src="@drawable/dashboard_arrow" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

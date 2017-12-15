@@ -28,6 +28,7 @@
             android:layout_weight="1"
             android:drawableLeft="@drawable/search"
             android:drawablePadding="@dimen/dp4"
+            android:drawableStart="@drawable/search"
             android:focusable="false"
             android:focusableInTouchMode="true"
             android:gravity="center"

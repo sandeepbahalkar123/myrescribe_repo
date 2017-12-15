@@ -41,6 +41,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
     private String locationReceived = "";
     private DoctorDataHelper doctorDataHelper;
     private String mReceivedTitle;
+    private String mClickedItemDataTypeValue;
 
 
     @Override
@@ -52,7 +53,8 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         setSupportActionBar(toolbar);
         mContext = ShowCategoryWiseDoctor.this;
 
-          mReceivedTitle = getIntent().getExtras().getString(getString(R.string.toolbarTitle));
+        mReceivedTitle = getIntent().getExtras().getString(getString(R.string.toolbarTitle));
+        mClickedItemDataTypeValue = getIntent().getExtras().getString(getString(R.string.clicked_item_data_type_value));
 
         getSupportActionBar().setTitle(mReceivedTitle);
         if (getSupportActionBar() != null)
@@ -75,30 +77,30 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
 
     private void setUpList() {
         mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (ShowCategoryWiseDoctor) mContext);
-        if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.favorite))) {
+        if (getString(R.string.favorite).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mDoctorCategoryList = mServicesCardViewImpl.getFavouriteDocList(-1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this,mReceivedTitle);
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             showDoctorList.setLayoutManager(layoutManager);
             showDoctorList.setHasFixedSize(true);
             showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
-        }else if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.recently_visit_doctor))){
+        } else if (getString(R.string.recently_visit_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
 
-            mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(getIntent().getExtras().getString(getString(R.string.toolbarTitle)),-1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this,mReceivedTitle);
+            mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(getIntent().getExtras().getString(getString(R.string.toolbarTitle)), -1);
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             showDoctorList.setLayoutManager(layoutManager);
             showDoctorList.setHasFixedSize(true);
             showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
-        }else if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.sponsered_doctor))){
+        } else if (getString(R.string.sponsered_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
 
-            mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(getIntent().getExtras().getString(getString(R.string.toolbarTitle)),-1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this,mReceivedTitle);
+            mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(getIntent().getExtras().getString(getString(R.string.toolbarTitle)), -1);
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             showDoctorList.setLayoutManager(layoutManager);
             showDoctorList.setHasFixedSize(true);
             showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
-        }else if(getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.complaints))){
+        } else if (getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.complaints))) {
            /* HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
             String[] split = locationReceived.split(",");

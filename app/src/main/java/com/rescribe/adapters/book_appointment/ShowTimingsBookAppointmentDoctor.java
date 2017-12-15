@@ -15,6 +15,7 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,14 +26,15 @@ import butterknife.ButterKnife;
 
 public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowTimingsBookAppointmentDoctor.ListViewHolder> {
 
+    private String mSelectedDate;
     private Context mContext;
     private ArrayList<TimeSlotsInfoList.TimeSlotData> mDataList;
     private String mSelectedTimeSlot;
 
-    public ShowTimingsBookAppointmentDoctor(Context mContext, ArrayList<TimeSlotsInfoList.TimeSlotData> dataList) {
+    public ShowTimingsBookAppointmentDoctor(Context mContext, ArrayList<TimeSlotsInfoList.TimeSlotData> dataList, String mSelectedDate) {
         this.mDataList = dataList;
         this.mContext = mContext;
-
+        this.mSelectedDate = mSelectedDate;
     }
 
     @Override
@@ -109,4 +111,6 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
             this.view = view;
         }
     }
+
+
 }

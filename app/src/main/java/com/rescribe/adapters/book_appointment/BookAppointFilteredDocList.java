@@ -2,7 +2,6 @@ package com.rescribe.adapters.book_appointment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -16,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -27,7 +25,6 @@ import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -38,7 +35,7 @@ import butterknife.ButterKnife;
 
 public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppointFilteredDocList.ListViewHolder> {
 
-    private String mClickedItemDataValue;
+    private String mClickedItemDataTypeValue;
     private HelperResponse mHelperResponse;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
@@ -51,7 +48,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         this.mContext = mContext;
         this.mOnFilterDocListClickListener = mOnFilterDocListClickListener;
         this.mHelperResponse = helperResponse;
-        this.mClickedItemDataValue = mClickedItemDataValue;
+        this.mClickedItemDataTypeValue = mClickedItemDataValue;
         setColumnNumber(mContext, 2);
     }
 
@@ -287,11 +284,10 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.opening_mode), mClickedItemDataValue);
 
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.getDocSpeciality());
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                b.putString(mContext.getString(R.string.opening_mode), mClickedItemDataValue);
+                b.putString(mContext.getString(R.string.opening_mode), mClickedItemDataTypeValue);
                 mOnFilterDocListClickListener.onClickOfCardView(b);
             }
         });
@@ -304,7 +300,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
 
                 b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
-                b.putString(mContext.getString(R.string.opening_mode), mClickedItemDataValue);
+                b.putString(mContext.getString(R.string.opening_mode), mClickedItemDataTypeValue);
 
                 mOnFilterDocListClickListener.onClickedOfBookButton(b);
             }
@@ -317,7 +313,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.token_number));
                 b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                b.putString(mContext.getString(R.string.opening_mode), mClickedItemDataValue);
+                b.putString(mContext.getString(R.string.opening_mode), mClickedItemDataTypeValue);
 
                 mOnFilterDocListClickListener.onClickedOfTokenNumber(b);
             }

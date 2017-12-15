@@ -62,13 +62,14 @@
                     <!-- Artist Name -->
                     <ImageView
                         android:id="@+id/secondLevelUpDownArrow"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/dp16"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:paddingBottom="@dimen/dp2"
                         android:paddingRight="@dimen/dp4"
                         android:paddingTop="@dimen/dp2"
                         android:src="@drawable/down_arrow"
+
                         android:visibility="gone" />
 
                     <com.rescribe.ui.customesViews.CustomTextView

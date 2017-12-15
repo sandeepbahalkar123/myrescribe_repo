@@ -501,6 +501,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
             case R.id.doneButton:
                 hideMainLayout.setVisibility(View.VISIBLE);
                 showSortLayout.setVisibility(View.GONE);
+                chooseOptionForSort.setText(mSortByPriceNameFilterAdapter.getSelectedSortedOptionLabel());
                 break;
         }
     }

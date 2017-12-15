@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.rescribe.R;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.RescribeConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +27,7 @@ public class SortByPriceNameFilterAdapter extends RecyclerView.Adapter<SortByPri
     private String fees = " Fees ";
     private String asc = "asc";
     private String desc = "desc";
-    private String selectedSortedOption = "";// sortBy|sortOrder
+    private String selectedSortedOptionLabel = "";//
 
     String[] sortOptions = new String[]{"Star" + ratings + lowToHigh,
             "Star" + ratings + highToLow,
@@ -56,29 +57,28 @@ public class SortByPriceNameFilterAdapter extends RecyclerView.Adapter<SortByPri
         holder.recyclerViewClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String receivedTitle = "" + v.getTag();
 
-                String tag = (String) v.getTag();
-                //-------
-                if (tag.toLowerCase().contains(ratings.toLowerCase())) {
-                    selectedSortedOption = ratings.trim();
+                if (receivedTitle.equalsIgnoreCase(selectedSortedOptionLabel)) {
+                    selectedSortedOptionLabel = "";
+                    holder.serviceIcon.setVisibility(View.GONE);
                 } else {
-                    selectedSortedOption = fees.trim();
+                    selectedSortedOptionLabel = receivedTitle;
+                    holder.serviceIcon.setVisibility(View.VISIBLE);
+                    notifyDataSetChanged();
                 }
-                //-------
-                //-------
-                if (tag.toLowerCase().endsWith(lowToHigh.toLowerCase())) {
-                    selectedSortedOption = selectedSortedOption + "|" + asc.trim();
-                } else {
-                    selectedSortedOption = selectedSortedOption + "|" + desc.trim();
-                }
-                //-------
 
-                holder.serviceIcon.setVisibility(View.VISIBLE);
             }
         });
 
-        holder.recyclerViewClick.setTag(sortOption);
+        if (sortOption.equalsIgnoreCase(selectedSortedOptionLabel)) {
+            selectedSortedOptionLabel = sortOption;
+            holder.serviceIcon.setVisibility(View.VISIBLE);
+        } else {
+            holder.serviceIcon.setVisibility(View.GONE);
+        }
 
+        holder.recyclerViewClick.setTag(sortOption);
     }
 
     @Override
@@ -103,7 +103,26 @@ public class SortByPriceNameFilterAdapter extends RecyclerView.Adapter<SortByPri
         }
     }
 
+    // sortBy|sortOrder
     public String getSelectedSortedOption() {
-        return selectedSortedOption;
+        String temp;
+        if (selectedSortedOptionLabel.toLowerCase().contains(ratings.toLowerCase())) {
+            temp = ratings.trim();
+        } else {
+            temp = fees.trim();
+        }
+        //-------
+        //-------
+
+        if (selectedSortedOptionLabel.toLowerCase().endsWith(lowToHigh.toLowerCase())) {
+            temp = temp + "|" + asc.trim();
+        } else {
+            temp = temp + "|" + desc.trim();
+        }
+        return temp;
+    }
+
+    public String getSelectedSortedOptionLabel() {
+        return selectedSortedOptionLabel;
     }
 }

@@ -89,19 +89,19 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
 
         } else if (clickOption.getName().equalsIgnoreCase(mContext.getString(R.string.appointment_alert))) {
             RescribePreferencesManager.putBoolean(mContext.getString(R.string.appointment_alert), isChecked, mContext);
-           // RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotification(), mContext);
+            RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotificationWrongFlow(), mContext);
 
         } else if (clickOption.getName().equalsIgnoreCase(mContext.getString(R.string.investigation_alert))) {
             RescribePreferencesManager.putBoolean(mContext.getString(R.string.investigation_alert), isChecked, mContext);
-            //RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotification(), mContext);
+            RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotificationWrongFlow(), mContext);
 
         } else if (clickOption.getName().equalsIgnoreCase(mContext.getString(R.string.medication_alert))) {
             RescribePreferencesManager.putBoolean(mContext.getString(R.string.medication_alert), isChecked, mContext);
-           // RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotification(), mContext);
+            RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotificationWrongFlow(), mContext);
 
         } else if (clickOption.getName().equalsIgnoreCase(mContext.getString(R.string.offers_alert))) {
             RescribePreferencesManager.putBoolean(mContext.getString(R.string.offers_alert), isChecked, mContext);
-           // RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotification(), mContext);
+            RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), checkToSetAllNotificationWrongFlow(), mContext);
 
         }
 
@@ -117,5 +117,45 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
 
         boolean status = appointmentAlert && investigationAlert && medicationAlert && offersAlert;
         return status;
+    }
+
+    private boolean checkToSetAllNotificationWrongFlow() {
+
+        boolean appointmentAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.appointment_alert), mContext);
+        boolean investigationAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.investigation_alert), mContext);
+        boolean medicationAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.medication_alert), mContext);
+        boolean offersAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.offers_alert), mContext);
+
+        boolean allNotifyAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.all_notifications), mContext);
+
+        int statusCount = 0;
+        int statusFalseCount = 0;
+        if (appointmentAlert)
+            statusCount = statusCount + 1;
+        else
+            statusFalseCount = statusFalseCount + 1;
+        //------
+        if (investigationAlert)
+            statusCount = statusCount + 1;
+        else
+            statusFalseCount = statusFalseCount + 1;
+        //------
+        if (medicationAlert)
+            statusCount = statusCount + 1;
+        else
+            statusFalseCount = statusFalseCount + 1;
+        //------
+        if (offersAlert)
+            statusCount = statusCount + 1;
+        else
+            statusFalseCount = statusFalseCount + 1;
+        //------
+
+        if (statusCount == 4) {
+            return true;
+        } else if (statusFalseCount == 4) {
+            return false;
+        }
+        return allNotifyAlert;
     }
 }

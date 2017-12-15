@@ -134,7 +134,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             String value = extras.getString(getString(R.string.clicked_item_data_type_value));
 
             if (mReceivedDashboardMenuListData != null)
-               title.setText(mReceivedDashboardMenuListData.getName());
+                title.setText(mReceivedDashboardMenuListData.getName());
             else if (value != null)
                 title.setText(value);
         }
@@ -295,29 +295,39 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         switch (view.getId()) {
             case R.id.viewAllFavorite:
                 Intent viewAllFavorite = new Intent(mContext, ShowCategoryWiseDoctor.class);
-                viewAllFavorite.putExtra(getString(R.string.toolbarTitle), getString(R.string.favorite));
+                viewAllFavorite.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
+                viewAllFavorite.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.favorite));
+
                 startActivity(viewAllFavorite);
                 break;
             case R.id.viewAllRecentVisited:
                 Intent viewAllRecentVisited = new Intent(mContext, ShowCategoryWiseDoctor.class);
-                viewAllRecentVisited.putExtra(getString(R.string.toolbarTitle), getString(R.string.recently_visit_doctor));
+                viewAllRecentVisited.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
+                viewAllRecentVisited.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.recently_visit_doctor));
+
                 startActivity(viewAllRecentVisited);
                 break;
             case R.id.viewAllSponsered:
                 Intent viewAllSponsered = new Intent(mContext, ShowCategoryWiseDoctor.class);
-                viewAllSponsered.putExtra(getString(R.string.toolbarTitle), getString(R.string.sponsered_doctor));
+                viewAllSponsered.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
+                viewAllSponsered.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.sponsered_doctor));
+
                 startActivity(viewAllSponsered);
                 break;
             case R.id.complaintsImageView:
-                Intent intentComplaint = new Intent(FindDoctorsActivity.this, ServicesFilteredDoctorListActivity.class);
-                Bundle bundleData = new Bundle();
-                bundleData.putString(mContext.getString(R.string.toolbarTitle), mContext.getString(R.string.complaints));
-                HashMap<String, String> h = new HashMap<>();
-                h.put(getString(R.string.complaint1), complaintsTextView.getText().toString());
-                bundleData.putSerializable(getString(R.string.complaints), h);
-                intentComplaint.putExtras(bundleData);
+                if (complaintsTextView.getText().toString().trim().length() != 0) {
+                    Intent intentComplaint = new Intent(FindDoctorsActivity.this, ServicesFilteredDoctorListActivity.class);
+                    Bundle bundleData = new Bundle();
+                    bundleData.putString(mContext.getString(R.string.toolbarTitle), complaintsTextView.getText().toString());
+                    bundleData.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.complaints));
+                    HashMap<String, String> h = new HashMap<>();
+                    h.put(getString(R.string.complaint1), complaintsTextView.getText().toString());
+                    bundleData.putSerializable(getString(R.string.complaints), h);
+                    intentComplaint.putExtras(bundleData);
               /*  intentComplaint.putExtra(getString(R.string.))*/
-                startActivity(intentComplaint);
+                    startActivity(intentComplaint);
+                }
+
                 break;
         }
     }

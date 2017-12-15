@@ -391,7 +391,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 if (slotListBaseModel != null) {
                     TimeSlotListDataModel selectSlotList = slotListBaseModel.getTimeSlotListDataModel();
                     if (selectSlotList != null) {
-                        mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList());
+                        mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList(),mSelectedTimeSlotDate);
                         selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
                     }
                 }
@@ -406,7 +406,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mClickedDoctorObject);
                         //----*************----
                         setDataInViews();
-                        mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList());
+                        mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList(),mSelectedTimeSlotDate);
                         selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
                     }
                 }

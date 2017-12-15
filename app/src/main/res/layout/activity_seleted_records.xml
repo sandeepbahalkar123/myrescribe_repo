@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:elevation="@dimen/dp5"
+        tools:visibility="gone"
         android:src="@drawable/coachmark"/>
 
     <android.support.design.widget.AppBarLayout

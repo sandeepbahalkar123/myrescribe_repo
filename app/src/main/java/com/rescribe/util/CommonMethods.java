@@ -906,6 +906,9 @@ public class CommonMethods {
             case DisplayMetrics.DENSITY_XXXHIGH:
                 resolution = "xxxhdpi";
                 break;
+            default:
+                resolution = "xhdpi";
+                break;
         }
         return resolution;
     }

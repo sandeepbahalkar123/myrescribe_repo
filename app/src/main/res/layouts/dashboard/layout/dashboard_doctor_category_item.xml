@@ -47,7 +47,7 @@
                     android:layout_marginBottom="@dimen/dp4"
                     android:layout_marginLeft="@dimen/dp11"
                     android:layout_marginStart="@dimen/dp11"
-                     android:layout_marginTop="3dp"
+                    android:layout_marginTop="3dp"
                     android:layout_toRightOf="@id/doctorCategoryVisit"
                     android:background="@drawable/show_count_bg"
                     android:gravity="center"
@@ -100,10 +100,13 @@
 
                 <com.rescribe.ui.customesViews.CircularImageView
                     android:id="@+id/imageURL"
-                    android:layout_gravity="center_vertical"
                     android:layout_width="@dimen/dp56"
                     android:layout_height="@dimen/dp56"
-                    android:src="@drawable/layer_12" />
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/layer_12"
+                    app:border="true"
+                    app:border_width="1dp"
+                    app:shadow="true" />
             </LinearLayout>
 
             <LinearLayout
@@ -222,11 +225,12 @@
             <LinearLayout
                 android:id="@+id/bookSlot"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginEnd="@dimen/dp10"
-                android:layout_marginRight="@dimen/dp10"
-                android:layout_height="wrap_content">
+                android:layout_marginRight="@dimen/dp10">
+
                 <ImageView
                     android:id="@+id/bookAppointmentButton"
                     android:layout_width="wrap_content"
@@ -234,6 +238,7 @@
                     android:gravity="right"
                     android:src="@drawable/book"
                     android:visibility="gone" />
+
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/doctorAppointmentDate"
                     android:layout_width="wrap_content"
@@ -244,22 +249,24 @@
                     android:visibility="invisible"
                     app:customFont="@string/roboto_medium"
                     tools:text="Oct 18,2017" />
+
                 <ImageView
                     android:id="@+id/tokenNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:src="@drawable/get_token_btn"
+                    android:visibility="gone"
                     tools:src="@drawable/get_token_btn" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_toStartOf="@id/bookSlot"
+                android:layout_toEndOf="@id/ratingBar"
                 android:layout_toLeftOf="@id/bookSlot"
                 android:layout_toRightOf="@id/ratingBar"
-                android:layout_toEndOf="@id/ratingBar"
+                android:layout_toStartOf="@id/bookSlot"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <com.rescribe.ui.customesViews.CustomTextView

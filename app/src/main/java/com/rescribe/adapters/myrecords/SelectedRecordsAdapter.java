@@ -62,6 +62,8 @@ public class SelectedRecordsAdapter extends RecyclerView.Adapter<SelectedRecords
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.override(imageSize, imageSize);
+        requestOptions.error(R.drawable.ic_file);
+        requestOptions.placeholder(R.drawable.ic_file);
 
         Glide.with(context)
                 .load(new File(image.getImagePath()))

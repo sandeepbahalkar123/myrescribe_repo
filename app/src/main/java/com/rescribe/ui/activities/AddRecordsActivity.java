@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -169,7 +171,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 autocompleteLayout.setVisibility(View.VISIBLE);
                 dateSpinnerLayout.setVisibility(View.GONE);
                 selectDateLayout.setVisibility(View.VISIBLE);
-                selectAddressLayout.setVisibility(View.VISIBLE);
+                selectAddressLayout.setVisibility(View.GONE);
 
                 isManual = true;
                 mSelectedId = -1;
@@ -322,6 +324,19 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 mSelectDoctorName.setThreshold(1);
                 doctorSpinnerAdapter = new DoctorSpinnerAdapter(AddRecordsActivity.this, R.layout.activity_add_records, R.id.doctorName, myRecordsDoctorListModel.getDoctorListModel().getDocList());
                 mSelectDoctorName.setAdapter(doctorSpinnerAdapter);
+
+                mSelectDoctorName.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (String.valueOf(s).length() > 0)
+                            selectAddressLayout.setVisibility(View.VISIBLE);
+                        else selectAddressLayout.setVisibility(View.GONE);
+                    }
+                });
 
                 mSelectDoctorName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

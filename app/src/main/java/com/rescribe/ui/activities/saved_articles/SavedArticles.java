@@ -34,6 +34,8 @@ import butterknife.ButterKnife;
 
 public class SavedArticles extends AppCompatActivity implements HelperResponse, SavedArticleListAdapter.OnArticleClickListener {
 
+    public static final int ARTICLE_REQUEST_CODE = 2312;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.listView)
@@ -53,7 +55,6 @@ public class SavedArticles extends AppCompatActivity implements HelperResponse, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.saved_articles_base_layout);
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
@@ -76,14 +77,9 @@ public class SavedArticles extends AppCompatActivity implements HelperResponse, 
 
     private void initialize() {
         mHelper = new DashboardHelper(this, this);
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         mHelper.doGetSavedArticles();
     }
+
 
     @Override
     public void onBackPressed() {
@@ -161,7 +157,7 @@ public class SavedArticles extends AppCompatActivity implements HelperResponse, 
         b.putString(getString(R.string.clicked_item_data), getString(R.string.clicked_saved_articles));
         b.putBoolean(getString(R.string.save), true);
         intent.putExtras(b);
-        startActivity(intent);
+        startActivityForResult(intent, ARTICLE_REQUEST_CODE);
     }
 
     @Override
@@ -181,5 +177,22 @@ public class SavedArticles extends AppCompatActivity implements HelperResponse, 
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ARTICLE_REQUEST_CODE) {
+                String articleUrl = data.getStringExtra(getString(R.string.url));
+                boolean isSaveArticle = data.getBooleanExtra(getString(R.string.save), false);
+                for (SavedArticleInfo savedArticleInfo : mReceivedSavedArticleList) {
+                    if (savedArticleInfo.getArticleUrl().equals(articleUrl) && !isSaveArticle) {
+                        mReceivedSavedArticleList.remove(savedArticleInfo);
+                        break;
+                    }
+                }
+
+                mSavedArticleListAdapter.notifyDataSetChanged();
+            }
+        }
+    }
 }
 

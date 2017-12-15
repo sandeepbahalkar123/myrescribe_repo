@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
@@ -108,6 +109,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     //-------------
     @BindView(R.id.aboutDoctorDescription)
     CustomTextView mAboutDoctorDescription;
+    @BindView(R.id.countDoctorExperience)
+    TextView mCountDoctorExperience;
     @BindView(R.id.aboutDoctor)
     CustomTextView aboutDoctor;
     @BindView(R.id.bookAppointmentButton)
@@ -251,6 +254,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         if (experience > 0) {
             mDoctorExperienceLayout.setVisibility(View.VISIBLE);
             mDoctorExperience.setText("" + experience + getString(R.string.space) + getString(R.string.years_experience));
+            mCountDoctorExperience.setText(""+experience);
         } else {
             mDoctorExperienceLayout.setVisibility(View.GONE);
         }

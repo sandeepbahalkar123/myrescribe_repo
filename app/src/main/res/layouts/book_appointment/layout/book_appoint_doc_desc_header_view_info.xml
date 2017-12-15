@@ -53,10 +53,10 @@
                     android:layout_gravity="right|center"
                     android:background="@drawable/white_square"
                     android:gravity="center"
-                    android:visibility="invisible"
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/dp4"
-                    android:paddingRight="@dimen/dp4">
+                    android:paddingRight="@dimen/dp4"
+                    android:visibility="invisible">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -74,10 +74,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="@dimen/dp2"
-                            tools:text="123"
                             android:textColor="@color/tagColor"
                             android:textSize="@dimen/sp13"
-                            app:customFont="@string/roboto_bold" />
+                            app:customFont="@string/roboto_bold"
+                            tools:text="123" />
 
                     </LinearLayout>
 
@@ -129,12 +129,12 @@
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@+id/thumbnail"
                         android:layout_marginTop="1dip"
-                        tools:text="Cardilogist"
-                        android:visibility="gone"
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp16"
                         android:textStyle="bold"
-                        app:customFont="@string/roboto_bold" />
+                        android:visibility="gone"
+                        app:customFont="@string/roboto_bold"
+                        tools:text="Cardilogist" />
 
                     <!-- Artist Name -->
                     <com.rescribe.ui.customesViews.CustomTextView
@@ -142,11 +142,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/thumbnail"
-                        tools:text="Dr. Sandeep Patil"
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp16"
                         android:typeface="sans"
-                        app:customFont="@string/roboto_bold" />
+                        app:customFont="@string/roboto_bold"
+                        tools:text="Dr. Sandeep Patil" />
 
                     <!-- Rightend Duration -->
                     <com.rescribe.ui.customesViews.CustomTextView
@@ -156,19 +156,19 @@
                         android:layout_below="@id/doctorName"
                         android:layout_toRightOf="@+id/thumbnail"
                         android:gravity="right"
-                        tools:text="MBBS, MD - Medicine, Neurology"
                         android:textColor="@color/dose_completed"
                         android:textSize="@dimen/sp13"
                         android:textStyle="bold"
-                        app:customFont="@string/roboto_medium" />
+                        app:customFont="@string/roboto_medium"
+                        tools:text="MBBS, MD - Medicine, Neurology" />
                 </LinearLayout>
 
             </LinearLayout>
 
             <RelativeLayout
-                android:gravity="bottom"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="bottom">
 
                 <LinearLayout
                     android:id="@+id/docRatingBarLayout"
@@ -181,10 +181,10 @@
                         android:id="@+id/docRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="4.5"
                         android:textColor="@color/tagColor"
                         android:textSize="@dimen/sp16"
-                        app:customFont="@string/roboto_regular" />
+                        app:customFont="@string/roboto_regular"
+                        tools:text="4.5" />
 
                     <RatingBar
                         android:id="@+id/docRatingBar"
@@ -290,7 +290,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/dp10"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -298,10 +298,26 @@
                     android:layout_gravity="center"
                     android:gravity="center">
 
-                    <ImageView
+                    <FrameLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/doc_experience" />
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/doc_experience" />
+
+                        <TextView
+                            android:id="@+id/countDoctorExperience"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textColor="@color/tagColor"
+                            android:textSize="@dimen/sp10"
+                            tools:text="12" />
+                    </FrameLayout>
+
                 </LinearLayout>
 
                 <com.rescribe.ui.customesViews.CustomTextView
@@ -314,7 +330,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp15"
                     app:customFont="@string/roboto_regular"
-                    tools:text="asdassdfd" />
+                    tools:text=" 11 asdassdfd" />
 
             </LinearLayout>
 

@@ -79,11 +79,16 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
             if (bottomMenu.getNotificationCount() > 0) {
                 holder.showCount.setText(String.valueOf(bottomMenu.getNotificationCount()));
                 holder.showCount.setVisibility(View.VISIBLE);
-            } else holder.showCount.setVisibility(View.GONE);
+                holder.spaceView.setVisibility(View.VISIBLE);
+            } else {
+                holder.showCount.setVisibility(View.GONE);
+                holder.spaceView.setVisibility(View.GONE);
+            }
 
         } else {
 
             holder.showCount.setVisibility(View.GONE);
+            holder.spaceView.setVisibility(View.GONE);
 
             if (bottomMenu.isSelected()) {
                 holder.bottomMenuTab.setVisibility(View.VISIBLE);
@@ -107,7 +112,8 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
         ImageView menuBottomIcon;
         TextView bottomMenuName;
         TextView showCount;
-        TextView     bottomMenuTab;
+        View spaceView;
+        TextView bottomMenuTab;
 
         View view;
 
@@ -117,13 +123,16 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
             bottomMenuName = (TextView) view.findViewById(R.id.bottomMenuName);
             menuBottomIcon = (ImageView) view.findViewById(R.id.menuBottomIcon);
             bottomMenuTab = (TextView) view.findViewById(R.id.bottomMenuTab);
+            spaceView = (View) view.findViewById(R.id.spaceView);
             showCount = (TextView) view.findViewById(R.id.showCountTextView);
         }
     }
 
     public interface OnBottomMenuClickListener {
         void onBottomSheetMenuClick(BottomSheetMenu bottomMenu);
+
         void onBottomMenuClick(BottomMenu bottomMenu);
+
         void onProfileImageClick();
     }
 

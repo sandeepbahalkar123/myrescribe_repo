@@ -46,13 +46,11 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
     private ServicesCardViewImpl mServicesCardViewClickListener;
-    private ColorGenerator mColorGenerator;
     private String cityname;
 
     public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, ServicesCardViewImpl mOnClickOfCardOnDashboard, Map<String, Integer> dataMap, HelperResponse helperResponse) {
         this.mContext = context;
         this.mDataList = doctorLists;
-        mColorGenerator = ColorGenerator.MATERIAL;
         this.mServicesCardViewClickListener = mOnClickOfCardOnDashboard;
         mInflater = LayoutInflater.from(context);
         this.mListSizeWithTypeMap = dataMap;

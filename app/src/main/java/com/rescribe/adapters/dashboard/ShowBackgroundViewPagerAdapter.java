@@ -28,18 +28,11 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
     private ArrayList<String> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
-    private ColorGenerator mColorGenerator;
 
     public ShowBackgroundViewPagerAdapter(Context context, ArrayList<String> doctorLists) {
         this.mContext = context;
         this.mDataList = doctorLists;
-        mColorGenerator = ColorGenerator.MATERIAL;
         mInflater = LayoutInflater.from(context);
-
-        /*WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        widthPixels = metrics.widthPixels;*/
     }
 
     @Override
@@ -62,7 +55,7 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
-        requestOptions.override(680, 423);
+        requestOptions.override(640, 400);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
 

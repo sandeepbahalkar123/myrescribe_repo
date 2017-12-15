@@ -120,8 +120,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     RecyclerView mMenuOptionsListView;
     @BindView(R.id.locationImageView)
     ImageView locationImageView;
-    @BindView(R.id.parentLayout)
-    RelativeLayout parentLayout;
     private Context mContext;
     private String mGetMealTime;
     String breakFastTime = "";
@@ -563,7 +561,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
 
         ArrayList<DashboardMenuList> dashboardMenuList = mDashboardDataModel.getDashboardMenuList();
-
+        int recyclerViewHeight = dashboardMenuList.size() * getResources().getDimensionPixelSize(R.dimen.dp56);
+        ViewGroup.LayoutParams params = mMenuOptionsListView.getLayoutParams();
+        params.height = recyclerViewHeight;
+        mMenuOptionsListView.setLayoutParams(params);
         //------- Menus received from server, like find_doc,ongoing_medication : START
         mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, dashboardMenuList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

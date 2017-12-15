@@ -45,7 +45,7 @@
                 android:paddingStart="@dimen/dp10"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp16"
-                app:customFont="@string/roboto_bold"
+                app:customFont="@string/roboto_medium"
                 tools:text="Blood Pressure" />
 
             <com.rescribe.ui.customesViews.CustomTextView
@@ -74,10 +74,12 @@
 
         </RelativeLayout>
 
-        <TextView
+        <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/date"
+            app:customFont="@string/roboto_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/sp13"
             android:paddingLeft="@dimen/dp46"
             android:paddingStart="@dimen/dp46"
             tools:text="23rd  Aug’17 " />

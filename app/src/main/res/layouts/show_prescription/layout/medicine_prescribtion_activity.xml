@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/dp16"
-        android:layout_marginTop="@dimen/dp4"
         android:gravity="right"
         android:orientation="horizontal"
         android:visibility="visible">
@@ -24,7 +23,7 @@
             android:layout_gravity="center"
             android:layout_weight="0.7"
             android:background="@drawable/curve_edges_button"
-            android:padding="@dimen/dp6"
+            android:padding="@dimen/dp4"
             android:text=""
             android:textColor="@color/white"
             android:textSize="@dimen/sp14"

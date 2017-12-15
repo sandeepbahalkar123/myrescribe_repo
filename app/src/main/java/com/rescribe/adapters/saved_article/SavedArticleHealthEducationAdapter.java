@@ -3,7 +3,9 @@ package com.rescribe.adapters.saved_article;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,12 +71,12 @@ public class SavedArticleHealthEducationAdapter extends RecyclerView.Adapter<Sav
         //-----------
         SpannableString s = CommonMethods.addTextToStringAtLast(savedArticleInfo.getArticleExcerpt(), 20, "... READ MORE", ContextCompat.getColor(mContext, R.color.tagColor));
 
+
         if (s == null) {
             holder.articleText.setText("" + savedArticleInfo.getArticleExcerpt());
         } else {
             holder.articleText.setText(s);
         }
-
         //------------
         int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(mContext, 2);
 

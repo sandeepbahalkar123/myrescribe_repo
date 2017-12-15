@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -19,6 +22,11 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -110,6 +118,8 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     private int opdId;
     private int mSelectedId;
     private MyRecordsHelper myRecordsHelper;
+    private ColorGenerator mColorGenerator;
+    private int mImageSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +132,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
     private void initialize() {
         mContext = AddRecordsActivity.this;
+        mColorGenerator = ColorGenerator.MATERIAL;
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.addrecords));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -131,7 +142,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 onBackPressed();
             }
         });
-
+        setColumnNumber(mContext, 2);
         myRecordsHelper = new MyRecordsHelper(mContext, this);
         myRecordsHelper.getDoctorList(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
         // HardCoded
@@ -169,7 +180,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 autocompleteLayout.setVisibility(View.VISIBLE);
                 dateSpinnerLayout.setVisibility(View.GONE);
                 selectDateLayout.setVisibility(View.VISIBLE);
-                selectAddressLayout.setVisibility(View.VISIBLE);
+                selectAddressLayout.setVisibility(View.GONE);
 
                 isManual = true;
                 mSelectedId = -1;
@@ -323,6 +334,19 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 doctorSpinnerAdapter = new DoctorSpinnerAdapter(AddRecordsActivity.this, R.layout.activity_add_records, R.id.doctorName, myRecordsDoctorListModel.getDoctorListModel().getDocList());
                 mSelectDoctorName.setAdapter(doctorSpinnerAdapter);
 
+                mSelectDoctorName.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (String.valueOf(s).length() > 0)
+                            selectAddressLayout.setVisibility(View.VISIBLE);
+                        else selectAddressLayout.setVisibility(View.GONE);
+                    }
+                });
+
                 mSelectDoctorName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -340,6 +364,27 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                             doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
                             doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
                             doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
+                            int color2 = mColorGenerator.getColor(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
+                            TextDrawable drawable = TextDrawable.builder()
+                                    .beginConfig()
+                                    .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                                    .endConfig()
+                                    .buildRound(("" + doctorSpinnerAdapter.getDoctor(position).getDoctorName().charAt(0)).toUpperCase(), color2);
+
+
+                            RequestOptions requestOptions = new RequestOptions();
+                            requestOptions.dontAnimate();
+                            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                            requestOptions.skipMemoryCache(true);
+                            requestOptions.override(mImageSize, mImageSize);
+                            requestOptions.error(drawable);
+                            requestOptions.placeholder(drawable);
+
+                            Glide.with(mContext)
+                                    .load(doctorSpinnerAdapter.getDoctor(position).getDocImg())
+                                    .apply(requestOptions).thumbnail(0.5f)
+                                    .into(doctorImage);
 
                             dateSpinnerLayout.setVisibility(View.VISIBLE);
                             selectDateLayout.setVisibility(View.GONE);
@@ -354,7 +399,27 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                             doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
                             doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
                             doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
+                            int color2 = mColorGenerator.getColor(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
+                            TextDrawable drawable = TextDrawable.builder()
+                                    .beginConfig()
+                                    .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                                    .endConfig()
+                                    .buildRound(("" + doctorSpinnerAdapter.getDoctor(position).getDoctorName().charAt(0)).toUpperCase(), color2);
 
+
+                            RequestOptions requestOptions = new RequestOptions();
+                            requestOptions.dontAnimate();
+                            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                            requestOptions.skipMemoryCache(true);
+                            requestOptions.override(mImageSize, mImageSize);
+                            requestOptions.error(drawable);
+                            requestOptions.placeholder(drawable);
+
+                            Glide.with(mContext)
+                                    .load(doctorSpinnerAdapter.getDoctor(position).getDocImg())
+                                    .apply(requestOptions).thumbnail(0.5f)
+                                    .into(doctorImage);
                             dateSpinnerLayout.setVisibility(View.GONE);
                             selectDateLayout.setVisibility(View.VISIBLE);
 
@@ -415,5 +480,12 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
+    }
+    private void setColumnNumber(Context context, int columnNum) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        int widthPixels = metrics.widthPixels;
+        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 }

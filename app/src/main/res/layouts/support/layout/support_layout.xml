@@ -6,23 +6,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 <LinearLayout
+    android:layout_marginTop="@dimen/dp20"
     android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
    <ImageView
-       android:paddingTop="@dimen/dp20"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:src="@drawable/support_bg"
-       />
+       android:src="@drawable/support_bg" />
 
     <com.rescribe.ui.customesViews.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:paddingTop="@dimen/dp12"
-        android:textSize="@dimen/sp21"
+        android:textSize="@dimen/sp20"
         app:customFont="@string/roboto_medium"
        android:text="@string/need_some_help" />
 
@@ -30,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/grey_shade"
-        android:textSize="@dimen/sp15"
+        android:textSize="@dimen/sp14"
         android:paddingTop="@dimen/dp8"
         app:customFont="@string/roboto_medium"
         android:text="@string/feel_free" />
@@ -64,7 +63,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp8"
+        android:layout_marginBottom="@dimen/dp9"
        android:layout_gravity="center" >
 
         <ImageView

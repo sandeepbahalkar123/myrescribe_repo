@@ -13,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -23,19 +22,21 @@ import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppointFilteredDocList.ListViewHolder> {
 
     private String mClickedItemDataTypeValue;
+
+    private  String cityname = "";
+
     private HelperResponse mHelperResponse;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
@@ -50,6 +51,11 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         this.mHelperResponse = helperResponse;
         this.mClickedItemDataTypeValue = mClickedItemDataValue;
         setColumnNumber(mContext, 2);
+        String cityNameString = RescribeApplication.getUserSelectedLocationInfo().get(mContext.getString(R.string.location));
+        if (cityNameString != null) {
+            String[] split = cityNameString.split(",");
+            cityname = split[1].trim();
+        }
     }
 
 
@@ -85,7 +91,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 /////
         //-------------
         ArrayList<ClinicData> clinicDataList = doctorObject.getClinicDataList();
-
+         /// MyAppointment Category
         if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
             holder.ruppessIcon.setVisibility(View.INVISIBLE);
             holder.doctorFee.setVisibility(View.INVISIBLE);
@@ -103,6 +109,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             } else {
                 holder.clinicName.setVisibility(View.GONE);
             }
+            //Sponsered Doctors
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
 
             if (clinicDataList.size() == 1) {
@@ -143,7 +150,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                     holder.tokenNo.setVisibility(View.INVISIBLE);
                 }
             }
-            //---------------
+            //---------------Recently Visited Category
 
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
             if (clinicDataList.size() == 1) {
@@ -154,7 +161,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations)+mContext.getString(R.string.space)+"in"+mContext.getString(R.string.space)+cityname);
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     holder.doctorAddress.setText(locationString);
                     holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
@@ -184,7 +191,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                     holder.tokenNo.setVisibility(View.INVISIBLE);
                 }
             }
-            //---------------
+            //---------------if Doctor Doesnt belong to any Category
         } else if (doctorObject.getCategoryName().equals("")) {
             if (clinicDataList.size() == 1) {
                 holder.clinicName.setVisibility(View.VISIBLE);
@@ -194,7 +201,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             } else {
                 if (doctorObject.getClinicDataList().size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations)+mContext.getString(R.string.space)+"in"+mContext.getString(R.string.space)+cityname);
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     holder.doctorAddress.setText(locationString);
                     holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));

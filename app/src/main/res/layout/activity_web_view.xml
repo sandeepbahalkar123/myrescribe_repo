@@ -11,10 +11,10 @@
         android:layout_height="match_parent"
         android:background="@color/recentblue"
         android:orientation="vertical">
-
         <LinearLayout
+            android:visibility="visible"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:background="@color/recentblue"
             android:orientation="horizontal">
 
@@ -22,7 +22,7 @@
                 android:id="@+id/backButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/dp10"
+                android:padding="@dimen/dp16"
                 app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
 
             <com.rescribe.ui.customesViews.CustomTextView
@@ -32,7 +32,7 @@
                 android:layout_weight="1"
                 android:gravity="center|left"
                 tools:text="asd"
-                android:paddingLeft="@dimen/dp12"
+                android:paddingLeft="@dimen/dp18"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="@dimen/dp18" />
@@ -44,16 +44,14 @@
                 android:layout_gravity="center"
                 android:gravity="center|right"
                 android:padding="@dimen/dp10"
-                android:src="@drawable/ic_action_bookmark_border"
-                android:visibility="gone" />
+                android:src="@drawable/ic_action_bookmark_border"/>
         </LinearLayout>
 
         <WebView
             android:id="@+id/webViewLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/backButton"></WebView>
-
+            android:layout_below="@+id/backButton"/>
 
     </LinearLayout>
 

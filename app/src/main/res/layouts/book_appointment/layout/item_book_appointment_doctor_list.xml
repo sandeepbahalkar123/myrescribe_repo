@@ -110,12 +110,17 @@
                         android:layout_alignParentLeft="true"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/dp9"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp9"
+                        android:layout_alignParentStart="true">
 
                         <com.rescribe.ui.customesViews.CircularImageView
                             android:id="@+id/imageURL"
                             android:layout_width="@dimen/dp66"
                             android:layout_height="@dimen/dp66"
+                            app:border_width="@dimen/dp1"
+                            app:shadow="true"
+                            app:border="true"
                             android:layout_gravity="center_vertical"
                             tools:src="@drawable/layer_12" />
 
@@ -139,12 +144,16 @@
                             android:layout_toRightOf="@+id/thumbnail"
                             android:textColor="@color/black"
                             android:textSize="@dimen/sp15"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:visibility="gone"
                             app:customFont="@string/roboto_bold"
                             tools:text="Neuro Clinic" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/doctorName"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/doctorType"
@@ -161,6 +170,8 @@
                             android:layout_alignTop="@+id/thumbnail"
                             android:textColor="@color/dose_completed"
                             android:textSize="@dimen/sp11"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             app:customFont="@string/roboto_medium"
                             tools:text="Cardilogist" />
 
@@ -262,7 +273,7 @@
                 android:id="@+id/ratingBar"
                 style="@style/customRatingBar"
                 android:layout_width="wrap_content"
-                android:layout_height="9dp"
+                android:layout_height="10dp"
                 android:layout_marginLeft="@dimen/dp10"
                 android:layout_marginTop="@dimen/dp6"
                 android:layout_toRightOf="@id/doctorRating"

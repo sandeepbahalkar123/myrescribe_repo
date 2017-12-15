@@ -47,7 +47,7 @@
                     android:layout_height="68dp"
                     android:layout_centerVertical="true"
                     android:padding="@dimen/dp10"
-                    android:src="@drawable/vitals" />
+                    tools:src="@drawable/vitals" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -204,6 +204,7 @@
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:visibility="gone"
             android:background="@drawable/curve_edges_common">
 
             <EditText
@@ -240,7 +241,7 @@
         <Button
             android:id="@+id/uploadButton"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp40"
+            android:layout_height="@dimen/dp44"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/curve_edges_button"
             android:paddingEnd="@dimen/dp50"

@@ -3,21 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp8"
-        android:layout_marginTop="@dimen/dp4"
+        android:layout_gravity="center_vertical"
         android:background="@color/recentblue"
         android:orientation="horizontal">
 
         <com.rescribe.ui.customesViews.CircularImageView
             android:id="@+id/doctorImg"
             android:layout_width="0dp"
+            android:layout_marginBottom="@dimen/dp4"
+            android:layout_marginTop="@dimen/dp8"
             android:layout_height="match_parent"
-            android:layout_gravity="right|center_vertical"
             android:layout_marginLeft="@dimen/dp16"
             android:layout_weight="0.5"
             android:textColor="@color/white"
@@ -29,6 +30,8 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1.8"
             android:orientation="vertical"
+            android:paddingTop="@dimen/dp4"
+            android:paddingBottom="@dimen/dp4"
             android:paddingLeft="@dimen/dp16">
 
             <com.rescribe.ui.customesViews.CustomTextView
@@ -38,7 +41,7 @@
                 android:layout_marginRight="@dimen/dp4"
                 android:text="Cardiologist"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp14"
+                android:textSize="@dimen/sp16"
                 app:customFont="@string/roboto_medium" />
 
             <com.rescribe.ui.customesViews.CustomTextView
@@ -48,7 +51,7 @@
                 android:layout_marginRight="@dimen/dp4"
                 android:text="Dr.Suresh Patil"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp16"
+                android:textSize="@dimen/sp20"
                 android:textStyle="bold"
                 app:customFont="@string/roboto_medium" />
 
@@ -59,7 +62,7 @@
                 android:layout_marginRight="@dimen/dp4"
                 android:text="Aundh, Pune"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp12"
+                android:textSize="@dimen/sp14"
                 app:customFont="@string/roboto_medium" />
 
         </LinearLayout>

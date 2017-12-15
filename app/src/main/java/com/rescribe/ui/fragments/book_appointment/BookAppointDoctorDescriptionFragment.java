@@ -430,11 +430,16 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 ArrayList<ClinicData> clinicNameList = mClickedDoctorObject.getClinicDataList();
 
                 for (int i = 0; i < clinicNameList.size(); i++) {
-                    DoctorList doctorListByClinic = new DoctorList();
-                    doctorListByClinic = mClickedDoctorObject;
-                    doctorListByClinic.setAddressOfDoctorString(clinicNameList.get(i).getClinicAddress());
-                    doctorListByClinic.setNameOfClinicString(clinicNameList.get(i).getClinicName());
-                    doctorListByClinics.add(doctorListByClinic);
+                    DoctorList doctorListByClinic;
+                    try {
+                        doctorListByClinic = (DoctorList) mClickedDoctorObject.clone();
+                        doctorListByClinic.setAddressOfDoctorString(clinicNameList.get(i).getClinicAddress());
+                        doctorListByClinic.setNameOfClinicString(clinicNameList.get(i).getClinicName());
+                        doctorListByClinics.add(doctorListByClinic);
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 Intent intentObjectMap = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intentObjectMap.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);

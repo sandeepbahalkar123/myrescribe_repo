@@ -32,8 +32,10 @@ import com.rescribe.model.case_details.Vital;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -60,6 +62,8 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     RelativeLayout mNoRecordAvailable;
     @BindView(R.id.doctorImg)
     CircularImageView mDoctorImg;
+    @BindView(R.id.title)
+    CustomTextView title;
     private int imageSize;
 
     private int mLastExpandedPosition = -1;
@@ -90,7 +94,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         mIntent = getIntent();
         setColumnNumber(this, 2);
         if (getIntent().getExtras() != null) {
-            mDocName  = mIntent.getStringExtra(getString(R.string.name));
+            mDocName = mIntent.getStringExtra(getString(R.string.name));
             mDoctorName.setText(mIntent.getStringExtra(getString(R.string.name)));
             mDoctorSpecialization.setText(mIntent.getStringExtra(getString(R.string.specialization)));
             mDoctor_address.setText(mIntent.getStringExtra(getString(R.string.address)));
@@ -100,7 +104,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                     .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
                     .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
                     .endConfig()
-                    .buildRound(""+(mDocName.charAt(0)), color2);
+                    .buildRound("" + mDocName.charAt(0), color2);
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
@@ -140,7 +144,8 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         mSingleVisitDetailHelper = new SingleVisitDetailHelper(this, this);
         mSingleVisitDetailHelper.doGetOneDayVisit(mIntent.getStringExtra(getString(R.string.opd_id)));
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(getString(R.string.visit_details));
+        getSupportActionBar().setTitle("");
+        title.setText(getString(R.string.visit_details));
         mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,22 +162,22 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
 //this is done because if single element in child list , groupPosition will not expand, it will expand on advice even if it has only one element ,vitals will also expand
                 List<PatientHistory> listDataList = mSingleVisitAdapter.getListDataList();
                 List<VisitCommonData> childObject = listDataList.get(groupPosition).getCommonData();
-                if(childObject.size()==1){
-                    if( mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("advice")){
+                if (childObject.size() == 1) {
+                    if (mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("advice")) {
                         if (mLastExpandedPosition != -1
                                 && groupPosition != mLastExpandedPosition) {
                             mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
                         }
 
                         mLastExpandedPosition = groupPosition;
-                    }else if( mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")){
+                    } else if (mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")) {
                         if (mLastExpandedPosition != -1
                                 && groupPosition != mLastExpandedPosition) {
                             mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
                         }
 
                         mLastExpandedPosition = groupPosition;
-                    }else {
+                    } else {
                         if (mLastExpandedPosition != -1
                                 && groupPosition != mLastExpandedPosition) {
                             mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
@@ -181,14 +186,14 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                         mLastExpandedPosition = groupPosition;
                         mHistoryExpandableListView.collapseGroup(groupPosition);
                     }
-                }else{
+                } else {
 
-                        if (mLastExpandedPosition != -1
-                                && groupPosition != mLastExpandedPosition) {
-                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
-                        }
+                    if (mLastExpandedPosition != -1
+                            && groupPosition != mLastExpandedPosition) {
+                        mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
+                    }
 
-                        mLastExpandedPosition = groupPosition;
+                    mLastExpandedPosition = groupPosition;
 
                 }
             }

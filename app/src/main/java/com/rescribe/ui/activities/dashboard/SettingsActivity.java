@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,7 +37,6 @@ import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
-import com.rescribe.ui.activities.NotificationActivity;
 import com.rescribe.ui.activities.NotificationSettingActivity;
 import com.rescribe.ui.activities.PrescriptionActivity;
 import com.rescribe.ui.activities.SelectedRecordsGroupActivity;
@@ -47,13 +45,11 @@ import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticles;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import net.gotev.uploadservice.UploadService;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,6 +76,8 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     ImageView dashboardArrowIcon;
     @BindView(R.id.selectMenuLayout)
     RelativeLayout selectMenuLayout;
+    @BindView(R.id.title)
+    CustomTextView title;
     private SettingsAdapter mSettingsAdapter;
     private Context mContext;
     private AppDBHelper appDBHelper;
@@ -155,7 +153,8 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         mContext = SettingsActivity.this;
         appDBHelper = new AppDBHelper(mContext);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getString(R.string.settings));
+        getSupportActionBar().setTitle("");
+        title.setText(getString(R.string.settings));
 
         ClickEvent clickEvent = mCurrentSelectedBottomMenu.getClickEvent();
         if (clickEvent != null) {
@@ -178,11 +177,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         String menuName = bottomMenu.getMenuName();
 
         if (menuName.equalsIgnoreCase(getString(R.string.home))) {
-            Intent intent = new Intent(this, HomePageActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            startActivity(intent);
             finish();
-
         } else if (menuName.equalsIgnoreCase(getString(R.string.profile))) {
             Intent intent = new Intent(this, ProfileActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
@@ -213,7 +208,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     }
 
     @Override
-    public void onClickOfSettingMenuOption(com.rescribe.model.dashboard_api.ClickOption clickedOption) {
+    public void onClickOfSettingMenuOption(ClickOption clickedOption) {
         //TODO : here 's' is added bcaz API giving notifications as name.
         if (clickedOption.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
             Intent intent = new Intent(SettingsActivity.this, NotificationSettingActivity.class);

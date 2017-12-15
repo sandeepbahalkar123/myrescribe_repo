@@ -110,10 +110,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, GoogleSettingsApi.LocationSettings {
 
-    private static final long MANAGE_ACCOUNT = 121;
-    private static final long ADD_ACCOUNT = 122;
     private static final String TAG = "HomePage";
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 101;
 
     @BindView(R.id.viewpager)
     ViewPager viewpager;

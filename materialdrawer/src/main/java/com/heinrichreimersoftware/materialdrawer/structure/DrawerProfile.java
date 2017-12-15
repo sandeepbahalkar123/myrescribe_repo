@@ -47,6 +47,7 @@ public class DrawerProfile {
     private Drawable mBackground = null;
     private String mName;
     private String mDescription;
+    private String mExtraText;
 
     private boolean isProfile = true;
 
@@ -295,11 +296,50 @@ public class DrawerProfile {
         return mDescription != null && !mDescription.equals("");
     }
 
+
     /**
      * Removes the description from the drawer profile
      */
     public DrawerProfile removeDescription() {
         mDescription = null;
+        notifyDataChanged();
+        return this;
+    }
+
+    /**
+     * Sets a description to the drawer profile
+     *
+     * @param extraText ExtraText to set
+     */
+    public DrawerProfile setExtraText(String extraText) {
+        mExtraText = extraText;
+        notifyDataChanged();
+        return this;
+    }
+
+    /**
+     * Gets the description of the drawer profile
+     *
+     * @return Description of the drawer profile
+     */
+    public String getExtraText() {
+        return mExtraText;
+    }
+
+    /**
+     * Gets whether the drawer profile has a description set to it
+     *
+     * @return True if the drawer profile has a description set to it, false otherwise.
+     */
+    public boolean hasExtraText() {
+        return mExtraText != null && !mExtraText.equals("");
+    }
+
+    /**
+     * Removes the description from the drawer profile
+     */
+    public DrawerProfile removeExtraText() {
+        mExtraText = null;
         notifyDataChanged();
         return this;
     }
@@ -376,7 +416,6 @@ public class DrawerProfile {
             mDrawerView.selectProfile(this);
         }
     }
-
 
     public interface OnProfileClickListener {
         void onClick(DrawerProfile profile, long id);

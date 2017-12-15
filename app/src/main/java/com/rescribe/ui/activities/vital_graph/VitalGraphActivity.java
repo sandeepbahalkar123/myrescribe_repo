@@ -19,6 +19,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphBaseModel;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphData;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphList;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
     RecyclerView mRecyclerView;
     @BindView(R.id.emptyListView)
     RelativeLayout mEmptyListView;
+    @BindView(R.id.title)
+    CustomTextView title;
 
     private VitalGraphHelper mVitalGraphHelper;
     private VitalGraphBaseModel mReceivedVitalGraphBaseModel;
@@ -47,7 +50,8 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        getSupportActionBar().setTitle("");
+        title.setText(getString(R.string.vital_graph));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

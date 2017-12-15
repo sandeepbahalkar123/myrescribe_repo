@@ -1,6 +1,7 @@
 package com.rescribe.ui.activities.vital_graph;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
@@ -59,6 +60,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
     CustomTextView mDescriptionText;
     @BindView(R.id.graphCard)
     LineChart mGraphCard;
+    @BindView(R.id.title)
+    CustomTextView title;
     private VitalGraphData mClickedVitalGraphData;
     private VitalGraphHelper mVitalGraphHelper;
     private VitalGraphInfoBaseModel.VitalGraphInfoDataModel mReceivedVitalGraphDataModel;
@@ -73,8 +76,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(mClickedVitalGraphData.getVitalName());
-        toolbar.setTitle(mClickedVitalGraphData.getVitalName());
+        getSupportActionBar().setTitle("");
+        title.setText(mClickedVitalGraphData.getVitalName());
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,7 +107,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
             cal.setTime(timeStamp);
             String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + "" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup>" + " " + new SimpleDateFormat("MMM yy").format(cal.getTime());
             //------
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 dateText.setText(Html.fromHtml(toDisplay, Html.FROM_HTML_MODE_LEGACY));
             } else {
                 dateText.setText(Html.fromHtml(toDisplay));
@@ -122,7 +125,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
                 if (customResponse1.getVitalGraphInfoDataModel() != null) {
                     mReceivedVitalGraphDataModel = customResponse1.getVitalGraphInfoDataModel();
-                   // mDescriptionText.setText("" + mReceivedVitalGraphDataModel.getDescription());
+                    // mDescriptionText.setText("" + mReceivedVitalGraphDataModel.getDescription());
                     // plotVitalGraph();
                     mGraphCard.invalidate();
                     if (mClickedVitalGraphData.getVitalName().equalsIgnoreCase("Blood Pressure")) {

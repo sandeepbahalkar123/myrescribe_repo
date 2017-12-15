@@ -13,7 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/layer_3_3_x"
+            android:background="@drawable/image"
             android:orientation="vertical"
             android:paddingBottom="@dimen/dp5"
             android:paddingLeft="@dimen/dp10"
@@ -33,13 +33,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/rounded_rectangle_8"
+                        android:background="@drawable/premium_doctor_bg"
                         android:drawableLeft="@drawable/premium_icon"
                         android:drawablePadding="@dimen/dp4"
-                        android:padding="@dimen/dp6"
+                        android:padding="@dimen/dp4"
                         android:text="Premium"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/sp10"
+                        android:textSize="@dimen/sp12"
                         android:visibility="invisible"
                         app:customFont="@string/roboto_medium" />
 
@@ -52,41 +52,56 @@
                     android:layout_alignParentRight="true"
                     android:layout_gravity="right|center"
                     android:background="@drawable/white_square"
-                    android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingLeft="@dimen/dp4"
-                    android:paddingRight="@dimen/dp4"
                     android:visibility="invisible">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ruppee_shadow" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/dp4"
+                        android:paddingRight="@dimen/dp4"
+                        android:paddingTop="@dimen/dp2">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ruppee" />
+                            android:src="@drawable/about_ruppee_icon" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/doctorFees"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="@dimen/dp2"
-                            android:textColor="@color/tagColor"
+                            android:textColor="@color/rating_color"
                             android:textSize="@dimen/sp13"
                             app:customFont="@string/roboto_bold"
                             tools:text="123" />
 
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp1"
+                    <!-- <TextView
+                         android:layout_marginTop="@dimen/dp4"
+                        android:layout_marginLeft="@dimen/dp8"
+                         android:layout_marginRight="@dimen/dp8"
+                         android:layout_width="match_parent"
+                         android:layout_height="@dimen/dp1"
+                         android:background="@color/tagColor" />-->
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginTop="@dimen/dp4"
-                        android:background="@color/tagColor" />
-
+                        android:src="@drawable/ruppee_line" />
                 </LinearLayout>
 
             </RelativeLayout>
@@ -190,7 +205,7 @@
                         android:id="@+id/docRatingBar"
                         style="@style/customRatingBar"
                         android:layout_width="wrap_content"
-                        android:layout_height="9dp"
+                        android:layout_height="10dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp3"
                         android:layout_toRightOf="@+id/doctorRating"
@@ -225,8 +240,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/dp10">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/allClinicPracticeLocationMainLayout"
@@ -235,6 +249,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:padding="@dimen/dp10"
                 android:paddingBottom="@dimen/dp10">
 
                 <com.rescribe.ui.customesViews.CustomTextView
@@ -260,9 +275,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/dp10">
+                android:paddingBottom="@dimen/dp6"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10">
 
                 <LinearLayout
+                    android:paddingLeft="@dimen/dp5"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -284,12 +302,18 @@
 
             </LinearLayout>
 
+            <View
+                android:id="@+id/selectClinicLine"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/divider" />
+
             <LinearLayout
                 android:id="@+id/doctorExperienceLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/dp10"
+                android:padding="@dimen/dp10"
                 android:visibility="visible">
 
                 <LinearLayout
@@ -330,11 +354,17 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp15"
                     app:customFont="@string/roboto_regular"
-                    tools:text=" 11 asdassdfd" />
+                    tools:text="asdassdfd" />
 
             </LinearLayout>
 
         </LinearLayout>
+
+        <View
+            android:id="@+id/yearsExperienceLine"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/divider" />
     </LinearLayout>
 
 </LinearLayout>

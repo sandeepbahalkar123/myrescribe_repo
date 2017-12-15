@@ -884,7 +884,7 @@ public class CommonMethods {
     }
 
     public static String getDeviceResolution(Context mContext) {
-        String resolution = "";
+        String resolution;
         int density = mContext.getResources().getDisplayMetrics().densityDpi;
         switch (density) {
             case DisplayMetrics.DENSITY_LOW:
@@ -905,6 +905,9 @@ public class CommonMethods {
                 break;
             case DisplayMetrics.DENSITY_XXXHIGH:
                 resolution = "xxxhdpi";
+                break;
+            default:
+                resolution = "xhdpi";
                 break;
         }
         return resolution;

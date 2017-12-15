@@ -34,7 +34,7 @@
     <color name="menu_option_on_dashboard_color">#5b5b5b</color>
     <color name="menu_option_on_dashboard_lower_color">#b3b3b3</color>
     <color name="grey_shade">#878787</color>
-    <color name="line_color">#d5d5d5</color>
+    <color name="line_color">#cdd3d5</color>
 
 
     <color name="dose_completed">#666666</color>

@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
-import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 
@@ -25,18 +24,22 @@ import java.util.ArrayList;
 
 public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
+//    private final int widthPixels;
     private ArrayList<String> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
-    private int mImageSize;
     private ColorGenerator mColorGenerator;
 
     public ShowBackgroundViewPagerAdapter(Context context, ArrayList<String> doctorLists) {
         this.mContext = context;
         this.mDataList = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
-        setColumnNumber(mContext, 2);
         mInflater = LayoutInflater.from(context);
+
+        /*WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        widthPixels = metrics.widthPixels;*/
     }
 
     @Override
@@ -59,23 +62,18 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
+        requestOptions.override(680, 423);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
 
         Glide.with(mContext)
                 .load(mDataList.get(position))
+                .apply(requestOptions)
                 .into(dashboardBackgroundLayout);
 
         view.addView(imageLayout, 0);
 
         return imageLayout;
-    }
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     @Override

@@ -8,7 +8,8 @@
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,35 +51,15 @@
                 android:id="@+id/dividerView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/sliderView"
                 android:background="@color/divider" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/menuOptionsListView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@+id/dividerView"
-                android:dividerHeight="1dp">
-
-            </android.support.v7.widget.RecyclerView>
+                android:scrollbars="none" />
         </LinearLayout>
 
-
     </android.support.v4.widget.NestedScrollView>
-
-    <ImageView
-        android:id="@+id/menuIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/dp10"
-        android:paddingEnd="@dimen/dp12"
-        android:paddingLeft="@dimen/dp12"
-        android:paddingRight="@dimen/dp12"
-        android:paddingStart="@dimen/dp12"
-        android:paddingTop="@dimen/dp10"
-        android:src="@drawable/menu_button_3_x"
-        android:visibility="gone" />
-
 
 </RelativeLayout>

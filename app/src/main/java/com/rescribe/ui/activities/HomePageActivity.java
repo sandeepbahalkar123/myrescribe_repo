@@ -16,13 +16,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -118,8 +118,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     ViewPager viewPagerDoctorItem;
     @BindView(R.id.menuOptionsListView)
     RecyclerView mMenuOptionsListView;
-    @BindView(R.id.menuIcon)
-    ImageView menuIcon;
     @BindView(R.id.locationImageView)
     ImageView locationImageView;
     @BindView(R.id.parentLayout)
@@ -163,7 +161,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     private String profileImageString;
     private String locationString;
     private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,7 +223,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         HomePageActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-
     }
 
     @Override
@@ -440,12 +436,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
             @Override
             public void onPageSelected(int position) {
-
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
 
@@ -467,12 +461,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     }
 
 
-    @OnClick({R.id.menuIcon, R.id.locationImageView})
+    @OnClick({R.id.locationImageView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.menuIcon:
-
-                break;
             case R.id.locationImageView:
                 Intent start = new Intent(this, BookAppointFindLocation.class);
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
@@ -571,15 +562,14 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
         int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
 
+        ArrayList<DashboardMenuList> dashboardMenuList = mDashboardDataModel.getDashboardMenuList();
+
         //------- Menus received from server, like find_doc,ongoing_medication : START
-        mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, mDashboardDataModel.getDashboardMenuList());
+        mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, dashboardMenuList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setAutoMeasureEnabled(true);
         mMenuOptionsListView.setLayoutManager(linearLayoutManager);
+        mMenuOptionsListView.setHasFixedSize(true);
         mMenuOptionsListView.setNestedScrollingEnabled(false);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mMenuOptionsListView.getContext(),
-                linearLayoutManager.getOrientation());
-        mMenuOptionsListView.addItemDecoration(dividerItemDecoration);
         mMenuOptionsListView.setAdapter(mMenuOptionsDashBoardAdapter);
         //------- Menus received from server, like find_doc,ongoing_medication : START
 

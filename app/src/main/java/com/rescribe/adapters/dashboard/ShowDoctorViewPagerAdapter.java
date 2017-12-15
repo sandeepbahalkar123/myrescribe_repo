@@ -45,7 +45,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     private ArrayList<DoctorList> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
-    private int mImageSize;
     private ServicesCardViewImpl mServicesCardViewClickListener;
     private ColorGenerator mColorGenerator;
     private String cityname;
@@ -54,7 +53,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         this.mContext = context;
         this.mDataList = doctorLists;
         mColorGenerator = ColorGenerator.MATERIAL;
-        setColumnNumber(mContext, 2);
         this.mServicesCardViewClickListener = mOnClickOfCardOnDashboard;
         mInflater = LayoutInflater.from(context);
         this.mListSizeWithTypeMap = dataMap;
@@ -83,7 +81,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup view, int position) {
         View imageLayout = mInflater.inflate(R.layout.dashboard_doctor_category_item, view, false);
         assert imageLayout != null;
-
 
         final CardView dashBoardCard = (CardView) imageLayout
                 .findViewById(R.id.dashBoardCard);
@@ -157,7 +154,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
-        requestOptions.override(mImageSize, mImageSize);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.placeholder(textDrawable);
@@ -353,14 +349,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         view.addView(imageLayout, 0);
 
         return imageLayout;
-    }
-
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     @Override

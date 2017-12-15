@@ -35,10 +35,7 @@ public class DashboardHelper implements ConnectionListener {
     String TAG = this.getClass().getName();
     Context mContext;
     HelperResponse mHelperResponseManager;
-
-
     private DashboardDataModel mDashboardDataModel = null;
-
 
     public DashboardHelper(Context context, HelperResponse loginActivity) {
         this.mContext = context;

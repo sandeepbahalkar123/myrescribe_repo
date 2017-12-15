@@ -177,11 +177,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         String menuName = bottomMenu.getMenuName();
 
         if (menuName.equalsIgnoreCase(getString(R.string.home))) {
-            Intent intent = new Intent(this, HomePageActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            startActivity(intent);
             finish();
-
         } else if (menuName.equalsIgnoreCase(getString(R.string.profile))) {
             Intent intent = new Intent(this, ProfileActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);

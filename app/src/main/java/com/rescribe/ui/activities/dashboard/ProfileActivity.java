@@ -126,8 +126,8 @@ public class ProfileActivity extends DrawerActivity implements HelperResponse {
         setDrawerTheme(
                 new DrawerTheme(this)
                         .setBackgroundColorRes(R.color.drawer_bg)
-                        .setTextColorPrimaryRes(R.color.drawer_menu_text_color)
-                        .setTextColorSecondaryRes(R.color.drawer_menu_text_color)
+                        .setTextColorPrimaryRes(R.color.black)
+                        .setTextColorSecondaryRes(R.color.grey_shade)
         );
 
         addItems(new DrawerItem()
@@ -240,6 +240,7 @@ public class ProfileActivity extends DrawerActivity implements HelperResponse {
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext))
                 .setDescription(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext))
+                .setExtraText("Age: 62 years")
         );
 
         addProfile(new DrawerProfile()
@@ -248,6 +249,7 @@ public class ProfileActivity extends DrawerActivity implements HelperResponse {
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr.Sandeep Deshmukh ")
                 .setDescription("8201888897")
+                .setExtraText("Age: 32 years")
         );
 
         addProfile(new DrawerProfile()

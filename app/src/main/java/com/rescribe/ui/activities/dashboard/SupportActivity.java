@@ -229,12 +229,7 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
             startActivity(intent);
             finish();
         } else if (menuName.equalsIgnoreCase(getString(R.string.home))) {
-
-            Intent intent = new Intent(this, HomePageActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            startActivity(intent);
             finish();
-
         }
         super.onBottomMenuClick(bottomMenu);
     }

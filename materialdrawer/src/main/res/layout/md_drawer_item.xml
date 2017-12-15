@@ -59,28 +59,31 @@
 
             <TextView
                 android:id="@id/mdTextPrimary"
-                style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="false"
+                android:textSize="@dimen/sp16"
+                android:ellipsize="marquee"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="start"
+                android:maxLines="1"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                tools:ignore="UnusedAttribute" />
+
+            <TextView
+                android:id="@id/mdTextSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/md_list_item_text_secondary_margin"
+                android:textSize="@dimen/sp12"
                 android:clickable="false"
                 android:ellipsize="marquee"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="start"
-                android:textAlignment="textStart"
-                tools:ignore="UnusedAttribute"
-                android:maxLines="1" />
-
-            <TextView
-                android:id="@id/mdTextSecondary"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/md_list_item_text_secondary_margin"
-                android:clickable="false"
-                android:ellipsize="marquee"
-                android:gravity="start"
                 android:maxLines="2"
                 android:textAlignment="textStart"
+                android:textColor="#878787"
                 tools:ignore="UnusedAttribute" />
 
         </LinearLayout>

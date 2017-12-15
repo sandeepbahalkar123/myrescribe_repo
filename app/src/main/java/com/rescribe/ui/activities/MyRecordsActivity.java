@@ -39,10 +39,10 @@ public class MyRecordsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(MyRecordsActivity.this, HomePageActivity.class);
+       /* Intent intent = new Intent(MyRecordsActivity.this, HomePageActivity.class);
         intent.putExtra(RescribeConstants.ALERT, false);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        startActivity(intent);*/
         super.onBackPressed();
     }
 

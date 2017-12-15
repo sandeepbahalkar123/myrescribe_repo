@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/home/jeetal/jeetal_projects/myrescribe_repo/library/src/main/shaders"/></dataSet><dataSet config="release"><source path="/home/jeetal/jeetal_projects/myrescribe_repo/library/src/release/shaders"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/library/src/main/shaders"/></dataSet><dataSet config="release"><source path="/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/library/src/release/shaders"/></dataSet></merger>

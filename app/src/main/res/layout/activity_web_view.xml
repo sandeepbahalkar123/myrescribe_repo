@@ -44,16 +44,14 @@
                 android:layout_gravity="center"
                 android:gravity="center|right"
                 android:padding="@dimen/dp10"
-                android:src="@drawable/ic_action_bookmark_border"
-                android:visibility="gone" />
+                android:src="@drawable/ic_action_bookmark_border"/>
         </LinearLayout>
 
         <WebView
             android:id="@+id/webViewLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/backButton"></WebView>
-
+            android:layout_below="@+id/backButton"/>
 
     </LinearLayout>
 

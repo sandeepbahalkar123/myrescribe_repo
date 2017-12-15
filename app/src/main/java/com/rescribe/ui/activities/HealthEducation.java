@@ -20,6 +20,7 @@ import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.saved_article.SavedArticleBaseModel;
 import com.rescribe.model.saved_article.SavedArticleDataModel;
 import com.rescribe.model.saved_article.SavedArticleInfo;
+import com.rescribe.ui.activities.saved_articles.SaveArticleWebViewActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
 
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.rescribe.ui.activities.saved_articles.SavedArticles.ARTICLE_REQUEST_CODE;
 
 /**
  * Created by jeetal on 8/12/17.
@@ -75,18 +78,8 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
         mContext = HealthEducation.this;
         mHelper = new DashboardHelper(this, this);
         mHelper.doHealthEducationGetSavedArticles();
-
-
     }
 
-    @Override
-    protected void onResume() {
-
-
-
-
-        super.onResume();
-    }
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         switch (mOldDataTag) {
@@ -134,8 +127,6 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
                         mReceivedSavedArticleList.get(pos).setIsSaved(false);
                         mSavedArticleListAdapter.notifyItemChanged(pos);
                     }
-
-
                 }
         }
     }
@@ -158,12 +149,13 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
     @Override
     public void onArticleClicked(SavedArticleInfo data) {
 
-        Intent intent = new Intent(HealthEducation.this, SaveArticleHealthEducation.class);
+        Intent intent = new Intent(HealthEducation.this, SaveArticleWebViewActivity.class);
         Bundle b = new Bundle();
         b.putString(getString(R.string.url), data.getArticleUrl());
         b.putString(getString(R.string.toolbarTitle), getString(R.string.health_education));
+        b.putBoolean(getString(R.string.save), data.getIsSaved());
         intent.putExtras(b);
-        startActivity(intent);
+        startActivityForResult(intent, ARTICLE_REQUEST_CODE);
     }
 
     @Override
@@ -174,8 +166,6 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
         } else {
             mHelper.doSaveArticlesToServer(data.getArticleUrl(), true);
         }
-
-
     }
 
     private void isDataListViewVisible(boolean flag) {
@@ -188,5 +178,22 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ARTICLE_REQUEST_CODE) {
+                String articleUrl = data.getStringExtra(getString(R.string.url));
+                boolean isSaveArticle = data.getBooleanExtra(getString(R.string.save), false);
+                for (SavedArticleInfo savedArticleInfo : mReceivedSavedArticleList) {
+                    if (savedArticleInfo.getArticleUrl().equals(articleUrl)) {
+                        savedArticleInfo.setIsSaved(isSaveArticle);
+                        break;
+                    }
+                }
+
+                mSavedArticleListAdapter.notifyDataSetChanged();
+            }
+        }
+    }
 }
 

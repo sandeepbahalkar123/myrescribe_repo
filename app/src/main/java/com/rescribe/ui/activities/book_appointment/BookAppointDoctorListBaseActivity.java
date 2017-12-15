@@ -227,12 +227,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         String menuName = bottomMenu.getMenuName();
 
         if (menuName.equalsIgnoreCase(getString(R.string.home))) {
-            Intent intent = new Intent(BookAppointDoctorListBaseActivity.this, HomePageActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            startActivity(intent);
             finish();
-
-
         } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
             Intent intent = new Intent(BookAppointDoctorListBaseActivity.this, SettingsActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
@@ -252,7 +247,6 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     public void onProfileImageClick() {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
-
     }
 
     @Override

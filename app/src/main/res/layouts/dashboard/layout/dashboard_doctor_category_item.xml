@@ -98,7 +98,10 @@
                     android:layout_width="@dimen/dp56"
                     android:layout_height="@dimen/dp56"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/layer_12" />
+                    android:src="@drawable/layer_12"
+                    app:border="true"
+                    app:border_width="1dp"
+                    app:shadow="true" />
             </LinearLayout>
 
             <LinearLayout

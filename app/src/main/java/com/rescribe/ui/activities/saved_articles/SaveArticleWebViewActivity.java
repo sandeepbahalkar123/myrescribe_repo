@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities.saved_articles;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.rescribe.R;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.interfaces.CustomResponse;
@@ -16,6 +18,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,7 +63,6 @@ public class SaveArticleWebViewActivity extends AppCompatActivity implements Hel
 
         }
 
-
         mDashBoardHelper = new DashboardHelper(this, this);
 
         // Hardcoded
@@ -76,7 +78,7 @@ public class SaveArticleWebViewActivity extends AppCompatActivity implements Hel
                 onBackPressed();
                 break;
             case R.id.bookMarkIcon:
-                boolean localSaved = mIsSaved ? false : true;
+                boolean localSaved = !mIsSaved;
 
                 Log.e("bookMarkIcon", "getUrl:" + mWebViewObject.getUrl());
                 Log.e("bookMarkIcon", "getOriginalUrl : " + mWebViewObject.getOriginalUrl());
@@ -106,19 +108,10 @@ public class SaveArticleWebViewActivity extends AppCompatActivity implements Hel
                 }
 
                 public void onPageFinished(WebView view, String url) {
-                    // do your stuff here
-                    if (getString(R.string.saved_articles).equalsIgnoreCase(mViewOpeningFrom)) {
-                        if (mWebViewObject.canGoBack()) {
-                            mBookMarkIcon.setVisibility(View.GONE);
-                        } else {
-                            mBookMarkIcon.setVisibility(View.GONE);
-                            mIsSaved = false;
-                            mBookMarkIcon.setImageResource(R.drawable.ic_action_bookmark_border);
-                        }
-                    } else if (getString(R.string.clicked_saved_articles).equalsIgnoreCase(mViewOpeningFrom)) {
+                    if (mWebViewObject.canGoBack())
                         mBookMarkIcon.setVisibility(View.GONE);
-                    }
-
+                    else
+                        mBookMarkIcon.setVisibility(View.VISIBLE);
                 }
             });
             mWebViewObject.loadUrl(url);
@@ -129,8 +122,13 @@ public class SaveArticleWebViewActivity extends AppCompatActivity implements Hel
     public void onBackPressed() {
         if (mWebViewObject.canGoBack()) {
             mWebViewObject.goBack();
-        } else
+        } else {
+            Intent intent = new Intent();
+            intent.putExtra(getString(R.string.url), mUrl);
+            intent.putExtra(getString(R.string.save), mIsSaved);
+            setResult(RESULT_OK, intent);
             super.onBackPressed();
+        }
     }
 
     @Override

@@ -116,6 +116,9 @@
                             android:id="@+id/imageURL"
                             android:layout_width="@dimen/dp66"
                             android:layout_height="@dimen/dp66"
+                            app:border_width="@dimen/dp1"
+                            app:shadow="true"
+                            app:border="true"
                             android:layout_gravity="center_vertical"
                             tools:src="@drawable/layer_12" />
 

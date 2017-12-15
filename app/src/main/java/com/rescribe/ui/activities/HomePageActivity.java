@@ -915,7 +915,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
                 intent.putExtra(RescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
             }
             startActivity(intent);
-        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment) + "s")) {
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
             Intent intent = new Intent(mContext, PrescriptionActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.clicked_item_data_type_value), bottomMenu.getName());

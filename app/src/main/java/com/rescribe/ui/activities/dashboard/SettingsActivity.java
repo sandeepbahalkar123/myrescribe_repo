@@ -99,7 +99,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         int chatCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
         //int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-        int notificationCount = appCount + invCount + medCount +chatCount;
+        int notificationCount = appCount + invCount + medCount + chatCount;
         if (dashboardBottomMenuLists != null)
             bottomSheetMenus.clear();
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
@@ -310,7 +310,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
                 intent.putExtra(RescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
             }
             startActivity(intent);
-        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment) + "s")) {
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
             Intent intent = new Intent(mContext, PrescriptionActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.clicked_item_data_type_value), bottomMenu.getName());

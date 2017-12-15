@@ -14,6 +14,8 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
 
+import com.rescribe.model.saved_article.SavedArticleBaseModel;
+import com.rescribe.model.saved_article.SavedArticleInfo;
 import com.rescribe.model.saved_article.request_model.ArticleToSaveReqModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
@@ -65,10 +67,30 @@ public class DashboardHelper implements ConnectionListener {
                     }
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_SAVED_ARTICLES)) {
+                    SavedArticleBaseModel savedArticleBaseModel = (SavedArticleBaseModel) customResponse;
+                    if (savedArticleBaseModel != null) {
+                        for (int i = 0; i < savedArticleBaseModel.getSavedArticleDataModel().getSavedArticleList().size(); i++) {
+                            SavedArticleInfo savedArticleInfo = savedArticleBaseModel.getSavedArticleDataModel().getSavedArticleList().get(i);
+                            if (!savedArticleInfo.getAuthorName().toLowerCase().contains("dr.")) {
+                                savedArticleInfo.setAuthorName("Dr. " + savedArticleInfo.getAuthorName());
+                            }
+                        }
+                    }
+
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER)) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_HEALTH_EDUCATION_ARTICLES)) {
+                    SavedArticleBaseModel savedArticleBaseModel = (SavedArticleBaseModel) customResponse;
+                    if (savedArticleBaseModel != null) {
+                        for (int i = 0; i < savedArticleBaseModel.getSavedArticleDataModel().getSavedArticleList().size(); i++) {
+                            SavedArticleInfo savedArticleInfo = savedArticleBaseModel.getSavedArticleDataModel().getSavedArticleList().get(i);
+                            if (!savedArticleInfo.getAuthorName().toLowerCase().contains("dr.")) {
+                                savedArticleInfo.setAuthorName("Dr. " + savedArticleInfo.getAuthorName());
+                            }
+                        }
+                    }
+
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;

@@ -74,10 +74,9 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
         SpannableString s = CommonMethods.addTextToStringAtLast(savedArticleInfo.getArticleExcerpt(), 20, "... READ MORE", ContextCompat.getColor(mContext, R.color.tagColor));
 
         if (s == null) {
-
-            holder.articleText.setText("" + stripHtml(savedArticleInfo.getArticleExcerpt()));
+            holder.articleText.setText("" + savedArticleInfo.getArticleExcerpt());
         } else {
-            holder.articleText.setText(stripHtml(""+s));
+            holder.articleText.setText(s);
         }
 
         //------------
@@ -148,13 +147,7 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
 
         //--------------
     }
-    public Spanned stripHtml(String html) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            return Html.fromHtml(html);
-        }
-    }
+
     @Override
     public int getItemCount() {
         return mReceivedSavedArticleList.size();

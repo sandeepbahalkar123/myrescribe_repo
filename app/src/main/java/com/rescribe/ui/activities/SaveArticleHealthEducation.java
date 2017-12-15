@@ -141,7 +141,7 @@ public class SaveArticleHealthEducation extends AppCompatActivity implements Hel
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (customResponse != null) {
             CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
-           // CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
+            // CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
 
             if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
                 if (mIsSaved) {

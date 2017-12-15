@@ -73,10 +73,9 @@ public class SavedArticleHealthEducationAdapter extends RecyclerView.Adapter<Sav
 
 
         if (s == null) {
-
-            holder.articleText.setText("" + stripHtml(savedArticleInfo.getArticleExcerpt()));
+            holder.articleText.setText("" + savedArticleInfo.getArticleExcerpt());
         } else {
-            holder.articleText.setText(stripHtml(""+s));
+            holder.articleText.setText(s);
         }
         //------------
         int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(mContext, 2);
@@ -145,13 +144,6 @@ public class SavedArticleHealthEducationAdapter extends RecyclerView.Adapter<Sav
         }
 
         //--------------
-    }
-    public Spanned stripHtml(String html) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            return Html.fromHtml(html);
-        }
     }
 
     @Override

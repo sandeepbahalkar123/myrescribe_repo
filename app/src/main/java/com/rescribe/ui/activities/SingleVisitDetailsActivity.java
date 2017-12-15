@@ -104,7 +104,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                     .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
                     .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
                     .endConfig()
-                    .buildRound("" + (mDocName.charAt(0)), color2);
+                    .buildRound("" + mDocName.charAt(0), color2);
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);

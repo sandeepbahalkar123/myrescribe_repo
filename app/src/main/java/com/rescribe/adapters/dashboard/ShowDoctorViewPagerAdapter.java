@@ -304,6 +304,15 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             }
         });
+        doctorCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
+                b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
+                mServicesCardViewClickListener.onClickOfTotalCount(b);
+            }
+        });
 
 
         dashBoardCard.setOnClickListener(new View.OnClickListener() {

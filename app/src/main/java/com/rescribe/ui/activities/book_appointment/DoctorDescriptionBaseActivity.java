@@ -58,7 +58,6 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
             title.setText(extras.getString(getString(R.string.toolbarTitle)));
         }
         mBookAppointDoctorDescriptionFragment = BookAppointDoctorDescriptionFragment.newInstance(extras);
-
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.viewContainer, mBookAppointDoctorDescriptionFragment);

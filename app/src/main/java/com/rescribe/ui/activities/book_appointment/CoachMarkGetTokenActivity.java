@@ -43,7 +43,7 @@ public class CoachMarkGetTokenActivity extends AppCompatActivity {
             case R.id.coachmark:
                 break;
             case R.id.coachmarkLayout:
-                Intent intent = new Intent(CoachMarkGetTokenActivity.this,DoctorDescriptionBaseActivity.class);
+                Intent intent = new Intent(CoachMarkGetTokenActivity.this, DoctorDescriptionBaseActivity.class);
                 startActivity(intent);
                 break;
         }

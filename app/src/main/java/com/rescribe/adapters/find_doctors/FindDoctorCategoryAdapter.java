@@ -140,7 +140,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
         //doctorCategory.setText(doctorObject.getCategoryName());
         doctorNameTextView.setText(doctorObject.getDocName());
         //  doctorType.setText(doctorObject.getDegree());
-        doctorExperience.setText(doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
+        doctorExperience.setText(doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
         aboutDoctor.setText(doctorObject.getDegree() + "");
         //-----THIS IS DONE TO SHOW COUNT OF FAVORITE(CUSTOM CREATED CATEGORY), ASSUME IT WILL COME LAST ALWAYS ----
       /*  int size;
@@ -211,7 +211,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
 
             } else {
                 if (doctorObject.getClinicDataList().size() > 0) {
-                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations));
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     doctorAddress.setText(locationString);
                     clinicName.setVisibility(View.INVISIBLE);
@@ -250,7 +250,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
 
             } else {
                 if (doctorObject.getClinicDataList().size() > 0) {
-                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations)+mContext.getString(R.string.space)+"in"+mContext.getString(R.string.space)+cityname);
+                    SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations)+" "+"in"+" "+cityname);
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     doctorAddress.setText(locationString);
                     clinicName.setVisibility(View.INVISIBLE);

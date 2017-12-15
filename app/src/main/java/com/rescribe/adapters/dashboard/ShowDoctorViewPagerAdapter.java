@@ -129,7 +129,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             doctorExperience.setVisibility(View.GONE);
         } else {
             doctorExperience.setVisibility(View.VISIBLE);
-            doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
+            doctorExperience.setText("" + doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
 
         }
 
@@ -201,7 +201,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     doctorAddress.setText(locationString);
                     doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
@@ -242,7 +242,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations)+mContext.getString(R.string.space)+"in"+mContext.getString(R.string.space)+cityname);
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+" "+"in"+" "+cityname);
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     doctorAddress.setText(locationString);
                     doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));

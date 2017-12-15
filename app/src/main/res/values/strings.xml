@@ -152,7 +152,6 @@
     <!--//*** Google Map key-->
     <string name="times">times</string>
     <string name="days">days</string>
-    <string name="space">\u0020</string>
     <string name="enter_otp_for_login">Otp For Login</string>
     <string name="your_health">Your Own Healthcare Repository</string>
     <string name="using_otp">Using OTP</string>

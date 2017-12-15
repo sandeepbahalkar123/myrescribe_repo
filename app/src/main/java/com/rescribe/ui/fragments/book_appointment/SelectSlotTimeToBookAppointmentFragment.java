@@ -712,14 +712,17 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             monthOfYearData = "0" + monthOfYearData;
         }
 
+        String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, dateConverted + "-" + monthOfYearData + "-" + year);
+
         mSelectedTimeSlotDate = year + "-" + monthOfYearData + "-" + dateConverted;
-        mSelectDateTime.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, dateConverted + "-" + monthOfYearData + "-" + year) + "," + getString(R.string.space) + CommonMethods.getFormattedDate(dateConverted + "-" + monthOfYearData + "-" + year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
+        mSelectDateTime.setText(dayFromDate + ", " + CommonMethods.getFormattedDate(dateConverted + "-" + monthOfYearData + "-" + year, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MMM));
 
         if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.mixed))) {
             changeViewBasedOnAppointmentType();
         } else {
             mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
         }
+
     }
 
     public void showTokenStatusMessageBox(Context context, String message) {

@@ -83,7 +83,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             holder.doctorExperience.setVisibility(View.GONE);
         } else {
             holder.doctorExperience.setVisibility(View.VISIBLE);
-            holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
+            holder.doctorExperience.setText("" + doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
 
         }
         holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
@@ -120,7 +120,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations));
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     holder.doctorAddress.setText(locationString);
                     holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
@@ -161,7 +161,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations)+mContext.getString(R.string.space)+"in"+mContext.getString(R.string.space)+cityname);
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+" "+"in"+" "+cityname);
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     holder.doctorAddress.setText(locationString);
                     holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
@@ -201,7 +201,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             } else {
                 if (doctorObject.getClinicDataList().size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations)+mContext.getString(R.string.space)+"in"+mContext.getString(R.string.space)+cityname);
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+" "+"in"+" "+cityname);
                     locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                     holder.doctorAddress.setText(locationString);
                     holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));

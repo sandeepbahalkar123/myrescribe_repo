@@ -107,8 +107,7 @@
             android:id="@+id/imageUrl"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/ellipse_2" />
+            android:layout_gravity="center_horizontal"/>
 
     </FrameLayout>
 

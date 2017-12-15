@@ -106,7 +106,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             holder.doctorExperience.setVisibility(View.GONE);
         } else {
             holder.doctorExperience.setVisibility(View.VISIBLE);
-            holder.doctorExperience.setText("" + doctorObject.getExperience() + mContext.getString(R.string.space) + mContext.getString(R.string.years_experience));
+            holder.doctorExperience.setText("" + doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
 
         }
         holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
@@ -138,7 +138,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
         } else {
             holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-            SpannableString locationString = new SpannableString( doctorObject.getClinicDataList().size() + mContext.getString(R.string.space) + mContext.getString(R.string.locations)+mContext.getString(R.string.space)+"in"+mContext.getString(R.string.space)+cityname);
+            SpannableString locationString = new SpannableString( doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations)+" "+"in"+" "+cityname);
             locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
             holder.doctorAddress.setText(locationString);
             if(doctorObject.getClinicDataList().get(0).getAmount()==0){
@@ -183,7 +183,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         SpannableString spannableClinicNameString = null;
         if ((mSearchString != null) && (!mSearchString.isEmpty())) {
 
-            if (doctorObject.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + mSearchString.toLowerCase())) {
+            if (doctorObject.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + " " + mSearchString.toLowerCase())) {
                 spannableStringSearch = new SpannableString(doctorObject.getDocName());
 
                 spannableStringSearch.setSpan(new ForegroundColorSpan(
@@ -362,7 +362,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
                     for (DoctorList doctorConnectModel : mArrayList) {
 
-                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase())) {
+                        if (doctorConnectModel.getDocName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + " " + charString.toLowerCase())) {
                             filteredList.add(doctorConnectModel);
                             setListByClinicName(false);
                         } else {

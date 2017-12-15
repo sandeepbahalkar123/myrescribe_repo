@@ -51,10 +51,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         } else {
             Intent intent = new Intent(mParentActivity, DoctorDescriptionBaseActivity.class);
             intent.putExtra(mContext.getString(R.string.clicked_item_data), userSelectedDoctorListDataObject);
-
             intent.putExtra(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
-
-
             mParentActivity.startActivity(intent);
         }
     }

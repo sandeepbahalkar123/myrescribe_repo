@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/clickHere"
-            android:text="@string/get_token"
+            android:text="@string/book_appointment"
             android:textAllCaps="false"
             android:textColor="@color/white" />
     </LinearLayout>

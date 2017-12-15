@@ -53,6 +53,7 @@ import java.util.Locale;
 public class CommonMethods {
 
     private static final String TAG = "Rescribe/CommonMethods";
+    public static final String TODAY = "Today";
     private static boolean encryptionIsOn = true;
     private static String aBuffer = "";
     private static CheckIpConnection mCheckIpConnection;
@@ -279,7 +280,7 @@ public class CommonMethods {
             }
 
             if (date.trim().equalsIgnoreCase(new SimpleDateFormat(dateFormat, Locale.US).format(currentDate).trim())) {
-                return "Today";
+                return TODAY;
             }
             //-----------
             Calendar cal = Calendar.getInstance();

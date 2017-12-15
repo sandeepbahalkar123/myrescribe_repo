@@ -38,6 +38,7 @@ import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAd
 @SuppressLint("Registered")
 public class BottomMenuActivity extends AppCompatActivity implements BottomMenuAdapter.OnBottomMenuClickListener {
 
+    private static final long ANIMATION_DUR = 300;
     private FrameLayout mFrame;
     private RecyclerView bottomMenuListRecyclerView;
     private BottomMenuAdapter bottomMenuAdapter;
@@ -103,7 +104,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         bottomSheetMenuLayout.setVisibility(View.VISIBLE);
 
         AlphaAnimation animation1 = new AlphaAnimation(0.0f, 1.0f);
-        animation1.setDuration(300);
+        animation1.setDuration(ANIMATION_DUR);
         bottomSheetMenu.startAnimation(animation1);
 
         Animation slideUpAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
@@ -198,7 +199,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
                 R.anim.slide_down_animation);
 
         AlphaAnimation animation1 = new AlphaAnimation(1.0f, 0.0f);
-        animation1.setDuration(300);
+        animation1.setDuration(ANIMATION_DUR);
         bottomSheetMenu.startAnimation(animation1);
 
         bottomSheetMenuLayout.startAnimation(slideDownAnimation);

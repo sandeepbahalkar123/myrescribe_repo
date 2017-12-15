@@ -189,8 +189,7 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
 
                     for (ChatDoctor doctorConnectModel : mArrayList) {
 
-                        if (doctorConnectModel.getDoctorName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + mContext.getString(R.string.space) + charString.toLowerCase())) {
-
+                        if (doctorConnectModel.getDoctorName().toLowerCase().startsWith(mContext.getString(R.string.dr).toLowerCase() + " " + charString.toLowerCase())) {
                             filteredList.add(doctorConnectModel);
                         }
                     }

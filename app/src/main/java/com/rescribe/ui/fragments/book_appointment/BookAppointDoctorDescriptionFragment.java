@@ -1,11 +1,7 @@
 package com.rescribe.ui.fragments.book_appointment;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,13 +17,10 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -173,6 +166,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     }
 
     private void init() {
+
         mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
         mColorGenerator = ColorGenerator.MATERIAL;
         setColumnNumber(getActivity(), 2);
@@ -192,6 +186,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     }
 
     private void setDataInViews() {
+
+        if (!mClickedDoctorObject.getClinicDataList().isEmpty())
+            bookAppointmentButton.setText(mClickedDoctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(getString(R.string.book)) ? getText(R.string.book_appointment) : getText(R.string.get_token));
+
         //-------
         SpannableString contentServices = new SpannableString(getString(R.string.services));
         contentServices.setSpan(new UnderlineSpan(), 0, contentServices.length(), 0);
@@ -253,8 +251,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         int experience = mClickedDoctorObject.getExperience();
         if (experience > 0) {
             mDoctorExperienceLayout.setVisibility(View.VISIBLE);
-            mDoctorExperience.setText("" + experience + getString(R.string.space) + getString(R.string.years_experience));
-            mCountDoctorExperience.setText(""+experience);
+            mDoctorExperience.setText(experience + " " + getString(R.string.years_experience));
+            mCountDoctorExperience.setText("" + experience);
         } else {
             mDoctorExperienceLayout.setVisibility(View.GONE);
         }

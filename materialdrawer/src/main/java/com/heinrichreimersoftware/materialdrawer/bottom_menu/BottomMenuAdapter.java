@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.heinrichreimersoftware.materialdrawer.R;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
@@ -21,9 +22,9 @@ import java.util.ArrayList;
 public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.ListViewHolder> {
 
     private final Context mContext;
-    public OnBottomMenuClickListener mBottomMenuListClickListener;
+    private OnBottomMenuClickListener mBottomMenuListClickListener;
     private ArrayList<BottomMenu> bottomMenus;
-    public static int appIconIndex;
+    static int appIconIndex;
 
     BottomMenuAdapter(Context mContext, ArrayList<BottomMenu> bottomMenus) {
         this.bottomMenus = bottomMenus;
@@ -63,9 +64,12 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
             }
         });
 
-        RequestOptions options = new RequestOptions()
-                .centerInside()
-                .priority(Priority.HIGH);
+        RequestOptions options = new RequestOptions();
+        options.dontAnimate();
+        options.centerInside();
+        options.diskCacheStrategy(DiskCacheStrategy.NONE);
+        options.skipMemoryCache(true);
+        options.priority(Priority.HIGH);
 
         Glide.with(holder.menuBottomIcon.getContext())
                 .load(bottomMenu.getMenuIcon()).apply(options)
@@ -79,16 +83,12 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
             if (bottomMenu.getNotificationCount() > 0) {
                 holder.showCount.setText(String.valueOf(bottomMenu.getNotificationCount()));
                 holder.showCount.setVisibility(View.VISIBLE);
-//                holder.spaceView.setVisibility(View.VISIBLE);
-            } else {
+            } else
                 holder.showCount.setVisibility(View.GONE);
-//                holder.spaceView.setVisibility(View.GONE);
-            }
 
         } else {
 
             holder.showCount.setVisibility(View.GONE);
-//            holder.spaceView.setVisibility(View.GONE);
 
             if (bottomMenu.isSelected()) {
                 holder.bottomMenuTab.setVisibility(View.VISIBLE);

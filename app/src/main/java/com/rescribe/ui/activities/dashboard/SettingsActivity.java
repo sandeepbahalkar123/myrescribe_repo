@@ -34,7 +34,6 @@ import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
-import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.ui.activities.NotificationSettingActivity;
@@ -167,8 +166,6 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             settingsMenuList.setNestedScrollingEnabled(false);
             settingsMenuList.setAdapter(mSettingsAdapter);
         }
-
-
     }
 
     @Override
@@ -197,6 +194,9 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             startActivity(intent);
             finish();
         }
+
+        if (isOpen)
+            closeSheet();
 
         super.onBottomMenuClick(bottomMenu);
     }
@@ -330,6 +330,10 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             intent.putExtras(bundle);
             startActivity(intent);
         }
+
+        if (isOpen)
+            closeSheet();
+
         super.onBottomSheetMenuClick(bottomMenu);
     }
 

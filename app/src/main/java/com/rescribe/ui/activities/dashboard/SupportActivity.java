@@ -25,7 +25,6 @@ import com.rescribe.model.investigation.Image;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
-import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.ui.activities.NotificationActivity;
 import com.rescribe.ui.activities.PrescriptionActivity;
@@ -121,11 +120,6 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
         mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
         registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     private void initialize() {
@@ -309,9 +303,11 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
             intent.putExtras(bundle);
             startActivity(intent);
         }
+
+        if (isOpen)
+            closeSheet();
+
         super.onBottomSheetMenuClick(bottomMenu);
-
-
     }
 
     @Override

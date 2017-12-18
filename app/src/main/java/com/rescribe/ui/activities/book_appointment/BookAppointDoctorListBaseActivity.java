@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
-import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenuAdapter;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
@@ -29,9 +27,7 @@ import com.rescribe.model.investigation.Image;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
-import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
-import com.rescribe.ui.activities.NotificationActivity;
 import com.rescribe.ui.activities.PrescriptionActivity;
 import com.rescribe.ui.activities.SelectedRecordsGroupActivity;
 import com.rescribe.ui.activities.dashboard.ProfileActivity;
@@ -44,11 +40,9 @@ import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
-import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -226,7 +220,6 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             super.onBackPressed();
             DoctorDataHelper.setReceivedDoctorServicesModel(null);
         }
-
     }
 
     @Override
@@ -326,6 +319,10 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             intent.putExtras(bundle);
             startActivity(intent);
         }
+
+        if (isOpen)
+            closeSheet();
+
         super.onBottomSheetMenuClick(bottomMenu);
 
     }

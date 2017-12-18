@@ -403,8 +403,14 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 if (slotListBaseModel != null) {
                     TimeSlotListDataModel selectSlotList = slotListBaseModel.getTimeSlotListDataModel();
                     if (selectSlotList != null) {
-                        mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList(), mSelectedTimeSlotDate);
-                        selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
+                        if (!selectSlotList.getTimeSlotsInfoList().isEmpty()) {
+                            selectTimeDateExpandableView.setVisibility(View.VISIBLE);
+                            mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList(), mSelectedTimeSlotDate);
+                            selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
+                        } else {
+                            selectTimeDateExpandableView.setVisibility(View.GONE);
+                            CommonMethods.showToast(getActivity(), "" + slotListBaseModel.getCommon().getStatusMessage());
+                        }
                     }
                 }
                 break;
@@ -418,8 +424,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mClickedDoctorObject);
                         //----*************----
                         setDataInViews();
-                        mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList(), mSelectedTimeSlotDate);
-                        selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
+                        //--------------------
+                        if (!selectSlotList.getTimeSlotsInfoList().isEmpty()) {
+                            selectTimeDateExpandableView.setVisibility(View.VISIBLE);
+                            mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList(), mSelectedTimeSlotDate);
+                            selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
+                        } else {
+                            selectTimeDateExpandableView.setVisibility(View.GONE);
+                            CommonMethods.showToast(getActivity(), "" + slotListBase.getCommon().getStatusMessage());
+                        }
                     }
                 }
                 break;

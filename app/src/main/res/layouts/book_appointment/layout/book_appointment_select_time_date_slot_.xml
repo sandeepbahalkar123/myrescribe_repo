@@ -61,9 +61,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:visibility="gone"
                     android:textColor="@color/recentblue"
                     android:textSize="@dimen/sp20"
+                    android:visibility="gone"
                     app:customFont="@string/roboto_bold"
                     tools:text="Dr. Patil" />
 
@@ -102,9 +102,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/leftArrow"
+                    android:layout_marginTop="@dimen/dp4"
                     android:paddingLeft="@dimen/dp6"
                     android:paddingStart="@dimen/dp6"
-                    android:layout_marginTop="@dimen/dp4"
                     android:src="@drawable/left_arrow" />
 
 
@@ -124,10 +124,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:padding="@dimen/dp4"
                     android:hint="Select date"
-                    android:textColorHint="@color/grey_300"
+                    android:padding="@dimen/dp4"
                     android:textColor="@color/black"
+                    android:textColorHint="@color/grey_300"
                     android:textSize="@dimen/sp17"
                     app:customFont="@string/roboto_medium" />
             </RelativeLayout>
@@ -136,8 +136,8 @@
                 android:id="@+id/adapter_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/divider"
-              />
+                android:background="@color/divider" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,17 +149,18 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:groupIndicator="@null"
-                    android:visibility="visible"
                     android:listSelector="@android:color/transparent"
+                    android:visibility="visible"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"></ExpandableListView>
 
+
             </LinearLayout>
+
             <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/divider"
-                />
+                android:background="@color/divider" />
         </LinearLayout>
 
 

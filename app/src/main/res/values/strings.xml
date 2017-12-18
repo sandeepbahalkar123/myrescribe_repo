@@ -399,6 +399,7 @@
     <string name="skip">SKIP</string>
     <string name="message_from">Message from </string>
     <string name="today">today</string>
+    <string name="book_time_slot_err">Slot must be greater than current time.</string>
 
     <!--************************-->
 </resources>

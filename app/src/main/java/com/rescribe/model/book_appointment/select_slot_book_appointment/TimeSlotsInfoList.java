@@ -65,9 +65,18 @@ public class TimeSlotsInfoList {
         }
 
         public String getFromTime() {
-            if (fromTime.contains(".")) {
-                fromTime = fromTime.replace(".", ":");
+            int counter = 0;
+            if (fromTime.contains(":")) {
+                for (int i = 0; i < fromTime.length(); i++) {
+                    if (fromTime.charAt(i) == ':') {
+                        counter++;
+                    }
+                }
             }
+            if (counter == 1) {
+                fromTime = fromTime + ":00";
+            }
+
             return fromTime;
         }
 

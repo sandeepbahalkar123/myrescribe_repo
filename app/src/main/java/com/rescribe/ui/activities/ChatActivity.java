@@ -196,8 +196,12 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     LinearLayout bookAppointmentLayout;
     @BindView(R.id.receiverName)
     CustomTextView receiverName;
+    //-------------
     @BindView(R.id.bookAppointmentButton)
     CustomTextView bookAppointmentButton;
+    @BindView(R.id.bookAppointmentGetTokenButton)
+    CustomTextView mBookAppointmentGetTokenButton;
+    //------------
     @BindView(R.id.dateTime)
     CustomTextView dateTime;
     @BindView(R.id.titleLayout)
@@ -461,22 +465,19 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
         downloadInit();
 
-        softKeyboard.setSoftKeyboardCallback(new SoftKeyboard.SoftKeyboardChanged()
-        {
+        softKeyboard.setSoftKeyboardCallback(new SoftKeyboard.SoftKeyboardChanged() {
 
             @Override
-            public void onSoftKeyboardHide()
-            {
+            public void onSoftKeyboardHide() {
                 showBookAppointmentButton();
-              //  bookAppointmentButton.setVisibility(View.VISIBLE);
+                //  bookAppointmentButton.setVisibility(View.VISIBLE);
                 // Code here
             }
 
             @Override
-            public void onSoftKeyboardShow()
-            {
+            public void onSoftKeyboardShow() {
                 doNotShowBookAppointmentButton();
-              //  bookAppointmentButton.setVisibility(View.GONE);
+                //  bookAppointmentButton.setVisibility(View.GONE);
                 // Code here
             }
         });
@@ -681,7 +682,15 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                String appointmentType = chatList.getDocAppointmentType();
                 bookAppointmentLayout.setVisibility(View.VISIBLE);
+                if (getString(R.string.token).equalsIgnoreCase(appointmentType) || getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
+                    bookAppointmentButton.setVisibility(View.GONE);
+                    mBookAppointmentGetTokenButton.setVisibility(View.VISIBLE);
+                } else if (appointmentType.equalsIgnoreCase(getString(R.string.book))) {
+                    bookAppointmentButton.setVisibility(View.VISIBLE);
+                    mBookAppointmentGetTokenButton.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -917,7 +926,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         UploadService.UPLOAD_POOL_SIZE = 10;
     }
 
-    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.sendButton, R.id.exitRevealDialog, R.id.camera, R.id.document, R.id.location, R.id.bookAppointmentButton,R.id.messageType})
+    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.sendButton, R.id.exitRevealDialog, R.id.camera, R.id.document, R.id.location, R.id.bookAppointmentButton, R.id.messageType, R.id.bookAppointmentGetTokenButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
@@ -930,6 +939,16 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData);
                 intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
                 startActivity(intent);
+                break;
+            case R.id.bookAppointmentGetTokenButton:
+                // call book appointment
+                Intent intent1 = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
+                intent1.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
+                intent1.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+                DoctorList doctorListData1 = new DoctorList();
+                doctorListData1.setDocId(chatList.getId());
+                ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData1);
+                startActivity(intent1);
                 break;
 
             case R.id.camera:
@@ -1749,8 +1768,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
         softKeyboard.unRegisterSoftKeyboardCallback();
     }

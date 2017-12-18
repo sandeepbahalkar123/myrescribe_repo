@@ -272,6 +272,7 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
         String date = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
         // notification for prescription , investigation and appointment initiated here
         new DosesAlarmTask(mContext, times, date).run();
+        new InvestigationAlarmTask(mContext, null, null).run();
         new InvestigationAlarmTask(mContext, RescribeConstants.INVESTIGATION_NOTIFICATION_TIME, getResources().getString(R.string.investigation_msg)).run();
         new AppointmentAlarmTask(mContext, RescribeConstants.APPOINTMENT_NOTIFICATION_TIME, getResources().getString(R.string.appointment_msg)).run();
     }

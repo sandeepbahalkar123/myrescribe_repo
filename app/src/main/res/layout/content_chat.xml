@@ -50,6 +50,18 @@
         android:gravity="center">
 
         <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/bookAppointmentGetTokenButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp14"
+            android:text="@string/get_token"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp16"
+            android:visibility="gone"
+            app:customFont="@string/roboto_medium" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/bookAppointmentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

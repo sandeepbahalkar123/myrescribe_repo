@@ -120,8 +120,13 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     LinearLayout servicesLayout;
     @BindView(R.id.aboutLayout)
     LinearLayout aboutLayout;
+    @BindView(R.id.selectClinicLine)
+    View selectClinicLine;
+    @BindView(R.id.yearsExperienceLine)
+    View yearsExperienceLine;
     //-------
-
+    @BindView(R.id.servicesLine)
+    View servicesLine;
     private View mRootView;
     private int mImageSize;
     Unbinder unbinder;
@@ -346,6 +351,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
         int receivedDocServiceSize = receivedDocService.size();
         if (receivedDocServiceSize > 0) {
+            servicesLine.setVisibility(View.VISIBLE);
             servicesLayout.setVisibility(View.VISIBLE);
             ArrayList<String> docListToSend = new ArrayList<>();
             if (receivedDocServiceSize > 4) {
@@ -359,6 +365,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             mServicesListView.setAdapter(mServicesAdapter);
             CommonMethods.setListViewHeightBasedOnChildren(mServicesListView);
         } else {
+            servicesLine.setVisibility(View.GONE);
             servicesLayout.setVisibility(View.GONE);
         }
 

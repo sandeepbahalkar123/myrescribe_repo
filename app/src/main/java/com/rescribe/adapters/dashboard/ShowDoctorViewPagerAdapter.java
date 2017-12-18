@@ -272,6 +272,45 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 }
             }
             //---------------
+        }else if (doctorObject.getCategoryName().equals(RescribeConstants.BLANK)) {
+            if (clinicDataList.size() == 1) {
+                clinicName.setVisibility(View.VISIBLE);
+                clinicName.setText(clinicDataList.get(0).getClinicName());
+                doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
+
+            } else {
+                if (clinicDataList.size() > 0) {
+                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+" "+"in"+" "+cityname);
+                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                    doctorAddress.setText(locationString);
+                    doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                    clinicName.setVisibility(View.INVISIBLE);
+                }
+            }
+            designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.desing_line_for_big_name));
+            doctorAppointmentDate.setVisibility(View.GONE);
+
+            //----------------
+            if (clinicDataList.size() > 0) {
+                feesToPaid.setVisibility(View.VISIBLE);
+                feesToPaid.setText("" + clinicDataList.get(0).getAmount());
+            } else {
+                feesToPaid.setVisibility(View.INVISIBLE);
+            }
+            //---------------
+
+            if (clinicDataList.size() > 0) {
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
+                    bookAppointmentButton.setVisibility(View.GONE);
+                    tokenNo.setVisibility(View.VISIBLE);
+                } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
+                    bookAppointmentButton.setVisibility(View.VISIBLE);
+                    tokenNo.setVisibility(View.GONE);
+                }
+            }
+            //---------------
         }
         //---------
         if (doctorObject.getFavourite()) {

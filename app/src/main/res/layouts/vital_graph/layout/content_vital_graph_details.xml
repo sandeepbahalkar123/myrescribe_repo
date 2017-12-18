@@ -58,8 +58,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/dp46"
+            android:textSize="@dimen/sp13"
             android:paddingStart="@dimen/dp46"
-            app:customFont="@string/roboto_bold"
+            app:customFont="@string/roboto_medium"
             tools:text="" />
 
         <LinearLayout

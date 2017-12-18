@@ -19,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.saved_article.SavedArticleInfo;
+import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -89,7 +90,8 @@ public class SavedArticleHealthEducationAdapter extends RecyclerView.Adapter<Sav
             TextDrawable drawable = TextDrawable.builder()
                     .beginConfig()
                     .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
-                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40)))
+                    .textColor(ContextCompat.getColor(mContext,R.color.black))// height in px
                     .endConfig()
                     .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
             RequestOptions requestOptions = new RequestOptions();
@@ -164,7 +166,7 @@ public class SavedArticleHealthEducationAdapter extends RecyclerView.Adapter<Sav
         @BindView(R.id.articleImage)
         ImageView articleImage;
         @BindView(R.id.doctorImage)
-        ImageView doctorImage;
+        CircularImageView doctorImage;
         @BindView(R.id.articleText)
         CustomTextView articleText;
         @BindView(R.id.bookMarkIcon)

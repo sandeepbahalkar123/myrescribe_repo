@@ -103,10 +103,13 @@
             </LinearLayout>
         </LinearLayout>
 
-        <ImageView
+        <com.heinrichreimersoftware.materialdrawer.bottom_menu.CircularImageView
             android:id="@+id/imageUrl"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            app:border_width="1dp"
+            app:shadow="true"
+            app:border="true"
             android:layout_gravity="center_horizontal"/>
 
     </FrameLayout>

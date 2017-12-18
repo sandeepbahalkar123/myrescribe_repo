@@ -18,6 +18,7 @@
     <color name="tagColor">#04abdf</color>
     <color name="statusbar">#0077a7</color>
     <color name="white">#ffffff</color>
+    <color name="opacitywhite">#CCffffff</color>
     <color name="clickHere">#3676a3</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
@@ -27,9 +28,7 @@
     <color name="dark_blue">#0077a7</color>
     <color name="greyish">#4f4f4f</color>
     <color name="greyshade">#8c959a</color>
-
     <color name="slot_color">#909090</color>
-
     <color name="menu_option_on_dashboard_color">#5b5b5b</color>
     <color name="menu_option_on_dashboard_lower_color">#b3b3b3</color>
     <color name="grey_shade">#878787</color>

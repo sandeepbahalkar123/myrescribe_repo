@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/library/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-v13/values-v13.xml",
+        "outputFile": "/home/jeetal/jeetal_projects/myrescribe_repo/library/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-v13/values-v13.xml",
         "map": [
             {
                 "to": {
@@ -11,31 +11,7 @@
                     "endOffset": 109
                 },
                 "from": {
-                    "file": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/values-v13/values-v13.xml",
-                    "position": {
-                        "startLine": 2,
-                        "startColumn": 4,
-                        "startOffset": 55,
-                        "endColumn": 58,
-                        "endOffset": 109
-                    }
-                }
-            }
-        ]
-    },
-    {
-        "outputFile": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-v13/values-v13.xml",
-        "map": [
-            {
-                "to": {
-                    "startLine": 2,
-                    "startColumn": 4,
-                    "startOffset": 55,
-                    "endColumn": 58,
-                    "endOffset": 109
-                },
-                "from": {
-                    "file": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/values-v13/values-v13.xml",
+                    "file": "/home/jeetal/.android/build-cache/c2eb696b4ee5c5822fd67ab5fdd972392333276d/output/res/values-v13/values-v13.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,

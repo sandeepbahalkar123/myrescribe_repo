@@ -20,6 +20,7 @@ import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.ChatActivity;
+import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -59,7 +60,7 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         ImageView onlineStatusIcon;
 
         @BindView(R.id.imageOfDoctor)
-        ImageView imageOfDoctor;
+        CircularImageView imageOfDoctor;
         @BindView(R.id.paidStatusTextView)
         TextView paidStatusTextView;
         @BindView(R.id.badgeView)

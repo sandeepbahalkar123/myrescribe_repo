@@ -92,7 +92,8 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
             TextDrawable drawable = TextDrawable.builder()
                     .beginConfig()
                     .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
-                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40)))
+                    .textColor(ContextCompat.getColor(mContext,R.color.black))// height in px
                     .endConfig()
                     .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
             RequestOptions requestOptions = new RequestOptions();

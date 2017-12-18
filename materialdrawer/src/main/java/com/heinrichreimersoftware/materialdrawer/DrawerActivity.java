@@ -34,13 +34,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerFragmentItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
@@ -48,9 +48,7 @@ import com.heinrichreimersoftware.materialdrawer.theme.DrawerTheme;
 
 import java.util.List;
 
-@SuppressWarnings("unused")
-@SuppressLint("Registered")
-public class DrawerActivity extends BottomMenuActivity {
+public class DrawerActivity extends AppCompatActivity {
 
     private DrawerFrameLayout mDrawer;
     private Toolbar mDefaultToolbar;
@@ -65,15 +63,11 @@ public class DrawerActivity extends BottomMenuActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.md_drawer_activity);
-
         mDrawer = (DrawerFrameLayout) findViewById(R.id.mdDrawerLayout);
         mDefaultToolbar = (Toolbar) findViewById(R.id.mdToolbar);
         mFrame = (FrameLayout) findViewById(R.id.mdFrame);
-
         setSupportActionBar(mDefaultToolbar);
-
-        mDrawer.closeDrawer();
-
+        mDrawer.openDrawer();
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 

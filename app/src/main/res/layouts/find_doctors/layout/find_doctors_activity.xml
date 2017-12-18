@@ -67,7 +67,6 @@
 
         <LinearLayout
 
-            android:id="@+id/consultOnline"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dp16"
@@ -77,7 +76,6 @@
             android:orientation="vertical">
 
             <FrameLayout
-                android:id="@+id/doctorConnectButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent">

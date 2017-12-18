@@ -1,26 +1,26 @@
 [
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v11/notification_template_big_media_narrow.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/layout-v11/notification_template_big_media_narrow.xml"
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v11/notification_template_big_media_narrow.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/layout-v11/notification_template_big_media_narrow.xml"
     },
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v11/notification_template_big_media.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/layout-v11/notification_template_big_media.xml"
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v11/notification_template_big_media_narrow_custom.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/layout-v11/notification_template_big_media_narrow_custom.xml"
     },
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v11/notification_media_cancel_action.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/layout-v11/notification_media_cancel_action.xml"
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v11/notification_media_cancel_action.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/layout-v11/notification_media_cancel_action.xml"
     },
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v11/notification_media_action.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/layout-v11/notification_media_action.xml"
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v11/notification_media_action.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/layout-v11/notification_media_action.xml"
     },
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v11/notification_template_big_media_narrow_custom.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/layout-v11/notification_template_big_media_narrow_custom.xml"
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v11/notification_template_big_media_custom.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/layout-v11/notification_template_big_media_custom.xml"
     },
     {
-        "merged": "/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/MyRescribe/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v11/notification_template_big_media_custom.xml",
-        "source": "/home/riteshpandhurkar/.android/build-cache/e6ea55d09eac73185aad5ed5d3bb7dd6a022f846/output/res/layout-v11/notification_template_big_media_custom.xml"
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/library/build/intermediates/res/merged/release/layout-v11/notification_template_big_media.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/layout-v11/notification_template_big_media.xml"
     }
 ]

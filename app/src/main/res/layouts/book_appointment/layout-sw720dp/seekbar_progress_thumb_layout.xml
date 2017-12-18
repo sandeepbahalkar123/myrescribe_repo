@@ -5,7 +5,6 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/seekBarLayout"
         android:layout_width="@dimen/dp35"
         android:layout_height="wrap_content"
         android:background="@drawable/short_rounded_rectangle"

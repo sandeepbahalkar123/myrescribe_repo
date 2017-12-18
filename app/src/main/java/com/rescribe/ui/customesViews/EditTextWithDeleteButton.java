@@ -178,6 +178,8 @@ public class EditTextWithDeleteButton extends LinearLayout {
 
     public void setText(String text) {
         editText.setText(text);
+        if (!text.isEmpty())
+            editText.setSelection(text.length(), text.length());
     }
 
     public interface OnClearButtonClickedInEditTextListener {

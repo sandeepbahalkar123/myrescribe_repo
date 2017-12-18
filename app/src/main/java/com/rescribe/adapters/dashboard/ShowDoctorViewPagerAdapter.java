@@ -19,6 +19,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
@@ -129,8 +130,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             doctorExperience.setVisibility(View.GONE);
         } else {
             doctorExperience.setVisibility(View.VISIBLE);
-            doctorExperience.setText("" + doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
-
+            doctorExperience.setText(doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
         }
 
         //-----THIS IS DONE TO SHOW COUNT OF FAVORITE(CUSTOM CREATED CATEGORY), ASSUME IT WILL COME LAST ALWAYS ----
@@ -159,7 +159,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
         Glide.with(mContext)
                 .load(doctorObject.getDoctorImageUrl())
-                .apply(requestOptions).thumbnail(0.5f)
+                .apply(requestOptions)
                 .into(imageURL);
         //---------------
 

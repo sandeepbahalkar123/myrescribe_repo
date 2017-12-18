@@ -8,7 +8,6 @@
     <item name="errorColor" type="color">#BD362F</item>
     <color name="recentblue">#04abdf</color>
     <color name="darkblue">#0E7EAB</color>
-    <color name="drawer_menu_text_color">#646464</color>
     <color name="black">#000000</color>
     <color name="drawer_bg">#edf1f4</color>
     <color name="view_detail_color">#737373</color>
@@ -30,7 +29,6 @@
     <color name="greyshade">#8c959a</color>
     <color name="slot_color">#909090</color>
     <color name="menu_option_on_dashboard_color">#5b5b5b</color>
-    <color name="menu_option_on_dashboard_lower_color">#b3b3b3</color>
     <color name="grey_shade">#878787</color>
     <color name="line_color">#cdd3d5</color>
 
@@ -52,7 +50,6 @@
     <color name="female_select">#3f0631</color>
 
     <color name="grey_light">#e0e0e0</color>
-    <color name="map_green">#45841c</color>
     <color name="gender_drawer">#cacaca</color>
 
     <color name="distance_seek_bar">#8a8a8a</color>
@@ -62,15 +59,7 @@
 
     <!--Switch Button-->
 
-    <color name="ksw_md_ripple_normal">#1E000000</color>
-    <color name="ksw_md_ripple_checked">#33019285</color>
-    <color name="ksw_md_solid_shadow">#33000000</color>
-    <color name="ksw_md_solid_normal">#ECECEC</color>
-    <color name="ksw_md_solid_checked">#019285</color>
-    <color name="ksw_md_solid_disable">#FFFFFF</color>
-    <color name="ksw_md_solid_checked_disable">#aaaaaa</color>
     <color name="switch_button_color">#9B9B9B</color>
-    <color name="alphaTagColor">#F804ABDF</color>
 
     <!--End Switch Button-->
 </resources>

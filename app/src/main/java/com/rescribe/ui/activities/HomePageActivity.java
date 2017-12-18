@@ -24,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -35,9 +34,9 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.rescribe.R;
 import com.rescribe.adapters.dashboard.MenuOptionsDashBoardAdapter;
 import com.rescribe.adapters.dashboard.ShowBackgroundViewPagerAdapter;
@@ -106,7 +105,7 @@ import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
  */
 
 @RuntimePermissions
-public class HomePageActivity extends DrawerActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, LocationListener,
+public class HomePageActivity extends BottomMenuActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, GoogleSettingsApi.LocationSettings {
 
@@ -270,7 +269,15 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
         String times[] = {breakFastTime, lunchTime, dinnerTime, snacksTime};
         String date = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
-        // notification for prescription , investigation and appointment initiated here
+
+        // Cancel Previous Alarms.
+
+        new DosesAlarmTask(mContext, null, null).run();
+        new AppointmentAlarmTask(mContext, null, null).run();
+        new InvestigationAlarmTask(mContext, null, null).run();
+
+        // Set Alarms Again when date changed.
+
         new DosesAlarmTask(mContext, times, date).run();
         new InvestigationAlarmTask(mContext, null, null).run();
         new InvestigationAlarmTask(mContext, RescribeConstants.INVESTIGATION_NOTIFICATION_TIME, getResources().getString(R.string.investigation_msg)).run();
@@ -279,7 +286,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
 
     @Override
     public void onBackPressed() {
-        finishAffinity();
+        if (isOpen)
+            closeSheet();
+        else
+            finishAffinity();
     }
 
 
@@ -479,7 +489,6 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
             b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
-
             intent.putExtras(b);
         } else if (menu.getName().toLowerCase().startsWith(getString(R.string.on_going_treatment).toLowerCase())) {
             intent = new Intent(mContext, PrescriptionActivity.class);
@@ -527,19 +536,18 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
             intent.putExtras(bundle);
             startActivity(intent);
-
-
         } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
             Intent intent = new Intent(HomePageActivity.this, SettingsActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
-
-
         } else if (menuName.equalsIgnoreCase(getString(R.string.support))) {
             Intent intent = new Intent(HomePageActivity.this, SupportActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
         }
+
+        if (isOpen)
+            closeSheet();
 
         super.onBottomMenuClick(bottomMenu);
     }
@@ -548,6 +556,9 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
     public void onProfileImageClick() {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
+
+        if (isOpen)
+            closeSheet();
     }
 
 
@@ -927,6 +938,10 @@ public class HomePageActivity extends DrawerActivity implements HelperResponse, 
             intent.putExtras(bundle);
             startActivity(intent);
         }
+
+        if (isOpen)
+            closeSheet();
+
         super.onBottomSheetMenuClick(bottomMenu);
     }
 

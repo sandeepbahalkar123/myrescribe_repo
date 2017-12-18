@@ -908,7 +908,7 @@ public class CommonMethods {
                 resolution = "xxxhdpi";
                 break;
             default:
-                resolution = "xhdpi";
+                resolution = "xxhdpi";
                 break;
         }
         return resolution;

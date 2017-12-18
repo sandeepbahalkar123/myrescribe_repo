@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none">
@@ -11,7 +10,6 @@
         android:orientation="vertical">
 
         <FrameLayout
-            android:id="@+id/sliderView"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:focusableInTouchMode="true">
@@ -42,7 +40,6 @@
         </FrameLayout>
 
         <View
-            android:id="@+id/dividerView"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/divider" />

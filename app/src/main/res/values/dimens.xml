@@ -1,7 +1,6 @@
 <resources>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="horizontal_margin">26dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="spinner_curve">3dp</dimen>
     <dimen name="dp0">0dp</dimen>
@@ -28,13 +27,9 @@
     <dimen name="dp46">46dp</dimen>
     <dimen name="dp34">34dp</dimen>
     <dimen name="dp18">18dp</dimen>
-    <dimen name="dp68">68dp</dimen>
     <dimen name="dp36">36dp</dimen>
-    <dimen name="dp48">48dp</dimen>
     <dimen name="dp120">120dp</dimen>
     <dimen name="dp80">80dp</dimen>
-    <dimen name="dp70">70dp</dimen>
-    <dimen name="sp9">9sp</dimen>
     <dimen name="sp10">10sp</dimen>
     <dimen name="sp11">11sp</dimen>
     <dimen name="sp12">12sp</dimen>
@@ -46,7 +41,6 @@
     <dimen name="sp16">16sp</dimen>
     <dimen name="sp15">15sp</dimen>
     <dimen name="sp17">17sp</dimen>
-    <dimen name="sp36">36sp</dimen>
     <dimen name="sp34">34sp</dimen>
     <dimen name="pager_padding">33dp</dimen>
     <dimen name="pager_margin">8dp</dimen>
@@ -54,25 +48,16 @@
     <dimen name="dp9">9dp</dimen>
     <dimen name="dp3">3dp</dimen>
     <dimen name="sp13">13sp</dimen>
-    <dimen name="dp60">60dp</dimen>
     <dimen name="dp13">13dp</dimen>
-    <dimen name="dp39">39dp</dimen>
     <dimen name="dp66">66dp</dimen>
 
     <!--Switch Button-->
 
-    <dimen name="ksw_md_thumb_ripple_size">42dp</dimen>
-    <dimen name="ksw_md_thumb_solid_inset">11dp</dimen>
-    <dimen name="ksw_md_thumb_shadow_inset">11dp</dimen>
-    <dimen name="ksw_md_thumb_shadow_inset_top">11dp</dimen>
-    <dimen name="ksw_md_thumb_shadow_inset_bottom">10dp</dimen>
-    <dimen name="ksw_md_thumb_solid_size">20dp</dimen>
-    <dimen name="ksw_md_thumb_shadow_size">21dp</dimen>
-    <dimen name="ksw_md_thumb_shadow_offset">2dp</dimen>
     <dimen name="margin_imageview">70dp</dimen>
-    <dimen name="sp21">21sp</dimen>
     <dimen name="dp28">28dp</dimen>
-    <dimen name="dp280">280dp</dimen>
+    <dimen name="dp60">60dp</dimen>
+    <dimen name="sp21">21sp</dimen>
+    <dimen name="dp48">48dp</dimen>
 
     <!--End Switch Button-->
 </resources>

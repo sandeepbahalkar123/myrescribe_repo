@@ -165,7 +165,6 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
                 if (tabPosition == 2) {
                     mSearchView.setVisibility(View.VISIBLE);
                     mWhiteUnderLine.setVisibility(View.VISIBLE);
-
                     title.setVisibility(View.GONE);
                 } else {
                     mSearchView.setVisibility(View.GONE);
@@ -232,11 +231,10 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
     }
 
     private void setupViewPager() {
-
-        //Api call to get getDoctorSpeciality
+        // Api call to get getDoctorSpeciality
         DoctorConnectSearchHelper doctorConnectSearchHelper = new DoctorConnectSearchHelper(this, this);
         doctorConnectSearchHelper.getDoctorSpecialityList();
-        //Doctor connect , chat and search fragment loaded here
+        // Doctor connect , chat and search fragment loaded here
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         doctorConnectChatFragment = DoctorConnectChatFragment.newInstance();
         DoctorConnectFragment doctorConnectFragment = DoctorConnectFragment.newInstance();
@@ -254,8 +252,8 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         } else if (SPECIALIZATION_DOCTOR_FRAGMENT_BYNAME.equalsIgnoreCase(mFragmentLoaded)) {
             mFragmentLoaded = SPECIALIZATION_DOCTOR_FRAGMENT;
         }
-        mSearchView.setText("");
-        onBackPressed();
+
+        super.onBackPressed();
     }
 
     @Override

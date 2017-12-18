@@ -35,8 +35,6 @@
     <string name="dinner">Dinner</string>
     <string name="smallcasedinner">dinner</string>
     <string name="smallcaselunch">lunch</string>
-    <string name="openingbrace">(</string>
-    <string name="closeingbrace">)</string>
     <string name="smallcasesnacks">snacks</string>
     <string name="smallcasebreakfast">breakfast</string>
     <string name="mdinner">DINNER</string>
@@ -224,12 +222,8 @@
     <string name="dr">Dr.</string>
     <string name="clicked_item_data">clicked_item_data</string>
     <string name="clicked_item_data_type_value">clicked_item_data_type_value</string>
-    <string name="clicked_item_data_value_position">clicked_item_data_value_position</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="type_a_message">Type a message</string>
-    <string name="online">Online</string>
-    <string name="offline">Offline</string>
-    <string name="idle">Idle</string>
     <string name="book_appointment">Book Appointment</string>
     <string name="gender">Gender</string>
     <string name="select_gender"><u>Select Gender</u></string>
@@ -242,8 +236,6 @@
     <string name="recently_visited_doctor">Recently Visited Doctors</string>
     <!--<string name="clickhere">Not Sure ?......click here</string>-->
     <!--<string name="clickhere">Not Sure ?......click here</string>-->
-    <string name="clickhere"><![CDATA[<b><font color=#d2d2d2>Not Sure ?......</font>click here</b>]]></string>
-    <string name="please_select_location">Please select location</string>
     <string name="select_location"><u>Select location</u></string>
     <string name="relevantkeywords">Enter relevant keywords to optimize your doctor search</string>
     <string name="complaint1">Complaint 1:</string>
@@ -273,17 +265,12 @@
     <string name="weekday_sat">Saturday</string>
     <string name="price_range"><u>Price Range</u></string>
     <string name="select_days"><u>Select Days</u></string>
-    <string name="also_practices">Also practices at :</string>
 
     <string name="services">Services</string>
     <string name="health_services">Health Services</string>
     <string name="doctorss">Doctors</string>
     <string name="years_experience">years of experience</string>
     <string name="toolbarTitle">title</string>
-    <string name="fee">Fee</string>
-    <string name="rupees">Rs.</string>
-    <string name="slash">/</string>
-    <string name="session">session</string>
 
     <string name="enter_reading">Enter Reading</string>
     <string name="err_reading_date">Reading date should not be greater than current date.</string>
@@ -295,7 +282,6 @@
     <string name="location_address">Location address</string>
     <string name="doctorId">DoctorId</string>
 
-    <string name="do_operation">do_operation</string>
     <string name="favorite">Favourite Doctors</string>
 
     <string name="reviews">Reviews</string>
@@ -307,7 +293,6 @@
     <string name="health_repository">Health Repository</string>
     <string name="health_offers">Health Offers</string>
     <string name="health_education">Health Education</string>
-    <string name="consult_online">Consult Online</string>
     <string name="doctor_visit">Doctor Visits</string>
     <string name="saved_articles">Saved Articles</string>
     <string name="clicked_saved_articles">clicked_saved_articles</string>
@@ -322,25 +307,11 @@
     <string name="sort">Sort by</string>
     <string name="choose_one_option">Choose one option</string>
     <string name="locations">Locations</string>
-    <string name="place_details">
-    <![CDATA[
-        <b>%1$s</b>
-        <br/>
-        <i>Place Id: %2$s</i>
-        <br/>
-        Address: %3$s
-        <br/>
-        Phone: %4$s
-        <br/>
-        Website: %5$s
-    ]]>
-    </string>
     <string name="view_all">VIEW ALL</string>
     <string name="platform"><![CDATA[&platform=]]></string>
     <string name="android">android</string>
     <string name="screen_resolution"><![CDATA[&screenResolution=]]></string>
     <string name="sponsered_doctor">Sponsored Doctors</string>
-    <string name="dashboardcard">dashboardcard</string>
     <string name="app_logo">AppLogo</string>
     <string name="sponsored_doctor">Sponsored Doctors</string>
     <string name="recently_visit_doctor">Recently Visited Doctors</string>
@@ -353,8 +324,6 @@
 
 
     <string name="category_name">category_name</string>
-    <string name="object_update_common_to_doc">UPDATE COMMON TO ALL DOCTOR</string>
-    <string name="object_update_specific_to_doc">UPDATE SPECIFIC TO DOCTOR</string>
     <string name="consultation">CONSULTATION</string>
     <string name="medicines">MEDICINES</string>
     <string name="lab_test">LAB TEST</string>

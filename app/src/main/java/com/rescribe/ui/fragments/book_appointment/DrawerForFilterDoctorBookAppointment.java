@@ -389,7 +389,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                         locationList.setIsDoctorAvailable(filterConfigData.getLocationList().get(i).getIsDoctorAvailable());
                         locations.add(locationList);
                     }
-
                 }
                 //--------
                 mFilterSelectLocationsAdapter = new FilterSelectLocationsAdapter(getActivity(), locations);

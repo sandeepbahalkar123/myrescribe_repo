@@ -109,7 +109,6 @@
         tools:text="sadasasdasdasdasd\nasdasdasd\nasdsadsada\nasdasdas" />
 
     <com.rescribe.ui.customesViews.CustomTextView
-        android:id="@+id/readMoreView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAllCaps="true"

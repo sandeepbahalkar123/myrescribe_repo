@@ -2,6 +2,7 @@ package com.heinrichreimersoftware.materialdrawer.bottom_menu;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -53,7 +54,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     public boolean isOpen;
     private TableLayout tableLayout;
     private int mPosition;
-    private ImageView imageUrl;
+    private CircularImageView imageUrl;
     private TextView mPatientName;
     private TextView mMobileNumber;
     private ColorGenerator mColorGenerator;
@@ -72,7 +73,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         mPatientName = (TextView) findViewById(R.id.patientName);
         mMobileNumber = (TextView) findViewById(R.id.mobileNumber);
         bottomMenuListRecyclerView = (RecyclerView) findViewById(R.id.bottomMenuListRecyclerView);
-        imageUrl = (ImageView) findViewById(R.id.imageUrl);
+        imageUrl = (CircularImageView) findViewById(R.id.imageUrl);
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         mColorGenerator = ColorGenerator.MATERIAL;
         createBottomMenu();
@@ -122,7 +123,8 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         TextDrawable drawable = TextDrawable.builder()
                 .beginConfig()
                 .width(Math.round(getResources().getDimension(R.dimen.dp40))) // width in px
-                .height(Math.round(getResources().getDimension(R.dimen.dp40))) // height in px
+                .height(Math.round(getResources().getDimension(R.dimen.dp40)))
+                .useFont(Typeface.defaultFromStyle(Typeface.BOLD))// height in px
                 .endConfig()
                 .buildRound(("" + patientName.charAt(0)).toUpperCase(), color2);
         imageUrl.setImageDrawable(drawable);

@@ -33,6 +33,27 @@
         android:textSize="@dimen/sp14"
         app:customFont="@string/roboto_regular"
         tools:text="@string/select_doctors" />
+    <com.rescribe.ui.customesViews.CustomTextView
+        android:id="@+id/healthoffersTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/menuOptionName"
+        android:layout_toLeftOf="@+id/arrowIcon1"
+        android:layout_toRightOf="@+id/menuOptionName"
+        android:layout_toStartOf="@+id/arrowIcon1"
+         android:paddingTop="@dimen/dp2"
+        android:paddingLeft="@dimen/dp6"
+        tools:visibility="visible"
+        android:paddingBottom="@dimen/dp2"
+        android:drawablePadding="@dimen/dp3"
+        android:drawableLeft="@drawable/white_dot_health_offers"
+        android:background="@drawable/health_offers_tag"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp10"
+        app:customFont="@string/roboto_regular"
+        android:text="3 Offers" />
 
     <ImageView
         android:id="@+id/dashboardArrowIcon"

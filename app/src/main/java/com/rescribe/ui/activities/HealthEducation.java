@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -106,6 +107,10 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
                             );
                             mSavedArticleListView.addItemDecoration(mDividerItemDecoration);
                             //----------
+                            RecyclerView.ItemAnimator animator = mSavedArticleListView.getItemAnimator();
+                            if (animator instanceof SimpleItemAnimator) {
+                                ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+                            }
                             mSavedArticleListAdapter = new SavedArticleHealthEducationAdapter(mContext, mReceivedSavedArticleList, this);
                             mSavedArticleListView.setAdapter(mSavedArticleListAdapter);
                         } else {

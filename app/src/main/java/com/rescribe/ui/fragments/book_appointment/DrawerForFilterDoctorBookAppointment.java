@@ -246,6 +246,8 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     private void configureDrawerFieldsData() {
 
         mSelectedGender = "";
+        chooseOptionForSort.setText(getString(R.string.choose_one_option));
+
         //---------
         mSelectedDays.put(getString(R.string.weekday_sun), false);
         mSelectedDays.put(getString(R.string.weekday_mon), false);

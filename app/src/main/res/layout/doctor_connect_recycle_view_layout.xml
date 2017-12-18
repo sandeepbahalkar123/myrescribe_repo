@@ -33,37 +33,27 @@
         android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <RelativeLayout
-        android:id="@+id/displayNote"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/listView"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/dp16"
-        android:layout_marginLeft="@dimen/dp10"
-        android:layout_marginRight="@dimen/dp10"
-        android:layout_marginTop="@dimen/dp16"
-        android:gravity="bottom|center"
-        android:orientation="vertical"
-        android:visibility="gone">
 
         <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/displayNote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_gravity="center"
             android:background="@drawable/curve_edge_blue"
             android:gravity="center"
+            android:visibility="gone"
             android:orientation="vertical"
             android:paddingBottom="@dimen/dp6"
             android:paddingLeft="@dimen/dp12"
             android:paddingRight="@dimen/dp12"
+            android:layout_margin="@dimen/dp16"
             android:paddingTop="@dimen/dp6"
             android:text="@string/details_note"
             android:textColor="@color/white"
             android:textSize="@dimen/sp12"
             app:customFont="@string/roboto_bold" />
-    </RelativeLayout>
+
 
     <RelativeLayout
         android:id="@+id/emptyListView"

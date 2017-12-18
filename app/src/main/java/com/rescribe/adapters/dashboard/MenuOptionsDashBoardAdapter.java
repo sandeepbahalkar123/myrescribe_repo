@@ -2,11 +2,9 @@ package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -16,7 +14,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 
@@ -29,6 +26,7 @@ import butterknife.ButterKnife;
 
 @SuppressWarnings("CheckResult")
 public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOptionsDashBoardAdapter.ListViewHolder> {
+
     private onMenuListClickListener mMenuListClickListener;
     private ArrayList<DashboardMenuList> mDashboardMenuList;
     private Context mContext;
@@ -57,6 +55,11 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
                 mMenuListClickListener.onClickOfMenu(dashboardMenuList);
             }
         });
+        if (mDashboardMenuList.get(position).getName().equals(mContext.getString(R.string.health_offers))) {
+                 holder.healthoffersTag.setVisibility(View.VISIBLE);
+        }else{
+            holder.healthoffersTag.setVisibility(View.GONE);
+        }
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
@@ -81,7 +84,8 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
         ImageView dashboardArrowIcon;
         @BindView(R.id.selectMenuLayout)
         RelativeLayout selectMenuLayout;
-
+        @BindView(R.id.healthoffersTag)
+        CustomTextView healthoffersTag;
         View view;
 
         ListViewHolder(View view) {

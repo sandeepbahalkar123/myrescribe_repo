@@ -56,7 +56,8 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         mReceivedTitle = getIntent().getExtras().getString(getString(R.string.toolbarTitle));
         mClickedItemDataTypeValue = getIntent().getExtras().getString(getString(R.string.clicked_item_data_type_value));
 
-        getSupportActionBar().setTitle(mReceivedTitle);
+        // toolbar title showing type of doctors as per requirement.
+        getSupportActionBar().setTitle(mClickedItemDataTypeValue);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

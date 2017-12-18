@@ -119,7 +119,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         setContentView(R.layout.show_all_unread_notification_layout);
         ButterKnife.bind(this);
 
-        mTitleView.setText(getString(R.string.notification));
+        mTitleView.setText(getString(R.string.notifications));
 
 
     }
@@ -562,6 +562,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
 
     private void setUnreadBookAppointTokenAlertListAdapter(ArrayList<UnreadBookAppointTokenNotificationData> appAlertList) {
+        unreadTokenNotificationListViewLayout.setVisibility(View.VISIBLE);
         mUnreadBookAppointTokenNotificationAdapter = new UnreadBookAppointTokenNotificationAdapter(this, appAlertList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mUnreadTokenNotificationListView.setLayoutManager(mLayoutManager);

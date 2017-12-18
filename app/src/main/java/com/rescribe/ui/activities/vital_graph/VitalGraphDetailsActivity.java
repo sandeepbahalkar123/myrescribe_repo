@@ -98,7 +98,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
         } else if (mClickedVitalGraphData.getCategory().equalsIgnoreCase(getString(R.string.severeRange))) {
             weightText.setTextColor(ContextCompat.getColor(this, R.color.Red));
         } else {
-            weightText.setTextColor(ContextCompat.getColor(this, R.color.Gray));
+            weightText.setTextColor(ContextCompat.getColor(this, R.color.black));
         }
 
         if (mClickedVitalGraphData.getVitalDate() != null) {

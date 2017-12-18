@@ -15,6 +15,7 @@ import com.rescribe.R;
 import com.rescribe.adapters.DoctorSearchByNameAdapter;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.ui.activities.DoctorConnectActivity;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
     @BindView(R.id.emptyListView)
     RelativeLayout emptyListView;
     Unbinder unbinder;
+    @BindView(R.id.displayNote)
+    CustomTextView displayNote;
     private View mRootView;
     private ArrayList<ChatDoctor> mReceivedList;
     private DoctorSearchByNameAdapter doctorSearchByNameAdapter;
@@ -71,11 +74,11 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
     }
 
     private void init() {
-        if(mReceivedList==null){
+        if (mReceivedList == null) {
             mRecyclerView.setVisibility(View.GONE);
             emptyListView.setVisibility(View.VISIBLE);
 
-        }else {
+        } else {
             //Added Dr. to doctorName
             //TODO : Temporary Fix as data from Server is not in Proper format
             mRecyclerView.setVisibility(View.VISIBLE);
@@ -103,6 +106,7 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
                     DividerItemDecoration.VERTICAL);
             mRecyclerView.addItemDecoration(dividerItemDecoration);
             mRecyclerView.setAdapter(doctorSearchByNameAdapter);
+           // displayNote.setVisibility(View.VISIBLE);
         }
     }
 

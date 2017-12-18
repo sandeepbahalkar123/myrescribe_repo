@@ -82,6 +82,7 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
 import com.rescribe.singleton.Device;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
+import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
@@ -163,19 +164,15 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     // Audio End
 
     private static final int MAX_ATTACHMENT_COUNT = 10;
-
     private static final String RESCRIBE_FILES = "/Rescribe/Files/";
     private static final String RESCRIBE_PHOTOS = "/Rescribe/Photos/";
     private static final String RESCRIBE_AUDIO = "/Rescribe/Audios/";
-
     private static final String RESCRIBE_UPLOAD_FILES = "/Rescribe/SentFiles/";
     private static final String RESCRIBE_UPLOAD_PHOTOS = "/Rescribe/SentPhotos/";
     private static final String RESCRIBE_UPLOAD_AUDIO = "/Rescribe/SentAudios/";
-
     private String filesFolder;
     private String photosFolder;
     private String audioFolder;
-
     private String filesUploadFolder;
     private String photosUploadFolder;
     private String audioUploadFolder;
@@ -183,11 +180,9 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     @BindView(R.id.backButton)
     ImageView backButton;
     @BindView(R.id.profilePhoto)
-    ImageView profilePhoto;
-
+    CircularImageView profilePhoto;
     @BindView(R.id.onlineStatusIcon)
     ImageView onlineStatusIcon;
-
     @BindView(R.id.contentLayout)
     RelativeLayout contentLayout;
     @BindView(R.id.contentCordinatelayout)
@@ -704,7 +699,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             dateTime.setTextColor(ContextCompat.getColor(ChatActivity.this, R.color.range_yellow));
             onlineStatusIcon.setVisibility(View.INVISIBLE);
         } else if (onlineStatus.equalsIgnoreCase(OFFLINE)) {
-            dateTime.setTextColor(ContextCompat.getColor(ChatActivity.this, R.color.grey_500));
+            dateTime.setTextColor(ContextCompat.getColor(ChatActivity.this, R.color.opacitywhite));
             onlineStatusIcon.setVisibility(View.INVISIBLE);
         }
     }

@@ -17,6 +17,9 @@ public class HistoryData implements Parcelable {
     @SerializedName("onlineStatus")
     @Expose
     private UserOnlineStatus userOnlineStatus;
+    @SerializedName("appointmentType")
+    @Expose
+    private String appointmentType;
 
     public final static Parcelable.Creator<HistoryData> CREATOR = new Creator<HistoryData>() {
 
@@ -28,6 +31,7 @@ public class HistoryData implements Parcelable {
             HistoryData instance = new HistoryData();
             in.readList(instance.chatHistory, (ChatHistory.class.getClassLoader()));
             instance.userOnlineStatus = ((UserOnlineStatus) in.readValue((UserOnlineStatus.class.getClassLoader())));
+            instance.appointmentType = ((String) in.readValue((String.class.getClassLoader())));
 
             return instance;
         }
@@ -49,6 +53,7 @@ public class HistoryData implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(chatHistory);
         dest.writeValue(userOnlineStatus);
+        dest.writeValue(appointmentType);
     }
 
     public int describeContents() {
@@ -61,5 +66,13 @@ public class HistoryData implements Parcelable {
 
     public void setUserOnlineStatus(UserOnlineStatus userOnlineStatus) {
         this.userOnlineStatus = userOnlineStatus;
+    }
+
+    public String getAppointmentType() {
+        return appointmentType;
+    }
+
+    public void setAppointmentType(String appointmentType) {
+        this.appointmentType = appointmentType;
     }
 }

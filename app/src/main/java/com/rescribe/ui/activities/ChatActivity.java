@@ -257,6 +257,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private boolean mPressed = false;
     private SupportAnimator mAnimator;
     private boolean hidden = true;
+    private String mReceivedDocAppointmentType;
 
     private void typingStatus() {
         StatusInfo statusInfo = new StatusInfo();
@@ -682,7 +683,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String appointmentType = chatList.getDocAppointmentType();
+                String appointmentType = mReceivedDocAppointmentType;
                 bookAppointmentLayout.setVisibility(View.VISIBLE);
                 if (getString(R.string.token).equalsIgnoreCase(appointmentType) || getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
                     bookAppointmentButton.setVisibility(View.GONE);
@@ -1402,6 +1403,11 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             if (chatHistoryModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
 
                 String onlineStatus = chatHistoryModel.getHistoryData().getUserOnlineStatus().getOnlineStatus();
+
+                //----- this is done to show, token/book appointment button based on appoitmentType received.
+                mReceivedDocAppointmentType = chatHistoryModel.getHistoryData().getAppointmentType();
+                showBookAppointmentButton();
+                //---------
                 dateTime.setText(onlineStatus);
                 setUserStatusColor(onlineStatus);
 

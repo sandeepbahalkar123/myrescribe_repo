@@ -45,14 +45,14 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
     public void onBindViewHolder(ListViewHolder holder, int position) {
 
         final Review doctorObject = mDataList.get(position);
-        holder.reviewName.setText(doctorObject.getRevierName());
+       /* holder.reviewName.setText(doctorObject.getRevierName());
         if(doctorObject.getReviewCommment().equals("")){
             holder.review.setVisibility(View.GONE);
         }else {
             holder.review.setText(doctorObject.getReviewCommment());
             holder.review.setVisibility(View.VISIBLE);
         }
-        holder.reviewDate.setText(CommonMethods.getFormattedDate(doctorObject.getReviewDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN,RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
+        holder.reviewDate.setText(CommonMethods.getFormattedDate(doctorObject.getReviewDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN,RescribeConstants.DATE_PATTERN.DD_MM_YYYY));*/
         if(!doctorObject.getRating().equals("NA")) {
             holder.ratingBar.setRating(Float.parseFloat(doctorObject.getRating()));
         }
@@ -64,12 +64,12 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.reviewName)
+     /*   @BindView(R.id.reviewName)
         CustomTextView reviewName;
         @BindView(R.id.review)
         CustomTextView review;
         @BindView(R.id.reviewDate)
-        CustomTextView reviewDate;
+        CustomTextView reviewDate;*/
         @BindView(R.id.ratingBar)
         RatingBar ratingBar;
 

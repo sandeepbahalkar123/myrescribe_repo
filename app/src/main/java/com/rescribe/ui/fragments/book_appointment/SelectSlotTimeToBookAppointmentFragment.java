@@ -450,7 +450,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         mFavorite.setImageResource(R.drawable.result_line_heart_fav);
                     }
                 }
-             //   CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+                //   CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;
             case RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS:
                 ClinicTokenDetailsBaseModel clinicTokenDetailsBaseModel = (ClinicTokenDetailsBaseModel) customResponse;
@@ -730,9 +730,22 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     @Override
     public void onTimeSet(ViewGroup viewGroup, int hourOfDay, int minute) {
-        if (mSelectedClinicDataObject != null) {
-            mSelectedTimeStampForNewToken = hourOfDay + ":" + minute;
-            mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), hourOfDay + ":" + minute);
+        //-----------------
+        String currentTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+        Date maxCurrentDateTimeForDay = CommonMethods.convertStringToDate(currentTimeStamp + " " + "23:59:59", RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+        //---
+        Date currentDateTimeForDay = CommonMethods.convertStringToDate(CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+        Date selectedDateTimeForDay = CommonMethods.convertStringToDate(mSelectedTimeSlotDate + " " + hourOfDay + ":" + minute + ":00", RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+
+        if (currentDateTimeForDay.getTime() > selectedDateTimeForDay.getTime()) {
+            CommonMethods.showToast(getContext(), getString(R.string.token_select_time_err_msg));
+        } else if (maxCurrentDateTimeForDay.getTime() < selectedDateTimeForDay.getTime()) {
+            CommonMethods.showToast(getContext(), getString(R.string.token_select_time_err_msg));
+        } else {
+            if (mSelectedClinicDataObject != null) {
+                mSelectedTimeStampForNewToken = hourOfDay + ":" + minute;
+                mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), hourOfDay + ":" + minute);
+            }
         }
     }
 

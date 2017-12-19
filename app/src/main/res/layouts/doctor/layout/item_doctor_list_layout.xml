@@ -98,7 +98,6 @@
                         android:layout_height="@dimen/dp50"
                         android:layout_gravity="center"
                         app:border="true"
-                        app:border_width="@dimen/dp1"
                         app:shadow="true" />
 
                 </LinearLayout>

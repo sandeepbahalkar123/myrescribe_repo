@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.rescribe.R;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -60,13 +61,18 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
         }else{
             holder.healthoffersTag.setVisibility(View.GONE);
         }
+
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestOptions.skipMemoryCache(true);
+
+        if (mDashboardMenuList.get(position).getIconImageUrl().getTime().isEmpty()) {
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
+        } else requestOptions.signature(new ObjectKey(mDashboardMenuList.get(position).getIconImageUrl().getTime()));
 
         Glide.with(mContext)
-                .load(mDashboardMenuList.get(position).getIconImageUrl())
+                .load(mDashboardMenuList.get(position).getIconImageUrl().getUrl())
+                .apply(requestOptions)
                 .into(holder.menuIcon);
     }
 

@@ -107,7 +107,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.bookAppointmentButton);
         final CustomTextView doctorAppointmentDate = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorAppointmentDate);
-        final CircularImageView imageURL = (CircularImageView) imageLayout
+        final ImageView imageURL = (ImageView) imageLayout
                 .findViewById(R.id.imageURL);
         final LinearLayout thumbnail = (LinearLayout) imageLayout
                 .findViewById(R.id.thumbnail);

@@ -123,13 +123,13 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         requestOptions.dontAnimate();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
-        requestOptions.override(CommonMethods.convertDpToPixel(40), CommonMethods.convertDpToPixel(40));
+        requestOptions.override(mContext.getResources().getDimensionPixelSize(R.dimen.dp52), mContext.getResources().getDimensionPixelSize(R.dimen.dp52));
         requestOptions.placeholder(textDrawable);
         requestOptions.error(textDrawable);
 
         Glide.with(mContext)
                 .load(doctorConnectChatModel.getImageUrl())
-                .apply(requestOptions).thumbnail(0.5f)
+                .apply(requestOptions)
                 .into(holder.imageOfDoctor);
         //---------------
 

@@ -278,7 +278,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), ServicesCardViewImpl.getReceivedDoctorDataList(), mServiceCardDataViewBuilder, RecentVisitDoctorFragment.this, this);
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 showDoctorsRecyclerView.setLayoutManager(linearlayoutManager);
-                showDoctorsRecyclerView.setHasFixedSize(true);
+                showDoctorsRecyclerView.setNestedScrollingEnabled(false);
                 showDoctorsRecyclerView.setAdapter(mSortByClinicAndDoctorNameAdapter);
             }
             //-------------
@@ -295,13 +295,13 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 whiteUnderLine.setVisibility(View.VISIBLE);
                 searchView.setVisibility(View.VISIBLE);
                 mSpecialityEmptyListView.setVisibility(View.GONE);
-                mBookAppointSpecialityListView.setHasFixedSize(true);
+
                 RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
                 mBookAppointSpecialityListView.setLayoutManager(layoutManager);
                 mBookAppointSpecialityListView.setItemAnimator(new DefaultItemAnimator());
-                /*int spanCount = 3; // 3 columns
-                int spacing = 30; // 50px*/
-                boolean includeEdge = true;
+
+                mBookAppointSpecialityListView.setNestedScrollingEnabled(false);
+
                 // mBookAppointSpecialityListView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
                 mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, mReceivedDoctorServicesModel.getDoctorSpecialities());
                 mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);

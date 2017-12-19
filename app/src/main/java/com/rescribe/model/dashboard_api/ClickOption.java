@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.IconImage;
 
 public class ClickOption implements Parcelable {
 
@@ -13,7 +14,7 @@ public class ClickOption implements Parcelable {
     private String name;
     @SerializedName("iconImageUrl")
     @Expose
-    private String iconImageUrl;
+    private IconImage iconImageUrl;
     @SerializedName("clickEvent")
     @Expose
     private ClickEvent clickEvent;
@@ -35,7 +36,7 @@ public class ClickOption implements Parcelable {
 
     protected ClickOption(Parcel in) {
         this.name = ((String) in.readValue((String.class.getClassLoader())));
-        this.iconImageUrl = ((String) in.readValue((String.class.getClassLoader())));
+        this.iconImageUrl = ((IconImage) in.readValue((IconImage.class.getClassLoader())));
         this.clickEvent = ((ClickEvent) in.readValue((ClickEvent.class.getClassLoader())));
     }
 
@@ -50,11 +51,11 @@ public class ClickOption implements Parcelable {
         this.name = name;
     }
 
-    public String getIconImageUrl() {
+    public IconImage getIconImageUrl() {
         return iconImageUrl;
     }
 
-    public void setIconImageUrl(String iconImageUrl) {
+    public void setIconImageUrl(IconImage iconImageUrl) {
         this.iconImageUrl = iconImageUrl;
     }
 

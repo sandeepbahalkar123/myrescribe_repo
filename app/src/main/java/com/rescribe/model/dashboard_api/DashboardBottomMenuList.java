@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.IconImage;
 
 public class DashboardBottomMenuList implements Parcelable {
 
@@ -14,7 +15,7 @@ public class DashboardBottomMenuList implements Parcelable {
     private String name;
     @SerializedName("iconImageUrl")
     @Expose
-    private String iconImageUrl;
+    private IconImage iconImageUrl;
     @SerializedName("selectedIconImageUrl")
     @Expose
     private String selectedIconImageUrl;
@@ -35,7 +36,7 @@ public class DashboardBottomMenuList implements Parcelable {
 
     protected DashboardBottomMenuList(Parcel in) {
         this.name = ((String) in.readValue((String.class.getClassLoader())));
-        this.iconImageUrl = ((String) in.readValue((String.class.getClassLoader())));
+        this.iconImageUrl = ((IconImage) in.readValue((IconImage.class.getClassLoader())));
         this.selectedIconImageUrl = ((String) in.readValue((String.class.getClassLoader())));
         this.clickEvent = ((ClickEvent) in.readValue((ClickEvent.class.getClassLoader())));
     }
@@ -51,11 +52,11 @@ public class DashboardBottomMenuList implements Parcelable {
         this.name = name;
     }
 
-    public String getIconImageUrl() {
+    public IconImage getIconImageUrl() {
         return iconImageUrl;
     }
 
-    public void setIconImageUrl(String iconImageUrl) {
+    public void setIconImageUrl(IconImage iconImageUrl) {
         this.iconImageUrl = iconImageUrl;
     }
 

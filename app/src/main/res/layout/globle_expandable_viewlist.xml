@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,15 +7,14 @@
     android:orientation="vertical"
     tools:ignore="MissingTranslation">
 
-    <ExpandableListView
+    <com.rescribe.ui.customesViews.NonScrollExpandableListView
         android:id="@+id/selectTimeDateExpandableView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:groupIndicator="@null"
         android:listSelector="@android:color/transparent"
-        android:visibility="visible"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"></ExpandableListView>
+        android:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/no_data_found"
@@ -34,37 +32,5 @@
             android:text="@string/no_clinic_data_found" />
 
     </LinearLayout>
-    <!--  <ImageView
-          android:id="@+id/emptyListView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_centerInParent="true"
-          android:gravity="center"
-          android:src="@drawable/no_records_found"
-          android:textSize="@dimen/sp18"
-          android:visibility="gone" />-->
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/rightFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/filter"
-        android:visibility="gone"
-        app:backgroundTint="@color/Red" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/leftFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/location_based_filter"
-        android:visibility="gone"
-        app:backgroundTint="#00af52" />
 
 </RelativeLayout>

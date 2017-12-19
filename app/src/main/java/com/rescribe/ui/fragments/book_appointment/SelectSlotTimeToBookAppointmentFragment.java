@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -235,7 +236,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         //----******************------
 
         String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DD_MM_YYYY, CommonMethods.getCurrentDate());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MMM);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MMM, Locale.US);
 
         mSelectDateTime.setText(dayFromDate + ", " + simpleDateFormat.format(new Date()));
         //----------
@@ -248,6 +249,11 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             toolbarTitle = arguments.getString(getString(R.string.toolbarTitle));
         }
         //--------------
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            selectTimeDateExpandableView.setNestedScrollingEnabled(false);
+        }
+
         selectTimeDateExpandableView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override

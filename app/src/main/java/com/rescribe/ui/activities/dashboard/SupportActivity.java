@@ -99,12 +99,12 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
 
                 for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
                     if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
+                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl().getUrl();
                     }
                     if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                         bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
-                        bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
+                        bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl().getUrl());
                         bottomSheetMenu.setNotificationCount(notificationCount);
 
                         //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
@@ -232,6 +232,8 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
     public void onProfileImageClick() {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
+
+        super.onProfileImageClick();
     }
 
     @OnClick({R.id.callTextView, R.id.emailtextView})
@@ -303,9 +305,6 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
             intent.putExtras(bundle);
             startActivity(intent);
         }
-
-        if (isOpen)
-            closeSheet();
 
         super.onBottomSheetMenuClick(bottomMenu);
     }

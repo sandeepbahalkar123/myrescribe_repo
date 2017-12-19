@@ -175,12 +175,12 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
                 for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
                     if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
+                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl().getUrl();
                     }
                     if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                         bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
-                        bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
+                        bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl().getUrl());
                         bottomSheetMenu.setNotificationCount(notificationCount);
 
                         //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
@@ -247,6 +247,8 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     public void onProfileImageClick() {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
+
+        super.onProfileImageClick();
     }
 
     @Override
@@ -320,11 +322,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             startActivity(intent);
         }
 
-        if (isOpen)
-            closeSheet();
-
         super.onBottomSheetMenuClick(bottomMenu);
-
     }
 
     // TODO : THIS IS EXACLTY COPIED FROM HOMEPAGEACTIVITY.java to update count.

@@ -40,7 +40,6 @@
                     android:id="@+id/profilePhoto"
                     android:layout_width="@dimen/dp40"
                     app:border="true"
-                    app:border_width="1dp"
                     app:shadow="true"
                     android:layout_height="@dimen/dp40"
                     tools:src="@drawable/layer_12" />

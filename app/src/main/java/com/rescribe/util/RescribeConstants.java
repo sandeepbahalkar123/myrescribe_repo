@@ -258,6 +258,7 @@ public class RescribeConstants {
         public static final String UTC_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
         public final static String YYYY_MM_DD = "yyyy-MM-dd";
         public final static String DD_MM_YYYY = "dd-MM-yyyy";
+        public final static String DD_MM_YYYY_hh_mm_a = "dd-MM-yyyy hh:mm a";
         public final static String hh_mm_a = "hh:mm a";
         public static final String TOTIMEZONE = "Asia/Kolkata";
         public final static String EEEE_dd_MMM_yyyy_hh_mm_a = "EEEE dd MMM yyyy | hh:mm a";

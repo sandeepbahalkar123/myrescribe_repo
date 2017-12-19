@@ -167,15 +167,23 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
         if (groupPosition % 2 == 1) {
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
-            dataObject.setRowColor(ContextCompat.getColor(context, R.color.divider));
             groupViewHolder.sideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.darkblue));
             groupViewHolder.footerSideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.darkblue));
+
+            //--- this is done to keep same bgColor for group n child and sub-childes.
+            dataObject.setRowColor(ContextCompat.getColor(context, R.color.divider));
+            groupViewHolder.footerDividerView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            //----------------
         } else {
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-            dataObject.setRowColor(ContextCompat.getColor(context, R.color.white));
-
             groupViewHolder.sideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.recentblue));
             groupViewHolder.footerSideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.recentblue));
+
+            //--- this is done to keep same bgColor for group n child and sub-childes.
+            dataObject.setRowColor(ContextCompat.getColor(context, R.color.white));
+            groupViewHolder.footerDividerView.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
+            //----------------
+
         }
         //-------
 
@@ -319,6 +327,8 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         TextView footerSideBarView;
         @BindView(R.id.footerBarLayout)
         LinearLayout footerBarLayout;
+        @BindView(R.id.footerDividerView)
+        TextView footerDividerView;
 
         GroupViewHolder(View view) {
             ButterKnife.bind(this, view);

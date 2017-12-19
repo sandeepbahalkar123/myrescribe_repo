@@ -178,6 +178,7 @@
             android:background="@color/recentblue" />
 
         <TextView
+            android:id="@+id/footerDividerView"
             android:layout_width="@dimen/dp0"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"

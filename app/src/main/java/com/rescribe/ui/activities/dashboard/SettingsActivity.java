@@ -214,6 +214,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             Intent intent = new Intent(SettingsActivity.this, NotificationSettingActivity.class);
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), clickedOption);
+            b.putString(getString(R.string.toolbarTitle), clickedOption.getName());
             intent.putExtras(b);
             startActivity(intent);
         } else if (clickedOption.getName().equalsIgnoreCase(getString(R.string.logout))) {

@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 import com.rescribe.model.book_appointment.search_doctors.RecentVisitedModel;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 
 public class UnreadBookAppointTokenNotificationData implements CustomResponse {
@@ -90,6 +92,11 @@ public class UnreadBookAppointTokenNotificationData implements CustomResponse {
     }
 
     public String getCreatedDate() {
+        if (createdDate != null) {
+            if (createdDate.contains("T")) {
+                createdDate = CommonMethods.formatDateTime(createdDate, RescribeConstants.DATE_PATTERN.DD_MM_YYYY_hh_mm_a, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
+            }
+        }
         return createdDate;
     }
 

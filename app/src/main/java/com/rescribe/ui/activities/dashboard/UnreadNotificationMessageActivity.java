@@ -185,15 +185,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     }
 
     private void setAppointmentAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
-        mAppointmentNotificationAlertAdapter = new UnreadAppointmentNotificationAlert(this, appAlertList, this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        mAppointmentAlertList.setLayoutManager(mLayoutManager);
 
-        // mAppointmentAlertList.setItemAnimator(new DefaultItemAnimator());
-        // DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mAppointmentAlertList.getContext(),
-        //         DividerItemDecoration.VERTICAL);
-        //  mAppointmentAlertList.addItemDecoration(dividerItemDecoration);
-        mAppointmentAlertList.setAdapter(mAppointmentNotificationAlertAdapter);
         UnreadSavedNotificationMessageData unreadSavedNotificationMessageData = appAlertList.get(0);
 
         String formattedDate = CommonMethods.getFormattedDate(unreadSavedNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
@@ -207,16 +199,16 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             mAppointmentsFirstMessageTimeStamp.setText(dayFromDate + " " + time);
         }
         mAppointmentsFirstMessageTimeStamp.setVisibility(View.VISIBLE);
+        //------------
+        mAppointmentNotificationAlertAdapter = new UnreadAppointmentNotificationAlert(this, appAlertList, this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mAppointmentAlertList.setLayoutManager(mLayoutManager);
+        mAppointmentAlertList.setAdapter(mAppointmentNotificationAlertAdapter);
     }
 
     private void setInvestigationAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
-        mInvestigationNotificationAlertAdapter = new UnreadAppointmentNotificationAlert(this, appAlertList, this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        mInvestigationsListView.setLayoutManager(mLayoutManager);
-        mInvestigationsListView.setAdapter(mInvestigationNotificationAlertAdapter);
 
         UnreadSavedNotificationMessageData unreadSavedNotificationMessageData = appAlertList.get(0);
-
         String formattedDate = CommonMethods.getFormattedDate(unreadSavedNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
         String time = CommonMethods.formatDateTime(unreadSavedNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
 
@@ -228,7 +220,25 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             mInvestigationFirstMessageTimeStamp.setText(dayFromDate + " " + time);
         }
         mInvestigationFirstMessageTimeStamp.setVisibility(View.VISIBLE);
+        //------------
+        mInvestigationNotificationAlertAdapter = new UnreadAppointmentNotificationAlert(this, appAlertList, this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mInvestigationsListView.setLayoutManager(mLayoutManager);
+        mInvestigationsListView.setAdapter(mInvestigationNotificationAlertAdapter);
 
+    }
+
+
+    public int isShowFirstMessageTimeStamp(String notificationType) {
+        int status = mAppointmentsFirstMessageTimeStamp.getVisibility();
+        if (notificationType.equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT)) {
+            status = mAppointmentsFirstMessageTimeStamp.getVisibility();
+        } else if (notificationType.equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT)) {
+            status = mInvestigationFirstMessageTimeStamp.getVisibility();
+        } else if (notificationType.equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT)) {
+            status = mGetTokenFirstMessageTimeStamp.getVisibility();
+        }
+        return status;
     }
 
     private void setUnreadChatAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
@@ -251,17 +261,18 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
     }
 
+
     @Override
     public void onMoreClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData) {
         if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
             mAppointmentNotificationAlertAdapter.addAllElementToList();
-            mAppointmentNotificationAlertAdapter.notifyDataSetChanged();
             mAppointmentsFirstMessageTimeStamp.setVisibility(View.INVISIBLE);
+            mAppointmentNotificationAlertAdapter.notifyDataSetChanged();
 
         } else if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
             mInvestigationNotificationAlertAdapter.addAllElementToList();
-            mInvestigationNotificationAlertAdapter.notifyDataSetChanged();
             mInvestigationFirstMessageTimeStamp.setVisibility(View.INVISIBLE);
+            mInvestigationNotificationAlertAdapter.notifyDataSetChanged();
         }
     }
 
@@ -562,6 +573,20 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
 
     private void setUnreadBookAppointTokenAlertListAdapter(ArrayList<UnreadBookAppointTokenNotificationData> appAlertList) {
+
+        UnreadBookAppointTokenNotificationData unreadSavedNotificationMessageData = appAlertList.get(0);
+        String formattedDate = CommonMethods.getFormattedDate(unreadSavedNotificationMessageData.getCreatedDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+        String time = CommonMethods.formatDateTime(unreadSavedNotificationMessageData.getCreatedDate(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
+        String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
+
+        if (getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
+            mGetTokenFirstMessageTimeStamp.setText(time);
+
+        } else {
+            mGetTokenFirstMessageTimeStamp.setText(dayFromDate + " " + time);
+        }
+        mGetTokenFirstMessageTimeStamp.setVisibility(View.VISIBLE);
+        //--------------
         unreadTokenNotificationListViewLayout.setVisibility(View.VISIBLE);
         mUnreadBookAppointTokenNotificationAdapter = new UnreadBookAppointTokenNotificationAdapter(this, appAlertList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());

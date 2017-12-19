@@ -431,7 +431,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                             selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
                         } else {
                             selectTimeDateExpandableView.setVisibility(View.GONE);
-                            CommonMethods.showToast(getActivity(), "" + slotListBase.getCommon().getStatusMessage());
                         }
                     }
                 }
@@ -451,7 +450,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         mFavorite.setImageResource(R.drawable.result_line_heart_fav);
                     }
                 }
-                CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+             //   CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;
             case RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS:
                 ClinicTokenDetailsBaseModel clinicTokenDetailsBaseModel = (ClinicTokenDetailsBaseModel) customResponse;

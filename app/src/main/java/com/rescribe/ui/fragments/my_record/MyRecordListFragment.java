@@ -68,6 +68,7 @@ public class MyRecordListFragment extends Fragment {
                 lastExpandedPosition = groupPosition;
             }
         });
+        setListAdapter();
         return mRootView;
     }
 
@@ -118,6 +119,6 @@ public class MyRecordListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setListAdapter();
+
     }
 }

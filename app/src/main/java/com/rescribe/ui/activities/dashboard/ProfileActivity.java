@@ -31,7 +31,7 @@ public class ProfileActivity extends DrawerActivity {
         ButterKnife.bind(this);
         mContext = ProfileActivity.this;
         drawerConfiguration();
-//        openDrawer();
+        openDrawer();
     }
 
     private void drawerConfiguration() {

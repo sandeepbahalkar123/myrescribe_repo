@@ -428,6 +428,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         viewPagerDoctorItem.setPageMargin(pager_margin);
 
         mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, mDashboardDataModel.getCardBgImageUrlList());
+        viewpager.setOffscreenPageLimit(5);
         viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
 
         final int scrollPixels = widthPixels * mShowDoctorViewPagerAdapter.getCount();

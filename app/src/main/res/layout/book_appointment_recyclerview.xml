@@ -83,6 +83,7 @@
                 android:layout_marginRight="@dimen/dp6"
                 android:divider="@null"
                 android:dividerHeight="0dp"
+                android:focusable="false"
                 android:visibility="visible">
 
             </android.support.v7.widget.RecyclerView>

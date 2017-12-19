@@ -252,7 +252,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                             mSortByClinicAndDoctorNameAdapter.updateClickedItemFavImage();
                         }
                     }
-                    CommonMethods.showToast(getActivity(), responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
+                  //  CommonMethods.showToast(getActivity(), responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
                 }
                 break;
             case RescribeConstants.TASK_GET_DOCTOR_DATA:

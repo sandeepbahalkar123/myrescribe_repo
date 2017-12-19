@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.rescribe.R;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -24,10 +25,12 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
     private final ArrayList<UnreadSavedNotificationMessageData> mOriginalReceivedList;
     private final Context mContext;
     private final OnNotificationItemClicked listener;
+    private UnreadNotificationMessageActivity parentActivity;
     private ArrayList<UnreadSavedNotificationMessageData> mListToBeUsed;
 
     public UnreadAppointmentNotificationAlert(Context context, ArrayList<UnreadSavedNotificationMessageData> list, OnNotificationItemClicked listener) {
         this.mContext = context;
+        this.parentActivity = (UnreadNotificationMessageActivity) context;
         this.mOriginalReceivedList = list;
 
         mListToBeUsed = new ArrayList<>();
@@ -60,14 +63,19 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
         }
         //--------
 
+        int showFirstMessageTimeStamp = parentActivity.isShowFirstMessageTimeStamp(unreadNotificationMessageData.getNotificationMessageType());
+
         //--- TO show more load button or not on appointment_type_notification.
         if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT)) {
             if (position == 0 && (mListToBeUsed.size() == 1 && mOriginalReceivedList.size() > 1)) {
                 holder.loadMoreItems.setVisibility(View.VISIBLE);
                 holder.textMessageTimeStamp.setVisibility(View.GONE);
             } else {
-                holder.textMessageTimeStamp.setVisibility(View.VISIBLE);
-
+                if (showFirstMessageTimeStamp == View.VISIBLE) {
+                    holder.textMessageTimeStamp.setVisibility(View.GONE);
+                } else {
+                    holder.textMessageTimeStamp.setVisibility(View.VISIBLE);
+                }
                 holder.loadMoreItems.setVisibility(View.GONE);
             }
         } else if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT)) {
@@ -77,7 +85,11 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
                 holder.textMessageTimeStamp.setVisibility(View.GONE);
 
             } else {
-                holder.textMessageTimeStamp.setVisibility(View.VISIBLE);
+                if (showFirstMessageTimeStamp == View.VISIBLE) {
+                    holder.textMessageTimeStamp.setVisibility(View.GONE);
+                } else {
+                    holder.textMessageTimeStamp.setVisibility(View.VISIBLE);
+                }
                 holder.loadMoreItems.setVisibility(View.GONE);
                 holder.skipItems.setVisibility(View.VISIBLE);
             }

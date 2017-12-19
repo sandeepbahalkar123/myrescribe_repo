@@ -145,8 +145,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
     private void plotVitalGraphUsingMpChart() {
 
-        //ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailList();
-        ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailListBySize(5);
+        ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailList();
+        //  ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailListBySize(5);
         if (vitalGraphDetailList.size() != 0) {
 
             // soring for ascending list
@@ -181,6 +181,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 dataset.setDrawCircleHole(false);
                 dataset.setDrawFilled(true);
                 dataset.setCircleColor(Color.WHITE);
+                dataset.setValueTextSize(CommonMethods.convertDpToPixel(this.getResources().getDimension(R.dimen.dp1)));
                 //----
                 mGraphCard.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
                 mGraphCard.setData(data);
@@ -199,6 +200,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 mGraphCard.setScrollContainer(true);
                 mGraphCard.setHorizontalScrollBarEnabled(true);
                 mGraphCard.setScaleXEnabled(true);
+                mGraphCard.setVisibleXRangeMaximum(4);
+                mGraphCard.moveViewToX(0);
                 //---------
                 IAxisValueFormatter formatter = new IAxisValueFormatter() {
 
@@ -227,8 +230,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
     private void plotVitalGraphUsingMpChartForBloodPressure() {
 
-        // ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailList();
-        ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailListBySize(5);
+        ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailList();
+        // ArrayList<VitalGraphDetails> vitalGraphDetailList = mReceivedVitalGraphDataModel.getVitalGraphDetailListBySize(5);
         if (vitalGraphDetailList.size() != 0) {
 
             // soring for ascending list
@@ -267,6 +270,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 data.addDataSet(maxTempEntriesDataset);
                 data.addDataSet(minTempEntriesDataset);
                 data.setValueTextColor(Color.WHITE);
+                data.setValueTextSize(CommonMethods.convertDpToPixel(this.getResources().getDimension(R.dimen.dp1)));
 
                 //----******for MAX*****------
                 maxTempEntriesDataset.setDrawCircleHole(false);
@@ -300,6 +304,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 mGraphCard.setScrollContainer(true);
                 mGraphCard.setHorizontalScrollBarEnabled(true);
                 mGraphCard.setScaleXEnabled(true);
+                mGraphCard.setVisibleXRangeMaximum(4);
+                mGraphCard.moveViewToX(0);
                 //---------
                 IAxisValueFormatter formatter = new IAxisValueFormatter() {
 

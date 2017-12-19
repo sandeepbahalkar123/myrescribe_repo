@@ -264,7 +264,8 @@ public class RescribeConstants {
         public final static String EEEE_dd_MMM_yyyy_hh_mm_a = "EEEE dd MMM yyyy | hh:mm a";
         public static String HH_mm_ss = "HH:mm:ss";
         public static String DD_MM_YYYY_hh_mm = "dd/MM/yyyy hh:mm aa";
-        public static String HH_mm = "hh:mm";
+        public static String HH_mm = "HH:mm";
+        public static String hh_mm = "hh:mm";
         public static String MMM_YYYY = "MMM, yyyy";
         public static String MMM_DD_YYYY = "MMM dd,yyyy";
         public static String DD_MM_YYYY_hh_mm_ss = "dd-MM-yyyy hh:mm:ss";

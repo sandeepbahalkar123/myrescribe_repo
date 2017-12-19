@@ -57,7 +57,7 @@ public class ClinicTokenDetails implements Parcelable {
             if (date[1].contains(":")) {
                 String[] split = date[1].split(":");
                 scheduledTimeStamp = split[0] + ":" + split[1] + ":00";
-                scheduledTimeStamp = CommonMethods.formatDateTime(scheduledTimeStamp, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.HH_mm, RescribeConstants.TIME);
+                scheduledTimeStamp = CommonMethods.formatDateTime(scheduledTimeStamp, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.hh_mm, RescribeConstants.TIME);
             }
         }
         return scheduledTimeStamp;

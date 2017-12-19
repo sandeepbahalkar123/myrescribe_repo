@@ -288,7 +288,9 @@ public class DoctorDataHelper implements ConnectionListener {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, taskID, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
 
-        String url = Config.TIME_SLOT_TO_BOOK_APPOINTMENT + "docId=" + docId + "&locationId=" + locationID + "&date=" + date;
+        String currentTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.HH_mm);
+
+        String url = Config.TIME_SLOT_TO_BOOK_APPOINTMENT + "docId=" + docId + "&locationId=" + locationID + "&date=" + date + "&time=" + currentTimeStamp;
 
         if (isReqDoctorData) {
             url = url + "&docDetailReq=" + isReqDoctorData + "&patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);

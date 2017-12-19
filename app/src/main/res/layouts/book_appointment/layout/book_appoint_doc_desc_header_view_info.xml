@@ -132,7 +132,6 @@
                         android:layout_height="@dimen/dp80"
                         android:layout_gravity="center"
                         app:border="true"
-                        app:border_width="1dp"
                         app:shadow="true"
                         tools:src="@drawable/layer_12" />
 

@@ -146,7 +146,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     ArrayList<DoctorList> sponsered;
     ArrayList<DoctorList> recently_visit_doctor;
     ArrayList<DoctorList> favoriteList;
-    // CustomProgressDialog mCustomProgressDialog;
     private static final long INTERVAL = 1000 * 50;
     private static final long FASTEST_INTERVAL = 1000 * 20;
     LocationRequest mLocationRequest;
@@ -546,9 +545,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             startActivity(intent);
         }
 
-        if (isOpen)
-            closeSheet();
-
         super.onBottomMenuClick(bottomMenu);
     }
 
@@ -557,8 +553,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
 
-        if (isOpen)
-            closeSheet();
+        super.onProfileImageClick();
     }
 
 
@@ -606,12 +601,12 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
                     ClickOption clickOption = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j);
                     if (clickOption.getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        profileImageString = clickOption.getIconImageUrl();
+                        profileImageString = clickOption.getIconImageUrl().getUrl();
                     }
                     if (!clickOption.getName().equalsIgnoreCase(getString(R.string.profile))) {
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                         bottomSheetMenu.setName(clickOption.getName());
-                        bottomSheetMenu.setIconImageUrl(clickOption.getIconImageUrl());
+                        bottomSheetMenu.setIconImageUrl(clickOption.getIconImageUrl().getUrl());
                         bottomSheetMenu.setNotificationCount(notificationCount);
 
                         //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
@@ -938,9 +933,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             intent.putExtras(bundle);
             startActivity(intent);
         }
-
-        if (isOpen)
-            closeSheet();
 
         super.onBottomSheetMenuClick(bottomMenu);
     }

@@ -101,6 +101,9 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     }
 
     public void openSheet() {
+
+        isOpen = true;
+
         bottomSheetMenu.setVisibility(View.VISIBLE);
         bottomSheetMenuLayout.setVisibility(View.VISIBLE);
 
@@ -111,7 +114,6 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         Animation slideUpAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.slide_up_animation);
         bottomSheetMenuLayout.startAnimation(slideUpAnimation);
-        isOpen = true;
     }
 
     public void setUpAdapterForBottomSheet(String patientImageUrl, String patientName, String patientMobileNo) {
@@ -197,6 +199,9 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     }
 
     public void closeSheet() {
+
+        isOpen = false;
+
         Animation slideDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.slide_down_animation);
 
@@ -221,7 +226,6 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
             public void onAnimationRepeat(Animation animation) {
             }
         });
-        isOpen = false;
     }
 
     @Override
@@ -281,8 +285,8 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 
     @Override
     public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
-
-
+        if (isOpen)
+            closeSheet();
     }
 
     @Override
@@ -292,6 +296,8 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
                 closeSheet();
             else
                 openSheet();
+        } else if (isOpen) {
+            closeSheet();
         }
     }
 

@@ -29,10 +29,9 @@
 
         <com.rescribe.ui.customesViews.CircularImageView
             android:id="@+id/imageOfDoctor"
-            android:layout_width="@dimen/dp50"
-            android:layout_height="@dimen/dp50"
+            android:layout_width="@dimen/dp52"
+            android:layout_height="@dimen/dp52"
             app:border="true"
-            app:border_width="1dp"
             app:shadow="true"
             tools:src="@drawable/layer_12" />
 

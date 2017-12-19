@@ -6,7 +6,7 @@ import android.os.Parcelable;
 public class BottomMenu implements Parcelable {
 
     private String menuName = "";
-    private String menuIcon = "";
+    private IconImage menuIcon;
     private boolean isSelected;
     private boolean isAppIcon;
     private int notificationCount;
@@ -30,7 +30,7 @@ public class BottomMenu implements Parcelable {
 
     protected BottomMenu(Parcel in) {
         this.menuName = ((String) in.readValue((String.class.getClassLoader())));
-        this.menuIcon = ((String) in.readValue((String.class.getClassLoader())));
+        this.menuIcon = ((IconImage) in.readValue((IconImage.class.getClassLoader())));
         this.isSelected = ((boolean) in.readValue((boolean.class.getClassLoader())));
         this.isAppIcon = ((boolean) in.readValue((boolean.class.getClassLoader())));
         this.notificationCount = ((int) in.readValue((boolean.class.getClassLoader())));
@@ -47,11 +47,11 @@ public class BottomMenu implements Parcelable {
         this.menuName = menuName;
     }
 
-    public String getMenuIcon() {
+    public IconImage getMenuIcon() {
         return menuIcon;
     }
 
-    public void setMenuIcon(String menuIcon) {
+    public void setMenuIcon(IconImage menuIcon) {
         this.menuIcon = menuIcon;
     }
 

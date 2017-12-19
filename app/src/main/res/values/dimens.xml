@@ -58,6 +58,7 @@
     <dimen name="dp60">60dp</dimen>
     <dimen name="sp21">21sp</dimen>
     <dimen name="dp48">48dp</dimen>
+    <dimen name="dp52">52dp</dimen>
 
     <!--End Switch Button-->
 </resources>

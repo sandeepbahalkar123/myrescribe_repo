@@ -146,7 +146,7 @@ public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         int widthPixels = metrics.widthPixels;
-        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+        mImageSize = (widthPixels / columnNum) - mContext.getResources().getDimensionPixelSize(R.dimen.dp30);
     }
     public SpinnerDoctor getDoctor(int position) {
         return suggestions.get(position);

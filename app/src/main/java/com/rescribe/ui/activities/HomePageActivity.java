@@ -120,21 +120,15 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     @BindView(R.id.locationImageView)
     ImageView locationImageView;
     private Context mContext;
-    private String mGetMealTime;
     String breakFastTime = "";
     String lunchTime = "";
     String dinnerTime = "";
     String snacksTime = "";
     String locationReceived = "";
     String previousLocationReceived = "";
-    private MenuOptionsDashBoardAdapter mMenuOptionsDashBoardAdapter;
-    private String patientId;
-    private LoginHelper loginHelper;
     Calendar c = Calendar.getInstance();
     int hour24 = c.get(Calendar.HOUR_OF_DAY);
     int Min = c.get(Calendar.MINUTE);
-    private ShowDoctorViewPagerAdapter mShowDoctorViewPagerAdapter;
-    private ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter;
     ArrayList<DoctorList> mDashboardDoctorListsToShowDashboardDoctor;
     private int widthPixels;
     DashboardDataModel mDashboardDataModel;
@@ -152,10 +146,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     GoogleApiClient mGoogleApiClient;
     Location mCurrentLocation;
     String mLastUpdateTime;
-    private int PLACE_PICKER_REQUEST = 10;
 
     private String profileImageString;
-    private String locationString;
     private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
 
     @Override
@@ -178,8 +170,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         mDashboardDataBuilder = new ServicesCardViewImpl(this, this);
 
         //------
-        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
-        loginHelper = new LoginHelper(mContext, HomePageActivity.this);
+        String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        LoginHelper loginHelper = new LoginHelper(mContext, HomePageActivity.this);
         ActiveRequest activeRequest = new ActiveRequest();
         activeRequest.setId(Integer.parseInt(patientId));
         loginHelper.doActiveStatus(activeRequest);
@@ -195,9 +187,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
 
         registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
-
-        //------
-        //  alertTab.setVisibility(View.VISIBLE);
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -309,7 +298,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 //        //noinspection SimplifiableIfStatement
         if (id == R.id.notification) {
 
-            mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
+            String mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
             if (mGetMealTime.equals(getString(R.string.break_fast))) {
                 Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
                 intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
@@ -416,7 +405,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         //------------
         mDashboardDoctorListsToShowDashboardDoctor.addAll(mergeList);
-        mShowDoctorViewPagerAdapter = new ShowDoctorViewPagerAdapter(this, mergeList, mDashboardDataBuilder, dataMap, this);
+        ShowDoctorViewPagerAdapter mShowDoctorViewPagerAdapter = new ShowDoctorViewPagerAdapter(this, mergeList, mDashboardDataBuilder, dataMap, this);
         viewPagerDoctorItem.setAdapter(mShowDoctorViewPagerAdapter);
         //-----------
         // Disable clip to padding
@@ -427,8 +416,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
         viewPagerDoctorItem.setPageMargin(pager_margin);
 
-        mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, mDashboardDataModel.getCardBgImageUrlList());
-        viewpager.setOffscreenPageLimit(5);
+        ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, mDashboardDataModel.getCardBgImageUrlList());
+        viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
 
         final int scrollPixels = widthPixels * mShowDoctorViewPagerAdapter.getCount();
@@ -475,9 +464,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         switch (view.getId()) {
             case R.id.locationImageView:
                 Intent start = new Intent(this, BookAppointFindLocation.class);
+                int PLACE_PICKER_REQUEST = 10;
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
-
         }
     }
 
@@ -569,15 +558,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
 
         ArrayList<DashboardMenuList> dashboardMenuList = mDashboardDataModel.getDashboardMenuList();
-        int recyclerViewHeight = dashboardMenuList.size() * getResources().getDimensionPixelSize(R.dimen.dp56);
-        ViewGroup.LayoutParams params = mMenuOptionsListView.getLayoutParams();
-        params.height = recyclerViewHeight;
-        mMenuOptionsListView.setLayoutParams(params);
         //------- Menus received from server, like find_doc,ongoing_medication : START
-        mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, dashboardMenuList);
+        MenuOptionsDashBoardAdapter mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, dashboardMenuList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mMenuOptionsListView.setLayoutManager(linearLayoutManager);
-        mMenuOptionsListView.setHasFixedSize(true);
         mMenuOptionsListView.setNestedScrollingEnabled(false);
         mMenuOptionsListView.setAdapter(mMenuOptionsDashBoardAdapter);
         //------- Menus received from server, like find_doc,ongoing_medication : START
@@ -607,7 +591,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                     if (!clickOption.getName().equalsIgnoreCase(getString(R.string.profile))) {
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                         bottomSheetMenu.setName(clickOption.getName());
-                        bottomSheetMenu.setIconImageUrl(clickOption.getIconImageUrl().getUrl());
+                        bottomSheetMenu.setIconImageUrl(clickOption.getIconImageUrl());
                         bottomSheetMenu.setNotificationCount(notificationCount);
 
                         //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
@@ -789,15 +773,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
             if (!addresses.isEmpty()) {
                 Address obj = addresses.get(0);
-
-                System.out.println("obj.getThoroughfare()" + obj.getThoroughfare());
-                System.out.println("obj.getSubLocality()" + obj.getSubLocality());
-                System.out.println("obj.getSubAdminArea()" + obj.getSubAdminArea());
-                System.out.println("obj.getLocality()" + obj.getLocality());
-                System.out.println("obj.getAdminArea()" + obj.getAdminArea());
-                System.out.println("obj.getCountryName()" + obj.getCountryName());
                 LatLng location = new LatLng(lat, lng);
                 mDashboardHelper = new DashboardHelper(this, this);
+                String locationString;
                 if (obj.getLocality().equals(null)) {
                     locationString = getArea(obj);
                 } else {

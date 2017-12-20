@@ -10,10 +10,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.IconImage;
 import com.rescribe.R;
 
 import java.util.ArrayList;
@@ -24,14 +25,20 @@ import java.util.ArrayList;
 
 public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
-//    private final int widthPixels;
-    private ArrayList<String> mDataList;
+    private final int widthPixelOfBanner;
+    private ArrayList<IconImage> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
 
-    public ShowBackgroundViewPagerAdapter(Context context, ArrayList<String> doctorLists) {
+    public ShowBackgroundViewPagerAdapter(Context context, ArrayList<IconImage> doctorLists) {
         this.mContext = context;
         this.mDataList = doctorLists;
+
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        widthPixelOfBanner = metrics.widthPixels;
+
         mInflater = LayoutInflater.from(context);
     }
 
@@ -48,19 +55,22 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup view, int position) {
         View imageLayout = mInflater.inflate(R.layout.background_item, view, false);
-        assert imageLayout != null;
 
         final ImageView dashboardBackgroundLayout = (ImageView) imageLayout
                 .findViewById(R.id.dashboardBackgroundLayout);
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
-        requestOptions.override(640, 400);
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestOptions.skipMemoryCache(true);
+        requestOptions.override(widthPixelOfBanner - 20);
+
+        if (mDataList.get(position).getTime().isEmpty()) {
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
+        } else
+            requestOptions.signature(new ObjectKey(mDataList.get(position).getTime()));
 
         Glide.with(mContext)
-                .load(mDataList.get(position))
+                .load(mDataList.get(position).getUrl())
                 .apply(requestOptions)
                 .into(dashboardBackgroundLayout);
 

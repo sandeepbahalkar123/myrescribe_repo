@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.IconImage;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class DashboardDataModel implements Parcelable {
     private ArrayList<DoctorList> doctorList = new ArrayList<DoctorList>();
     @SerializedName("cardBgImageUrlList")
     @Expose
-    private ArrayList<String> cardBgImageUrlList = new ArrayList<String>();
+    private ArrayList<IconImage> cardBgImageUrlList = new ArrayList<IconImage>();
     @SerializedName("dashboardMenuList")
     @Expose
     private ArrayList<DashboardMenuList> dashboardMenuList = new ArrayList<DashboardMenuList>();
@@ -45,7 +46,7 @@ public class DashboardDataModel implements Parcelable {
 
     protected DashboardDataModel(Parcel in) {
         in.readList(this.doctorList, (DoctorList.class.getClassLoader()));
-        in.readList(this.cardBgImageUrlList, (String.class.getClassLoader()));
+        in.readList(this.cardBgImageUrlList, (IconImage.class.getClassLoader()));
         in.readList(this.dashboardMenuList, (DashboardMenuList.class.getClassLoader()));
         in.readList(this.dashboardBottomMenuList, (DashboardBottomMenuList.class.getClassLoader()));
         in.readList(this.dashboardLeftSideDrawerMenuList, (DashboardLeftSideDrawerMenuList.class.getClassLoader()));
@@ -62,11 +63,11 @@ public class DashboardDataModel implements Parcelable {
         this.doctorList = doctorList;
     }
 
-    public ArrayList<String> getCardBgImageUrlList() {
+    public ArrayList<IconImage> getCardBgImageUrlList() {
         return cardBgImageUrlList;
     }
 
-    public void setCardBgImageUrlList(ArrayList<String> cardBgImageUrlList) {
+    public void setCardBgImageUrlList(ArrayList<IconImage> cardBgImageUrlList) {
         this.cardBgImageUrlList = cardBgImageUrlList;
     }
 

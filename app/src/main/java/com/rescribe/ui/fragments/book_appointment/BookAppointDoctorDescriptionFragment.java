@@ -187,7 +187,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         int widthPixels = metrics.widthPixels;
-        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+        mImageSize = (widthPixels / columnNum) - getResources().getDimensionPixelSize(R.dimen.dp30);
     }
 
     private void setDataInViews() {

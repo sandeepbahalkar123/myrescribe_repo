@@ -81,9 +81,8 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_details_activity);
         ButterKnife.bind(this);
-        setColumnNumber(this, 2);
-
         initialize();
+        setColumnNumber(this, 2);
     }
 
 
@@ -314,7 +313,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         int widthPixels = metrics.widthPixels;
-        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+        imageSize = (widthPixels / columnNum) - mContext.getResources().getDimensionPixelSize(R.dimen.dp30);
     }
 
 }

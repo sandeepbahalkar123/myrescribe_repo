@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.ServicesAdapter;
 import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
@@ -91,17 +92,19 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
         ClickEvent clickEvent1 = mReceivedDashboardMenuListData.getClickEvent();
         if (clickEvent1 != null) {
             if (clickEvent1.getBgImageUrl() != null) {
-                int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(this, 2);
 
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
-                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                requestOptions.skipMemoryCache(true);
-                requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
+
+                if (clickEvent1.getBgImageUrl().getTime().isEmpty()) {
+                    requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                    requestOptions.skipMemoryCache(true);
+                } else
+                    requestOptions.signature(new ObjectKey(clickEvent1.getBgImageUrl().getTime()));
 
                 Glide.with(this)
-                        .load(clickEvent1.getBgImageUrl())
-                        .apply(requestOptions).thumbnail(0.5f)
+                        .load(clickEvent1.getBgImageUrl().getUrl())
+                        .apply(requestOptions)
                         .into(imgGroupPhoto);
             }
         }

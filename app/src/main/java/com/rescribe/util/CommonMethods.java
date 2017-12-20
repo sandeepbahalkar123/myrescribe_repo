@@ -919,7 +919,7 @@ public class CommonMethods {
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         int widthPixels = metrics.widthPixels;
-        int mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+        int mImageSize = (widthPixels / columnNum) - context.getResources().getDimensionPixelSize(R.dimen.dp30);
         return mImageSize;
     }
 

@@ -69,14 +69,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     ArrayList<DoctorList> sponsered;
     ArrayList<DoctorList> recently_visit_doctor;
     ArrayList<DoctorList> favoriteList;
-    @BindView(R.id.serviceNameTextView)
-    CustomTextView serviceNameTextView;
-    @BindView(R.id.showVitalUnitNameIconLayout)
-    LinearLayout showVitalUnitNameIconLayout;
-    @BindView(R.id.serviceIcon)
-    ImageView serviceIcon;
-    @BindView(R.id.bookAppointmentLayout)
-    LinearLayout bookAppointmentLayout;
     @BindView(R.id.recentlyViewPager)
     ViewPager recentlyViewPager;
     @BindView(R.id.recentlyVisitedFindDoctorLayout)
@@ -99,8 +91,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     CustomTextView viewAllFavorite;
     @BindView(R.id.complaintsTextView)
     AutoCompleteTextView complaintsTextView;
-    @BindView(R.id.bookAppointmentButton)
-    FrameLayout bookAppointmentButton;
     @BindView(R.id.complaintsImageView)
     ImageView complaintsImageView;
     @BindView(R.id.recentlyvisitedTextView)
@@ -133,9 +123,12 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
             String value = extras.getString(getString(R.string.clicked_item_data_type_value));
 
-            if (mReceivedDashboardMenuListData != null)
+            if (mReceivedDashboardMenuListData != null) {
                 title.setText(mReceivedDashboardMenuListData.getName());
-            else if (value != null)
+
+
+
+            } else if (value != null)
                 title.setText(value);
         }
 
@@ -162,17 +155,16 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         ClickEvent clickEvent1 = mReceivedDashboardMenuListData.getClickEvent();
         if (clickEvent1 != null) {
             if (clickEvent1.getBgImageUrl() != null) {
-                int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(this, 2);
 
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
+
                 requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
                 requestOptions.skipMemoryCache(true);
-                requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
 
                 Glide.with(this)
-                        .load(clickEvent1.getBgImageUrl())
-                        .apply(requestOptions).thumbnail(0.5f)
+                        .load(clickEvent1.getBgImageUrl().getUrl())
+                        .apply(requestOptions)
                         .into(imgGroupPhoto);
             }
         }

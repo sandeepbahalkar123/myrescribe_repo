@@ -42,7 +42,7 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         int widthPixels = metrics.widthPixels;
-        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+        imageSize = (widthPixels / columnNum) - context.getResources().getDimensionPixelSize(R.dimen.dp30);
     }
 
     @Override

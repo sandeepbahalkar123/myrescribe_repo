@@ -41,7 +41,7 @@ public class HealthOffersAdapter extends RecyclerView.Adapter<HealthOffersAdapte
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         int widthPixels = metrics.widthPixels;
-        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+        imageSize = (widthPixels / columnNum) - mContext.getResources().getDimensionPixelSize(R.dimen.dp30);
     }
 
     @Override

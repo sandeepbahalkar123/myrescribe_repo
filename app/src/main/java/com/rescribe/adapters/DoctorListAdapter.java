@@ -214,7 +214,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         int widthPixels = metrics.widthPixels;
-        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
+        imageSize = (widthPixels / columnNum) - mContext.getResources().getDimensionPixelSize(R.dimen.dp30);
     }
 
 }

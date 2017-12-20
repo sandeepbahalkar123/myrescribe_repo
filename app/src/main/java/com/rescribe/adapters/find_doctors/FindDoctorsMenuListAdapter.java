@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.rescribe.R;
 import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
 import com.rescribe.model.dashboard_api.ClickOption;
@@ -62,16 +63,18 @@ public class FindDoctorsMenuListAdapter extends RecyclerView.Adapter<FindDoctors
 
         //------------
         if (clickOption.getIconImageUrl() != null) {
-            int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(mContext, 2);
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
-            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-            requestOptions.skipMemoryCache(true);
-            requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
+
+            if (clickOption.getIconImageUrl().getTime().isEmpty()) {
+                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.skipMemoryCache(true);
+            } else
+                requestOptions.signature(new ObjectKey(clickOption.getIconImageUrl().getTime()));
 
             Glide.with(mContext)
-                    .load(clickOption.getIconImageUrl())
-                    .apply(requestOptions).thumbnail(0.5f)
+                    .load(clickOption.getIconImageUrl().getUrl())
+                    .apply(requestOptions)
                     .into(holder.serviceIcon);
         }
         //--------------

@@ -18,7 +18,7 @@ public class DashboardBottomMenuList implements Parcelable {
     private IconImage iconImageUrl;
     @SerializedName("selectedIconImageUrl")
     @Expose
-    private String selectedIconImageUrl;
+    private IconImage selectedIconImageUrl;
     @SerializedName("clickEvent")
     @Expose
     private ClickEvent clickEvent;
@@ -37,7 +37,7 @@ public class DashboardBottomMenuList implements Parcelable {
     protected DashboardBottomMenuList(Parcel in) {
         this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.iconImageUrl = ((IconImage) in.readValue((IconImage.class.getClassLoader())));
-        this.selectedIconImageUrl = ((String) in.readValue((String.class.getClassLoader())));
+        this.selectedIconImageUrl = ((IconImage) in.readValue((IconImage.class.getClassLoader())));
         this.clickEvent = ((ClickEvent) in.readValue((ClickEvent.class.getClassLoader())));
     }
 
@@ -60,11 +60,11 @@ public class DashboardBottomMenuList implements Parcelable {
         this.iconImageUrl = iconImageUrl;
     }
 
-    public String getSelectedIconImageUrl() {
+    public IconImage getSelectedIconImageUrl() {
         return selectedIconImageUrl;
     }
 
-    public void setSelectedIconImageUrl(String selectedIconImageUrl) {
+    public void setSelectedIconImageUrl(IconImage selectedIconImageUrl) {
         this.selectedIconImageUrl = selectedIconImageUrl;
     }
 

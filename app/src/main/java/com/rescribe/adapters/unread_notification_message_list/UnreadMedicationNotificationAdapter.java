@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.model.notification.Medication;
+import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -30,6 +32,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 public class UnreadMedicationNotificationAdapter extends StatelessSection {
 
     private final OnMedicationNotificationEventClick mListener;
+    private UnreadNotificationMessageActivity parentActivity;
     private String mTimeStamp;
     private boolean isDisplayMoreElementsView;
     private Context mContext;
@@ -41,6 +44,7 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
         super(builder);
 
         this.mContext = mContext;
+        this.parentActivity = (UnreadNotificationMessageActivity) mContext;
         this.isDisplayMoreElementsView = isDisplayMoreElementsView;
         this.mListener = listener;
         this.mTimeStamp = timeStamp;
@@ -84,7 +88,7 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
 
         itemHolder.tabNameTextView.setText(item.getMedicineName());
         itemHolder.tabCountTextView.setText(item.getQuantity());
-        itemHolder.tabImageView.setImageDrawable(CommonMethods.getMedicineTypeImage(item.getMedicineTypeName(), mContext,ContextCompat.getColor(mContext, R.color.white)));
+        itemHolder.tabImageView.setImageDrawable(CommonMethods.getMedicineTypeImage(item.getMedicineTypeName(), mContext, ContextCompat.getColor(mContext, R.color.white)));
 
         itemHolder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,15 +143,23 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         headerHolder.mGroupText.setText(modifiedText);
 
-        String formattedDate = CommonMethods.getFormattedDate(mTimeStamp, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
-        String time = CommonMethods.formatDateTime(mTimeStamp, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
-        String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
-        if (mContext.getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
-            headerHolder.medicationTimeStamp.setText(time);
+        int showFirstMessageTimeStamp = parentActivity.isShowFirstMessageTimeStamp(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+        if (showFirstMessageTimeStamp == View.VISIBLE) {
+            headerHolder.medicationTimeStamp.setVisibility(View.INVISIBLE);
         } else {
-            headerHolder.medicationTimeStamp.setText(dayFromDate + " " + time);
+            //----
+            headerHolder.medicationTimeStamp.setVisibility(View.VISIBLE);
+            //----
+            String formattedDate = CommonMethods.getFormattedDate(mTimeStamp, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+            String time = CommonMethods.formatDateTime(mTimeStamp, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
+            String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
+            if (mContext.getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
+                headerHolder.medicationTimeStamp.setText(time);
+            } else {
+                headerHolder.medicationTimeStamp.setText(dayFromDate + " " + time);
+            }
+            //----
         }
-
     }
 
     @Override

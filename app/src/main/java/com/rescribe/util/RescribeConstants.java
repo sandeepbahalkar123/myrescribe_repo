@@ -70,6 +70,7 @@ public class RescribeConstants {
     //------------
     public static final String NOTIFICATION_ID = "notification_id";
     public static final String APPOINTMENT_NOTIFICATION_ID = "appointment_notification_id";
+    public static final String APPOINTMENT_ID = "appointment_id";
     public static final String APPOINTMENT_MESSAGE = "appointment_message";
     public static final String BLANK = "";
 

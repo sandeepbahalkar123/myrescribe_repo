@@ -237,6 +237,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             status = mInvestigationFirstMessageTimeStamp.getVisibility();
         } else if (notificationType.equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT)) {
             status = mGetTokenFirstMessageTimeStamp.getVisibility();
+        } else if (notificationType.equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT)) {
+            status = mOnGoingMedicationFirstMessageTimeStamp.getVisibility();
         }
         return status;
     }
@@ -324,8 +326,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     public void onMedicationLoadMoreFooterClicked() {
         doCreateMedicationDataMap(true);
         isMedicationLoadMoreFooterClickedPreviously = true;
-        mUnreadMedicationNotificationAdapter.notifyDataSetChanged();
         mOnGoingMedicationFirstMessageTimeStamp.setVisibility(View.INVISIBLE);
+        mUnreadMedicationNotificationAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -380,6 +382,24 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             formattedSet.addAll(mainActualHeaderList);
             stringArrayListHashMap = configureGroupChildMapList(formattedSet, mUnreadMedicationNotificationMessageDataList);
         }
+        //------ Show timeStamp of first element in header view------
+        if (firstElementKey != null) {
+            ArrayList<Medication> medications = stringArrayListHashMap.get(firstElementKey);
+            if (!medications.isEmpty()) {
+                Medication medication = medications.get(0);
+                //---------
+                String formattedDate = CommonMethods.getFormattedDate(medication.getUnreadNotificationMessageDataTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+                String time = CommonMethods.formatDateTime(medication.getUnreadNotificationMessageDataTimeStamp(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
+                String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
+                if (getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
+                    mOnGoingMedicationFirstMessageTimeStamp.setText(time);
+                } else {
+                    mOnGoingMedicationFirstMessageTimeStamp.setText(dayFromDate + " " + time);
+                }
+                mOnGoingMedicationFirstMessageTimeStamp.setVisibility(View.VISIBLE);
+                //---------
+            }
+        }
         //------------
 
         int count = 0;
@@ -406,23 +426,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         }
         mOnGoingMedicationListView.setLayoutManager(new LinearLayoutManager(this));
 
-        if (firstElementKey != null) {
-            ArrayList<Medication> medications = stringArrayListHashMap.get(firstElementKey);
-            if (!medications.isEmpty()) {
-                Medication medication = medications.get(0);
-                //---------
-                String formattedDate = CommonMethods.getFormattedDate(medication.getUnreadNotificationMessageDataTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
-                String time = CommonMethods.formatDateTime(medication.getUnreadNotificationMessageDataTimeStamp(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
-                String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
-                if (getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
-                    mOnGoingMedicationFirstMessageTimeStamp.setText(time);
-                } else {
-                    mOnGoingMedicationFirstMessageTimeStamp.setText(dayFromDate + " " + time);
-                }
-                mOnGoingMedicationFirstMessageTimeStamp.setVisibility(View.VISIBLE);
-                //---------
-            }
-        }
+
     }
 
 

@@ -41,6 +41,7 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
         int notificationId = intent.getIntExtra(RescribeConstants.NOTIFICATION_ID, -1);
         int investigation_notification_id = intent.getIntExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, -1);
         int appointment_notification_id = intent.getIntExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, -1);
+        int appointment_id = intent.getIntExtra(RescribeConstants.APPOINTMENT_ID, -1);
 
         int unreadMessNotificationID = intent.getIntExtra(mContext.getString(R.string.unread_notification_update_received), -1);
 
@@ -88,7 +89,7 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
                     Intent.FLAG_ACTIVITY_CLEAR_TOP);
             mContext.startActivity(intentNotification);
 
-            manager.cancel(appointment_notification_id);
+            manager.cancel(appointment_id);
         }
 
     }

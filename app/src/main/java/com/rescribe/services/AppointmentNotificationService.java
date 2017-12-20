@@ -19,6 +19,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.notification.AppointmentsNotificationData;
 import com.rescribe.model.notification.AppointmentsNotificationModel;
+import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -100,7 +101,8 @@ public class AppointmentNotificationService extends Service implements HelperRes
                 R.layout.appointment_notification_layout);
 
         Intent mNotifyYesIntent = new Intent(this, ClickOnCheckBoxOfNotificationReceiver.class);
-        mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, subNotificationId);
+        mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID);
+        mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_ID, subNotificationId);
         mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
         mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, message);
         mNotifyYesIntent.putExtra(getString(R.string.unread_notification_update_received), id);
@@ -109,7 +111,8 @@ public class AppointmentNotificationService extends Service implements HelperRes
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
 
         Intent mNotifyNoIntent = new Intent(this, ClickOnNotificationReceiver.class);
-        mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, subNotificationId);
+        mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID);
+        mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_ID, subNotificationId);
         mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
         mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, message);
         mNotifyNoIntent.putExtra(getString(R.string.unread_notification_update_received), id);

@@ -206,6 +206,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             case R.id.locationTextView:
                 //    BookAppointDoctorListBaseActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
                 Intent start = new Intent(this, BookAppointFindLocation.class);
+                start.putExtra(getString(R.string.opening_mode),getString(R.string.book_appointment));
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
         }

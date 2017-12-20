@@ -475,6 +475,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         switch (view.getId()) {
             case R.id.locationImageView:
                 Intent start = new Intent(this, BookAppointFindLocation.class);
+                start.putExtra(getString(R.string.opening_mode),getString(R.string.home));
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
 

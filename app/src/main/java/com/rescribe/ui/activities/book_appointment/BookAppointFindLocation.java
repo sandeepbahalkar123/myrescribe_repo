@@ -124,6 +124,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
     private ShowPopularPlacesAdapter mShowPopularPlacesAdapter;
     private RecentPlacesAdapter mRecentPlacesAdapter;
     private String locationString;
+    private String mOpeningMode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -132,6 +133,11 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
         ButterKnife.bind(this);
 
         mContext = BookAppointFindLocation.this;
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            mOpeningMode = intent.getStringExtra(getString(R.string.opening_mode));
+        }
 
         init(savedInstanceState);
 
@@ -241,6 +247,8 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                     detectLocation.setText(locationString + "," + obj.getLocality());
                 }
                 finish();
+                openLocationSelectionScreen();
+
                 //DoctorDataHelper.setPreviousUserSelectedLocationInfo(mContext, location, getArea(obj) + "," + obj.getLocality());
                /* mDashboardHelper = new DashboardHelper(this, this);
                 if (obj.getLocality() != null) {
@@ -321,13 +329,14 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
     public void onClickOfPopularPlaces(String location) {
         RescribeApplication.setUserSelectedLocationInfo(this, null, location);
         finish();
-
+        openLocationSelectionScreen();
     }
 
     @Override
     public void onClickOfRecentPlaces(String location) {
         RescribeApplication.setUserSelectedLocationInfo(this, null, location);
         finish();
+        openLocationSelectionScreen();
     }
 
     // Location Things
@@ -586,4 +595,15 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
     }
 
     // End Location Things
+
+
+    private void openLocationSelectionScreen(){
+        if (getString(R.string.book_appointment).equalsIgnoreCase(mOpeningMode)) {
+            Intent i = new Intent(this, BookAppointListOnLocationSelection.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.toolbarTitle), getString(R.string.doctorss));
+            i.putExtra(getString(R.string.clicked_item_data), bundle);
+            startActivity(i);
+        }
+    }
 }

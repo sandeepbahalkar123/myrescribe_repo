@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".singleton.RescribeApplication"
@@ -68,7 +68,7 @@
             android:name=".ui.activities.ConnectSplashActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_connect"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.HomePageActivity"
             android:configChanges="orientation|keyboard|screenSize"
@@ -142,6 +142,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.book_appointment.BookAppointDoctorListBaseActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/doctor_connect"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.activities.book_appointment.BookAppointListOnLocationSelection"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/doctor_connect"
             android:screenOrientation="portrait"

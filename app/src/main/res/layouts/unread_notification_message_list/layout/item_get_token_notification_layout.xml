@@ -41,7 +41,7 @@
                 android:orientation="vertical">
 
                 <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/docConnectTimeStamp"
+                    android:id="@+id/tokenMessageTimeStamp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
@@ -49,6 +49,7 @@
                     android:paddingRight="@dimen/dp5"
                     android:textColor="@color/grey_shade"
                     android:textSize="@dimen/sp11"
+                    android:visibility="invisible"
                     app:customFont="@string/roboto_medium"
                     tools:text="2:00 am" />
 

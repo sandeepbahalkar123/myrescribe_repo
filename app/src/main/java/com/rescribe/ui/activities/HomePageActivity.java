@@ -370,7 +370,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                         mDashboardDataBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                         setUpViewPager();
                     }
-                    CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
+               //     CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
                 }
         }
     }

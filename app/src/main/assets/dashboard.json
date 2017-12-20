@@ -7,430 +7,1190 @@
   "data": {
     "doctorList": [
       {
-        "docId": 10,
-        "categoryName": "My Appointments",
-        "categorySpeciality": "Premium",
-        "docName": "Dr. Shalu Gupta",
-        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "degree": "MBBS,MD-Medicine,Neurology",
-        "speciality": "Surgeon",
-        "experience": 11,
-        "clinicList": [
-          {
-            "clinicName": "Dr. Parag Khare clinic",
-            "clinicAddress": "warje, Pune",
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "locationId": 5,
-            "appointmentType": "token"
-          }
-        ],
-        "favorite": true,
-        "rating": 4.5,
-        "aptDate": "2017-09-17",
-        "aptTime": "15:00:00",
-        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
-      },
-      {
-        "docId": 10,
-        "categoryName": "My Appointments",
-        "categorySpeciality": "Premium",
-        "docName": "Dr. Shalu Gupta",
-        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "degree": "MBBS,MD-Medicine,Neurology",
-        "speciality": "Surgeon",
-        "experience": 11,
-        "clinicList": [
-          {
-            "clinicName": "Dr. Parag Khare clinic",
-            "clinicAddress": "warje, Pune",
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "locationId": 5,
-            "appointmentType": "token"
-          }
-        ],
-        "favorite": true,
-        "rating": 4.5,
-        "aptDate": "2017-09-30",
-        "aptTime": "14:00:00",
-        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
-      },
-      {
-        "docId": 8,
+        "docId": 1284,
         "categoryName": "Sponsored Doctors",
         "categorySpeciality": "Premium",
-        "docName": "Dr. Parag Khare",
-        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "degree": "MBBS,MD-Medicine,Neurology",
-        "speciality": "General Physician",
+        "docName": "Kailash Kothari. M.D.",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MS - Orthopedics",
+        "gender": "Male",
+        "speciality": "Orthopedic",
         "experience": 11,
         "clinicList": [
           {
-            "clinicName": "Dr. Parag Khare clinic",
-            "clinicAddress": "bhandarkar road, Pune",
-            "locationId": 5,
+            "clinicName": "KEM HOSPITAL",
+            "clinicAddress": "Dadar, Mumbai",
+            "locationId": 1,
             "amount": 350,
             "apptScheduleLmtDays": 7,
-            "appointmentType": "token"
+            "appointmentType": "mixed",
+            "services": [
+              "Knee Care",
+              "Osteopathic Treatment",
+              "Arthroscopy",
+              "Hip Replacement",
+              "Knee Replacement",
+              "Trauma",
+              "Bone and Joint Centre",
+              "Sports Medicine",
+              "Back Pain Physiotherapy",
+              "Spine Injury",
+              "Sports Injury",
+              "Neck Pain Treatment",
+              "Joint Mobilization",
+              "Foot Drop",
+              "Foot Care",
+              "Knee Pain Physiotherapy",
+              "Primary Hip and Knee Arthroplasty",
+              "Knee Pain Treatment",
+              "Spine Mobilization"
+            ]
           },
           {
-            "clinicName": "Dr. Parag Khare",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 20,
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Karve Road, Pune",
+            "locationId": 9,
             "amount": 350,
             "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
+            "appointmentType": "book",
+            "services": []
+          },
+          {
+            "clinicName": "KEM HOSPITAL",
+            "clinicAddress": "Ichalkaranji, Ichalkaranji",
+            "locationId": 60,
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "token",
+            "services": []
+          },
+          {
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Dadar, Mumbai",
+            "locationId": 61,
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book",
+            "services": []
+          },
+          {
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Mira Road, Mumbai",
+            "locationId": 62,
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": true,
+        "rating": 5,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 1286,
+        "categoryName": "Sponsored Doctors",
+        "categorySpeciality": "Premium",
+        "docName": "Manjiri Pandit M.D.",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, MS - Orthopedics",
+        "gender": "Female",
+        "speciality": "Orthopedic",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Manjiri Clinic",
+            "clinicAddress": "kothrud, Pune",
+            "locationId": 2,
+            "amount": 400,
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": true,
+        "rating": 3.5,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 1497,
+        "categoryName": "Sponsored Doctors",
+        "categorySpeciality": "Premium",
+        "docName": "Venkatesh Nevagi M.D.",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MS - Orthopedics",
+        "gender": "Male",
+        "speciality": "Orthopedic",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Venkatesh Hospital",
+            "clinicAddress": "warje, Pune",
+            "locationId": 3,
+            "amount": 200,
+            "apptScheduleLmtDays": 7,
+            "appointmentType": "book",
+            "services": [
+              "Knee Care",
+              "Osteopathic Treatment",
+              "Arthroscopy",
+              "Hip Replacement",
+              "Knee Replacement",
+              "Trauma",
+              "Bone and Joint Centre",
+              "Sports Medicine",
+              "Back Pain Physiotherapy",
+              "Spine Injury",
+              "Sports Injury",
+              "Neck Pain Treatment",
+              "Joint Mobilization",
+              "Foot Drop",
+              "Foot Care",
+              "Knee Pain Physiotherapy",
+              "Primary Hip and Knee Arthroplasty",
+              "Knee Pain Treatment",
+              "Spine Mobilization"
+            ]
           }
         ],
         "favorite": false,
-        "rating": 0,
+        "rating": 4.5,
         "aptDate": "",
         "aptTime": "",
-        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
       },
       {
-        "docId": 9,
+        "docId": 2427,
         "categoryName": "Sponsored Doctors",
         "categorySpeciality": "Premium",
-        "docName": "Dr. Hemant Pahariya",
-        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "degree": "MBBS,MD-Medicine,Neurology",
-        "speciality": "General Physician",
-        "experience": 11,
+        "docName": "Kapil Borawake",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MD - Medicine, DM (Neurology)",
+        "gender": "Male",
+        "speciality": "Neurologist",
+        "experience": 5,
         "clinicList": [
           {
-            "clinicName": "Dr. Hemant Pahariya clinic",
+            "clinicName": "Borawake clinic",
             "clinicAddress": "kothrud, Pune",
             "locationId": 6,
-            "amount": 350,
+            "amount": 150,
             "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
-          },
-          {
-            "clinicName": "Dr. Hemant Pahariya",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 21,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
+            "appointmentType": "token",
+            "services": [
+              "Memory Loss",
+              "Parkinson",
+              "Alzheimer",
+              "Epilepsy",
+              "Seizure",
+              "Convulsions",
+              "Multiple Sclerosis",
+              "Tremor",
+              "Spinal Cord Injuries",
+              "Sleep Disorders",
+              "Personality Changes",
+              "Confusion",
+              "Stroke",
+              "Vertigo",
+              "Numbness",
+              "Rigidity"
+            ]
           }
         ],
-        "favorite": false,
-        "rating": 0,
+        "favorite": true,
+        "rating": 2,
         "aptDate": "",
         "aptTime": "",
-        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
       },
       {
-        "docId": 13,
-        "categoryName": "Sponsored Doctors",
+        "docId": 1654,
+        "categoryName": "",
         "categorySpeciality": "Premium",
-        "docName": "Dr. Kailash Kothari. M.D.",
-        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "degree": "MBBS,MD-Medicine,Neurology",
+        "docName": "Prakash Deshmukh M.D.",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MD - Medicine",
+        "gender": "Male",
         "speciality": "General Physician",
         "experience": 11,
         "clinicList": [
           {
-            "clinicName": "Dr. Venkatesh Nevagi M.D.",
+            "clinicName": "Prakash Deshmukh clinic",
             "clinicAddress": "kothrud, Pune",
-            "locationId": 11,
             "amount": 350,
             "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
-          },
-          {
-            "clinicName": "Dr. Kailash Kothari. M.D.",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 10,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "mixed"
-          },
-          {
-            "clinicName": "Dr. Kailash Kothari. M.D.",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 25,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
-          },
-          {
-            "clinicName": "Phoenix Hospital",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 29,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "mixed"
-          },
-          {
-            "clinicName": "Phoenix Hospital",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 30,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "mixed"
-          },
-          {
-            "clinicName": "Phoenix Hospital",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 33,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "mixed"
+            "locationId": 4,
+            "appointmentType": "token",
+            "services": []
           }
         ],
         "favorite": false,
         "rating": 4,
         "aptDate": "",
         "aptTime": "",
-        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
       },
       {
-        "docId": 14,
-        "categoryName": "Sponsored Doctors",
+        "docId": 1655,
+        "categoryName": "",
         "categorySpeciality": "Premium",
-        "docName": "Dr. Venkatesh Nevagi M.D.",
-        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "degree": "MBBS,MD-Medicine,Neurology",
+        "docName": "Santoshi Nagaonkar ",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, MS - Orthopedics",
+        "gender": "Female",
+        "speciality": "Orthopedic",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Santoshi Nagaonkar clinic",
+            "clinicAddress": "kothrud, Pune",
+            "amount": 100,
+            "apptScheduleLmtDays": 7,
+            "locationId": 5,
+            "appointmentType": "token",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 4,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2460,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Khushbu Jain",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, MD - Medicine, DM (Neurology)",
+        "gender": "Female",
+        "speciality": "Neurologist",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Khushbu clinic",
+            "clinicAddress": "kothrud, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 7,
+            "appointmentType": "token",
+            "services": [
+              "Rigidity",
+              "Memory Loss",
+              "Parkinson",
+              "Alzheimer",
+              "Epilepsy",
+              "Seizure",
+              "Convulsions",
+              "Multiple Sclerosis",
+              "Tremor",
+              "Spinal Cord Injuries",
+              "Sleep Disorders",
+              "Personality Changes",
+              "Vertigo"
+            ]
+          }
+        ],
+        "favorite": false,
+        "rating": 5,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2462,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Shalu Gupta",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, MD - Medicine",
+        "gender": "Female",
         "speciality": "General Physician",
         "experience": 5,
         "clinicList": [
           {
-            "clinicName": "Dr. Venkatesh Nevagi M.D.",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 11,
-            "amount": 350,
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 600,
             "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
-          },
-          {
-            "clinicName": "Dr. Manjiri Pandit M.D.",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 12,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
-          },
-          {
-            "clinicName": "Dr. Venkatesh Nevagi M.D.",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 26,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
-          },
-          {
-            "clinicName": "Phoenix Hospital",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 29,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "mixed"
-          },
-          {
-            "clinicName": "Phoenix Hospital",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 30,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "mixed"
-          },
-          {
-            "clinicName": "Phoenix Hospital",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 33,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "mixed"
-          }
-        ],
-        "favorite": false,
-        "rating": 0.3,
-        "aptDate": "",
-        "aptTime": "",
-        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
-      },
-      {
-        "docId": 18,
-        "categoryName": "Sponsored Doctors",
-        "categorySpeciality": "Premium",
-        "docName": "DR. Sandeep",
-        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "degree": "MBBS,MD-Medicine,Neurology",
-        "speciality": "General Physician",
-        "experience": 11,
-        "clinicList": [
-          {
-            "clinicName": "DR. Sandeep",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 15,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
-          }
-        ],
-        "favorite": false,
-        "rating": 0,
-        "aptDate": "",
-        "aptTime": "",
-        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
-      },
-      {
-        "docId": 7,
-        "categoryName": "Recently Visited Doctors",
-        "categorySpeciality": "Premium",
-        "docName": "DR. Amruta Nikam",
-        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "degree": "MBBS,MD-Medicine,Neurology",
-        "speciality": "General Physician",
-        "experience": 11,
-        "clinicList": [],
-        "favorite": false,
-        "rating": 0,
-        "aptDate": "2017-05-17",
-        "aptTime": "19:00:00",
-        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
-      },
-      {
-        "docId": 10,
-        "categoryName": "Recently Visited Doctors",
-        "categorySpeciality": "Premium",
-        "docName": "Dr. Shalu Gupta",
-        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "degree": "MBBS,MD-Medicine,Neurology",
-        "speciality": "Surgeon",
-        "experience": 11,
-        "clinicList": [
-          {
-            "clinicName": "Dr. Shalu Gupta clinic",
-            "clinicAddress": "mulund, Mumbai",
-            "locationId": 7,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
-          },
-          {
-            "clinicName": "Dr. Shalu Gupta clinic",
-            "clinicAddress": "mulund, Mumbai",
-            "locationId": 32,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
-          },
-          {
-            "clinicName": "Dr. Hemant Pahariya clinic",
-            "clinicAddress": "kothrud, Pune",
-            "locationId": 6,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
-          },
-          {
-            "clinicName": "Dr. Parag Khare clinic",
-            "clinicAddress": "bhandarkar road, Pune",
-            "locationId": 5,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "token"
-          }
-        ],
-        "favorite": true,
-        "rating": 4.5,
-        "aptDate": "2017-06-17",
-        "aptTime": "19:45:00",
-        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
-      },
-      {
-        "docId": 11,
-        "categoryName": "Recently Visited Doctors",
-        "categorySpeciality": "Premium",
-        "docName": "Dr. Doctor Doctor",
-        "doctorImageUrl": "http://192.168.0.182/medsonit-be/assets/doc_profile/DR-avatar.png",
-        "degree": "MBBS,MD-Medicine,Neurology",
-        "speciality": "General Physician",
-        "experience": 11,
-        "clinicList": [
-          {
-            "clinicName": "Dr. Shalu Gupta clinic",
-            "clinicAddress": "mulund, Mumbai",
-            "locationId": 7,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
-          },
-          {
-            "clinicName": "Dr. Shalu Gupta clinic",
-            "clinicAddress": "mulund, Mumbai",
-            "locationId": 32,
-            "amount": 350,
-            "apptScheduleLmtDays": 7,
-            "appointmentType": "book"
+            "locationId": 9,
+            "appointmentType": "book",
+            "services": [
+              "(ADHD) Treatment",
+              "Fine Needle Aspiration Cytology",
+              "Adolescent Medicine",
+              "Newborn Jaundice",
+              "Growth & Development Evaluation / Management",
+              "Nutritional Assessment",
+              "Development Assessment",
+              "New Born Care",
+              "Diabetes Management",
+              "Contraception Advise",
+              "Obstetrics & Gynaecology",
+              "Vaccinations",
+              "Blood Pressure Test",
+              "Blood Test",
+              "Stress Test",
+              "X-Ray",
+              "First Aid",
+              "Headache"
+            ]
           }
         ],
         "favorite": false,
         "rating": 4,
-        "aptDate": "2017-07-21",
-        "aptTime": "09:30:00",
-        "aboutDoctor": "Between family, work and an ever-growing to-do list, you have enough on your plate. When immediate illnesses and injuries arise, it’s not always possible or convenient to make a doctor’s appointment. And, often it’s not serious enough for the ER. That’s why we’re here. Our goal is to “care from the heart” and bring peace of mind to the communities we serve."
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2464,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Parag Khare",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MD - Dermatology",
+        "gender": "Male",
+        "speciality": "Dermatologist",
+        "experience": 6,
+        "clinicList": [
+          {
+            "clinicName": "Parag Khare clinic",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 10,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 3.5,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2479,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Pradeep Desai",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MS - Orthopedics",
+        "gender": "male",
+        "speciality": "Orthopedic",
+        "experience": 5,
+        "clinicList": [
+          {
+            "clinicName": "Pradeep Desai clinic",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 11,
+            "appointmentType": "token",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 3.5,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2483,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Manohar Joshi",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MS - ENT",
+        "gender": "MALE",
+        "speciality": "ENT Specialist",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Parag Khare clinic",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 10,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 4,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2497,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Rinkush Tilokchandani",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "BDS, MDS - Orthodontics",
+        "gender": "Male",
+        "speciality": "Dentist",
+        "experience": 5,
+        "clinicList": [
+          {
+            "clinicName": "Sahyadri Hospital",
+            "clinicAddress": "Bopodi, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 29,
+            "appointmentType": "book",
+            "services": [
+              "Migraine",
+              "Spinal Disorders",
+              "Brain Mapping",
+              "Foot Drop",
+              "Sleep Disorder"
+            ]
+          }
+        ],
+        "favorite": false,
+        "rating": 3.2,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2499,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Anant Suryawanshi",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MD - Medicine",
+        "gender": "Male",
+        "speciality": "General Physician",
+        "experience": 5,
+        "clinicList": [
+          {
+            "clinicName": "Ram Mangal heart foundation,Rasiklal M Dhariwal hospital",
+            "clinicAddress": "wanowrie, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 31,
+            "appointmentType": "book",
+            "services": [
+              "Spinal Disorders",
+              "Foot Drop",
+              "Muscle Disorders"
+            ]
+          }
+        ],
+        "favorite": false,
+        "rating": 5,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2500,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "parag reception",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "BDS, MDS - Orthodontics",
+        "gender": "Male",
+        "speciality": "Dentist",
+        "experience": 7,
+        "clinicList": [
+          {
+            "clinicName": "Parag Khare clinic",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 10,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2501,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Mohan Date",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "BDS, MDS - Orthodontics",
+        "gender": "Male",
+        "speciality": "Dentist",
+        "experience": 8,
+        "clinicList": [
+          {
+            "clinicName": "Parag Khare clinic",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 10,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2502,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Varsha Shrikant Kurhade",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, MD - Pediatrics",
+        "gender": "Female",
+        "speciality": "Pediatrist",
+        "experience": 8,
+        "clinicList": [
+          {
+            "clinicName": "Painex Pain Management Clinic",
+            "clinicAddress": "FC Road, Pune",
+            "amount": 400,
+            "apptScheduleLmtDays": 7,
+            "locationId": 32,
+            "appointmentType": "token",
+            "services": [
+              "Spinal Disorders",
+              "Foot Drop",
+              "Muscle Disorders"
+            ]
+          }
+        ],
+        "favorite": false,
+        "rating": 4,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2503,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Nivedita Page",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, MD - Pediatrics",
+        "gender": "Female",
+        "speciality": "Pediatrist",
+        "experience": 4,
+        "clinicList": [
+          {
+            "clinicName": "Painex Pain Management Clinic",
+            "clinicAddress": "FC Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 32,
+            "appointmentType": "mixed",
+            "services": [
+              "Spinal Disorders",
+              "Foot Drop",
+              "Sleep Disorder",
+              "Muscle Disorders"
+            ]
+          }
+        ],
+        "favorite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2504,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Kashinath Shridhar Bangar",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "BPTh, MPTh - Sports Physiotherapy",
+        "gender": "Male",
+        "speciality": "Physiotherapist",
+        "experience": 7,
+        "clinicList": [
+          {
+            "clinicName": "Painex Pain Management Clinic",
+            "clinicAddress": "FC Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 32,
+            "appointmentType": "mixed",
+            "services": [
+              "Spinal Disorders",
+              "Foot Drop",
+              "Sleep Disorder",
+              "Muscle Disorders"
+            ]
+          }
+        ],
+        "favorite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2506,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "R.H.Pahariya.",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MS - General Surgery",
+        "gender": "Male",
+        "speciality": "Surgeon",
+        "experience": 8,
+        "clinicList": [
+          {
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 9,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2508,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Uttam Sidhaye",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MS - General Surgery",
+        "gender": "Male",
+        "speciality": "Surgeon",
+        "experience": 7,
+        "clinicList": [
+          {
+            "clinicName": "Pain Management Clinic",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 36,
+            "appointmentType": "mixed",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 3,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2510,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Hemant Kshirsagar",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MD - Obstetrics & Gynecology",
+        "gender": "Male",
+        "speciality": "Gynecologist",
+        "experience": 11,
+        "clinicList": [
+          {
+            "clinicName": "Ankur Pain clinic",
+            "clinicAddress": "Pimpri chinchwad link road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 38,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 4,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2517,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Manas Manohar",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MD - Medicine, DM - Nephrology",
+        "gender": "Male",
+        "speciality": "Nephrologist",
+        "experience": 13,
+        "clinicList": [
+          {
+            "clinicName": "Poona Hospital & Research centre",
+            "clinicAddress": "FC Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 45,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2520,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Apeksha Bansode",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, MD - Medicine",
+        "gender": "Female",
+        "speciality": "General Physician",
+        "experience": 14,
+        "clinicList": [
+          {
+            "clinicName": "Active health care clinic",
+            "clinicAddress": "pune, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 48,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 3,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2522,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Kiran Shah",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MD - Medicine, DNB (Cardiology)",
+        "gender": "Male",
+        "speciality": "Cardiologist",
+        "experience": 12,
+        "clinicList": [
+          {
+            "clinicName": "Pain Management Clinic",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 200,
+            "apptScheduleLmtDays": 7,
+            "locationId": 36,
+            "appointmentType": "mixed",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 4,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2523,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Manjiri",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, MD - Medicine, DNB (Cardiology)",
+        "gender": "Female",
+        "speciality": "Cardiologist",
+        "experience": 12,
+        "clinicList": [
+          {
+            "clinicName": "Manjiri Clinic",
+            "clinicAddress": "kothrud, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 2,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2534,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Prachi belkhede",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, MS - Orthopedics",
+        "gender": "Female",
+        "speciality": "Orthopedic",
+        "experience": 7,
+        "clinicList": [
+          {
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 9,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2542,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "sagar patil",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MS - Orthopedics",
+        "gender": "Male",
+        "speciality": "Orthopedic",
+        "experience": 13,
+        "clinicList": [
+          {
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 9,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2552,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Vaibhav C.C",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MS - Orthopedics",
+        "gender": "Male",
+        "speciality": "Orthopedic",
+        "experience": 20,
+        "clinicList": [
+          {
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 9,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 5,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2557,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Vrinda P.D.",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, MS - Orthopedics",
+        "gender": "Female",
+        "speciality": "Orthopedic",
+        "experience": 9,
+        "clinicList": [
+          {
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 9,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 5,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2558,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Manju C.D.",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, MS - ENT",
+        "gender": "Female",
+        "speciality": "ENT Specialist",
+        "experience": 8,
+        "clinicList": [
+          {
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 9,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 4,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2559,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Aarti M.P.",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, MS - ENT",
+        "gender": "Female",
+        "speciality": "ENT Specialist",
+        "experience": 5,
+        "clinicList": [
+          {
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 350,
+            "apptScheduleLmtDays": 7,
+            "locationId": 9,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2564,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Surabhi Kankaiya",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, MD - Psychiatry",
+        "gender": "Female",
+        "speciality": "Psychiatrist",
+        "experience": 8,
+        "clinicList": [
+          {
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 0,
+            "apptScheduleLmtDays": 0,
+            "locationId": 9,
+            "appointmentType": "book",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2570,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Tajashree Pandit",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Female_DRAvatar.jpg",
+        "degree": "MBBS, DNB - Urology",
+        "gender": "Female",
+        "speciality": "Urologist",
+        "experience": 8,
+        "clinicList": [
+          {
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 0,
+            "apptScheduleLmtDays": 0,
+            "locationId": 9,
+            "appointmentType": "",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 5,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2571,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Shiram Pandit",
+        "doctorImageUrl": "http://drrescribe.com/medsonit-be/assets/doc_profile/Male_DRAvatar.jpg",
+        "degree": "MBBS, MS - Opthalmologist",
+        "gender": "Male",
+        "speciality": "Opthalmologist",
+        "experience": 9,
+        "clinicList": [
+          {
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 0,
+            "apptScheduleLmtDays": 0,
+            "locationId": 9,
+            "appointmentType": "",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": "I believe in listening to each patient and creating a partnership to maintain and improve lifelong health. Teaching medical students and residents continues to be one of my strong areas of interest."
+      },
+      {
+        "docId": 2580,
+        "categoryName": "",
+        "categorySpeciality": "Premium",
+        "docName": "Kailash Recep2",
+        "doctorImageUrl": "",
+        "degree": "",
+        "gender": "",
+        "speciality": "",
+        "experience": 0,
+        "clinicList": [
+          {
+            "clinicName": "Sancheti Hospital",
+            "clinicAddress": "Karve Road, Pune",
+            "amount": 0,
+            "apptScheduleLmtDays": 0,
+            "locationId": 9,
+            "appointmentType": "",
+            "services": []
+          }
+        ],
+        "favorite": false,
+        "rating": 0,
+        "aptDate": "",
+        "aptTime": "",
+        "aboutDoctor": ""
       }
     ],
     "cardBgImageUrlList": [
-      "http://localhost:3003/images/dashboard/cardBgImage/android/hdpi/myappointments.png",
-      "http://localhost:3003/images/dashboard/cardBgImage/android/hdpi/sponsored.png",
-      "http://localhost:3003/images/dashboard/cardBgImage/android/hdpi/recentlyvisited.png",
-      "http://localhost:3003/images/dashboard/cardBgImage/android/hdpi/favorite.png"
+      "http://drrescribe.com:3003/images/dashboard/cardBgImage/android/hdpi/sponsored.png",
+      "http://drrescribe.com:3003/images/dashboard/cardBgImage/android/hdpi/favorite.png"
     ],
     "dashboardMenuList": [
       {
         "name": "Find Doctors",
-        "iconImageUrl": "http://localhost:3003/images/dashboard/menu/android/hdpi/finddoctor.png",
+        "identifier": "dashboard_FindDoctors",
+        "iconImageUrl": {
+          "url": "http://drrescribe.com:3003/images/dashboard/menu/android/hdpi/finddoctor.png",
+          "time": "2017-12-18T09:40:45.382Z"
+        },
         "clickEvent": {
-          "bgImageUrl": "http://localhost:3003/images/dashboard/menu/finddoctors/android/hdpi/finddoctors_bg.png",
+          "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/menu/finddoctors/android/hdpi/finddoctors_bg.png",
           "clickOptions": [
             {
               "name": "Book Appointment",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/finddoctors/android/hdpi/bookappointment.png",
+              "identifier": "findDoc_BookAppointment",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/finddoctors/android/hdpi/bookappointment.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
-              "name": "Consult Online",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/finddoctors/android/hdpi/consultonline.png",
+              "name": "Doctor Connect",
+              "identifier": "findDoc_DoctorConnect",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/finddoctors/android/hdpi/doctorconnect.png",
+                "time": ""
+              },
               "clickEvent": {}
             }
           ]
         }
       },
       {
-        "name": "On Going Treatment",
-        "iconImageUrl": "http://localhost:3003/images/dashboard/menu/android/hdpi/ongoingtreatment.png",
+        "name": "Ongoing Medication",
+        "identifier": "dashboard_OngoingMedication",
+        "iconImageUrl": {
+          "url": "http://drrescribe.com:3003/images/dashboard/menu/android/hdpi/ongoingmedications.png",
+          "time": "2017-12-18T09:40:45.454Z"
+        },
         "clickEvent": {}
       },
       {
         "name": "Health Repository",
-        "iconImageUrl": "http://localhost:3003/images/dashboard/menu/android/hdpi/healthrepository.png",
+        "identifier": "dashboard_HealthRepository",
+        "iconImageUrl": {
+          "url": "http://drrescribe.com:3003/images/dashboard/menu/android/hdpi/healthrepository.png",
+          "time": "2017-12-18T09:40:45.418Z"
+        },
         "clickEvent": {
-          "bgImageUrl": "http://localhost:3003/images/dashboard/menu/healthrepository/android/hdpi/healthrepository_bg.png",
+          "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/menu/healthrepository/android/hdpi/healthrepository_bg.png",
           "clickOptions": [
             {
               "name": "My Records",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthrepository/android/hdpi/myrecords.png",
+              "identifier": "healthRepo_MyRecords",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/healthrepository/android/hdpi/myrecords.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Vital Graphs",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthrepository/android/hdpi/vitalgraph.png",
+              "identifier": "healthRepo_VitalGraphs",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/healthrepository/android/hdpi/vitalgraph.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Doctor Visits",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthrepository/android/hdpi/doctorvisit.png",
+              "identifier": "healthRepo_DoctorVisits",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/healthrepository/android/hdpi/doctorvisit.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Saved Articles",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthrepository/android/hdpi/savedarticle.png",
+              "identifier": "healthRepo_SavedArticle",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/healthrepository/android/hdpi/savedarticle.png",
+                "time": ""
+              },
               "clickEvent": {}
             }
           ]
@@ -438,59 +1198,102 @@
       },
       {
         "name": "Health Offers",
-        "iconImageUrl": "http://localhost:3003/images/dashboard/menu/android/hdpi/healthoffers.png",
+        "identifier": "dashboard_HealthOffers",
+        "iconImageUrl": {
+          "url": "http://drrescribe.com:3003/images/dashboard/menu/android/hdpi/healthoffers.png",
+          "time": "2017-12-18T09:40:45.418Z"
+        },
         "clickEvent": {}
       },
       {
         "name": "Health Education",
-        "iconImageUrl": "http://localhost:3003/images/dashboard/menu/android/hdpi/healtheducation.png",
-        "clickEvent": {},
-        "healthEducationUrl": "http://blogs.scorgtechnologies.com/"
+        "identifier": "dashboard_HealthEdu",
+        "iconImageUrl": {
+          "url": "http://drrescribe.com:3003/images/dashboard/menu/android/hdpi/healtheducation.png",
+          "time": "2017-12-18T09:40:45.382Z"
+        },
+        "clickEvent": {}
       },
       {
         "name": "Health Services",
-        "iconImageUrl": "http://localhost:3003/images/dashboard/menu/android/hdpi/healthservices.png",
+        "identifier": "dashboard_HealthServices",
+        "iconImageUrl": {
+          "url": "http://drrescribe.com:3003/images/dashboard/menu/android/hdpi/healthservices.png",
+          "time": "2017-12-18T09:40:45.442Z"
+        },
         "clickEvent": {
-          "bgImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/healthservices_bg.png",
+          "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/menu/healthservices/android/hdpi/healthservices_bg.png",
           "clickOptions": [
             {
-              "name": "Doctor",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/doctor.png",
+              "name": "Doctors",
+              "identifier": "healthServices_Doctor",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/healthservices/android/hdpi/doctor.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Pharmacy",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/pharmacy.png",
+              "identifier": "healthServices_Pharmacy",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/healthservices/android/hdpi/pharmacy.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Hospital",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/hospital.png",
+              "identifier": "healthServices_Hospital",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/healthservices/android/hdpi/hospital.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Laboratory",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/laboratory.png",
+              "identifier": "healthServices_Lab",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/healthservices/android/hdpi/laboratory.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Palliative Care",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/palliative_care.png",
+              "identifier": "healthServices_Palliative",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/healthservices/android/hdpi/palliative_care.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Diagnostic Center",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/diagnosticcenter.png",
+              "identifier": "healthServices_Diagnostic",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/healthservices/android/hdpi/diagnosticcenter.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Blood Bank",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/bloodbank.png",
+              "identifier": "healthServices_BloodBank",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/healthservices/android/hdpi/bloodbank.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Ambulance",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/menu/healthservices/android/hdpi/ambulance.png",
+              "identifier": "healthServices_Ambulance",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/menu/healthservices/android/hdpi/ambulance.png",
+                "time": ""
+              },
               "clickEvent": {}
             }
           ]
@@ -500,89 +1303,153 @@
     "dashboardBottomMenuList": [
       {
         "name": "Home",
-        "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/home.png",
-        "selectedIconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/home_selected.png",
+        "identifier": "bottomMenu_Home",
+        "iconImageUrl": {
+          "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/android/hdpi/home.png",
+          "time": ""
+        },
+        "selectedIconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/android/hdpi/home_selected.png",
         "clickEvent": {}
       },
       {
         "name": "Appointment",
-        "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/appointment.png",
-        "selectedIconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/appointment_selected.png",
+        "identifier": "bottomMenu_Appointment",
+        "iconImageUrl": {
+          "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/android/hdpi/appointment.png",
+          "time": ""
+        },
+        "selectedIconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/android/hdpi/appointment_selected.png",
         "clickEvent": {}
       },
       {
         "name": "AppLogo",
-        "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/applogo.png",
-        "selectedIconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/applogo_selected.png",
+        "identifier": "bottomMenu_AppLogo",
+        "iconImageUrl": {
+          "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/android/hdpi/applogo.png",
+          "time": ""
+        },
+        "selectedIconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/android/hdpi/applogo_selected.png",
         "clickEvent": {
-          "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/applogo_bg.png",
+          "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/android/hdpi/applogo_bg.png",
           "clickOptions": [
             {
               "name": "Profile",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/profile.png",
+              "identifier": "appLogo_Profile",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/android/hdpi/profile.png",
+                "time": ""
+              },
               "clickEvent": {
-                "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/profile_bg.png",
+                "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/profile_bg.png",
                 "clickOptions": [
                   {
                     "name": "Services",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/services.png",
+                    "identifier": "",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/services.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   },
                   {
-                    "name": "On Going Treatment",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/ongoingtreatment.png",
+                    "name": "Ongoing Medication",
+                    "identifier": "",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/ongoingmedications.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   },
                   {
                     "name": "Appointments",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/appointments.png",
+                    "identifier": "",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/appointments.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   },
                   {
                     "name": "Doctor Visits",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/doctorvisits.png",
+                    "identifier": "",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/doctorvisits.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   },
                   {
                     "name": "Vital Graphs",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/vitalgraphs.png",
+                    "identifier": "",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/vitalgraphs.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   },
                   {
                     "name": "Settings",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/settings.png",
+                    "identifier": "",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/android/hdpi/settings.png",
+                      "time": ""
+                    },
                     "clickEvent": {
-                      "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/settings_bg.png",
+                      "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/settings_bg.png",
                       "clickOptions": [
                         {
                           "name": "Notifications",
-                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/notifications.png",
+                          "identifier": "",
+                          "iconImageUrl": {
+                            "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/notifications.png",
+                            "time": ""
+                          },
                           "clickEvent": {
-                            "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/notifications_bg.png",
+                            "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/notifications_bg.png",
                             "clickOptions": [
                               {
                                 "name": "All Notifications",
-                                "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/allnotifications.png",
+                                "identifier": "",
+                                "iconImageUrl": {
+                                  "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/allnotifications.png",
+                                  "time": ""
+                                },
                                 "clickEvent": {}
                               },
                               {
                                 "name": "Appointment Alert",
-                                "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/appointmentalert.png",
+                                "identifier": "",
+                                "iconImageUrl": {
+                                  "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/appointmentalert.png",
+                                  "time": ""
+                                },
                                 "clickEvent": {}
                               },
                               {
                                 "name": "Investigation Alert",
-                                "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/investigationalert.png",
+                                "identifier": "",
+                                "iconImageUrl": {
+                                  "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/investigationalert.png",
+                                  "time": ""
+                                },
                                 "clickEvent": {}
                               },
                               {
                                 "name": "Medication Alert",
-                                "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/medicationalert.png",
+                                "identifier": "",
+                                "iconImageUrl": {
+                                  "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/medicationalert.png",
+                                  "time": ""
+                                },
                                 "clickEvent": {}
                               },
                               {
                                 "name": "Offers Alert",
-                                "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/offersalert.png",
+                                "identifier": "",
+                                "iconImageUrl": {
+                                  "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/hdpi/offersalert.png",
+                                  "time": ""
+                                },
                                 "clickEvent": {}
                               }
                             ]
@@ -590,32 +1457,56 @@
                         },
                         {
                           "name": "How It Works?",
-                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/howitworks.png",
+                          "identifier": "",
+                          "iconImageUrl": {
+                            "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/howitworks.png",
+                            "time": ""
+                          },
                           "clickEvent": {}
                         },
                         {
                           "name": "Terms of Use",
-                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/termsofuse.png",
+                          "identifier": "",
+                          "iconImageUrl": {
+                            "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/termsofuse.png",
+                            "time": ""
+                          },
                           "clickEvent": {}
                         },
                         {
                           "name": "Privacy Policy",
-                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/privacypolicy.png",
+                          "identifier": "",
+                          "iconImageUrl": {
+                            "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/privacypolicy.png",
+                            "time": ""
+                          },
                           "clickEvent": {}
                         },
                         {
                           "name": "Recommend Us",
-                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/recommendus.png",
+                          "identifier": "",
+                          "iconImageUrl": {
+                            "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/recommendus.png",
+                            "time": ""
+                          },
                           "clickEvent": {}
                         },
                         {
                           "name": "Feedback",
-                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/feedback.png",
+                          "identifier": "",
+                          "iconImageUrl": {
+                            "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/feedback.png",
+                            "time": ""
+                          },
                           "clickEvent": {}
                         },
                         {
                           "name": "Log Out",
-                          "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/logout.png",
+                          "identifier": "",
+                          "iconImageUrl": {
+                            "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/hdpi/logout.png",
+                            "time": ""
+                          },
                           "clickEvent": {}
                         }
                       ]
@@ -625,52 +1516,106 @@
               }
             },
             {
+              "name": "Vital Graphs",
+              "identifier": "appLogo_VitalGraphs",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/android/hdpi/vitalgraphs.png",
+                "time": ""
+              },
+              "clickEvent": {}
+            },
+            {
               "name": "Notifications",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/notifications.png",
+              "identifier": "appLogo_Notifications",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/android/hdpi/notifications.png",
+                "time": ""
+              },
               "clickEvent": {
-                "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/notifications_bg.png",
+                "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/notifications_bg.png",
                 "clickOptions": [
                   {
                     "name": "Chat Notifications",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/chatnotification.png",
+                    "identifier": "appLogoNotify_Chat",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/chatnotification.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   },
                   {
-                    "name": "On Going Treatment Notifications",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/ongoingtreatmentnotification.png",
+                    "name": "Ongoing Medication Notifications",
+                    "identifier": "appLogoNotify_Ongoing",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/ongoingtreatmentnotification.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   },
                   {
                     "name": "Appointment Notifications",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/appointmentnotification.png",
+                    "identifier": "appLogoNotify_Appointment",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/appointmentnotification.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   },
                   {
                     "name": "Pending Investigation Notifications",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/pendinginvestigationnotification.png",
+                    "identifier": "appLogoNotify_Pending",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/notifications/android/hdpi/pendinginvestigationnotification.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   }
                 ]
               }
             },
             {
-              "name": "Vitals",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/vitals.png",
+              "name": "My Records",
+              "identifier": "appLogo_MyRecords",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/android/hdpi/myrecords.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
-              "name": "Favorites",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/favorites.png",
+              "name": "My Appointments",
+              "identifier": "appLogo_Appointment",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/android/hdpi/myappointments.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
-              "name": "On Going Treatment",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/ongoingtreatment.png",
+              "name": "Ongoing Medication",
+              "identifier": "appLogo_OngoingMedication",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/android/hdpi/ongoingmedications.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Doctor Visits",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/applogo/android/hdpi/doctorvisits.png",
+              "identifier": "appLogo_DoctorVisits",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/android/hdpi/doctorvisits.png",
+                "time": ""
+              },
+              "clickEvent": {}
+            },
+            {
+              "name": "Saved Articles",
+              "identifier": "appLogo_SavedArticle",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/android/hdpi/savedarticles.png",
+                "time": ""
+              },
               "clickEvent": {}
             }
           ]
@@ -678,40 +1623,68 @@
       },
       {
         "name": "Settings",
-        "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/settings.png",
-        "selectedIconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/settings_selected.png",
+        "identifier": "bottomMenu_Settings",
+        "iconImageUrl": {
+          "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/android/hdpi/settings.png",
+          "time": ""
+        },
+        "selectedIconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/android/hdpi/settings_selected.png",
         "clickEvent": {
-          "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/settings_bg.png",
+          "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/hdpi/settings_bg.png",
           "clickOptions": [
             {
               "name": "Notifications",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/notifications.png",
+              "identifier": "setting_Notification",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/hdpi/notifications.png",
+                "time": ""
+              },
               "clickEvent": {
-                "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/notifications_bg.png",
+                "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/notifications_bg.png",
                 "clickOptions": [
                   {
                     "name": "All Notifications",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/allnotifications.png",
+                    "identifier": "settingNotify_All",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/allnotifications.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   },
                   {
                     "name": "Appointment Alert",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/appointmentalert.png",
+                    "identifier": "settingNotify_Appointment",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/appointmentalert.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   },
                   {
                     "name": "Investigation Alert",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/investigationalert.png",
+                    "identifier": "settingNotify_Investigation",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/investigationalert.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   },
                   {
                     "name": "Medication Alert",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/medicationalert.png",
+                    "identifier": "settingNotify_Medication",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/medicationalert.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   },
                   {
                     "name": "Offers Alert",
-                    "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/offersalert.png",
+                    "identifier": "settingNotify_Offers",
+                    "iconImageUrl": {
+                      "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/notifications/android/hdpi/offersalert.png",
+                      "time": ""
+                    },
                     "clickEvent": {}
                   }
                 ]
@@ -719,32 +1692,56 @@
             },
             {
               "name": "How It Works?",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/howitworks.png",
+              "identifier": "setting_HowItWorks",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/hdpi/howitworks.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Terms of Use",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/termsofuse.png",
+              "identifier": "setting_Terms",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/hdpi/termsofuse.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Privacy Policy",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/privacypolicy.png",
+              "identifier": "setting_Privacy",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/hdpi/privacypolicy.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Recommend Us",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/recommendus.png",
+              "identifier": "setting_Recommended",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/hdpi/recommendus.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Feedback",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/feedback.png",
+              "identifier": "setting_FeedBack",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/hdpi/feedback.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Log Out",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/settings/android/hdpi/logout.png",
+              "identifier": "setting_Logout",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/hdpi/logout.png",
+                "time": ""
+              },
               "clickEvent": {}
             }
           ]
@@ -752,19 +1749,31 @@
       },
       {
         "name": "Support",
-        "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/support.png",
-        "selectedIconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/android/hdpi/support_selected.png",
+        "identifier": "bottomMenu_Support",
+        "iconImageUrl": {
+          "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/android/hdpi/support.png",
+          "time": ""
+        },
+        "selectedIconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/android/hdpi/support_selected.png",
         "clickEvent": {
-          "bgImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/support/android/hdpi/support_bg.png",
+          "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/support/android/hdpi/support_bg.png",
           "clickOptions": [
             {
               "name": "Contact Number",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/support/android/hdpi/contactnumber.png",
+              "identifier": "support_Contact",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/support/android/hdpi/contactnumber.png",
+                "time": ""
+              },
               "clickEvent": {}
             },
             {
               "name": "Support Email Id",
-              "iconImageUrl": "http://localhost:3003/images/dashboard/bottomMenu/support/android/hdpi/supportemailid.png",
+              "identifier": "support_Email",
+              "iconImageUrl": {
+                "url": "http://drrescribe.com:3003/images/dashboard/bottomMenu/support/android/hdpi/supportemailid.png",
+                "time": ""
+              },
               "clickEvent": {}
             }
           ]

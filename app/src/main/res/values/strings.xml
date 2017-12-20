@@ -369,6 +369,7 @@
     <string name="message_from">Message from </string>
     <string name="today">today</string>
     <string name="book_time_slot_err">Slot must be greater than current time.</string>
+    <string name="token_select_time_err_msg">Please select future time slot for the day.</string>
 
     <!--************************-->
 </resources>

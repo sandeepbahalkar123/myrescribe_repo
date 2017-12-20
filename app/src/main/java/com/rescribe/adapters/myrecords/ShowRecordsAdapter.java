@@ -93,7 +93,7 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
             }
         });
 
-        holder.addCaptionText.setText(caption + "_" + (position + 1));
+        holder.addCaptionText.setText(paths.length > 1 ? caption + "_" + (position + 1) : caption);
     }
 
     @Override

@@ -114,11 +114,7 @@ public class CommonMethods {
      * @return
      */
     public final static boolean isValidEmail(CharSequence emailId) {
-        if (emailId == null) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(emailId).matches();
-        }
+        return emailId != null && android.util.Patterns.EMAIL_ADDRESS.matcher(emailId).matches();
     }
 
 

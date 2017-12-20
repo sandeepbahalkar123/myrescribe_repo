@@ -158,6 +158,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
 
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
+                requestOptions.centerCrop();
 
                 requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
                 requestOptions.skipMemoryCache(true);

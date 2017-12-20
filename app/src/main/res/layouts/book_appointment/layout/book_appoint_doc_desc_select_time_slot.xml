@@ -1,15 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:layout_above="@+id/bookAppointmentButton"
+        android:background="@color/white"
         android:fillViewport="true">
 
         <LinearLayout
@@ -90,14 +90,14 @@
                 <include
                     layout="@layout/globle_expandable_viewlist"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/confirmedTokenMainLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/confirmedTokenMainLayout"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -284,15 +284,34 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/bookAppointmentButton"
+    <LinearLayout
+        android:id="@+id/appointmentTypeFooterButtonBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/clickHere"
-        android:text="@string/confirm_token"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
         android:layout_alignParentBottom="true"
-        android:visibility="visible" />
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/appointmentTypeIsTokenButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/clickHere"
+            android:text="@string/confirm_token"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/appointmentTypeIsBookButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/clickHere"
+            android:text="@string/book_appointment"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:visibility="visible" />
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -22,7 +22,6 @@ import butterknife.ButterKnife;
 public class HealthOffersAdapter extends RecyclerView.Adapter<HealthOffersAdapter.ListViewHolder> {
 
     private Context mContext;
-    private int imageSize;
     Integer[] mImageMenuICons = {
             R.drawable.metropolis,
             R.drawable.dentist_health_offers,
@@ -33,15 +32,6 @@ public class HealthOffersAdapter extends RecyclerView.Adapter<HealthOffersAdapte
 
     public HealthOffersAdapter(final Context mContext) {
         this.mContext = mContext;
-        setColumnNumber(mContext, 2);
-    }
-
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        imageSize = (widthPixels / columnNum) - mContext.getResources().getDimensionPixelSize(R.dimen.dp30);
     }
 
     @Override
@@ -66,12 +56,10 @@ public class HealthOffersAdapter extends RecyclerView.Adapter<HealthOffersAdapte
 
         @BindView(R.id.healthOffersImage)
         ImageView healthOffersImage;
-        View view;
 
         ListViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            this.view = view;
         }
     }
 

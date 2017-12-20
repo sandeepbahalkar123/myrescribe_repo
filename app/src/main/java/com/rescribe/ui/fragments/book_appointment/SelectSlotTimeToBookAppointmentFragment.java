@@ -130,8 +130,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     //-------------
     @BindView(R.id.selectTimeDateExpandableView)
     ExpandableListView selectTimeDateExpandableView;
-    @BindView(R.id.bookAppointmentButton)
-    AppCompatButton bookAppointmentButton;
+    @BindView(R.id.appointmentTypeIsTokenButton)
+    AppCompatButton appointmentTypeIsTokenButton;
+    @BindView(R.id.appointmentTypeIsBookButton)
+    AppCompatButton appointmentTypeIsBookButton;
+    @BindView(R.id.appointmentTypeFooterButtonBarLayout)
+    LinearLayout mAppointmentTypeFooterButtonBarLayout;
     @BindView(R.id.no_data_found)
     LinearLayout noDataFound;
     @BindView(R.id.timeSlotListViewLayout)
@@ -277,10 +281,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     private void setDataInViews() {
         if (mClickedDoctorObject.getClinicDataList().size() > 0) {
-            bookAppointmentButton.setVisibility(View.VISIBLE);
+            mAppointmentTypeFooterButtonBarLayout.setVisibility(View.VISIBLE);
             noDataFound.setVisibility(View.GONE);
         } else {
-            bookAppointmentButton.setVisibility(View.GONE);
+            mAppointmentTypeFooterButtonBarLayout.setVisibility(View.GONE);
             noDataFound.setVisibility(View.VISIBLE);
         }
 
@@ -435,7 +439,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                             selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
                         } else {
                             selectTimeDateExpandableView.setVisibility(View.GONE);
-                            CommonMethods.showToast(getActivity(), "" + slotListBase.getCommon().getStatusMessage());
                         }
                     }
                 }
@@ -455,7 +458,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         mFavorite.setImageResource(R.drawable.result_line_heart_fav);
                     }
                 }
-                CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+                //   CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;
             case RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS:
                 ClinicTokenDetailsBaseModel clinicTokenDetailsBaseModel = (ClinicTokenDetailsBaseModel) customResponse;
@@ -472,6 +475,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 }
                 break;
             case RescribeConstants.TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER:
+            case RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION:
                 CommonBaseModelContainer temp1 = (CommonBaseModelContainer) customResponse;
                 CommonMethods.showToast(getActivity(), temp1.getCommonRespose().getStatusMessage());
                 break;
@@ -522,7 +526,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     }
 
-    @OnClick({R.id.selectDateTime, R.id.bookAppointmentButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat, R.id.tokenNewTimeStamp, R.id.leftArrow, R.id.rightArrow})
+    @OnClick({R.id.selectDateTime, R.id.appointmentTypeIsTokenButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat, R.id.tokenNewTimeStamp, R.id.leftArrow, R.id.rightArrow})
     public void onClickOfView(View view) {
         Calendar now = Calendar.getInstance();
         switch (view.getId()) {
@@ -552,7 +556,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 //-------------
 
                 break;
-            case R.id.bookAppointmentButton:
+            case R.id.appointmentTypeIsTokenButton:
+                String receiveTokenNo = mReceivedTokenNumber.getText().toString().trim();
+                if (receiveTokenNo.length() > 0) {
+                    int receivedTokenNo = Integer.parseInt(receiveTokenNo);
+                    mDoctorDataHelper.doConfirmBookAppointReceivedToken(mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), receivedTokenNo);
+                }
+                break;
+            case R.id.appointmentTypeIsBookButton:
+
                 break;
             case R.id.viewAllClinicsOnMap: // on view-all location clicked
                 //-----Show all doc clinic on map, copied from BookAppointFilteredDoctorListFragment.java----
@@ -599,7 +611,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         now.get(Calendar.HOUR_OF_DAY),
                         now.get(Calendar.MINUTE),
                         DateFormat.is24HourFormat(getActivity()));
-                // TODO : NEED TO SET START AND END TIME OVER HERE.
 
                 grid.setAccentColor(getResources().getColor(R.color.tagColor));
                 grid.show(getFragmentManager(), getResources().getString(R.string.select_date_text));
@@ -667,6 +678,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 mConfirmedTokenMainLayout.setVisibility(View.VISIBLE);
                 mTimeSlotListViewLayout.setVisibility(View.GONE);
                 //----
+                mAppointmentTypeFooterButtonBarLayout.setVisibility(View.VISIBLE);
+                appointmentTypeIsTokenButton.setVisibility(View.VISIBLE);
+                appointmentTypeIsBookButton.setVisibility(View.GONE);
+                //----
                 mPreviousDayLeftArrow.setVisibility(View.INVISIBLE);
                 mNextDayRightArrow.setVisibility(View.INVISIBLE);
                 mSelectDateTime.setEnabled(false);
@@ -674,6 +689,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             } else if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.book))) {
                 mConfirmedTokenMainLayout.setVisibility(View.GONE);
                 mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
+                //----
+                mAppointmentTypeFooterButtonBarLayout.setVisibility(View.VISIBLE);
+                appointmentTypeIsTokenButton.setVisibility(View.GONE);
+                appointmentTypeIsBookButton.setVisibility(View.VISIBLE);
                 //----
                 mPreviousDayLeftArrow.setVisibility(View.VISIBLE);
                 mNextDayRightArrow.setVisibility(View.VISIBLE);
@@ -702,6 +721,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     mConfirmedTokenMainLayout.setVisibility(View.VISIBLE);
                     mTimeSlotListViewLayout.setVisibility(View.GONE);
 
+                    //----
+                    mAppointmentTypeFooterButtonBarLayout.setVisibility(View.VISIBLE);
+                    appointmentTypeIsTokenButton.setVisibility(View.VISIBLE);
+                    appointmentTypeIsBookButton.setVisibility(View.GONE);
+                    //----
+
                     if (selectedDate.equalsIgnoreCase(maxDate)) {
                         mPreviousDayLeftArrow.setVisibility(View.INVISIBLE);
                         mNextDayRightArrow.setVisibility(View.INVISIBLE);
@@ -716,6 +741,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 } else {
                     mConfirmedTokenMainLayout.setVisibility(View.GONE);
                     mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
+                    //--------
+                    //----
+                    mAppointmentTypeFooterButtonBarLayout.setVisibility(View.VISIBLE);
+                    appointmentTypeIsTokenButton.setVisibility(View.GONE);
+                    appointmentTypeIsBookButton.setVisibility(View.VISIBLE);
+                    //----
                     //--------
                     if (selectedDate.equalsIgnoreCase(maxDate)) {
                         mPreviousDayLeftArrow.setVisibility(View.VISIBLE);
@@ -735,9 +766,22 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     @Override
     public void onTimeSet(ViewGroup viewGroup, int hourOfDay, int minute) {
-        if (mSelectedClinicDataObject != null) {
-            mSelectedTimeStampForNewToken = hourOfDay + ":" + minute;
-            mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), hourOfDay + ":" + minute);
+        //-----------------
+        String currentTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+        Date maxCurrentDateTimeForDay = CommonMethods.convertStringToDate(currentTimeStamp + " " + "23:59:59", RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+        //---
+        Date currentDateTimeForDay = CommonMethods.convertStringToDate(CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+        Date selectedDateTimeForDay = CommonMethods.convertStringToDate(mSelectedTimeSlotDate + " " + hourOfDay + ":" + minute + ":00", RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+
+        if (currentDateTimeForDay.getTime() > selectedDateTimeForDay.getTime()) {
+            CommonMethods.showToast(getContext(), getString(R.string.token_select_time_err_msg));
+        } else if (maxCurrentDateTimeForDay.getTime() < selectedDateTimeForDay.getTime()) {
+            CommonMethods.showToast(getContext(), getString(R.string.token_select_time_err_msg));
+        } else {
+            if (mSelectedClinicDataObject != null) {
+                mSelectedTimeStampForNewToken = hourOfDay + ":" + minute;
+                mDoctorDataHelper.getTokenNumberDetails("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), hourOfDay + ":" + minute);
+            }
         }
     }
 

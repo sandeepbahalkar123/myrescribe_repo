@@ -42,6 +42,7 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mClickedOptionData = extras.getParcelable(getString(R.string.clicked_item_data));
+            title.setText(extras.getString(getString(R.string.toolbarTitle)));
         }
         switchListeners();
     }

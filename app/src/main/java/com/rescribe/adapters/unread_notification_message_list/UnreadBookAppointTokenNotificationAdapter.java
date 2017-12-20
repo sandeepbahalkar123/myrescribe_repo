@@ -9,7 +9,11 @@ import android.widget.ImageView;
 
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookAppointTokenNotificationData;
+import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -21,11 +25,13 @@ public class UnreadBookAppointTokenNotificationAdapter extends RecyclerView.Adap
     private final ArrayList<UnreadBookAppointTokenNotificationData> mOriginalReceivedList;
     private final Context mContext;
     private final OnUnreadTokenNotificationItemClicked listener;
+    private UnreadNotificationMessageActivity parentActivity;
     private ArrayList<UnreadBookAppointTokenNotificationData> mListToBeUsed;
 
     public UnreadBookAppointTokenNotificationAdapter(Context context, ArrayList<UnreadBookAppointTokenNotificationData> list, OnUnreadTokenNotificationItemClicked listener) {
         this.mContext = context;
         this.mOriginalReceivedList = list;
+        this.parentActivity = (UnreadNotificationMessageActivity) context;
 
         mListToBeUsed = new ArrayList<>();
         addSingleElementToList();
@@ -52,12 +58,37 @@ public class UnreadBookAppointTokenNotificationAdapter extends RecyclerView.Adap
         }
         //--------
 
+        int showFirstMessageTimeStamp = parentActivity.isShowFirstMessageTimeStamp(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT);
+
+
         //--- TO show more load button or not on appointment_type_notification.
         if (position == 0 && (mListToBeUsed.size() == 1 && mOriginalReceivedList.size() > 1)) {
             holder.loadMoreUnreadTokenMessage.setVisibility(View.VISIBLE);
+            holder.tokenMessageTimeStamp.setVisibility(View.INVISIBLE);
         } else {
             holder.loadMoreUnreadTokenMessage.setVisibility(View.INVISIBLE);
+            if (showFirstMessageTimeStamp == View.VISIBLE) {
+                holder.tokenMessageTimeStamp.setVisibility(View.GONE);
+            } else {
+                holder.tokenMessageTimeStamp.setVisibility(View.VISIBLE);
+            }
         }
+        //----------
+        if (holder.tokenMessageTimeStamp.getVisibility() == View.VISIBLE) {
+
+            String formattedDate = CommonMethods.getFormattedDate(unreadNotificationMessageData.getCreatedDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+            String time = CommonMethods.formatDateTime(unreadNotificationMessageData.getCreatedDate(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
+
+            String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
+
+            if (mContext.getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
+                holder.tokenMessageTimeStamp.setText(time);
+            } else {
+                holder.tokenMessageTimeStamp.setText(dayFromDate + " " + time);
+            }
+        }
+        //--------------
+
 
         //--- TO show more load button or not
         holder.rowView.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +131,8 @@ public class UnreadBookAppointTokenNotificationAdapter extends RecyclerView.Adap
 
         @BindView(R.id.tokenMessage)
         CustomTextView text;
+        @BindView(R.id.tokenMessageTimeStamp)
+        CustomTextView tokenMessageTimeStamp;
         @BindView(R.id.loadMoreUnreadTokenMessage)
         CustomTextView loadMoreUnreadTokenMessage;
         @BindView(R.id.yesTextView)

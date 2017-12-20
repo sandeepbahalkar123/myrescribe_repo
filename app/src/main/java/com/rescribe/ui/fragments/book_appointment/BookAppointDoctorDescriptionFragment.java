@@ -364,7 +364,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
                     setFavorite(mClickedDoctorObject.getFavourite());
                 }
-                CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+            //    CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;
         }
     }

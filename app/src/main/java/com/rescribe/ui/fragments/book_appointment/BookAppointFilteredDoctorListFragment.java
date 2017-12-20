@@ -194,7 +194,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         switch (mOldDataTag) {
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
-                CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+               // CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());

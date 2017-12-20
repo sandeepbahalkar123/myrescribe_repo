@@ -3,12 +3,8 @@ package com.rescribe.adapters.saved_article;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +17,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.saved_article.SavedArticleInfo;
-import com.rescribe.ui.activities.saved_articles.SavedArticles;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -80,7 +74,6 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
         }
 
         //------------
-        int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(mContext, 2);
 
         if (!savedArticleInfo.getAuthorImageURL().equals(null)) {
 
@@ -93,16 +86,18 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
                     .beginConfig()
                     .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
                     .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40)))
-                    .textColor(ContextCompat.getColor(mContext,R.color.black))// height in px
+                    .textColor(ContextCompat.getColor(mContext, R.color.black))// height in px
                     .endConfig()
                     .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
+
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
-            requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
+
             requestOptions.placeholder(drawable);
             requestOptions.error(drawable);
+
             Glide.with(mContext)
                     .load(savedArticleInfo.getAuthorImageURL())
                     .apply(requestOptions).thumbnail(0.5f)
@@ -110,17 +105,18 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
         }
 
         if (savedArticleInfo.getArticleImageURL() != null) {
+
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
-            requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
+
             requestOptions.placeholder(R.drawable.image_1);
+            requestOptions.error(R.drawable.image_1);
 
             Glide.with(mContext)
                     .load(savedArticleInfo.getArticleImageURL())
-                    .apply(requestOptions).thumbnail(0.5f)
-
+                    .apply(requestOptions)
                     .into(holder.articleImage);
         } else {
             holder.articleImage.setVisibility(View.GONE);

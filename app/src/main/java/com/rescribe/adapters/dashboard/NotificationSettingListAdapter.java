@@ -31,7 +31,6 @@ public class NotificationSettingListAdapter extends RecyclerView.Adapter<Notific
     private OnSwitchButtonClickListener listener;
     private ArrayList<ClickOption> clickOptionList;
     private Context mContext;
-    private int mImageSize;
 
     public NotificationSettingListAdapter(Context mContext, ArrayList<ClickOption> mDashboardMenuList, OnSwitchButtonClickListener listener) {
         this.mContext = mContext;
@@ -55,16 +54,14 @@ public class NotificationSettingListAdapter extends RecyclerView.Adapter<Notific
 
         //------------
         if (clickOption.getIconImageUrl() != null) {
-            int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(mContext, 2);
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
-            requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
 
             Glide.with(mContext)
                     .load(clickOption.getIconImageUrl())
-                    .apply(requestOptions).thumbnail(0.5f)
+                    .apply(requestOptions)
                     .into(holder.menuIcon);
         }
         //--------------

@@ -53,7 +53,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     private Fragment mFragment;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
-    private int mImageSize;
     private ArrayList<DoctorList> mArrayList;
     private ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem;
     private String mSearchString;
@@ -80,15 +79,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             cityname = split[1].trim();
         }
         mColorGenerator = ColorGenerator.MATERIAL;
-        setColumnNumber(mContext, 2);
-    }
-
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        mImageSize = (widthPixels / columnNum) - mContext.getResources().getDimensionPixelSize(R.dimen.dp30);
     }
 
     @Override
@@ -167,7 +157,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
-        requestOptions.override(mImageSize, mImageSize);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.placeholder(textDrawable);

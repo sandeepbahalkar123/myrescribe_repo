@@ -40,7 +40,6 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     private HelperResponse mHelperResponse;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
-    private int mImageSize;
     private ServicesCardViewImpl mOnFilterDocListClickListener;
     private ImageView mClickedItemFavImageView;
 
@@ -50,21 +49,11 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         this.mOnFilterDocListClickListener = mOnFilterDocListClickListener;
         this.mHelperResponse = helperResponse;
         this.mClickedItemDataTypeValue = mClickedItemDataValue;
-        setColumnNumber(mContext, 2);
         String cityNameString = RescribeApplication.getUserSelectedLocationInfo().get(mContext.getString(R.string.location));
         if (cityNameString != null) {
             String[] split = cityNameString.split(",");
             cityname = split[1].trim();
         }
-    }
-
-
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        mImageSize = (widthPixels / columnNum) - mContext.getResources().getDimensionPixelSize(R.dimen.dp30);
     }
 
     @Override
@@ -263,7 +252,6 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
-        requestOptions.override(mImageSize, mImageSize);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.placeholder(textDrawable);

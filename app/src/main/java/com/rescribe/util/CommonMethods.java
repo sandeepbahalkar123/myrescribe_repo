@@ -914,15 +914,6 @@ public class CommonMethods {
         return resolution;
     }
 
-    public static int getImageSizeToLoadImage(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        int mImageSize = (widthPixels / columnNum) - context.getResources().getDimensionPixelSize(R.dimen.dp30);
-        return mImageSize;
-    }
-
     public static SpannableString addTextToStringAtLast(String text, int wordSize, String addLastString, int addLastStringColor) {
         boolean isMultiWordText = false;
         int spaceCount = 0;

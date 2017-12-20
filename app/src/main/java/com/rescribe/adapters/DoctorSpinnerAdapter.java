@@ -32,7 +32,6 @@ public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
     private ArrayList<SpinnerDoctor> suggestions;
     private TextEnterListener textEnterListener;
     private ColorGenerator mColorGenerator;
-    private int mImageSize;
 
     public DoctorSpinnerAdapter(Context context, int resource, int textViewResourceId, ArrayList<SpinnerDoctor> items) {
         super(context, resource, textViewResourceId, items);
@@ -41,7 +40,6 @@ public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
         tempItems = new ArrayList<SpinnerDoctor>(items); // this makes the difference.
         suggestions = new ArrayList<SpinnerDoctor>();
         mColorGenerator = ColorGenerator.MATERIAL;
-        setColumnNumber(mContext, 2);
 
         try {
             this.textEnterListener = ((TextEnterListener) context);
@@ -82,7 +80,6 @@ public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
-            requestOptions.override(mImageSize, mImageSize);
             requestOptions.error(drawable);
             requestOptions.placeholder(drawable);
 
@@ -141,13 +138,6 @@ public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
         }
     };
 
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        mImageSize = (widthPixels / columnNum) - mContext.getResources().getDimensionPixelSize(R.dimen.dp30);
-    }
     public SpinnerDoctor getDoctor(int position) {
         return suggestions.get(position);
     }

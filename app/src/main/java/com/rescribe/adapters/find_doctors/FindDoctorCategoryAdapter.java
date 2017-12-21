@@ -49,7 +49,6 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
     private ArrayList<DoctorList> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
-    private int mImageSize;
     private ServicesCardViewImpl mServicesCardViewClickListener;
     private ColorGenerator mColorGenerator;
     private String cityname;
@@ -57,7 +56,6 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
     public FindDoctorCategoryAdapter(Context context, ArrayList<DoctorList> doctorLists, ServicesCardViewImpl mOnClickOfCardOnDashboard, HelperResponse helperResponse) {
         this.mContext = context;
         this.mDataList = doctorLists;
-        setColumnNumber(mContext, 2);
         this.mServicesCardViewClickListener = mOnClickOfCardOnDashboard;
          /* this.mListSizeWithTypeMap = dataMap;*/
 
@@ -163,7 +161,6 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
         TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
-        requestOptions.override(mImageSize, mImageSize);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.placeholder(textDrawable);
@@ -171,7 +168,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
 
         Glide.with(mContext)
                 .load(doctorObject.getDoctorImageUrl())
-                .apply(requestOptions).thumbnail(0.5f)
+                .apply(requestOptions)
                 .into(imageURL);
         //---------------
 
@@ -183,7 +180,6 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             ratingBar.setVisibility(View.VISIBLE);
             ratingBar.setRating((float) doctorObject.getRating());
             doctorRating.setText("" + doctorObject.getRating());
-
         }
 
 
@@ -335,14 +331,6 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
         view.addView(imageLayout, 0);
 
         return imageLayout;
-    }
-
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     @Override

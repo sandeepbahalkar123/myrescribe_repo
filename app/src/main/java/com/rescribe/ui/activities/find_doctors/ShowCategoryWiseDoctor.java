@@ -80,7 +80,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (ShowCategoryWiseDoctor) mContext);
         if (getString(R.string.favorite).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mDoctorCategoryList = mServicesCardViewImpl.getFavouriteDocList(-1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle);
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle,mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             showDoctorList.setLayoutManager(layoutManager);
             showDoctorList.setHasFixedSize(true);
@@ -88,7 +88,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         } else if (getString(R.string.recently_visit_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
 
             mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataTypeValue, -1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle);
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle,mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             showDoctorList.setLayoutManager(layoutManager);
             showDoctorList.setHasFixedSize(true);
@@ -96,7 +96,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         } else if (getString(R.string.sponsered_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
 
             mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataTypeValue, -1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle);
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle,mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             showDoctorList.setLayoutManager(layoutManager);
             showDoctorList.setHasFixedSize(true);

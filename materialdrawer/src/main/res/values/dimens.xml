@@ -59,5 +59,6 @@
     <dimen name="sp14">14sp</dimen>
     <dimen name="sp12">12sp</dimen>
     <dimen name="dp16">16dp</dimen>
+    <dimen name="bottom_sheet_icon_size">32dp</dimen>
 
 </resources>

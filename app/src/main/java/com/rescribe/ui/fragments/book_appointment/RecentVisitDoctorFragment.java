@@ -58,7 +58,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.facebook.FacebookSdk.isLegacyTokenUpgradeSupported;
 
 
-public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse {
+public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, SortByClinicAndDoctorNameAdapter.OnDataListViewVisible {
 
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
@@ -137,7 +137,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         searchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {
             @Override
             public void onClearButtonClicked() {
-                isDataListViewVisible(false, false);
+                doConfigureDataListViewVisibility(false, false);
             }
         });
 
@@ -172,7 +172,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 if (s.toString().trim().length() > 0) {
                     mSortByClinicAndDoctorNameAdapter.getFilter().filter(s);
                 } else {
-                    isDataListViewVisible(false, false);
+                    doConfigureDataListViewVisibility(false, false);
                 }
             }
         });
@@ -252,7 +252,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                             mSortByClinicAndDoctorNameAdapter.updateClickedItemFavImage();
                         }
                     }
-                  //  CommonMethods.showToast(getActivity(), responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
+                    //  CommonMethods.showToast(getActivity(), responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
                 }
                 break;
             case RescribeConstants.TASK_GET_DOCTOR_DATA:
@@ -273,7 +273,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
         //----- to set doc data list, invisible by default -----
         if (mReceivedDoctorServicesModel != null) {
-            isDataListViewVisible(false, false);
+            doConfigureDataListViewVisibility(false, false);
             if (mReceivedDoctorServicesModel.getDoctorList().size() > 0) {
                 mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), ServicesCardViewImpl.getReceivedDoctorDataList(), mServiceCardDataViewBuilder, RecentVisitDoctorFragment.this, this);
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -376,30 +376,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
 
-    public void isDataListViewVisible(boolean flag, boolean isShowEmptyListView) {
-        if (flag) {
-            recentDoctorLayout.setVisibility(View.GONE);
-            leftFab.setVisibility(View.VISIBLE);
-            rightFab.setVisibility(View.VISIBLE);
-            showDoctorsRecyclerView.setVisibility(View.VISIBLE);
-            mFilterDocListEmptyListView.setVisibility(View.GONE);
-
-            if (isShowEmptyListView) {
-                leftFab.setVisibility(View.GONE);
-                rightFab.setVisibility(View.GONE);
-                mFilterDocListEmptyListView.setVisibility(View.VISIBLE);
-                showDoctorsRecyclerView.setVisibility(View.GONE);
-            }
-        } else {
-            leftFab.setVisibility(View.GONE);
-            rightFab.setVisibility(View.GONE);
-            mFilterDocListEmptyListView.setVisibility(View.GONE);
-            recentDoctorLayout.setVisibility(View.VISIBLE);
-            showDoctorsRecyclerView.setVisibility(View.GONE);
-        }
-
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -459,6 +435,32 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     public void onResetClicked() {
+
+    }
+
+    // It is implemented for SortByClinicAndDoctorNameAdapter and for local level view manage.
+    @Override
+    public void doConfigureDataListViewVisibility(boolean flag, boolean isShowEmptyListView) {
+        if (flag) {
+            recentDoctorLayout.setVisibility(View.GONE);
+            leftFab.setVisibility(View.VISIBLE);
+            rightFab.setVisibility(View.VISIBLE);
+            showDoctorsRecyclerView.setVisibility(View.VISIBLE);
+            mFilterDocListEmptyListView.setVisibility(View.GONE);
+
+            if (isShowEmptyListView) {
+                leftFab.setVisibility(View.GONE);
+                rightFab.setVisibility(View.GONE);
+                mFilterDocListEmptyListView.setVisibility(View.VISIBLE);
+                showDoctorsRecyclerView.setVisibility(View.GONE);
+            }
+        } else {
+            leftFab.setVisibility(View.GONE);
+            rightFab.setVisibility(View.GONE);
+            mFilterDocListEmptyListView.setVisibility(View.GONE);
+            recentDoctorLayout.setVisibility(View.VISIBLE);
+            showDoctorsRecyclerView.setVisibility(View.GONE);
+        }
 
     }
 

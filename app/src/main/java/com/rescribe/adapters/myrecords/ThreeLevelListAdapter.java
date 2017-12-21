@@ -66,13 +66,10 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
             mListDataChild.put(dataObject, myRecordReportInfo);
         }
 
-        int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(context, 2);
-
         mRequestOptions = new RequestOptions();
         mRequestOptions.dontAnimate();
         mRequestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         mRequestOptions.skipMemoryCache(true);
-        mRequestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
     }
 
 

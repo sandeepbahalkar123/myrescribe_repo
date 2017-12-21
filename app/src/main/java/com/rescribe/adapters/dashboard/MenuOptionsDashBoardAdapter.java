@@ -56,19 +56,20 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
                 mMenuListClickListener.onClickOfMenu(dashboardMenuList);
             }
         });
-        if (mDashboardMenuList.get(position).getName().equals(mContext.getString(R.string.health_offers))) {
-                 holder.healthoffersTag.setVisibility(View.VISIBLE);
-        }else{
-            holder.healthoffersTag.setVisibility(View.GONE);
-        }
+        
+        if (mDashboardMenuList.get(position).getName().equals(mContext.getString(R.string.health_offers)))
+            holder.healthoffersTag.setVisibility(View.VISIBLE);
+        else holder.healthoffersTag.setVisibility(View.GONE);
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.dontAnimate();
+        RequestOptions requestOptions = new RequestOptions()
+                .dontAnimate()
+                .override(mContext.getResources().getDimensionPixelSize(R.dimen.menu_list_icon_size));
 
         if (mDashboardMenuList.get(position).getIconImageUrl().getTime().isEmpty()) {
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
-        } else requestOptions.signature(new ObjectKey(mDashboardMenuList.get(position).getIconImageUrl().getTime()));
+        } else
+            requestOptions.signature(new ObjectKey(mDashboardMenuList.get(position).getIconImageUrl().getTime()));
 
         Glide.with(mContext)
                 .load(mDashboardMenuList.get(position).getIconImageUrl().getUrl())
@@ -92,12 +93,10 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
         RelativeLayout selectMenuLayout;
         @BindView(R.id.healthoffersTag)
         CustomTextView healthoffersTag;
-        View view;
 
         ListViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            this.view = view;
         }
     }
 

@@ -38,14 +38,7 @@ public class BookAppointListOnLocationSelection extends AppCompatActivity implem
     FrameLayout mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-    @BindView(R.id.bookAppointmentBackButton)
-    ImageView bookAppointmentBackButton;
-    @BindView(R.id.title)
-    CustomTextView title;
-    @BindView(R.id.locationTextView)
-    CustomTextView locationTextView;
-    @BindView(R.id.showlocation)
-    CustomTextView showlocation;
+
     @BindView(R.id.viewContainer)
     FrameLayout viewContainer;
     private FragmentManager mFragmentManager;

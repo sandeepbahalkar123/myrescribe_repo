@@ -526,7 +526,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 requestOptions.dontAnimate();
                 requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
                 requestOptions.skipMemoryCache(true);
-                requestOptions.override(CommonMethods.convertDpToPixel(40), CommonMethods.convertDpToPixel(40));
+                requestOptions.override(getResources().getDimensionPixelSize(R.dimen.dp40), getResources().getDimensionPixelSize(R.dimen.dp40));
                 requestOptions.placeholder(mReceiverDrawable);
                 requestOptions.error(mReceiverDrawable);
 
@@ -715,7 +715,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         ChatActivityPermissionsDispatcher.getAudioPermissionWithCheck(ChatActivity.this);
 
         audioSlider.getTextView().setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mic_red_24dp, 0, 0, 0);
-        audioSlider.getTextView().setCompoundDrawablePadding(CommonMethods.convertDpToPixel(5));
+        audioSlider.getTextView().setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp5));
         audioSlider.setOnSlideCompleteListener(new SlideView.OnSlideCompleteListener() {
             @Override
             public void onSlideComplete(SlideView slideView) {

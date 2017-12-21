@@ -602,7 +602,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
             Intent i = new Intent(this, BookAppointListOnLocationSelection.class);
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.toolbarTitle), getString(R.string.doctorss));
-            i.putExtra(getString(R.string.clicked_item_data), bundle);
+            i.putExtras( bundle);
             startActivity(i);
         }
     }

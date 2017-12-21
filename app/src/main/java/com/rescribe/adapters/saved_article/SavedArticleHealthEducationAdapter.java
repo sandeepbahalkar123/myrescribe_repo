@@ -79,10 +79,8 @@ public class SavedArticleHealthEducationAdapter extends RecyclerView.Adapter<Sav
             holder.articleText.setText(s);
         }
         //------------
-        int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(mContext, 2);
 
         if (!savedArticleInfo.getAuthorImageURL().equals(null)) {
-
 
             String doctorName = savedArticleInfo.getAuthorName();
 
@@ -98,27 +96,28 @@ public class SavedArticleHealthEducationAdapter extends RecyclerView.Adapter<Sav
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
-            requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
             requestOptions.placeholder(drawable);
             requestOptions.error(drawable);
             Glide.with(mContext)
                     .load(savedArticleInfo.getAuthorImageURL())
-                    .apply(requestOptions).thumbnail(0.5f)
+                    .apply(requestOptions)
                     .into(holder.doctorImage);
         }
 
         if (savedArticleInfo.getArticleImageURL() != null) {
 
             RequestOptions requestOptions = new RequestOptions();
+
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
-            requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
+
             requestOptions.placeholder(R.drawable.image_1);
+            requestOptions.error(R.drawable.image_1);
 
             Glide.with(mContext)
                     .load(savedArticleInfo.getArticleImageURL())
-                    .apply(requestOptions).thumbnail(0.5f)
+                    .apply(requestOptions)
 
                     .into(holder.articleImage);
         } else {

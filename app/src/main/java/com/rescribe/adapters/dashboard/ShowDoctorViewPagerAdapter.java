@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
@@ -109,9 +110,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.doctorAppointmentDate);
         final ImageView imageURL = (ImageView) imageLayout
                 .findViewById(R.id.imageURL);
-        final LinearLayout thumbnail = (LinearLayout) imageLayout
-                .findViewById(R.id.thumbnail);
-        final LinearLayout designLineLayout = (LinearLayout) imageLayout
+        final RelativeLayout designLineLayout = (RelativeLayout) imageLayout
                 .findViewById(R.id.designLineLayout);
         final CustomTextView clinicName = (CustomTextView) imageLayout
                 .findViewById(R.id.clinicName);
@@ -142,7 +141,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             doctorCategory.setText(doctorObject.getCategoryName());
             size = mListSizeWithTypeMap.get(doctorObject.getCategoryName());
         }
-        sizeOfList.setText("" + size);
+        sizeOfList.setText(String.valueOf(size));
 
         //----------------
         String doctorName = doctorObject.getDocName();
@@ -170,7 +169,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             doctorRating.setVisibility(View.VISIBLE);
             ratingBar.setVisibility(View.VISIBLE);
             ratingBar.setRating((float) doctorObject.getRating());
-            doctorRating.setText("" + doctorObject.getRating());
+            doctorRating.setText(String.valueOf(doctorObject.getRating()));
 
         }
 
@@ -198,7 +197,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 clinicName.setText(clinicDataList.get(0).getClinicName());
                 doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
                 doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
-
             } else {
                 if (clinicDataList.size() > 0) {
                     SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));

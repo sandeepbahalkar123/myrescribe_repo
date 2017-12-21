@@ -175,7 +175,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             isDataListViewVisible(false);
         } else {
             isDataListViewVisible(true);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), mReceivedList, mServicesCardViewImpl, this,mClickedItemDataTypeValue);
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), mReceivedList, mServicesCardViewImpl, this,mClickedItemDataTypeValue,mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             mDoctorListView.setLayoutManager(layoutManager);
             mDoctorListView.setHasFixedSize(true);

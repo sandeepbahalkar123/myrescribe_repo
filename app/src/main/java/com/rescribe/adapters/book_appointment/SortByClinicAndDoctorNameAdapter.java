@@ -50,10 +50,9 @@ import butterknife.ButterKnife;
 public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortByClinicAndDoctorNameAdapter.ListViewHolder> implements Filterable {
 
     private final HelperResponse mHelperResponse;
-    private Fragment mFragment;
+    private OnDataListViewVisible mOnDataListViewVisibleListener;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
-    private int mImageSize;
     private ArrayList<DoctorList> mArrayList;
     private ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem;
     private String mSearchString;
@@ -66,13 +65,12 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     private String cityname;
 
 
-
-    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, Fragment m, HelperResponse mHelperResponse) {
+    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, OnDataListViewVisible m, HelperResponse mHelperResponse) {
         this.mDataList = dataList;
         this.mContext = mContext;
         this.mArrayList = dataList;
         this.mOnClinicAndDoctorNameSearchRowItem = mOnClinicAndDoctorNameSearchRowItem;
-        this.mFragment = m;
+        this.mOnDataListViewVisibleListener = m;
         this.mHelperResponse = mHelperResponse;
         String cityNameString = RescribeApplication.getUserSelectedLocationInfo().get(mContext.getString(R.string.location));
         if (cityNameString != null) {
@@ -80,15 +78,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             cityname = split[1].trim();
         }
         mColorGenerator = ColorGenerator.MATERIAL;
-        setColumnNumber(mContext, 2);
-    }
-
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     @Override
@@ -125,29 +114,29 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
         //if only one clinic is available then only show doctoraddress otherwise show total locations available
         if (doctorObject.getClinicDataList().size() == 1) {
-            if(doctorObject.getClinicDataList().get(0).getAmount()==0){
+            if (doctorObject.getClinicDataList().get(0).getAmount() == 0) {
                 holder.doctorFee.setVisibility(View.INVISIBLE);
                 holder.ruppessIcon.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 holder.doctorFee.setVisibility(View.VISIBLE);
                 holder.ruppessIcon.setVisibility(View.VISIBLE);
-                holder.doctorFee.setText(""+doctorObject.getClinicDataList().get(0).getAmount());
+                holder.doctorFee.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
             }
             holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
             holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.dose_completed));
 
         } else {
             holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-            SpannableString locationString = new SpannableString( doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations)+" "+"in"+" "+cityname);
+            SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
             locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
             holder.doctorAddress.setText(locationString);
-            if(doctorObject.getClinicDataList().get(0).getAmount()==0){
+            if (doctorObject.getClinicDataList().get(0).getAmount() == 0) {
                 holder.doctorFee.setVisibility(View.INVISIBLE);
                 holder.ruppessIcon.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 holder.doctorFee.setVisibility(View.VISIBLE);
                 holder.ruppessIcon.setVisibility(View.VISIBLE);
-                holder.doctorFee.setText(""+doctorObject.getClinicDataList().get(0).getAmount());
+                holder.doctorFee.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
             }
 
         }
@@ -167,7 +156,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
-        requestOptions.override(mImageSize, mImageSize);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.placeholder(textDrawable);
@@ -224,8 +212,9 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                     }
                 }
             }
+        } else {
+            holder.doctorName.setText(doctorObject.getDocName());
         }
-
         //--------------
         if (doctorObject.getClinicDataList().size() > 0) {
             String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
@@ -391,11 +380,9 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 mDataList = (ArrayList<DoctorList>) filterResults.values;
                 if (mDataList.size() == 0) {
-                    RecentVisitDoctorFragment temp = (RecentVisitDoctorFragment) mFragment;
-                    temp.isDataListViewVisible(true, true);
+                    mOnDataListViewVisibleListener.doConfigureDataListViewVisibility(true, true);
                 } else {
-                    RecentVisitDoctorFragment temp = (RecentVisitDoctorFragment) mFragment;
-                    temp.isDataListViewVisible(true, false);
+                    mOnDataListViewVisibleListener.doConfigureDataListViewVisibility(true, false);
                 }
                 notifyDataSetChanged();
             }
@@ -414,11 +401,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         isListByClinicName = listByClinicName;
     }
 
-    public interface OnClinicAndDoctorNameSearchRowItem {
-        void onClickOfDoctorRowItem(Bundle bundleData);
-    }
-
-
     public void updateClickedItemFavImage() {
         DoctorList userSelectedDoctorListDataObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
         if (userSelectedDoctorListDataObject.getFavourite()) {
@@ -427,4 +409,9 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             mClickedItemFavImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
         }
     }
+
+    public interface OnDataListViewVisible {
+        public void doConfigureDataListViewVisibility(boolean flag, boolean isShowEmptyListView);
+    }
+
 }

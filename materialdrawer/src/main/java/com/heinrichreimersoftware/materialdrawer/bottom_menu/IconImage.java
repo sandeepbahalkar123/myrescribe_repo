@@ -59,9 +59,4 @@ public class IconImage implements Parcelable {
     public int describeContents() {
         return 0;
     }
-
-    @Override
-    public String toString() {
-        return url;
-    }
 }

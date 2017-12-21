@@ -44,14 +44,24 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     @Override
     public void onClickOfCardView(Bundle bundleData) {
         String value = bundleData.getString(mContext.getString(R.string.clicked_item_data_type_value));
+        String openingMode = bundleData.getString(mContext.getString(R.string.opening_mode));
+        String title = bundleData.getString(mContext.getString(R.string.toolbarTitle));
         userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
         if (value.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
             Intent intent = new Intent(mParentActivity, AppointmentActivity.class);
+            intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);
         } else {
             Intent intent = new Intent(mParentActivity, DoctorDescriptionBaseActivity.class);
             intent.putExtra(mContext.getString(R.string.clicked_item_data), userSelectedDoctorListDataObject);
-            intent.putExtra(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
+            if (mContext.getString(R.string.complaints).equalsIgnoreCase(openingMode) ||
+                    mContext.getString(R.string.doctors_speciality).equalsIgnoreCase(openingMode)) {
+                intent.putExtra(mContext.getString(R.string.toolbarTitle), title);
+            } else {
+                intent.putExtra(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
+                bundleData.putString(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
+            }
+            intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);
         }
     }
@@ -92,10 +102,18 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     @Override
     public void onClickedOfTokenNumber(Bundle bundleData) {
         userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
-
         Intent intent = new Intent(mParentActivity, SelectSlotToBookAppointmentBaseActivity.class);
 
-        bundleData.putString(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
+        //---
+        String openingMode = bundleData.getString(mContext.getString(R.string.opening_mode));
+        String title = bundleData.getString(mContext.getString(R.string.toolbarTitle));
+        if (mContext.getString(R.string.complaints).equalsIgnoreCase(openingMode) ||
+                mContext.getString(R.string.doctors_speciality).equalsIgnoreCase(openingMode)) {
+            intent.putExtra(mContext.getString(R.string.toolbarTitle), title);
+        } else {
+            bundleData.putString(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
+        }
+
 
         intent.putExtras(bundleData);
         mParentActivity.startActivity(intent);
@@ -107,7 +125,15 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
         Intent intent = new Intent(mParentActivity, SelectSlotToBookAppointmentBaseActivity.class);
 
-        bundleData.putString(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
+        //---
+        String openingMode = bundleData.getString(mContext.getString(R.string.opening_mode));
+        String title = bundleData.getString(mContext.getString(R.string.toolbarTitle));
+        if (mContext.getString(R.string.complaints).equalsIgnoreCase(openingMode) ||
+                mContext.getString(R.string.doctors_speciality).equalsIgnoreCase(openingMode)) {
+            intent.putExtra(mContext.getString(R.string.toolbarTitle), title);
+        } else {
+            bundleData.putString(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
+        }
 
         intent.putExtras(bundleData);
         mParentActivity.startActivity(intent);

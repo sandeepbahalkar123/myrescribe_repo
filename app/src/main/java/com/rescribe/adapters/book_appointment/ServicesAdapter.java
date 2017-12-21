@@ -60,16 +60,15 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListVi
 
         //------------
         if (clickOption.getIconImageUrl() != null) {
-            int imageSizeToLoadImage = CommonMethods.getImageSizeToLoadImage(mContext, 2);
+
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
-            requestOptions.override(imageSizeToLoadImage, imageSizeToLoadImage);
 
             Glide.with(mContext)
                     .load(clickOption.getIconImageUrl())
-                    .apply(requestOptions).thumbnail(0.5f)
+                    .apply(requestOptions)
                     .into(holder.serviceIcon);
         }
         //--------------

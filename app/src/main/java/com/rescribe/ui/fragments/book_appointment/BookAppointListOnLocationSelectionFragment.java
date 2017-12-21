@@ -44,7 +44,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class BookAppointListOnLocationSelectionFragment extends Fragment implements HelperResponse {
+public class BookAppointListOnLocationSelectionFragment extends Fragment implements HelperResponse, SortByClinicAndDoctorNameAdapter.OnDataListViewVisible {
 
 
     @BindView(R.id.listView)
@@ -115,7 +115,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
             @Override
             public void onClearButtonClicked() {
                 mSortByClinicAndDoctorNameAdapter.getFilter().filter("");
-                isDataListViewVisible(true, false);
+                doConfigureDataListViewVisibility(true, false);
             }
         });
 
@@ -135,7 +135,8 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
                 if (s.toString().trim().length() > 0) {
                     mSortByClinicAndDoctorNameAdapter.getFilter().filter(s);
                 } else {
-                    isDataListViewVisible(false, false);
+                    mSortByClinicAndDoctorNameAdapter.getFilter().filter("");
+                    doConfigureDataListViewVisibility(false, false);
                 }
             }
         });
@@ -160,9 +161,9 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     private void setDoctorListAdapter() {
 
         if (mReceivedList.size() == 0) {
-            isDataListViewVisible(true, true);
+            doConfigureDataListViewVisibility(true, true);
         } else {
-            isDataListViewVisible(true, false);
+            doConfigureDataListViewVisibility(true, false);
 
             mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), ServicesCardViewImpl.getReceivedDoctorDataList(), mServicesCardViewImpl, this, this);
             LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -220,7 +221,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
                 if (received != null) {
                     DoctorServicesModel doctorServices = received.getDoctorServicesModel();
                     if (doctorServices != null) {
-                        new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity()).setReceivedDoctorDataList(doctorServices.getDoctorList());
+                        new ServicesCardViewImpl(this.getContext(), (BookAppointListOnLocationSelection) getActivity()).setReceivedDoctorDataList(doctorServices.getDoctorList());
                         // mReceivedList = doctorServices.filterDocListBySpeciality(mReceivedTitle);
                     }
                 }
@@ -229,7 +230,8 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
             case RescribeConstants.TASK_GET_DOCTOR_DATA:
                 DoctorServicesModel receivedDoctorServicesModel = DoctorDataHelper.getReceivedDoctorServicesModel();
                 if (receivedDoctorServicesModel != null) {
-                    new ServicesCardViewImpl(this.getContext(), (BookAppointListOnLocationSelection) getActivity()).setReceivedDoctorDataList(receivedDoctorServicesModel.getDoctorList());
+                    mReceivedList = receivedDoctorServicesModel.getDoctorList();
+                    new ServicesCardViewImpl(this.getContext(), (BookAppointListOnLocationSelection) getActivity()).setReceivedDoctorDataList(mReceivedList);
                     setDoctorListAdapter();
                 }
                 break;
@@ -251,26 +253,6 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
 
     }
 
-    public void isDataListViewVisible(boolean flag, boolean isShowEmptyListView) {
-        if (flag) {
-            mLocationFab.setVisibility(View.VISIBLE);
-            mFilterFab.setVisibility(View.VISIBLE);
-            mDoctorListView.setVisibility(View.VISIBLE);
-            mEmptyListView.setVisibility(View.GONE);
-            if (isShowEmptyListView) {
-                mLocationFab.setVisibility(View.GONE);
-                mFilterFab.setVisibility(View.GONE);
-                mEmptyListView.setVisibility(View.VISIBLE);
-                mDoctorListView.setVisibility(View.GONE);
-            }
-        } else {
-            mLocationFab.setVisibility(View.GONE);
-            mFilterFab.setVisibility(View.GONE);
-            mEmptyListView.setVisibility(View.GONE);
-            mDoctorListView.setVisibility(View.GONE);
-        }
-
-    }
 
     @OnClick({R.id.rightFab, R.id.leftFab, R.id.bookAppointmentBackButton})
     public void onViewClicked(View view) {
@@ -321,6 +303,29 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    // It is implemented for SortByClinicAndDoctorNameAdapter and for local level view manage.
+    @Override
+    public void doConfigureDataListViewVisibility(boolean flag, boolean isShowEmptyListView) {
+        if (flag) {
+            mLocationFab.setVisibility(View.VISIBLE);
+            mFilterFab.setVisibility(View.VISIBLE);
+            mDoctorListView.setVisibility(View.VISIBLE);
+            mEmptyListView.setVisibility(View.GONE);
+            if (isShowEmptyListView) {
+                mLocationFab.setVisibility(View.GONE);
+                mFilterFab.setVisibility(View.GONE);
+                mEmptyListView.setVisibility(View.VISIBLE);
+                mDoctorListView.setVisibility(View.GONE);
+            }
+        } else {
+            mLocationFab.setVisibility(View.GONE);
+            mFilterFab.setVisibility(View.GONE);
+            mEmptyListView.setVisibility(View.GONE);
+            mDoctorListView.setVisibility(View.GONE);
+        }
+
     }
 
 }

@@ -114,11 +114,7 @@ public class CommonMethods {
      * @return
      */
     public final static boolean isValidEmail(CharSequence emailId) {
-        if (emailId == null) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(emailId).matches();
-        }
+        return emailId != null && android.util.Patterns.EMAIL_ADDRESS.matcher(emailId).matches();
     }
 
 
@@ -912,15 +908,6 @@ public class CommonMethods {
                 break;
         }
         return resolution;
-    }
-
-    public static int getImageSizeToLoadImage(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        int mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
-        return mImageSize;
     }
 
     public static SpannableString addTextToStringAtLast(String text, int wordSize, String addLastString, int addLastStringColor) {

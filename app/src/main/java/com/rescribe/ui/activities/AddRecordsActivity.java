@@ -120,6 +120,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     private MyRecordsHelper myRecordsHelper;
     private ColorGenerator mColorGenerator;
     private int mImageSize;
+    private String mSelectDatePicker = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,7 +210,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                         CommonMethods.showToast(mContext, getResources().getString(R.string.please_enter_doctor_address));
                         return;
                     }
-                    visitDate = selectDate.getText().toString();
+                    visitDate = mSelectDatePicker;
                 } else {
                     doctorId = mSelectedId;
                     if (isDatesThere) {
@@ -231,7 +232,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                             CommonMethods.showToast(mContext, getResources().getString(R.string.please_enter_date));
                             return;
                         }
-                        visitDate = selectDate.getText().toString();
+                        visitDate = mSelectDatePicker;
                     }
                 }
 
@@ -316,7 +317,8 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
     @Override
     public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-        selectDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+        selectDate.setText(CommonMethods.ordinal(dayOfMonth) + " " + CommonMethods.getFormattedDate(String.valueOf(monthOfYear + 1), RescribeConstants.DATE_PATTERN.MM, RescribeConstants.DATE_PATTERN.MMM) + " " + year);
+        mSelectDatePicker = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
     }
 
     @Override
@@ -350,6 +352,8 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                 mSelectDoctorName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        CommonMethods.hideKeyboard(AddRecordsActivity.this);
 
                         final ArrayList<VisitDate> spinnerList = new ArrayList<VisitDate>();
                         mSelectDateString = getResources().getString(R.string.select_date_text);
@@ -406,7 +410,6 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                                     .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
                                     .endConfig()
                                     .buildRound(("" + doctorSpinnerAdapter.getDoctor(position).getDoctorName().charAt(0)).toUpperCase(), color2);
-
 
                             RequestOptions requestOptions = new RequestOptions();
                             requestOptions.dontAnimate();

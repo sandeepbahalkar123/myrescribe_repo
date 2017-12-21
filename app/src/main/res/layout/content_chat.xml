@@ -38,6 +38,7 @@
         android:textColor="@color/Gray"
         android:textSize="@dimen/sp12"
         android:visibility="gone"
+        tools:visibility="visible"
         tools:text="12 September 2017" />
 
 

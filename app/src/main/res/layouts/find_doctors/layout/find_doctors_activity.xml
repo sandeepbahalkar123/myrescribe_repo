@@ -163,7 +163,100 @@
             android:paddingRight="@dimen/dp11"
             android:src="@drawable/right_arrow_circle" />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/favoriteFindDoctorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/favouriteDoctors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp26"
+            android:text="@string/favorite"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp14"
+            app:customFont="@string/roboto_regular" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp6"
+            android:src="@drawable/blue_line_find_doctor" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/viewAllFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/dp13"
+            android:layout_marginRight="@dimen/dp13"
+            android:layout_marginTop="@dimen/dp16"
+            android:text="@string/view_all"
+            android:textColor="#4785ee"
+            android:textSize="@dimen/sp14"
+            app:customFont="@string/roboto_regular" />
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/favoriteViewPager"
+            android:layout_width="wrap_content"
+            android:layout_height="165dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="@dimen/dp10"
+            android:visibility="visible" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/sponseredFindDoctorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/sponsoredDoctors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp26"
+            android:text="@string/featured_doctors"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp14"
+            app:customFont="@string/roboto_regular" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp6"
+            android:src="@drawable/blue_line_find_doctor" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/viewAllSponsered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/dp13"
+            android:layout_marginRight="@dimen/dp13"
+            android:layout_marginTop="@dimen/dp16"
+            android:text="@string/view_all"
+            android:textColor="#4785ee"
+            android:textSize="@dimen/sp14"
+            app:customFont="@string/roboto_regular" />
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/sponseredViewPager"
+            android:layout_width="wrap_content"
+            android:layout_height="165dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="@dimen/dp10"
+            android:visibility="visible" />
+
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/recentlyVisitedFindDoctorLayout"
         android:layout_width="match_parent"
@@ -212,100 +305,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/sponseredFindDoctorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/sponsoredDoctors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp26"
-            android:text="@string/sponsered_doctor"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp14"
-            app:customFont="@string/roboto_regular" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp6"
-            android:src="@drawable/blue_line_find_doctor" />
-
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/viewAllSponsered"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/dp13"
-            android:layout_marginRight="@dimen/dp13"
-            android:layout_marginTop="@dimen/dp16"
-            android:text="@string/view_all"
-            android:textColor="#4785ee"
-            android:textSize="@dimen/sp14"
-            app:customFont="@string/roboto_regular" />
 
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/sponseredViewPager"
-            android:layout_width="wrap_content"
-            android:layout_height="165dp"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="@dimen/dp10"
-            android:visibility="visible" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/favoriteFindDoctorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/favouriteDoctors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp26"
-            android:text="@string/favorite"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp14"
-            app:customFont="@string/roboto_regular" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp6"
-            android:src="@drawable/blue_line_find_doctor" />
-
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/viewAllFavorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/dp13"
-            android:layout_marginRight="@dimen/dp13"
-            android:layout_marginTop="@dimen/dp16"
-            android:text="@string/view_all"
-            android:textColor="#4785ee"
-            android:textSize="@dimen/sp14"
-            app:customFont="@string/roboto_regular" />
-
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/favoriteViewPager"
-            android:layout_width="wrap_content"
-            android:layout_height="165dp"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="@dimen/dp10"
-            android:visibility="visible" />
-
-    </LinearLayout>
 
 </LinearLayout>

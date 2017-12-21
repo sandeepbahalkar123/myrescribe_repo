@@ -127,6 +127,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     //-------
     @BindView(R.id.servicesLine)
     View servicesLine;
+    @BindView(R.id.ruppeeShadow)
+    ImageView ruppeeShadow;
     private View mRootView;
     private int mImageSize;
     Unbinder unbinder;
@@ -315,9 +317,11 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
                     }
                     if (clinicData.getAmount() == 0) {
+                        ruppeeShadow.setVisibility(View.INVISIBLE);
                         rupeesLayout.setVisibility(View.INVISIBLE);
                     } else {
                         rupeesLayout.setVisibility(View.VISIBLE);
+                        ruppeeShadow.setVisibility(View.VISIBLE);
                         mDoctorFees.setText("" + clinicData.getAmount());
                     }
                     mSelectedClinicDataPosition = position;
@@ -381,7 +385,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
                     setFavorite(mClickedDoctorObject.getFavourite());
                 }
-            //    CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+                //    CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;
         }
     }
@@ -455,7 +459,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 //--------
                 break;
             case R.id.favorite:
-
                 mDoctorDataHelper.setFavouriteDoctor(!mClickedDoctorObject.getFavourite(), mClickedDoctorObject.getDocId());
                 break;
             case R.id.doChat:

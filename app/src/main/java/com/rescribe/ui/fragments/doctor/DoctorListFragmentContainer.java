@@ -65,10 +65,8 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
     CustomTextView mYearSpinnerSingleItem;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-
     @BindView(R.id.noRecords)
     ImageView noRecords;
-
     private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<Year> mTimePeriodList = new ArrayList<>();
     private Year mCurrentSelectedTimePeriodTab;
@@ -115,7 +113,7 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
         YearSpinnerInteractionListener listener = new YearSpinnerInteractionListener();
         mYearSpinnerView.setOnTouchListener(listener);
         mYearSpinnerView.setOnItemSelectedListener(listener);
-        mYearSpinnerView.setVisibility(View.VISIBLE);
+        mYearSpinnerView.setVisibility(View.GONE);
         mYearSpinnerSingleItem.setVisibility(View.GONE);
 
 
@@ -181,8 +179,8 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
                 }
 
                 if (mYearList.size() == 1) {
-                    mYearSpinnerSingleItem.setVisibility(View.VISIBLE);
                     mYearSpinnerView.setVisibility(View.GONE);
+                    mYearSpinnerSingleItem.setVisibility(View.VISIBLE);
                     SpannableString contentViewAllFavorite = new SpannableString(mYearList.get(0).toString());
                     contentViewAllFavorite.setSpan(new UnderlineSpan(), 0, contentViewAllFavorite.length(), 0);
                     mYearSpinnerSingleItem.setText(contentViewAllFavorite);
@@ -316,10 +314,11 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
                     mYearSpinnerView.setAdapter(mCustomSpinAdapter);
                 }
                 if (doctorDataModel.getReceivedYearMap().isEmpty()) {
-                    noRecords.setVisibility(View.VISIBLE);
+
                     mYearSpinnerView.setVisibility(View.GONE);
                     mYearSpinnerSingleItem.setVisibility(View.GONE);
                     mTabLayout.setVisibility(View.GONE);
+                    noRecords.setVisibility(View.VISIBLE);
                 } else {
                     noRecords.setVisibility(View.GONE);
                     mYearSpinnerView.setVisibility(View.VISIBLE);

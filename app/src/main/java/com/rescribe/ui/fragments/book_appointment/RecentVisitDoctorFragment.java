@@ -125,7 +125,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     private void init() {
-
+        recyclerViewLinearLayout.setVisibility(View.INVISIBLE);
+        mBookAppointSpecialityListView.setVisibility(View.INVISIBLE);
+        whiteUnderLine.setVisibility(View.INVISIBLE);
+        searchView.setVisibility(View.INVISIBLE);
+        pickSpeciality.setVisibility(View.INVISIBLE);
         Bundle arguments = getArguments();
         if (arguments != null) {
             mReceivedTitle = arguments.getString(getString(R.string.title));

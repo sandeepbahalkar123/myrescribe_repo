@@ -75,7 +75,7 @@
     <string name="upload">Upload</string>
     <string name="adddocs">Add Documents</string>
     <string name="title_activity_zoomview">Zoom View</string>
-    <string name="investigation_msg">Have you done the investigations advised by&#160;</string>
+    <string name="investigation_msg">Have you done the investigations advised by Dr.&#160;</string>
     <string name="appointment_msg">You have an appointment with Dr. ---- on --th June at --:-- am.</string>
     <string name="appointment">Appointment</string>
     <string name="investigation">Investigation</string>
@@ -370,6 +370,7 @@
     <string name="today">today</string>
     <string name="book_time_slot_err">Slot must be greater than current time.</string>
     <string name="token_select_time_err_msg">Please select future time slot for the day.</string>
+    <string name="featured_doctors">Featured Doctors</string>
 
     <!--************************-->
 </resources>

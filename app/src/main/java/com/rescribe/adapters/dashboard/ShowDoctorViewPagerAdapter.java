@@ -123,7 +123,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         final DoctorList doctorObject = mDataList.get(position);
 
         doctorCategoryType.setText(doctorObject.getCategorySpeciality());
-        doctorCategory.setText(doctorObject.getCategoryName());
+
         doctorNameTextView.setText(doctorObject.getDocName());
         doctorType.setText(doctorObject.getDegree());
         if (doctorObject.getExperience() == 0) {
@@ -179,6 +179,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
             feesToPaid.setVisibility(View.INVISIBLE);
             bookAppointmentButton.setVisibility(View.GONE);
+            doctorCategory.setText(mContext.getString(R.string.my_appointments));
             doctorAppointmentDate.setVisibility(View.VISIBLE);
             tokenNo.setVisibility(View.GONE);
             SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + ", " + CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a));
@@ -192,7 +193,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
 
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
-
+            doctorCategory.setText(mContext.getString(R.string.featured_doctors));
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
@@ -234,6 +235,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             //---------------
 
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
+            doctorCategory.setText(mContext.getString(R.string.recently_visited_doctor));
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
@@ -273,6 +275,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             }
             //---------------
         }else if (doctorObject.getCategoryName().equals(RescribeConstants.BLANK)) {
+
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());

@@ -25,8 +25,9 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.heinrichreimersoftware.materialdrawer.R;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 
@@ -43,14 +44,12 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     private FrameLayout mFrame;
     private RecyclerView bottomMenuListRecyclerView;
     private BottomMenuAdapter bottomMenuAdapter;
-    private int widthPixels;
 
     public ArrayList<BottomMenu> bottomMenus = new ArrayList<>();
     public ArrayList<BottomSheetMenu> bottomSheetMenus = new ArrayList<>();
 
     private RelativeLayout bottomSheetMenu;
     private FrameLayout bottomSheetMenuLayout;
-    //    private BottomSheetMenuAdapter mBottomSheetMenuAdapter;
     public boolean isOpen;
     private TableLayout tableLayout;
     private int mPosition;
@@ -74,7 +73,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         mMobileNumber = (TextView) findViewById(R.id.mobileNumber);
         bottomMenuListRecyclerView = (RecyclerView) findViewById(R.id.bottomMenuListRecyclerView);
         imageUrl = (CircularImageView) findViewById(R.id.imageUrl);
-        widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         mColorGenerator = ColorGenerator.MATERIAL;
         createBottomMenu();
 
@@ -175,13 +174,21 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
                     onBottomSheetMenuClick(bottomSheetMenu);
                 }
             });
-            RequestOptions options = new RequestOptions()
+
+            RequestOptions requestOptions = new RequestOptions()
                     .centerInside()
-                    .priority(Priority.HIGH);
+                    .override(getResources().getDimensionPixelSize(R.dimen.bottom_sheet_icon_size));
+
+            if (bottomSheetMenus.get(i).getIconImageUrl().getTime().isEmpty()) {
+                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.skipMemoryCache(true);
+            } else
+                requestOptions.signature(new ObjectKey(bottomSheetMenus.get(i).getIconImageUrl().getTime()));
 
             Glide.with(menuBottomIcon.getContext())
-                    .load(bottomSheetMenus.get(i).getIconImageUrl()).apply(options)
+                    .load(bottomSheetMenus.get(i).getIconImageUrl().getUrl()).apply(requestOptions)
                     .into(menuBottomIcon);
+
             tableRow.setGravity(Gravity.CENTER);
             tableRow.addView(item);
         }

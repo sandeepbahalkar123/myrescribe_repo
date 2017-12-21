@@ -13,11 +13,9 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -130,7 +128,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     @BindView(R.id.ruppeeShadow)
     ImageView ruppeeShadow;
     private View mRootView;
-    private int mImageSize;
     Unbinder unbinder;
     private DoctorList mClickedDoctorObject;
     private DoctorDataHelper mDoctorDataHelper;
@@ -165,31 +162,18 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     }
 
     private void setFavorite(boolean favorite) {
-        if (favorite) {
-            mFavorite.setImageResource(R.drawable.fav_icon);
-        } else {
-            mFavorite.setImageResource(R.drawable.result_line_heart_fav);
-        }
+        mFavorite.setImageResource(favorite ? R.drawable.fav_icon : R.drawable.result_line_heart_fav);
     }
 
     private void init() {
 
         mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
         mColorGenerator = ColorGenerator.MATERIAL;
-        setColumnNumber(getActivity(), 2);
         //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
         Bundle arguments = getArguments();
         if (arguments != null) {
             mReceivedTitle = arguments.getString(getString(R.string.toolbarTitle));
         }
-    }
-
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     private void setDataInViews() {
@@ -229,7 +213,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
-            requestOptions.override(mImageSize, mImageSize);
             requestOptions.placeholder(drawable);
             requestOptions.error(drawable);
 

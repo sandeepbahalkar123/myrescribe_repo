@@ -150,7 +150,7 @@ public class EditTextWithDeleteButton extends LinearLayout {
         editText.setFocusable(false);
         editText.setFocusableInTouchMode(true);
         editText.setHintTextColor(getResources().getColor(R.color.grey_hint_color));
-        editText.setCompoundDrawablePadding(CommonMethods.convertDpToPixel(6));
+        editText.setCompoundDrawablePadding(context.getResources().getDimensionPixelSize(R.dimen.dp6));
         editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.search, 0, 0, 0);
         editText.setBackground(null);
         editText.setTextColor(getResources().getColor(R.color.white));
@@ -165,7 +165,7 @@ public class EditTextWithDeleteButton extends LinearLayout {
 
         params.gravity = Gravity.CENTER_VERTICAL;
         clearTextButton.setLayoutParams(params);
-        clearTextButton.setPadding(CommonMethods.convertDpToPixel(6), CommonMethods.convertDpToPixel(6), CommonMethods.convertDpToPixel(6), CommonMethods.convertDpToPixel(6));
+        clearTextButton.setPadding(context.getResources().getDimensionPixelSize(R.dimen.dp6), context.getResources().getDimensionPixelSize(R.dimen.dp6), context.getResources().getDimensionPixelSize(R.dimen.dp6), context.getResources().getDimensionPixelSize(R.dimen.dp6));
         clearTextButton.setBackgroundResource(deleteButtonRes);
 //        clearTextButton.setVisibility(View.GONE);
         return clearTextButton;

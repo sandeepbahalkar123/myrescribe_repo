@@ -230,7 +230,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                                 .fontSize(fontSize)
                                 .toUpperCase()
                                 .endConfig()
-                                .buildRoundRect(extension, holder.senderFileIcon.getResources().getColor(R.color.grey_500), CommonMethods.convertDpToPixel(2));
+                                .buildRoundRect(extension, holder.senderFileIcon.getResources().getColor(R.color.grey_500), context.getResources().getDimensionPixelSize(R.dimen.dp2));
                         holder.senderFileIcon.setImageDrawable(fileTextDrawable);
 
                         holder.senderFileLayout.setOnClickListener(new View.OnClickListener() {
@@ -493,7 +493,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                                 .fontSize(fontSize)
                                 .toUpperCase()
                                 .endConfig()
-                                .buildRoundRect(extension, holder.senderFileIcon.getResources().getColor(R.color.grey_500), CommonMethods.convertDpToPixel(3));
+                                .buildRoundRect(extension, holder.senderFileIcon.getResources().getColor(R.color.grey_500), context.getResources().getDimensionPixelSize(R.dimen.dp3));
 
                         holder.receiverFileIcon.setImageDrawable(fileTextDrawable);
 

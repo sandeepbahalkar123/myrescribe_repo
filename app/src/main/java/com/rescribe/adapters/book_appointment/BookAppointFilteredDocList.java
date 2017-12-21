@@ -40,7 +40,6 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     private HelperResponse mHelperResponse;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
-    private int mImageSize;
     private ServicesCardViewImpl mOnFilterDocListClickListener;
     private ImageView mClickedItemFavImageView;
 
@@ -50,21 +49,11 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         this.mOnFilterDocListClickListener = mOnFilterDocListClickListener;
         this.mHelperResponse = helperResponse;
         this.mClickedItemDataTypeValue = mClickedItemDataValue;
-        setColumnNumber(mContext, 2);
         String cityNameString = RescribeApplication.getUserSelectedLocationInfo().get(mContext.getString(R.string.location));
         if (cityNameString != null) {
             String[] split = cityNameString.split(",");
             cityname = split[1].trim();
         }
-    }
-
-
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        mImageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
     @Override
@@ -110,7 +99,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 holder.clinicName.setVisibility(View.GONE);
             }
             //Sponsered Doctors
-        } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
+        } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))) {
 
             if (clinicDataList.size() == 1) {
                 holder.clinicName.setVisibility(View.VISIBLE);
@@ -120,11 +109,21 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
-                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
-                    holder.doctorAddress.setText(locationString);
-                    holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                    holder.clinicName.setVisibility(View.GONE);
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.GONE);
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.GONE);
+
+                    }
                 }
             }
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
@@ -161,11 +160,22 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+" "+"in"+" "+cityname);
-                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
-                    holder.doctorAddress.setText(locationString);
-                    holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                    holder.clinicName.setVisibility(View.GONE);
+
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.GONE);
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.GONE);
+
+                    }
                 }
             }
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
@@ -201,11 +211,21 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             } else {
                 if (doctorObject.getClinicDataList().size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+" "+"in"+" "+cityname);
-                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
-                    holder.doctorAddress.setText(locationString);
-                    holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                    holder.clinicName.setVisibility(View.GONE);
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.GONE);
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.GONE);
+
+                    }
                 }
             }
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
@@ -263,7 +283,6 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
-        requestOptions.override(mImageSize, mImageSize);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.placeholder(textDrawable);
@@ -389,5 +408,29 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         } else {
             mClickedItemFavImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
         }
+    }
+    /**
+     *
+     * @param list
+     * @return true incase all clinic adrress are same, else false.
+     * (Considered all address ends with city name)
+     */
+    private boolean checkAllClinicAddressInSameCity(ArrayList<ClinicData> list) {
+
+        if (list.size() > 1) {
+            int count = 0;
+            String[] clinicAddress = list.get(0).getClinicAddress().split(",");
+            for (ClinicData innerDataObject :
+                    list) {
+                String innerClinicAddress = innerDataObject.getClinicAddress();
+                if (innerClinicAddress.endsWith(clinicAddress[clinicAddress.length - 1])) {
+                    count = count + 1;
+                }
+            }
+            if (count == list.size()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

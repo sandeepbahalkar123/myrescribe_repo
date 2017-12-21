@@ -64,7 +64,6 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     CircularImageView mDoctorImg;
     @BindView(R.id.title)
     CustomTextView title;
-    private int imageSize;
 
     private int mLastExpandedPosition = -1;
     Intent mIntent;
@@ -81,8 +80,6 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_details_activity);
         ButterKnife.bind(this);
-        setColumnNumber(this, 2);
-
         initialize();
     }
 
@@ -92,7 +89,6 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         mContext = SingleVisitDetailsActivity.this;
         mColorGenerator = ColorGenerator.MATERIAL;
         mIntent = getIntent();
-        setColumnNumber(this, 2);
         if (getIntent().getExtras() != null) {
             mDocName = mIntent.getStringExtra(getString(R.string.name));
             mDoctorName.setText(mIntent.getStringExtra(getString(R.string.name)));
@@ -109,7 +105,6 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
-            requestOptions.override(imageSize, imageSize);
             requestOptions.placeholder(drawable);
             requestOptions.error(drawable);
 
@@ -133,12 +128,11 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         requestOptions.dontAnimate();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
-        requestOptions.override(imageSize, imageSize);
         requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
 
         Glide.with(this)
                 .load(mIntent.getStringExtra(getString(R.string.doctor_image)))
-                .apply(requestOptions).thumbnail(0.5f)
+                .apply(requestOptions)
                 .into(mDoctorImg);
 
         mSingleVisitDetailHelper = new SingleVisitDetailHelper(this, this);
@@ -307,14 +301,6 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
         mHistoryExpandableListView.setVisibility(View.GONE);
         mNoRecordAvailable.setVisibility(View.VISIBLE);
-    }
-
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        imageSize = (widthPixels / columnNum) - CommonMethods.convertDpToPixel(30);
     }
 
 }

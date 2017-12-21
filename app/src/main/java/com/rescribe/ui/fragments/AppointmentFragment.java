@@ -64,12 +64,14 @@ public class AppointmentFragment extends Fragment {
     private void init() {
         mAppointmentListView = (RecyclerView) mRootView.findViewById(R.id.listView);
         mEmptyListView = (RelativeLayout) mRootView.findViewById(R.id.emptyListView);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setDoctorListAdapter();
+
     }
 
     private void setDoctorListAdapter() {

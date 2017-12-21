@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <View
@@ -53,7 +54,7 @@
     </LinearLayout>
 
     <android.support.v4.widget.NestedScrollView
-
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -67,6 +68,8 @@
             android:visibility="visible">
 
             <LinearLayout
+                android:id="@+id/viewDoctorPager"
+                tools:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#05163B">

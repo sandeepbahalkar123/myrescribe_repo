@@ -12,69 +12,62 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/designLineLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp4"
-            android:background="@drawable/design_line"
-            android:orientation="horizontal">
+            android:background="@drawable/design_line">
 
-            <RelativeLayout
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/doctorCategoryVisit"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp11"
+                android:layout_marginTop="@dimen/dp8"
+                android:drawableLeft="@drawable/blue_line"
+                android:drawablePadding="@dimen/dp8"
+                android:paddingRight="@dimen/dp4"
+                android:textColor="@color/greyish"
+                android:textSize="@dimen/sp12"
+                app:customFont="@string/roboto_regular"
+                tools:text="My Appointments" />
 
-                <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/doctorCategoryVisit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp11"
-                    android:layout_marginTop="@dimen/dp8"
-                    android:drawableLeft="@drawable/blue_line"
-                    android:drawablePadding="@dimen/dp8"
-                    android:paddingRight="@dimen/dp4"
-                    android:textColor="@color/greyish"
-                    android:textSize="@dimen/sp12"
-                    app:customFont="@string/roboto_regular"
-                    tools:text="My Appointments" />
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/sizeOfList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp4"
+                android:layout_marginLeft="@dimen/dp11"
+                android:layout_marginStart="@dimen/dp11"
+                android:layout_marginTop="3dp"
+                android:layout_toRightOf="@id/doctorCategoryVisit"
+                android:background="@drawable/show_count_bg"
+                android:gravity="center"
+                android:paddingBottom="@dimen/dp4"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp12"
+                app:customFont="@string/roboto_bold"
+                tools:text="1" />
 
-                <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/sizeOfList"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp4"
-                    android:layout_marginLeft="@dimen/dp11"
-                    android:layout_marginStart="@dimen/dp11"
-                    android:layout_marginTop="3dp"
-                    android:layout_toRightOf="@id/doctorCategoryVisit"
-                    android:background="@drawable/show_count_bg"
-                    android:gravity="center"
-                    android:paddingBottom="@dimen/dp4"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp12"
-                    app:customFont="@string/roboto_bold"
-                    tools:text="1" />
-
-                <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/doctorCategoryType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp10"
-                    android:layout_marginTop="@dimen/dp9"
-                    android:background="@drawable/premium_doctor_bg"
-                    android:drawableLeft="@drawable/premium_icon"
-                    android:drawablePadding="@dimen/dp2"
-                    android:gravity="center"
-                    android:padding="@dimen/dp4"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp12"
-                    app:customFont="@string/roboto_medium"
-                    tools:text="Premium" />
-            </RelativeLayout>
-
-        </LinearLayout>
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/doctorCategoryType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dp10"
+                android:layout_marginTop="@dimen/dp9"
+                android:background="@drawable/premium_doctor_bg"
+                android:drawableLeft="@drawable/premium_icon"
+                android:drawablePadding="@dimen/dp2"
+                android:gravity="center"
+                android:padding="@dimen/dp4"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp12"
+                app:customFont="@string/roboto_medium"
+                tools:text="Premium" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -96,9 +89,9 @@
                     android:layout_width="@dimen/dp56"
                     android:layout_height="@dimen/dp56"
                     android:layout_gravity="center_vertical"
-                    tools:src="@drawable/layer_12"
                     app:border="true"
-                    app:shadow="true" />
+                    app:shadow="true"
+                    tools:src="@drawable/layer_12" />
             </LinearLayout>
 
             <LinearLayout
@@ -159,10 +152,10 @@
                     android:id="@+id/doctorType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/grey_shade"
-                    android:textSize="10sp"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:textColor="@color/grey_shade"
+                    android:textSize="10sp"
                     app:customFont="@string/roboto_medium"
                     tools:text="Cardilogist" />
 
@@ -283,6 +276,4 @@
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
-
-
 </android.support.v7.widget.CardView>

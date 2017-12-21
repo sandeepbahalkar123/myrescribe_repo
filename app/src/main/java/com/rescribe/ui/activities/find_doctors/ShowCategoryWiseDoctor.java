@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
@@ -16,7 +17,6 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -34,6 +34,8 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
     Toolbar toolbar;
     @BindView(R.id.showDoctorList)
     RecyclerView showDoctorList;
+    @BindView(R.id.emptyListView)
+    RelativeLayout emptyListView;
     private BookAppointFilteredDocList mBookAppointFilteredDocListAdapter;
     private ServicesCardViewImpl mServicesCardViewImpl;
     private Context mContext;
@@ -80,27 +82,39 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (ShowCategoryWiseDoctor) mContext);
         if (getString(R.string.favorite).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mDoctorCategoryList = mServicesCardViewImpl.getFavouriteDocList(-1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            showDoctorList.setLayoutManager(layoutManager);
-            showDoctorList.setHasFixedSize(true);
-            showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
+            if(mDoctorCategoryList.size()!=0) {
+                emptyListView.setVisibility(View.GONE);
+                mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                showDoctorList.setLayoutManager(layoutManager);
+                showDoctorList.setHasFixedSize(true);
+                showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
+            }else{
+                emptyListView.setVisibility(View.VISIBLE);
+            }
         } else if (getString(R.string.recently_visit_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
-
             mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataTypeValue, -1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            showDoctorList.setLayoutManager(layoutManager);
-            showDoctorList.setHasFixedSize(true);
-            showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
-        } else if (getString(R.string.sponsered_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
-
+            if(mDoctorCategoryList.size()!=0) {
+                emptyListView.setVisibility(View.GONE);
+                mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                showDoctorList.setLayoutManager(layoutManager);
+                showDoctorList.setHasFixedSize(true);
+                showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
+            }else{
+                emptyListView.setVisibility(View.VISIBLE);
+            }
+        } else if (getString(R.string.sponsored_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataTypeValue, -1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            showDoctorList.setLayoutManager(layoutManager);
-            showDoctorList.setHasFixedSize(true);
-            showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
+            if(mDoctorCategoryList.size()!=0) {
+                mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                showDoctorList.setLayoutManager(layoutManager);
+                showDoctorList.setHasFixedSize(true);
+                showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
+            } else{
+                emptyListView.setVisibility(View.VISIBLE);
+            }
         } else if (getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.complaints))) {
            /* HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
@@ -117,7 +131,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         switch (mOldDataTag) {
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
-              //  CommonMethods.showToast(this, temp.getCommonRespose().getStatusMessage());
+                //  CommonMethods.showToast(this, temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());

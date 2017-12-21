@@ -110,7 +110,7 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
         YearSpinnerInteractionListener listener = new YearSpinnerInteractionListener();
         mYearSpinnerView.setOnTouchListener(listener);
         mYearSpinnerView.setOnItemSelectedListener(listener);
-        mYearSpinnerView.setVisibility(View.VISIBLE);
+        mYearSpinnerView.setVisibility(View.GONE);
         mYearSpinnerSingleItem.setVisibility(View.GONE);
 
         //-------

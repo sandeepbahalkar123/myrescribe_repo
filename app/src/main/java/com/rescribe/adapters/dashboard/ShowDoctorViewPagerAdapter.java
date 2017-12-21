@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
@@ -111,7 +112,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.imageURL);
         final LinearLayout thumbnail = (LinearLayout) imageLayout
                 .findViewById(R.id.thumbnail);
-        final LinearLayout designLineLayout = (LinearLayout) imageLayout
+        final RelativeLayout designLineLayout = (RelativeLayout) imageLayout
                 .findViewById(R.id.designLineLayout);
         final CustomTextView clinicName = (CustomTextView) imageLayout
                 .findViewById(R.id.clinicName);
@@ -123,7 +124,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         final DoctorList doctorObject = mDataList.get(position);
 
         doctorCategoryType.setText(doctorObject.getCategorySpeciality());
-
+        doctorCategory.setText(doctorObject.getCategoryName());
         doctorNameTextView.setText(doctorObject.getDocName());
         doctorType.setText(doctorObject.getDegree());
         if (doctorObject.getExperience() == 0) {
@@ -179,7 +180,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
             feesToPaid.setVisibility(View.INVISIBLE);
             bookAppointmentButton.setVisibility(View.GONE);
-            doctorCategory.setText(mContext.getString(R.string.my_appointments));
             doctorAppointmentDate.setVisibility(View.VISIBLE);
             tokenNo.setVisibility(View.GONE);
             SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + ", " + CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a));
@@ -192,8 +192,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
 
-        } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
-            doctorCategory.setText(mContext.getString(R.string.featured_doctors));
+        } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))) {
+
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
@@ -202,11 +202,22 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
-                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
-                    doctorAddress.setText(locationString);
-                    doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                    clinicName.setVisibility(View.INVISIBLE);
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        clinicName.setVisibility(View.INVISIBLE);
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        clinicName.setVisibility(View.INVISIBLE);
+
+                    }
+
                 }
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
@@ -235,7 +246,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             //---------------
 
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
-            doctorCategory.setText(mContext.getString(R.string.recently_visited_doctor));
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
@@ -244,11 +254,21 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+" "+"in"+" "+cityname);
-                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
-                    doctorAddress.setText(locationString);
-                    doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                    clinicName.setVisibility(View.INVISIBLE);
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        clinicName.setVisibility(View.INVISIBLE);
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        clinicName.setVisibility(View.INVISIBLE);
+
+                    }
                 }
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.desing_line_for_big_name));
@@ -274,8 +294,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 }
             }
             //---------------
-        }else if (doctorObject.getCategoryName().equals(RescribeConstants.BLANK)) {
-
+        } else if (doctorObject.getCategoryName().equals(RescribeConstants.BLANK)) {
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
@@ -284,11 +303,21 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+" "+"in"+" "+cityname);
-                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
-                    doctorAddress.setText(locationString);
-                    doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                    clinicName.setVisibility(View.INVISIBLE);
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        clinicName.setVisibility(View.INVISIBLE);
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        clinicName.setVisibility(View.INVISIBLE);
+
+                    }
                 }
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.desing_line_for_big_name));
@@ -394,6 +423,31 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view.equals(object);
+    }
+
+    /**
+     *
+     * @param list
+     * @return true incase all clinic adrress are same, else false.
+     * (Considered all address ends with city name)
+     */
+    private boolean checkAllClinicAddressInSameCity(ArrayList<ClinicData> list) {
+
+        if (list.size() > 1) {
+            int count = 0;
+            String[] clinicAddress = list.get(0).getClinicAddress().split(",");
+            for (ClinicData innerDataObject :
+                    list) {
+                String innerClinicAddress = innerDataObject.getClinicAddress();
+                if (innerClinicAddress.endsWith(clinicAddress[clinicAddress.length - 1])) {
+                    count = count + 1;
+                }
+            }
+            if (count == list.size()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

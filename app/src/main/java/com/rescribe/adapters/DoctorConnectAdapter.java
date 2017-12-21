@@ -121,7 +121,7 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         requestOptions.dontAnimate();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
-        requestOptions.override(CommonMethods.convertDpToPixel(40), CommonMethods.convertDpToPixel(40));
+        requestOptions.override(mContext.getResources().getDimensionPixelSize(R.dimen.dp40), mContext.getResources().getDimensionPixelSize(R.dimen.dp40));
         requestOptions.placeholder(textDrawable);
         requestOptions.error(textDrawable);
 

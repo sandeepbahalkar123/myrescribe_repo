@@ -158,7 +158,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     //--------------
 
     private View mRootView;
-    private int mImageSize;
     Unbinder unbinder;
 
     private DoctorDataHelper mDoctorDataHelper;
@@ -308,7 +307,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
-            requestOptions.override(mImageSize, mImageSize);
             requestOptions.placeholder(drawable);
             requestOptions.error(drawable);
 

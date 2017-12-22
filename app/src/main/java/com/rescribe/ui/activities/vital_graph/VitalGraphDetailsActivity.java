@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.google.gson.Gson;
 import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 import com.rescribe.R;
 import com.rescribe.helpers.vital_graph_helper.VitalGraphHelper;
@@ -36,6 +38,8 @@ import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -121,7 +125,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         switch (mOldDataTag) {
             case RescribeConstants.TASK_GET_PATIENT_VITAL_DETAIL:
-                VitalGraphInfoBaseModel customResponse1 = (VitalGraphInfoBaseModel) customResponse;
+               // VitalGraphInfoBaseModel customResponse1 = test();
+                 VitalGraphInfoBaseModel customResponse1 = (VitalGraphInfoBaseModel) customResponse;
 
                 if (customResponse1.getVitalGraphInfoDataModel() != null) {
                     mReceivedVitalGraphDataModel = customResponse1.getVitalGraphInfoDataModel();
@@ -141,6 +146,25 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 mVitalGraphHelper.doGetPatientVitalDetail(mClickedVitalGraphData.getVitalName());
                 break;
         }
+    }
+
+    private VitalGraphInfoBaseModel test() {
+        try {
+            InputStream is = getAssets().open("vitals_graph.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+            Log.e("test", "doctor_data_22_nov_2017" + json);
+
+            Gson gson = new Gson();
+            VitalGraphInfoBaseModel bookAppointmentBaseModel = gson.fromJson(json, VitalGraphInfoBaseModel.class);
+            return bookAppointmentBaseModel;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     private void plotVitalGraphUsingMpChart() {
@@ -213,10 +237,15 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                     public String getFormattedValue(float value, AxisBase axis) {
 
                         System.out.println(value);
-                        if (((int) value) < tempLabelsArrayList.size()) {
-                            return (tempLabelsArrayList.get((int) value));
-                        } else {
+
+                        if ((int) value == -1) {
                             return "";
+                        } else {
+                            if (((int) value) < tempLabelsArrayList.size()) {
+                                return (tempLabelsArrayList.get((int) value));
+                            } else {
+                                return "";
+                            }
                         }
                         //  return tempLabelsArrayList.get((int) value);
                     }
@@ -316,10 +345,14 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                     @Override
                     public String getFormattedValue(float value, AxisBase axis) {
                         System.out.println(value);
-                        if (((int) value) < tempLabelsArrayList.size()) {
-                            return (tempLabelsArrayList.get((int) value));
-                        } else {
+                        if ((int) value == -1) {
                             return "";
+                        } else {
+                            if (((int) value) < tempLabelsArrayList.size()) {
+                                return (tempLabelsArrayList.get((int) value));
+                            } else {
+                                return "";
+                            }
                         }
                         //  return tempLabelsArrayList.get((int) value);
                     }

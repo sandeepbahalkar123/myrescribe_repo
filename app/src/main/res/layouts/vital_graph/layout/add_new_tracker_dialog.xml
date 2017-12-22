@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:hint="@string/enter_date"
+                android:hint="@string/dd_mm_yyy"
                 android:padding="@dimen/dp10"
                 android:textSize="@dimen/sp16"
                 app:customFont="@string/roboto_regular" />
@@ -132,7 +132,7 @@
                 android:background="@null"
                 android:cursorVisible="true"
                 android:gravity="center"
-                android:hint="@string/enter_reading"
+                android:hint="130/88"
                 android:inputType="numberDecimal"
                 android:padding="@dimen/dp10"
                 android:textCursorDrawable="@drawable/cursor_black"

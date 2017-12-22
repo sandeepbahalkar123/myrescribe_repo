@@ -141,7 +141,7 @@ public class InvestigationNotificationService extends Service implements HelperR
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.investigation));
 
-        mRemoteViews.setTextViewText(R.id.questionText, getText(R.string.investigation_msg) + value.get(0).getDoctorName() + "?");
+        mRemoteViews.setTextViewText(R.id.questionText, getText(R.string.investigation_msg) + doctorName + "?");
         mRemoteViews.setTextViewText(R.id.timeText, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
 
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

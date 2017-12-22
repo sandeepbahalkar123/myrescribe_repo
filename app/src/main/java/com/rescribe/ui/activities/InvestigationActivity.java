@@ -76,6 +76,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     private InvestigationHelper investigationHelper;
     private int patientId;
     private Intent gmailIntent;
+    private String doctorName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -313,9 +314,14 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     private void getIntentData() {
 
         investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
-
+        if(investigation.get(0).getDoctorName().toLowerCase().contains("dr.")){
+            doctorName = investigation.get(0).getDoctorName();
+        }else{
+            doctorName = "Dr. " + investigation.get(0).getDoctorName();
+        }
         String titleText = getResources().getString(R.string.investigation_title);
-        titleText += investigation.get(0).getDoctorName();
+
+        titleText += doctorName;
 
         title.setText(titleText);
 

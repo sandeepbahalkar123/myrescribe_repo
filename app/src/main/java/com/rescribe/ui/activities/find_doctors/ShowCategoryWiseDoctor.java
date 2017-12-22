@@ -96,25 +96,12 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
 
         } else if (getString(R.string.recently_visit_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataTypeValue, -1);
-
             mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle, mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             showDoctorList.setLayoutManager(layoutManager);
             showDoctorList.setHasFixedSize(true);
             showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
-        } else if (getString(R.string.sponsored_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
-
-            if (mDoctorCategoryList.size() != 0) {
-                emptyListView.setVisibility(View.GONE);
-                mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle, mReceivedTitle);
-                LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-                showDoctorList.setLayoutManager(layoutManager);
-                showDoctorList.setHasFixedSize(true);
-                showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
-            } else {
-                emptyListView.setVisibility(View.VISIBLE);
-            }
-        } else if (getString(R.string.sponsored_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
+        }  else if (getString(R.string.sponsored_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataTypeValue, -1);
             if (mDoctorCategoryList.size() != 0) {
                 mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle, mReceivedTitle);

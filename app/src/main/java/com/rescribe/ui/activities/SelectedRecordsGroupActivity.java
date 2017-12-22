@@ -96,7 +96,6 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
         opdId = getIntent().getIntExtra(RescribeConstants.OPD_ID, 0);
 
         visitDate = getIntent().getStringExtra(RescribeConstants.VISIT_DATE);
-        visitDate = CommonMethods.getFormattedDate(visitDate, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
 
         docId = getIntent().getIntExtra(RescribeConstants.DOCTORS_ID, 0);
 
@@ -263,6 +262,8 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
             else
                 childCaptionName = image.getParentCaption();
 
+            String visitDateToPass = CommonMethods.getFormattedDate(visitDate, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+
             MultipartUploadRequest uploadRequest = new MultipartUploadRequest(SelectedRecordsGroupActivity.this, uploadId, Url)
                     .setNotificationConfig(uploadNotificationConfig)
                     .setMaxRetries(RescribeConstants.MAX_RETRIES)
@@ -275,7 +276,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
 
                     .addHeader("patientId", patientId)
                     .addHeader("docId", String.valueOf(docId))
-                    .addHeader("visitDate", visitDate)
+                    .addHeader("visitDate", visitDateToPass)
                     .addHeader("imageId", image.getImageId())
                     .addHeader("parentCaptionName", image.getParentCaption())
                     .addHeader("childCaptionName", childCaptionName)

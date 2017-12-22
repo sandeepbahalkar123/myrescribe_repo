@@ -309,7 +309,7 @@
                 android:layout_marginEnd="@dimen/dp10"
                 android:layout_marginRight="@dimen/dp10"
                 android:gravity="center_vertical"
-                android:textColor="@color/dose_completed"
+                android:textColor="@color/black"
                 android:textSize="@dimen/sp11"
                 android:visibility="invisible"
                 app:customFont="@string/roboto_medium"

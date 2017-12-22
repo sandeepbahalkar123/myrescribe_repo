@@ -11,11 +11,11 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.rescribe.R;
 import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
 import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 
@@ -60,14 +60,17 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListVi
 
         //------------
         if (clickOption.getIconImageUrl() != null) {
-
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
-            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-            requestOptions.skipMemoryCache(true);
+
+            if (clickOption.getIconImageUrl().getTime().isEmpty()) {
+                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.skipMemoryCache(true);
+            } else
+                requestOptions.signature(new ObjectKey(clickOption.getIconImageUrl().getTime()));
 
             Glide.with(mContext)
-                    .load(clickOption.getIconImageUrl())
+                    .load(clickOption.getIconImageUrl().getUrl())
                     .apply(requestOptions)
                     .into(holder.serviceIcon);
         }

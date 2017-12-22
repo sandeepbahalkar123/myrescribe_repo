@@ -13,19 +13,19 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.heinrichreimersoftware.materialdrawer.R;
-
 
 /**
  * Created by Sandeep Bahalkar
  */
 public class CircularImageView extends AppCompatImageView {
-    private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
+    private static final ScaleType SCALE_TYPE = ScaleType.CENTER_INSIDE;
 
     // Default Values
-    private static final float DEFAULT_BORDER_WIDTH = 0;
-    private static final float DEFAULT_SHADOW_RADIUS = 8.0f;
+    private static final float DEFAULT_BORDER_WIDTH = 1f;
+    private static final float DEFAULT_SHADOW_RADIUS = 4.5f;
 
     // Properties
     private float borderWidth;
@@ -156,6 +156,7 @@ public class CircularImageView extends AppCompatImageView {
 
         this.drawable = getDrawable();
         this.image = drawableToBitmap(this.drawable);
+
         updateShader();
     }
 
@@ -218,9 +219,9 @@ public class CircularImageView extends AppCompatImageView {
     private Bitmap drawableToBitmap(Drawable drawable) {
         if (drawable == null) {
             return null;
-        } else if (drawable instanceof BitmapDrawable) {
+        } /*else if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
-        }
+        }*/
 
         int intrinsicWidth = drawable.getIntrinsicWidth();
         int intrinsicHeight = drawable.getIntrinsicHeight();
@@ -232,15 +233,21 @@ public class CircularImageView extends AppCompatImageView {
             // Create Bitmap object out of the drawable
             Bitmap bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            int top = 0;
+
+            if (drawable instanceof BitmapDrawable)
+                top = (int) ((borderWidth * 2) + shadowRadius);
+
+            drawable.setBounds(0, top, canvas.getWidth(), canvas.getHeight() + top);
             drawable.draw(canvas);
             return bitmap;
         } catch (OutOfMemoryError e) {
             // Simply return null of failed bitmap creations
-          //  CommonMethods.Log(getClass().toString(), "Encountered OutOfMemoryError while generating bitmap!");
+            Log.d(getClass().toString(), "Encountered OutOfMemoryError while generating bitmap!");
             return null;
         }
     }
+
     //endregion
 
     //region Mesure Method

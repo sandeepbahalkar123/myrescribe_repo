@@ -66,6 +66,9 @@ public class DoctorDataHelper implements ConnectionListener {
                                 if (!doctorList.getDocName().toLowerCase().contains("dr.")) {
                                     doctorList.setDocName("Dr. " + doctorList.getDocName());
                                 }
+                                if (doctorList.getCategoryName().equalsIgnoreCase(mContext.getString(R.string.sponsered))) {
+                                    doctorList.setCategoryName(mContext.getString(R.string.sponsored_doctor));
+                                }
                             }
                         }
                     }

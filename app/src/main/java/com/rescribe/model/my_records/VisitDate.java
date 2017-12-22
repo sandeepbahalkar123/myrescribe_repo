@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rescribe.util.CommonMethods;
+
+import static com.rescribe.util.RescribeConstants.DATE_PATTERN.DD_MM_YYYY;
 
 public class VisitDate implements Parcelable {
 
@@ -60,6 +63,11 @@ public class VisitDate implements Parcelable {
 
     @Override
     public String toString() {
-        return opdDate;
+
+        if (opdDate.equals("Select Date") || opdDate.equals(""))
+            return opdDate;
+
+        String ordinal = CommonMethods.ordinal(Integer.parseInt(CommonMethods.getFormattedDate(opdDate, DD_MM_YYYY, "dd")));
+        return ordinal + " " + CommonMethods.getFormattedDate(opdDate, DD_MM_YYYY, "MMM yyyy").toUpperCase();
     }
 }

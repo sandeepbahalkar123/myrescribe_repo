@@ -110,6 +110,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.doctorAppointmentDate);
         final ImageView imageURL = (ImageView) imageLayout
                 .findViewById(R.id.imageURL);
+        final LinearLayout thumbnail = (LinearLayout) imageLayout
+                .findViewById(R.id.thumbnail);
         final RelativeLayout designLineLayout = (RelativeLayout) imageLayout
                 .findViewById(R.id.designLineLayout);
         final CustomTextView clinicName = (CustomTextView) imageLayout
@@ -141,7 +143,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             doctorCategory.setText(doctorObject.getCategoryName());
             size = mListSizeWithTypeMap.get(doctorObject.getCategoryName());
         }
-        sizeOfList.setText(String.valueOf(size));
+        sizeOfList.setText("" + size);
 
         //----------------
         String doctorName = doctorObject.getDocName();
@@ -169,7 +171,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             doctorRating.setVisibility(View.VISIBLE);
             ratingBar.setVisibility(View.VISIBLE);
             ratingBar.setRating((float) doctorObject.getRating());
-            doctorRating.setText(String.valueOf(doctorObject.getRating()));
+            doctorRating.setText("" + doctorObject.getRating());
 
         }
 
@@ -190,20 +192,32 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
 
-        } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
+        } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))) {
 
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
                 doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
                 doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
+
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
-                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
-                    doctorAddress.setText(locationString);
-                    doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                    clinicName.setVisibility(View.INVISIBLE);
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        clinicName.setVisibility(View.INVISIBLE);
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        clinicName.setVisibility(View.INVISIBLE);
+
+                    }
+
                 }
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
@@ -240,11 +254,21 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+" "+"in"+" "+cityname);
-                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
-                    doctorAddress.setText(locationString);
-                    doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                    clinicName.setVisibility(View.INVISIBLE);
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        clinicName.setVisibility(View.INVISIBLE);
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        clinicName.setVisibility(View.INVISIBLE);
+
+                    }
                 }
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.desing_line_for_big_name));
@@ -270,7 +294,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 }
             }
             //---------------
-        }else if (doctorObject.getCategoryName().equals(RescribeConstants.BLANK)) {
+        } else if (doctorObject.getCategoryName().equals(RescribeConstants.BLANK)) {
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
@@ -279,11 +303,21 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+" "+"in"+" "+cityname);
-                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
-                    doctorAddress.setText(locationString);
-                    doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                    clinicName.setVisibility(View.INVISIBLE);
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        clinicName.setVisibility(View.INVISIBLE);
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        clinicName.setVisibility(View.INVISIBLE);
+
+                    }
                 }
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.desing_line_for_big_name));
@@ -389,6 +423,31 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view.equals(object);
+    }
+
+    /**
+     *
+     * @param list
+     * @return true incase all clinic adrress are same, else false.
+     * (Considered all address ends with city name)
+     */
+    private boolean checkAllClinicAddressInSameCity(ArrayList<ClinicData> list) {
+
+        if (list.size() > 1) {
+            int count = 0;
+            String[] clinicAddress = list.get(0).getClinicAddress().split(",");
+            for (ClinicData innerDataObject :
+                    list) {
+                String innerClinicAddress = innerDataObject.getClinicAddress();
+                if (innerClinicAddress.endsWith(clinicAddress[clinicAddress.length - 1])) {
+                    count = count + 1;
+                }
+            }
+            if (count == list.size()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

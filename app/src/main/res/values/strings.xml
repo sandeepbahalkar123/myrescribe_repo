@@ -311,9 +311,8 @@
     <string name="platform"><![CDATA[&platform=]]></string>
     <string name="android">android</string>
     <string name="screen_resolution"><![CDATA[&screenResolution=]]></string>
-    <string name="sponsered_doctor">Sponsored Doctors</string>
     <string name="app_logo">AppLogo</string>
-    <string name="sponsored_doctor">Sponsored Doctors</string>
+    <string name="sponsored_doctor">Featured Doctors</string>
     <string name="recently_visit_doctor">Recently Visited Doctors</string>
     <string name="practices_at_locations">Practices at $$ locations</string>
     <string name="home">Home</string>
@@ -370,6 +369,7 @@
     <string name="today">today</string>
     <string name="book_time_slot_err">Slot must be greater than current time.</string>
     <string name="token_select_time_err_msg">Please select future time slot for the day.</string>
+    <string name="sponsered">Sponsored Doctors</string>
 
     <!--************************-->
 </resources>

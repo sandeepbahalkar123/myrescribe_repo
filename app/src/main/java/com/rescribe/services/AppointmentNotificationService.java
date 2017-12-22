@@ -44,6 +44,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
     private String notifyTime;
+    private String doctorName = "";
 
     @Override
     public void onCreate() {
@@ -84,10 +85,15 @@ public class AppointmentNotificationService extends Service implements HelperRes
     public void customNotification(AppointmentsNotificationData data, int index) {
 
         String drName = data.getDoctorName();
+        if(drName.toLowerCase().contains("dr.")){
+            doctorName = data.getDoctorName();
+        }else{
+            doctorName = "Dr. " + data.getDoctorName();
+        }
         int subNotificationId = data.getAptId();
         String date = CommonMethods.getFormattedDate(data.getAptDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY);
         String time = CommonMethods.getFormattedDate(data.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a);
-        String message = "You have an appointment with " + drName + " on " + date + " at " + time.toLowerCase() + ".";
+        String message = "You have an appointment with " + doctorName + " on " + date + " at " + time.toLowerCase() + ".";
 
         //---- Save notification in db---
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());

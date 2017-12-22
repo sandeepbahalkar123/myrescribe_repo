@@ -92,6 +92,7 @@
                          android:layout_height="@dimen/dp1"
                          android:background="@color/tagColor" />-->
                     <ImageView
+                        android:id="@+id/ruppeeShadow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

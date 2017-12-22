@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -577,32 +576,34 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE:
 
-                        dateTextView.animate()
-                                .alpha(0.0f)
-                                .setDuration(1000)
-                                .setListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-                                        super.onAnimationEnd(animation);
-                                        dateTextView.setVisibility(View.GONE);
-                                    }
-                                });
-
+                        if (!mqttMessage.isEmpty()) {
+                            dateTextView.animate()
+                                    .alpha(0.0f)
+                                    .setDuration(1000)
+                                    .setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            dateTextView.setVisibility(View.GONE);
+                                        }
+                                    });
+                        }
                         CommonMethods.Log(TAG, "The RecyclerView is not scrolling");
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
 
-                        dateTextView.animate()
-                                .alpha(1.0f)
-                                .setDuration(300)
-                                .setListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-                                        super.onAnimationEnd(animation);
-                                        dateTextView.setVisibility(View.VISIBLE);
-                                    }
-                                });
-
+                        if (!mqttMessage.isEmpty()) {
+                            dateTextView.animate()
+                                    .alpha(1.0f)
+                                    .setDuration(300)
+                                    .setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            dateTextView.setVisibility(View.VISIBLE);
+                                        }
+                                    });
+                        }
                         CommonMethods.Log(TAG, "Scrolling now");
                         break;
                 }

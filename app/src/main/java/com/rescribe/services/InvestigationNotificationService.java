@@ -49,6 +49,7 @@ public class InvestigationNotificationService extends Service implements HelperR
     private final IBinder mBinder = new ServiceBinder();
     private int notification_id;
     private Intent intent;
+    private String doctorName;
 
     @Override
     public void onCreate() {
@@ -90,9 +91,13 @@ public class InvestigationNotificationService extends Service implements HelperR
         //-------------
         InvestigationNotification data = new InvestigationNotification();
         data.setNotifications(value);
-
+        if(value.get(0).getDoctorName().toLowerCase().contains("dr.")){
+            doctorName = value.get(0).getDoctorName();
+        }else{
+            doctorName = "Dr. " + value.get(0).getDoctorName();
+        }
         String time = CommonMethods.getCurrentDate() + " " + intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME);
-        String message = getText(R.string.investigation_msg) + value.get(0).getDoctorName() + "?";
+        String message = getText(R.string.investigation_msg) + doctorName + "?";
         //--------------
 
         //---- Save notification in db---

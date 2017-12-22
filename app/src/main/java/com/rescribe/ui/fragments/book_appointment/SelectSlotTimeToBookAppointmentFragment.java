@@ -153,6 +153,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     View selectClinicLine;
     @BindView(R.id.yearsExperienceLine)
     View yearsExperienceLine;
+    @BindView(R.id.ruppeeShadow)
+    ImageView ruppeeShadow;
     //--------------
 
     private View mRootView;
@@ -669,8 +671,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
             if (mSelectedClinicDataObject.getAmount() == 0) {
                 mRupeesLayout.setVisibility(View.INVISIBLE);
+                ruppeeShadow.setVisibility(View.INVISIBLE);
             } else {
                 mRupeesLayout.setVisibility(View.VISIBLE);
+                ruppeeShadow.setVisibility(View.VISIBLE);
                 mDoctorFees.setText("" + mSelectedClinicDataObject.getAmount());
             }
             //-----------

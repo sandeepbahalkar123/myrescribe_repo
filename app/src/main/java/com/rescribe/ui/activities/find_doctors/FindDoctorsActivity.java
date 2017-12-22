@@ -148,7 +148,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     private void initialize() {
         mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (FindDoctorsActivity) mContext);
         recentlyvisitedTextView.setText(getString(R.string.recently_visit_doctor).toUpperCase());
-        sponsoredDoctors.setText(getString(R.string.sponsered_doctor).toUpperCase());
+        sponsoredDoctors.setText(getString(R.string.sponsored_doctor).toUpperCase());
         favouriteDoctors.setText(getString(R.string.favorite).toUpperCase());
 
         //------Load background image : START------
@@ -206,24 +206,25 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
 
     private void setUpViewPager() {
         if (mServicesCardViewImpl.getFavouriteDocList(-1).size() > 3) {
-            viewAllFavorite.setVisibility(View.VISIBLE);
+
+            viewAllFavorite.setVisibility(View.GONE);
         } else {
             viewAllFavorite.setVisibility(View.GONE);
 
         }
-        if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsered_doctor), -1).size() > 3) {
-            viewAllSponsered.setVisibility(View.VISIBLE);
+        if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1).size() > 3) {
+            viewAllSponsered.setVisibility(View.GONE);
         } else {
             viewAllSponsered.setVisibility(View.GONE);
         }
 
         if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), -1).size() > 3) {
-            viewAllRecentVisited.setVisibility(View.VISIBLE);
+            viewAllRecentVisited.setVisibility(View.GONE);
         } else {
             viewAllRecentVisited.setVisibility(View.GONE);
 
         }
-        sponsered = mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsered_doctor), 3);
+        sponsered = mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), 3);
         recently_visit_doctor = mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), 3);
         favoriteList = mServicesCardViewImpl.getFavouriteDocList(3);
         setRecentlyVisitedPager();
@@ -283,29 +284,17 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
 
-    @OnClick({R.id.viewAllFavorite, R.id.viewAllRecentVisited, R.id.viewAllSponsered, R.id.complaintsImageView})
+    @OnClick({R.id.viewAllFavorite, R.id.viewAllRecentVisited, R.id.viewAllSponsered, R.id.complaintsImageView,R.id.favouriteDoctors,R.id.recentlyvisitedTextView,R.id.sponsoredDoctors})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.viewAllFavorite:
-                Intent viewAllFavorite = new Intent(mContext, ShowCategoryWiseDoctor.class);
-                viewAllFavorite.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
-                viewAllFavorite.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.favorite));
 
-                startActivity(viewAllFavorite);
                 break;
             case R.id.viewAllRecentVisited:
-                Intent viewAllRecentVisited = new Intent(mContext, ShowCategoryWiseDoctor.class);
-                viewAllRecentVisited.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
-                viewAllRecentVisited.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.recently_visit_doctor));
 
-                startActivity(viewAllRecentVisited);
                 break;
             case R.id.viewAllSponsered:
-                Intent viewAllSponsered = new Intent(mContext, ShowCategoryWiseDoctor.class);
-                viewAllSponsered.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
-                viewAllSponsered.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.sponsered_doctor));
 
-                startActivity(viewAllSponsered);
                 break;
             case R.id.complaintsImageView:
                 if (complaintsTextView.getText().toString().trim().length() != 0) {
@@ -322,6 +311,41 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 }
 
                 break;
+            case R.id.favouriteDoctors:
+                /*if (mServicesCardViewImpl.getFavouriteDocList(-1).size() > 3) {*/
+                    Intent viewAllFavorite = new Intent(mContext, ShowCategoryWiseDoctor.class);
+                    viewAllFavorite.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
+                    viewAllFavorite.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.favorite));
+                    startActivity(viewAllFavorite);
+                /*} else {
+
+                }
+*/
+                break;
+            case R.id.recentlyvisitedTextView:
+              /*  if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), -1).size() > 3) {*/
+                    Intent viewAllRecentVisited = new Intent(mContext, ShowCategoryWiseDoctor.class);
+                    viewAllRecentVisited.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
+                    viewAllRecentVisited.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.recently_visit_doctor));
+
+                    startActivity(viewAllRecentVisited);
+                /*} else {
+
+                }*/
+
+                break;
+            case R.id.sponsoredDoctors:
+               /* if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1).size() > 3) {*/
+                    Intent viewAllSponsered = new Intent(mContext, ShowCategoryWiseDoctor.class);
+                    viewAllSponsered.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
+                    viewAllSponsered.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.sponsored_doctor));
+                    startActivity(viewAllSponsered);
+               /* } else {
+
+                }
+*/
+                break;
+
         }
     }
 

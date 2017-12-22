@@ -61,7 +61,7 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
         mFragmentTitleList[0] = getString(R.string.upcoming);
         mFragmentTitleList[1] = getString(R.string.completed);
         mFragmentTitleList[2] = getString(R.string.cancelled);
-        setupViewPager();
+        //setupViewPager();
 
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);

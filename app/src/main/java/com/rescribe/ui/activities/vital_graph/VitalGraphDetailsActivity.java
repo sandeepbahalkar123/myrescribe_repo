@@ -181,7 +181,11 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 dataset.setDrawCircleHole(false);
                 dataset.setDrawFilled(true);
                 dataset.setCircleColor(Color.WHITE);
+
                 dataset.setValueTextSize(getResources().getDimensionPixelSize(R.dimen.sp1));
+
+                dataset.setColor(Color.TRANSPARENT);
+
                 //----
                 mGraphCard.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
                 mGraphCard.setData(data);
@@ -263,8 +267,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
             if (maxTempEntries.size() > 0) {
 
-                LineDataSet maxTempEntriesDataset = new LineDataSet(maxTempEntries, "MAX");
-                LineDataSet minTempEntriesDataset = new LineDataSet(minTempEntries, "MIN");
+                LineDataSet maxTempEntriesDataset = new LineDataSet(maxTempEntries, "SYSTOLIC");
+                LineDataSet minTempEntriesDataset = new LineDataSet(minTempEntries, "DIASTOLIC");
 
                 LineData data = new LineData();
                 data.addDataSet(maxTempEntriesDataset);

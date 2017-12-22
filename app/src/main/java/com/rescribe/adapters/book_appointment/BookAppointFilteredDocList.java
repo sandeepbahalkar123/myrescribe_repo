@@ -104,7 +104,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 holder.clinicName.setVisibility(View.GONE);
             }
             //Sponsered Doctors
-        } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsered_doctor))) {
+        } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))) {
 
             if (clinicDataList.size() == 1) {
                 holder.clinicName.setVisibility(View.VISIBLE);
@@ -114,11 +114,21 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
-                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
-                    holder.doctorAddress.setText(locationString);
-                    holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                    holder.clinicName.setVisibility(View.GONE);
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.GONE);
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.GONE);
+
+                    }
                 }
             }
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
@@ -155,11 +165,24 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             } else {
                 if (clinicDataList.size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
-                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
-                    holder.doctorAddress.setText(locationString);
-                    holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                    holder.clinicName.setVisibility(View.GONE);
+
+
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.GONE);
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.GONE);
+
+                    }
+
                 }
             }
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
@@ -195,11 +218,23 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
             } else {
                 if (doctorObject.getClinicDataList().size() > 0) {
-                    SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
-                    locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
-                    holder.doctorAddress.setText(locationString);
-                    holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                    holder.clinicName.setVisibility(View.GONE);
+
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.GONE);
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.GONE);
+
+                    }
+
                 }
             }
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
@@ -386,5 +421,29 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
         } else {
             mClickedItemFavImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
         }
+    }
+
+    /**
+     * @param list
+     * @return true incase all clinic adrress are same, else false.
+     * (Considered all address ends with city name)
+     */
+    private boolean checkAllClinicAddressInSameCity(ArrayList<ClinicData> list) {
+
+        if (list.size() > 1) {
+            int count = 0;
+            String[] clinicAddress = list.get(0).getClinicAddress().split(",");
+            for (ClinicData innerDataObject :
+                    list) {
+                String innerClinicAddress = innerDataObject.getClinicAddress();
+                if (innerClinicAddress.endsWith(clinicAddress[clinicAddress.length - 1])) {
+                    count = count + 1;
+                }
+            }
+            if (count == list.size()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -75,7 +75,7 @@ public class HealthRepositoryAdapter extends RecyclerView.Adapter<HealthReposito
                 requestOptions.signature(new ObjectKey(clickOption.getIconImageUrl().getTime()));
 
             Glide.with(mContext)
-                    .load(clickOption.getIconImageUrl())
+                    .load(clickOption.getIconImageUrl().getUrl())
                     .apply(requestOptions)
                     .into(holder.serviceIcon);
         }

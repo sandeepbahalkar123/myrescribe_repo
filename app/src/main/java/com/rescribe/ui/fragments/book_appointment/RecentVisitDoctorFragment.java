@@ -40,7 +40,6 @@ import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
-import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -52,10 +51,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import droidninja.filepicker.utils.GridSpacingItemDecoration;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
-import static com.facebook.FacebookSdk.isLegacyTokenUpgradeSupported;
 
 
 public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, SortByClinicAndDoctorNameAdapter.OnDataListViewVisible {
@@ -94,6 +91,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     FloatingActionButton rightFab;
     @BindView(R.id.leftFab)
     FloatingActionButton leftFab;
+    @BindView(R.id.viewDoctorPager)
+    LinearLayout viewDoctorPager;
     private View mRootView;
     Unbinder unbinder;
     DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter;
@@ -125,7 +124,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     private void init() {
-
+        pickSpeciality.setVisibility(View.INVISIBLE);
+        recyclerViewLinearLayout.setVisibility(View.INVISIBLE);
+        recentDoctorLayout.setVisibility(View.INVISIBLE);
+        viewDoctorPager.setVisibility(View.INVISIBLE);
+        doConfigureDataListViewVisibility(false, false);
         Bundle arguments = getArguments();
         if (arguments != null) {
             mReceivedTitle = arguments.getString(getString(R.string.title));
@@ -288,6 +291,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 mSpecialityEmptyListView.setVisibility(View.VISIBLE);
                 prevBtn.setVisibility(View.INVISIBLE);
                 nextBtn.setVisibility(View.INVISIBLE);
+                viewDoctorPager.setVisibility(View.INVISIBLE);
                 mBookAppointSpecialityListView.setVisibility(View.GONE);
             } else {
                 recyclerViewLinearLayout.setVisibility(View.VISIBLE);
@@ -306,6 +310,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, mReceivedDoctorServicesModel.getDoctorSpecialities());
                 mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
                 pickSpeciality.setVisibility(View.VISIBLE);
+                viewDoctorPager.setVisibility(View.VISIBLE);
                 //  doubtMessage.setVisibility(View.VISIBLE);
             }
             //---set data ---------

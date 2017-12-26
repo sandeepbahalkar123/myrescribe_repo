@@ -142,6 +142,13 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     LinearLayout hideMainLayout;
     @BindView(R.id.showSortLayout)
     LinearLayout showSortLayout;
+
+    @BindView(R.id.locationView)
+    LinearLayout mLocationView;
+
+    @BindView(R.id.clinicFeesView)
+    LinearLayout mClinicFeesView;
+
     private OnDrawerInteractionListener mListener;
 
     //--------
@@ -266,14 +273,12 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         mRightThumbView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
         //----- Left thumb view------
-        Bitmap leftBitmap = null;
         if (mLeftThumbView != null) {
             mLeftThumbView.setDrawingCacheEnabled(true);
             setThumbValue(mLeftThumbView, "" + 1);
         }
         //-----------
         // ----- Right thumb view------
-        Bitmap rightBitmap = null;
         if (mRightThumbView != null) {
             mRightThumbView.setDrawingCacheEnabled(true);
             setThumbValue(mRightThumbView, "" + 250);
@@ -286,10 +291,10 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                 .setBarColor(ContextCompat.getColor(getActivity(), R.color.seek_bar_default))
                 .setBarHighlightColor(ContextCompat.getColor(getActivity(), R.color.seek_bar_progress))
                 .setSteps(1)
-                .setLeftThumbBitmap(leftBitmap)
-                .setLeftThumbHighlightBitmap(leftBitmap)
-                .setRightThumbBitmap(rightBitmap)
-                .setRightThumbHighlightBitmap(rightBitmap)
+                .setLeftThumbBitmap(null)
+                .setLeftThumbHighlightBitmap(null)
+                .setRightThumbBitmap(null)
+                .setRightThumbHighlightBitmap(null)
                 .setDataType(CrystalRangeSeekbar.DataType.INTEGER)
                 .apply();
 
@@ -382,37 +387,55 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
             BookAppointFilterBaseModel.FilterConfigData filterConfigData = bookAppointFilterBaseModel.getFilterConfigData();
 
             if (filterConfigData != null) {
-                for (int i = 0; i < filterConfigData.getLocationList().size(); i++) {
-                    LocationList locationList = new LocationList();
-                    if (filterConfigData.getLocationList().get(i).getIsDoctorAvailable()) {
-                        locationList.setAreaName(filterConfigData.getLocationList().get(i).getAreaName());
-                        locationList.setIsDoctorAvailable(filterConfigData.getLocationList().get(i).getIsDoctorAvailable());
-                        locations.add(locationList);
+
+                if (!filterConfigData.getLocationList().isEmpty()) {
+
+                    for (int i = 0; i < filterConfigData.getLocationList().size(); i++) {
+                        LocationList locationList = new LocationList();
+                        if (filterConfigData.getLocationList().get(i).getIsDoctorAvailable()) {
+                            locationList.setAreaName(filterConfigData.getLocationList().get(i).getAreaName());
+                            locationList.setIsDoctorAvailable(filterConfigData.getLocationList().get(i).getIsDoctorAvailable());
+                            locations.add(locationList);
+                        }
                     }
-                }
-                //--------
-                mFilterSelectLocationsAdapter = new FilterSelectLocationsAdapter(getActivity(), locations);
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-                mLocationContentRecycleView.setLayoutManager(layoutManager);
-                mLocationContentRecycleView.setHasFixedSize(true);
-                mLocationContentRecycleView.setAdapter(mFilterSelectLocationsAdapter);
+                    //--------
+
+                    mFilterSelectLocationsAdapter = new FilterSelectLocationsAdapter(getActivity(), locations);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                    mLocationContentRecycleView.setLayoutManager(layoutManager);
+                    mLocationContentRecycleView.setHasFixedSize(true);
+                    mLocationContentRecycleView.setAdapter(mFilterSelectLocationsAdapter);
+
+                } else mLocationView.setVisibility(View.GONE);
 
                 //------
                 ArrayList<Integer> clinicFeesRange = filterConfigData.getClinicFeesRange();
-                if (clinicFeesRange.size() > 0) {
+                if (!clinicFeesRange.isEmpty()) {
                     Integer min = clinicFeesRange.get(0);
                     Integer max = clinicFeesRange.get(clinicFeesRange.size() - 1);
                     if (min != 0 && max != 0) {
-                        mClinicFeesSeekBarMinValue.setText("" + min);
-                        mClinicFeesSeekBarMaxValue.setText("" + max);
-                        setThumbValue(mLeftThumbView, "" + min);
-                        setThumbValue(mRightThumbView, "" + max);
+
+                        mClinicFeesSeekBarMinValue.setText(String.valueOf(min));
+                        mClinicFeesSeekBarMaxValue.setText(String.valueOf(max));
+
+                        setThumbValue(mLeftThumbView, String.valueOf(min));
+                        setThumbValue(mRightThumbView, String.valueOf(max));
+
                         mClinicFeesSeekBar.setMinValue(Float.parseFloat(String.valueOf(min)))
                                 .setMaxValue(Float.parseFloat(String.valueOf(max)))
                                 .setMinStartValue(Float.parseFloat(String.valueOf(min)))
                                 .setMaxStartValue(Float.parseFloat(String.valueOf(max))).apply();
+                    } else {
+
+                        setThumbValue(mLeftThumbView, String.valueOf(250));
+                        setThumbValue(mRightThumbView, String.valueOf(25000));
+
+                        mClinicFeesSeekBar.setMinValue(250)
+                                .setMaxValue(25000)
+                                .setMinStartValue(250)
+                                .setMaxStartValue(25000).apply();
                     }
-                }
+                } else mClinicFeesView.setVisibility(View.GONE);
                 //------
               /*  ArrayList<String> distanceFeesRange = filterConfigData.get();
                 if (distanceFeesRange.size() > 0) {

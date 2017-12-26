@@ -181,7 +181,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 dataset.setDrawCircleHole(false);
                 dataset.setDrawFilled(true);
                 dataset.setCircleColor(Color.WHITE);
-                dataset.setValueTextSize(CommonMethods.convertDpToPixel(this.getResources().getDimension(R.dimen.dp1)));
+                dataset.setValueTextSize(10); // It's a DP value.
                 //----
                 mGraphCard.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
                 mGraphCard.setData(data);

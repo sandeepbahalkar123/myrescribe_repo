@@ -112,12 +112,11 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                     } else count++;
                 }
 
-                if (isLastChild) {
-
+                if (isLastChild)
                     divider.setVisibility(View.VISIBLE);
-                } else {
+                else
                     divider.setVisibility(View.GONE);
-                }
+
                 break;
 
             default:
@@ -329,9 +328,8 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         String s1 = mListDataHeader.get(groupPosition).getCaseDetailName();
         groupViewHolder.lblListHeader.setText(s1.substring(0, 1).toUpperCase() + s1.substring(1));
         groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getCaseStudyIcons(mListDataHeader.get(groupPosition).getCaseDetailName()));
-        if (!mListDataHeader.get(groupPosition).getCommonData().equals(null)) {
+        if (mListDataHeader.get(groupPosition).getCommonData() != null) {
             mVisitDetailList = mListDataHeader.get(groupPosition).getCommonData();
-
 
             if (mVisitDetailList.size() > 1) {
                 groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");

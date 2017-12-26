@@ -38,7 +38,7 @@
                     android:textSize="@dimen/sp18"
                     android:visibility="visible"
                     app:customFont="@string/roboto_bold"
-                    tools:text="sfdfsdgffghghg" />
+                    tools:text="Title" />
 
 
                 <LinearLayout

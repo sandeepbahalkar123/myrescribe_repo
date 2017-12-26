@@ -95,6 +95,10 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     CustomTextView mInvestigationFirstMessageTimeStamp;
     @BindView(R.id.doctorConnectFirstMessageTimeStamp)
     CustomTextView mDoctorConnectFirstMessageTimeStamp;
+
+    @BindView(R.id.emptyListMessageView)
+    ImageView emptyListMessageView;
+
     //-----------
     private UnreadAppointmentNotificationAlert mAppointmentNotificationAlertAdapter;
     private UnreadAppointmentNotificationAlert mInvestigationNotificationAlertAdapter;
@@ -112,6 +116,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     private UnreadSavedNotificationMessageData mClickedUnreadInvestigationMessageData;
     //-------
     private boolean isMedicationLoadMoreFooterClickedPreviously = false;
+    private boolean isAllListEmpty = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +141,10 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         initializeAppointmentsListView();
         initializeInvestigationListView();
         initializeMedicationListView();
+
+        if (isAllListEmpty)
+            emptyListMessageView.setVisibility(View.VISIBLE);
+        else emptyListMessageView.setVisibility(View.GONE);
     }
 
     private void initializeAppointmentsListView() {
@@ -204,6 +213,9 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mAppointmentAlertList.setLayoutManager(mLayoutManager);
         mAppointmentAlertList.setAdapter(mAppointmentNotificationAlertAdapter);
+
+        if (!appAlertList.isEmpty())
+            isAllListEmpty = false;
     }
 
     private void setInvestigationAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
@@ -226,6 +238,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         mInvestigationsListView.setLayoutManager(mLayoutManager);
         mInvestigationsListView.setAdapter(mInvestigationNotificationAlertAdapter);
 
+        if (!appAlertList.isEmpty())
+            isAllListEmpty = false;
     }
 
 
@@ -259,6 +273,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         }
         mDoctorConnectFirstMessageTimeStamp.setVisibility(View.VISIBLE);
 
+        if (!appAlertList.isEmpty())
+            isAllListEmpty = false;
     }
 
 
@@ -403,6 +419,11 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             if (!isRequiredAllElements) {
                 break;
             }
+
+            // check is data there empty
+
+            if (!medications.isEmpty())
+                isAllListEmpty = false;
         }
         mOnGoingMedicationListView.setLayoutManager(new LinearLayoutManager(this));
 

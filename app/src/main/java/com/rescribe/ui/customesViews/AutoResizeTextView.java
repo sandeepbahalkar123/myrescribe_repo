@@ -1,6 +1,7 @@
 package com.rescribe.ui.customesViews;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.Layout.Alignment;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -12,11 +13,11 @@ import android.widget.TextView;
  * Text view that auto adjusts text size to fit within the view.
  * If the text size equals the minimum text size and still does not
  * fit, append with an ellipsis.
- * 
+ *
  * @author Chase Colburn
  * @since Apr 4, 2011
  */
-public class AutoResizeTextView extends TextView {
+public class AutoResizeTextView extends AppCompatTextView {
 
     // Minimum text size for this text view
     public static final float MIN_TEXT_SIZE = 20;
@@ -91,6 +92,7 @@ public class AutoResizeTextView extends TextView {
 
     /**
      * Register listener to receive resize notifications
+     *
      * @param listener
      */
     public void setOnResizeListener(OnTextResizeListener listener) {
@@ -127,6 +129,7 @@ public class AutoResizeTextView extends TextView {
 
     /**
      * Set the upper text size limit and invalidate the view
+     *
      * @param maxTextSize
      */
     public void setMaxTextSize(float maxTextSize) {
@@ -137,6 +140,7 @@ public class AutoResizeTextView extends TextView {
 
     /**
      * Return upper text size limit
+     *
      * @return
      */
     public float getMaxTextSize() {
@@ -145,6 +149,7 @@ public class AutoResizeTextView extends TextView {
 
     /**
      * Set the lower text size limit and invalidate the view
+     *
      * @param minTextSize
      */
     public void setMinTextSize(float minTextSize) {
@@ -155,6 +160,7 @@ public class AutoResizeTextView extends TextView {
 
     /**
      * Return lower text size limit
+     *
      * @return
      */
     public float getMinTextSize() {
@@ -163,6 +169,7 @@ public class AutoResizeTextView extends TextView {
 
     /**
      * Set flag to add ellipsis to text that overflows at the smallest text size
+     *
      * @param addEllipsis
      */
     public void setAddEllipsis(boolean addEllipsis) {
@@ -171,6 +178,7 @@ public class AutoResizeTextView extends TextView {
 
     /**
      * Return flag to add ellipsis to text that overflows at the smallest text size
+     *
      * @return
      */
     public boolean getAddEllipsis() {
@@ -212,6 +220,7 @@ public class AutoResizeTextView extends TextView {
 
     /**
      * Resize the text size with specified width and height
+     *
      * @param width
      * @param height
      */

@@ -124,6 +124,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
                     onBackPressed();
             }
         });
+        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
 
         // End

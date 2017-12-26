@@ -64,7 +64,6 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     CircularImageView mDoctorImg;
     @BindView(R.id.title)
     CustomTextView title;
-
     private int mLastExpandedPosition = -1;
     Intent mIntent;
     private String TAG = getClass().getName();
@@ -158,6 +157,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 List<VisitCommonData> childObject = listDataList.get(groupPosition).getCommonData();
                 if (childObject.size() == 1) {
                     if (mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("advice")) {
+
                         if (mLastExpandedPosition != -1
                                 && groupPosition != mLastExpandedPosition) {
                             mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);

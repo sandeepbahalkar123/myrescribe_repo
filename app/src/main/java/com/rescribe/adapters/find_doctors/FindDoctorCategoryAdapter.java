@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
 import android.text.SpannableString;
@@ -229,6 +230,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                     tokenNo.setVisibility(View.VISIBLE);
                 } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
                     bookAppointmentButton.setVisibility(View.VISIBLE);
+                    bookAppointmentButton.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.book));
                     tokenNo.setVisibility(View.INVISIBLE);
                 }
             }
@@ -283,6 +285,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                     tokenNo.setVisibility(View.VISIBLE);
                 } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
                     bookAppointmentButton.setVisibility(View.VISIBLE);
+                    bookAppointmentButton.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.book));
                     tokenNo.setVisibility(View.INVISIBLE);
                 }
             }

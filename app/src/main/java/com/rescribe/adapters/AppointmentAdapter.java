@@ -1,5 +1,6 @@
 package com.rescribe.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -120,7 +121,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     Intent intent = new Intent(mContext, MapsActivity.class);
                     intent.putExtra(mContext.getString(R.string.address), appointment1.getAddress());
                     //intent.putExtra(mContext.getString(R.string.longitude), appointment1.getLongitude());
-                    mContext.startActivity(intent);
+                    ((Activity)mContext).finish();
                 } else {
                     CommonMethods.showToast(mContext, mContext.getString(R.string.internet));
                 }

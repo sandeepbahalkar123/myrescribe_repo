@@ -551,7 +551,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             if (!category.equals(":")) {
                 String[] categoryForBp = category.split(":");
                 categoryForBpMax = categoryForBp[0];
-                categoryBpMin = categoryForBp[1];
+                categoryBpMin = categoryForBp.length == 2 ? categoryForBp[1] : "";
             }
             if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
                 noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
@@ -586,9 +586,9 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             }
             if (normalBpMaxRange.getText().toString().trim().length() == 0 && moderateBpMaxRange.getText().toString().trim().length() == 0 && severeBpMaxRange.getText().toString().trim().length() == 0) {
                 showVitalRangeLayout.setVisibility(View.GONE);
-                showVitalNameLayout.setBackground(mContext.getDrawable(R.drawable.vitals_curve_white_bg));
+                showVitalNameLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.vitals_curve_white_bg));
                 bpMinLayout.setVisibility(View.GONE);
-                showVitalUnitNameIconLayout.setBackground(mContext.getDrawable(R.drawable.vitals_curve_grey_bg));
+                showVitalUnitNameIconLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.vitals_curve_grey_bg));
 
             }
             if (normalRange.getText().toString().trim().length() == 0) {
@@ -605,7 +605,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             }
             if (normalRange.getText().toString().trim().length() == 0 && moderateRange.getText().toString().trim().length() == 0 && severeRange.getText().toString().trim().length() == 0) {
                 bpMinLayout.setVisibility(View.GONE);
-                showVitalUnitNameIconLayout.setBackground(mContext.getDrawable(R.drawable.vitals_curve_grey_bg));
+                showVitalUnitNameIconLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.vitals_curve_grey_bg));
             }
 
         } else {
@@ -638,7 +638,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             }
             if (normalRange.getText().toString().trim().length() == 0 && moderateRange.getText().toString().trim().length() == 0 && severeRange.getText().toString().trim().length() == 0) {
                 bpMinLayout.setVisibility(View.GONE);
-                showVitalUnitNameIconLayout.setBackground(mContext.getDrawable(R.drawable.vital_curve_allcorners_grey));
+                showVitalUnitNameIconLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.vital_curve_allcorners_grey));
 
 
             }

@@ -99,7 +99,7 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
         if (responseLogNotificationModel.getCommon().isSuccess()) {
-            CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
+            CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
         }
     }
 

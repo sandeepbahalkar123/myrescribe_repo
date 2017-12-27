@@ -62,7 +62,7 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
 
     private void initialize() {
         showlocation.setVisibility(View.GONE);
-        locationTextView.setVisibility(View.VISIBLE);
+        locationTextView.setVisibility(View.GONE);
         userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         //  showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
         //--------

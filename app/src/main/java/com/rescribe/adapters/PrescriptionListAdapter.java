@@ -31,6 +31,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
     private List<PrescriptionModel> mPrescriptionData;
     private Context mContext;
+    String medicineType = "";
 
     private List<PrescriptionModel> mSearchListByMedicineName;
 
@@ -160,8 +161,9 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.INVISIBLE);
         }
         //-split medicineName at 15th, if long string-----------
+        medicineType = prescriptionDataObject.getMedicineTypeName();
 
-        holder.mTextviewNameOfMedicine.setText(prescriptionDataObject.getMedicineName());
+        holder.mTextviewNameOfMedicine.setText(medicineType.charAt(0)+". "+prescriptionDataObject.getMedicineName());
         //holder.mDays.setText(prescriptionDataObject.getDays()+" "+mContext.getString(R.string.days));
         holder.mDays.setText(calculateDays(CommonMethods.getCurrentDateTime(),CommonMethods.getFormattedDate(prescriptionDataObject.getEndDate(),RescribeConstants.DATE_PATTERN.UTC_PATTERN,RescribeConstants.DATE_PATTERN.DD_MM_YYYY)));
         holder.mDoseAge.setText(prescriptionDataObject.getDosage());

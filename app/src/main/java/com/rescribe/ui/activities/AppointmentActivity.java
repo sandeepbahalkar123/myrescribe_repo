@@ -78,9 +78,11 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         for (int i = 0; i < mFragmentTitleList.length; i++) {
             Fragment fragment = AppointmentFragment.newInstance(mFragmentTitleList[i]); // pass data here
-            adapter.addFragment(fragment, mFragmentTitleList[i]); // pass title here
+            adapter.addFragment(fragment, mFragmentTitleList[i]);
+            // pass title here
         }
         mViewPager.setAdapter(adapter);
+
     }
 
     @Override
@@ -153,26 +155,47 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
 
     public ArrayList<AptList> getAppointmentList(String type) {
         ArrayList<AptList> tempList = new ArrayList<>();
-        if (mAppointmentList != null) {
-            for (AptList dataObject :
-                    mAppointmentList) {
-                if (dataObject.getAppointmentType().equalsIgnoreCase(type)) {
-                    tempList.add(dataObject);
+        if(type.equalsIgnoreCase(getString(R.string.upcoming))) {
+
+            if (mAppointmentList != null) {
+                for (AptList dataObject :
+                        mAppointmentList) {
+                    if (dataObject.getAppointmentType().equalsIgnoreCase(type)) {
+                        tempList.add(dataObject);
+                    }
                 }
             }
+            Collections.sort(tempList, new Comparator<AptList>() {
+                @Override
+                public int compare(AptList o1, AptList o2) {
+                    Date m1Date = CommonMethods.convertStringToDate(o1.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
+                    Date m2Date = CommonMethods.convertStringToDate(o2.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
+
+                    return m1Date.compareTo(m2Date);
+                }
+            });
+
         }
-        Collections.sort(tempList, new Comparator<AptList>() {
-            @Override
-            public int compare(AptList o1, AptList o2) {
-                Date m1Date = CommonMethods.convertStringToDate(o1.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
-                Date m2Date = CommonMethods.convertStringToDate(o2.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
-
-                return m1Date.compareTo(m2Date);
+        else{
+            if (mAppointmentList != null) {
+                for (AptList dataObject :
+                        mAppointmentList) {
+                    if (dataObject.getAppointmentType().equalsIgnoreCase(type)) {
+                        tempList.add(dataObject);
+                    }
+                }
             }
-        });
+            Collections.sort(tempList, new Comparator<AptList>() {
+                @Override
+                public int compare(AptList o1, AptList o2) {
+                    Date m1Date = CommonMethods.convertStringToDate(o1.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
+                    Date m2Date = CommonMethods.convertStringToDate(o2.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a);
 
+                    return m2Date.compareTo(m1Date);
+                }
+            });
+
+        }
         return tempList;
     }
-
-
 }

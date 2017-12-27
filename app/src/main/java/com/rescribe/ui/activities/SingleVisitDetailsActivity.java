@@ -8,9 +8,7 @@ import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 
@@ -31,13 +29,14 @@ import com.rescribe.model.case_details.VisitData;
 import com.rescribe.model.case_details.Vital;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.rescribe.adapters.SingleVisitAdapter.TEXT_LIMIT;
 
 /**
  * Created by jeetal on 14/6/17.
@@ -128,6 +127,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+        requestOptions.error(droidninja.filepicker.R.drawable.image_placeholder);
 
         Glide.with(this)
                 .load(mIntent.getStringExtra(getString(R.string.doctor_image)))
@@ -143,53 +143,34 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 finish();
             }
         });
 
         mHistoryExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
             @Override
             public void onGroupExpand(int groupPosition) {
-//this is done because if single element in child list , groupPosition will not expand, it will expand on advice even if it has only one element ,vitals will also expand
+
+                // this is done because if single element in child list , groupPosition will not expand, it will expand on advice even if it has only one element ,vitals will also expand
                 List<PatientHistory> listDataList = mSingleVisitAdapter.getListDataList();
                 List<VisitCommonData> childObject = listDataList.get(groupPosition).getCommonData();
-                if (childObject.size() == 1) {
-                    if (mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("advice")) {
 
-                        if (mLastExpandedPosition != -1
-                                && groupPosition != mLastExpandedPosition) {
-                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
-                        }
-
-                        mLastExpandedPosition = groupPosition;
-                    } else if (mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")) {
-                        if (mLastExpandedPosition != -1
-                                && groupPosition != mLastExpandedPosition) {
-                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
-                        }
-
-                        mLastExpandedPosition = groupPosition;
-                    } else {
-                        if (mLastExpandedPosition != -1
-                                && groupPosition != mLastExpandedPosition) {
-                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
-                        }
-
-                        mLastExpandedPosition = groupPosition;
+                if (mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")) {
+                    if (mSingleVisitAdapter.getListDataList().get(groupPosition).getVitals().isEmpty()) {
                         mHistoryExpandableListView.collapseGroup(groupPosition);
                     }
-                } else {
-
-                    if (mLastExpandedPosition != -1
-                            && groupPosition != mLastExpandedPosition) {
-                        mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
-                    }
-
-                    mLastExpandedPosition = groupPosition;
-
+                } else if (childObject.size() == 1) {
+                    if (childObject.get(0).getName().length() <= TEXT_LIMIT)
+                        mHistoryExpandableListView.collapseGroup(groupPosition);
                 }
+
+                collapseOther(groupPosition);
+            }
+
+            private void collapseOther(int groupPosition) {
+                if (mLastExpandedPosition != -1 && mLastExpandedPosition != groupPosition)
+                    mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
+                mLastExpandedPosition = groupPosition;
             }
         });
 
@@ -205,9 +186,12 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 return false;
             }
         });*/
-        mHistoryExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        mHistoryExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
+
+        {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
+                                        int childPosition, long id) {
 
                 mHistoryExpandableListView.collapseGroup(groupPosition);
 

@@ -30,10 +30,6 @@ public class InvestigationHelper implements ConnectionListener {
     private String TAG = this.getClass().getName();
     private Context mContext;
 
-    public InvestigationHelper(Context context) {
-        this.mContext = context;
-    }
-
     public InvestigationHelper(Context context, HelperResponse mHelperResponseManager) {
         this.mContext = context;
         this.mHelperResponseManager = mHelperResponseManager;
@@ -45,20 +41,20 @@ public class InvestigationHelper implements ConnectionListener {
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 CommonMethods.Log(TAG, customResponse.getClass() + " success");
-                ((HelperResponse) mContext).onSuccess(mOldDataTag, customResponse);
+                mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 break;
             case ConnectionListener.PARSE_ERR0R:
                 CommonMethods.Log(TAG, mContext.getString(R.string.parse_error));
-                ((HelperResponse) mContext).onParseError(mOldDataTag, mContext.getString(R.string.parse_error));
+                mHelperResponseManager.onParseError(mOldDataTag, mContext.getString(R.string.parse_error));
                 break;
             case ConnectionListener.SERVER_ERROR:
                 CommonMethods.Log(TAG, mContext.getString(R.string.server_error));
-                ((HelperResponse) mContext).onServerError(mOldDataTag, mContext.getString(R.string.server_error));
+                mHelperResponseManager.onServerError(mOldDataTag, mContext.getString(R.string.server_error));
 
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
                 CommonMethods.Log(TAG, mContext.getString(R.string.no_connection_error));
-                ((HelperResponse) mContext).onNoConnectionError(mOldDataTag, mContext.getString(R.string.no_connection_error));
+                mHelperResponseManager.onNoConnectionError(mOldDataTag, mContext.getString(R.string.no_connection_error));
                 break;
             default:
                 CommonMethods.Log(TAG, mContext.getString(R.string.default_error));
@@ -108,8 +104,8 @@ public class InvestigationHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED);
     }
 
-    public void doSkipInvestigation(int invID) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DO_SKIP_INVESTIGATION, Request.Method.POST, false);
+    public void doSkipInvestigation(int invID, boolean progress) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, progress, RescribeConstants.TASK_DO_SKIP_INVESTIGATION, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
         InvestigationUploadByGmailRequest obj = new InvestigationUploadByGmailRequest();

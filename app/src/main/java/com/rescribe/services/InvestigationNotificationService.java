@@ -68,7 +68,7 @@ public class InvestigationNotificationService extends Service implements HelperR
             // If this service was started by out DosesAlarmTask intent then we want to show our notification
             InvestigationHelper investigationHelper;
             if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
-                investigationHelper = new InvestigationHelper(this);
+                investigationHelper = new InvestigationHelper(this, this);
                 investigationHelper.getInvestigationList(false);
             } else {
                 PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, notification_id, intent, flags);

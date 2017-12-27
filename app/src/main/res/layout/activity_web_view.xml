@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/recentblue">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/recentblue"
-        android:orientation="vertical">
+        android:layout_height="?attr/actionBarSize">
+
         <LinearLayout
-            android:visibility="visible"
+            android:id="@+id/toolbarView"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="match_parent"
             android:background="@color/recentblue"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/backButton"
@@ -27,15 +27,15 @@
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/webViewTitle"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center|left"
-                tools:text="asd"
                 android:paddingLeft="@dimen/dp18"
-                android:textStyle="bold"
                 android:textColor="@color/white"
-                android:textSize="@dimen/dp18" />
+                android:textSize="@dimen/sp18"
+                android:textStyle="bold"
+                tools:text="Title" />
 
             <ImageView
                 android:id="@+id/bookMarkIcon"
@@ -44,16 +44,25 @@
                 android:layout_gravity="center"
                 android:gravity="center|right"
                 android:padding="@dimen/dp10"
-                android:visibility="gone"
-                android:src="@drawable/ic_action_bookmark_border"/>
+                android:src="@drawable/ic_action_bookmark_border"
+                android:visibility="gone" />
         </LinearLayout>
 
-        <WebView
-            android:id="@+id/webViewLayout"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/backButton"/>
+            android:layout_height="@dimen/dp7"
+            android:layout_alignParentBottom="true"
+            android:indeterminate="false"
+            tools:progress="90"
+            android:max="90" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
-</RelativeLayout>
+    <WebView
+        android:id="@+id/webViewLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

@@ -205,11 +205,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 dataset.setDrawCircleHole(false);
                 dataset.setDrawFilled(true);
                 dataset.setCircleColor(Color.WHITE);
-
-                dataset.setValueTextSize(getResources().getDimensionPixelSize(R.dimen.sp1));
-
                 dataset.setColor(Color.TRANSPARENT);
-
+                dataset.setValueTextSize(10); // It's a DP value.
                 //----
                 mGraphCard.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
                 mGraphCard.setData(data);
@@ -303,7 +300,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 data.addDataSet(maxTempEntriesDataset);
                 data.addDataSet(minTempEntriesDataset);
                 data.setValueTextColor(Color.WHITE);
-                data.setValueTextSize(getResources().getDimensionPixelSize(R.dimen.sp1));
+                data.setValueTextSize(10); // It's DP value.
 
                 //----******for MAX*****------
                 maxTempEntriesDataset.setDrawCircleHole(false);

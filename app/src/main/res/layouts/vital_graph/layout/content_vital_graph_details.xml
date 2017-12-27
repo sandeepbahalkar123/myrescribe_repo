@@ -58,8 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/dp46"
-            android:textSize="@dimen/sp13"
             android:paddingStart="@dimen/dp46"
+            android:textSize="@dimen/sp13"
             app:customFont="@string/roboto_medium"
             tools:text="" />
 
@@ -76,13 +76,13 @@
                 android:background="@drawable/curve_edges_button"
                 android:orientation="vertical">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/addNewTracker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:padding="@dimen/dp5"
-                    android:src="@drawable/icon_add_white" />
+                    android:padding="@dimen/dp8"
+                    app:srcCompat="@drawable/icon_add_white" />
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/graphCard"
@@ -102,9 +102,9 @@
                 android:layout_height="@dimen/dp0"
                 android:layout_marginTop="@dimen/dp10"
                 android:layout_weight="1"
-                tools:text="@string/dummy_full"
                 android:textSize="@dimen/sp14"
-                app:customFont="@string/roboto_medium" />
+                app:customFont="@string/roboto_medium"
+                tools:text="@string/dummy_full" />
 
         </LinearLayout>
 

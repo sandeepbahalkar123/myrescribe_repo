@@ -375,6 +375,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
                 b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
+                b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
+
                 mServicesCardViewClickListener.onClickOfTotalCount(b);
             }
         });
@@ -386,6 +388,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
                 mServicesCardViewClickListener.onClickOfCardView(b);
             }
         });

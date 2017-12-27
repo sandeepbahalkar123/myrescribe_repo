@@ -44,10 +44,11 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     @Override
     public void onClickOfCardView(Bundle bundleData) {
         String value = bundleData.getString(mContext.getString(R.string.clicked_item_data_type_value));
+        String category = bundleData.getString(mContext.getString(R.string.category_name));
         String openingMode = bundleData.getString(mContext.getString(R.string.opening_mode));
         String title = bundleData.getString(mContext.getString(R.string.toolbarTitle));
         userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
-        if (value.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
+        if (category.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
             Intent intent = new Intent(mParentActivity, AppointmentActivity.class);
             intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);

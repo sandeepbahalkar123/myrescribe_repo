@@ -94,8 +94,6 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 .findViewById(R.id.dashBoardCard);
         final CustomTextView doctorNameTextView = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorName);
-       /* final CustomTextView doctorType = (CustomTextView) imageLayout
-                .findViewById(R.id.doctorType);*/
         final  ImageView ruppessIcon = (ImageView)imageLayout.findViewById(R.id.ruppessIcon);
         final CustomTextView sizeOfList = (CustomTextView) imageLayout
                 .findViewById(R.id.sizeOfList);
@@ -109,8 +107,6 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 .findViewById(R.id.doctorCategoryType);
         final CustomTextView feesToPaid = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorFee);
-       /* final CustomTextView doctorCategory = (CustomTextView) imageLayout
-                .findViewById(R.id.doctorCategoryVisit);*/
         final ImageView favorite = (ImageView) imageLayout
                 .findViewById(R.id.favoriteView);
         final ImageView bookAppointmentButton = (ImageView) imageLayout
@@ -143,20 +139,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
         //  doctorType.setText(doctorObject.getDegree());
         doctorExperience.setText(doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
         aboutDoctor.setText(doctorObject.getDegree() + "");
-        //-----THIS IS DONE TO SHOW COUNT OF FAVORITE(CUSTOM CREATED CATEGORY), ASSUME IT WILL COME LAST ALWAYS ----
-      /*  int size;
-        if (((position == mDataList.size() - 1) && mIsFavAvail)) {
-            doctorCategory.setText(mContext.getString(R.string.favorite));
-            size = mListSizeWithTypeMap.get(mContext.getString(R.string.favorite));
-        } else {
-            doctorCategory.setText(doctorObject.getCategoryName());
-            size = mListSizeWithTypeMap.get(doctorObject.getCategoryName());
-        }
-        sizeOfList.setText("" + size);
-*/
-        //-----------
 
-        //---------------
         String doctorName = doctorObject.getDocName();
         if (doctorName.contains("Dr. ")) {
             doctorName = doctorName.replace("Dr. ", "");
@@ -201,8 +184,6 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
                 clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
             }
-            //     designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
-
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))) {
 
             if (doctorObject.getClinicDataList().size() == 1) {
@@ -330,6 +311,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.getCategoryName());
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
                 mServicesCardViewClickListener.onClickOfCardView(b);
             }
         });

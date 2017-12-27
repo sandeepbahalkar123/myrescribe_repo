@@ -59,9 +59,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     private ColorGenerator mColorGenerator;
     private String mSearchClinicNameString;
     private boolean isListByClinicName;
-
     private ImageView mClickedItemFavImageView;
-
     private String cityname;
 
 
@@ -253,6 +251,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.doctor));
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
                 mOnClinicAndDoctorNameSearchRowItem.onClickOfCardView(b);
             }
         });

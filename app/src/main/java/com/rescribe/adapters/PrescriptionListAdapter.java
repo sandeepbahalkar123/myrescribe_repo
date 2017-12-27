@@ -9,19 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.rescribe.R;
 import com.rescribe.model.prescription_response_model.PrescriptionModel;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -203,7 +200,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             showSlotLabel = mContext.getString(R.string.break_fast);
 
         }
-        if (quantityOfDose.isEmpty()) {
+        if (doseQuantity.isEmpty()) {
             holder.mShowMorningDosage.setVisibility(View.GONE);
         } else {
             holder.mShowMorningDosage.setVisibility(View.VISIBLE);
@@ -238,7 +235,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             showSlotLabel = mContext.getString(R.string.mlunch);
 
         }
-        if (quantityOfDose.isEmpty()) {
+        if (doseQuantity.isEmpty()) {
             holder.mShowAfternoonDosage.setVisibility(View.GONE);
 
         } else {
@@ -273,7 +270,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             showSlotLabel = mContext.getString(R.string.msnacks);
 
         }
-        if (quantityOfDose.isEmpty()) {
+        if (doseQuantity.isEmpty()) {
             holder.mShowEveningDosage.setVisibility(View.GONE);
         } else {
             holder.mShowEveningDosage.setVisibility(View.VISIBLE);
@@ -309,7 +306,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             durationOfDinner = mContext.getString(R.string.after) + " " + mContext.getString(R.string.dinner);
 
         }
-        if (quantityOfDose.isEmpty()) {
+        if (doseQuantity.isEmpty()) {
             holder.mShowDinnerDosage.setVisibility(View.GONE);
         } else {
             holder.mShowDinnerDosage.setVisibility(View.VISIBLE);

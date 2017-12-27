@@ -38,9 +38,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 
     private String mReceivedTitleForView;
     private String mClickedItemDataTypeValue;
-
     private String cityname = "";
-
     private HelperResponse mHelperResponse;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
@@ -324,7 +322,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.opening_mode), mClickedItemDataTypeValue);
                 b.putString(mContext.getString(R.string.toolbarTitle), mReceivedTitleForView);
-
+                b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
                 mOnFilterDocListClickListener.onClickOfCardView(b);
             }
         });

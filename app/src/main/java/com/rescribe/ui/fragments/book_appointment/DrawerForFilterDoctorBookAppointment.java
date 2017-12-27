@@ -413,7 +413,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                 if (!clinicFeesRange.isEmpty()) {
                     Integer min = clinicFeesRange.get(0);
                     Integer max = clinicFeesRange.get(clinicFeesRange.size() - 1);
-                    if (min != 0 && max != 0) {
+                    if (max != 0 && min < max) {
 
                         mClinicFeesSeekBarMinValue.setText(String.valueOf(min));
                         mClinicFeesSeekBarMaxValue.setText(String.valueOf(max));
@@ -427,13 +427,16 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                                 .setMaxStartValue(Float.parseFloat(String.valueOf(max))).apply();
                     } else {
 
-                        setThumbValue(mLeftThumbView, String.valueOf(250));
+                       /* setThumbValue(mLeftThumbView, String.valueOf(250));
                         setThumbValue(mRightThumbView, String.valueOf(25000));
 
                         mClinicFeesSeekBar.setMinValue(250)
                                 .setMaxValue(25000)
                                 .setMinStartValue(250)
-                                .setMaxStartValue(25000).apply();
+                                .setMaxStartValue(25000).apply();*/
+
+                        mClinicFeesView.setVisibility(View.GONE);
+
                     }
                 } else mClinicFeesView.setVisibility(View.GONE);
                 //------

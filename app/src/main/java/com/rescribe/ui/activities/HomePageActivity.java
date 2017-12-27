@@ -258,7 +258,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         String times[] = {breakFastTime, lunchTime, dinnerTime, snacksTime};
         String date = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
 
-        // Cancel Previous Alarms.
+        // Cancel Previous Alarms so it will not repeat.
 
         new DosesAlarmTask(mContext, null, null).run();
         new AppointmentAlarmTask(mContext, null, null).run();
@@ -267,7 +267,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         // Set Alarms Again when date changed.
 
         new DosesAlarmTask(mContext, times, date).run();
-        new InvestigationAlarmTask(mContext, null, null).run();
         new InvestigationAlarmTask(mContext, RescribeConstants.INVESTIGATION_NOTIFICATION_TIME, getResources().getString(R.string.investigation_msg)).run();
         new AppointmentAlarmTask(mContext, RescribeConstants.APPOINTMENT_NOTIFICATION_TIME, getResources().getString(R.string.appointment_msg)).run();
     }

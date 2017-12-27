@@ -8,14 +8,18 @@ import android.widget.Toast;
 
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.helpers.investigation.InvestigationHelper;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.investigation.InvestigationData;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.ui.activities.InvestigationActivity;
 import com.rescribe.ui.activities.NotificationActivity;
 import com.rescribe.ui.activities.SplashScreenActivity;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -24,10 +28,14 @@ import java.util.ArrayList;
  * Created by jeetal on 16/5/17.
  */
 
-public class ClickOnNotificationReceiver extends BroadcastReceiver {
+public class ClickOnNotificationReceiver extends BroadcastReceiver implements HelperResponse {
+
+    private Context mContext;
 
     @Override
     public void onReceive(Context mContext, Intent intent) {
+
+        this.mContext = mContext;
 
         int notificationId = intent.getIntExtra(RescribeConstants.NOTIFICATION_ID, 10);
         int investigation_notification_id = intent.getIntExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, 10);
@@ -43,7 +51,6 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver {
 
                 AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(unreadMessNotificationID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
 
-
                 Intent intentNotification = new Intent(mContext, NotificationActivity.class);
                 intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, intent.getStringExtra(RescribeConstants.MEDICINE_SLOT));
                 intentNotification.putExtra(RescribeConstants.NOTIFICATION_DATE, intent.getStringExtra(RescribeConstants.NOTIFICATION_DATE));
@@ -53,11 +60,15 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver {
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mContext.startActivity(intentNotification);
 
-
                 manager.cancel(notificationId);
             } else if (investigation_notification_id == InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID) {
 
                 ArrayList<InvestigationData> investigationData = intent.getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
+
+                int invId = investigationData.get(0).getId();
+                InvestigationHelper mInvestigationHelper = new InvestigationHelper(mContext, this);
+                mInvestigationHelper.doSkipInvestigation(invId, false);
+
                 RescribePreferencesManager.putBoolean(mContext.getString(R.string.investigation_alert), false, mContext);
                 manager.cancel(investigationData.get(0).getDrId());
 
@@ -73,6 +84,29 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver {
             mContext.startActivity(intentNotification);
         }
 
+
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if (RescribeConstants.TASK_DO_SKIP_INVESTIGATION.equals(mOldDataTag)) {
+            CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
+            CommonMethods.showToast(mContext, commonbject.getCommonRespose().getStatusMessage());
+        }
+    }
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
     }
 }

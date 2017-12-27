@@ -65,13 +65,12 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
 
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
-
-
         initialize();
     }
 
     private void initialize() {
         mDoctorHelper = new DoctorHelper(this);
+        mDoctorHelper.doGetDoctorAppointment();
     }
 
     private void setupViewPager() {
@@ -137,18 +136,6 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mDoctorHelper.doGetDoctorAppointment();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     public ArrayList<AptList> getAppointmentList(String type) {

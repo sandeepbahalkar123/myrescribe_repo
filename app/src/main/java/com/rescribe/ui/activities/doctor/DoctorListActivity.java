@@ -24,6 +24,7 @@ import com.rescribe.model.filter.DoctorSpecialityData;
 import com.rescribe.model.filter.FilterDoctorListModel;
 import com.rescribe.model.filter.FilterDoctorSpecialityListModel;
 import com.rescribe.model.filter.filter_request.DrFilterRequestModel;
+import com.rescribe.network.RequestPool;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.fragments.doctor.DoctorFilteredListFragment;
 import com.rescribe.ui.fragments.doctor.DoctorListFragmentContainer;
@@ -31,6 +32,7 @@ import com.rescribe.ui.fragments.filter.FilterFragment;
 import com.rescribe.ui.fragments.filter.SelectDoctorsFragment;
 import com.rescribe.ui.fragments.filter.SelectSpecialityFragment;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -81,6 +83,7 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
         } else {
+            RequestPool.getInstance(this).cancellAllPreviousRequestWithSameTag(RescribeConstants.CASE_DETAILS_LIST);
             super.onBackPressed();
         }
 

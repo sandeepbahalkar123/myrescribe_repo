@@ -297,7 +297,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         this.mClickedUnreadInvestigationMessageData = unreadNotificationMessageData;
         mInvestigationHelper = new InvestigationHelper(this, this);
         InvestigationNotification data = new Gson().fromJson(unreadNotificationMessageData.getNotificationData(), InvestigationNotification.class);
-        mInvestigationHelper.doSkipInvestigation(data.getNotifications().get(0).getId());
+        mInvestigationHelper.doSkipInvestigation(data.getNotifications().get(0).getId(), true);
     }
 
     @Override

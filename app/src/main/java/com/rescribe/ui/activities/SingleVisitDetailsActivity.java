@@ -36,6 +36,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.rescribe.adapters.SingleVisitAdapter.TEXT_LIMIT;
+
 /**
  * Created by jeetal on 14/6/17.
  */
@@ -152,40 +154,23 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 // this is done because if single element in child list , groupPosition will not expand, it will expand on advice even if it has only one element ,vitals will also expand
                 List<PatientHistory> listDataList = mSingleVisitAdapter.getListDataList();
                 List<VisitCommonData> childObject = listDataList.get(groupPosition).getCommonData();
-                if (childObject.size() == 1) {
-                    if (mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("advice")) {
-                        if (mLastExpandedPosition != -1
-                                && groupPosition != mLastExpandedPosition) {
-                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
-                        }
 
-                        mLastExpandedPosition = groupPosition;
-                    } else if (mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")) {
-                        if (mLastExpandedPosition != -1
-                                && groupPosition != mLastExpandedPosition) {
-                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
-                        }
-
-                        mLastExpandedPosition = groupPosition;
-                    } else {
-                        if (mLastExpandedPosition != -1
-                                && groupPosition != mLastExpandedPosition) {
-                            mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
-                        }
-
-                        mLastExpandedPosition = groupPosition;
+                if (mSingleVisitAdapter.getListDataList().get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")) {
+                    if (mSingleVisitAdapter.getListDataList().get(groupPosition).getVitals().isEmpty()) {
                         mHistoryExpandableListView.collapseGroup(groupPosition);
                     }
-                } else {
-
-                    if (mLastExpandedPosition != -1
-                            && groupPosition != mLastExpandedPosition) {
-                        mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
-                    }
-
-                    mLastExpandedPosition = groupPosition;
-
+                } else if (childObject.size() == 1) {
+                    if (childObject.get(0).getName().length() <= TEXT_LIMIT)
+                        mHistoryExpandableListView.collapseGroup(groupPosition);
                 }
+
+                collapseOther(groupPosition);
+            }
+
+            private void collapseOther(int groupPosition) {
+                if (mLastExpandedPosition != -1 && mLastExpandedPosition != groupPosition)
+                    mHistoryExpandableListView.collapseGroup(mLastExpandedPosition);
+                mLastExpandedPosition = groupPosition;
             }
         });
 
@@ -201,9 +186,12 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 return false;
             }
         });*/
-        mHistoryExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        mHistoryExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
+
+        {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
+                                        int childPosition, long id) {
 
                 mHistoryExpandableListView.collapseGroup(groupPosition);
 

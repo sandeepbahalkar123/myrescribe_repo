@@ -51,9 +51,7 @@
                 android:id="@+id/detailFirstPoint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
                 android:maxLines="1"
-                android:text=""
                 android:textColor="@color/view_detail_color"
                 android:textSize="@dimen/sp17"
                 app:customFont="@string/roboto_medium" />

@@ -200,13 +200,17 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                        clinicName.setVisibility(View.INVISIBLE);
+                        clinicName.setVisibility(View.VISIBLE);
+                        clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
+
                     } else {
                         SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations));
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                        clinicName.setVisibility(View.INVISIBLE);
+                        clinicName.setVisibility(View.VISIBLE);
+                        clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
+
 
                     }
                 }
@@ -252,13 +256,16 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                        clinicName.setVisibility(View.INVISIBLE);
+                        clinicName.setVisibility(View.VISIBLE);
+                        clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
+
                     } else {
                         SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations));
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                        clinicName.setVisibility(View.INVISIBLE);
+                        clinicName.setVisibility(View.VISIBLE);
+                        clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
 
                     }
                 }

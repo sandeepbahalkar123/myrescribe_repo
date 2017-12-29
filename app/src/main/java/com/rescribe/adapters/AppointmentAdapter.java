@@ -79,7 +79,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     public void onBindViewHolder(ListViewHolder holder, int position) {
         final AptList appointment = appointmentsList.get(position);
 
-        holder.doctorName.setText(appointment.getDoctorName());
+        holder.doctorName.setText("Dr. " + appointment.getDoctorName());
         holder.doctorType.setText(appointment.getSpecialization());
 
         //--- For address
@@ -126,8 +126,10 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     AptList appointment1 = appointmentsList.get(Integer.parseInt("" + v.getTag()));
                     Intent intent = new Intent(mContext, MapsActivity.class);
                     intent.putExtra(mContext.getString(R.string.address), appointment1.getAddress());
+                    intent.putExtra(RescribeConstants.DOCTOR_NAME,appointment1.getDoctorName());
+                    mContext.startActivity(intent);
                     //intent.putExtra(mContext.getString(R.string.longitude), appointment1.getLongitude());
-                    ((Activity) mContext).finish();
+
                 } else {
                     CommonMethods.showToast(mContext, mContext.getString(R.string.internet));
                 }

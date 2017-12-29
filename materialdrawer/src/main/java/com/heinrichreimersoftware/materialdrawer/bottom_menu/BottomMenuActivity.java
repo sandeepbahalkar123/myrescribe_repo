@@ -117,7 +117,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 
     public void setUpAdapterForBottomSheet(String patientImageUrl, String patientName, String patientMobileNo) {
 
-        mMobileNumber.setText(patientMobileNo);
+        mMobileNumber.setText("+91 - "+patientMobileNo);
         mPatientName.setText(patientName);
 
         int color2 = mColorGenerator.getColor(patientName);

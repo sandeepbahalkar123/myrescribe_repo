@@ -2,6 +2,7 @@ package com.rescribe.ui.activities.vital_graph;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class VitalGraphActivity extends AppCompatActivity implements VitalGraphAdapter.ItemClickListener, HelperResponse {
 
@@ -37,6 +39,8 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
     RelativeLayout mEmptyListView;
     @BindView(R.id.title)
     CustomTextView title;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     private VitalGraphHelper mVitalGraphHelper;
     private VitalGraphBaseModel mReceivedVitalGraphBaseModel;
@@ -84,8 +88,8 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
 
     @Override
     public void onAddTrackerClick() {
-        Intent intent = new Intent(VitalGraphActivity.this, AddTrackerActivity.class);
-        startActivity(intent);
+      /*  Intent intent = new Intent(VitalGraphActivity.this, AddTrackerActivity.class);
+        startActivity(intent);*/
     }
 
     @Override
@@ -150,6 +154,18 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
                     mRecyclerView.setAdapter(vitalGraphAdapter);
                 }
             }
+        }
+    }
+
+    @OnClick({R.id.fab, R.id.emptyListView})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.fab:
+                Intent intent = new Intent(VitalGraphActivity.this, AddTrackerActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.emptyListView:
+                break;
         }
     }
 }

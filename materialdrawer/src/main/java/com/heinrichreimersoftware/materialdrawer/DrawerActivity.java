@@ -67,6 +67,8 @@ public class DrawerActivity extends AppCompatActivity {
         mDefaultToolbar = (Toolbar) findViewById(R.id.mdToolbar);
         mFrame = (FrameLayout) findViewById(R.id.mdFrame);
         setSupportActionBar(mDefaultToolbar);
+
+        mDrawer.setFocusableInTouchMode(false);
         mDrawer.openDrawer();
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }

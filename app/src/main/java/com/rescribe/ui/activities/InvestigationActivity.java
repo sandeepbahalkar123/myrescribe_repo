@@ -101,7 +101,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
         patientId = Integer.parseInt(patientIdString.equals("") ? "0" : patientIdString);
 
-        investigationHelper = new InvestigationHelper(mContext);
+        investigationHelper = new InvestigationHelper(mContext, this);
         getIntentData();
 //        investigationHelper.getInvestigationList(true);
 

@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.rescribe.R;
 import com.rescribe.adapters.find_doctors.FindDoctorCategoryAdapter;
 import com.rescribe.adapters.find_doctors.FindDoctorsMenuListAdapter;
@@ -160,8 +161,10 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 requestOptions.dontAnimate();
                 requestOptions.centerCrop();
 
-                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                requestOptions.skipMemoryCache(true);
+                if (clickEvent1.getBgImageUrl().getTime().isEmpty()) {
+                    requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                    requestOptions.skipMemoryCache(true);
+                } else requestOptions.signature(new ObjectKey(clickEvent1.getBgImageUrl().getTime()));
 
                 Glide.with(this)
                         .load(clickEvent1.getBgImageUrl().getUrl())

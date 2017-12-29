@@ -64,7 +64,7 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
 
         mContext = UploadedDocsActivity.this;
         appDBHelper = new AppDBHelper(mContext);
-        investigationHelper = new InvestigationHelper(mContext);
+        investigationHelper = new InvestigationHelper(mContext, this);
 
         investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
         investigationTemp = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TEMP_DATA);

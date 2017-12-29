@@ -164,7 +164,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
                         doctorNameText.setText(doctorList.getDocName());
 
                         mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(MapActivityPlotNearByDoctor.this, itemView))));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), 14.0f));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), RescribeConstants.ZOOM_CAMERA_VALUE));
                     } else
                         CommonMethods.showToast(MapActivityPlotNearByDoctor.this, getString(R.string.address_not_found));
                 }

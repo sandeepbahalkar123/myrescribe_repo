@@ -1,21 +1,28 @@
 package com.rescribe.ui.activities.book_appointment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
+import android.text.format.DateFormat;
 import android.text.style.UnderlineSpan;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.ui.activities.MapsActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -57,11 +64,22 @@ public class ConfirmAppointmentActivity extends AppCompatActivity {
     @BindView(R.id.locationImageView)
     ImageView locationImageView;
     @BindView(R.id.cancelButton)
-    Button cancelButton;
+    CustomTextView cancelButton;
     @BindView(R.id.rescheduleButton)
-    Button rescheduleButton;
+    CustomTextView rescheduleButton;
     Context mContext;
+    @BindView(R.id.doctorDetailLayout)
+    RelativeLayout doctorDetailLayout;
+    @BindView(R.id.phoneNumberLayout)
+    RelativeLayout phoneNumberLayout;
+    @BindView(R.id.addressLayout)
+    RelativeLayout addressLayout;
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
+    @BindView(R.id.buttonLayout)
+    LinearLayout buttonLayout;
     private DoctorList mDoctorObject;
+    private String mobileNo = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,8 +109,13 @@ public class ConfirmAppointmentActivity extends AppCompatActivity {
             clinicName.setText(mDoctorObject.getClinicDataList().get(0).getClinicName());
             aboutDoctor.setText(mDoctorObject.getDegree());
             clinicAddress.setText(mDoctorObject.getClinicDataList().get(0).getClinicAddress());
-            if(!mDoctorObject.getAptTime().isEmpty()&&!mDoctorObject.getAptDate().isEmpty()) {
-                String dateValueToShow = (String) android.text.format.DateFormat.format("EEE", CommonMethods.convertStringToDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD));
+            if (mobileNo.equals("")) {
+                phoneNumberLayout.setVisibility(View.GONE);
+            }else{
+                phoneNumberLayout.setVisibility(View.VISIBLE);
+            }
+            if (!mDoctorObject.getAptTime().isEmpty() && !mDoctorObject.getAptDate().isEmpty()) {
+                String dateValueToShow = (String) DateFormat.format("EEE", CommonMethods.convertStringToDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD));
                 String ordinal = CommonMethods.ordinal(Integer.parseInt(CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "dd")));
                 String timeToShow = CommonMethods.formatDateTime(mDoctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.hh_mm_a,
                         RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.TIME).toLowerCase();
@@ -107,7 +130,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity {
                 requestOptions.centerCrop();
 
                 Glide.with(mContext)
-                        .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mDoctorObject.getClinicDataList().get(0).getClinicAddress() + "&markers=color:red%7Clabel:C%7C" + mDoctorObject.getClinicDataList().get(0).getClinicAddress() + "&zoom=12&size=640x250")
+                        .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mDoctorObject.getClinicDataList().get(0).getClinicAddress() + "&markers=color:red%7Clabel:C%7C" + mDoctorObject.getClinicDataList().get(0).getClinicAddress() + "&zoom=12&size=640x300")
                         .into(locationImageView);
             }
             // mobileNumber.setText(mDoctorObject.);
@@ -116,7 +139,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity {
 
     }
 
-    @OnClick({R.id.cancelButton, R.id.rescheduleButton, R.id.bookAppointmentBackButton})
+    @OnClick({R.id.cancelButton, R.id.rescheduleButton, R.id.bookAppointmentBackButton, R.id.locationImageView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cancelButton:
@@ -125,6 +148,12 @@ public class ConfirmAppointmentActivity extends AppCompatActivity {
                 break;
             case R.id.bookAppointmentBackButton:
                 onBackPressed();
+                break;
+            case R.id.locationImageView:
+                Intent intent = new Intent(mContext, MapsActivity.class);
+                intent.putExtra(mContext.getString(R.string.address), mDoctorObject.getClinicDataList().get(0).getClinicAddress());
+                intent.putExtra(RescribeConstants.DOCTOR_NAME, mDoctorObject.getDocName());
+                mContext.startActivity(intent);
                 break;
         }
     }

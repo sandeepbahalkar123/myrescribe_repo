@@ -68,8 +68,8 @@ public class VitalGraphAdapter extends RecyclerView.Adapter<VitalGraphAdapter.Fi
         }
 
         if ((getItemCount() - 1) == position) {
-            holder.layout1.setVisibility(View.VISIBLE);
-            holder.divider.setVisibility(View.VISIBLE);
+            holder.layout1.setVisibility(View.GONE);
+            holder.divider.setVisibility(View.GONE);
         } else {
             holder.layout1.setVisibility(View.GONE);
             holder.divider.setVisibility(View.GONE);

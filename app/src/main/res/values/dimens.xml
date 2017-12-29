@@ -63,6 +63,8 @@
     <dimen name="menu_list_icon_size">32dp</dimen>
     <dimen name="dp134">134dp</dimen>
     <dimen name="dp136">136dp</dimen>
+    <dimen name="dp7">7dp</dimen>
+
 
     <!--End Switch Button-->
 </resources>

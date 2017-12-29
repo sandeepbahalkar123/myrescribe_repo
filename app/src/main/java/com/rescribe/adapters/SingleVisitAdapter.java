@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
-import android.text.SpannableString;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +40,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
     private List<PatientHistory> mListDataHeader = new ArrayList<>(); // header titles
     List<VisitCommonData> mVisitDetailList = new ArrayList<>();
     List<VisitCommonData> mCommonDataVisitList = new ArrayList<>();
+    public static final int TEXT_LIMIT = 36;
 
     public SingleVisitAdapter(Context context, List<PatientHistory> listDataHeader) {
         this.mContext = context;
@@ -112,12 +112,11 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                     } else count++;
                 }
 
-                if (isLastChild) {
-
+                if (isLastChild)
                     divider.setVisibility(View.VISIBLE);
-                } else {
+                else
                     divider.setVisibility(View.GONE);
-                }
+
                 break;
 
             default:
@@ -170,12 +169,10 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
             if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName().equals(mContext.getString(R.string.bp))) {
                 String category = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory();
-                if (!category.contains(":")) {
                     String[] categoryForBp = category.split(":");
-
                     categoryForBpMax = categoryForBp[0];
-                    categoryForBpMin = categoryForBp[1];
-                }
+                    categoryForBpMin = categoryForBp.length== 2?categoryForBp[1]:"";
+
                 String unit = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue();
                 String[] unitForBp = unit.split("/");
                 String unitForBpMax = unitForBp[0];
@@ -270,6 +267,42 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             String slash = "<font color='#737373'>" + "/" + "</font>";
             unitValue = bpMax + slash + bpMin;
 
+        } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange)) && categoryForBpMin.equals("")) {
+            String bpMax = "<font color='#FF0000'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#737373'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
+
+        } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && categoryForBpMin.equals("")) {
+            String bpMax = "<font color='#ff9500'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#737373'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
+
+        } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.normalRange)) && categoryForBpMin.equals("")) {
+            String bpMax = "<font color='#178a00'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#737373'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
+
+        } else if (categoryForBpMax.equalsIgnoreCase("") && categoryForBpMin.equals(mContext.getString(R.string.severeRange))) {
+            String bpMax = "<font color='#737373'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#FF0000'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
+
+        } else if (categoryForBpMax.equalsIgnoreCase("") && categoryForBpMin.equals(mContext.getString(R.string.moderateRange))) {
+            String bpMax = "<font color='#737373'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#ff9500'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
+
+        } else if (categoryForBpMax.equalsIgnoreCase("") && categoryForBpMin.equals(mContext.getString(R.string.normalRange))) {
+            String bpMax = "<font color='#737373'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#178a00'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
+
         } else {
             String bpMax = "<font color='#737373'>" + forBpMax + "</font>";
             String bpMin = "<font color='#737373'>" + forBpMin + "</font>";
@@ -320,24 +353,29 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             groupViewHolder.mDetailFirstPoint.setVisibility(View.GONE);
             groupViewHolder.mHeadergroupDivider.setVisibility(View.VISIBLE);
             groupViewHolder.mDivider.setVisibility(View.GONE);
-
         } else {
             groupViewHolder.mDetailFirstPoint.setVisibility(View.VISIBLE);
             groupViewHolder.mHeadergroupDivider.setVisibility(View.GONE);
             groupViewHolder.mDivider.setVisibility(View.VISIBLE);
         }
+
         String s1 = mListDataHeader.get(groupPosition).getCaseDetailName();
         groupViewHolder.lblListHeader.setText(s1.substring(0, 1).toUpperCase() + s1.substring(1));
         groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getCaseStudyIcons(mListDataHeader.get(groupPosition).getCaseDetailName()));
-        if (!mListDataHeader.get(groupPosition).getCommonData().equals(null)) {
+        if (mListDataHeader.get(groupPosition).getCommonData() != null) {
             mVisitDetailList = mListDataHeader.get(groupPosition).getCommonData();
 
-
-            if (mVisitDetailList.size() > 1) {
+            if (mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")) {
+                if (!mListDataHeader.get(groupPosition).getVitals().isEmpty())
+                    groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
+            } else if (mVisitDetailList.size() > 1) {
                 groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
             } else {
-                SpannableString s = CommonMethods.addTextToStringAtLast(mVisitDetailList.get(0).getName(), 5, "...", ContextCompat.getColor(mContext, R.color.view_detail_color));
-                groupViewHolder.mDetailFirstPoint.setText(s);
+//                SpannableString s = CommonMethods.addTextToStringAtLast(mVisitDetailList.get(0).getName(), 5, "...", ContextCompat.getColor(mContext, R.color.view_detail_color));
+                String text = mVisitDetailList.get(0).getName();
+                if (text.length() > TEXT_LIMIT)
+                    groupViewHolder.mDetailFirstPoint.setText(text.substring(0, TEXT_LIMIT - 1) + "...");
+                else groupViewHolder.mDetailFirstPoint.setText(text);
             }
             //groupViewHolder.mDetailFirstPoint.setText(setStringLength(mVisitDetailList.get(0).getName()));// + ".......");
 
@@ -541,8 +579,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             }
         }
         if (unitName.equals(mContext.getString(R.string.bp))) {
-            String unitData = unitValue;
-            String[] unitDataObject = unitData.split("/");
+            String[] unitDataObject = unitValue.split("/");
             String unitBpMax = unitDataObject[0];
             String unitBpMin = unitDataObject[1];
             showVitalNameLayout.setVisibility(View.VISIBLE);
@@ -589,7 +626,6 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 showVitalNameLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.vitals_curve_white_bg));
                 bpMinLayout.setVisibility(View.GONE);
                 showVitalUnitNameIconLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.vitals_curve_grey_bg));
-
             }
             if (normalRange.getText().toString().trim().length() == 0) {
                 LinearLayout normalRangeLayout = (LinearLayout) dialog.findViewById(R.id.normalSubTypeRangeLayout);
@@ -639,8 +675,6 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             if (normalRange.getText().toString().trim().length() == 0 && moderateRange.getText().toString().trim().length() == 0 && severeRange.getText().toString().trim().length() == 0) {
                 bpMinLayout.setVisibility(View.GONE);
                 showVitalUnitNameIconLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.vital_curve_allcorners_grey));
-
-
             }
         }
 

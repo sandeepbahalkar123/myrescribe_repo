@@ -125,8 +125,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         switch (mOldDataTag) {
             case RescribeConstants.TASK_GET_PATIENT_VITAL_DETAIL:
-               // VitalGraphInfoBaseModel customResponse1 = test();
-                 VitalGraphInfoBaseModel customResponse1 = (VitalGraphInfoBaseModel) customResponse;
+                // VitalGraphInfoBaseModel customResponse1 = test();
+                VitalGraphInfoBaseModel customResponse1 = (VitalGraphInfoBaseModel) customResponse;
 
                 if (customResponse1.getVitalGraphInfoDataModel() != null) {
                     mReceivedVitalGraphDataModel = customResponse1.getVitalGraphInfoDataModel();
@@ -195,22 +195,20 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
             }
 
             if (tempEntries.size() > 0) {
-
                 LineDataSet dataset = new LineDataSet(tempEntries, "");
 
                 LineData data = new LineData();
+
                 data.addDataSet(dataset);
                 data.setValueTextColor(Color.WHITE);
 
                 dataset.setDrawCircleHole(false);
                 dataset.setDrawFilled(true);
                 dataset.setCircleColor(Color.WHITE);
-
-                dataset.setValueTextSize(getResources().getDimensionPixelSize(R.dimen.sp1));
-
-                dataset.setColor(Color.TRANSPARENT);
-
+                dataset.setColor(Color.WHITE);
+                dataset.setValueTextSize(10); // It's a DP value.
                 //----
+                mGraphCard.getLegend().setEnabled(false);
                 mGraphCard.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
                 mGraphCard.setData(data);
                 mGraphCard.animateY(1000);
@@ -303,7 +301,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 data.addDataSet(maxTempEntriesDataset);
                 data.addDataSet(minTempEntriesDataset);
                 data.setValueTextColor(Color.WHITE);
-                data.setValueTextSize(getResources().getDimensionPixelSize(R.dimen.sp1));
+                data.setValueTextSize(10); // It's DP value.
 
                 //----******for MAX*****------
                 maxTempEntriesDataset.setDrawCircleHole(false);

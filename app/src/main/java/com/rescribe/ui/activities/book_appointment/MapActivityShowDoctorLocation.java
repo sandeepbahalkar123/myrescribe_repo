@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rescribe.R;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class MapActivityShowDoctorLocation extends AppCompatActivity implements 
         if (p1 != null) {
             LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
             mMap.addMarker(new MarkerOptions().position(currentLocation).title(address).icon(getMarkerIcon("#04abdf")));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), 14.0f));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), RescribeConstants.ZOOM_CAMERA_VALUE));
         }
     }
 

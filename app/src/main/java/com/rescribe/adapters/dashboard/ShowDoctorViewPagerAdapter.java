@@ -207,14 +207,17 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                         SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
+                        clinicName.setVisibility(View.VISIBLE);
+                        clinicName.setText(clinicDataList.get(0).getClinicName());
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                        clinicName.setVisibility(View.INVISIBLE);
+
                     } else {
                         SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                        clinicName.setVisibility(View.INVISIBLE);
+                        clinicName.setVisibility(View.VISIBLE);
+                        clinicName.setText(clinicDataList.get(0).getClinicName());
 
                     }
 
@@ -259,14 +262,17 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                         SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
+                        clinicName.setVisibility(View.VISIBLE);
+                        clinicName.setText(clinicDataList.get(0).getClinicName());
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                        clinicName.setVisibility(View.INVISIBLE);
                     } else {
                         SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                        clinicName.setVisibility(View.INVISIBLE);
+                        clinicName.setVisibility(View.VISIBLE);
+                        clinicName.setText(clinicDataList.get(0).getClinicName());
+
 
                     }
                 }
@@ -309,13 +315,16 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                        clinicName.setVisibility(View.INVISIBLE);
+                        clinicName.setVisibility(View.VISIBLE);
+                        clinicName.setText(clinicDataList.get(0).getClinicName());
+
                     } else {
                         SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-                        clinicName.setVisibility(View.INVISIBLE);
+                        clinicName.setVisibility(View.VISIBLE);
+                        clinicName.setText(clinicDataList.get(0).getClinicName());
 
                     }
                 }

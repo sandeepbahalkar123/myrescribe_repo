@@ -40,6 +40,7 @@ import com.rescribe.adapters.DoctorSpinnerAdapter;
 import com.rescribe.helpers.myrecords.MyRecordsHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.model.my_records.AddDoctorModel;
 import com.rescribe.model.my_records.MyRecordsDoctorListModel;
 import com.rescribe.model.my_records.RequestAddDoctorModel;
@@ -50,6 +51,9 @@ import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -431,10 +435,6 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
                         isManual = false;
 
-                        VisitDate visitDate = new VisitDate();
-                        visitDate.setOpdDate(getResources().getString(R.string.select_date_text));
-                        visitDate.setOpdId(0);
-                        spinnerList.add(visitDate);
                         for (VisitDate date : doctorSpinnerAdapter.getDoctor(position).getDates()) {
                             String formatedDate = CommonMethods.getFormattedDate(date.getOpdDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY);
 
@@ -443,6 +443,22 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                             visitD.setOpdId(date.getOpdId());
                             spinnerList.add(visitD);
                         }
+
+                        Comparator<VisitDate> comparator = new Comparator<VisitDate>() {
+                            @Override
+                            public int compare(VisitDate o1, VisitDate o2) {
+                                Date m1Date = CommonMethods.convertStringToDate(o1.getOpdDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+                                Date m2Date = CommonMethods.convertStringToDate(o2.getOpdDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+                                return m1Date.compareTo(m2Date);
+                            }
+                        };
+
+                        Collections.sort(spinnerList, Collections.reverseOrder(comparator));
+
+                        VisitDate visitDate = new VisitDate();
+                        visitDate.setOpdDate(getResources().getString(R.string.select_date_text));
+                        visitDate.setOpdId(0);
+                        spinnerList.add(0, visitDate);
 
                         ArrayAdapter<VisitDate> arrayAdapter = new ArrayAdapter<>(AddRecordsActivity.this, R.layout.global_item_simple_spinner, spinnerList);
                         selectDateSpinner.setAdapter(arrayAdapter);

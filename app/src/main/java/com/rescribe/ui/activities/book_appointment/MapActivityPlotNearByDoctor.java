@@ -96,7 +96,6 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
         mDoctorLists = new ArrayList<>();
         mUserSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         mDoctorLists = getIntent().getExtras().getParcelableArrayList(getString(R.string.doctor_data));
-        ;
         bookAppointmentBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,9 +110,8 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
         if (getString(R.string.filter).equalsIgnoreCase(isActivityOpenedFromFilterViewMapFAB)) {
             locationTextView.setVisibility(View.VISIBLE);
             mDoctorDataHelper = new DoctorDataHelper(this, this);
-        } else {
+        } else
             locationTextView.setVisibility(View.GONE);
-        }
         //--------
 
         // showlocation.setText(mUserSelectedLocationInfo.get(getString(R.string.location)));
@@ -163,7 +161,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
                         }
                         doctorNameText.setText(doctorList.getDocName());
 
-                        mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(MapActivityPlotNearByDoctor.this, itemView))));
+                        mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(BitmapDescriptorFactory.fromBitmap(CommonMethods.createDrawableFromView(MapActivityPlotNearByDoctor.this, itemView))));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), 14.0f));
                     } else
                         CommonMethods.showToast(MapActivityPlotNearByDoctor.this, getString(R.string.address_not_found));
@@ -189,27 +187,6 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
             e.printStackTrace();
         }
         return location;
-    }
-
-    //creation of marker on map
-    public static Bitmap createDrawableFromView(Context context, View view) {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity) context).getWindowManager().getDefaultDisplay()
-                .getMetrics(displayMetrics);
-        view.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT));
-        view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
-        view.layout(0, 0, displayMetrics.widthPixels,
-                displayMetrics.heightPixels);
-
-        view.buildDrawingCache(true);
-        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(),
-                view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-        view.buildDrawingCache(false);
-
-        Canvas canvas = new Canvas(bitmap);
-        view.draw(canvas);
-        return bitmap;
     }
 
     @Override

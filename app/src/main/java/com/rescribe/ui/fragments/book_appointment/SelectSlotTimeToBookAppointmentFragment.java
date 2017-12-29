@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -254,10 +255,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             toolbarTitle = arguments.getString(getString(R.string.toolbarTitle));
         }
         //--------------
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            selectTimeDateExpandableView.setNestedScrollingEnabled(false);
-        }
 
         selectTimeDateExpandableView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 

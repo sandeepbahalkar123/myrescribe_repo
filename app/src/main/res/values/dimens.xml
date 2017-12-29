@@ -62,6 +62,7 @@
     <dimen name="dp52">52dp</dimen>
     <dimen name="menu_list_icon_size">32dp</dimen>
     <dimen name="dp7">7dp</dimen>
+    <dimen name="time_slot_item_height">32dp</dimen>
 
     <!--End Switch Button-->
 </resources>

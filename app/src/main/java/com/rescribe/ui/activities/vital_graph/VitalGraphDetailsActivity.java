@@ -47,6 +47,8 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -125,8 +127,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         switch (mOldDataTag) {
             case RescribeConstants.TASK_GET_PATIENT_VITAL_DETAIL:
-               // VitalGraphInfoBaseModel customResponse1 = test();
-                 VitalGraphInfoBaseModel customResponse1 = (VitalGraphInfoBaseModel) customResponse;
+                // VitalGraphInfoBaseModel customResponse1 = test();
+                VitalGraphInfoBaseModel customResponse1 = (VitalGraphInfoBaseModel) customResponse;
 
                 if (customResponse1.getVitalGraphInfoDataModel() != null) {
                     mReceivedVitalGraphDataModel = customResponse1.getVitalGraphInfoDataModel();
@@ -176,22 +178,42 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
             // soring for ascending list
             //Collections.sort(vitalGraphDetailList, new DateWiseComparator());
             //------
-            DateFormat requiredDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MMM);
+            DateFormat requiredDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MMM, Locale.US);
             final ArrayList<Entry> tempEntries = new ArrayList<>();
             final HashSet<String> tempLabels = new HashSet<>();
             final ArrayList<String> tempLabelsArrayList = new ArrayList<>();
 
+            List<Integer> circleColors = new ArrayList<>();
+
             for (int i = 0; i < vitalGraphDetailList.size(); i++) {
 
                 VitalGraphDetails data = vitalGraphDetailList.get(i);
+
+                circleColors.add(data.getSelfTrackerFlag() ? getResources().getColor(R.color.grey_300) : getResources().getColor(R.color.white));
+
                 //----
                 Date date = CommonMethods.convertStringToDate(data.getCreationDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
                 String formattedDate = requiredDateFormat.format(date);
                 tempLabels.add(formattedDate);
                 tempLabelsArrayList.add(formattedDate);
                 //----
-                if (!(RescribeConstants.BLANK.equalsIgnoreCase(data.getVitalValue())))
+                if (!(RescribeConstants.BLANK.equalsIgnoreCase(data.getVitalValue()))) {
+
+                    /*View itemView = getLayoutInflater().inflate(R.layout.custom_point, null);
+                    TextView ratingText = (TextView) itemView.findViewById(R.id.ratingText);
+                    TextView doctorNameText = (TextView) itemView.findViewById(R.id.doctorNameText);
+                    if (doctorList.getRating() == 0) {
+                        ratingText.setText("");
+                    } else {
+                        ratingText.setText(String.valueOf(doctorList.getRating()));
+                    }
+                    doctorNameText.setText(doctorList.getDocName());
+
+                    CommonMethods.createDrawableFromView(this, itemView);*/
+
                     tempEntries.add(new Entry(i, Float.parseFloat(data.getVitalValue())));
+//                    tempEntries.add(new Entry(i, Float.parseFloat(data.getVitalValue()), getResources().getDrawable( R.drawable.blue_dot)));
+                }
             }
 
             if (tempEntries.size() > 0) {
@@ -200,11 +222,12 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
                 LineData data = new LineData();
                 data.addDataSet(dataset);
-                data.setValueTextColor(Color.WHITE);
 
                 dataset.setDrawCircleHole(false);
                 dataset.setDrawFilled(true);
-                dataset.setCircleColor(Color.WHITE);
+                dataset.setValueTextColor(Color.WHITE);
+//                dataset.setValueTextColors(circleColors);
+                dataset.setCircleColors(circleColors);
                 dataset.setColor(Color.TRANSPARENT);
                 dataset.setValueTextSize(10); // It's a DP value.
                 //----
@@ -225,7 +248,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 mGraphCard.setScrollContainer(true);
                 mGraphCard.setHorizontalScrollBarEnabled(true);
                 mGraphCard.setScaleXEnabled(true);
-                mGraphCard.setVisibleXRangeMaximum(4);
+                mGraphCard.setVisibleXRangeMaximum(5);
                 mGraphCard.moveViewToX(0);
                 //---------
                 IAxisValueFormatter formatter = new IAxisValueFormatter() {
@@ -267,15 +290,20 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
             // soring for ascending list
             //Collections.sort(vitalGraphDetailList, new DateWiseComparator());
             //------
-            DateFormat requiredDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MMM);
+            DateFormat requiredDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MMM, Locale.US);
             final ArrayList<Entry> maxTempEntries = new ArrayList<>();
             final ArrayList<Entry> minTempEntries = new ArrayList<>();
             final HashSet<String> tempLabels = new HashSet<>();
             final ArrayList<String> tempLabelsArrayList = new ArrayList<>();
 
+            List<Integer> circleColors = new ArrayList<>();
+
             for (int i = 0; i < vitalGraphDetailList.size(); i++) {
 
                 VitalGraphDetails data = vitalGraphDetailList.get(i);
+
+                circleColors.add(data.getSelfTrackerFlag() ? getResources().getColor(R.color.grey_300) : getResources().getColor(R.color.white));
+
                 //----
                 Date date = CommonMethods.convertStringToDate(data.getCreationDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
                 String formattedDate = requiredDateFormat.format(date);
@@ -303,16 +331,16 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 data.setValueTextSize(10); // It's DP value.
 
                 //----******for MAX*****------
+                maxTempEntriesDataset.setCircleColor(Color.WHITE);
                 maxTempEntriesDataset.setDrawCircleHole(false);
                 maxTempEntriesDataset.setDrawFilled(true);
-                maxTempEntriesDataset.setCircleColor(Color.WHITE);
                 maxTempEntriesDataset.setColor(Color.WHITE);
                 maxTempEntriesDataset.setFillColor(Color.WHITE);
                 maxTempEntriesDataset.setFillAlpha(10);
                 //----*******for MIN****------
                 minTempEntriesDataset.setDrawCircleHole(false);
                 minTempEntriesDataset.setDrawFilled(true);
-                minTempEntriesDataset.setCircleColor(Color.YELLOW);
+                minTempEntriesDataset.setCircleColors(Color.YELLOW);
                 minTempEntriesDataset.setFillColor(Color.YELLOW);
                 minTempEntriesDataset.setFillAlpha(10);
                 minTempEntriesDataset.setColor(Color.YELLOW);

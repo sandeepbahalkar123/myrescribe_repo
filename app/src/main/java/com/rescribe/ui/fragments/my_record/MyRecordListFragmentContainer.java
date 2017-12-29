@@ -112,7 +112,6 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
         mYearSpinnerView.setOnItemSelectedListener(listener);
         mYearSpinnerView.setVisibility(View.GONE);
         mYearSpinnerSingleItem.setVisibility(View.GONE);
-
         //-------
         mMyRecordHelper = new MyRecordsHelper(mContext, this);
         //-------

@@ -48,6 +48,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
     private SimpleDateFormat mDateFormat;
     private int imageSize;
     private ColorGenerator mColorGenerator;
+    private String doctorName = "";
 
 
     public DoctorListAdapter(Context context, ArrayList<DoctorDetail> dataList) {
@@ -104,8 +105,12 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
             holder.circularBulletMainElement.setVisibility(View.GONE);
 
         }
-
-        holder.doctorName.setText(dataObject.getDoctorName());
+        if (dataObject.getDoctorName().contains("Dr.")) {
+            doctorName = dataObject.getDoctorName();
+        } else {
+            doctorName = "Dr. " + dataObject.getDoctorName();
+        }
+        holder.doctorName.setText(doctorName);
         holder.doctorAddress.setText(dataObject.getAddress());
         holder.doctorType.setText(dataObject.getSpecialization());
 

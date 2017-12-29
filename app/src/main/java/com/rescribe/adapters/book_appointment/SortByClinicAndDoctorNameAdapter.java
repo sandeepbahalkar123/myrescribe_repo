@@ -125,9 +125,24 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
         } else {
             holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-            SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
+            boolean b = checkAllClinicAddressInSameCity(doctorObject.getClinicDataList());
+            if (b) {
+                SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                holder.doctorAddress.setText(locationString);
+                holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                //clinicName.setVisibility(View.INVISIBLE);
+            } else {
+                SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations));
+                locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                holder.doctorAddress.setText(locationString);
+                holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+              //  clinicName.setVisibility(View.INVISIBLE);
+
+            }
+          /*  SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
             locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
-            holder.doctorAddress.setText(locationString);
+            holder.doctorAddress.setText(locationString);*/
             if (doctorObject.getClinicDataList().get(0).getAmount() == 0) {
                 holder.doctorFee.setVisibility(View.INVISIBLE);
                 holder.ruppessIcon.setVisibility(View.INVISIBLE);
@@ -140,13 +155,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         }
         //------------
 
-        // holder.doctorFee.setText("" + doctorObject.getAmount());
-      /*  SpannableString content = new SpannableString(doctorObject.getDistance());
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        holder.distance.setText(content);*/
-
-        //-------Load image-------
-        //----------------
         String doctorName = doctorObject.getDocName();
         if (doctorName.contains("Dr. ")) {
             doctorName = doctorName.replace("Dr. ", "");
@@ -412,5 +420,22 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     public interface OnDataListViewVisible {
         public void doConfigureDataListViewVisibility(boolean flag, boolean isShowEmptyListView);
     }
+    private boolean checkAllClinicAddressInSameCity(ArrayList<ClinicData> list) {
 
+        if (list.size() > 1) {
+            int count = 0;
+            String[] clinicAddress = list.get(0).getClinicAddress().split(",");
+            for (ClinicData innerDataObject :
+                    list) {
+                String innerClinicAddress = innerDataObject.getClinicAddress();
+                if (innerClinicAddress.endsWith(clinicAddress[clinicAddress.length - 1])) {
+                    count = count + 1;
+                }
+            }
+            if (count == list.size()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

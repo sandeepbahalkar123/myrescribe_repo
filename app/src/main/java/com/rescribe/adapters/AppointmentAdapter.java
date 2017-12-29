@@ -3,6 +3,8 @@ package com.rescribe.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.DisplayMetrics;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -19,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.MapsActivity;
+import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.NetworkUtil;
@@ -36,11 +40,13 @@ import butterknife.ButterKnife;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.ListViewHolder> {
 
+
     private String mCurrentDate;
     private String mAppointmentType;
     private Context mContext;
     private ArrayList<AptList> appointmentsList;
     private int imageSize;
+    private Bundle bundleData;
 
 
     public AppointmentAdapter(final Context mContext, ArrayList<AptList> appointmentsList, String appointmentType) {
@@ -71,7 +77,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        AptList appointment = appointmentsList.get(position);
+        final AptList appointment = appointmentsList.get(position);
 
         holder.doctorName.setText(appointment.getDoctorName());
         holder.doctorType.setText(appointment.getSpecialization());
@@ -83,7 +89,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             cal.setTime(timeStamp);
             String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup>" + new SimpleDateFormat("MMM").format(cal.getTime());
             //------
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 holder.doctorAddress.setText(Html.fromHtml(toDisplay + ", " + appointment.getAddress(), Html.FROM_HTML_MODE_LEGACY));
             } else {
                 holder.doctorAddress.setText(Html.fromHtml(toDisplay + ", " + appointment.getAddress()));
@@ -121,7 +127,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     Intent intent = new Intent(mContext, MapsActivity.class);
                     intent.putExtra(mContext.getString(R.string.address), appointment1.getAddress());
                     //intent.putExtra(mContext.getString(R.string.longitude), appointment1.getLongitude());
-                    ((Activity)mContext).finish();
+                    ((Activity) mContext).finish();
                 } else {
                     CommonMethods.showToast(mContext, mContext.getString(R.string.internet));
                 }
@@ -140,6 +146,18 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(holder.mImageURL);
         //--------------
+        if (mAppointmentType.equalsIgnoreCase(mContext.getString(R.string.upcoming))) {
+              holder.appointmentItemLayout.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                      bundleData = new Bundle();
+                      Intent intent = new Intent(mContext, ConfirmAppointmentActivity.class);
+                      bundleData.putSerializable(mContext.getString(R.string.clicked_item_data), appointment);
+                      intent.putExtras(bundleData);
+                      mContext.startActivity(intent);
+                  }
+              });
+        }
 
     }
 
@@ -156,14 +174,14 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         TextView doctorType;
         @BindView(R.id.doctorAddress)
         TextView doctorAddress;
-
         @BindView(R.id.gMapLocationView)
         ImageView mGmapLocationView;
         @BindView(R.id.imageURL)
         ImageView mImageURL;
         @BindView(R.id.appointmentsTimeStamp)
         TextView appointmentsTimeStamp;
-
+        @BindView(R.id.appointmentItemLayout)
+        LinearLayout appointmentItemLayout;
         View view;
 
         ListViewHolder(View view) {

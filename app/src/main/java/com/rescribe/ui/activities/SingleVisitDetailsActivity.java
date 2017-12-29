@@ -72,6 +72,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     private ColorGenerator mColorGenerator;
     private Context mContext;
     private String mDocName;
+    private String doctorName = "";
 
 
     @Override
@@ -90,7 +91,12 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         mIntent = getIntent();
         if (getIntent().getExtras() != null) {
             mDocName = mIntent.getStringExtra(getString(R.string.name));
-            mDoctorName.setText(mIntent.getStringExtra(getString(R.string.name)));
+            if (mIntent.getStringExtra(getString(R.string.name)).contains("Dr.")) {
+                doctorName = mIntent.getStringExtra(getString(R.string.name));
+            } else {
+                doctorName = "Dr. " + mIntent.getStringExtra(getString(R.string.name));
+            }
+            mDoctorName.setText(doctorName);
             mDoctorSpecialization.setText(mIntent.getStringExtra(getString(R.string.specialization)));
             mDoctor_address.setText(mIntent.getStringExtra(getString(R.string.address)));
             int color2 = mColorGenerator.getColor(mIntent.getStringExtra(getString(R.string.name)));

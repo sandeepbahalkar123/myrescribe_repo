@@ -48,6 +48,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
     private ArrayList<MyRecordInfoAndReports> mOriginalList;
     private Context context;
+    private String doctorName = "";
 
     public ThreeLevelListAdapter(Context context, ArrayList<MyRecordInfoAndReports> mOriginalList) {
         this.context = context;
@@ -132,8 +133,13 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         MyRecordInfoAndReports group = getGroup(groupPosition);
 
         MyRecordDoctorInfo dataObject = group.getMyRecordDoctorInfo();
+        if (dataObject.getDoctorName().contains("Dr.")) {
+            doctorName = dataObject.getDoctorName();
+        } else {
+            doctorName = "Dr. " + dataObject.getDoctorName();
+        }
 
-        groupViewHolder.doctorName.setText(dataObject.getDoctorName());
+        groupViewHolder.doctorName.setText(doctorName);
         groupViewHolder.doctorAddress.setText(dataObject.getAddress());
         groupViewHolder.doctorType.setText(dataObject.getSpecialization());
 

@@ -6,11 +6,13 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.io.Serializable;
+
 /**
  * Created by riteshpandhurkar on 19/7/17.
  */
 
-public class AptList implements CustomResponse{
+public class AptList implements CustomResponse, Serializable{
     @SerializedName("aptId")
     @Expose
     private String id;

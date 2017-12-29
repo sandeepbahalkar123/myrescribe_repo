@@ -55,7 +55,9 @@ import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlot
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.ChatActivity;
+import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
@@ -176,6 +178,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private String mSelectedTimeStampForNewToken;
     private ColorGenerator mColorGenerator;
     private String toolbarTitle;
+    private Bundle bundleData;
 
 
     public SelectSlotTimeToBookAppointmentFragment() {
@@ -528,7 +531,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     }
 
-    @OnClick({R.id.selectDateTime, R.id.appointmentTypeIsTokenButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat, R.id.tokenNewTimeStamp, R.id.leftArrow, R.id.rightArrow})
+    @OnClick({R.id.selectDateTime, R.id.appointmentTypeIsTokenButton, R.id.viewAllClinicsOnMap, R.id.favorite, R.id.doChat, R.id.tokenNewTimeStamp, R.id.leftArrow, R.id.rightArrow, R.id.appointmentTypeIsBookButton})
     public void onClickOfView(View view) {
         Calendar now = Calendar.getInstance();
         switch (view.getId()) {
@@ -566,6 +569,11 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 }
                 break;
             case R.id.appointmentTypeIsBookButton:
+                bundleData = new Bundle();
+                bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
+                Intent intentObject = new Intent(getContext(), ConfirmAppointmentActivity.class);
+                intentObject.putExtras(bundleData);
+                startActivity(intentObject);
 
                 break;
             case R.id.viewAllClinicsOnMap: // on view-all location clicked

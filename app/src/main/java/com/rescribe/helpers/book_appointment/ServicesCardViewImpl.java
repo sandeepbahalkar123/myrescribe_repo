@@ -11,6 +11,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.interfaces.services.IServicesCardViewClickListener;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.AppointmentActivity;
+import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
 import com.rescribe.ui.activities.book_appointment.DoctorDescriptionBaseActivity;
@@ -49,7 +50,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         String title = bundleData.getString(mContext.getString(R.string.toolbarTitle));
         userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
         if (category.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
-            Intent intent = new Intent(mParentActivity, AppointmentActivity.class);
+            Intent intent = new Intent(mParentActivity, ConfirmAppointmentActivity.class);
             intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);
         } else {
@@ -78,7 +79,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         String nameOfCategoryType = bundleData.getString(mContext.getString(R.string.clicked_item_data));
 
         if (nameOfCategoryType.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
-            Intent intent = new Intent(mParentActivity, ServicesFilteredDoctorListActivity.class);
+            Intent intent = new Intent(mParentActivity, AppointmentActivity.class);
             bundleData.putString(mContext.getString(R.string.toolbarTitle), mContext.getString(R.string.my_appointments));
             intent.putExtras(bundleData);
             //mParentActivity.startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
@@ -86,7 +87,6 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         } else if (nameOfCategoryType.equalsIgnoreCase(mContext.getString(R.string.favorite))) { // favorite card name
             Intent intent = new Intent(mParentActivity, ServicesFilteredDoctorListActivity.class);
             bundleData.putString(mContext.getString(R.string.toolbarTitle), nameOfCategoryType);
-
             bundleData.putBoolean(mContext.getString(R.string.favorite), true);
             intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);

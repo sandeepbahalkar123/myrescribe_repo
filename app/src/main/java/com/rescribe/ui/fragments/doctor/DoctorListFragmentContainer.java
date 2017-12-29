@@ -321,8 +321,17 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
                     noRecords.setVisibility(View.VISIBLE);
                 } else {
                     noRecords.setVisibility(View.GONE);
-                    mYearSpinnerView.setVisibility(View.VISIBLE);
-                    mTabLayout.setVisibility(View.VISIBLE);
+                    if(mYearList.size()==1){
+                        mYearSpinnerView.setVisibility(View.GONE);
+                        mYearSpinnerSingleItem.setVisibility(View.VISIBLE);
+                        mTabLayout.setVisibility(View.VISIBLE);
+                        SpannableString contentViewAllFavorite = new SpannableString(mYearList.get(0).toString());
+                        contentViewAllFavorite.setSpan(new UnderlineSpan(), 0, contentViewAllFavorite.length(), 0);
+                        mYearSpinnerSingleItem.setText(contentViewAllFavorite);
+                    }else {
+                        mYearSpinnerView.setVisibility(View.VISIBLE);
+                        mTabLayout.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         }

@@ -371,6 +371,10 @@
     <string name="token_select_time_err_msg">Please select future time slot for the day.</string>
     <string name="sponsered">Sponsored Doctors</string>
     <string name="dd_mm_yyy">DD/MM/YY</string>
+    <string name="appointment_confirmed">Your appointment is confirmed !</string>
+    <string name="address_dummy">Flat No 1, Akash Apartment, Karve Road, Kothrud,  Opposite Amber Mangal Karyalay, Pune,  Maharashtra 411029</string>
+    <string name="reschedule">RESCHEDULE</string>
+    <string name="appointment_confirmation">Appointment Confirmation</string>
 
     <!--************************-->
 </resources>

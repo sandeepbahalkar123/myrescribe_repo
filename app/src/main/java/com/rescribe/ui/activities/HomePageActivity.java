@@ -923,33 +923,37 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
-            int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
-            int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-            int chatCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
-            // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-            int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
-            //--- Update count on App_logo
-            for (BottomMenu object :
-                    bottomMenus) {
-                if (object.isAppIcon()) {
-                    object.setNotificationCount(notificationCount);
+            if (intent.getAction().equals(getString(R.string.unread_notification_update_received))) {
+
+                int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
+                int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+                int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+                int chatCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
+                // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
+
+                int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
+                //--- Update count on App_logo
+                for (BottomMenu object :
+                        bottomMenus) {
+                    if (object.isAppIcon()) {
+                        object.setNotificationCount(notificationCount);
+                    }
                 }
-            }
-            doNotifyDataSetChanged();
-            //--------------- :END
-            //---- Update bottom sheet notification_count : START
-            ArrayList<BottomSheetMenu> bottomSheetMenus = HomePageActivity.this.bottomSheetMenus;
-            for (BottomSheetMenu object :
-                    bottomSheetMenus) {
-                if (object.getName().equalsIgnoreCase(getString(R.string.notifications))) {
-                    object.setNotificationCount(notificationCount);
+                doNotifyDataSetChanged();
+                //--------------- :END
+                //---- Update bottom sheet notification_count : START
+                ArrayList<BottomSheetMenu> bottomSheetMenus = HomePageActivity.this.bottomSheetMenus;
+                for (BottomSheetMenu object :
+                        bottomSheetMenus) {
+                    if (object.getName().equalsIgnoreCase(getString(R.string.notifications))) {
+                        object.setNotificationCount(notificationCount);
+                    }
                 }
-            }
-            setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
-            //--------------------------
-            //---- Update bottom sheet notification_count : END
+                setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+                //--------------------------
+                //---- Update bottom sheet notification_count : END
+            } else CommonMethods.Log(TAG, "Other Broadcast");
         }
     }
 

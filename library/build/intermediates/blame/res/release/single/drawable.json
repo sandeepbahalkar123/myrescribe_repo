@@ -36,16 +36,16 @@
         "source": "/home/jeetal/.android/build-cache/c2eb696b4ee5c5822fd67ab5fdd972392333276d/output/res/drawable/abc_seekbar_tick_mark_material.xml"
     },
     {
-        "merged": "/home/jeetal/jeetal_projects/myrescribe_repo/library/build/intermediates/res/merged/release/drawable/abc_switch_thumb_material.xml",
-        "source": "/home/jeetal/.android/build-cache/c2eb696b4ee5c5822fd67ab5fdd972392333276d/output/res/drawable/abc_switch_thumb_material.xml"
+        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/library/build/intermediates/res/merged/release/drawable/abc_item_background_holo_dark.xml",
+        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/drawable/abc_item_background_holo_dark.xml"
     },
     {
         "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/library/build/intermediates/res/merged/release/drawable/abc_ic_go_search_api_material.xml",
         "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/drawable/abc_ic_go_search_api_material.xml"
     },
     {
-        "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/library/build/intermediates/res/merged/release/drawable/abc_item_background_holo_dark.xml",
-        "source": "/home/ganeshshirole/.android/build-cache/0fdf986a54e38a69f01dd85d2c721bf600c35844/output/res/drawable/abc_item_background_holo_dark.xml"
+        "merged": "/home/jeetal/jeetal_projects/myrescribe_repo/library/build/intermediates/res/merged/release/drawable/abc_switch_thumb_material.xml",
+        "source": "/home/jeetal/.android/build-cache/c2eb696b4ee5c5822fd67ab5fdd972392333276d/output/res/drawable/abc_switch_thumb_material.xml"
     },
     {
         "merged": "/home/ganeshshirole/AndroidStudioProjects/myrescribe_repo/library/build/intermediates/res/merged/release/drawable/abc_text_cursor_material.xml",

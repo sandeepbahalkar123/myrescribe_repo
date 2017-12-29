@@ -62,6 +62,8 @@ public class SelectSlotToBookAppointmentAdapter extends BaseExpandableListAdapte
         slotRecyclerView.setLayoutManager(layoutManager);
         slotRecyclerView.setItemAnimator(new DefaultItemAnimator());
         slotRecyclerView.setAdapter(mShowTimingsBookAppointmentDoctor);
+        slotRecyclerView.setHasFixedSize(true);
+        slotRecyclerView.setNestedScrollingEnabled(false);
 
         return convertView;
     }

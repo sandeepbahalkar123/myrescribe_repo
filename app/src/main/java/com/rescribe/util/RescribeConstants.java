@@ -202,6 +202,7 @@ public class RescribeConstants {
     public static final String DOCTOR_DATA = "doctor_data";
     public static final int PLACE_PICKER_REQUEST = 99;
     public static final String NOTIFICATION_COUNT = "notification_count";
+    public static final String NOTIFICATION_TAG = "rescribe_notification_tag";
 
 
     public static class USER_STATUS {

@@ -1,6 +1,10 @@
 package com.rescribe.ui.activities.dashboard;
 
+import android.annotation.TargetApi;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,6 +53,7 @@ import butterknife.OnClick;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
+import static com.rescribe.util.RescribeConstants.NOTIFICATION_TAG;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 
@@ -116,17 +121,14 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     private UnreadSavedNotificationMessageData mClickedUnreadInvestigationMessageData;
     //-------
     private boolean isMedicationLoadMoreFooterClickedPreviously = false;
-    private boolean isAllListEmpty = true;
+    public boolean isAllListEmpty = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_all_unread_notification_layout);
         ButterKnife.bind(this);
-
         mTitleView.setText(getString(R.string.notifications));
-
-
     }
 
     @Override
@@ -141,7 +143,10 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         initializeAppointmentsListView();
         initializeInvestigationListView();
         initializeMedicationListView();
+        showMessage();
+    }
 
+    private void showMessage() {
         if (isAllListEmpty)
             emptyListMessageView.setVisibility(View.VISIBLE);
         else emptyListMessageView.setVisibility(View.GONE);
@@ -300,17 +305,36 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         mInvestigationHelper = new InvestigationHelper(this, this);
         InvestigationNotification data = new Gson().fromJson(unreadNotificationMessageData.getNotificationData(), InvestigationNotification.class);
         mInvestigationHelper.doSkipInvestigation(data.getNotifications().get(0).getId(), true);
+
+        clearNotification(unreadNotificationMessageData.getId());
+    }
+
+    @TargetApi(Build.VERSION_CODES.ECLAIR)
+    private void clearNotification(String notificationId) {
+        try {
+            final NotificationManager nm = (NotificationManager) this
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            nm.cancel(NOTIFICATION_TAG, Integer.parseInt(notificationId));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onNotificationRowClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData) {
         AppDBHelper instance = AppDBHelper.getInstance(this);
         if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
-            instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
+            int unReadCount = instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
             Intent intentNotification = new Intent(this, AppointmentActivity.class);
             startActivity(intentNotification);
+
+            if (unReadCount == 0) {
+                isAllListEmpty = true;
+                showMessage();
+            }
+
         } else if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
-            instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
+            int unReadCount = instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
             String notificationData = unreadNotificationMessageData.getNotificationData();
 
             Intent intentNotification = new Intent(this, InvestigationActivity.class);
@@ -319,9 +343,15 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             intentNotification.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, unreadNotificationMessageData.getNotificationTimeStamp());
             startActivity(intentNotification);
 
+            if (unReadCount == 0) {
+                isAllListEmpty = true;
+                showMessage();
+            }
+
             // OPEN INVESTIGATION SCREEN, pending for ganesh code
         }
 
+        clearNotification(unreadNotificationMessageData.getId());
     }
 
 
@@ -516,7 +546,11 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                 if (tempArryForId.size() == value.size()) {
                     for (String idsToDelete :
                             tempArryForId) {
-                        appDBHelper.deleteUnreadReceivedNotificationMessage(Integer.parseInt(idsToDelete), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+                        int unReadCount = appDBHelper.deleteUnreadReceivedNotificationMessage(Integer.parseInt(idsToDelete), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+                        if (unReadCount == 0) {
+                            isAllListEmpty = true;
+                            showMessage();
+                        }
                     }
                 }
             }
@@ -556,7 +590,13 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             CommonMethods.showToast(this, commonbject.getCommonRespose().getStatusMessage());
             AppDBHelper instance = AppDBHelper.getInstance(this);
 
-            instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(mClickedUnreadInvestigationMessageData.getId()), mClickedUnreadInvestigationMessageData.getNotificationMessageType());
+            int unReadCount = instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(mClickedUnreadInvestigationMessageData.getId()), mClickedUnreadInvestigationMessageData.getNotificationMessageType());
+
+            if (unReadCount == 0) {
+                isAllListEmpty = true;
+                showMessage();
+            }
+
             initializeInvestigationListView();
         }
     }
@@ -663,7 +703,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     @Override
     public void onDocConnectRowClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData) {
         AppDBHelper instance = AppDBHelper.getInstance(this);
-        instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
+        int unReadCount = instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
 
         ChatDoctor chatDoctor = new ChatDoctor();
         chatDoctor.setId(Integer.parseInt(unreadNotificationMessageData.getId()));
@@ -672,5 +712,10 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
         startActivity(intent);
+
+        if (unReadCount == 0) {
+            isAllListEmpty = true;
+            showMessage();
+        }
     }
 }

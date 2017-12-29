@@ -106,7 +106,7 @@ public class RescribeApplication extends MultiDexApplication {
 
     public static int doGetUnreadNotificationCount(String notificationType) {
         ArrayList<UnreadSavedNotificationMessageData> receivedNotificationMessageList = new ArrayList<>();
-        int size = receivedNotificationMessageList.size();
+        int size;
         if (notificationType.equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT)) {
             TreeSet<String> listDataGroup = new TreeSet<>();
             //--- set header data

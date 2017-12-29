@@ -16,6 +16,12 @@
         android:listSelector="@android:color/transparent"
         android:visibility="visible" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/selectTimeDateExpandableView"
+        android:background="@color/divider" />
+
     <LinearLayout
         android:id="@+id/no_data_found"
         android:layout_width="match_parent"

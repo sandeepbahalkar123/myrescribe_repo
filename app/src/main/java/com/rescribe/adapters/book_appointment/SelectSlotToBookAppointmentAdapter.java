@@ -27,7 +27,6 @@ public class SelectSlotToBookAppointmentAdapter extends BaseExpandableListAdapte
     private final String mSelectedDate;
     private Context mContext;
     private ArrayList<TimeSlotsInfoList> expandableListTitle;
-    private ShowTimingsBookAppointmentDoctor mShowTimingsBookAppointmentDoctor;
 
 
     public SelectSlotToBookAppointmentAdapter(Context context, ArrayList<TimeSlotsInfoList> expandableListTitle, String selectedDate) {
@@ -57,11 +56,13 @@ public class SelectSlotToBookAppointmentAdapter extends BaseExpandableListAdapte
         }
 
         RecyclerView slotRecyclerView = (RecyclerView) convertView.findViewById(R.id.slotRecyclerView);
-        mShowTimingsBookAppointmentDoctor = new ShowTimingsBookAppointmentDoctor(mContext, timeSlotData,mSelectedDate);
+
+        ShowTimingsBookAppointmentDoctor mShowTimingsBookAppointmentDoctor = new ShowTimingsBookAppointmentDoctor(mContext, timeSlotData, mSelectedDate);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 4);
         slotRecyclerView.setLayoutManager(layoutManager);
         slotRecyclerView.setItemAnimator(new DefaultItemAnimator());
         slotRecyclerView.setAdapter(mShowTimingsBookAppointmentDoctor);
+        slotRecyclerView.setNestedScrollingEnabled(false);
 
         return convertView;
     }

@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.rescribe.notification.InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID;
+import static com.rescribe.util.RescribeConstants.NOTIFICATION_TAG;
 
 
 /**
@@ -71,7 +72,7 @@ public class InvestigationNotificationService extends Service implements HelperR
                 investigationHelper = new InvestigationHelper(this, this);
                 investigationHelper.getInvestigationList(false);
             } else {
-                PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, notification_id, intent, flags);
+                PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, INVESTIGATION_NOTIFICATION_ID, intent, flags);
                 AlarmManager aManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 aManager.cancel(mAlarmPendingIntent);
             }
@@ -91,18 +92,19 @@ public class InvestigationNotificationService extends Service implements HelperR
         //-------------
         InvestigationNotification data = new InvestigationNotification();
         data.setNotifications(value);
-        if(value.get(0).getDoctorName().toLowerCase().contains("dr.")){
+
+        if (value.get(0).getDoctorName().toLowerCase().contains("dr."))
             doctorName = value.get(0).getDoctorName();
-        }else{
+        else
             doctorName = "Dr. " + value.get(0).getDoctorName();
-        }
+
         String time = CommonMethods.getCurrentDate() + " " + intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME);
         String message = getText(R.string.investigation_msg) + doctorName + "?";
         //--------------
 
         //---- Save notification in db---
         AppDBHelper appDBHelper = AppDBHelper.getInstance(getApplicationContext());
-        appDBHelper.insertUnreadReceivedNotificationMessage(String.valueOf(value.get(0).getDrId()), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, message, new Gson().toJson(data).toString(), time);
+        appDBHelper.insertUnreadReceivedNotificationMessage(String.valueOf(value.get(0).getDrId()), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, message, new Gson().toJson(data), time);
         //-------
 
         // Using RemoteViews to bind custom layouts into Notification
@@ -145,7 +147,7 @@ public class InvestigationNotificationService extends Service implements HelperR
         mRemoteViews.setTextViewText(R.id.timeText, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
 
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationmanager.notify(value.get(0).getDrId(), builder.build());
+        notificationmanager.notify(NOTIFICATION_TAG, value.get(0).getDrId(), builder.build());
 
         stopSelf();
     }

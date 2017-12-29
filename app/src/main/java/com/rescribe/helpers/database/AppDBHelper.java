@@ -2,7 +2,6 @@ package com.rescribe.helpers.database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
@@ -26,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class AppDBHelper extends SQLiteOpenHelper {
 
@@ -366,7 +364,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }*/
 
     // MyRecords
-    public boolean insertMyRecordsData(String id, int status, String data, int docId,int opdId, String visitDate) {
+    public boolean insertMyRecordsData(String id, int status, String data, int docId, int opdId, String visitDate) {
         if (MyRecordsDataTableNumberOfRows(id) == 0) {
             SQLiteDatabase db = getWritableDatabase();
             ContentValues contentValues = new ContentValues();
@@ -592,44 +590,34 @@ public class AppDBHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_DATA, jsonDataObject);
         contentValues.put(TIME_STAMP, timeStamp);
 
-        db.insert(NOTIFICATION_MESSAGE_TABLE, null, contentValues);
+        if (isExist(id))
+            CommonMethods.Log(TAG, "existed doc");
+        else {
+            db.insert(NOTIFICATION_MESSAGE_TABLE, null, contentValues);
+            doMergeUnreadMessageForChatAndOther(type);
+        }
 
-        doMergeUnreadMessageForChatAndOther(type);
         return true;
     }
 
+    private boolean isExist(String id) {
+        SQLiteDatabase db = getReadableDatabase();
+        String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE + " where " + COLUMN_ID + " = " + id;
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count > 0;
+    }
 
     public void doMergeUnreadMessageForChatAndOther(String notificationType) {
 
-        if (notificationType == null) {
-            ArrayList<UnreadSavedNotificationMessageData> list = new ArrayList<>();
-
-            ArrayList<UnreadSavedNotificationMessageData> unreadSavedNotificationMessageData = unreadChatMessagesList();
-            ArrayList<UnreadSavedNotificationMessageData> otherMsgList = doGetAppUnreadReceivedNotificationMessage();
-            list.addAll(unreadSavedNotificationMessageData);
-            list.addAll(otherMsgList);
-            RescribeApplication.setAppUnreadNotificationMessageList(mContext, list);
-
-        } else {
-            ArrayList<UnreadSavedNotificationMessageData> receiveList;
-            if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT.equalsIgnoreCase(notificationType)) {
-                receiveList = unreadChatMessagesList();
-            } else {
-                receiveList = doGetAppUnreadReceivedNotificationMessage();
-            }
-            //--------------
             ArrayList<UnreadSavedNotificationMessageData> mainList = RescribeApplication.getAppUnreadNotificationMessageList();
-            for (Iterator<UnreadSavedNotificationMessageData> iterator = mainList.iterator(); iterator.hasNext(); ) {
-                UnreadSavedNotificationMessageData object = iterator.next();
-                if (notificationType.equalsIgnoreCase(object.getNotificationMessageType())) {
-                    iterator.remove();
-                }
-            }
-            //--------------
-            mainList.addAll(receiveList);
-            RescribeApplication.setAppUnreadNotificationMessageList(mContext, mainList);
-        }
+            mainList.clear();
 
+            mainList.addAll(unreadChatMessagesList());
+            mainList.addAll(doGetAppUnreadReceivedNotificationMessage());
+
+            RescribeApplication.setAppUnreadNotificationMessageList(mContext, mainList);
     }
 
     public ArrayList<UnreadSavedNotificationMessageData> doGetAppUnreadReceivedNotificationMessage() {
@@ -654,16 +642,30 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return chatDoctors;
     }
 
-    public void deleteUnreadReceivedNotificationMessage(int id, String notificationType) {
+    public int deleteUnreadReceivedNotificationMessage(int id, String notificationType) {
         SQLiteDatabase db = getWritableDatabase();
         if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT.equalsIgnoreCase(notificationType)) {
             deleteUnreadMessage(id);
         } else {
-            int delete = db.delete(NOTIFICATION_MESSAGE_TABLE,
-                    COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ",
+            int delete = db.delete(NOTIFICATION_MESSAGE_TABLE, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ",
                     new String[]{Integer.toString(id), notificationType});
         }
         doMergeUnreadMessageForChatAndOther(notificationType);
+        return getUnreadNotificationCount();
+    }
+
+    private int getUnreadNotificationCount() {
+        SQLiteDatabase db = getReadableDatabase();
+        String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE;
+        Cursor cursor = db.rawQuery(countQuery, null);
+        return cursor.getCount();
+    }
+
+    private int getUnreadNotificationCount(String type) {
+        SQLiteDatabase db = getReadableDatabase();
+        String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE + " where " + NOTIFICATION_MSG_TYPE + " = " + type;
+        Cursor cursor = db.rawQuery(countQuery, null);
+        return cursor.getCount();
     }
 
 
@@ -691,7 +693,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
                 MQTTMessage messageObject = gson.fromJson(messageJson, MQTTMessage.class);
 
-                unreadNotificationMessageData.setId("" + messageObject.getDocId());
+                unreadNotificationMessageData.setId(String.valueOf(messageObject.getDocId()));
                 unreadNotificationMessageData.setNotificationMessageType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
                 unreadNotificationMessageData.setNotificationMessage(mContext.getString(R.string.message_from) + " " + messageObject.getName());
                 unreadNotificationMessageData.setNotificationData(messageObject.getMsg());

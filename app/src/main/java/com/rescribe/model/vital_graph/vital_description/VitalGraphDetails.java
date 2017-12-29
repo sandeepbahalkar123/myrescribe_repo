@@ -19,7 +19,7 @@ public class VitalGraphDetails implements CustomResponse {
 
     @SerializedName("selfTrackerFlag")
     @Expose
-    private String selfTrackerFlag;
+    private boolean selfTrackerFlag;
 
     public String getVitalValue() {
         return vitalValue;
@@ -43,11 +43,11 @@ public class VitalGraphDetails implements CustomResponse {
         this.creationDate = creation_date;
     }
 
-    public String getSelfTrackerFlag() {
+    public boolean getSelfTrackerFlag() {
         return selfTrackerFlag;
     }
 
-    public void setSelfTrackerFlag(String selfTrackerFlag) {
+    public void setSelfTrackerFlag(boolean selfTrackerFlag) {
         this.selfTrackerFlag = selfTrackerFlag;
     }
 }

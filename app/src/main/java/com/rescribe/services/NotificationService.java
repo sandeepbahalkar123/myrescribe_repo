@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.facebook.login.widget.ProfilePictureView.TAG;
+import static com.rescribe.util.RescribeConstants.NOTIFICATION_TAG;
 
 
 /**
@@ -180,9 +181,7 @@ public class NotificationService extends Service implements HelperResponse {
             startActivity(popup);
             //----------
             //----------
-        } else {
-            notificationmanager.notify(notification_id, build);
-        }
+        } else notificationmanager.notify(NOTIFICATION_TAG, notification_id, build);
         //--- Show notification/Alarm based on user configured setting : END
 
         stopSelf();

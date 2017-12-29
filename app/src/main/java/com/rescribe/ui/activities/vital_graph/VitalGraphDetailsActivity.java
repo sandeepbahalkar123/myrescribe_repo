@@ -1,6 +1,11 @@
 package com.rescribe.ui.activities.vital_graph;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
@@ -9,11 +14,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.MeasureSpec;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -47,6 +56,8 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -176,22 +187,33 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
             // soring for ascending list
             //Collections.sort(vitalGraphDetailList, new DateWiseComparator());
             //------
-            DateFormat requiredDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MMM);
+            DateFormat requiredDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MMM, Locale.US);
             final ArrayList<Entry> tempEntries = new ArrayList<>();
             final HashSet<String> tempLabels = new HashSet<>();
             final ArrayList<String> tempLabelsArrayList = new ArrayList<>();
 
+            List<Integer> circleColors = new ArrayList<>();
+
             for (int i = 0; i < vitalGraphDetailList.size(); i++) {
 
                 VitalGraphDetails data = vitalGraphDetailList.get(i);
+
+                circleColors.add(data.getSelfTrackerFlag() ? getResources().getColor(R.color.grey) : getResources().getColor(R.color.white));
+
                 //----
                 Date date = CommonMethods.convertStringToDate(data.getCreationDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
                 String formattedDate = requiredDateFormat.format(date);
                 tempLabels.add(formattedDate);
                 tempLabelsArrayList.add(formattedDate);
                 //----
-                if (!(RescribeConstants.BLANK.equalsIgnoreCase(data.getVitalValue())))
-                    tempEntries.add(new Entry(i, Float.parseFloat(data.getVitalValue())));
+                if (!(RescribeConstants.BLANK.equalsIgnoreCase(data.getVitalValue()))) {
+
+                    Bitmap bitmapView = createBitmapFromLayoutWithText(data.getVitalValue(), data.getSelfTrackerFlag() ? getResources().getColor(R.color.grey) : getResources().getColor(R.color.white));
+                    Drawable drawable = new BitmapDrawable(getResources(), bitmapView);
+
+                    tempEntries.add(new Entry(i, Float.parseFloat(data.getVitalValue()), drawable));
+//                    tempEntries.add(new Entry(i, Float.parseFloat(data.getVitalValue()), getResources().getDrawable( R.drawable.blue_dot)));
+                }
             }
 
             if (tempEntries.size() > 0) {
@@ -200,12 +222,13 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 LineData data = new LineData();
 
                 data.addDataSet(dataset);
-                data.setValueTextColor(Color.WHITE);
 
                 dataset.setDrawCircleHole(false);
-                dataset.setDrawFilled(true);
-                dataset.setCircleColor(Color.WHITE);
                 dataset.setColor(Color.WHITE);
+                dataset.setValueTextColor(Color.TRANSPARENT);
+//                dataset.setValueTextColors(circleColors);
+//                dataset.setCircleColor(Color.TRANSPARENT);
+                dataset.setCircleColors(circleColors);
                 dataset.setValueTextSize(10); // It's a DP value.
                 //----
                 mGraphCard.getLegend().setEnabled(false);
@@ -226,7 +249,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 mGraphCard.setScrollContainer(true);
                 mGraphCard.setHorizontalScrollBarEnabled(true);
                 mGraphCard.setScaleXEnabled(true);
-                mGraphCard.setVisibleXRangeMaximum(4);
+                mGraphCard.setVisibleXRangeMaximum(5);
                 mGraphCard.moveViewToX(0);
                 //---------
                 IAxisValueFormatter formatter = new IAxisValueFormatter() {
@@ -268,15 +291,20 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
             // soring for ascending list
             //Collections.sort(vitalGraphDetailList, new DateWiseComparator());
             //------
-            DateFormat requiredDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MMM);
+            DateFormat requiredDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.DD_MMM, Locale.US);
             final ArrayList<Entry> maxTempEntries = new ArrayList<>();
             final ArrayList<Entry> minTempEntries = new ArrayList<>();
             final HashSet<String> tempLabels = new HashSet<>();
             final ArrayList<String> tempLabelsArrayList = new ArrayList<>();
 
+            List<Integer> circleColors = new ArrayList<>();
+
             for (int i = 0; i < vitalGraphDetailList.size(); i++) {
 
                 VitalGraphDetails data = vitalGraphDetailList.get(i);
+
+                circleColors.add(data.getSelfTrackerFlag() ? getResources().getColor(R.color.grey_300) : getResources().getColor(R.color.white));
+
                 //----
                 Date date = CommonMethods.convertStringToDate(data.getCreationDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
                 String formattedDate = requiredDateFormat.format(date);
@@ -304,16 +332,16 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 data.setValueTextSize(10); // It's DP value.
 
                 //----******for MAX*****------
+                maxTempEntriesDataset.setCircleColor(Color.WHITE);
                 maxTempEntriesDataset.setDrawCircleHole(false);
                 maxTempEntriesDataset.setDrawFilled(true);
-                maxTempEntriesDataset.setCircleColor(Color.WHITE);
                 maxTempEntriesDataset.setColor(Color.WHITE);
                 maxTempEntriesDataset.setFillColor(Color.WHITE);
                 maxTempEntriesDataset.setFillAlpha(10);
                 //----*******for MIN****------
                 minTempEntriesDataset.setDrawCircleHole(false);
                 minTempEntriesDataset.setDrawFilled(true);
-                minTempEntriesDataset.setCircleColor(Color.YELLOW);
+                minTempEntriesDataset.setCircleColors(Color.YELLOW);
                 minTempEntriesDataset.setFillColor(Color.YELLOW);
                 minTempEntriesDataset.setFillAlpha(10);
                 minTempEntriesDataset.setColor(Color.YELLOW);
@@ -507,5 +535,31 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
     }
 
+    public Bitmap createBitmapFromLayoutWithText(String text, int color) {
+        LayoutInflater mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View view = mInflater.inflate(R.layout.custom_point, null);
+        TextView tv = (TextView) view.findViewById(R.id.valueTextView);
+        tv.setTextColor(color);
+        tv.setText(text);
+
+        //Pre-measure the view so that height and width don't remain null.
+        view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+                MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+
+        //Assign a size and position to the view and all of its descendants
+        view.layout(0, 0, getResources().getDimensionPixelSize(R.dimen.dp24), getResources().getDimensionPixelSize(R.dimen.dp24));
+
+        //Create the bitmap
+        Bitmap bitmap = Bitmap.createBitmap(getResources().getDimensionPixelSize(R.dimen.dp30),
+                getResources().getDimensionPixelSize(R.dimen.dp30),
+                Bitmap.Config.ARGB_8888);
+        //Create a canvas with the specified bitmap to draw into
+        Canvas c = new Canvas(bitmap);
+
+        //Render this view (and all of its children) to the given Canvas
+        view.draw(c);
+        return bitmap;
+    }
 
 }

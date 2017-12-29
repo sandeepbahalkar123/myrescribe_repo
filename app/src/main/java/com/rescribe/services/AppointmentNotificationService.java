@@ -26,6 +26,8 @@ import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
+import static com.rescribe.util.RescribeConstants.NOTIFICATION_TAG;
+
 
 /**
  * This service is started when an Alarm has been raised
@@ -59,15 +61,12 @@ public class AppointmentNotificationService extends Service implements HelperRes
         boolean isNotificationOn = RescribePreferencesManager.getBoolean(getString(R.string.appointment_alert), this);
 
         if (loginStatus.equals(RescribeConstants.YES) && isNotificationOn) {
-
-            int notification_id = intent.getIntExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, 0);
             notifyTime = intent.getStringExtra(RescribeConstants.APPOINTMENT_TIME);
-
             if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
                 AppointmentHelper appointmentHelper = new AppointmentHelper(this);
                 appointmentHelper.getDoctorList();
             } else {
-                PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, notification_id, intent, flags);
+                PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID, intent, flags);
                 AlarmManager aManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 aManager.cancel(mAlarmPendingIntent);
             }
@@ -85,9 +84,9 @@ public class AppointmentNotificationService extends Service implements HelperRes
     public void customNotification(AppointmentsNotificationData data, int index) {
 
         String drName = data.getDoctorName();
-        if(drName.toLowerCase().contains("dr.")){
+        if (drName.toLowerCase().contains("dr.")) {
             doctorName = data.getDoctorName();
-        }else{
+        } else {
             doctorName = "Dr. " + data.getDoctorName();
         }
         int subNotificationId = data.getAptId();
@@ -97,9 +96,8 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
         //---- Save notification in db---
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
-        int id = (int) System.currentTimeMillis();
         String currentTimeStamp = CommonMethods.getCurrentDate() + " " + time;
-        appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message,message, currentTimeStamp);
+        appDBHelper.insertUnreadReceivedNotificationMessage("" + subNotificationId, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message, message, currentTimeStamp);
         //-------
 
         // Using RemoteViews to bind custom layouts into Notification
@@ -111,7 +109,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_ID, subNotificationId);
         mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
         mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, message);
-        mNotifyYesIntent.putExtra(getString(R.string.unread_notification_update_received), id);
+        mNotifyYesIntent.putExtra(getString(R.string.unread_notification_update_received), subNotificationId);
 
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, subNotificationId, mNotifyYesIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
@@ -121,7 +119,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_ID, subNotificationId);
         mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
         mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, message);
-        mNotifyNoIntent.putExtra(getString(R.string.unread_notification_update_received), id);
+        mNotifyNoIntent.putExtra(getString(R.string.unread_notification_update_received), subNotificationId);
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, subNotificationId, mNotifyNoIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mNoPendingIntent);
 
@@ -143,7 +141,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         mRemoteViews.setTextViewText(R.id.timeText, notifyTime);
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        notificationmanager.notify(subNotificationId, builder.build());
+        notificationmanager.notify(NOTIFICATION_TAG, subNotificationId, builder.build());
     }
 
     @Override

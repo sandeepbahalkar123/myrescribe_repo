@@ -64,6 +64,7 @@
     <dimen name="dp134">134dp</dimen>
     <dimen name="dp136">136dp</dimen>
     <dimen name="dp7">7dp</dimen>
+    <dimen name="time_slot_item_height">32dp</dimen>
 
 
     <!--End Switch Button-->

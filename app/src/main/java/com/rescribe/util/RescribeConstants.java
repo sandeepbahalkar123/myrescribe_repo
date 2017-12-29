@@ -204,6 +204,7 @@ public class RescribeConstants {
     public static final String NOTIFICATION_COUNT = "notification_count";
     public static final String DOCTOR_NAME = "doctor_name";
     public static final float ZOOM_CAMERA_VALUE = 7.0f;
+    public static final String NOTIFICATION_TAG = "rescribe_notification_tag";
 
 
     public static class USER_STATUS {

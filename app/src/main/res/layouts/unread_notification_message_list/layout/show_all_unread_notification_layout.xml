@@ -28,11 +28,11 @@
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp10"
                 android:layout_marginLeft="@dimen/dp16"
                 android:layout_marginRight="@dimen/dp16"
@@ -74,11 +74,10 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/docConnectListView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:divider="@null"
                         android:dividerHeight="0dp"
-                        android:visibility="visible"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                        android:visibility="visible"/>
 
                     <View
                         android:layout_width="match_parent"
@@ -123,11 +122,10 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/unreadTokenNotificationListView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:divider="@null"
                         android:dividerHeight="0dp"
-                        android:visibility="visible"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                        android:visibility="visible"/>
 
                     <View
                         android:layout_width="match_parent"
@@ -171,11 +169,10 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/onGoingMedicationListView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:divider="@null"
                         android:dividerHeight="0dp"
-                        android:visibility="visible"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                        android:visibility="visible"/>
 
                 </LinearLayout>
 
@@ -214,7 +211,7 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/appointmentsListView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:divider="@null"
                         android:dividerHeight="0dp"
                         android:visibility="visible" />
@@ -262,11 +259,10 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/investigationsListView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:divider="@null"
                         android:dividerHeight="0dp"
-                        android:visibility="visible"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                        android:visibility="visible"/>
 
                 </LinearLayout>
             </LinearLayout>

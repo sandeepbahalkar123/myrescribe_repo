@@ -79,14 +79,14 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     public void onBackPressed() {
         if (mDrawer.isDrawerOpen(GravityCompat.END)) {
             mDrawer.closeDrawer(GravityCompat.END);
-        }
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStack();
         } else {
-            RequestPool.getInstance(this).cancellAllPreviousRequestWithSameTag(RescribeConstants.CASE_DETAILS_LIST);
-            super.onBackPressed();
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                getSupportFragmentManager().popBackStack();
+            } else {
+                RequestPool.getInstance(this).cancellAllPreviousRequestWithSameTag(RescribeConstants.CASE_DETAILS_LIST);
+                super.onBackPressed();
+            }
         }
-
     }
 
     public DrawerLayout getActivityDrawer() {

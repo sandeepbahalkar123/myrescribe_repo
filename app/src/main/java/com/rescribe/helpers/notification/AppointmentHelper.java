@@ -63,9 +63,13 @@ public class AppointmentHelper implements ConnectionListener {
 
     public void getDoctorList() {
         if (!patient_id.equals("")) {
+
+            String time = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.HH_mm);
+            String date = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+
             ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.APPOINTMENT_NOTIFICATION, Request.Method.GET, true);
             mConnectionFactory.setHeaderParams();
-            mConnectionFactory.setUrl(Config.APPOINTMENTS + "?patientId=" + patient_id + "&status=Upcoming");
+            mConnectionFactory.setUrl(Config.APPOINTMENTS + "?patientId=" + patient_id + "&status=Upcoming&date=" + date + "&time=" + time);
             mConnectionFactory.createConnection(RescribeConstants.APPOINTMENT_NOTIFICATION);
         }
     }

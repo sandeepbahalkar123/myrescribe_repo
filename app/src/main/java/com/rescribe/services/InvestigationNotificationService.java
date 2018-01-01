@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.rescribe.notification.InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID;
-import static com.rescribe.util.RescribeConstants.NOTIFICATION_TAG;
+import static com.rescribe.util.RescribeConstants.INVESTIGATION_NOTIFICATION_TAG;
 
 
 /**
@@ -147,7 +147,7 @@ public class InvestigationNotificationService extends Service implements HelperR
         mRemoteViews.setTextViewText(R.id.timeText, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
 
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationmanager.notify(NOTIFICATION_TAG, value.get(0).getDrId(), builder.build());
+        notificationmanager.notify(INVESTIGATION_NOTIFICATION_TAG, value.get(0).getDrId(), builder.build());
 
         stopSelf();
     }

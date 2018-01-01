@@ -375,6 +375,7 @@
     <string name="address_dummy">Flat No 1, Akash Apartment, Karve Road, Kothrud,  Opposite Amber Mangal Karyalay, Pune,  Maharashtra 411029</string>
     <string name="reschedule">RESCHEDULE</string>
     <string name="appointment_confirmation">Appointment Confirmation</string>
+    <string name="appointment_time_has_lapsed">Appointment time has lapsed.</string>
 
     <!--************************-->
 </resources>

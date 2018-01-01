@@ -75,9 +75,9 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
 
     private void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        for (int i = 0; i < mFragmentTitleList.length; i++) {
-            Fragment fragment = AppointmentFragment.newInstance(mFragmentTitleList[i]); // pass data here
-            adapter.addFragment(fragment, mFragmentTitleList[i]);
+        for (String aMFragmentTitleList : mFragmentTitleList) {
+            Fragment fragment = AppointmentFragment.newInstance(aMFragmentTitleList); // pass data here
+            adapter.addFragment(fragment, aMFragmentTitleList);
             // pass title here
         }
         mViewPager.setAdapter(adapter);

@@ -24,9 +24,13 @@ import com.rescribe.model.doctors.filter_doctor_list.DoctorFilterModel;
 import com.rescribe.model.doctors.filter_doctor_list.DoctorFilteredInfoAndCaseDetails;
 import com.rescribe.model.filter.filter_request.DrFilterRequestModel;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,6 +100,8 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
         DoctorFilterModel model = (DoctorFilterModel) customResponse;
         if (model != null) {
             ArrayList<DoctorFilteredInfoAndCaseDetails> doctorsInfoAndCaseDetailsList = model.getFilterModel().getDocVisits();
+            Collections.sort(doctorsInfoAndCaseDetailsList, new DateWiseComparator());
+
             if (doctorsInfoAndCaseDetailsList != null) {
                 setListAdapter(doctorsInfoAndCaseDetailsList);
             }
@@ -151,6 +157,16 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
                     activityDrawer.openDrawer(GravityCompat.END);
                 }
                 break;
+        }
+    }
+
+    private class DateWiseComparator implements Comparator<DoctorFilteredInfoAndCaseDetails> {
+        // To make sorting based on descending order.
+        public int compare(DoctorFilteredInfoAndCaseDetails m1, DoctorFilteredInfoAndCaseDetails m2) {
+            Date m1Date = CommonMethods.convertStringToDate(m1.getDoctorFilteredInfo().getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            Date m2Date = CommonMethods.convertStringToDate(m2.getDoctorFilteredInfo().getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            int i = m2Date.compareTo(m1Date);
+            return i;
         }
     }
 }

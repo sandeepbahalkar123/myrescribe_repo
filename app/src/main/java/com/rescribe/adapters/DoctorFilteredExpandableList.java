@@ -104,7 +104,8 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
 
         if (child.contains("|") && child.endsWith(RescribeConstants.TRUE)) {
             String[] split = child.split("\\|");
-            childViewHolder.headerName.setText(split[1]);
+            String substring = split[1].substring(0, 1);
+            childViewHolder.headerName.setText(substring.toUpperCase() + split[1].substring(1, split[1].length()));
             childViewHolder.headerName.setVisibility(View.VISIBLE);
             childViewHolder.childContent.setVisibility(View.GONE);
             childViewHolder.cardDetailsBullet.setVisibility(View.INVISIBLE);

@@ -232,6 +232,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         } else {
             //--THIS IS DONE IF, ADAPTER OPEND FROM FIND_LOCATION(RECENT_VISITOR.java location selection)
             holder.doctorName.setText(doctorName);
+            holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
         }
         //--------------
         if (doctorObject.getClinicDataList().size() > 0) {

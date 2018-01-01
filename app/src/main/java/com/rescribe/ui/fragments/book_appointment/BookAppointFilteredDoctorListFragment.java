@@ -175,7 +175,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             isDataListViewVisible(false);
         } else {
             isDataListViewVisible(true);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), mReceivedList, mServicesCardViewImpl, this,mClickedItemDataTypeValue,mReceivedTitle);
+            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), mReceivedList, mServicesCardViewImpl, this, mClickedItemDataTypeValue, mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             mDoctorListView.setLayoutManager(layoutManager);
             mDoctorListView.setHasFixedSize(true);
@@ -194,7 +194,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         switch (mOldDataTag) {
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
-               // CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+                // CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
@@ -294,7 +294,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
                 intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.filter));
-                intent.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
+                intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.location));
                 startActivityForResult(intent, RescribeConstants.DOCTOR_LOCATION_CHANGE_FROM_MAP_REQUEST_CODE);
                 break;
         }

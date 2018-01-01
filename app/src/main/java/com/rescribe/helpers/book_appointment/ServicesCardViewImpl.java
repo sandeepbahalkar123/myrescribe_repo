@@ -229,10 +229,26 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             for (DoctorList listObject :
                     mReceivedDoctorDataList) {
                 if (selectedSpeciality.equalsIgnoreCase(listObject.getDocSpeciality())) {
-                    dataList.add(listObject);
+
+                    if (dataList.size() > 0) {
+                        boolean isAddItemToList = true;
+                        for (DoctorList prevAddedObject :
+                                dataList) {
+                            if (listObject.getDocId() == prevAddedObject.getDocId()) {
+                                isAddItemToList = false;
+                                break;
+                            }
+                        }
+                        if (isAddItemToList) {
+                            dataList.add(listObject);
+                        }
+                    } else {
+                        dataList.add(listObject);
+                    }
                 }
             }
         }
+
         return dataList;
     }
 

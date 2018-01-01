@@ -127,7 +127,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
             boolean b = checkAllClinicAddressInSameCity(doctorObject.getClinicDataList());
             if (b) {
-                SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
                 locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                 holder.doctorAddress.setText(locationString);
                 holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
@@ -137,7 +137,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                 holder.doctorAddress.setText(locationString);
                 holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-              //  clinicName.setVisibility(View.INVISIBLE);
+                //  clinicName.setVisibility(View.INVISIBLE);
 
             }
           /*  SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
@@ -259,7 +259,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.doctor));
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
+                b.putString(mContext.getString(R.string.category_name), doctorObject.getCategoryName());
                 mOnClinicAndDoctorNameSearchRowItem.onClickOfCardView(b);
             }
         });
@@ -376,7 +376,33 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                         }
 
                     }
-                    mDataList = filteredList;
+                    //--removed duplicate doctors based on docID--
+                    if (filteredList.size() > 0) {
+                        ArrayList<DoctorList> filteredBasedOnDocList = new ArrayList<>();
+                        for (DoctorList addedDocObject :
+                                filteredList) {
+                            if (filteredBasedOnDocList.size() > 0) {
+                                boolean isAddItemToList = true;
+                                for (DoctorList prevAddedObject :
+                                        filteredBasedOnDocList) {
+                                    if (addedDocObject.getDocId() == prevAddedObject.getDocId()) {
+                                        isAddItemToList = false;
+                                        break;
+                                    }
+                                }
+                                if (isAddItemToList) {
+                                    filteredBasedOnDocList.add(addedDocObject);
+                                }
+                            } else {
+                                filteredBasedOnDocList.add(addedDocObject);
+                            }
+                        }
+                        mDataList = filteredBasedOnDocList;
+                    } else {
+                        mDataList = filteredList;
+                    }
+                    //----
+
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = mDataList;
@@ -420,6 +446,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     public interface OnDataListViewVisible {
         public void doConfigureDataListViewVisibility(boolean flag, boolean isShowEmptyListView);
     }
+
     private boolean checkAllClinicAddressInSameCity(ArrayList<ClinicData> list) {
 
         if (list.size() > 1) {

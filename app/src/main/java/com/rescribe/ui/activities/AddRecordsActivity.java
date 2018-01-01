@@ -101,7 +101,6 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     RelativeLayout selectDateLayout;
     @BindView(R.id.selectAddressLayout)
     RelativeLayout selectAddressLayout;
-
     @BindView(R.id.selectAddressText)
     EditText selectAddressText;
     @BindView(R.id.addressIcon)
@@ -125,6 +124,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     private ColorGenerator mColorGenerator;
     private int mImageSize;
     private String mSelectDatePicker = "";
+    private String doctorNameString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -361,6 +361,11 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
                         final ArrayList<VisitDate> spinnerList = new ArrayList<VisitDate>();
                         mSelectDateString = getResources().getString(R.string.select_date_text);
+                        if(doctorSpinnerAdapter.getDoctor(position).getDoctorName().contains("Dr.")){
+                            doctorNameString = doctorSpinnerAdapter.getDoctor(position).getDoctorName();
+                        }else {
+                            doctorNameString = "Dr. "+doctorSpinnerAdapter.getDoctor(position).getDoctorName();
+                        }
                         mSelectDoctorString = doctorSpinnerAdapter.getDoctor(position).getDoctorName();
 
                         mSelectedId = doctorSpinnerAdapter.getDoctor(position).getId();
@@ -369,7 +374,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
                             dropdownLayout.setVisibility(View.VISIBLE);
                             autocompleteLayout.setVisibility(View.GONE);
-                            doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
+                            doctorName.setText(doctorNameString);
                             doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
                             doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
                             int color2 = mColorGenerator.getColor(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
@@ -404,7 +409,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
                             mSelectDoctorName.setText("");
                             dropdownLayout.setVisibility(View.VISIBLE);
                             autocompleteLayout.setVisibility(View.GONE);
-                            doctorName.setText(doctorSpinnerAdapter.getDoctor(position).getDoctorName());
+                            doctorName.setText(doctorNameString);
                             doctorSpecialist.setText(doctorSpinnerAdapter.getDoctor(position).getSpecialization());
                             doctorAddress.setText(doctorSpinnerAdapter.getDoctor(position).getAddress());
                             int color2 = mColorGenerator.getColor(doctorSpinnerAdapter.getDoctor(position).getDoctorName());

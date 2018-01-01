@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    tools:visibility="visible"
     android:visibility="gone">
 
     <LinearLayout
@@ -17,7 +18,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp10"
+            android:layout_marginBottom="@dimen/dp6"
             android:paddingEnd="@dimen/horizontal_margin"
             android:paddingStart="@dimen/horizontal_margin">
 
@@ -27,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/dinner_medication"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp20"
+                android:textSize="@dimen/sp16"
                 app:customFont="@string/roboto_bold" />
 
             <com.rescribe.ui.customesViews.CustomTextView
@@ -36,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp16"
+                android:textSize="@dimen/sp14"
                 app:customFont="@string/roboto_bold" />
 
         </FrameLayout>
@@ -45,7 +46,7 @@
             android:id="@+id/dividerLineInHeader"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp05"
-            android:layout_marginBottom="@dimen/dp10"
+            android:layout_marginBottom="@dimen/dp6"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:background="@color/divider" />
@@ -76,7 +77,7 @@
                         android:layout_toStartOf="@+id/selectView"
                         android:text="@string/dosage_completed"
                         android:textColor="@color/dose_completed"
-                        android:textSize="@dimen/sp19"
+                        android:textSize="@dimen/sp15"
                         app:customFont="@string/roboto_medium" />
 
                     <CheckBox

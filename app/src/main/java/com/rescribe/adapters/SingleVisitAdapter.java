@@ -176,7 +176,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 String unit = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue();
                 String[] unitForBp = unit.split("/");
                 String unitForBpMax = unitForBp[0];
-                String unitForBpMin = unitForBp[1];
+                String unitForBpMin = unitForBp.length==2 ?unitForBp[1]:"";
                 vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getIcon()));
 
                 vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
@@ -220,26 +220,26 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
 
         } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.severeRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
-            String bpMax = "<font color='#FF0000'>" + forBpMax + "</font>";
-            String bpMin = "<font color='#ff9500'>" + forBpMin + "</font>";
+            String bpMax = "<font color='#ff9500'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#FF0000'>" + forBpMin + "</font>";
             String slash = "<font color='#737373'>" + "/" + "</font>";
             unitValue = bpMax + slash + bpMin;
 
         } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.severeRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
-            String bpMax = "<font color='#FF0000'>" + forBpMax + "</font>";
-            String bpMin = "<font color='#178a00'>" + forBpMin + "</font>";
-            String slash = "<font color='#737373'>" + "/" + "</font>";
-            unitValue = bpMax + slash + bpMin;
-
-        } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.normalRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
             String bpMax = "<font color='#178a00'>" + forBpMax + "</font>";
             String bpMin = "<font color='#FF0000'>" + forBpMin + "</font>";
             String slash = "<font color='#737373'>" + "/" + "</font>";
             unitValue = bpMax + slash + bpMin;
 
+        } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.normalRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
+            String bpMax = "<font color='#FF0000'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#178a00'>" + forBpMin + "</font>";
+            String slash = "<font color='#737373'>" + "/" + "</font>";
+            unitValue = bpMax + slash + bpMin;
+
         } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.normalRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
-            String bpMax = "<font color='#178a00'>" + forBpMax + "</font>";
-            String bpMin = "<font color='#ff9500'>" + forBpMin + "</font>";
+            String bpMax = "<font color='#ff9500'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#178a00'>" + forBpMin + "</font>";
             String slash = "<font color='#737373'>" + "/" + "</font>";
             unitValue = bpMax + slash + bpMin;
 
@@ -250,8 +250,8 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             unitValue = bpMax + slash + bpMin;
 
         } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
-            String bpMax = "<font color='#ff9500'>" + forBpMax + "</font>";
-            String bpMin = "<font color='#FF0000'>" + forBpMin + "</font>";
+            String bpMax = "<font color='#FF0000'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#ff9500'>" + forBpMin + "</font>";
             String slash = "<font color='#737373'>" + "/" + "</font>";
             unitValue = bpMax + slash + bpMin;
 
@@ -262,42 +262,42 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             unitValue = bpMax + slash + bpMin;
 
         } else if (categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
-            String bpMax = "<font color='#ff9500'>" + forBpMax + "</font>";
-            String bpMin = "<font color='#178a00'>" + forBpMin + "</font>";
+            String bpMax = "<font color='#178a00'>" + forBpMax + "</font>";
+            String bpMin = "<font color='#ff9500'>" + forBpMin + "</font>";
             String slash = "<font color='#737373'>" + "/" + "</font>";
             unitValue = bpMax + slash + bpMin;
 
-        } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange)) && categoryForBpMin.equals("")) {
+        } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange)) && categoryForBpMin.equalsIgnoreCase("")) {
             String bpMax = "<font color='#FF0000'>" + forBpMax + "</font>";
             String bpMin = "<font color='#737373'>" + forBpMin + "</font>";
             String slash = "<font color='#737373'>" + "/" + "</font>";
             unitValue = bpMax + slash + bpMin;
 
-        } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && categoryForBpMin.equals("")) {
+        } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) && categoryForBpMin.equalsIgnoreCase("")) {
             String bpMax = "<font color='#ff9500'>" + forBpMax + "</font>";
             String bpMin = "<font color='#737373'>" + forBpMin + "</font>";
             String slash = "<font color='#737373'>" + "/" + "</font>";
             unitValue = bpMax + slash + bpMin;
 
-        } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.normalRange)) && categoryForBpMin.equals("")) {
+        } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.normalRange)) && categoryForBpMin.equalsIgnoreCase("")) {
             String bpMax = "<font color='#178a00'>" + forBpMax + "</font>";
             String bpMin = "<font color='#737373'>" + forBpMin + "</font>";
             String slash = "<font color='#737373'>" + "/" + "</font>";
             unitValue = bpMax + slash + bpMin;
 
-        } else if (categoryForBpMax.equalsIgnoreCase("") && categoryForBpMin.equals(mContext.getString(R.string.severeRange))) {
+        } else if (categoryForBpMax.equalsIgnoreCase("") && categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
             String bpMax = "<font color='#737373'>" + forBpMax + "</font>";
             String bpMin = "<font color='#FF0000'>" + forBpMin + "</font>";
             String slash = "<font color='#737373'>" + "/" + "</font>";
             unitValue = bpMax + slash + bpMin;
 
-        } else if (categoryForBpMax.equalsIgnoreCase("") && categoryForBpMin.equals(mContext.getString(R.string.moderateRange))) {
+        } else if (categoryForBpMax.equalsIgnoreCase("") && categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
             String bpMax = "<font color='#737373'>" + forBpMax + "</font>";
             String bpMin = "<font color='#ff9500'>" + forBpMin + "</font>";
             String slash = "<font color='#737373'>" + "/" + "</font>";
             unitValue = bpMax + slash + bpMin;
 
-        } else if (categoryForBpMax.equalsIgnoreCase("") && categoryForBpMin.equals(mContext.getString(R.string.normalRange))) {
+        } else if (categoryForBpMax.equalsIgnoreCase("") && categoryForBpMin.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
             String bpMax = "<font color='#737373'>" + forBpMax + "</font>";
             String bpMin = "<font color='#178a00'>" + forBpMin + "</font>";
             String slash = "<font color='#737373'>" + "/" + "</font>";
@@ -581,7 +581,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         if (unitName.equals(mContext.getString(R.string.bp))) {
             String[] unitDataObject = unitValue.split("/");
             String unitBpMax = unitDataObject[0];
-            String unitBpMin = unitDataObject[1];
+            String unitBpMin = unitDataObject.length==2? unitDataObject[1]:"";
             showVitalNameLayout.setVisibility(View.VISIBLE);
             showVitalRangeLayout.setVisibility(View.VISIBLE);
             vitalName.setText(mContext.getString(R.string.systolic_pressure));

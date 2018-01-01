@@ -32,6 +32,7 @@ public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
     private ArrayList<SpinnerDoctor> suggestions;
     private TextEnterListener textEnterListener;
     private ColorGenerator mColorGenerator;
+    private String doctorName;
 
     public DoctorSpinnerAdapter(Context context, int resource, int textViewResourceId, ArrayList<SpinnerDoctor> items) {
         super(context, resource, textViewResourceId, items);
@@ -63,8 +64,14 @@ public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
             ImageView doctorImage = (ImageView)view.findViewById(R.id.doctorImage);
             TextView doctorSpecialist = (TextView) view.findViewById(R.id.doctorSpecialist);
             TextView doctorAddress = (TextView) view.findViewById(R.id.doctorAddress);
+
+            if(doctor_details.getDoctorName().contains("Dr. ")){
+                doctorName = doctor_details.getDoctorName();
+            }else{
+                doctorName = "Dr. " + doctor_details.getDoctorName();
+            }
             if (lblName != null)
-                lblName.setText(doctor_details.getDoctorName());
+                lblName.setText(doctorName);
             doctorSpecialist.setText(doctor_details.getSpecialization());
             doctorAddress.setText(doctor_details.getAddress());
             int color2 = mColorGenerator.getColor(doctor_details.getDoctorName());

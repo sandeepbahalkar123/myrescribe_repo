@@ -143,6 +143,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cancelButton:
+
                 break;
             case R.id.rescheduleButton:
                 break;

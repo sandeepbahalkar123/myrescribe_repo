@@ -136,6 +136,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     private ClinicData clinicData;
     private BottomSheetDialog mBottomSheetDialog;
     private ColorGenerator mColorGenerator;
+    int spinnePos;
+    private String clinicNameSpinner;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -287,6 +289,12 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
 
             mClinicNameSpinner.setAdapter(arrayAdapter);
+            for(int i = 0 ;i < mClickedDoctorObject.getClinicDataList().size() ;i++){
+                clinicNameSpinner = mClickedDoctorObject.getNameOfClinicString();
+                if(clinicNameSpinner.equalsIgnoreCase(mClickedDoctorObject.getClinicDataList().get(i).getClinicName()))
+                mClinicNameSpinner.setSelection(i);
+            }
+
             mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

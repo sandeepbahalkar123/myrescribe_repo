@@ -15,6 +15,7 @@ import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
 import com.rescribe.ui.activities.book_appointment.DoctorDescriptionBaseActivity;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,21 +39,36 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         this.mContext = context;
         this.mParentActivity = parentActivity;
 
-        mHardCodedTitle = mContext.getString(R.string.doctorss);
+        mHardCodedTitle = mContext.getString(R.string.doctor);
     }
 
 
     @Override
     public void onClickOfCardView(Bundle bundleData) {
+        String searchType = bundleData.getString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH);
         String value = bundleData.getString(mContext.getString(R.string.clicked_item_data_type_value));
         String category = bundleData.getString(mContext.getString(R.string.category_name));
         String openingMode = bundleData.getString(mContext.getString(R.string.opening_mode));
         String title = bundleData.getString(mContext.getString(R.string.toolbarTitle));
         userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
         if (category.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
-            Intent intent = new Intent(mParentActivity, ConfirmAppointmentActivity.class);
-            intent.putExtras(bundleData);
-            mParentActivity.startActivity(intent);
+            if (searchType.equalsIgnoreCase(RescribeConstants.SEARCH_DOCTORS)) {
+                Intent intent = new Intent(mParentActivity, DoctorDescriptionBaseActivity.class);
+                intent.putExtra(mContext.getString(R.string.clicked_item_data), userSelectedDoctorListDataObject);
+                if (mContext.getString(R.string.complaints).equalsIgnoreCase(openingMode) ||
+                        mContext.getString(R.string.doctors_speciality).equalsIgnoreCase(openingMode)) {
+                    intent.putExtra(mContext.getString(R.string.toolbarTitle), title);
+                } else {
+                    intent.putExtra(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
+                    bundleData.putString(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
+                }
+                intent.putExtras(bundleData);
+                mParentActivity.startActivity(intent);
+            } else {
+                Intent intent = new Intent(mParentActivity, ConfirmAppointmentActivity.class);
+                intent.putExtras(bundleData);
+                mParentActivity.startActivity(intent);
+            }
         } else {
             Intent intent = new Intent(mParentActivity, DoctorDescriptionBaseActivity.class);
             intent.putExtra(mContext.getString(R.string.clicked_item_data), userSelectedDoctorListDataObject);

@@ -12,9 +12,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.doctors.filter_doctor_list.DoctorFilteredInfo;
 import com.rescribe.model.doctors.filter_doctor_list.DoctorFilteredInfoAndCaseDetails;
+import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -205,6 +210,22 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
             groupViewHolder.footerSideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.recentblue));
         }
         //-------
+        //------------
+
+        TextDrawable textDrawable = CommonMethods.getTextDrawable(context, dataObject.getDoctorName());
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
+        requestOptions.placeholder(textDrawable);
+        requestOptions.error(textDrawable);
+
+        Glide.with(context)
+                .load(dataObject.getDocImgURL())
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(groupViewHolder.docProfileImage);
+        //---------------
+        //-------
 
         return convertView;
     }
@@ -230,6 +251,8 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
         ImageView circularBulletChildElement;
         @BindView(R.id.circularBulletMainElement)
         ImageView circularBulletMainElement;
+        @BindView(R.id.docProfileImage)
+        CircularImageView docProfileImage;
 
         @BindView(R.id.upperLine)
         TextView upperLine;

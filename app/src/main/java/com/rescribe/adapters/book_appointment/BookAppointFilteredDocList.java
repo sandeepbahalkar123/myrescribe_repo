@@ -166,7 +166,6 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             } else {
                 if (clinicDataList.size() > 0) {
 
-
                     boolean b = checkAllClinicAddressInSameCity(clinicDataList);
                     if (b) {
                         SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
@@ -322,12 +321,12 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.getDocSpeciality());
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.opening_mode), mClickedItemDataTypeValue);
                 b.putString(mContext.getString(R.string.toolbarTitle), mReceivedTitleForView);
                 b.putString(mContext.getString(R.string.category_name), doctorObject.getCategoryName());
+                b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH,"");
                 mOnFilterDocListClickListener.onClickOfCardView(b);
             }
         });

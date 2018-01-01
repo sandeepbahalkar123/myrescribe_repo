@@ -38,13 +38,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by jeetal on 26/10/17.
+ * Created by jeetal on 1/1/18.
  */
 
-public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortByClinicAndDoctorNameAdapter.ListViewHolder> implements Filterable {
+public class SortAdapter extends RecyclerView.Adapter<SortAdapter.ListViewHolder> implements Filterable {
 
     private final HelperResponse mHelperResponse;
-    private OnDataListViewVisible mOnDataListViewVisibleListener;
+    private SortAdapter.OnDataListViewVisible mOnDataListViewVisibleListener;
     private Context mContext;
     private ArrayList<DoctorList> mDataList;
     private ArrayList<DoctorList> mArrayList;
@@ -57,7 +57,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     private String cityname;
 
 
-    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, OnDataListViewVisible m, HelperResponse mHelperResponse) {
+    public SortAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, SortAdapter.OnDataListViewVisible m, HelperResponse mHelperResponse) {
         this.mDataList = dataList;
         this.mContext = mContext;
         this.mArrayList = dataList;
@@ -73,15 +73,15 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     }
 
     @Override
-    public SortByClinicAndDoctorNameAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SortAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_book_appointment_doctor_list, parent, false);
 
-        return new SortByClinicAndDoctorNameAdapter.ListViewHolder(itemView);
+        return new SortAdapter.ListViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(SortByClinicAndDoctorNameAdapter.ListViewHolder holder, final int position) {
+    public void onBindViewHolder(SortAdapter.ListViewHolder holder, final int position) {
         final DoctorList doctorObject = mDataList.get(position);
         if (doctorObject.getExperience() == 0) {
             holder.doctorExperience.setVisibility(View.GONE);
@@ -442,3 +442,4 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         return false;
     }
 }
+

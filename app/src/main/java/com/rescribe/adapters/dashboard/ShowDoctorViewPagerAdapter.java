@@ -398,6 +398,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
+                b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH,"");
                 mServicesCardViewClickListener.onClickOfCardView(b);
             }
         });

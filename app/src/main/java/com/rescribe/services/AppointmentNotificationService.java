@@ -17,6 +17,7 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.notification.AppointmentHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.my_records.VisitDate;
 import com.rescribe.model.notification.AppointmentsNotificationData;
 import com.rescribe.model.notification.AppointmentsNotificationModel;
 import com.rescribe.notification.AppointmentAlarmTask;
@@ -25,8 +26,11 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
-import static com.rescribe.util.RescribeConstants.NOTIFICATION_TAG;
+import static com.rescribe.util.RescribeConstants.APPOINTMENT_NOTIFICATION_TAG;
 
 
 /**
@@ -141,7 +145,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         mRemoteViews.setTextViewText(R.id.timeText, notifyTime);
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        notificationmanager.notify(NOTIFICATION_TAG, subNotificationId, builder.build());
+        notificationmanager.notify(APPOINTMENT_NOTIFICATION_TAG, subNotificationId, builder.build());
     }
 
     @Override
@@ -151,6 +155,18 @@ public class AppointmentNotificationService extends Service implements HelperRes
             AppointmentsNotificationModel appointmentsNotificationModel = (AppointmentsNotificationModel) customResponse;
             ArrayList<AppointmentsNotificationData> aptList = appointmentsNotificationModel.getData().getAptList();
             if (!aptList.isEmpty()) {
+
+                Comparator<AppointmentsNotificationData> comparator = new Comparator<AppointmentsNotificationData>() {
+                    @Override
+                    public int compare(AppointmentsNotificationData o1, AppointmentsNotificationData o2) {
+                        Date m1Date = CommonMethods.convertStringToDate(o1.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss);
+                        Date m2Date = CommonMethods.convertStringToDate(o2.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss);
+                        return m1Date.compareTo(m2Date);
+                    }
+                };
+
+                Collections.sort(aptList, Collections.reverseOrder(comparator));
+
                 for (int index = 0; index < aptList.size(); index++) {
                     AppointmentsNotificationData aptListObject = aptList.get(index);
                     customNotification(aptListObject, index);

@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -23,7 +22,15 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.NetworkUtil;
 import com.rescribe.util.RescribeConstants;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
+import static com.rescribe.util.RescribeConstants.APPOINTMENT_NOTIFICATION_TAG;
+import static com.rescribe.util.RescribeConstants.INVESTIGATION_NOTIFICATION_TAG;
+import static com.rescribe.util.RescribeConstants.MEDICATIONS_NOTIFICATION_TAG;
 
 /**
  * Created by jeetal on 16/5/17.
@@ -60,7 +67,7 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
             if (NetworkUtil.isInternetAvailable(mContext)) {
                 respondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), medicineSlot, medicineID, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION);
                 //Toast.makeText(mContext, slot + " " + notificationId + " " + "Dose Accepted", Toast.LENGTH_SHORT).show();
-                manager.cancel(notificationId);
+                manager.cancel(MEDICATIONS_NOTIFICATION_TAG, notificationId);
             } else {
                 CommonMethods.showToast(mContext, mContext.getString(R.string.internet));
             }
@@ -76,21 +83,41 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
                     Intent.FLAG_ACTIVITY_CLEAR_TOP);
             mContext.startActivity(intentNotification);
 
-            manager.cancel(investigationData.get(0).getDrId());
+            manager.cancel(INVESTIGATION_NOTIFICATION_TAG, investigationData.get(0).getDrId());
 
         } else if (appointment_notification_id == AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID) {
 
             AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(unreadMessNotificationID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
 
-            Intent intentNotification = new Intent(mContext, AppointmentActivity.class);
-            intentNotification.putExtra(RescribeConstants.APPOINTMENT_TIME, intent.getStringExtra(RescribeConstants.APPOINTMENT_TIME));
-            intentNotification.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, intent.getBundleExtra(RescribeConstants.APPOINTMENT_MESSAGE));
-            intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            mContext.startActivity(intentNotification);
+            SimpleDateFormat sdf = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.hh_mm_a, Locale.US);
+            try {
 
-            manager.cancel(appointment_id);
+                String time = intent.getStringExtra(RescribeConstants.APPOINTMENT_TIME);
+
+                Date date1 = sdf.parse(CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.hh_mm_a));
+                Date date2 = sdf.parse(time);
+
+                if (date2.before(date1))
+                    CommonMethods.showToast(mContext, mContext.getResources().getString(R.string.appointment_time_has_lapsed));
+                else {
+                    Intent intentNotification = new Intent(mContext, AppointmentActivity.class);
+                    intentNotification.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
+                    intentNotification.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, intent.getBundleExtra(RescribeConstants.APPOINTMENT_MESSAGE));
+                    intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                            Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    mContext.startActivity(intentNotification);
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            manager.cancel(APPOINTMENT_NOTIFICATION_TAG, appointment_id);
         }
+
+        // Collapse the notification bar.
+        Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        mContext.sendBroadcast(it);
 
     }
 

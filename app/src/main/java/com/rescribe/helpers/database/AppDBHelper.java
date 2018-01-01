@@ -591,11 +591,11 @@ public class AppDBHelper extends SQLiteOpenHelper {
         contentValues.put(TIME_STAMP, timeStamp);
 
         if (isExist(id))
-            CommonMethods.Log(TAG, "existed doc");
-        else {
+            db.update(NOTIFICATION_MESSAGE_TABLE, contentValues, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ", new String[]{id, type});
+        else
             db.insert(NOTIFICATION_MESSAGE_TABLE, null, contentValues);
-            doMergeUnreadMessageForChatAndOther(type);
-        }
+
+        doMergeUnreadMessageForChatAndOther(type);
 
         return true;
     }
@@ -611,13 +611,13 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     public void doMergeUnreadMessageForChatAndOther(String notificationType) {
 
-            ArrayList<UnreadSavedNotificationMessageData> mainList = RescribeApplication.getAppUnreadNotificationMessageList();
-            mainList.clear();
+        ArrayList<UnreadSavedNotificationMessageData> mainList = RescribeApplication.getAppUnreadNotificationMessageList();
+        mainList.clear();
 
-            mainList.addAll(unreadChatMessagesList());
-            mainList.addAll(doGetAppUnreadReceivedNotificationMessage());
+        mainList.addAll(unreadChatMessagesList());
+        mainList.addAll(doGetAppUnreadReceivedNotificationMessage());
 
-            RescribeApplication.setAppUnreadNotificationMessageList(mContext, mainList);
+        RescribeApplication.setAppUnreadNotificationMessageList(mContext, mainList);
     }
 
     public ArrayList<UnreadSavedNotificationMessageData> doGetAppUnreadReceivedNotificationMessage() {

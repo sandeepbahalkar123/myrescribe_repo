@@ -24,6 +24,10 @@ import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
+import static com.rescribe.util.RescribeConstants.APPOINTMENT_NOTIFICATION_TAG;
+import static com.rescribe.util.RescribeConstants.INVESTIGATION_NOTIFICATION_TAG;
+import static com.rescribe.util.RescribeConstants.MEDICATIONS_NOTIFICATION_TAG;
+
 /**
  * Created by jeetal on 16/5/17.
  */
@@ -60,7 +64,7 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver implements He
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mContext.startActivity(intentNotification);
 
-                manager.cancel(notificationId);
+                manager.cancel(MEDICATIONS_NOTIFICATION_TAG, notificationId);
             } else if (investigation_notification_id == InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID) {
 
                 ArrayList<InvestigationData> investigationData = intent.getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
@@ -70,12 +74,12 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver implements He
                 mInvestigationHelper.doSkipInvestigation(invId, false);
 
                 RescribePreferencesManager.putBoolean(mContext.getString(R.string.investigation_alert), false, mContext);
-                manager.cancel(investigationData.get(0).getDrId());
+                manager.cancel(INVESTIGATION_NOTIFICATION_TAG, investigationData.get(0).getDrId());
 
             } else if (appointment_notification_id == AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID) {
                 String action = (String) intent.getExtras().get(RescribeConstants.APPOINTMENT_MESSAGE);
                 Toast.makeText(mContext, action + " " + "Not Accepted", Toast.LENGTH_SHORT).show();
-                manager.cancel(appointment_notification_id);
+                manager.cancel(APPOINTMENT_NOTIFICATION_TAG, appointment_notification_id);
             }
         } else {
             Intent intentNotification = new Intent(mContext, SplashScreenActivity.class);
@@ -84,6 +88,10 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver implements He
             mContext.startActivity(intentNotification);
         }
 
+        // Collapse the notification bar.
+
+        Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        mContext.sendBroadcast(it);
 
     }
 

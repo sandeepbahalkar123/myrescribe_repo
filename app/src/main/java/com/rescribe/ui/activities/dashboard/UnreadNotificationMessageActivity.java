@@ -53,7 +53,13 @@ import butterknife.OnClick;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
-import static com.rescribe.util.RescribeConstants.NOTIFICATION_TAG;
+import static com.rescribe.notification.DosesAlarmTask.BREAKFAST_NOTIFICATION_ID;
+import static com.rescribe.notification.DosesAlarmTask.DINNER_NOTIFICATION_ID;
+import static com.rescribe.notification.DosesAlarmTask.EVENING_NOTIFICATION_ID;
+import static com.rescribe.notification.DosesAlarmTask.LUNCH_NOTIFICATION_ID;
+import static com.rescribe.util.RescribeConstants.APPOINTMENT_NOTIFICATION_TAG;
+import static com.rescribe.util.RescribeConstants.INVESTIGATION_NOTIFICATION_TAG;
+import static com.rescribe.util.RescribeConstants.MEDICATIONS_NOTIFICATION_TAG;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 
@@ -215,7 +221,12 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         mAppointmentsFirstMessageTimeStamp.setVisibility(View.VISIBLE);
         //------------
         mAppointmentNotificationAlertAdapter = new UnreadAppointmentNotificationAlert(this, appAlertList, this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         mAppointmentAlertList.setLayoutManager(mLayoutManager);
         mAppointmentAlertList.setAdapter(mAppointmentNotificationAlertAdapter);
 
@@ -239,7 +250,12 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         mInvestigationFirstMessageTimeStamp.setVisibility(View.VISIBLE);
         //------------
         mInvestigationNotificationAlertAdapter = new UnreadAppointmentNotificationAlert(this, appAlertList, this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         mInvestigationsListView.setLayoutManager(mLayoutManager);
         mInvestigationsListView.setAdapter(mInvestigationNotificationAlertAdapter);
 
@@ -264,7 +280,12 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
     private void setUnreadChatAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
         mUnreadChatNotificationListAdapter = new UnreadChatNotificationList(this, appAlertList, this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         mDocConnectListView.setLayoutManager(mLayoutManager);
         mDocConnectListView.setAdapter(mUnreadChatNotificationListAdapter);
 
@@ -306,15 +327,15 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         InvestigationNotification data = new Gson().fromJson(unreadNotificationMessageData.getNotificationData(), InvestigationNotification.class);
         mInvestigationHelper.doSkipInvestigation(data.getNotifications().get(0).getId(), true);
 
-        clearNotification(unreadNotificationMessageData.getId());
+        clearNotification(INVESTIGATION_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
     }
 
     @TargetApi(Build.VERSION_CODES.ECLAIR)
-    private void clearNotification(String notificationId) {
+    private void clearNotification(String notification_tag, String notificationId) {
         try {
             final NotificationManager nm = (NotificationManager) this
                     .getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.cancel(NOTIFICATION_TAG, Integer.parseInt(notificationId));
+            nm.cancel(notification_tag, Integer.parseInt(notificationId));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -333,6 +354,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                 showMessage();
             }
 
+            clearNotification(APPOINTMENT_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
+
         } else if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
             int unReadCount = instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
             String notificationData = unreadNotificationMessageData.getNotificationData();
@@ -348,10 +371,9 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                 showMessage();
             }
 
+            clearNotification(INVESTIGATION_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
             // OPEN INVESTIGATION SCREEN, pending for ganesh code
         }
-
-        clearNotification(unreadNotificationMessageData.getId());
     }
 
 
@@ -475,9 +497,12 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             if (!medications.isEmpty())
                 isAllListEmpty = false;
         }
-        mOnGoingMedicationListView.setLayoutManager(new LinearLayoutManager(this));
-
-
+        mOnGoingMedicationListView.setLayoutManager(new LinearLayoutManager(this) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
     }
 
 
@@ -485,11 +510,9 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         Gson gson = new Gson();
         HashMap<String, ArrayList<Medication>> listDataChild = new HashMap<>();
         //-- set child data
-        for (String groupName :
-                listDataGroup) {
+        for (String groupName : listDataGroup) {
             ArrayList<Medication> temp = new ArrayList<>();
-            for (UnreadSavedNotificationMessageData dataObject :
-                    dataArrayList) {
+            for (UnreadSavedNotificationMessageData dataObject : dataArrayList) {
                 String notificationMessage = dataObject.getNotificationMessage();
                 if (notificationMessage.equalsIgnoreCase(groupName)) {
                     Medication medication = gson.fromJson(dataObject.getNotificationData(), Medication.class);
@@ -537,15 +560,25 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             for (Map.Entry<String, ArrayList<Medication>> entry : groupHeaderAndMap.entrySet()) {
                 ArrayList<Medication> value = entry.getValue();
                 ArrayList<String> tempArryForId = new ArrayList<>();
-                for (Medication dataObject :
-                        value) {
+                for (Medication dataObject : value) {
                     if (dataObject.isTabSelected()) {
                         tempArryForId.add(dataObject.getUnreadNotificationMessageDataID());
                     }
                 }
                 if (tempArryForId.size() == value.size()) {
-                    for (String idsToDelete :
-                            tempArryForId) {
+
+                    String slot = entry.getKey();
+
+                    if (slot.contains(getResources().getString(R.string.breakfast_medication)))
+                        clearNotification(MEDICATIONS_NOTIFICATION_TAG, String.valueOf(BREAKFAST_NOTIFICATION_ID));
+                    else if (slot.contains(getResources().getString(R.string.lunch_medication)))
+                        clearNotification(MEDICATIONS_NOTIFICATION_TAG, String.valueOf(LUNCH_NOTIFICATION_ID));
+                    else if (slot.contains(getResources().getString(R.string.snacks_medication)))
+                        clearNotification(MEDICATIONS_NOTIFICATION_TAG, String.valueOf(EVENING_NOTIFICATION_ID));
+                    else if (slot.contains(getResources().getString(R.string.dinner_medication)))
+                        clearNotification(MEDICATIONS_NOTIFICATION_TAG, String.valueOf(DINNER_NOTIFICATION_ID));
+
+                    for (String idsToDelete : tempArryForId) {
                         int unReadCount = appDBHelper.deleteUnreadReceivedNotificationMessage(Integer.parseInt(idsToDelete), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
                         if (unReadCount == 0) {
                             isAllListEmpty = true;
@@ -558,7 +591,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             //--******* RE-INITIALIZE UnreadNotificationMessageList----
             initializeMedicationListView();
             //-------
-        } else if (mOldDataTag == RescribeConstants.TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS) {
+        } else if (mOldDataTag.equals(RescribeConstants.TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS)) {
             UnreadBookAppointTokenNotificationBaseModel customResponse1 = (UnreadBookAppointTokenNotificationBaseModel) customResponse;
             if (customResponse1 != null) {
                 UnreadBookAppointTokenNotificationBaseModel.UnreadTokenNotificationDataModel dataModel = customResponse1.getUnreadTokenNotificationDataModel();
@@ -579,8 +612,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             } else {
                 unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
             }
-        } else if (mOldDataTag == RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER ||
-                mOldDataTag == RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION) {
+        } else if (mOldDataTag.equals(RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER) ||
+                mOldDataTag.equals(RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION)) {
             CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
             CommonMethods.showToast(this, commonbject.getCommonRespose().getStatusMessage());
 
@@ -654,7 +687,12 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         //--------------
         unreadTokenNotificationListViewLayout.setVisibility(View.VISIBLE);
         mUnreadBookAppointTokenNotificationAdapter = new UnreadBookAppointTokenNotificationAdapter(this, appAlertList, this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         mUnreadTokenNotificationListView.setLayoutManager(mLayoutManager);
         mUnreadTokenNotificationListView.setAdapter(mUnreadBookAppointTokenNotificationAdapter);
     }

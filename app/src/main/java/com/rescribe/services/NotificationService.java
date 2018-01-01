@@ -34,7 +34,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.facebook.login.widget.ProfilePictureView.TAG;
-import static com.rescribe.util.RescribeConstants.NOTIFICATION_TAG;
+import static com.rescribe.util.RescribeConstants.MEDICATIONS_NOTIFICATION_TAG;
 
 
 /**
@@ -120,8 +120,7 @@ public class NotificationService extends Service implements HelperResponse {
         //-------
 
         // Using RemoteViews to bind custom layouts into Notification
-        RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
-                R.layout.notification_layout);
+        RemoteViews mRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_layout);
 
         Intent mNotifyYesIntent = new Intent(this.getApplicationContext(), ClickOnCheckBoxOfNotificationReceiver.class);
         mNotifyYesIntent.putExtra(RescribeConstants.MEDICINE_SLOT, medicineSlot);
@@ -181,7 +180,7 @@ public class NotificationService extends Service implements HelperResponse {
             startActivity(popup);
             //----------
             //----------
-        } else notificationmanager.notify(NOTIFICATION_TAG, notification_id, build);
+        } else notificationmanager.notify(MEDICATIONS_NOTIFICATION_TAG, notification_id, build);
         //--- Show notification/Alarm based on user configured setting : END
 
         stopSelf();

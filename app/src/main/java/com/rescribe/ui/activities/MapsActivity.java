@@ -20,7 +20,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,12 +33,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rescribe.R;
-import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.singleton.RescribeApplication;
-import com.rescribe.ui.activities.book_appointment.DoctorDescriptionBaseActivity;
-import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
-import com.rescribe.ui.activities.book_appointment.ShowReviewListActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -61,6 +55,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     ImageView directions;
     @BindView(R.id.showDocDetailBottomSheet)
     LinearLayout showDocDetailBottomSheet;
+    @BindView(R.id.title)
+    CustomTextView title;
     private GoogleMap mMap;
     private String mLatitude;
     private String mLongitude;
@@ -96,8 +92,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Toolbar toolbar = (Toolbar) findViewById(R.id.mapToolbar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getString(R.string.location));
+        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        title.setText(getString(R.string.location));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,7 +259,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Intent intent = new Intent(Intent.ACTION_VIEW,
                         Uri.parse("http://maps.google.com/maps?saddr=" + mUserSelectedLocationInfo.get(getString(R.string.latitude)) + "," + mUserSelectedLocationInfo.get(getString(R.string.longitude)) + "&daddr=" + p1.getLatitude() + "," + p1.getLongitude()));
                 startActivity(intent);
             }

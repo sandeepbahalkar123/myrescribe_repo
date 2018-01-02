@@ -159,10 +159,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     @BindView(R.id.ruppeeShadow)
     ImageView ruppeeShadow;
     //--------------
-
     private View mRootView;
     Unbinder unbinder;
-
     private DoctorDataHelper mDoctorDataHelper;
     private DoctorList mClickedDoctorObject;
     private Context mContext;
@@ -172,7 +170,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private ClinicData mSelectedClinicDataObject;
     private int mSelectedClinicDataPosition = -1;
     private String activityOpeningFrom;
-
     private String mCurrentDate;
     private Date mMaxDateRange;
     private DatePickerDialog mDatePickerDialog;
@@ -249,7 +246,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
         mSelectDateTime.setText(dayFromDate + ", " + simpleDateFormat.format(new Date()));
         //----------
-        mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
+
 
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -509,20 +506,26 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     public void onResume() {
         super.onResume();
 
-        mClickedDoctorObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
-        //--------------
-        if (mSelectedClinicDataPosition != -1) {
-            if (mClickedDoctorObject.getClinicDataList().size() > 0)
-                mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(mSelectedClinicDataPosition);
-        } //--------------
+        if(mDoctorDataHelper==null){
 
-        if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom)) {
-            mConfirmedTokenMainLayout.setVisibility(View.GONE);
-            mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
-            mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
-        } else {
-            setDataInViews();
-            changeViewBasedOnAppointmentType();
+            mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
+
+            mClickedDoctorObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
+            //--------------
+            if (mSelectedClinicDataPosition != -1) {
+                if (mClickedDoctorObject.getClinicDataList().size() > 0)
+                    mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(mSelectedClinicDataPosition);
+            } //--------------
+
+            if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom)) {
+                mConfirmedTokenMainLayout.setVisibility(View.GONE);
+                mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
+                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
+            } else {
+                setDataInViews();
+                changeViewBasedOnAppointmentType();
+
+            }
 
         }
 

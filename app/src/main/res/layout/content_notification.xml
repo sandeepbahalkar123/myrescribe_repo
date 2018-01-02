@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            tools:visibility="visible"
             android:visibility="gone">
 
             <LinearLayout
@@ -27,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                tools:visibility="visible"
                 android:visibility="gone">
 
                 <LinearLayout
@@ -44,6 +46,7 @@
                         android:paddingEnd="@dimen/horizontal_margin"
                         android:paddingStart="@dimen/horizontal_margin"
                         android:paddingTop="@dimen/dp10"
+                        tools:visibility="visible"
                         android:visibility="gone">
 
                         <com.rescribe.ui.customesViews.CustomTextView
@@ -89,7 +92,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textColor="@color/black"
-                                    android:textSize="@dimen/sp20"
+                                    android:textSize="@dimen/sp18"
                                     app:customFont="@string/roboto_bold" />
 
                                 <com.rescribe.ui.customesViews.CustomTextView
@@ -152,7 +155,7 @@
                                             android:layout_toLeftOf="@+id/selectView"
                                             android:layout_toStartOf="@+id/selectView"
                                             android:textColor="@color/dose_completed"
-                                            android:textSize="@dimen/sp19"
+                                            android:textSize="@dimen/sp17"
                                             app:customFont="@string/roboto_medium" />
 
                                         <CheckBox

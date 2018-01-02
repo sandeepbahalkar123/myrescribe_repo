@@ -407,6 +407,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         String specialityName = bundleData.getString(getString(R.string.clicked_item_data));
         Intent intent = new Intent(getActivity(), ServicesFilteredDoctorListActivity.class);
         bundleData.putString(getString(R.string.toolbarTitle), specialityName);
+        intent.putExtra(RescribeConstants.PICK_SPECAILITY,RescribeConstants.SORT_BY_SPECIALITY);
         intent.putExtras(bundleData);
         startActivity(intent);
     }

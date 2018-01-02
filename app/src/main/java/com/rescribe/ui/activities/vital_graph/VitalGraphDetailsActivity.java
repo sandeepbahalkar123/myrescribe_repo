@@ -198,7 +198,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
                 VitalGraphDetails data = vitalGraphDetailList.get(i);
 
-                circleColors.add(data.getSelfTrackerFlag() ? getResources().getColor(R.color.grey) : getResources().getColor(R.color.white));
+                circleColors.add(data.getSelfTrackerFlag() ? getResources().getColor(R.color.black) : getResources().getColor(R.color.white));
 
                 //----
                 Date date = CommonMethods.convertStringToDate(data.getCreationDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
@@ -208,7 +208,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 //----
                 if (!(RescribeConstants.BLANK.equalsIgnoreCase(data.getVitalValue()))) {
 
-                    Bitmap bitmapView = createBitmapFromLayoutWithText(data.getVitalValue(), data.getSelfTrackerFlag() ? getResources().getColor(R.color.grey) : getResources().getColor(R.color.white));
+                    Bitmap bitmapView = createBitmapFromLayoutWithText(data.getVitalValue(), data.getSelfTrackerFlag() ? getResources().getColor(R.color.black) : getResources().getColor(R.color.white));
                     Drawable drawable = new BitmapDrawable(getResources(), bitmapView);
 
                     tempEntries.add(new Entry(i, Float.parseFloat(data.getVitalValue()), drawable));
@@ -303,7 +303,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
                 VitalGraphDetails data = vitalGraphDetailList.get(i);
 
-                circleColors.add(data.getSelfTrackerFlag() ? getResources().getColor(R.color.grey_300) : getResources().getColor(R.color.white));
+                circleColors.add(data.getSelfTrackerFlag() ? getResources().getColor(R.color.black) : getResources().getColor(R.color.white));
 
                 //----
                 Date date = CommonMethods.convertStringToDate(data.getCreationDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
@@ -443,13 +443,17 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
         //------
         Button addTrackerButton = (Button) modalbottomsheet.findViewById(R.id.addTrackerButton);
         //---------
+        addTrackerDate.setHint(CommonMethods.getCurrentDate());
 
         //-------------
         if (mClickedVitalGraphData.getVitalName().equalsIgnoreCase("Blood Pressure")) {
             bloodPressureReadingLayout.setVisibility(View.VISIBLE);
+            dystolic.setHint(RescribeConstants.DIASTOLIC_HINT);
+            systolic.setHint(RescribeConstants.SYSTOLIC_HINT);
             reading.setVisibility(View.GONE);
         } else {
             bloodPressureReadingLayout.setVisibility(View.GONE);
+            reading.setHint(RescribeConstants.OTHER_VITALS_HINT);
             reading.setVisibility(View.VISIBLE);
         }
 

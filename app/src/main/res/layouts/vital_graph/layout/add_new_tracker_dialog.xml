@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fillViewport="true">
 
     <LinearLayout
@@ -53,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:hint="@string/dd_mm_yyy"
+                tools:hint="@string/dd_mm_yyy"
                 android:padding="@dimen/dp10"
                 android:textSize="@dimen/sp16"
                 app:customFont="@string/roboto_regular" />
@@ -93,7 +94,7 @@
                     android:background="@null"
                     android:cursorVisible="true"
                     android:gravity="center"
-                    android:hint="Systolic"
+                    tools:hint="Systolic"
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
@@ -117,7 +118,7 @@
                     android:cursorVisible="true"
                     android:inputType="numberDecimal"
                     android:gravity="center"
-                    android:hint="Diastolic"
+                    tools:hint="Diastolic"
                     android:imeOptions="actionDone"
                     android:maxLines="1"
                     android:padding="@dimen/dp10"
@@ -132,7 +133,7 @@
                 android:background="@null"
                 android:cursorVisible="true"
                 android:gravity="center"
-                android:hint="130/88"
+                tools:hint="130/88"
                 android:inputType="numberDecimal"
                 android:padding="@dimen/dp10"
                 android:textCursorDrawable="@drawable/cursor_black"

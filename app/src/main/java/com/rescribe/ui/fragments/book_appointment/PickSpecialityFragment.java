@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
+import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
@@ -27,15 +29,20 @@ import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+/**
+ * Created by jeetal on 2/1/18.
+ */
 
-public class BookAppointFilteredDoctorListFragment extends Fragment implements HelperResponse {
+public class PickSpecialityFragment extends Fragment implements HelperResponse , SortByClinicAndDoctorNameAdapter.OnDataListViewVisible{
 
 
     @BindView(R.id.listView)
@@ -48,7 +55,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     FloatingActionButton mLocationFab;
     Unbinder unbinder;
     private View mRootView;
-    BookAppointFilteredDocList mBookAppointFilteredDocListAdapter;
     private ArrayList<DoctorList> mReceivedList = new ArrayList<>();
     private DoctorDataHelper mDoctorDataHelper;
     private String mClickedItemDataTypeValue;
@@ -58,8 +64,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     private String mUserSelectedLocation;
     private ServicesCardViewImpl mServicesCardViewImpl;
     private HashMap<String, String> mComplaintHashMap;
+    private SortByClinicAndDoctorNameAdapter mSortByClinicAndDoctorNameAdapter;
 
-    public BookAppointFilteredDoctorListFragment() {
+    public PickSpecialityFragment() {
         // Required empty public constructor
     }
 
@@ -74,8 +81,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         return mRootView;
     }
 
-    public static BookAppointFilteredDoctorListFragment newInstance(Bundle b) {
-        BookAppointFilteredDoctorListFragment fragment = new BookAppointFilteredDoctorListFragment();
+    public static PickSpecialityFragment newInstance(Bundle b) {
+        PickSpecialityFragment fragment = new PickSpecialityFragment();
         Bundle args = b;
         if (args == null) {
             args = new Bundle();
@@ -171,7 +178,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             isDataListViewVisible(false);
         } else {
             isDataListViewVisible(true);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), mReceivedList, mServicesCardViewImpl, this, mClickedItemDataTypeValue, mReceivedTitle);
+           mSortByClinicAndDoctorNameAdapter  = new SortByClinicAndDoctorNameAdapter(getActivity(), mReceivedList, mServicesCardViewImpl, this,this);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             mDoctorListView.setLayoutManager(layoutManager);
             mDoctorListView.setHasFixedSize(true);
@@ -179,7 +186,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             RecyclerView.ItemAnimator animator = mDoctorListView.getItemAnimator();
             if (animator instanceof SimpleItemAnimator)
                 ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
-            mDoctorListView.setAdapter(mBookAppointFilteredDocListAdapter);
+            mDoctorListView.setAdapter(mSortByClinicAndDoctorNameAdapter);
         }
     }
 
@@ -195,7 +202,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                     //--------
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                     //--------
-                    mBookAppointFilteredDocListAdapter.updateClickedItemFavImage();
+                    mSortByClinicAndDoctorNameAdapter.updateClickedItemFavImage();
                 }
                 break;
             case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:
@@ -309,6 +316,29 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void doConfigureDataListViewVisibility(boolean flag, boolean isShowEmptyListView) {
+        if (flag) {
+            mLocationFab.setVisibility(View.VISIBLE);
+            mFilterFab.setVisibility(View.VISIBLE);
+            mDoctorListView.setVisibility(View.VISIBLE);
+            mEmptyListView.setVisibility(View.GONE);
+            if (isShowEmptyListView) {
+                mLocationFab.setVisibility(View.GONE);
+                mFilterFab.setVisibility(View.GONE);
+                mEmptyListView.setVisibility(View.VISIBLE);
+                mDoctorListView.setVisibility(View.GONE);
+            }
+        } else {
+            mLocationFab.setVisibility(View.GONE);
+            mFilterFab.setVisibility(View.GONE);
+            mEmptyListView.setVisibility(View.GONE);
+            mDoctorListView.setVisibility(View.GONE);
+        }
+
+
     }
 
 

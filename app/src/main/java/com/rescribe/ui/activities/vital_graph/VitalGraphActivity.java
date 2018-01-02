@@ -69,6 +69,7 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
     private void init() {
 
         mVitalGraphHelper = new VitalGraphHelper(this, this);
+        mVitalGraphHelper.doGetPatientVitalList();
 
     }
 
@@ -76,7 +77,7 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
     @Override
     protected void onResume() {
         super.onResume();
-        mVitalGraphHelper.doGetPatientVitalList();
+
     }
 
     @Override

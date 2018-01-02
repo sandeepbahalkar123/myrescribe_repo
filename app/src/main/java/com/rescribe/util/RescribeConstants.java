@@ -212,6 +212,12 @@ public class RescribeConstants {
 
     public static final String TYPE_OF_DOCTOR_SEARCH = "type_of_doctor_search";
     public static final String SEARCH_DOCTORS = "search_doctors";
+    public static final String BLOOD_PRESSURE_HINT = "130/88";
+    public static final String OTHER_VITALS_HINT = "88";
+    public static final String SYSTOLIC_HINT = "130";
+    public static final String DIASTOLIC_HINT = "88";
+    public static final String PICK_SPECAILITY = "pick_speciality";
+    public static final String SORT_BY_SPECIALITY = "sort_by_speciality";
 
 
     public static class USER_STATUS {

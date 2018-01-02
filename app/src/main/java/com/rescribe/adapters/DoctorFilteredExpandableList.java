@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
                 mOriginalList) {
             mListDataHeader.add(dataObject);
 
-            HashMap<String, String[]> caseDetailList = dataObject.getCaseDetailList();
+            LinkedHashMap<String, String[]> caseDetailList = dataObject.getCaseDetailList();
             ArrayList<String> listToInsert = new ArrayList();
             for (Map.Entry<String, String[]> pair : caseDetailList.entrySet()) {
                 //--- Add case name as header in list

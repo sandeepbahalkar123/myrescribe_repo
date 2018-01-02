@@ -1,20 +1,20 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/dp16"
-    android:layout_marginLeft="@dimen/dp16"
-    android:layout_marginRight="@dimen/dp16"
-    android:layout_marginTop="@dimen/dp16"
     android:background="@color/transparent"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:clickable="true"
+        android:id="@+id/vitalsDialogLayout"
+        android:padding="@dimen/activity_horizontal_margin">
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -24,6 +24,7 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/vitals_curve_grey_bg"
+                android:clickable="true"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -52,21 +53,24 @@
                 android:id="@+id/vitalImageDialog"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/circular_shape_vital_bg"
+                android:clickable="true"
                 android:padding="@dimen/dp20"
                 android:src="@drawable/weight" />
 
-        </FrameLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/showVitalRangeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:clickable="true"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -166,9 +170,11 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="@color/vitals_dialog_grey"
+            android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/vitalTypeNameDialog"
@@ -195,6 +201,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/vitals_curve_white_bg"
+            android:clickable="true"
             android:gravity="center"
             android:orientation="vertical">
 

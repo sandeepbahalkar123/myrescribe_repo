@@ -23,6 +23,8 @@
             android:id="@+id/tabTypeView"
             android:paddingEnd="@dimen/dp8"
             android:src="@drawable/tablet"
+            android:paddingStart="@dimen/dp8"
+            android:paddingLeft="@dimen/dp8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -36,8 +38,10 @@
             android:maxLines="10"
             android:textColor="@color/black"
             android:textSize="@dimen/sp15"
+            android:paddingStart="@dimen/dp20"
             app:customFont="@string/roboto_bold"
-            tools:text="Rantacfdffgdfgfgsgggggggggdddf" />
+            tools:text="Rantacfdffgdfgfgsgggggggggdddf"
+            android:paddingLeft="@dimen/dp20" />
 
         <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/tabCountTextView"

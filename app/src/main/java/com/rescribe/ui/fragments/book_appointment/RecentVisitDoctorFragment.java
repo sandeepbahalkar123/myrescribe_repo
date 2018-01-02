@@ -12,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -136,46 +137,21 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
         mServiceCardDataViewBuilder = new ServicesCardViewImpl(this.getContext(), (BookAppointDoctorListBaseActivity) getActivity());
         mDoctorDataHelper = new DoctorDataHelper(this.getContext(), this);
-        //-----------
-        searchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {
-            @Override
-            public void onClearButtonClicked() {
-                doConfigureDataListViewVisibility(false, false);
-            }
-        });
-
-       /* searchView.addKeyboardDoneKeyPressedInEditTextListener(new EditTextWithDeleteButton.OnKeyboardDoneKeyPressedInEditTextListener() {
-            @Override
-            public void onKeyPressed(int actionId, KeyEvent event) {
-//                   || event.getAction() == KeyEvent.ACTION_DOWN
-//                        && event.getKeyCode() == KeyEvent.KEYCODE_ENTER
-                if (actionId == EditorInfo.IME_ACTION_SEARCH
-                        || actionId == EditorInfo.IME_ACTION_DONE
-                        ) {
-                    CommonMethods.hideKeyboard(getActivity());
-                }
-            }
-        });*/
 
         searchView.addTextChangedListener(new EditTextWithDeleteButton.TextChangedListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
-                recentDoctorLayout.setVisibility(View.VISIBLE);
-                mFilterListLayout.setVisibility(View.VISIBLE);
-                if (s.toString().trim().length() > 0) {
+                if (!s.toString().trim().isEmpty()) {
                     mSortByClinicAndDoctorNameAdapter.getFilter().filter(s);
                 } else {
                     doConfigureDataListViewVisibility(false, false);
+                    recentDoctorLayout.setVisibility(View.VISIBLE);
+                    mFilterListLayout.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -278,10 +254,14 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         if (mReceivedDoctorServicesModel != null) {
             doConfigureDataListViewVisibility(false, false);
             if (mReceivedDoctorServicesModel.getDoctorList().size() > 0) {
-                mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), ServicesCardViewImpl.getReceivedDoctorDataList(), mServiceCardDataViewBuilder, RecentVisitDoctorFragment.this, this);
+                mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), ServicesCardViewImpl.getReceivedDoctorDataList(), mServiceCardDataViewBuilder, RecentVisitDoctorFragment.this, this, showDoctorsRecyclerView);
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 showDoctorsRecyclerView.setLayoutManager(linearlayoutManager);
                 showDoctorsRecyclerView.setNestedScrollingEnabled(false);
+                // off recyclerView Animation
+                RecyclerView.ItemAnimator animator = showDoctorsRecyclerView.getItemAnimator();
+                if (animator instanceof SimpleItemAnimator)
+                    ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
                 showDoctorsRecyclerView.setAdapter(mSortByClinicAndDoctorNameAdapter);
             }
             //-------------

@@ -2,6 +2,7 @@ package com.rescribe.adapters.book_appointment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -58,15 +59,18 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     private boolean isListByClinicName;
     private ImageView mClickedItemFavImageView;
     private String cityname;
+    private RecyclerView recyclerView;
 
 
-    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, SortByClinicAndDoctorNameAdapter.OnDataListViewVisible m, HelperResponse mHelperResponse) {
+    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, SortByClinicAndDoctorNameAdapter.OnDataListViewVisible m, HelperResponse mHelperResponse, RecyclerView recyclerView) {
         this.mDataList = dataList;
         this.mContext = mContext;
         this.mArrayList = dataList;
         this.mOnClinicAndDoctorNameSearchRowItem = mOnClinicAndDoctorNameSearchRowItem;
         this.mOnDataListViewVisibleListener = m;
         this.mHelperResponse = mHelperResponse;
+        this.recyclerView = recyclerView;
+
         String cityNameString = RescribeApplication.getUserSelectedLocationInfo().get(mContext.getString(R.string.location));
         if (cityNameString != null) {
             String[] split = cityNameString.split(",");
@@ -379,25 +383,22 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                         if (docName.toLowerCase().contains(/*mContext.getString(R.string.dr).toLowerCase() + " " + */ charString.toLowerCase())) {
                             filteredList.add(doctorConnectModel);
                         } else {
-                            int i = 0;
                             for (ClinicData dataObj :
                                     doctorConnectModel.getClinicDataList()) {
                                 if (dataObj.getClinicName().toLowerCase().contains(charString.toLowerCase())) {
                                     doctorConnectModel.setNameOfClinicString(dataObj.getClinicName());
                                     doctorConnectModel.setAddressOfDoctorString(dataObj.getClinicAddress());
                                     filteredList.add(doctorConnectModel);
-                                    i++;
                                 }
                             }
                         }
 
                     }
                     //--removed duplicate doctors based on docID--
-                    if (filteredList.size() > 0) {
+                    if (!filteredList.isEmpty()) {
                         ArrayList<DoctorList> filteredBasedOnDocList = new ArrayList<>();
-                        for (DoctorList addedDocObject :
-                                filteredList) {
-                            if (filteredBasedOnDocList.size() > 0) {
+                        for (DoctorList addedDocObject : filteredList) {
+                            if (!filteredBasedOnDocList.isEmpty()) {
                                 boolean isAddItemToList = true;
                                 for (DoctorList prevAddedObject :
                                         filteredBasedOnDocList) {
@@ -432,7 +433,12 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 } else {
                     mOnDataListViewVisibleListener.doConfigureDataListViewVisibility(true, false);
                 }
-                notifyDataSetChanged();
+                recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyDataSetChanged();
+                    }
+                });
             }
         };
     }

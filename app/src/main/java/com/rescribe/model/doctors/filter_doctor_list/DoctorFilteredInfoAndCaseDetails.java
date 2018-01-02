@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class DoctorFilteredInfoAndCaseDetails implements CustomResponse {
     @SerializedName("doc")
@@ -14,7 +15,7 @@ public class DoctorFilteredInfoAndCaseDetails implements CustomResponse {
 
     @SerializedName("cases")
     @Expose
-    private HashMap<String, String[]> caseDetailList =new HashMap<>();
+    private LinkedHashMap<String, String[]> caseDetailList =new LinkedHashMap<>();
 
 
     private boolean isCaseDetailHeader = false;
@@ -36,11 +37,11 @@ public class DoctorFilteredInfoAndCaseDetails implements CustomResponse {
         this.doctorFilteredInfo = doctorFilteredInfo;
     }
 
-    public HashMap<String, String[]> getCaseDetailList() {
+    public LinkedHashMap<String, String[]> getCaseDetailList() {
         return caseDetailList;
     }
 
-    public void setCaseDetailList(HashMap<String, String[]> caseDetailList) {
+    public void setCaseDetailList(LinkedHashMap<String, String[]> caseDetailList) {
         this.caseDetailList = caseDetailList;
     }
 }

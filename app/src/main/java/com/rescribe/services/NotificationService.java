@@ -116,6 +116,7 @@ public class NotificationService extends Service implements HelperResponse {
         medication.setUnreadNotificationMessageDataTimeStamp(timeStamp);
 
         String medicationDataDetails = getText(R.string.have_u_taken).toString() + medicineSlot;
+        String medicineData = getText(R.string.have_u_taken).toString() + medicineSlot.toLowerCase();
         appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, medicationDataDetails, new Gson().toJson(medication), timeStamp);
         //-------
 
@@ -160,7 +161,7 @@ public class NotificationService extends Service implements HelperResponse {
 
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, medicineSlot);
-        mRemoteViews.setTextViewText(R.id.questionText, title);
+        mRemoteViews.setTextViewText(R.id.questionText, medicineData+"?");
         mRemoteViews.setTextViewText(R.id.timeText, notificationTimeSlot);
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification build = builder.build();

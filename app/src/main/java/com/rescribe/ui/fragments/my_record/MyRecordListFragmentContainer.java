@@ -210,7 +210,7 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
                         break;
                     }
 
-                    mViewpager.setCurrentItem(mTimePeriodList.size());
+                //    mViewpager.setCurrentItem(mTimePeriodList.size());
                 }
             }
         }, 0);

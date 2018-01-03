@@ -16,7 +16,7 @@ public class RequestDoctorListBaseModel implements CustomResponse {
     @Expose
     private Integer patientId;
 
-    @SerializedName("complaint1")
+    @SerializedName("complaint")
     @Expose
     private String complaint;
 

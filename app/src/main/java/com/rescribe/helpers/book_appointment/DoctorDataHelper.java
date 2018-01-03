@@ -131,6 +131,8 @@ public class DoctorDataHelper implements ConnectionListener {
     public void doGetDoctorData(String city, String address, HashMap<String, String> mReceivedComplaintHashMap) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_DOCTOR_DATA, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
+
+        String url = Config.DOCTOR_LIST_BY_LOCATION;
         RequestDoctorListBaseModel requestDoctorListBaseModel = new RequestDoctorListBaseModel();
         requestDoctorListBaseModel.setArea(address.trim());
         requestDoctorListBaseModel.setCityName(city.trim());
@@ -138,13 +140,14 @@ public class DoctorDataHelper implements ConnectionListener {
         //--------In case of complaint added by user from ComplaintFragment.java---
         if (mReceivedComplaintHashMap != null) {
             if (mReceivedComplaintHashMap.size() > 0) {
+                url = Config.GET_DOCTOR_LIST_BY_COMPLAINT;
                 requestDoctorListBaseModel.setComplaint(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint1)));
                 //requestDoctorListBaseModel.setComplaint2(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint2)));
             }
         }
         //-----------
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
-        mConnectionFactory.setUrl(Config.DOCTOR_LIST_BY_LOCATION);
+        mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_DOCTOR_DATA);
         /*try {
             InputStream is = mContext.getAssets().open("doctor_data_22_nov_2017.json");

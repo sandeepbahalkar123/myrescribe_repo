@@ -139,6 +139,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 mReceivedList = mServicesCardViewImpl.getFavouriteDocList(-1);
             } else if (mClickedItemDataValue != null) {
                 mReceivedList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataValue, -1);
+            } else if (mComplaintHashMap != null) {
+                // THIS IS HACK, TO CALL API IN CASE OF COMAPINT-MAP!=NULL
+                mReceivedList = ServicesCardViewImpl.getDoctorListByUniqueDocIDs(ServicesCardViewImpl.getReceivedDoctorDataList());
             } else {
                 mReceivedList = ServicesCardViewImpl.getReceivedDoctorDataList();
             }

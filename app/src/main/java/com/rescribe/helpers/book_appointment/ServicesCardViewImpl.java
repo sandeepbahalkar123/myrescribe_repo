@@ -283,4 +283,28 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     public static ArrayList<DoctorList> getReceivedDoctorDataList() {
         return mReceivedDoctorDataList;
     }
+
+
+    public static ArrayList<DoctorList> getDoctorListByUniqueDocIDs(ArrayList<DoctorList> mReceivedDoctorDataList) {
+        ArrayList<DoctorList> dataList = new ArrayList<>();
+        for (DoctorList listObject :
+                mReceivedDoctorDataList) {
+            if (dataList.size() > 0) {
+                boolean isAddItemToList = true;
+                for (DoctorList prevAddedObject :
+                        dataList) {
+                    if (listObject.getDocId() == prevAddedObject.getDocId()) {
+                        isAddItemToList = false;
+                        break;
+                    }
+                }
+                if (isAddItemToList) {
+                    dataList.add(listObject);
+                }
+            } else {
+                dataList.add(listObject);
+            }
+        }
+        return dataList;
+    }
 }

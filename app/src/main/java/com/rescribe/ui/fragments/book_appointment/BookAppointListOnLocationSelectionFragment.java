@@ -165,7 +165,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
         } else {
             doConfigureDataListViewVisibility(true, false);
 
-            ArrayList<DoctorList> receivedDoctorDataList = removeDuplicateDocIDs(ServicesCardViewImpl.getReceivedDoctorDataList());
+            ArrayList<DoctorList> receivedDoctorDataList = ServicesCardViewImpl.getDoctorListByUniqueDocIDs(ServicesCardViewImpl.getReceivedDoctorDataList());
 
             mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), receivedDoctorDataList, mServicesCardViewImpl, this, this);
             LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -330,26 +330,4 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
 
     }
 
-    public ArrayList<DoctorList> removeDuplicateDocIDs(ArrayList<DoctorList> mReceivedDoctorDataList) {
-        ArrayList<DoctorList> dataList = new ArrayList<>();
-        for (DoctorList listObject :
-                mReceivedDoctorDataList) {
-            if (dataList.size() > 0) {
-                boolean isAddItemToList = true;
-                for (DoctorList prevAddedObject :
-                        dataList) {
-                    if (listObject.getDocId() == prevAddedObject.getDocId()) {
-                        isAddItemToList = false;
-                        break;
-                    }
-                }
-                if (isAddItemToList) {
-                    dataList.add(listObject);
-                }
-            } else {
-                dataList.add(listObject);
-            }
-        }
-        return dataList;
-    }
 }

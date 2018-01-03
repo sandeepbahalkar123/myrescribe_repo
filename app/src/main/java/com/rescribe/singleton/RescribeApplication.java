@@ -1,8 +1,11 @@
 package com.rescribe.singleton;
 
+import android.annotation.TargetApi;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
@@ -13,6 +16,8 @@ import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +36,7 @@ public class RescribeApplication extends MultiDexApplication {
     private static HashMap<String, String> previousUserSelectedLocationInfo = new HashMap<>();
 
     private static ArrayList<UnreadSavedNotificationMessageData> appUnreadNotificationMessageList = new ArrayList<>();
+    private static AppDBHelper appDBHelper;
 
     public static RescribeApplication getInstance() {
         return singleton;
@@ -55,7 +61,8 @@ public class RescribeApplication extends MultiDexApplication {
         AppDBHelper instance = AppDBHelper.getInstance(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-        instance.doMergeUnreadMessageForChatAndOther(null);
+        instance.doMergeUnreadMessageForChatAndOther();
+        appDBHelper = new AppDBHelper(this);
         //--------------
     }
 
@@ -104,7 +111,10 @@ public class RescribeApplication extends MultiDexApplication {
         return receivedNotificationMessageList;
     }
 
-    public static int doGetUnreadNotificationCount(String notificationType) {
+    public static int doGetUnreadNotificationCount(Context context, String notificationType) {
+
+        ArrayList<UnreadSavedNotificationMessageData> objectToRemove = new ArrayList<>();
+
         ArrayList<UnreadSavedNotificationMessageData> receivedNotificationMessageList = new ArrayList<>();
         int size;
         if (notificationType.equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT)) {
@@ -113,21 +123,51 @@ public class RescribeApplication extends MultiDexApplication {
             for (UnreadSavedNotificationMessageData dataObject :
                     appUnreadNotificationMessageList) {
                 if (dataObject.getNotificationMessageType().equalsIgnoreCase(notificationType)) {
-                    listDataGroup.add(dataObject.getNotificationMessage());
+
+                    String dateText = CommonMethods.getFormattedDate(dataObject.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+                    String today = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+
+                    if (dateText.equals(today))
+                        listDataGroup.add(dataObject.getNotificationMessage());
+                    else
+                        objectToRemove.add(dataObject);
                 }
             }
             size = listDataGroup.size();
         } else {
             //String : id|messageType|message
-            for (UnreadSavedNotificationMessageData object :
+            for (UnreadSavedNotificationMessageData dataObject :
                     appUnreadNotificationMessageList) {
-                if (object.getNotificationMessageType().equalsIgnoreCase(notificationType)) {
-                    receivedNotificationMessageList.add(object);
+                if (dataObject.getNotificationMessageType().equalsIgnoreCase(notificationType)) {
+
+                    String dateText = CommonMethods.getFormattedDate(dataObject.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+                    String today = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+
+                    if (dateText.equals(today))
+                        receivedNotificationMessageList.add(dataObject);
+                    else
+                        objectToRemove.add(dataObject);
                 }
             }
             size = receivedNotificationMessageList.size();
         }
+
+        for (UnreadSavedNotificationMessageData dataObject : objectToRemove) {
+            appUnreadNotificationMessageList.remove(dataObject);
+            appDBHelper.deleteUnreadReceivedNotificationMessage(Integer.parseInt(dataObject.getId()), dataObject.getNotificationMessageType());
+        }
+
         return size;
     }
 
+    @TargetApi(Build.VERSION_CODES.ECLAIR)
+    public static void clearNotification(Context context, String notification_tag, String notificationId) {
+        try {
+            final NotificationManager nm = (NotificationManager) context
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            nm.cancel(notification_tag, Integer.parseInt(notificationId));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
 }

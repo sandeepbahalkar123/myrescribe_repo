@@ -2,7 +2,6 @@ package com.rescribe.adapters.book_appointment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -18,6 +17,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -33,9 +33,14 @@ import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -365,9 +370,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 mSearchString = charString;
                 if (charString.isEmpty()) {
                     mDataList = mArrayList;
-
                 } else {
-
                     ArrayList<DoctorList> filteredList = new ArrayList<>();
 
                     for (DoctorList doctorConnectModel : mArrayList) {
@@ -393,25 +396,20 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                     }
                     //--removed duplicate doctors based on docID--
                     if (!filteredList.isEmpty()) {
-                        ArrayList<DoctorList> filteredBasedOnDocList = new ArrayList<>();
-                        for (DoctorList addedDocObject : filteredList) {
-                            if (!filteredBasedOnDocList.isEmpty()) {
-                                boolean isAddItemToList = true;
-                                for (DoctorList prevAddedObject :
-                                        filteredBasedOnDocList) {
-                                    if (addedDocObject.getDocId() == prevAddedObject.getDocId()) {
-                                        isAddItemToList = false;
-                                        break;
-                                    }
+
+                        Set set = new TreeSet(new Comparator() {
+                            @Override
+                            public int compare(Object o1, Object o2) {
+                                if(((DoctorList)o1).getDocId() == ((DoctorList)o2).getDocId()){
+                                    return 0;
                                 }
-                                if (isAddItemToList) {
-                                    filteredBasedOnDocList.add(addedDocObject);
-                                }
-                            } else {
-                                filteredBasedOnDocList.add(addedDocObject);
+                                return 1;
                             }
-                        }
-                        mDataList = filteredBasedOnDocList;
+                        });
+                        set.addAll(filteredList);
+                        mDataList.clear();
+                        mDataList.addAll(set);
+
                     } else {
                         mDataList = filteredList;
                     }
@@ -430,12 +428,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 } else {
                     mOnDataListViewVisibleListener.doConfigureDataListViewVisibility(true, false);
                 }
-                recyclerView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        notifyDataSetChanged();
-                    }
-                });
+
+                notifyDataSetChanged();
             }
         };
     }

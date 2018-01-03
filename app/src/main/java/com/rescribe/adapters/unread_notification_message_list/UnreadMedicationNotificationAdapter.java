@@ -9,7 +9,6 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,7 +21,6 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
@@ -48,22 +46,22 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
         this.isDisplayMoreElementsView = isDisplayMoreElementsView;
         this.mListener = listener;
         this.mTimeStamp = timeStamp;
-        String hveUTaken = mContext.getString(R.string.have_u_taken).toString();
-        String dinnerMed = mContext.getString(R.string.dinner_medication).toString();
-        String lunchMed = mContext.getString(R.string.lunch_medication).toString();
-        String snacks_med = mContext.getString(R.string.snacks_medication).toString();
-        String breakfast_med = mContext.getString(R.string.breakfast_medication).toString();
+        String hveUTaken = mContext.getString(R.string.have_u_taken);
+        String dinnerMed = mContext.getString(R.string.dinner_medication);
+        String lunchMed = mContext.getString(R.string.lunch_medication);
+        String snacks_med = mContext.getString(R.string.snacks_medication);
+        String breakfast_med = mContext.getString(R.string.breakfast_medication);
 
-        if (groupName.equalsIgnoreCase(hveUTaken + dinnerMed)) {
+        if (groupName.equalsIgnoreCase(hveUTaken + dinnerMed + "?")) {
             this.title = groupName;
             this.list = list;
-        } else if (groupName.equalsIgnoreCase(hveUTaken + lunchMed)) {
+        } else if (groupName.equalsIgnoreCase(hveUTaken + lunchMed + "?")) {
             this.title = groupName;
             this.list = list;
-        } else if (groupName.equalsIgnoreCase(hveUTaken + snacks_med)) {
+        } else if (groupName.equalsIgnoreCase(hveUTaken + snacks_med + "?")) {
             this.title = groupName;
             this.list = list;
-        } else if (groupName.equalsIgnoreCase(hveUTaken + breakfast_med)) {
+        } else if (groupName.equalsIgnoreCase(hveUTaken + breakfast_med + "?")) {
             this.title = groupName;
             this.list = list;
         }

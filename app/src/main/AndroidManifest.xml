@@ -187,7 +187,7 @@
             android:name=".ui.activities.book_appointment.BookAppointmentServices"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_activity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.activities.DoctorConnectActivity"
             android:configChanges="orientation|keyboard|screenSize"

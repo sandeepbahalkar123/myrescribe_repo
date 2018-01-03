@@ -54,8 +54,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         this.mAppointmentType = appointmentType;
         this.appointmentsList = appointmentsList;
         this.mContext = mContext;
-        DateFormat dateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.YYYY_MM_DD, Locale.US);
-        mCurrentDate = dateFormat.format(new Date());
         setColumnNumber(mContext, 2);
     }
 
@@ -87,7 +85,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             Date timeStamp = CommonMethods.convertStringToDate(appointment.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
             Calendar cal = Calendar.getInstance();
             cal.setTime(timeStamp);
-            String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup>" + new SimpleDateFormat("MMM").format(cal.getTime());
+            String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup>" + new SimpleDateFormat("MMM", Locale.US).format(cal.getTime());
             //------
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 holder.doctorAddress.setText(Html.fromHtml(toDisplay + ", " + appointment.getAddress(), Html.FROM_HTML_MODE_LEGACY));
@@ -106,6 +104,10 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             String timeStamp = CommonMethods.formatDateTime(appointment.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD,
                     RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, RescribeConstants.DATE);
             String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.YYYY_MM_DD, timeStamp);
+
+            DateFormat dateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.YYYY_MM_DD, Locale.US);
+            mCurrentDate = dateFormat.format(new Date());
+
             if (mCurrentDate.equalsIgnoreCase(timeStamp)) {// for Current date
                 holder.appointmentsTimeStamp.setText(timeToShow);
             } else if (dayFromDate.equalsIgnoreCase("Yesterday")) { // for Yesterday date

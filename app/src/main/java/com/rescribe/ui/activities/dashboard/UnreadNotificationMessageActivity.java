@@ -1,10 +1,6 @@
 package com.rescribe.ui.activities.dashboard;
 
-import android.annotation.TargetApi;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -57,6 +53,7 @@ import static com.rescribe.notification.DosesAlarmTask.BREAKFAST_NOTIFICATION_ID
 import static com.rescribe.notification.DosesAlarmTask.DINNER_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.EVENING_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.LUNCH_NOTIFICATION_ID;
+import static com.rescribe.singleton.RescribeApplication.clearNotification;
 import static com.rescribe.util.RescribeConstants.APPOINTMENT_NOTIFICATION_TAG;
 import static com.rescribe.util.RescribeConstants.INVESTIGATION_NOTIFICATION_TAG;
 import static com.rescribe.util.RescribeConstants.MEDICATIONS_NOTIFICATION_TAG;
@@ -327,18 +324,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         InvestigationNotification data = new Gson().fromJson(unreadNotificationMessageData.getNotificationData(), InvestigationNotification.class);
         mInvestigationHelper.doSkipInvestigation(data.getNotifications().get(0).getId(), true);
 
-        clearNotification(INVESTIGATION_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
-    }
-
-    @TargetApi(Build.VERSION_CODES.ECLAIR)
-    private void clearNotification(String notification_tag, String notificationId) {
-        try {
-            final NotificationManager nm = (NotificationManager) this
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.cancel(notification_tag, Integer.parseInt(notificationId));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
+        clearNotification(this, INVESTIGATION_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
     }
 
     @Override
@@ -354,7 +340,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                 showMessage();
             }
 
-            clearNotification(APPOINTMENT_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
+            clearNotification(this, APPOINTMENT_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
 
         } else if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
             int unReadCount = instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
@@ -371,7 +357,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                 showMessage();
             }
 
-            clearNotification(INVESTIGATION_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
+            clearNotification(this, INVESTIGATION_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
             // OPEN INVESTIGATION SCREEN, pending for ganesh code
         }
     }
@@ -570,13 +556,13 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                     String slot = entry.getKey();
 
                     if (slot.contains(getResources().getString(R.string.breakfast_medication)))
-                        clearNotification(MEDICATIONS_NOTIFICATION_TAG, String.valueOf(BREAKFAST_NOTIFICATION_ID));
+                        clearNotification(this, MEDICATIONS_NOTIFICATION_TAG, String.valueOf(BREAKFAST_NOTIFICATION_ID));
                     else if (slot.contains(getResources().getString(R.string.lunch_medication)))
-                        clearNotification(MEDICATIONS_NOTIFICATION_TAG, String.valueOf(LUNCH_NOTIFICATION_ID));
+                        clearNotification(this, MEDICATIONS_NOTIFICATION_TAG, String.valueOf(LUNCH_NOTIFICATION_ID));
                     else if (slot.contains(getResources().getString(R.string.snacks_medication)))
-                        clearNotification(MEDICATIONS_NOTIFICATION_TAG, String.valueOf(EVENING_NOTIFICATION_ID));
+                        clearNotification(this, MEDICATIONS_NOTIFICATION_TAG, String.valueOf(EVENING_NOTIFICATION_ID));
                     else if (slot.contains(getResources().getString(R.string.dinner_medication)))
-                        clearNotification(MEDICATIONS_NOTIFICATION_TAG, String.valueOf(DINNER_NOTIFICATION_ID));
+                        clearNotification(this, MEDICATIONS_NOTIFICATION_TAG, String.valueOf(DINNER_NOTIFICATION_ID));
 
                     for (String idsToDelete : tempArryForId) {
                         int unReadCount = appDBHelper.deleteUnreadReceivedNotificationMessage(Integer.parseInt(idsToDelete), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);

@@ -493,7 +493,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
-        doMergeUnreadMessageForChatAndOther(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
+        doMergeUnreadMessageForChatAndOther();
 
         return chatDoctors;
     }
@@ -595,7 +595,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         else
             db.insert(NOTIFICATION_MESSAGE_TABLE, null, contentValues);
 
-        doMergeUnreadMessageForChatAndOther(type);
+        doMergeUnreadMessageForChatAndOther();
 
         return true;
     }
@@ -609,7 +609,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return count > 0;
     }
 
-    public void doMergeUnreadMessageForChatAndOther(String notificationType) {
+    public void doMergeUnreadMessageForChatAndOther() {
 
         ArrayList<UnreadSavedNotificationMessageData> mainList = RescribeApplication.getAppUnreadNotificationMessageList();
         mainList.clear();
@@ -633,7 +633,15 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 unreadNotificationMessageData.setNotificationMessage(cursor.getString(cursor.getColumnIndex(MESSAGE)));
                 unreadNotificationMessageData.setNotificationData(cursor.getString(cursor.getColumnIndex(COLUMN_DATA)));
                 unreadNotificationMessageData.setNotificationTimeStamp(cursor.getString(cursor.getColumnIndex(TIME_STAMP)));
+
+//                String dateText = CommonMethods.getFormattedDate(unreadNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+//                String today = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+
+//                if (dateText.equals(today))
                 chatDoctors.add(unreadNotificationMessageData);
+//                else
+//                    deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
+
                 cursor.moveToNext();
             }
         }
@@ -650,7 +658,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
             int delete = db.delete(NOTIFICATION_MESSAGE_TABLE, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ",
                     new String[]{Integer.toString(id), notificationType});
         }
-        doMergeUnreadMessageForChatAndOther(notificationType);
+        doMergeUnreadMessageForChatAndOther();
         return getUnreadNotificationCount();
     }
 
@@ -675,7 +683,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_DATA, data);
 
         db.update(NOTIFICATION_MESSAGE_TABLE, contentValues, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ", new String[]{dataId, notificationType});
-        doMergeUnreadMessageForChatAndOther(notificationType);
+        doMergeUnreadMessageForChatAndOther();
 
         return true;
     }

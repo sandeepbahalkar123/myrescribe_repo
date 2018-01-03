@@ -21,6 +21,7 @@ public class FilterDoctorsAdapter extends RecyclerView.Adapter<FilterDoctorsAdap
     private final ArrayList<DoctorData> doctorDetailArrayList;
     private final Context context;
     private ItemClickListener itemClickListener;
+    private String doctorName;
 
     public FilterDoctorsAdapter(Context context, ArrayList<DoctorData> doctorDetailArrayList) {
         this.context = context;
@@ -42,8 +43,12 @@ public class FilterDoctorsAdapter extends RecyclerView.Adapter<FilterDoctorsAdap
 
     @Override
     public void onBindViewHolder(final FilterDoctorsAdapter.FileViewHolder holder, final int position) {
-
-        holder.drName.setText(doctorDetailArrayList.get(position).getDoctorName());
+        if(doctorDetailArrayList.get(position).getDoctorName().contains("Dr.")) {
+            doctorName = doctorDetailArrayList.get(position).getDoctorName();
+        }else{
+            doctorName = "Dr. " + doctorDetailArrayList.get(position).getDoctorName();
+        }
+        holder.drName.setText(doctorName);
 
         holder.selectCheckbox.setChecked(doctorDetailArrayList.get(position).isSelected());
         holder.rowView.setOnClickListener(new View.OnClickListener() {

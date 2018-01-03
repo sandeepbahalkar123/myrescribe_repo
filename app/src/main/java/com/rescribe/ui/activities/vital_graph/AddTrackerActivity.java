@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities.vital_graph;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -121,6 +122,9 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
             case RescribeConstants.TASK_ADD_VITAL_MANUALLY:
                 CommonBaseModelContainer common = (CommonBaseModelContainer) customResponse;
                 CommonMethods.showToast(this, "" + common.getCommonRespose().getStatusMessage());
+                Intent intent = new Intent(this,VitalGraphActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 finish();
                 break;
         }
@@ -202,12 +206,14 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
         //------
         Button addTrackerButton = (Button) modalbottomsheet.findViewById(R.id.addTrackerButton);
         //---------
-
-        //-------------
+        addTrackerDate.setHint(CommonMethods.getCurrentDateWithSlash());        //-------------
         if (vitalList.getVitalName().equalsIgnoreCase("Blood Pressure")) {
             bloodPressureReadingLayout.setVisibility(View.VISIBLE);
+            systolic.setHint(RescribeConstants.SYSTOLIC_HINT);
+            dystolic.setHint(RescribeConstants.DIASTOLIC_HINT);
             reading.setVisibility(View.GONE);
         } else {
+            reading.setHint(RescribeConstants.OTHER_VITALS_HINT);
             bloodPressureReadingLayout.setVisibility(View.GONE);
             reading.setVisibility(View.VISIBLE);
         }

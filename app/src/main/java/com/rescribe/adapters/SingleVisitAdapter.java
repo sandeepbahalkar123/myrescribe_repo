@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -169,14 +170,14 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
             if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName().equals(mContext.getString(R.string.bp))) {
                 String category = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory();
-                    String[] categoryForBp = category.split(":");
-                    categoryForBpMax = categoryForBp[0];
-                    categoryForBpMin = categoryForBp.length== 2?categoryForBp[1]:"";
+                String[] categoryForBp = category.split(":");
+                categoryForBpMax = categoryForBp[0];
+                categoryForBpMin = categoryForBp.length == 2 ? categoryForBp[1] : "";
 
                 String unit = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue();
                 String[] unitForBp = unit.split("/");
                 String unitForBpMax = unitForBp[0];
-                String unitForBpMin = unitForBp.length==2 ?unitForBp[1]:"";
+                String unitForBpMin = unitForBp.length == 2 ? unitForBp[1] : "";
                 vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getIcon()));
 
                 vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
@@ -443,17 +444,20 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
     public Dialog showVitalDialog(Context context, String unitName, String unitValue, List<Range> rangeList, Integer drawable, String category, String vitalDisplayName) {
 
-        final Context mContext = context;
         final Dialog dialog = new Dialog(context);
         String categoryForBpMax = "";
         String categoryBpMin = "";
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.vitals_dialog_layout);
-        dialog.setCancelable(true);
         String normal = "";
         String moderate = "";
         String severe = "";
+        String moderateBpmin = "";
+        String normalBpmin = "";
+        String severeBpmin = "";
 
+
+        LinearLayout vitalsDialogLayout = (LinearLayout) dialog.findViewById(R.id.vitalsDialogLayout);
         LinearLayout normalBpMaxRangeLayout = (LinearLayout) dialog.findViewById(R.id.normalRangeLayout);
         LinearLayout showVitalUnitNameIconLayout = (LinearLayout) dialog.findViewById(R.id.showVitalUnitNameIconLayout);
         LinearLayout moderateBpMaxRangeLayout = (LinearLayout) dialog.findViewById(R.id.moderateRangeLayout);
@@ -475,143 +479,143 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
         for (int i = 0; i < rangeList.size(); i++) {
             if (rangeList.get(i).getNameOfVital() != null) {
-                if (rangeList.get(i).getNameOfVital().equalsIgnoreCase(mContext.getString(R.string.bp_max))) {
-                    if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
+                if (rangeList.get(i).getNameOfVital().equalsIgnoreCase(context.getString(R.string.bp_max))) {
+                    if (rangeList.get(i).getCategory().equalsIgnoreCase(context.getString(R.string.normalRange))) {
                         if (normal.equals("")) {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                             normal += finalString;
                             normalBpMaxRange.setText(normal);
                         } else {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                            normal += "," + finalString;
+                            normal += ", " + finalString;
                             normalBpMaxRange.setText(normal);
                         }
-                    } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
+                    } else if (rangeList.get(i).getCategory().equalsIgnoreCase(context.getString(R.string.moderateRange))) {
                         if (moderate.equals("")) {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                             moderate += finalString;
                             moderateBpMaxRange.setText(moderate);
                         } else {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                            moderate += "," + finalString;
+                            moderate += ", " + finalString;
                             moderateBpMaxRange.setText(moderate);
                         }
-                    } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
+                    } else if (rangeList.get(i).getCategory().equalsIgnoreCase(context.getString(R.string.severeRange))) {
                         if (severe.equals("")) {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                             severe += finalString;
                             severeBpMaxRange.setText(severe);
                         } else {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                            severe += "," + finalString;
+                            severe += ", " + finalString;
                             severeBpMaxRange.setText(severe);
 
                         }
                     }
-                } else if (rangeList.get(i).getNameOfVital().equalsIgnoreCase(mContext.getString(R.string.bp_min))) {
+                } else if (rangeList.get(i).getNameOfVital().equalsIgnoreCase(context.getString(R.string.bp_min))) {
 
-                    if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
+                    if (rangeList.get(i).getCategory().equalsIgnoreCase(context.getString(R.string.normalRange))) {
                         if (normal.equals("")) {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                             normal += finalString;
                             normalRange.setText(normal);
                         } else {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                            normal += "," + finalString;
+                            normal += ", " + finalString;
                             normalRange.setText(normal);
                         }
-                    } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
+                    } else if (rangeList.get(i).getCategory().equalsIgnoreCase(context.getString(R.string.moderateRange))) {
                         if (moderate.equals("")) {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                             moderate += finalString;
                             moderateRange.setText(moderate);
                         } else {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                            moderate += "," + finalString;
+                            moderate += ", " + finalString;
                             moderateRange.setText(moderate);
                         }
-                    } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
+                    } else if (rangeList.get(i).getCategory().equalsIgnoreCase(context.getString(R.string.severeRange))) {
                         if (severe.equals("")) {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                             severe += finalString;
                             severeRange.setText(severe);
                         } else {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                            severe += "," + finalString;
+                            severe += ", " + finalString;
                             severeRange.setText(severe);
                         }
                     }
 
                 }
             } else if (rangeList.get(i).getNameOfVital() == null) {
-                if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
-                    if (normal.equals("")) {
+                if (rangeList.get(i).getCategory().equalsIgnoreCase(context.getString(R.string.normalRange))) {
+                    if (normalBpmin.equals("")) {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                        normal += finalString;
-                        normalRange.setText(normal);
+                        normalBpmin += finalString;
+                        normalRange.setText(normalBpmin);
                     } else {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                        normal += "," + finalString;
-                        normalRange.setText(normal);
+                        normalBpmin += ", " + finalString;
+                        normalRange.setText(normalBpmin);
                     }
-                } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
-                    if (moderate.equals("")) {
+                } else if (rangeList.get(i).getCategory().equalsIgnoreCase(context.getString(R.string.moderateRange))) {
+                    if (moderateBpmin.equals("")) {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                        moderate += finalString;
-                        moderateRange.setText(moderate);
+                        moderateBpmin += finalString;
+                        moderateRange.setText(moderateBpmin);
                     } else {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                        moderate += "," + finalString;
-                        moderateRange.setText(moderate);
+                        moderateBpmin += ", " + finalString;
+                        moderateRange.setText(moderateBpmin);
                     }
-                } else if (rangeList.get(i).getCategory().equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
-                    if (severe.equals("")) {
+                } else if (rangeList.get(i).getCategory().equalsIgnoreCase(context.getString(R.string.severeRange))) {
+                    if (severeBpmin.equals("")) {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                        severe += finalString;
-                        severeRange.setText(severe);
+                        severeBpmin += finalString;
+                        severeRange.setText(severeBpmin);
                     } else {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                        severe += "," + finalString;
-                        severeRange.setText(severe);
+                        severeBpmin += ", " + finalString;
+                        severeRange.setText(severeBpmin);
 
                     }
                 }
             }
         }
-        if (unitName.equals(mContext.getString(R.string.bp))) {
+        if (unitName.equals(context.getString(R.string.bp))) {
             String[] unitDataObject = unitValue.split("/");
             String unitBpMax = unitDataObject[0];
-            String unitBpMin = unitDataObject.length==2? unitDataObject[1]:"";
+            String unitBpMin = unitDataObject.length == 2 ? unitDataObject[1] : "";
             showVitalNameLayout.setVisibility(View.VISIBLE);
             showVitalRangeLayout.setVisibility(View.VISIBLE);
-            vitalName.setText(mContext.getString(R.string.systolic_pressure));
+            vitalName.setText(context.getString(R.string.systolic_pressure));
             if (!category.equals(":")) {
                 String[] categoryForBp = category.split(":");
                 categoryForBpMax = categoryForBp[0];
                 categoryBpMin = categoryForBp.length == 2 ? categoryForBp[1] : "";
             }
-            if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
-                noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
-            } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
-                noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
-            } else if (categoryForBpMax.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
-                noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
+            if (categoryForBpMax.equalsIgnoreCase(context.getString(R.string.severeRange))) {
+                noOfVitalsDialog.setTextColor(ContextCompat.getColor(context, R.color.Red));
+            } else if (categoryForBpMax.equalsIgnoreCase(context.getString(R.string.normalRange))) {
+                noOfVitalsDialog.setTextColor(ContextCompat.getColor(context, R.color.range_green));
+            } else if (categoryForBpMax.equalsIgnoreCase(context.getString(R.string.moderateRange))) {
+                noOfVitalsDialog.setTextColor(ContextCompat.getColor(context, R.color.range_yellow));
             } else {
-                noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.view_detail_color));
+                noOfVitalsDialog.setTextColor(ContextCompat.getColor(context, R.color.view_detail_color));
             }
 
-            if (categoryBpMin.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
-                noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
-            } else if (categoryBpMin.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
-                noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
-            } else if (categoryBpMin.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
-                noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
+            if (categoryBpMin.equalsIgnoreCase(context.getString(R.string.severeRange))) {
+                noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(context, R.color.Red));
+            } else if (categoryBpMin.equalsIgnoreCase(context.getString(R.string.normalRange))) {
+                noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(context, R.color.range_green));
+            } else if (categoryBpMin.equalsIgnoreCase(context.getString(R.string.moderateRange))) {
+                noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(context, R.color.range_yellow));
             } else {
-                noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(mContext, R.color.view_detail_color));
+                noOfVitalsTypeDialog.setTextColor(ContextCompat.getColor(context, R.color.view_detail_color));
             }
             noOfVitalsDialog.setText(unitBpMax);
             noOfVitalsTypeDialog.setText(unitBpMin);
-            vitalTypeNameDialog.setText(mContext.getString(R.string.diastolic_pressure));
+            vitalTypeNameDialog.setText(context.getString(R.string.diastolic_pressure));
             if (normalBpMaxRange.getText().toString().trim().length() == 0) {
                 normalBpMaxRangeLayout.setVisibility(View.GONE);
             }
@@ -623,9 +627,9 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             }
             if (normalBpMaxRange.getText().toString().trim().length() == 0 && moderateBpMaxRange.getText().toString().trim().length() == 0 && severeBpMaxRange.getText().toString().trim().length() == 0) {
                 showVitalRangeLayout.setVisibility(View.GONE);
-                showVitalNameLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.vitals_curve_white_bg));
+                showVitalNameLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.vitals_curve_white_bg));
                 bpMinLayout.setVisibility(View.GONE);
-                showVitalUnitNameIconLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.vitals_curve_grey_bg));
+                showVitalUnitNameIconLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.vitals_curve_grey_bg));
             }
             if (normalRange.getText().toString().trim().length() == 0) {
                 LinearLayout normalRangeLayout = (LinearLayout) dialog.findViewById(R.id.normalSubTypeRangeLayout);
@@ -641,7 +645,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             }
             if (normalRange.getText().toString().trim().length() == 0 && moderateRange.getText().toString().trim().length() == 0 && severeRange.getText().toString().trim().length() == 0) {
                 bpMinLayout.setVisibility(View.GONE);
-                showVitalUnitNameIconLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.vitals_curve_grey_bg));
+                showVitalUnitNameIconLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.vitals_curve_grey_bg));
             }
 
         } else {
@@ -653,12 +657,12 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             //vitalName.setText(unitName);
             vitalName.setText(vitalDisplayName);
             //---*************** Show vaital_display_name instead of unitName : END
-            if (category.equalsIgnoreCase(mContext.getString(R.string.severeRange))) {
-                noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.Red));
-            } else if (category.equalsIgnoreCase(mContext.getString(R.string.normalRange))) {
-                noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_green));
-            } else if (category.equalsIgnoreCase(mContext.getString(R.string.moderateRange))) {
-                noOfVitalsDialog.setTextColor(ContextCompat.getColor(mContext, R.color.range_yellow));
+            if (category.equalsIgnoreCase(context.getString(R.string.severeRange))) {
+                noOfVitalsDialog.setTextColor(ContextCompat.getColor(context, R.color.Red));
+            } else if (category.equalsIgnoreCase(context.getString(R.string.normalRange))) {
+                noOfVitalsDialog.setTextColor(ContextCompat.getColor(context, R.color.range_green));
+            } else if (category.equalsIgnoreCase(context.getString(R.string.moderateRange))) {
+                noOfVitalsDialog.setTextColor(ContextCompat.getColor(context, R.color.range_yellow));
             }
             if (normalRange.getText().toString().trim().length() == 0) {
                 LinearLayout normalRangeLayout = (LinearLayout) dialog.findViewById(R.id.normalSubTypeRangeLayout);
@@ -674,21 +678,27 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             }
             if (normalRange.getText().toString().trim().length() == 0 && moderateRange.getText().toString().trim().length() == 0 && severeRange.getText().toString().trim().length() == 0) {
                 bpMinLayout.setVisibility(View.GONE);
-                showVitalUnitNameIconLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.vital_curve_allcorners_grey));
+                showVitalUnitNameIconLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.vital_curve_allcorners_grey));
             }
         }
 
         ((ImageView) dialog.findViewById(R.id.vitalImageDialog)).setImageResource(drawable);
+
+        vitalsDialogLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
         lp.gravity = Gravity.CENTER;
-        dialog.show();
         dialog.getWindow().setAttributes(lp);
-        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
         dialog.show();
+
         return dialog;
     }
 
@@ -719,4 +729,5 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
     public List<PatientHistory> getListDataList() {
         return mListDataHeader;
     }
+
 }

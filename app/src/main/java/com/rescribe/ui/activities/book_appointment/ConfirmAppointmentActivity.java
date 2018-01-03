@@ -151,10 +151,12 @@ public class ConfirmAppointmentActivity extends AppCompatActivity {
                 onBackPressed();
                 break;
             case R.id.locationImageView:
-                Intent intent = new Intent(mContext, MapsActivity.class);
-                intent.putExtra(mContext.getString(R.string.address), mDoctorObject.getClinicDataList().get(0).getClinicAddress());
-                intent.putExtra(RescribeConstants.DOCTOR_NAME, mDoctorObject.getDocName());
-                mContext.startActivity(intent);
+                if(mDoctorObject!=null) {
+                    Intent intent = new Intent(mContext, MapsActivity.class);
+                    intent.putExtra(mContext.getString(R.string.address), mDoctorObject.getClinicDataList().get(0).getClinicAddress());
+                    intent.putExtra(RescribeConstants.DOCTOR_NAME, mDoctorObject.getDocName());
+                    mContext.startActivity(intent);
+                }
                 break;
         }
     }

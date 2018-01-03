@@ -69,7 +69,7 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
         if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT)) {
             if (position == 0 && (mListToBeUsed.size() == 1 && mOriginalReceivedList.size() > 1)) {
                 holder.loadMoreItems.setVisibility(View.VISIBLE);
-                holder.textMessageTimeStamp.setVisibility(View.GONE);
+                holder.textMessageTimeStamp.setVisibility(View.INVISIBLE);
             } else {
                 if (showFirstMessageTimeStamp == View.VISIBLE) {
                     holder.textMessageTimeStamp.setVisibility(View.GONE);
@@ -82,7 +82,7 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
             if (position == 0 && (mListToBeUsed.size() == 1 && mOriginalReceivedList.size() > 1)) {
                 holder.loadMoreItems.setVisibility(View.VISIBLE);
                 holder.skipItems.setVisibility(View.VISIBLE);
-                holder.textMessageTimeStamp.setVisibility(View.GONE);
+                holder.textMessageTimeStamp.setVisibility(View.INVISIBLE);
 
             } else {
                 if (showFirstMessageTimeStamp == View.VISIBLE) {

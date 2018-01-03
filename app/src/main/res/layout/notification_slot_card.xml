@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/dinner_medication"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp16"
+                android:textSize="@dimen/sp18"
                 app:customFont="@string/roboto_bold" />
 
             <com.rescribe.ui.customesViews.CustomTextView
@@ -37,7 +37,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp14"
+                android:textSize="@dimen/sp16"
+                tools:text="yesterday"
                 app:customFont="@string/roboto_bold" />
 
         </FrameLayout>
@@ -70,14 +71,12 @@
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/slotQuestionTextView"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/selectView"
-                        android:layout_toStartOf="@+id/selectView"
+                        android:layout_alignParentLeft="true"
                         android:text="@string/dosage_completed"
                         android:textColor="@color/dose_completed"
-                        android:textSize="@dimen/sp15"
+                        android:textSize="@dimen/sp17"
                         app:customFont="@string/roboto_medium" />
 
                     <CheckBox
@@ -87,14 +86,12 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:button="@drawable/checkboxselecter"
                         android:checked="false"
-                        android:paddingEnd="@dimen/dp10"
-                        android:paddingRight="@dimen/dp10"
+                        android:paddingEnd="@dimen/dp40"
+                        android:paddingRight="@dimen/dp40"
                         android:visibility="visible"
-                        tools:visibility="invisible" />
+                        tools:visibility="visible" />
 
                 </RelativeLayout>
             </LinearLayout>

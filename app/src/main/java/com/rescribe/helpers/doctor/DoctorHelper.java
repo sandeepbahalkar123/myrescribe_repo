@@ -152,7 +152,7 @@ public class DoctorHelper implements ConnectionListener {
                             }
                             data.setStartElement(true);
                             flag = false;
-                        } else if (!flag) {
+                        } else {
                             data.setRowColor(previousColor);
                             data.setSideBarViewColor(previousSideViewCColor);
                         }

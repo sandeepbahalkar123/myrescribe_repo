@@ -12,7 +12,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.widget.RemoteViews;
-
 import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver;
@@ -28,11 +27,9 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.SnoozeAlarmNotifyActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import static com.facebook.login.widget.ProfilePictureView.TAG;
 import static com.rescribe.util.RescribeConstants.MEDICATIONS_NOTIFICATION_TAG;
 
@@ -115,7 +112,8 @@ public class NotificationService extends Service implements HelperResponse {
         medication.setUnreadNotificationMessageDataID("" + id);
         medication.setUnreadNotificationMessageDataTimeStamp(timeStamp);
 
-        String medicationDataDetails = getText(R.string.have_u_taken).toString() + medicineSlot;
+        String medicationDataDetails = getText(R.string.have_u_taken).toString() + medicineSlot + "?";
+        String medicineData = getText(R.string.have_u_taken).toString() + medicineSlot.toLowerCase();
         appDBHelper.insertUnreadReceivedNotificationMessage("" + id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, medicationDataDetails, new Gson().toJson(medication), timeStamp);
         //-------
 
@@ -160,7 +158,7 @@ public class NotificationService extends Service implements HelperResponse {
 
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, medicineSlot);
-        mRemoteViews.setTextViewText(R.id.questionText, title);
+        mRemoteViews.setTextViewText(R.id.questionText, medicineData+"?");
         mRemoteViews.setTextViewText(R.id.timeText, notificationTimeSlot);
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification build = builder.build();

@@ -111,28 +111,16 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
         mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
         mServicesCardViewImpl = new ServicesCardViewImpl(this.getContext(), (BookAppointListOnLocationSelection) getActivity());
 
-        mSearchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {
-            @Override
-            public void onClearButtonClicked() {
-                mSortByClinicAndDoctorNameAdapter.getFilter().filter("");
-                doConfigureDataListViewVisibility(true, false);
-            }
-        });
-
         mSearchView.addTextChangedListener(new EditTextWithDeleteButton.TextChangedListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().trim().length() > 0) {
+                if (!s.toString().trim().isEmpty()) {
                     mSortByClinicAndDoctorNameAdapter.getFilter().filter(s);
                 } else {
                     mSortByClinicAndDoctorNameAdapter.getFilter().filter("");
@@ -167,7 +155,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
 
             ArrayList<DoctorList> receivedDoctorDataList = ServicesCardViewImpl.getDoctorListByUniqueDocIDs(ServicesCardViewImpl.getReceivedDoctorDataList());
 
-            mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), receivedDoctorDataList, mServicesCardViewImpl, this, this);
+            mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), receivedDoctorDataList, mServicesCardViewImpl, this, this, mDoctorListView);
             LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             mDoctorListView.setLayoutManager(linearlayoutManager);
             mDoctorListView.setNestedScrollingEnabled(false);

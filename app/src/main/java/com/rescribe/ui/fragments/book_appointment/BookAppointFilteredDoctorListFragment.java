@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
@@ -27,12 +26,9 @@ import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppoin
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
-import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

@@ -83,8 +83,8 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
 /////
         //-------------
         ArrayList<ClinicData> clinicDataList = doctorObject.getClinicDataList();
-        /// MyAppointment Category
-        if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
+        /// MyAppointment Category is commented as per new flow appointment category is considered non - category so that patient can book appointment.
+       /* if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
             holder.ruppessIcon.setVisibility(View.INVISIBLE);
             holder.doctorFee.setVisibility(View.INVISIBLE);
             holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
@@ -102,7 +102,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 holder.clinicName.setVisibility(View.GONE);
             }
             //Sponsered Doctors
-        } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))) {
+        } else*/ if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))) {
 
             if (clinicDataList.size() == 1) {
                 holder.clinicName.setVisibility(View.VISIBLE);
@@ -209,7 +209,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 }
             }
             //---------------if Doctor Doesnt belong to any Category
-        } else if (doctorObject.getCategoryName().equals("")) {
+        } else if (doctorObject.getCategoryName().equals("")||doctorObject.getCategoryName().equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
             if (clinicDataList.size() == 1) {
                 holder.clinicName.setVisibility(View.VISIBLE);
                 holder.clinicName.setText(clinicDataList.get(0).getClinicName());
@@ -326,7 +326,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
                 b.putString(mContext.getString(R.string.opening_mode), mClickedItemDataTypeValue);
                 b.putString(mContext.getString(R.string.toolbarTitle), mReceivedTitleForView);
                 b.putString(mContext.getString(R.string.category_name), doctorObject.getCategoryName());
-                b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH,"");
+                b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH, RescribeConstants.SEARCH_DOCTORS);
                 mOnFilterDocListClickListener.onClickOfCardView(b);
             }
         });

@@ -17,12 +17,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.MeasureSpec;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -191,14 +189,14 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
             final ArrayList<Entry> tempEntries = new ArrayList<>();
             final HashSet<String> tempLabels = new HashSet<>();
             final ArrayList<String> tempLabelsArrayList = new ArrayList<>();
-
+             //To add circle color
             List<Integer> circleColors = new ArrayList<>();
 
             for (int i = 0; i < vitalGraphDetailList.size(); i++) {
 
                 VitalGraphDetails data = vitalGraphDetailList.get(i);
 
-                circleColors.add(data.getSelfTrackerFlag() ? getResources().getColor(R.color.grey) : getResources().getColor(R.color.white));
+                circleColors.add(data.getSelfTrackerFlag() ? getResources().getColor(R.color.black) : getResources().getColor(R.color.white));
 
                 //----
                 Date date = CommonMethods.convertStringToDate(data.getCreationDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
@@ -207,8 +205,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 tempLabelsArrayList.add(formattedDate);
                 //----
                 if (!(RescribeConstants.BLANK.equalsIgnoreCase(data.getVitalValue()))) {
-
-                    Bitmap bitmapView = createBitmapFromLayoutWithText(data.getVitalValue(), data.getSelfTrackerFlag() ? getResources().getColor(R.color.grey) : getResources().getColor(R.color.white));
+                    //To add text color
+                    Bitmap bitmapView = createBitmapFromLayoutWithText(data.getVitalValue(), data.getSelfTrackerFlag() ? getResources().getColor(R.color.black) : getResources().getColor(R.color.white));
                     Drawable drawable = new BitmapDrawable(getResources(), bitmapView);
 
                     tempEntries.add(new Entry(i, Float.parseFloat(data.getVitalValue()), drawable));
@@ -297,13 +295,16 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
             final HashSet<String> tempLabels = new HashSet<>();
             final ArrayList<String> tempLabelsArrayList = new ArrayList<>();
 
-            List<Integer> circleColors = new ArrayList<>();
+            List<Integer> circleColorsSystolic = new ArrayList<>();
+            List<Integer> circleColorsDiastolic = new ArrayList<>();
+
 
             for (int i = 0; i < vitalGraphDetailList.size(); i++) {
 
                 VitalGraphDetails data = vitalGraphDetailList.get(i);
 
-                circleColors.add(data.getSelfTrackerFlag() ? getResources().getColor(R.color.grey_300) : getResources().getColor(R.color.white));
+                circleColorsSystolic.add(data.getSelfTrackerFlag() ? getResources().getColor(R.color.black) : getResources().getColor(R.color.white));
+                circleColorsDiastolic.add(data.getSelfTrackerFlag() ? getResources().getColor(R.color.black) : Color.YELLOW);
 
                 //----
                 Date date = CommonMethods.convertStringToDate(data.getCreationDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
@@ -315,8 +316,13 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 vitalValue = vitalValue.replaceAll("[^0-9/.]", "");
                 if (vitalValue.contains("/")) {
                     String[] split = vitalValue.split("/");
-                    maxTempEntries.add(new Entry(i, Float.parseFloat(split[0])));
-                    minTempEntries.add(new Entry(i, Float.parseFloat(split[1])));
+                    Bitmap bitmapViewSystolic = createBitmapFromLayoutWithText( split[0], data.getSelfTrackerFlag() ? getResources().getColor(R.color.black) : getResources().getColor(R.color.white));
+                    Drawable drawableSystolic = new BitmapDrawable(getResources(), bitmapViewSystolic);
+                    Bitmap bitmapViewDiasystolic = createBitmapFromLayoutWithText(split[1], data.getSelfTrackerFlag() ? getResources().getColor(R.color.black) : Color.YELLOW);
+                    Drawable drawableDiasystolic = new BitmapDrawable(getResources(), bitmapViewDiasystolic);
+
+                    maxTempEntries.add(new Entry(i, Float.parseFloat(split[0]),drawableSystolic));
+                    minTempEntries.add(new Entry(i, Float.parseFloat(split[1]),drawableDiasystolic));
                 }
             }
 
@@ -328,23 +334,24 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 LineData data = new LineData();
                 data.addDataSet(maxTempEntriesDataset);
                 data.addDataSet(minTempEntriesDataset);
-                data.setValueTextColor(Color.WHITE);
                 data.setValueTextSize(10); // It's DP value.
 
-                //----******for MAX*****------
-                maxTempEntriesDataset.setCircleColor(Color.WHITE);
+                //----******for MAX/Systolic*****------
                 maxTempEntriesDataset.setDrawCircleHole(false);
                 maxTempEntriesDataset.setDrawFilled(true);
                 maxTempEntriesDataset.setColor(Color.WHITE);
+                maxTempEntriesDataset.setCircleColors(circleColorsSystolic);
                 maxTempEntriesDataset.setFillColor(Color.WHITE);
                 maxTempEntriesDataset.setFillAlpha(10);
-                //----*******for MIN****------
+                maxTempEntriesDataset.setValueTextColor(Color.TRANSPARENT);
+                //----*******for MIN/Diastolic****------
                 minTempEntriesDataset.setDrawCircleHole(false);
                 minTempEntriesDataset.setDrawFilled(true);
-                minTempEntriesDataset.setCircleColors(Color.YELLOW);
+                minTempEntriesDataset.setCircleColors(circleColorsDiastolic);
                 minTempEntriesDataset.setFillColor(Color.YELLOW);
                 minTempEntriesDataset.setFillAlpha(10);
                 minTempEntriesDataset.setColor(Color.YELLOW);
+                minTempEntriesDataset.setValueTextColor(Color.TRANSPARENT);
                 //----
                 mGraphCard.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
                 mGraphCard.setData(data);
@@ -443,13 +450,17 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
         //------
         Button addTrackerButton = (Button) modalbottomsheet.findViewById(R.id.addTrackerButton);
         //---------
+        addTrackerDate.setHint(CommonMethods.getCurrentDateWithSlash());
 
         //-------------
         if (mClickedVitalGraphData.getVitalName().equalsIgnoreCase("Blood Pressure")) {
             bloodPressureReadingLayout.setVisibility(View.VISIBLE);
+            dystolic.setHint(RescribeConstants.DIASTOLIC_HINT);
+            systolic.setHint(RescribeConstants.SYSTOLIC_HINT);
             reading.setVisibility(View.GONE);
         } else {
             bloodPressureReadingLayout.setVisibility(View.GONE);
+            reading.setHint(RescribeConstants.OTHER_VITALS_HINT);
             reading.setVisibility(View.VISIBLE);
         }
 

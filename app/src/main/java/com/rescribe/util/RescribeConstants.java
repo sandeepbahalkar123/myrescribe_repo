@@ -212,6 +212,12 @@ public class RescribeConstants {
 
     public static final String TYPE_OF_DOCTOR_SEARCH = "type_of_doctor_search";
     public static final String SEARCH_DOCTORS = "search_doctors";
+    public static final String BLOOD_PRESSURE_HINT = "130/88";
+    public static final String OTHER_VITALS_HINT = "88";
+    public static final String SYSTOLIC_HINT = "130";
+    public static final String DIASTOLIC_HINT = "88";
+    public static final String PICK_SPECAILITY = "pick_speciality";
+    public static final String SORT_BY_SPECIALITY = "sort_by_speciality";
 
 
     public static class USER_STATUS {
@@ -286,6 +292,7 @@ public class RescribeConstants {
         public static String DD_MM_YYYY_hh_mm_ss = "dd-MM-yyyy hh:mm:ss";
         public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
         public static String YYYY_MM_DD_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
+        public static String dd_mm_yyyy = "dd/MM/yyyy";
     }
 
     public static class TIME_STAMPS {

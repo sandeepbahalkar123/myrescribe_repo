@@ -6,7 +6,6 @@
     android:background="@color/recentblue"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/dp6"
-    android:paddingRight="@dimen/dp6"
     android:paddingTop="@dimen/dp6">
 
     <TextView

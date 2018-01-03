@@ -55,7 +55,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
         final PrescriptionModel prescriptionDataObject = mPrescriptionData.get(position);
         if (prescriptionDataObject.getInstruction().equals("")) {
-            holder.mHighlightedInstructionView.setVisibility(View.GONE);
+            holder.mHighlightedInstructionView.setVisibility(View.INVISIBLE);
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT

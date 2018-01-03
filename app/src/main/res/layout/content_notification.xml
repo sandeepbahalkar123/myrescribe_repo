@@ -83,7 +83,7 @@
                             <FrameLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/dp10"
+                                android:layout_marginBottom="@dimen/dp6"
                                 android:paddingEnd="@dimen/horizontal_margin"
                                 android:paddingStart="@dimen/horizontal_margin">
 
@@ -135,7 +135,7 @@
                                         android:id="@+id/dividerLineInHeader"
                                         android:layout_width="match_parent"
                                         android:layout_height="@dimen/dp05"
-                                        android:layout_marginBottom="@dimen/dp10"
+                                        android:layout_marginBottom="@dimen/dp6"
                                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
                                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                                         android:background="@color/divider"
@@ -168,8 +168,9 @@
                                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
                                             android:layout_marginStart="@dimen/activity_horizontal_margin"
                                             android:button="@drawable/checkboxselecter"
-                                            android:paddingEnd="@dimen/dp10"
-                                            android:paddingRight="@dimen/dp10"
+                                            tools:visibility="visible"
+                                            android:paddingEnd="@dimen/dp40"
+                                            android:paddingRight="@dimen/dp40"
                                             android:visibility="invisible" />
 
                                     </RelativeLayout>

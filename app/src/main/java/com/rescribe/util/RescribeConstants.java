@@ -292,6 +292,7 @@ public class RescribeConstants {
         public static String DD_MM_YYYY_hh_mm_ss = "dd-MM-yyyy hh:mm:ss";
         public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
         public static String YYYY_MM_DD_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
+        public static String dd_mm_yyyy = "dd/MM/yyyy";
     }
 
     public static class TIME_STAMPS {

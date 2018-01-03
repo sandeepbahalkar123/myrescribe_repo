@@ -147,6 +147,22 @@ public class CommonMethods {
         dString.append(year);
         return dString.toString();
     }
+    public static String getCurrentDateWithSlash() // for enrollmentId
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int date = calendar.get(Calendar.DATE);
+        String Year = String.valueOf(year);
+        StringBuffer dString = new StringBuffer();
+        dString.append(date);
+        dString.append("/");
+        dString.append(month);
+        dString.append("/");
+        dString.append(year);
+        return dString.toString();
+    }
 
     public static String getCurrentDate() // for enrollmentId
     {

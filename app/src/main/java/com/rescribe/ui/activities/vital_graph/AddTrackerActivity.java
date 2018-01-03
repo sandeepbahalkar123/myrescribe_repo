@@ -206,8 +206,7 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
         //------
         Button addTrackerButton = (Button) modalbottomsheet.findViewById(R.id.addTrackerButton);
         //---------
-        addTrackerDate.setHint(CommonMethods.getCurrentDate());
-        //-------------
+        addTrackerDate.setHint(CommonMethods.getCurrentDateWithSlash());        //-------------
         if (vitalList.getVitalName().equalsIgnoreCase("Blood Pressure")) {
             bloodPressureReadingLayout.setVisibility(View.VISIBLE);
             systolic.setHint(RescribeConstants.SYSTOLIC_HINT);

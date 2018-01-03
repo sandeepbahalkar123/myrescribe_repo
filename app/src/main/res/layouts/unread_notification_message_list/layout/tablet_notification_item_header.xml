@@ -27,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp12"
                 android:layout_marginRight="@dimen/dp12"
+                tools:visibility="visible"
                 android:src="@drawable/notifications_get_token_icon"
                 android:visibility="invisible" />
         </LinearLayout>

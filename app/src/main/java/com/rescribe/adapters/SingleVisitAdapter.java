@@ -170,14 +170,14 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
             if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName().equals(mContext.getString(R.string.bp))) {
                 String category = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory();
-                    String[] categoryForBp = category.split(":");
-                    categoryForBpMax = categoryForBp[0];
-                    categoryForBpMin = categoryForBp.length== 2?categoryForBp[1]:"";
+                String[] categoryForBp = category.split(":");
+                categoryForBpMax = categoryForBp[0];
+                categoryForBpMin = categoryForBp.length == 2 ? categoryForBp[1] : "";
 
                 String unit = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue();
                 String[] unitForBp = unit.split("/");
                 String unitForBpMax = unitForBp[0];
-                String unitForBpMin = unitForBp.length==2 ?unitForBp[1]:"";
+                String unitForBpMin = unitForBp.length == 2 ? unitForBp[1] : "";
                 vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getIcon()));
 
                 vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
@@ -452,6 +452,10 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         String normal = "";
         String moderate = "";
         String severe = "";
+        String moderateBpmin = "";
+        String normalBpmin = "";
+        String severeBpmin = "";
+
 
         LinearLayout vitalsDialogLayout = (LinearLayout) dialog.findViewById(R.id.vitalsDialogLayout);
         LinearLayout normalBpMaxRangeLayout = (LinearLayout) dialog.findViewById(R.id.normalRangeLayout);
@@ -545,34 +549,34 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 }
             } else if (rangeList.get(i).getNameOfVital() == null) {
                 if (rangeList.get(i).getCategory().equalsIgnoreCase(context.getString(R.string.normalRange))) {
-                    if (normal.equals("")) {
+                    if (normalBpmin.equals("")) {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                        normal += finalString;
-                        normalRange.setText(normal);
+                        normalBpmin += finalString;
+                        normalRange.setText(normalBpmin);
                     } else {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                        normal += ", " + finalString;
-                        normalRange.setText(normal);
+                        normalBpmin += ", " + finalString;
+                        normalRange.setText(normalBpmin);
                     }
                 } else if (rangeList.get(i).getCategory().equalsIgnoreCase(context.getString(R.string.moderateRange))) {
-                    if (moderate.equals("")) {
+                    if (moderateBpmin.equals("")) {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                        moderate += finalString;
-                        moderateRange.setText(moderate);
+                        moderateBpmin += finalString;
+                        moderateRange.setText(moderateBpmin);
                     } else {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                        moderate += ", " + finalString;
-                        moderateRange.setText(moderate);
+                        moderateBpmin += ", " + finalString;
+                        moderateRange.setText(moderateBpmin);
                     }
                 } else if (rangeList.get(i).getCategory().equalsIgnoreCase(context.getString(R.string.severeRange))) {
-                    if (severe.equals("")) {
+                    if (severeBpmin.equals("")) {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                        severe += finalString;
-                        severeRange.setText(severe);
+                        severeBpmin += finalString;
+                        severeRange.setText(severeBpmin);
                     } else {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
-                        severe += ", " + finalString;
-                        severeRange.setText(severe);
+                        severeBpmin += ", " + finalString;
+                        severeRange.setText(severeBpmin);
 
                     }
                 }
@@ -581,7 +585,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         if (unitName.equals(context.getString(R.string.bp))) {
             String[] unitDataObject = unitValue.split("/");
             String unitBpMax = unitDataObject[0];
-            String unitBpMin = unitDataObject.length==2? unitDataObject[1]:"";
+            String unitBpMin = unitDataObject.length == 2 ? unitDataObject[1] : "";
             showVitalNameLayout.setVisibility(View.VISIBLE);
             showVitalRangeLayout.setVisibility(View.VISIBLE);
             vitalName.setText(context.getString(R.string.systolic_pressure));

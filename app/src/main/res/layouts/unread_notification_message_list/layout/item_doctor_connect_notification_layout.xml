@@ -42,8 +42,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:paddingLeft="@dimen/dp5"
-                    android:paddingRight="@dimen/dp5">
+                    android:paddingLeft="@dimen/dp8"
+                    android:paddingRight="@dimen/dp8">
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/docConnectTimeStamp"
@@ -52,7 +52,8 @@
                         android:layout_gravity="right"
                         android:textColor="@color/grey_shade"
                         android:textSize="@dimen/sp11"
-
+                        android:paddingTop="@dimen/dp4"
+                        android:paddingBottom="@dimen/dp4"
                         app:customFont="@string/roboto_medium"
                         tools:text="2:00 am" />
 
@@ -81,8 +82,11 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="right"
                         android:gravity="right|center"
-                        android:paddingTop="@dimen/dp4"
                         android:text="@string/more"
+                        android:paddingTop="@dimen/dp10"
+                        android:paddingBottom="@dimen/dp13"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
                         android:textColor="@color/tagColor"
                         android:textSize="@dimen/sp12"
                         android:visibility="visible"

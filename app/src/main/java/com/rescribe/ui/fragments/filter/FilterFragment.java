@@ -198,7 +198,7 @@ public class FilterFragment extends Fragment {
     }
 
     public void setDoctorName(String name) {
-        drNameTextView.setText(name);
+        drNameTextView.setText("Dr. "+name);
     }
 
     public void setDoctorSpeciality(String speciality) {

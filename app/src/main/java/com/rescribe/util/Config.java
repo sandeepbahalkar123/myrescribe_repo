@@ -19,11 +19,11 @@ public class Config {
     public static final String GET_TASK_RECENT_VISIT_DOCTOR_PLACES_DATA = "api/doctors/getDocCountByArea?patientId=";
     public static boolean DEV_BUILD = true;
 
-    public static final String BROKER = "tcp://13.127.27.202:1883"; // Dr Rescribe IP
-//    public static final String BROKER = "tcp://192.168.0.182:1883";
+   public static final String BROKER = "tcp://13.127.27.202:1883"; // Dr Rescribe IP
+   // public static final String BROKER = "tcp://192.168.0.182:1883";
 
-    public static String BASE_URL = "http://drrescribe.com:3003/";
-//    public static String BASE_URL = "http://192.168.0.182:3003/";
+   public static String BASE_URL = "http://drrescribe.com:3003/";
+  //  public static String BASE_URL = "http://192.168.0.182:3003/";
 
 
     //---------------------

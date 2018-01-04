@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,11 +13,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.rescribe.R;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -46,9 +50,9 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
     FrameLayout viewContainer;
     HashMap<String, String> userSelectedLocationInfo;
     private BookAppointFilteredDoctorListFragment mBookAppointFilteredDoctorListFragment;
-
     private Fragment mDrawerLoadedFragment;
     private int PLACE_PICKER_REQUEST = 1;
+    private Context mContext;
     private boolean isLocationChangeViewClicked = false;
 
     @Override
@@ -61,6 +65,7 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
     }
 
     private void initialize() {
+        mContext = ServicesFilteredDoctorListActivity.this;
         showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
         userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
@@ -131,6 +136,9 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
         if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
             mDrawerLayout.closeDrawer(GravityCompat.END);
         } else {
+            if (mBookAppointFilteredDoctorListFragment.getReceivedPreviousDoctorList() != null) {
+                new ServicesCardViewImpl(this, this).setReceivedDoctorDataList(mBookAppointFilteredDoctorListFragment.getReceivedPreviousDoctorList());
+            }
             super.onBackPressed();
         }
     }

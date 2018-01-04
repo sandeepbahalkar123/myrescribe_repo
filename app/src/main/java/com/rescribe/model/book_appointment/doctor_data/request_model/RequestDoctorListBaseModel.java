@@ -20,6 +20,29 @@ public class RequestDoctorListBaseModel implements CustomResponse {
     @Expose
     private String complaint;
 
+    @SerializedName("date")
+    @Expose
+    private String date;
+
+    @SerializedName("time")
+    @Expose
+    private String time;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public String getCityName() {
         return cityName;

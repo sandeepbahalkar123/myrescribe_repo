@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appointmentItemLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="@dimen/dp16"
     android:layout_marginEnd="@dimen/dp6"
     android:layout_marginLeft="@dimen/dp16"
     android:layout_marginRight="@dimen/dp6"
     android:layout_marginTop="@dimen/dp16"
-    android:id="@+id/appointmentItemLayout"
     android:background="@color/white"
     android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -25,7 +26,6 @@
             android:id="@+id/thumbnail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_marginRight="@dimen/dp5"
             android:padding="3dip">
 
@@ -40,11 +40,13 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_toEndOf="@+id/thumbnail"
+            android:layout_toLeftOf="@+id/dateLayout"
             android:layout_toRightOf="@+id/thumbnail"
-            android:layout_weight="1"
+            android:layout_toStartOf="@+id/dateLayout"
             android:gravity="center|left"
             android:orientation="vertical">
 
@@ -53,43 +55,41 @@
                 android:id="@+id/doctorType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/thumbnail"
                 android:layout_marginTop="1dip"
-                android:text="Cardilogist"
                 android:textColor="@color/dose_completed"
                 android:textSize="@dimen/sp16"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="Cardilogist" />
 
             <!-- Artist Name -->
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/doctorType"
-                android:layout_toRightOf="@+id/thumbnail"
-                android:text="Dr. Sandeep Patil"
                 android:textColor="@color/recentblue"
                 android:textSize="@dimen/sp18"
                 android:textStyle="bold"
-                android:typeface="sans" />
+                android:typeface="sans"
+                tools:text="Dr. Sandeep Patil" />
 
             <!-- Rightend Duration -->
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/doctorName"
-                android:layout_toRightOf="@+id/thumbnail"
                 android:gravity="right"
-                android:text="10th July, Aundh, Pune"
                 android:textColor="@color/dose_completed"
                 android:textSize="@dimen/sp12"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="10th July, Aundh, Pune" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/dateLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -97,20 +97,19 @@
                 android:id="@+id/appointmentsTimeStamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="6:30 pm"
                 android:textAllCaps="false"
                 android:textColor="@color/dose_completed"
-                app:customFont="@string/roboto_bold" />
+                app:customFont="@string/roboto_bold"
+                tools:text="6:30 pm" />
 
             <ImageView
                 android:id="@+id/gMapLocationView"
                 android:layout_width="@dimen/dp35"
                 android:layout_height="@dimen/dp35"
-                android:layout_marginRight="@dimen/dp16"
                 android:paddingTop="@dimen/dp6"
                 android:src="@drawable/location" />
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"

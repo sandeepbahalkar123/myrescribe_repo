@@ -169,7 +169,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     @OnClick({R.id.viewpager,/* R.id.doubtMessage,*/ R.id.prevBtn, R.id.nextBtn, R.id.rightFab, R.id.leftFab})
-
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.viewpager:
@@ -254,7 +253,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         if (mReceivedDoctorServicesModel != null) {
             doConfigureDataListViewVisibility(false, false);
             if (mReceivedDoctorServicesModel.getDoctorList().size() > 0) {
-                mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), ServicesCardViewImpl.getReceivedDoctorDataList(), mServiceCardDataViewBuilder, RecentVisitDoctorFragment.this, this, showDoctorsRecyclerView);
+                mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), ServicesCardViewImpl.getReceivedDoctorDataList(), mServiceCardDataViewBuilder, RecentVisitDoctorFragment.this, this);
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 showDoctorsRecyclerView.setLayoutManager(linearlayoutManager);
                 showDoctorsRecyclerView.setNestedScrollingEnabled(false);

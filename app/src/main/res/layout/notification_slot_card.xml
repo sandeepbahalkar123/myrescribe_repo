@@ -38,7 +38,7 @@
                 android:layout_gravity="bottom|end"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp16"
-                tools:text="yesterday"
+                tools:text="dddd"
                 app:customFont="@string/roboto_bold" />
 
         </FrameLayout>
@@ -71,7 +71,7 @@
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/slotQuestionTextView"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:text="@string/dosage_completed"
@@ -88,8 +88,8 @@
                         android:layout_centerVertical="true"
                         android:button="@drawable/checkboxselecter"
                         android:checked="false"
-                        android:paddingEnd="@dimen/dp40"
-                        android:paddingRight="@dimen/dp40"
+                        android:paddingEnd="@dimen/dp10"
+                        android:paddingRight="@dimen/dp10"
                         android:visibility="visible"
                         tools:visibility="visible" />
 

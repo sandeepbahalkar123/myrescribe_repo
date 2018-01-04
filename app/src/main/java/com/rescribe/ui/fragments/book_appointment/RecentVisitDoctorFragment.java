@@ -254,7 +254,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         if (mReceivedDoctorServicesModel != null) {
             doConfigureDataListViewVisibility(false, false);
             if (mReceivedDoctorServicesModel.getDoctorList().size() > 0) {
-                mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), ServicesCardViewImpl.getReceivedDoctorDataList(), mServiceCardDataViewBuilder, RecentVisitDoctorFragment.this, this, showDoctorsRecyclerView);
+                mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), ServicesCardViewImpl.getReceivedDoctorDataList(), mServiceCardDataViewBuilder, RecentVisitDoctorFragment.this, this);
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 showDoctorsRecyclerView.setLayoutManager(linearlayoutManager);
                 showDoctorsRecyclerView.setNestedScrollingEnabled(false);

@@ -1,6 +1,5 @@
 package com.rescribe.adapters.book_appointment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -32,6 +31,7 @@ import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -52,7 +52,6 @@ import butterknife.ButterKnife;
 public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortByClinicAndDoctorNameAdapter.ListViewHolder> implements Filterable {
 
     private final HelperResponse mHelperResponse;
-    private final RecyclerView mDoctorListView;
     private SortByClinicAndDoctorNameAdapter.OnDataListViewVisible mOnDataListViewVisibleListener;
     private Context mContext;
     private ArrayList<DoctorList> mDataList = new ArrayList<>();
@@ -63,15 +62,11 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     private ImageView mClickedItemFavImageView;
     private String cityname;
 
-    CustomProgressDialog customProgressDialog;
-
-    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, OnDataListViewVisible m, HelperResponse mHelperResponse, RecyclerView mDoctorListView) {
+    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, OnDataListViewVisible m, HelperResponse mHelperResponse) {
         this.mContext = mContext;
 
         this.mArrayList = dataList;
         this.mDataList.addAll(dataList);
-
-        this.mDoctorListView = mDoctorListView;
 
         this.mOnClinicAndDoctorNameSearchRowItem = mOnClinicAndDoctorNameSearchRowItem;
         this.mOnDataListViewVisibleListener = m;
@@ -82,9 +77,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             String[] split = cityNameString.split(",");
             cityname = split[1].trim();
         }
-
-        customProgressDialog = new CustomProgressDialog(mContext);
-        customProgressDialog.setCancelable(false);
     }
 
     @Override
@@ -110,8 +102,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         } else {
             holder.doctorExperience.setVisibility(View.VISIBLE);
             holder.doctorExperience.setText("" + doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
-
         }
+
         holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
         holder.aboutDoctor.setText(doctorObject.getDegree());
         //------------
@@ -173,11 +165,12 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
         requestOptions.placeholder(textDrawable);
+        requestOptions.override(mContext.getResources().getDimensionPixelSize(R.dimen.dp46));
         requestOptions.error(textDrawable);
 
         Glide.with(mContext)
                 .load(doctorObject.getDoctorImageUrl())
-                .apply(requestOptions).thumbnail(0.5f)
+                .apply(requestOptions)
                 .into(holder.imageURL);
         //---------------
 
@@ -195,7 +188,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
                 holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
 
-                if (replacedDrNameString.toLowerCase().contains(/*mContext.getString(R.string.dr).toLowerCase() + " " +*/ mSearchString.toLowerCase())) {
+                if (replacedDrNameString.toLowerCase().contains(mSearchString.toLowerCase())) {
                     spannableStringSearch = new SpannableString(replacedDrNameString);
                     Pattern pattern = Pattern.compile(mSearchString, Pattern.CASE_INSENSITIVE);
                     Matcher matcher = pattern.matcher(replacedDrNameString);
@@ -371,18 +364,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
-
                 String charString = charSequence.toString();
                 mSearchString = charString;
-
-                /*if (charString.length() > 0 && charString.length() < 3) {
-                    ((Activity) mContext).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            customProgressDialog.show();
-                        }
-                    });
-                }*/
 
                 mDataList.clear();
 
@@ -429,24 +412,12 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
 
-                String charString = charSequence.toString();
-
-//                mDataList = (ArrayList<DoctorList>) filterResults.values;
                 if (mDataList.isEmpty())
                     mOnDataListViewVisibleListener.doConfigureDataListViewVisibility(true, true);
                 else
                     mOnDataListViewVisibleListener.doConfigureDataListViewVisibility(true, false);
 
                 notifyDataSetChanged();
-
-                /*if (charString.length() > 0 && charString.length() < 3) {
-                    ((Activity) mContext).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            customProgressDialog.dismiss();
-                        }
-                    });
-                }*/
             }
         };
     }

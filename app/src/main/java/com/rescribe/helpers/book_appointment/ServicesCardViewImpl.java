@@ -159,12 +159,13 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
 
     public ArrayList<DoctorList> getCategoryWiseDoctorList(String categoryName, int size) {
         ArrayList<DoctorList> temp = new ArrayList<>();
-        for (DoctorList docObject :
-                mReceivedDoctorDataList) {
-            if (docObject.getCategoryName().equalsIgnoreCase(categoryName)) {
-                temp.add(docObject);
+        if (mReceivedDoctorDataList != null)
+            for (DoctorList docObject :
+                    mReceivedDoctorDataList) {
+                if (docObject.getCategoryName().equalsIgnoreCase(categoryName)) {
+                    temp.add(docObject);
+                }
             }
-        }
         if (size != -1) {
             if (temp.size() > size) {
                 temp = new ArrayList<DoctorList>(temp.subList(0, size));

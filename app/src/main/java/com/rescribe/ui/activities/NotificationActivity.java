@@ -120,7 +120,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
 
     private void initialize() {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(getString(R.string.notification));
+        getSupportActionBar().setTitle(getString(R.string.notifications));
         mContext = NotificationActivity.this;
         mProgressDialog = new CustomProgressDialog(mContext);
         mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));

@@ -370,6 +370,7 @@
     <string name="today">today</string>
     <string name="book_time_slot_err">Slot must be greater than current time.</string>
     <string name="token_select_time_err_msg">Please select future time slot for the day.</string>
+    <string name="time_select_err">Please select time slot.</string>
     <string name="sponsered">Sponsored Doctors</string>
     <string name="dd_mm_yyy">DD/MM/YY</string>
     <string name="appointment_confirmed">Your appointment is confirmed !</string>

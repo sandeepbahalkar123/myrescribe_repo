@@ -321,7 +321,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
 
     public void onApplyClicked(Bundle data) {
         BookAppointFilterRequestModel requestModel = data.getParcelable(getString(R.string.filter));
-        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel);
+        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel, mComplaintHashMap);
     }
 
     public void onResetClicked() {

@@ -282,7 +282,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     public void onApplyClicked(Bundle data) {
         BookAppointFilterRequestModel requestModel = data.getParcelable(getString(R.string.filter));
 
-        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel);
+        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel,null);
     }
 
     public void onResetClicked() {

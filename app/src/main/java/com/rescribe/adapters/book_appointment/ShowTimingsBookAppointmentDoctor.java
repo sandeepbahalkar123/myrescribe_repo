@@ -30,7 +30,7 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
     private String mSelectedDate;
     private Context mContext;
     private ArrayList<TimeSlotsInfoList.TimeSlotData> mDataList;
-    private String mSelectedTimeSlot;
+    private static String mSelectedTimeSlot;
 
     public ShowTimingsBookAppointmentDoctor(Context mContext, ArrayList<TimeSlotsInfoList.TimeSlotData> dataList, String mSelectedDate) {
         this.mDataList = dataList;
@@ -127,4 +127,7 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
     }
 
 
+    public static String getSelectedTimeSlot() {
+        return mSelectedTimeSlot;
+    }
 }

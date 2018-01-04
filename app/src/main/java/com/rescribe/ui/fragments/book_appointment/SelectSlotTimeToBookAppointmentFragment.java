@@ -506,7 +506,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     public void onResume() {
         super.onResume();
 
-        if(mDoctorDataHelper==null){
+        if (mDoctorDataHelper == null) {
 
             mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
 

@@ -19,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.my_records.SpinnerDoctor;
+import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
         final SpinnerDoctor doctor_details = items.get(position);
         if (doctor_details != null) {
             TextView lblName = (TextView) view.findViewById(R.id.doctorName);
-            ImageView doctorImage = (ImageView)view.findViewById(R.id.doctorImage);
+            CircularImageView doctorImage = (CircularImageView) view.findViewById(R.id.doctorImage);
             TextView doctorSpecialist = (TextView) view.findViewById(R.id.doctorSpecialist);
             TextView doctorAddress = (TextView) view.findViewById(R.id.doctorAddress);
 

@@ -41,13 +41,16 @@
                 android:visibility="gone"
                 tools:visibility="visible">
 
-                <ImageView
+                <com.rescribe.ui.customesViews.CircularImageView
                     android:id="@+id/doctorImage"
-                    android:layout_width="68dp"
-                    android:layout_height="68dp"
+                    android:layout_width="@dimen/dp56"
+                    android:layout_height="@dimen/dp56"
                     android:layout_centerVertical="true"
                     android:padding="@dimen/dp10"
-                    tools:src="@drawable/vitals" />
+                    android:layout_marginLeft="@dimen/dp4"
+                    app:border="true"
+                    app:shadow="true"
+                    tools:src="@drawable/layer_12" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

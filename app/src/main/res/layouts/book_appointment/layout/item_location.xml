@@ -5,13 +5,14 @@
     android:orientation="vertical">
 
     <CheckBox
-        android:layout_marginLeft="@dimen/dp10"
+        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/locationName"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp40"
         android:padding="@dimen/dp5"
         android:text="Nagpur"
-        android:buttonTint="@color/tagColor"
-        android:textColor="@color/black"
+        android:drawableTint="@color/tagColor"
+        android:button="@null"
+        android:textColor="@color/tagColor"
         android:textSize="@dimen/sp14" />
 </LinearLayout>

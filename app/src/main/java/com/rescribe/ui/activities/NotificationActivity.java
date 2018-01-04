@@ -67,9 +67,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
     private boolean isHeaderExpand = true;
     private RespondToNotificationHelper mRespondToNotificationHelper;
     private ArrayList<Medication> mTodayDataList;
-
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
-
     @BindView(R.id.recycler)
     RecyclerView mRecyclerView;
     @BindView(R.id.selectView)
@@ -118,7 +116,6 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                 addBottomMenu(bottomMenu);
             }
         }
-
     }
 
     private void initialize() {

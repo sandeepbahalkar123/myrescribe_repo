@@ -22,7 +22,7 @@ public class Config {
     public static final String BROKER = "tcp://52.66.154.249:1883"; // Dr Rescribe IP
 
     public static String BASE_URL = "http://drrescribe.com:3003/";
-//    public static String BASE_URL = "http://192.168.0.182:3003/";
+    //  public static String BASE_URL = "http://192.168.0.182:3003/";
 
 
     //---------------------

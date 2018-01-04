@@ -169,7 +169,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     @OnClick({R.id.viewpager,/* R.id.doubtMessage,*/ R.id.prevBtn, R.id.nextBtn, R.id.rightFab, R.id.leftFab})
-
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.viewpager:

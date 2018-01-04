@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -54,18 +55,18 @@
             android:id="@+id/doseImageLinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="@dimen/dp2"
             android:layout_gravity="center_vertical|top"
+            android:layout_marginBottom="@dimen/dp2"
             android:layout_marginTop="@dimen/dp4"
-           android:paddingLeft="@dimen/dp12"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp12"
             android:paddingRight="@dimen/dp12">
 
             <ImageView
-                android:layout_marginTop="@dimen/dp2"
                 android:id="@+id/medicineType"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp2" />
 
         </LinearLayout>
 
@@ -113,12 +114,14 @@
                     android:id="@+id/frequencyString"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp8"
                     android:layout_weight="0.5"
                     android:gravity="right"
                     android:paddingRight="@dimen/dp10"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp14"
-                    app:customFont="@string/roboto_bold" />
+                    app:customFont="@string/roboto_bold"
+                    tools:text="1-1-1-1-1-1" />
 
 
                 <LinearLayout
@@ -131,7 +134,7 @@
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/days"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp8"
                         android:layout_weight="0.5"
@@ -139,7 +142,8 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp14"
                         android:textStyle="bold"
-                        app:customFont="@string/roboto_bold" />
+                        app:customFont="@string/roboto_bold"
+                        tools:text="14 days" />
                 </LinearLayout>
 
             </LinearLayout>

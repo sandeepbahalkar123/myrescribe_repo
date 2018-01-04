@@ -148,7 +148,8 @@ public class DashboardHelper implements ConnectionListener {
 
         String url = Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.platform) + mContext.getString(R.string.android) + mContext.getString(R.string.screen_resolution) + screenResolutionValue;
         if (currentCity != null) {
-            url = url + mContext.getString(R.string.city) + currentCity.trim();
+            String dateAndTime = CommonMethods.getFormattedDate(CommonMethods.getCurrentDate(),RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD)+"&time="+CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.HH_mm);
+            url = url + mContext.getString(R.string.city) + currentCity.trim()+"&date="+dateAndTime;
         }
         mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);

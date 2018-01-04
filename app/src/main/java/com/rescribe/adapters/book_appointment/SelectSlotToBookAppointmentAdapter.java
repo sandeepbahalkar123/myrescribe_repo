@@ -130,4 +130,9 @@ public class SelectSlotToBookAppointmentAdapter extends BaseExpandableListAdapte
     public boolean isChildSelectable(int listPosition, int expandedListPosition) {
         return true;
     }
+
+
+    public String getSelectedTimeSlot() {
+        return ShowTimingsBookAppointmentDoctor.getSelectedTimeSlot();
+    }
 }

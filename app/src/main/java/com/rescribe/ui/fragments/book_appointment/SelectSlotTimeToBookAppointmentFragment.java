@@ -506,7 +506,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     public void onResume() {
         super.onResume();
 
-        if(mDoctorDataHelper==null){
+        if (mDoctorDataHelper == null) {
 
             mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
 
@@ -569,11 +569,18 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 }
                 break;
             case R.id.appointmentTypeIsBookButton:
-                bundleData = new Bundle();
-                bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
-                Intent intentObject = new Intent(getContext(), ConfirmAppointmentActivity.class);
-                intentObject.putExtras(bundleData);
-                startActivity(intentObject);
+                if (mSelectSlotToBookAppointmentAdapter != null) {
+                    if (RescribeConstants.BLANK.equalsIgnoreCase(mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot()) || mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot() == null) {
+                        CommonMethods.showToast(getContext(), getString(R.string.time_select_err));
+                    } else {
+                        bundleData = new Bundle();
+                        bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
+                        Intent intentObject = new Intent(getContext(), ConfirmAppointmentActivity.class);
+                        intentObject.putExtras(bundleData);
+                        startActivity(intentObject);
+                    }
+                }
+
 
                 break;
             case R.id.viewAllClinicsOnMap: // on view-all location clicked

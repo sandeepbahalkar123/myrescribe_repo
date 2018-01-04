@@ -32,6 +32,7 @@ import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
+import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
@@ -106,6 +107,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private ShowDoctorViewPagerAdapter mRecentVisitedDoctorPagerAdapter;
     private String mUserSelectedLocation;
     private boolean isLocationChanged;
+    private ArrayList<DoctorList> mPreviousLoadedDocList;
+    private boolean isFilterApplied = false;
 
     public RecentVisitDoctorFragment() {
 
@@ -120,6 +123,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
         init();
+        mPreviousLoadedDocList = ServicesCardViewImpl.getReceivedDoctorDataList();
         return mRootView;
 
     }
@@ -140,9 +144,12 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
         searchView.addTextChangedListener(new EditTextWithDeleteButton.TextChangedListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -152,6 +159,10 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     doConfigureDataListViewVisibility(false, false);
                     recentDoctorLayout.setVisibility(View.VISIBLE);
                     mFilterListLayout.setVisibility(View.VISIBLE);
+                    if (isFilterApplied) {
+                        mServiceCardDataViewBuilder.setReceivedDoctorDataList(mPreviousLoadedDocList);
+                        setDoctorListAdapter(false);
+                    }
                 }
             }
         });
@@ -239,20 +250,33 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 if (receivedDoctorServicesModel != null) {
                     mReceivedDoctorServicesModel = receivedDoctorServicesModel;
                     mServiceCardDataViewBuilder.setReceivedDoctorDataList(mReceivedDoctorServicesModel.getDoctorList());
-                    setDoctorListAdapter();
+                    setDoctorListAdapter(false);
                 }
+                break;
+            case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:
+                BookAppointmentBaseModel received = (BookAppointmentBaseModel) customResponse;
+                if (received != null) {
+                    DoctorServicesModel doctorServices = received.getDoctorServicesModel();
+                    if (doctorServices != null) {
+
+                        mReceivedDoctorServicesModel = doctorServices;
+                        mServiceCardDataViewBuilder.setReceivedDoctorDataList(doctorServices.getDoctorList());
+                        setDoctorListAdapter(isFilterApplied);
+                    }
+                }
+
                 break;
         }
 
     }
 
-    private void setDoctorListAdapter() {
+    private void setDoctorListAdapter(boolean isShowSortByClinicAndDoctorNameAdapter) {
 
         setUpViewPager();
 
         //----- to set doc data list, invisible by default -----
         if (mReceivedDoctorServicesModel != null) {
-            doConfigureDataListViewVisibility(false, false);
+
             if (mReceivedDoctorServicesModel.getDoctorList().size() > 0) {
                 mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), ServicesCardViewImpl.getReceivedDoctorDataList(), mServiceCardDataViewBuilder, RecentVisitDoctorFragment.this, this, showDoctorsRecyclerView);
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -294,6 +318,16 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 //  doubtMessage.setVisibility(View.VISIBLE);
             }
             //---set data ---------
+
+            //------manage sorted_listview visibility---
+            if (isShowSortByClinicAndDoctorNameAdapter) {
+                if (mSortByClinicAndDoctorNameAdapter != null)
+                    mSortByClinicAndDoctorNameAdapter.getFilter().filter(searchView.getText().toString());
+                doConfigureDataListViewVisibility(true, mReceivedDoctorServicesModel.getDoctorList().size() == 0 ? true : false);
+            } else {
+                doConfigureDataListViewVisibility(false, false);
+            }
+            //---------
         }
 
     }
@@ -387,7 +421,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         String specialityName = bundleData.getString(getString(R.string.clicked_item_data));
         Intent intent = new Intent(getActivity(), ServicesFilteredDoctorListActivity.class);
         bundleData.putString(getString(R.string.toolbarTitle), specialityName);
-        intent.putExtra(RescribeConstants.PICK_SPECAILITY,RescribeConstants.SORT_BY_SPECIALITY);
+        intent.putExtra(RescribeConstants.PICK_SPECAILITY, RescribeConstants.SORT_BY_SPECIALITY);
         intent.putExtras(bundleData);
         startActivity(intent);
     }
@@ -415,9 +449,10 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     public void onApplyClicked(Bundle data) {
+        isFilterApplied = true;
         BookAppointFilterRequestModel requestModel = data.getParcelable(getString(R.string.filter));
 
-        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel,null);
+        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel, null);
     }
 
     public void onResetClicked() {
@@ -449,30 +484,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         }
 
     }
-
-    // COPIED FROM BookAppointFilteredDoctorListFragment.onClickOfDoctorRowItem();
-    // NOT USING RIGHT NOW, FILTETED LISTENER MANAGE WITH SERVICECARDVIEWIMPL.java class
-    /*@Override
-    public void onClickOfDoctorRowItem(Bundle bundleData) {
-        DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
-        ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mClickedDoctorObject);
-        //------------
-        if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.doctor_details))) {
-
-            if (mClickedDoctorObject.getCategoryName().equalsIgnoreCase(getString(R.string.my_appointments))) {
-                Intent intent = new Intent(getActivity(), AppointmentActivity.class);
-                startActivity(intent);
-            } else {
-                bundleData.putString(getString(R.string.toolbarTitle), mReceivedTitle);
-                Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
-                intent.putExtras(bundleData);
-                startActivity(intent);
-            }
-        } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {
-            boolean status = mClickedDoctorObject.getFavourite() ? false : true;
-            mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
-        }
-    }*/
 
 }
 

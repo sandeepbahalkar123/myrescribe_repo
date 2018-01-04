@@ -136,6 +136,8 @@ public class DoctorDataHelper implements ConnectionListener {
         RequestDoctorListBaseModel requestDoctorListBaseModel = new RequestDoctorListBaseModel();
         requestDoctorListBaseModel.setArea(address.trim());
         requestDoctorListBaseModel.setCityName(city.trim());
+        requestDoctorListBaseModel.setDate(CommonMethods.getFormattedDate(CommonMethods.getCurrentDate(),RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD));
+        requestDoctorListBaseModel.setTime(CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.HH_mm));
         requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
         //--------In case of complaint added by user from ComplaintFragment.java---
         if (mReceivedComplaintHashMap != null) {

@@ -61,6 +61,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     private String mUserSelectedLocation;
     private ServicesCardViewImpl mServicesCardViewImpl;
     private HashMap<String, String> mComplaintHashMap;
+    private ArrayList<DoctorList> mReceivedPreviousDoctorList;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -97,6 +98,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
 
             mComplaintHashMap = (HashMap<String, String>) args.getSerializable(getString(R.string.complaints));
         }
+/// OnBackPressed of this page original list of doctor should be shown , thats why that list is set here and accessed in ServicesFilteredDoctorListActivity which is base of this fragment.
+        setReceivedPreviousDoctorList(ServicesCardViewImpl.getReceivedDoctorDataList());
         mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
         mServicesCardViewImpl = new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity());
 
@@ -105,6 +108,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     @Override
     public void onResume() {
         super.onResume();
+
         doGetReceivedListBasedOnClickedItemData();
         setDoctorListAdapter();
         ServicesFilteredDoctorListActivity activity = (ServicesFilteredDoctorListActivity) getActivity();
@@ -126,6 +130,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
 
     private void doGetReceivedListBasedOnClickedItemData() {
         //------------
+
+
 
         if (getString(R.string.doctors_speciality).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mReceivedList = mServicesCardViewImpl.filterDocListBySpeciality(mClickedItemDataValue);
@@ -190,6 +196,15 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     }
 
 
+    public ArrayList<DoctorList> getReceivedPreviousDoctorList() {
+        return mReceivedPreviousDoctorList;
+    }
+
+    public void setReceivedPreviousDoctorList(ArrayList<DoctorList> mReceivedPreviousDoctorList) {
+        if (this.mReceivedPreviousDoctorList == null)
+            this.mReceivedPreviousDoctorList = mReceivedPreviousDoctorList;
+    }
+
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
 
@@ -219,7 +234,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 break;
             case RescribeConstants.TASK_GET_DOCTOR_DATA:
                 DoctorServicesModel receivedDoctorServicesModel = DoctorDataHelper.getReceivedDoctorServicesModel();
+
                 if (receivedDoctorServicesModel != null) {
+
                     new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity()).setReceivedDoctorDataList(receivedDoctorServicesModel.getDoctorList());
                     doGetReceivedListBasedOnClickedItemData();
                     setDoctorListAdapter();

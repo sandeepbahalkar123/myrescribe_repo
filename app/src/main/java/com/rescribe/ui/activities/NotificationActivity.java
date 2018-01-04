@@ -67,9 +67,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
     private boolean isHeaderExpand = true;
     private RespondToNotificationHelper mRespondToNotificationHelper;
     private ArrayList<Medication> mTodayDataList;
-
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
-
     @BindView(R.id.recycler)
     RecyclerView mRecyclerView;
     @BindView(R.id.selectView)
@@ -118,12 +116,11 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                 addBottomMenu(bottomMenu);
             }
         }
-
     }
 
     private void initialize() {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(getString(R.string.notification));
+        getSupportActionBar().setTitle(getString(R.string.notifications));
         mContext = NotificationActivity.this;
         mProgressDialog = new CustomProgressDialog(mContext);
         mToolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_white_24dp, null));

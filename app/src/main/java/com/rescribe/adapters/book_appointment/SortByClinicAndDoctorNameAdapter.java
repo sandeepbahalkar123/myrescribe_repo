@@ -1,5 +1,6 @@
 package com.rescribe.adapters.book_appointment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -19,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -30,6 +30,7 @@ import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CircularImageView;
+import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -51,34 +52,39 @@ import butterknife.ButterKnife;
 public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortByClinicAndDoctorNameAdapter.ListViewHolder> implements Filterable {
 
     private final HelperResponse mHelperResponse;
+    private final RecyclerView mDoctorListView;
     private SortByClinicAndDoctorNameAdapter.OnDataListViewVisible mOnDataListViewVisibleListener;
     private Context mContext;
-    private ArrayList<DoctorList> mDataList;
+    private ArrayList<DoctorList> mDataList = new ArrayList<>();
     private ArrayList<DoctorList> mArrayList;
     private ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem;
     private String mSearchString;
-    private ColorGenerator mColorGenerator;
     private boolean isListByClinicName;
     private ImageView mClickedItemFavImageView;
     private String cityname;
-    private RecyclerView recyclerView;
 
+    CustomProgressDialog customProgressDialog;
 
-    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, SortByClinicAndDoctorNameAdapter.OnDataListViewVisible m, HelperResponse mHelperResponse, RecyclerView recyclerView) {
-        this.mDataList = dataList;
+    public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, OnDataListViewVisible m, HelperResponse mHelperResponse, RecyclerView mDoctorListView) {
         this.mContext = mContext;
+
         this.mArrayList = dataList;
+        this.mDataList.addAll(dataList);
+
+        this.mDoctorListView = mDoctorListView;
+
         this.mOnClinicAndDoctorNameSearchRowItem = mOnClinicAndDoctorNameSearchRowItem;
         this.mOnDataListViewVisibleListener = m;
         this.mHelperResponse = mHelperResponse;
-        this.recyclerView = recyclerView;
 
         String cityNameString = RescribeApplication.getUserSelectedLocationInfo().get(mContext.getString(R.string.location));
         if (cityNameString != null) {
             String[] split = cityNameString.split(",");
             cityname = split[1].trim();
         }
-        mColorGenerator = ColorGenerator.MATERIAL;
+
+        customProgressDialog = new CustomProgressDialog(mContext);
+        customProgressDialog.setCancelable(false);
     }
 
     @Override
@@ -368,11 +374,29 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
                 String charString = charSequence.toString();
                 mSearchString = charString;
+
+                /*if (charString.length() > 0 && charString.length() < 3) {
+                    ((Activity) mContext).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            customProgressDialog.show();
+                        }
+                    });
+                }*/
+
+                mDataList.clear();
+
                 if (charString.isEmpty()) {
-                    mDataList.clear();
                     mDataList.addAll(mArrayList);
                 } else {
-                    ArrayList<DoctorList> filteredList = new ArrayList<>();
+                    Set filteredList = new TreeSet(new Comparator() {
+                        @Override
+                        public int compare(Object o1, Object o2) {
+                            if (((DoctorList) o1).getDocId() == ((DoctorList) o2).getDocId())
+                                return 0;
+                            return 1;
+                        }
+                    });
 
                     for (DoctorList doctorConnectModel : mArrayList) {
                         String docName = doctorConnectModel.getDocName();
@@ -381,7 +405,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                             docName = docName.replace("Dr. ", "");
                         }
                         //---
-                        if (docName.toLowerCase().contains(/*mContext.getString(R.string.dr).toLowerCase() + " " + */ charString.toLowerCase())) {
+                        if (docName.toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(doctorConnectModel);
                         } else {
                             for (ClinicData dataObj :
@@ -395,25 +419,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                         }
 
                     }
-                    //--removed duplicate doctors based on docID--
-                    if (!filteredList.isEmpty()) {
-
-                        Set set = new TreeSet(new Comparator() {
-                            @Override
-                            public int compare(Object o1, Object o2) {
-                                if(((DoctorList)o1).getDocId() == ((DoctorList)o2).getDocId()){
-                                    return 0;
-                                }
-                                return 1;
-                            }
-                        });
-                        set.addAll(filteredList);
-                        mDataList.clear();
-                        mDataList.addAll(set);
-
-                    } else
-                        mDataList.clear();
-                    //----
+                    mDataList.addAll(filteredList);
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = mDataList;
@@ -422,14 +428,25 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mDataList = (ArrayList<DoctorList>) filterResults.values;
-                if (mDataList.size() == 0) {
+
+                String charString = charSequence.toString();
+
+//                mDataList = (ArrayList<DoctorList>) filterResults.values;
+                if (mDataList.isEmpty())
                     mOnDataListViewVisibleListener.doConfigureDataListViewVisibility(true, true);
-                } else {
+                else
                     mOnDataListViewVisibleListener.doConfigureDataListViewVisibility(true, false);
-                }
 
                 notifyDataSetChanged();
+
+                /*if (charString.length() > 0 && charString.length() < 3) {
+                    ((Activity) mContext).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            customProgressDialog.dismiss();
+                        }
+                    });
+                }*/
             }
         };
     }

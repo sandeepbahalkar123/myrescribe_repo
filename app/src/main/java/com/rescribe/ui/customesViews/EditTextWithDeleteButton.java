@@ -17,7 +17,6 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.rescribe.R;
-import com.rescribe.util.CommonMethods;
 
 
 public class EditTextWithDeleteButton extends LinearLayout {
@@ -99,7 +98,8 @@ public class EditTextWithDeleteButton extends LinearLayout {
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         // Identifier of the action. This will be either the identifier you supplied,
                         // or EditorInfo.IME_NULL if being called due to the enter key being pressed.
-                        mOnKeyboardKeyPressedInEditTextListener.onKeyPressed(actionId,event);
+                        if (mOnKeyboardKeyPressedInEditTextListener != null)
+                            mOnKeyboardKeyPressedInEditTextListener.onKeyPressed(actionId,event);
                         // Return true if you have consumed the action, else false.
                         return true;
                     }

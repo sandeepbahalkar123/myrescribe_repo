@@ -369,7 +369,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 String charString = charSequence.toString();
                 mSearchString = charString;
                 if (charString.isEmpty()) {
-                    mDataList = mArrayList;
+                    mDataList.clear();
+                    mDataList.addAll(mArrayList);
                 } else {
                     ArrayList<DoctorList> filteredList = new ArrayList<>();
 
@@ -410,9 +411,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                         mDataList.clear();
                         mDataList.addAll(set);
 
-                    } else {
-                        mDataList = filteredList;
-                    }
+                    } else
+                        mDataList.clear();
                     //----
                 }
                 FilterResults filterResults = new FilterResults();

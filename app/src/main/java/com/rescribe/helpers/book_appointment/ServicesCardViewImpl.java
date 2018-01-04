@@ -12,9 +12,9 @@ import com.rescribe.interfaces.services.IServicesCardViewClickListener;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
+import com.rescribe.ui.activities.book_appointment.DoctorDescriptionBaseActivity;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
-import com.rescribe.ui.activities.book_appointment.DoctorDescriptionBaseActivity;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -175,14 +175,15 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
 
     public ArrayList<DoctorList> getFavouriteDocList(int size) {
         HashMap<Integer, DoctorList> tempMap = new HashMap<>();
-        for (DoctorList docObject :
-                mReceivedDoctorDataList) {
-            if (docObject.getFavourite()) {
-                DoctorList doctorList = tempMap.get(docObject.getDocId());
-                if (doctorList == null)
-                    tempMap.put(docObject.getDocId(), docObject);
+        if (mReceivedDoctorDataList != null)
+            for (DoctorList docObject :
+                    mReceivedDoctorDataList) {
+                if (docObject.getFavourite()) {
+                    DoctorList doctorList = tempMap.get(docObject.getDocId());
+                    if (doctorList == null)
+                        tempMap.put(docObject.getDocId(), docObject);
+                }
             }
-        }
         ArrayList<DoctorList> temp = new ArrayList<>(tempMap.values());
         if (size != -1)
             if (temp.size() > size) {

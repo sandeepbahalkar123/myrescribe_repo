@@ -421,7 +421,7 @@
         <!-- [END fcm_default_channel] -->
 
         <!-- [START firebase_service] -->
-        <service android:name=".services.fcm.MyFirebaseMessagingService">
+        <service android:name=".services.fcm.FCMService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

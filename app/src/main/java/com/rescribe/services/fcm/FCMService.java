@@ -26,9 +26,6 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.rescribe.R;
@@ -36,12 +33,29 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.HomePageActivity;
 
 import java.util.HashMap;
-import java.util.Map;
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class FCMService extends FirebaseMessagingService {
 
+    public static final String MSG = "msg";
+    public static final String DOC_ID = "docId";
+    public static final String PROFILE_PIC_URL = "profilePicUrl";
+    public static final String CLINIC_NAME = "clinicName";
+    public static final String DOC_NAME = "docName";
+    public static final String DOC_SPECIALITY = "docSpeciality";
+    public static final String DEGREE = "degree";
+    public static final String PRICE = "price";
+    public static final String RATING = "rating";
+    public static final String FAVORITE = "favorite";
+    public static final String LOCATION_ID = "locationId";
+    public static final String APPOINTMENT_TIME = "appointmentTime";
+    public static final String TOKEN_NUMBER = "tokenNumber";
+    public static final String PATIENT_ID = "patientId";
+    public static final String WAITING_TIME = "waitingTime";
+    
     private static final String TAG = "MyFirebaseMsgService";
     public static final String TOKEN_DATA = "token_data";
+
+    public static final String TOKEN_DATA_ACTION = "token_data_action";
 
     /**
      * Called when message is received.
@@ -61,8 +75,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // messages. For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
         // [END_EXCLUDE]
 
-        int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, MyFirebaseMessagingService.this);
-        RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, preCount + 1, MyFirebaseMessagingService.this);
+        int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, FCMService.this);
+        RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, preCount + 1, FCMService.this);
 
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
@@ -82,7 +96,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         if (remoteMessage.getData().size() > 0)
-            sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getData());
+            sendNotification(remoteMessage.getNotification().getBody(), new HashMap<String, String>(remoteMessage.getData()));
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -108,10 +122,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *  @param messageBody FCM message body received.
      * @param data
      */
-    private void sendNotification(String messageBody, Map<String, String> data) {
+    private void sendNotification(String messageBody, HashMap<String, String> data) {
         Intent intent = new Intent(this, HomePageActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        intent.putExtra(TOKEN_DATA, data);
+        intent.putExtra(TOKEN_DATA, data);
+        intent.setAction(TOKEN_DATA_ACTION);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

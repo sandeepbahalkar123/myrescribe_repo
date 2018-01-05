@@ -65,7 +65,7 @@ import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.services.fcm.MyFirebaseMessagingService;
+import com.rescribe.services.fcm.FCMService;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointFindLocation;
@@ -193,8 +193,14 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
 
-//        Intent intent = getIntent();
-//        HashMap<String, String> hashMap = (HashMap<String, String>)intent.getSerializableExtra(MyFirebaseMessagingService.TOKEN_DATA);
+        Intent intent = getIntent();
+
+        if (intent.getAction() != null) {
+            if (intent.getAction().equals(FCMService.TOKEN_DATA_ACTION)) {
+                HashMap<String, String> tokenData = (HashMap<String, String>) intent.getSerializableExtra(FCMService.TOKEN_DATA);
+                showTokenDialog(tokenData);
+            }
+        }
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -974,7 +980,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         super.onDestroy();
     }
 
-    public void showTokenDialog(String msg) {
+    public void showTokenDialog(HashMap<String, String> tokenData) {
 
         final Dialog dialog = new Dialog(this);
 
@@ -984,7 +990,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
 
-        ((TextView) dialog.findViewById(R.id.textview_sucess)).setText(msg);
+        ((TextView) dialog.findViewById(R.id.textview_sucess)).setText(tokenData.get(FCMService.MSG));
 
         dialog.findViewById(R.id.button_yes).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -46,6 +46,7 @@ import com.rescribe.model.my_records.MyRecordsDoctorListModel;
 import com.rescribe.model.my_records.RequestAddDoctorModel;
 import com.rescribe.model.my_records.VisitDate;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -78,7 +79,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
     @BindView(R.id.uploadButton)
     Button uploadButton;
     @BindView(R.id.doctorImage)
-    ImageView doctorImage;
+    CircularImageView doctorImage;
     @BindView(R.id.doctorSpecialist)
     TextView doctorSpecialist;
     @BindView(R.id.doctorName)

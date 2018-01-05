@@ -280,6 +280,7 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dp14"
                             android:orientation="horizontal">
 
                             <com.rescribe.ui.customesViews.CustomTextView

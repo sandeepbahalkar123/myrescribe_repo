@@ -106,6 +106,9 @@
                 android:id="@+id/gMapLocationView"
                 android:layout_width="@dimen/dp35"
                 android:layout_height="@dimen/dp35"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/dp6"
+                android:layout_marginRight="@dimen/dp6"
                 android:paddingTop="@dimen/dp6"
                 android:src="@drawable/location" />
         </LinearLayout>

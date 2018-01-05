@@ -81,6 +81,9 @@ public class DoctorList implements Parcelable, Cloneable {
     private String nameOfClinicString = "";
     private String addressOfDoctorString = "";
 
+    private String spannable;
+    private boolean doctorSearch;
+
     /*  @SerializedName("reviewList")
     @Expose
     private ArrayList<ReviewList> reviewList = null;*/
@@ -113,6 +116,8 @@ public class DoctorList implements Parcelable, Cloneable {
             instance.sizeOfList = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.addressOfDoctorString = ((String) in.readValue((String.class.getClassLoader())));
             instance.nameOfClinicString = ((String) in.readValue((String.class.getClassLoader())));
+            instance.spannable = ((String) in.readValue((String.class.getClassLoader())));
+            instance.doctorSearch = ((boolean) in.readValue((String.class.getClassLoader())));
             //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
             return instance;
         }
@@ -294,7 +299,24 @@ public class DoctorList implements Parcelable, Cloneable {
     public void setAptTime(String aptTime) {
         this.aptTime = aptTime;
     }
-/* public ArrayList<ReviewList> getReviewList() {
+
+    public String getSpannable() {
+        return spannable;
+    }
+
+    public void setSpannable(String spannable) {
+        this.spannable = spannable;
+    }
+
+    public boolean isDoctorSearch() {
+        return doctorSearch;
+    }
+
+    public void setDoctorSearch(boolean doctorSearch) {
+        this.doctorSearch = doctorSearch;
+    }
+
+    /* public ArrayList<ReviewList> getReviewList() {
         return reviewList;
     }
 
@@ -325,6 +347,8 @@ public class DoctorList implements Parcelable, Cloneable {
         dest.writeValue(sizeOfList);
         dest.writeValue(addressOfDoctorString);
         dest.writeValue(nameOfClinicString);
+        dest.writeValue(spannable);
+        dest.writeValue(doctorSearch);
     }
 
 

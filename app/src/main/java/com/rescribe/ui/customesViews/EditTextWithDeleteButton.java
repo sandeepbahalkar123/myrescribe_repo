@@ -99,7 +99,7 @@ public class EditTextWithDeleteButton extends LinearLayout {
                         // Identifier of the action. This will be either the identifier you supplied,
                         // or EditorInfo.IME_NULL if being called due to the enter key being pressed.
                         if (mOnKeyboardKeyPressedInEditTextListener != null)
-                            mOnKeyboardKeyPressedInEditTextListener.onKeyPressed(actionId,event);
+                            mOnKeyboardKeyPressedInEditTextListener.onKeyPressed(actionId, event);
                         // Return true if you have consumed the action, else false.
                         return true;
                     }
@@ -187,7 +187,7 @@ public class EditTextWithDeleteButton extends LinearLayout {
     }
 
     public interface OnKeyboardDoneKeyPressedInEditTextListener {
-        void onKeyPressed(int actionId,KeyEvent event);
+        void onKeyPressed(int actionId, KeyEvent event);
     }
 
     public void addClearTextButtonListener(OnClearButtonClickedInEditTextListener onClearButtonClickedInEditTextListener) {

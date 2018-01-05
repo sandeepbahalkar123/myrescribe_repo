@@ -90,8 +90,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:gravity="end"
+            android:layout_marginEnd="@dimen/dp5"
+            android:orientation="vertical"
+            android:layout_marginRight="@dimen/dp5">
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/appointmentsTimeStamp"
@@ -106,9 +108,6 @@
                 android:id="@+id/gMapLocationView"
                 android:layout_width="@dimen/dp35"
                 android:layout_height="@dimen/dp35"
-                android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/dp6"
-                android:layout_marginRight="@dimen/dp6"
                 android:paddingTop="@dimen/dp6"
                 android:src="@drawable/location" />
         </LinearLayout>

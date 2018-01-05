@@ -508,7 +508,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                 if (mSortByPriceNameFilterAdapter != null) {
                     String[] split = mSortByPriceNameFilterAdapter.getSelectedSortedOption().split("\\|");
                     if (split.length == 2) {
-                        bookAppointFilterRequestModel.setSortBy(split[0]);
+                        bookAppointFilterRequestModel.setSortBy(split[0].toLowerCase());
                         bookAppointFilterRequestModel.setSortOrder(split[1]);
                     }
                 }

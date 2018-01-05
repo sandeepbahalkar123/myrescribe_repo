@@ -40,7 +40,6 @@ import butterknife.ButterKnife;
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.ListViewHolder> {
 
 
-    private String mCurrentDate;
     private String mAppointmentType;
     private Context mContext;
     private ArrayList<AptList> appointmentsList;
@@ -104,7 +103,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, RescribeConstants.DATE);
 
             DateFormat dateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.YYYY_MM_DD, Locale.US);
-            mCurrentDate = dateFormat.format(new Date());
+            String mCurrentDate = dateFormat.format(new Date());
 
             if (mCurrentDate.equalsIgnoreCase(timeStamp)) {// for Current date
                 holder.appointmentsTimeStamp.setText(timeToShow);

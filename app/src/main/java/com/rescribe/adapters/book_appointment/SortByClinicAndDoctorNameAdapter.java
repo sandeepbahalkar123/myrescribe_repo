@@ -170,18 +170,23 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 .into(holder.imageURL);
         //---------------
 
-        SpannableString spannableStringSearch = new SpannableString(doctorObject.isDoctorSearch() ? doctorName : doctorObject.getNameOfClinicString());
-        Pattern pattern = Pattern.compile(doctorObject.getSpannable(), Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(doctorObject.isDoctorSearch() ? doctorName : doctorObject.getNameOfClinicString());
-        while (matcher.find()) {
-            spannableStringSearch.setSpan(new ForegroundColorSpan(
-                            ContextCompat.getColor(mContext, R.color.tagColor)),
-                    matcher.start(), matcher.end(),//hightlight mSearchString
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (doctorObject.getSpannable() != null) {
+            SpannableString spannableStringSearch = new SpannableString(doctorObject.isDoctorSearch() ? doctorName : doctorObject.getNameOfClinicString());
+            Pattern pattern = Pattern.compile(doctorObject.getSpannable(), Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(doctorObject.isDoctorSearch() ? doctorName : doctorObject.getNameOfClinicString());
+            while (matcher.find()) {
+                spannableStringSearch.setSpan(new ForegroundColorSpan(
+                                ContextCompat.getColor(mContext, R.color.tagColor)),
+                        matcher.start(), matcher.end(),//hightlight mSearchString
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            //-------
+            holder.doctorName.setText(doctorObject.isDoctorSearch() ? spannableStringSearch : doctorName);
+            holder.clinicName.setText(doctorObject.isDoctorSearch() ? doctorObject.getClinicDataList().get(0).getClinicName() : spannableStringSearch);
+        } else {
+            holder.doctorName.setText(doctorName);
+            holder.clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
         }
-        //-------
-        holder.doctorName.setText(doctorObject.isDoctorSearch() ? spannableStringSearch : doctorName);
-        holder.clinicName.setText(doctorObject.isDoctorSearch() ? doctorObject.getClinicDataList().get(0).getClinicName() : spannableStringSearch);
 
         //--------------
         if (doctorObject.getClinicDataList().size() > 0) {
@@ -313,16 +318,12 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 mDataList.clear();
 
                 if (charString.isEmpty()) {
-                    mDataList.addAll(mArrayList);
+                    for (DoctorList doctorConnectModel : mArrayList) {
+                        doctorConnectModel.setSpannable(null);
+                        mDataList.add(doctorConnectModel);
+                    }
                 } else {
-                    Set filteredList = new TreeSet(new Comparator() {
-                        @Override
-                        public int compare(Object o1, Object o2) {
-                            if (((DoctorList) o1).getDocId() == ((DoctorList) o2).getDocId())
-                                return 0;
-                            return 1;
-                        }
-                    });
+                    TreeSet<DoctorList> filteredList = new TreeSet<>();
 
                     for (DoctorList doctorConnectModel : mArrayList) {
                         String docName = doctorConnectModel.getDocName();

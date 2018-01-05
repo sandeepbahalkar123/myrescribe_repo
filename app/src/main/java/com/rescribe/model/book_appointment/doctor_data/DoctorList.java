@@ -3,6 +3,7 @@ package com.rescribe.model.book_appointment.doctor_data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 
 
 //TODO : RESPONSE JSON IS GOING TO CHANGE, ONCE RESPONSE FINAL REMOVE UNWANTED VARIABLES.
-public class DoctorList implements Parcelable, Cloneable {
+public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList> {
 
     @SerializedName("docId")
     @Expose
@@ -358,6 +359,16 @@ public class DoctorList implements Parcelable, Cloneable {
 
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    @Override
+    public int compareTo(@NonNull DoctorList doctorList) {
+        if (this.docId == doctorList.getDocId()) {
+            return 0;
+        } else if (this.docId < doctorList.getDocId()) {
+            return -1;
+        }
+        return 1;
     }
 
 }

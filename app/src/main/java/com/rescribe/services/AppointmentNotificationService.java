@@ -49,8 +49,6 @@ public class AppointmentNotificationService extends Service implements HelperRes
     public static final String INTENT_NOTIFY = "com.rescribe";
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
-    private String notifyTime;
-    private String doctorName = "";
 
     @Override
     public void onCreate() {
@@ -65,7 +63,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         boolean isNotificationOn = RescribePreferencesManager.getBoolean(getString(R.string.appointment_alert), this);
 
         if (loginStatus.equals(RescribeConstants.YES) && isNotificationOn) {
-            notifyTime = intent.getStringExtra(RescribeConstants.APPOINTMENT_TIME);
+
             if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
                 AppointmentHelper appointmentHelper = new AppointmentHelper(this);
                 appointmentHelper.getDoctorList();
@@ -87,7 +85,11 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
     public void customNotification(AppointmentsNotificationData data, int index) {
 
+        //        String notificationTimeSlot = intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME);
+        String notificationTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.hh_mm_a);
+
         String drName = data.getDoctorName();
+        String doctorName = "";
         if (drName.toLowerCase().contains("dr.")) {
             doctorName = data.getDoctorName();
         } else {
@@ -142,7 +144,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.appointment));
         mRemoteViews.setTextViewText(R.id.questionText, message);
-        mRemoteViews.setTextViewText(R.id.timeText, notifyTime);
+        mRemoteViews.setTextViewText(R.id.timeText, notificationTime);
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         notificationmanager.notify(APPOINTMENT_NOTIFICATION_TAG, subNotificationId, builder.build());

@@ -2,6 +2,7 @@ package com.rescribe.ui.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -22,7 +25,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -60,6 +65,7 @@ import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.services.fcm.MyFirebaseMessagingService;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointFindLocation;
@@ -186,6 +192,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
 
         registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
+
+//        Intent intent = getIntent();
+//        HashMap<String, String> hashMap = (HashMap<String, String>)intent.getSerializableExtra(MyFirebaseMessagingService.TOKEN_DATA);
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -964,4 +973,34 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         }
         super.onDestroy();
     }
+
+    public void showTokenDialog(String msg) {
+
+        final Dialog dialog = new Dialog(this);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_token_yes_no);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+
+        ((TextView) dialog.findViewById(R.id.textview_sucess)).setText(msg);
+
+        dialog.findViewById(R.id.button_yes).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.findViewById(R.id.button_no).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
 }

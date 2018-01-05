@@ -90,6 +90,10 @@ public class InvestigationNotificationService extends Service implements HelperR
     public void customNotification(ArrayList<InvestigationData> value) {
 
         //-------------
+
+        //        String notificationTimeSlot = intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME);
+        String notificationTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.hh_mm_a);
+
         InvestigationNotification data = new InvestigationNotification();
         data.setNotifications(value);
 
@@ -144,7 +148,7 @@ public class InvestigationNotificationService extends Service implements HelperR
         mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.investigation));
 
         mRemoteViews.setTextViewText(R.id.questionText, getText(R.string.investigation_msg) + doctorName + "?");
-        mRemoteViews.setTextViewText(R.id.timeText, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
+        mRemoteViews.setTextViewText(R.id.timeText, notificationTime);
 
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationmanager.notify(INVESTIGATION_NOTIFICATION_TAG, value.get(0).getDrId(), builder.build());

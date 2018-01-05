@@ -52,8 +52,6 @@ public class NotificationService extends Service implements HelperResponse {
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
     private int notification_id;
-    private AppDBHelper appDBHelper;
-    private NotificationHelper mNotificationHelper;
     private Intent intent;
     Calendar c = Calendar.getInstance();
     int hour24 = c.get(Calendar.HOUR_OF_DAY);
@@ -78,8 +76,7 @@ public class NotificationService extends Service implements HelperResponse {
 
             // If this service was started by out DosesAlarmTask intent then we want to show our notification
             if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
-                appDBHelper = new AppDBHelper(this);
-                mNotificationHelper = new NotificationHelper(this);
+                NotificationHelper mNotificationHelper = new NotificationHelper(this);
                 mNotificationHelper.doGetNotificationList();
                 //customNotification(intent);
             } else {
@@ -102,13 +99,15 @@ public class NotificationService extends Service implements HelperResponse {
     public void customNotification(Intent intentData, Medication medication) {
         //--------------
         String medicineSlot = intentData.getStringExtra(RescribeConstants.MEDICINE_SLOT);
-        String notificationTimeSlot = intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME);
-        String title = getText(R.string.taken_medicine).toString();
+//        String notificationTimeSlot = intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME);
+        String notificationTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.hh_mm_a);
+        String title =  getText(R.string.taken_medicine).toString();
 
         //---- Save notification in db---
-        String timeStamp = CommonMethods.getCurrentDate() + " " + notificationTimeSlot;
+        String timeStamp = CommonMethods.getCurrentDate() + " " + notificationTime;
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
-        int id = (int) System.currentTimeMillis();
+        int id = medication.getId();
+
         medication.setUnreadNotificationMessageDataID("" + id);
         medication.setUnreadNotificationMessageDataTimeStamp(timeStamp);
 
@@ -131,7 +130,7 @@ public class NotificationService extends Service implements HelperResponse {
         Intent mNotifyNoIntent = new Intent(this, ClickOnNotificationReceiver.class);
         mNotifyNoIntent.putExtra(RescribeConstants.MEDICINE_SLOT, medicineSlot);
         mNotifyNoIntent.putExtra(RescribeConstants.NOTIFICATION_DATE, intentData.getStringExtra(RescribeConstants.NOTIFICATION_DATE));
-        mNotifyNoIntent.putExtra(RescribeConstants.NOTIFICATION_TIME, notificationTimeSlot);
+        mNotifyNoIntent.putExtra(RescribeConstants.NOTIFICATION_TIME, notificationTime);
         mNotifyNoIntent.putExtra(RescribeConstants.MEDICINE_NAME, intentData.getBundleExtra(RescribeConstants.MEDICINE_NAME));
         mNotifyNoIntent.putExtra(RescribeConstants.NOTIFICATION_ID, notification_id);
         mNotifyNoIntent.putExtra(getString(R.string.unread_notification_update_received), id);
@@ -159,7 +158,7 @@ public class NotificationService extends Service implements HelperResponse {
 
         mRemoteViews.setTextViewText(R.id.showMedicineName, medicineSlot);
         mRemoteViews.setTextViewText(R.id.questionText, medicineData+"?");
-        mRemoteViews.setTextViewText(R.id.timeText, notificationTimeSlot);
+        mRemoteViews.setTextViewText(R.id.timeText, notificationTime);
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification build = builder.build();
         // build.flags |= Notification.FLAG_INSISTENT;
@@ -171,7 +170,7 @@ public class NotificationService extends Service implements HelperResponse {
             //----------
             Intent popup = new Intent(getApplicationContext(), SnoozeAlarmNotifyActivity.class);
             popup.putExtra(RescribeConstants.MEDICINE_SLOT, medicineSlot);
-            popup.putExtra(RescribeConstants.NOTIFICATION_TIME, notificationTimeSlot);
+            popup.putExtra(RescribeConstants.NOTIFICATION_TIME, notificationTime);
             popup.putExtra(RescribeConstants.NOTIFICATION_ID, "" + notification_id);
             popup.putExtra(RescribeConstants.TITLE, title);
             popup.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);

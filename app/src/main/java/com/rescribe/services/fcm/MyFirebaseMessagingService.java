@@ -33,12 +33,15 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.rescribe.R;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.services.NotificationService;
 import com.rescribe.ui.activities.HomePageActivity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
+    public static final String TOKEN_DATA = "token_data";
 
     /**
      * Called when message is received.
@@ -65,20 +68,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
-        // Check if message contains a data payload.
+       /* // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
             scheduleJob();
 
-        }
+        }*/
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
-        sendNotification(remoteMessage.getNotification().getBody());
+        if (remoteMessage.getData().size() > 0)
+            sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getData());
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -88,7 +92,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * Schedule a job using FirebaseJobDispatcher.
      */
-    private void scheduleJob() {
+    /*private void scheduleJob() {
         // [START dispatch_job]
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
         Job myJob = dispatcher.newJobBuilder()
@@ -97,16 +101,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .build();
         dispatcher.schedule(myJob);
         // [END dispatch_job]
-    }
+    }*/
 
     /**
      * Create and show a simple notification containing the received FCM message.
-     *
-     * @param messageBody FCM message body received.
+     *  @param messageBody FCM message body received.
+     * @param data
      */
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String messageBody, Map<String, String> data) {
         Intent intent = new Intent(this, HomePageActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.putExtra(TOKEN_DATA, data);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
@@ -126,6 +131,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(321 /* ID of notification */, notificationBuilder.build());
     }
 }

@@ -13,6 +13,10 @@
         android:text="Nagpur"
         android:drawableTint="@color/tagColor"
         android:button="@null"
-        android:textColor="@color/tagColor"
-        android:textSize="@dimen/sp14" />
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginStart="@dimen/dp16"
+        android:layout_marginEnd="@dimen/dp14"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp16"
+        android:layout_marginRight="@dimen/dp14" />
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -107,16 +108,16 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             setBottomMenu();
             int paddingPixel = 30;
             float density = getResources().getDisplayMetrics().density;
-            int paddingDp = (int)(paddingPixel * density);
+            int paddingDp = (int) (paddingPixel * density);
             bookAppointmentBackButton.setVisibility(View.GONE);
-            mTitleView.setPadding(paddingDp,0,0,0);
+            mTitleView.setPadding(paddingDp, 0, 0, 0);
 
         } else {
             int paddingPixel = 16;
             float density = getResources().getDisplayMetrics().density;
-            int paddingDp = (int)(paddingPixel * density);
+            int paddingDp = (int) (paddingPixel * density);
             bookAppointmentBackButton.setVisibility(View.VISIBLE);
-            mTitleView.setPadding(paddingDp,0,0,0);
+            mTitleView.setPadding(paddingDp, 0, 0, 0);
         }
         //------
         locationTextView.setVisibility(View.VISIBLE);
@@ -142,8 +143,42 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mRecentVisitDoctorFragment).commit();
         //-----------
         //----------
-        mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
-        getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                //Called when a drawer's position changes.
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                //Called when a drawer has settled in a completely open state.
+                //The drawer is interactive at this point.
+                // If you have 2 drawers (left and right) you can distinguish
+                // them by using id of the drawerView. int id = drawerView.getId();
+                // id will be your layout's id: for example R.id.left_drawer
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                // Called when a drawer has settled in a completely closed state.
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
+            }
+        });
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
+        }, 100);
 
     }
 
@@ -203,7 +238,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             case R.id.locationTextView:
                 //    BookAppointDoctorListBaseActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
                 Intent start = new Intent(this, BookAppointFindLocation.class);
-                start.putExtra(getString(R.string.opening_mode),getString(R.string.book_appointment));
+                start.putExtra(getString(R.string.opening_mode), getString(R.string.book_appointment));
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
         }

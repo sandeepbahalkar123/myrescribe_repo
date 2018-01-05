@@ -111,6 +111,7 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
             public void run() {
                 mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
         }, 100);
 

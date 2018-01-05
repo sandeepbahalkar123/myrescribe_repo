@@ -157,6 +157,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         RescribeApplication.setPreviousUserSelectedLocationInfo(this, null, null);
         mContext = HomePageActivity.this;
         appDBHelper = new AppDBHelper(mContext);
+        mDashboardHelper = new DashboardHelper(this, this);
 
         //----------
         //----------
@@ -218,6 +219,23 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                         HomePageActivityPermissionsDispatcher.getWritePermissionWithCheck(HomePageActivity.this);
                         break;
                     case Activity.RESULT_CANCELED:
+                        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+                        if (userSelectedLocationInfo.get(mContext.getString(R.string.location)) == null) {
+                            String lastCapturedLocation = RescribePreferencesManager.getString(getString(R.string.location), mContext);
+                            if (!lastCapturedLocation.isEmpty()) {
+                                try {
+                                    Double lat = Double.valueOf(RescribePreferencesManager.getString(getString(R.string.latitude), mContext));
+                                    Double lng = Double.valueOf(RescribePreferencesManager.getString(getString(R.string.longitude), mContext));
+                                    LatLng location = new LatLng(lat, lng);
+                                    RescribeApplication.setUserSelectedLocationInfo(mContext, location, lastCapturedLocation);
+                                    String[] split = lastCapturedLocation.split(",");
+                                    mDashboardHelper.doGetDashboard(split[1]);
+                                } catch (NumberFormatException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }
                         break;
                 }
                 break;
@@ -717,7 +735,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 else startLocationUpdates();
             } else {
                 String[] split = locationReceived.split(",");
-                mDashboardHelper = new DashboardHelper(this, this);
                 mDashboardHelper.doGetDashboard(split[1]);
                 Double lat = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.latitude)));
                 Double lng = Double.valueOf(userSelectedLocationInfo.get(getString(R.string.longitude)));

@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
-
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.maps.model.LatLng;
@@ -18,7 +17,6 @@ import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadS
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -67,8 +65,11 @@ public class RescribeApplication extends MultiDexApplication {
     }
 
     public static void setUserSelectedLocationInfo(Context ctx, LatLng data, String locationText) {
+        RescribePreferencesManager.putString(ctx.getString(R.string.location),locationText,ctx);
         userSelectedLocationInfo.put(ctx.getString(R.string.location), locationText);
         if (data != null) {
+            RescribePreferencesManager.putString(ctx.getString(R.string.latitude), "" + data.latitude,ctx);
+            RescribePreferencesManager.putString(ctx.getString(R.string.longitude), "" + data.longitude,ctx);
             userSelectedLocationInfo.put(ctx.getString(R.string.latitude), "" + data.latitude);
             userSelectedLocationInfo.put(ctx.getString(R.string.longitude), "" + data.longitude);
         }

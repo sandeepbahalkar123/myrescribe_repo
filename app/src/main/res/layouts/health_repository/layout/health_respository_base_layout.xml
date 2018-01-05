@@ -34,10 +34,10 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="@dimen/dp8"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+            android:elevation="@dimen/dp8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true"
@@ -56,9 +56,9 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:background="@drawable/bg" />
+                    android:background="@drawable/services_bg" />
 
 
                 <android.support.v7.widget.RecyclerView

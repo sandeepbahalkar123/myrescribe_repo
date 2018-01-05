@@ -110,6 +110,15 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private ArrayList<DoctorList> mPreviousLoadedDocList;
     private boolean isFilterApplied = false;
 
+    public ArrayList<DoctorList> getmReceivedPreviousDoctorList() {
+        return mReceivedPreviousDoctorList;
+    }
+
+    public void setmReceivedPreviousDoctorList(ArrayList<DoctorList> mReceivedPreviousDoctorList) {
+        this.mReceivedPreviousDoctorList = mReceivedPreviousDoctorList;
+    }
+
+    private ArrayList<DoctorList> mReceivedPreviousDoctorList;
     public RecentVisitDoctorFragment() {
 
     }

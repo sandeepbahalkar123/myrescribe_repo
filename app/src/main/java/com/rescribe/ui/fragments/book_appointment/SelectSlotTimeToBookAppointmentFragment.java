@@ -474,9 +474,13 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 }
                 break;
             case RescribeConstants.TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER:
-            case RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION:
                 CommonBaseModelContainer temp1 = (CommonBaseModelContainer) customResponse;
                 CommonMethods.showToast(getActivity(), temp1.getCommonRespose().getStatusMessage());
+                getActivity().finish();
+                break;
+            case RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION:
+                CommonBaseModelContainer temp2 = (CommonBaseModelContainer) customResponse;
+                CommonMethods.showToast(getActivity(), temp2.getCommonRespose().getStatusMessage());
                 break;
         }
     }
@@ -846,6 +850,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             public void onClick(View v) {
                 mDoctorDataHelper.doSetTokenNotificationReminder(mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
                 dialog.cancel();
+
             }
         });
         //------------

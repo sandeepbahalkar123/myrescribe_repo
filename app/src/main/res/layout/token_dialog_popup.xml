@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
@@ -39,8 +40,8 @@
             </LinearLayout>
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/circular_shape_vital_bg"
                 android:padding="@dimen/dp20"
@@ -63,57 +64,72 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/dp20"
-                    android:layout_marginRight="@dimen/dp20"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/dp16">
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/messageView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp20"
+                        android:layout_marginRight="@dimen/dp20"
                         android:gravity="center|left"
-                        android:text="Sorry, currently there is no other token number
-available. Would you like to get notified as soon
-as any token number for today is available?"
                         android:textColor="@color/range_label_color"
                         android:textSize="@dimen/sp14"
-                        app:customFont="@string/roboto_regular" />
+                        app:customFont="@string/roboto_regular"
+                        tools:text="@string/get_token_msg" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp20"
-                        android:layout_marginRight="@dimen/dp20"
                         android:orientation="horizontal"
                         android:paddingTop="@dimen/dp16">
 
-                        <android.support.v7.widget.AppCompatButton
-                            android:id="@+id/yesButton"
+                        <RelativeLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/token_popup_rounded_rectangle_blue"
-                            android:gravity="center"
-                            android:text="@string/yes"
-                            android:textAllCaps="true"
-                            android:textColor="@color/white"
-                            android:textSize="14sp"
-                            app:customFont="@string/roboto_medium" />
+                            android:layout_marginLeft="@dimen/dp20"
+                            android:layout_marginStart="@dimen/dp20"
+                            android:layout_weight="1">
 
-                        <android.support.v7.widget.AppCompatButton
-                            android:id="@+id/noButton"
+                            <android.support.v7.widget.AppCompatButton
+                                android:id="@+id/yesButton"
+                                android:layout_width="97dp"
+                                android:layout_height="@dimen/dp28"
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/token_popup_rounded_rectangle_blue"
+                                android:gravity="center"
+                                android:text="@string/yes"
+                                android:textAllCaps="true"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                app:customFont="@string/roboto_medium" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp10"
-                            android:layout_weight="1"
-                            android:background="@drawable/rounded_blue_border"
-                            android:gravity="center"
-                            android:text="@string/no"
-                            android:textAllCaps="true"
-                            android:textColor="@color/tagColor"
-                            android:textSize="14sp"
-                            app:customFont="@string/roboto_medium" />
+                            android:layout_marginEnd="@dimen/dp20"
+                            android:layout_marginRight="@dimen/dp20"
+                            android:layout_weight="1">
+
+                            <android.support.v7.widget.AppCompatButton
+                                android:id="@+id/noButton"
+                                android:layout_width="97dp"
+                                android:layout_height="@dimen/dp28"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="@dimen/dp10"
+                                android:background="@drawable/rounded_blue_border"
+                                android:gravity="center"
+                                android:text="@string/no"
+                                android:textAllCaps="true"
+                                android:textColor="@color/tagColor"
+                                android:textSize="14sp"
+                                app:customFont="@string/roboto_medium" />
+
+                        </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
 

@@ -38,6 +38,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
@@ -61,6 +62,7 @@ import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.login.ActiveRequest;
+import com.rescribe.model.token.FCMTokenData;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
@@ -197,8 +199,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         if (intent.getAction() != null) {
             if (intent.getAction().equals(FCMService.TOKEN_DATA_ACTION)) {
-                HashMap<String, String> tokenData = (HashMap<String, String>) intent.getSerializableExtra(FCMService.TOKEN_DATA);
-                showTokenDialog(tokenData);
+                FCMTokenData fcmTokenData = intent.getParcelableExtra(FCMService.TOKEN_DATA);
+                showTokenDialog(fcmTokenData);
             }
         }
     }
@@ -980,7 +982,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         super.onDestroy();
     }
 
-    public void showTokenDialog(HashMap<String, String> tokenData) {
+    public void showTokenDialog(FCMTokenData tokenData) {
 
         final Dialog dialog = new Dialog(this);
 
@@ -990,7 +992,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
 
-        ((TextView) dialog.findViewById(R.id.textview_sucess)).setText(tokenData.get(FCMService.MSG));
+        ((TextView) dialog.findViewById(R.id.textview_sucess)).setText(tokenData.getMsg());
 
         dialog.findViewById(R.id.button_yes).setOnClickListener(new View.OnClickListener() {
             @Override

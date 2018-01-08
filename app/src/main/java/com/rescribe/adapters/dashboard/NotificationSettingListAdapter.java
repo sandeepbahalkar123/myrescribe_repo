@@ -2,6 +2,7 @@ package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +87,14 @@ public class NotificationSettingListAdapter extends RecyclerView.Adapter<Notific
                 listener.onClick(clickOption, v1.isChecked());
             }
         });*/
-
+        holder.radioSwitch.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                SwitchButton v1 = (SwitchButton) v;
+                listener.onClick(clickOption, v1.isChecked());
+                return false;
+            }
+        });
         holder.radioSwitch.setAnimationDuration(250);
         holder.radioSwitch.setChecked(RescribePreferencesManager.getBoolean(clickOption.getName(), mContext));
 

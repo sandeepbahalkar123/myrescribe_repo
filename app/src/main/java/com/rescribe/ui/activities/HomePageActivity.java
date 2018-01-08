@@ -109,7 +109,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         GoogleApiClient.OnConnectionFailedListener, GoogleSettingsApi.LocationSettings {
 
     private static final String TAG = "HomePage";
-
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.viewPagerDoctorItem)
@@ -145,7 +144,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     GoogleApiClient mGoogleApiClient;
     Location mCurrentLocation;
     String mLastUpdateTime;
-
     private String profileImageString;
     private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
 

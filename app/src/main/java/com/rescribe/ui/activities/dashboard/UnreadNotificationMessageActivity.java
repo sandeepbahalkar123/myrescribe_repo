@@ -78,11 +78,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     RecyclerView mInvestigationsListView;
     @BindView(R.id.unreadTokenNotificationListView)
     RecyclerView mUnreadTokenNotificationListView;
-    //----------
-
     @BindView(R.id.onGoingMedicationListView)
     RecyclerView mOnGoingMedicationListView;
-    //------------
     @BindView(R.id.onGoingMedicationListViewLayout)
     LinearLayout mOnGoingMedicationListViewLayout;
     @BindView(R.id.investigationsListViewLayout)
@@ -103,11 +100,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     CustomTextView mInvestigationFirstMessageTimeStamp;
     @BindView(R.id.doctorConnectFirstMessageTimeStamp)
     CustomTextView mDoctorConnectFirstMessageTimeStamp;
-
     @BindView(R.id.emptyListMessageView)
     ImageView emptyListMessageView;
-
-    //-----------
     private UnreadAppointmentNotificationAlert mAppointmentNotificationAlertAdapter;
     private UnreadAppointmentNotificationAlert mInvestigationNotificationAlertAdapter;
     private UnreadChatNotificationList mUnreadChatNotificationListAdapter;
@@ -115,14 +109,10 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     private SectionedRecyclerViewAdapter mUnreadMedicationNotificationAdapter;
     private ArrayList<UnreadSavedNotificationMessageData> mUnreadMedicationNotificationMessageDataList;
     private String mMedicationCheckBoxClickedData;
-    //--------------
     private DoctorDataHelper mDoctorDataHelper;
     private RespondToNotificationHelper mMedicationToNotificationHelper;
-
-    //-------
     private InvestigationHelper mInvestigationHelper;
     private UnreadSavedNotificationMessageData mClickedUnreadInvestigationMessageData;
-    //-------
     private boolean isMedicationLoadMoreFooterClickedPreviously = false;
     public boolean isAllListEmpty = true;
 
@@ -195,6 +185,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         if (medicationAlertList.isEmpty()) {
             mOnGoingMedicationListViewLayout.setVisibility(View.GONE);
         } else {
+            isAllListEmpty = false;
             mMedicationToNotificationHelper = new RespondToNotificationHelper(this, this);
             mOnGoingMedicationListViewLayout.setVisibility(View.VISIBLE);
             setMedicationAlertListAdapter(medicationAlertList, isMedicationLoadMoreFooterClickedPreviously);
@@ -413,7 +404,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         mMedicationToNotificationHelper.doRespondToNotificationForNotificationAdapter(
                 Integer.valueOf(RescribePreferencesManager.getString(
                         RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this)),
-                slotType, medication.getMedicineId(), presDate, 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition);
+                slotType, medication.getMedicineId(), presDate, 0, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition);
 
     }
 

@@ -49,6 +49,7 @@
                     android:layout_gravity="right"
                     android:paddingLeft="@dimen/dp5"
                     android:paddingRight="@dimen/dp5"
+                    android:paddingTop="@dimen/dp4"
                     android:textColor="@color/grey_shade"
                     android:textSize="@dimen/sp11"
                     android:visibility="invisible"
@@ -61,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/dp5"
                     android:paddingRight="@dimen/dp5"
-                    android:text="Do you want to confirm the token number available with Dr. Sachin Patil for 10:00 pm today?"
+                    tools:text="Do you want to confirm the token number available with Dr. Sachin Patil for 10:00 pm today?"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp13"
                     app:customFont="@string/roboto_medium" />
@@ -104,7 +105,7 @@
                         android:layout_gravity="right"
                         android:gravity="right"
                         android:text="@string/more"
-                        android:textColor="@color/tagColor"
+                        android:textColor="@color/statusbar"
                         android:textSize="@dimen/sp12"
                         app:customFont="@string/roboto_medium" />
                 </RelativeLayout>

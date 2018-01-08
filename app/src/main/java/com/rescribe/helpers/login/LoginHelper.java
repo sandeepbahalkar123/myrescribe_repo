@@ -128,7 +128,7 @@ public class LoginHelper implements ConnectionListener {
 
     // Logout
     public void doLogout(ActiveRequest activeRequest) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.LOGOUT, Request.Method.POST, false);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.LOGOUT, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setPostParams(activeRequest);
         mConnectionFactory.setUrl(Config.LOGOUT);

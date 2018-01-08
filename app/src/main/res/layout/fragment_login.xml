@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_marginTop="@dimen/dp20"
             android:paddingLeft="@dimen/dp30"
             android:paddingRight="@dimen/dp30">
 
@@ -54,7 +55,7 @@
             <EditText
                 android:id="@+id/editTextPassword"
                 style="@style/AppLoginNewMainStyle"
-                android:layout_marginTop="@dimen/dp8"
+                android:layout_marginTop="@dimen/dp10"
                 android:hint="@string/enter_password"
                 android:inputType="textPassword"
                 android:textStyle="bold"
@@ -63,20 +64,25 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp1"
-                android:background="@color/white" />
+                android:background="@color/white" />Ap
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/btnOtp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
-                android:layout_marginBottom="@dimen/dp16"
-                android:layout_marginTop="@dimen/dp16"
+                android:layout_marginBottom="@dimen/dp25"
+                android:layout_marginTop="@dimen/dp25"
                 android:background="@drawable/rectangle_box"
-                android:drawablePadding="@dimen/dp10"
+                android:drawablePadding="@dimen/dp16"
                 android:drawableRight="@drawable/layer_20"
                 android:gravity="center_vertical"
-                android:padding="@dimen/dp10"
+                android:paddingTop="@dimen/dp6"
+                android:paddingBottom="@dimen/dp6"
+                android:paddingLeft="@dimen/dp8"
+                android:paddingStart="@dimen/dp8"
+                android:paddingEnd="@dimen/dp8"
+                android:paddingRight="@dimen/dp8"
                 android:text="@string/using_otp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp16"

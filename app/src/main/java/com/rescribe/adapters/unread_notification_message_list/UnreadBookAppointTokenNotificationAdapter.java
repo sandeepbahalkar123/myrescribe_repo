@@ -48,7 +48,7 @@ public class UnreadBookAppointTokenNotificationAdapter extends RecyclerView.Adap
     @Override
     public void onBindViewHolder(final UnreadBookAppointTokenNotificationAdapter.FileViewHolder holder, final int position) {
         final UnreadBookAppointTokenNotificationData unreadNotificationMessageData = mListToBeUsed.get(position);
-        //holder.text.setText(unreadNotificationMessageData.getNotificationMsg());
+        holder.text.setText(unreadNotificationMessageData.getNotificationMsg());
 
         //---- To show icon for first element based on notification type----
         if (position == 0) {

@@ -92,7 +92,7 @@
                                 android:paddingBottom="@dimen/dp13"
                                 android:paddingLeft="@dimen/dp5"
                                 android:text="@string/skip"
-                                android:textColor="@color/tagColor"
+                                android:textColor="@color/no_color"
                                 android:textSize="@dimen/sp12"
                                 android:visibility="gone"
                                 app:customFont="@string/roboto_medium" />
@@ -110,7 +110,7 @@
                                 android:paddingBottom="@dimen/dp13"
                                 android:paddingLeft="@dimen/dp5"
                                 android:paddingRight="@dimen/dp5"
-                                android:textColor="@color/tagColor"
+                                android:textColor="@color/statusbar"
                                 android:textSize="@dimen/sp12"
                                 app:customFont="@string/roboto_medium" />
                         </LinearLayout>

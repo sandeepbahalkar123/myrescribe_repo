@@ -193,15 +193,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
 
         registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
-
-        Intent intent = getIntent();
-
-        if (intent.getAction() != null) {
-            if (intent.getAction().equals(FCMService.TOKEN_DATA_ACTION)) {
-                HashMap<String, String> tokenData = (HashMap<String, String>) intent.getSerializableExtra(FCMService.TOKEN_DATA);
-                showTokenDialog(tokenData);
-            }
-        }
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -995,35 +986,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             mUpdateAppUnreadNotificationCount = null;
         }
         super.onDestroy();
-    }
-
-    public void showTokenDialog(HashMap<String, String> tokenData) {
-
-        final Dialog dialog = new Dialog(this);
-
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_token_yes_no);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-
-        ((TextView) dialog.findViewById(R.id.textview_sucess)).setText(tokenData.get(FCMService.MSG));
-
-        dialog.findViewById(R.id.button_yes).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.findViewById(R.id.button_no).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
     }
 
 }

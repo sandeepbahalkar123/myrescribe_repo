@@ -1,6 +1,7 @@
 package com.rescribe.ui.activities.book_appointment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,11 +11,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.rescribe.R;
-import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.services.fcm.FCMService;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.SelectSlotTimeToBookAppointmentFragment;
-import com.rescribe.util.RescribeConstants;
 
 import java.util.HashMap;
 
@@ -41,6 +41,7 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
     HashMap<String, String> userSelectedLocationInfo;
     private SelectSlotTimeToBookAppointmentFragment mSelectSlotTimeToBookAppointmentFragment;
     private Context mContext;
+    private HashMap<String, String> tokenData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,14 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
 
     private void initialize() {
         mContext = SelectSlotToBookAppointmentBaseActivity.this;
+
+        Intent intent = getIntent();
+
+        if (intent.getAction() != null) {
+            if (intent.getAction().equals(FCMService.TOKEN_DATA_ACTION))
+                tokenData = (HashMap<String, String>) intent.getSerializableExtra(FCMService.TOKEN_DATA);
+        }
+
         showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
       /*  String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK_GET_TOKEN, mContext);
@@ -64,7 +73,7 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
         if (extras == null) {
             extras = new Bundle();
         }
-        title.setText("" + extras.getString(getString(R.string.toolbarTitle)));
+        title.setText(extras.getString(getString(R.string.toolbarTitle)));
 
         //extras.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         // extras.putString(getString(R.string.clicked_item_data_type_value), getIntent().getStringExtra(getString(R.string.clicked_item_data_type_value)));

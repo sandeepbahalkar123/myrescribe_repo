@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.rescribe.R;
-import com.rescribe.services.fcm.FCMService;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.SelectSlotTimeToBookAppointmentFragment;
@@ -21,6 +20,9 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.rescribe.services.fcm.FCMService.TOKEN_DATA;
+import static com.rescribe.services.fcm.FCMService.TOKEN_DATA_ACTION;
 
 /**
  * Created by jeetal on 1/11/17.
@@ -41,7 +43,6 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
     HashMap<String, String> userSelectedLocationInfo;
     private SelectSlotTimeToBookAppointmentFragment mSelectSlotTimeToBookAppointmentFragment;
     private Context mContext;
-    private HashMap<String, String> tokenData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +55,6 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
 
     private void initialize() {
         mContext = SelectSlotToBookAppointmentBaseActivity.this;
-
-        /*Intent intent = getIntent();
-
-        if (intent.getAction() != null) {
-            if (intent.getAction().equals(FCMService.TOKEN_DATA_ACTION))
-                tokenData = (HashMap<String, String>) intent.getSerializableExtra(FCMService.TOKEN_DATA);
-        }*/
-
         showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
       /*  String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK_GET_TOKEN, mContext);
@@ -69,11 +62,20 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
             coachmark.setVisibility(View.GONE);
         }*/
         userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
-        Bundle extras = getIntent().getExtras();
+
+        Intent intent = getIntent();
+
+        Bundle extras = intent.getExtras();
         if (extras == null) {
             extras = new Bundle();
         }
         title.setText(extras.getString(getString(R.string.toolbarTitle)));
+
+        if (intent.getAction() != null) {
+            if (intent.getAction().equals(TOKEN_DATA_ACTION)) {
+                extras.putParcelable(TOKEN_DATA, intent.getParcelableExtra(TOKEN_DATA));
+            }
+        }
 
         //extras.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         // extras.putString(getString(R.string.clicked_item_data_type_value), getIntent().getStringExtra(getString(R.string.clicked_item_data_type_value)));
@@ -104,4 +106,3 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
     }
 
 }
-

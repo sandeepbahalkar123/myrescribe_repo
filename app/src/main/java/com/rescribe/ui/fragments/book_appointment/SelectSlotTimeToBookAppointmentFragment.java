@@ -4,19 +4,20 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatButton;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.format.DateFormat;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,8 +56,8 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
 import com.rescribe.model.doctor_connect.ChatDoctor;
+import com.rescribe.model.token.FCMTokenData;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
@@ -70,12 +71,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.rescribe.services.fcm.FCMService.TOKEN_DATA;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 /**
@@ -175,8 +179,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private DatePickerDialog mDatePickerDialog;
     private String mSelectedTimeStampForNewToken;
     private ColorGenerator mColorGenerator;
-    private String toolbarTitle;
     private Bundle bundleData;
+    private FCMTokenData fcmTokenData;
 
 
     public SelectSlotTimeToBookAppointmentFragment() {
@@ -247,12 +251,11 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         mSelectDateTime.setText(dayFromDate + ", " + simpleDateFormat.format(new Date()));
         //----------
 
-
         Bundle arguments = getArguments();
         if (arguments != null) {
+            fcmTokenData = arguments.getParcelable(TOKEN_DATA);
             activityOpeningFrom = arguments.getString(getString(R.string.clicked_item_data_type_value));
             mSelectedClinicDataPosition = arguments.getInt(getString(R.string.selected_clinic_data_position), -1);
-            toolbarTitle = arguments.getString(getString(R.string.toolbarTitle));
         }
         //--------------
 
@@ -448,7 +451,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     boolean isUpdated = ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
                     //----THIS IS DONE FOR, WHEN PAGE OPENED FROM CHAT_ACTIVITY---
                     if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom) && isUpdated) {
-                        mClickedDoctorObject.setFavourite(mClickedDoctorObject.getFavourite() ? false : true);
+                        mClickedDoctorObject.setFavourite(!mClickedDoctorObject.getFavourite());
                     }
                     //-------
                     if (mClickedDoctorObject.getFavourite()) {
@@ -469,7 +472,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         mScheduledAppointmentsTimeStamp.setText("" + clinicTokenDetails.getScheduledTimeStamp());
                         mReceivedTokenNumber.setText("" + clinicTokenDetails.getTokenNumber());
                     } else {
-                        showTokenStatusMessageBox(getActivity(), common.getStatusMessage());
+                        showTokenStatusMessageBox(-1, common.getStatusMessage(), mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
                     }
                 }
                 break;
@@ -525,6 +528,11 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 mConfirmedTokenMainLayout.setVisibility(View.GONE);
                 mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
                 mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
+
+                if (fcmTokenData != null) {
+                    showTokenStatusMessageBox(fcmTokenData.getTokenNumber(), fcmTokenData.getMsg(), fcmTokenData.getTime(), fcmTokenData.getDocId(), fcmTokenData.getLocationId());
+                }
+
             } else {
                 setDataInViews();
                 changeViewBasedOnAppointmentType();
@@ -645,7 +653,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 receivedDate = cc.getTime();
                 //-----------
                 String formattedCurrentDateString = CommonMethods.formatDateTime(CommonMethods.getCurrentDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DD_MM_YYYY, RescribeConstants.DATE);
-                SimpleDateFormat dateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                SimpleDateFormat dateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.YYYY_MM_DD, Locale.US);
                 String receivedDateString = dateFormat.format(receivedDate);
                 //------------
                 Date currentDate = new Date();
@@ -734,7 +742,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 //------------
 
                 String selectedDate = CommonMethods.getFormattedDate(mSelectedTimeSlotDate, RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.YYYY_MM_DD, Locale.US);
                 String maxDate = simpleDateFormat.format(mMaxDateRange);
                 //--------
                 // IF MIXED, FOR SELECTED DATE == CURRENT DATE --> TOKEN FLOW WILL WORK
@@ -833,24 +841,42 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     }
 
-    public void showTokenStatusMessageBox(Context context, String message) {
+    public void showTokenStatusMessageBox(final int tokenNumber, String message, final String mSelectedTimeStampForNewT, final int mDocId, final int mLocationId) {
 
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(mContext);
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.token_dialog_popup);
         dialog.setCancelable(true);
 
         TextView messageView = (TextView) dialog.findViewById(R.id.messageView);
-        messageView.setText(message);
+
+        String textToStyle = "Sorry";
+
+        if (message.contains(textToStyle)) {
+            SpannableString spannableStringSearch = new SpannableString(message);
+            Pattern pattern = Pattern.compile(textToStyle, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(message);
+            while (matcher.find()) {
+                spannableStringSearch.setSpan(new ForegroundColorSpan(Color.RED),
+                        matcher.start(), matcher.end(),//hightlight mSearchString
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableStringSearch.setSpan(new StyleSpan(Typeface.BOLD), matcher.start(), matcher.end(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            }
+
+            messageView.setText(spannableStringSearch);
+        } else messageView.setText(message);
+
         //-----------------
         TextView yesButton = (TextView) dialog.findViewById(R.id.yesButton);
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDoctorDataHelper.doSetTokenNotificationReminder(mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
+                if (tokenNumber != -1)
+                    mDoctorDataHelper.doConfirmBookAppointReceivedToken(mSelectedTimeStampForNewT, mDocId, mLocationId, tokenNumber);
+                else
+                    mDoctorDataHelper.doSetTokenNotificationReminder(mSelectedTimeStampForNewT, mDocId, mLocationId);
                 dialog.cancel();
-
             }
         });
         //------------

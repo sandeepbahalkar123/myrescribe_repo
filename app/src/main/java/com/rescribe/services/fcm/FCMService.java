@@ -30,16 +30,18 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.rescribe.R;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.token.FCMTokenData;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.ui.activities.HomePageActivity;
+import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 
 import java.util.HashMap;
 
 import static com.rescribe.util.RescribeConstants.TOKEN_NOTIFICATION_TAG;
 
 public class FCMService extends FirebaseMessagingService {
-    
+
     private static final String TAG = "MyFirebaseMsgService";
     public static final String TOKEN_DATA = "token_data";
 
@@ -51,23 +53,8 @@ public class FCMService extends FirebaseMessagingService {
         super.onDeletedMessages();
     }
 
-    /**
-     * Called when message is received.
-     *
-     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
-     */
-    // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        // [START_EXCLUDE]
-        // There are two types of messages data messages and notification messages. Data messages are handled
-        // here in onMessageReceived whether the app is in the foreground or background. Data messages are the type
-        // traditionally used with GCM. Notification messages are only received here in onMessageReceived when the app
-        // is in the foreground. When the app is in the background an automatically generated notification is displayed.
-        // When the user taps on the notification they are returned to the app. Messages containing both notification
-        // and data payloads are treated as notification messages. The Firebase console always sends notification
-        // messages. For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
-        // [END_EXCLUDE]
 
         int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, FCMService.this);
         RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, preCount + 1, FCMService.this);
@@ -108,7 +95,8 @@ public class FCMService extends FirebaseMessagingService {
 
     /**
      * Create and show a simple notification containing the received FCM message.
-     *  @param messageBody FCM message body received.
+     *
+     * @param messageBody FCM message body received.
      * @param data
      */
     private void sendNotification(String messageBody, HashMap<String, String> data) {
@@ -122,10 +110,18 @@ public class FCMService extends FirebaseMessagingService {
         Gson gson = new Gson();
         FCMTokenData fcmTokenData = gson.fromJson(dataText, FCMTokenData.class);
 
-        Intent intent = new Intent(this, HomePageActivity.class);
+        Intent intent = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(TOKEN_DATA, fcmTokenData);
         intent.setAction(TOKEN_DATA_ACTION);
+
+        // call book appointment
+        intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
+        intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+        DoctorList doctorListData1 = new DoctorList();
+        doctorListData1.setDocId(fcmTokenData.getDocId());
+        ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData1);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

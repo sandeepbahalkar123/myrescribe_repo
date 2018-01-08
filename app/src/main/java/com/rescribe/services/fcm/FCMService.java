@@ -28,34 +28,28 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 import com.rescribe.R;
+import com.rescribe.model.token.FCMTokenData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.HomePageActivity;
 
 import java.util.HashMap;
 
-public class FCMService extends FirebaseMessagingService {
+import static com.rescribe.util.RescribeConstants.TOKEN_NOTIFICATION_TAG;
 
-    public static final String MSG = "msg";
-    public static final String DOC_ID = "docId";
-    public static final String PROFILE_PIC_URL = "profilePicUrl";
-    public static final String CLINIC_NAME = "clinicName";
-    public static final String DOC_NAME = "docName";
-    public static final String DOC_SPECIALITY = "docSpeciality";
-    public static final String DEGREE = "degree";
-    public static final String PRICE = "price";
-    public static final String RATING = "rating";
-    public static final String FAVORITE = "favorite";
-    public static final String LOCATION_ID = "locationId";
-    public static final String APPOINTMENT_TIME = "appointmentTime";
-    public static final String TOKEN_NUMBER = "tokenNumber";
-    public static final String PATIENT_ID = "patientId";
-    public static final String WAITING_TIME = "waitingTime";
+public class FCMService extends FirebaseMessagingService {
     
     private static final String TAG = "MyFirebaseMsgService";
     public static final String TOKEN_DATA = "token_data";
 
     public static final String TOKEN_DATA_ACTION = "token_data_action";
+    public static final String FCM_BODY = "body";
+
+    @Override
+    public void onDeletedMessages() {
+        super.onDeletedMessages();
+    }
 
     /**
      * Called when message is received.
@@ -90,11 +84,6 @@ public class FCMService extends FirebaseMessagingService {
 
         }*/
 
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-        }
-
         if (remoteMessage.getData().size() > 0)
             sendNotification(remoteMessage.getNotification().getBody(), new HashMap<String, String>(remoteMessage.getData()));
 
@@ -123,14 +112,23 @@ public class FCMService extends FirebaseMessagingService {
      * @param data
      */
     private void sendNotification(String messageBody, HashMap<String, String> data) {
+
+        for (String name : data.keySet()) {
+            String value = data.get(name);
+            Log.d(TAG, name + " " + value);
+        }
+
+        String dataText = data.get(FCM_BODY);
+        Gson gson = new Gson();
+        FCMTokenData fcmTokenData = gson.fromJson(dataText, FCMTokenData.class);
+
         Intent intent = new Intent(this, HomePageActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(TOKEN_DATA, data);
+        intent.putExtra(TOKEN_DATA, fcmTokenData);
         intent.setAction(TOKEN_DATA_ACTION);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        String channelId = getString(R.string.default_notification_channel_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this)
@@ -146,6 +144,8 @@ public class FCMService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(321 /* ID of notification */, notificationBuilder.build());
+        if (fcmTokenData != null) {
+            notificationManager.notify(TOKEN_NOTIFICATION_TAG, fcmTokenData.getTokenNumber(), notificationBuilder.build());
+        }
     }
 }

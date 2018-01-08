@@ -49,8 +49,6 @@ public class InvestigationNotificationService extends Service implements HelperR
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
     private int notification_id;
-    private Intent intent;
-    private String doctorName;
 
     @Override
     public void onCreate() {
@@ -58,8 +56,6 @@ public class InvestigationNotificationService extends Service implements HelperR
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        this.intent = intent;
 
         String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this);
         boolean isNotificationOn = RescribePreferencesManager.getBoolean(getString(R.string.investigation_alert), this);
@@ -97,12 +93,13 @@ public class InvestigationNotificationService extends Service implements HelperR
         InvestigationNotification data = new InvestigationNotification();
         data.setNotifications(value);
 
+        String doctorName;
         if (value.get(0).getDoctorName().toLowerCase().contains("dr."))
             doctorName = value.get(0).getDoctorName();
         else
             doctorName = "Dr. " + value.get(0).getDoctorName();
 
-        String time = CommonMethods.getCurrentDate() + " " + intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME);
+        String time = CommonMethods.getCurrentDate() + " " + notificationTime;
         String message = getText(R.string.investigation_msg) + doctorName + "?";
         //--------------
 
@@ -121,7 +118,7 @@ public class InvestigationNotificationService extends Service implements HelperR
         mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, notification_id);
         mNotifyYesIntent.putExtra(getString(R.string.unread_notification_update_received), value.get(0).getDrId());
 
-        mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, intent.getStringExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME));
+        mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, notificationTime);
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, value.get(0).getDrId(), mNotifyYesIntent, 0);
 
         mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);

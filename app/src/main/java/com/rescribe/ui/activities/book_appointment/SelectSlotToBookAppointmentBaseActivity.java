@@ -55,12 +55,12 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
     private void initialize() {
         mContext = SelectSlotToBookAppointmentBaseActivity.this;
 
-        Intent intent = getIntent();
+        /*Intent intent = getIntent();
 
         if (intent.getAction() != null) {
             if (intent.getAction().equals(FCMService.TOKEN_DATA_ACTION))
                 tokenData = (HashMap<String, String>) intent.getSerializableExtra(FCMService.TOKEN_DATA);
-        }
+        }*/
 
         showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);

@@ -10,14 +10,16 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.broadcast_receivers.SnoozeAlarmNotificationReceiver;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.token.FCMTokenData;
 import com.rescribe.notification.MQTTServiceAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.fcm.FCMService;
+import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.util.RescribeConstants;
 
 import static com.rescribe.services.fcm.FCMService.TOKEN_DATA;
@@ -50,25 +52,42 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, mContext).equals(RescribeConstants.YES)) {
-                    Intent intentObj = new Intent(SplashScreenActivity.this, HomePageActivity.class);
                     if (getIntent().getExtras() != null) {
                         String dataText = getIntent().getExtras().getString(FCMService.FCM_BODY);
                         if (dataText != null) {
+
+                            Intent intent = new Intent(SplashScreenActivity.this, SelectSlotToBookAppointmentBaseActivity.class);
+
                             Gson gson = new Gson();
                             FCMTokenData fcmTokenData = gson.fromJson(dataText, FCMTokenData.class);
-                            intentObj.putExtra(TOKEN_DATA, fcmTokenData);
-                            intentObj.setAction(TOKEN_DATA_ACTION);
+                            intent.putExtra(TOKEN_DATA, fcmTokenData);
+                            intent.setAction(TOKEN_DATA_ACTION);
+
+                            // call book appointment
+                            intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
+                            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+                            DoctorList doctorListData1 = new DoctorList();
+                            doctorListData1.setDocId(fcmTokenData.getDocId());
+                            ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData1);
+
+                            startActivity(intent);
 
                             int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, mContext);
                             RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, preCount + 1, mContext);
-                        }
-                    }
-                    startActivity(intentObj);
+
+                        } else callDashBoard();
+                    } else
+                        callDashBoard();
                 } else {
                     Intent intentObj = new Intent(SplashScreenActivity.this, LoginSignUpActivity.class);
                     startActivity(intentObj);
                 }
                 finish();
+            }
+
+            private void callDashBoard() {
+                Intent intentObj = new Intent(SplashScreenActivity.this, HomePageActivity.class);
+                startActivity(intentObj);
             }
         }, RescribeConstants.TIME_STAMPS.THREE_SECONDS);
 

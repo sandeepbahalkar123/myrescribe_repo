@@ -68,7 +68,7 @@
                     android:orientation="vertical"
                     android:paddingTop="@dimen/dp16">
 
-                    <com.rescribe.ui.customesViews.CustomTextView
+                    <TextView
                         android:id="@+id/messageView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -77,7 +77,6 @@
                         android:gravity="center|left"
                         android:textColor="@color/range_label_color"
                         android:textSize="@dimen/sp14"
-                        app:customFont="@string/roboto_regular"
                         tools:text="@string/get_token_msg" />
 
                     <LinearLayout

@@ -13,9 +13,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.ObjectKey;
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.IconImage;
 import com.rescribe.R;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.Config;
 
 import java.util.ArrayList;
 
@@ -26,11 +26,14 @@ import java.util.ArrayList;
 public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
     private final int widthPixelOfBanner;
-    private ArrayList<IconImage> mDataList;
+    private ArrayList<String> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
 
-    public ShowBackgroundViewPagerAdapter(Context context, ArrayList<IconImage> doctorLists) {
+    private final static String FOLDER_PATH = "images/dashboard/cardBgImage/android/";
+    private String density;
+
+    public ShowBackgroundViewPagerAdapter(Context context, ArrayList<String> doctorLists) {
         this.mContext = context;
         this.mDataList = doctorLists;
 
@@ -40,6 +43,8 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
         widthPixelOfBanner = metrics.widthPixels;
 
         mInflater = LayoutInflater.from(context);
+
+        density = CommonMethods.getDeviceResolution(mContext) + "/";
     }
 
     @Override
@@ -62,15 +67,12 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.override(widthPixelOfBanner - 20);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
 
-        if (mDataList.get(position).getTime().isEmpty()) {
-            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-            requestOptions.skipMemoryCache(true);
-        } else
-            requestOptions.signature(new ObjectKey(mDataList.get(position).getTime()));
-
+        String imageURL = Config.BASE_URL + FOLDER_PATH + density + mDataList.get(position);
         Glide.with(mContext)
-                .load(mDataList.get(position).getUrl())
+                .load(imageURL)
                 .apply(requestOptions)
                 .into(dashboardBackgroundLayout);
 

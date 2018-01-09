@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.ObjectKey;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.ServicesAdapter;
 import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
@@ -25,6 +24,7 @@ import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.Config;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +36,10 @@ import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
  */
 
 public class BookAppointmentServices extends AppCompatActivity implements IOnMenuClickListener {
+
+    private static final String FOLDER_PATH = "images/dashboard/menu/healthservices/android/";
+    private String density;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.img_group_photo)
@@ -65,6 +69,7 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("");
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
@@ -88,6 +93,9 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
 
     private void initialize() {
         mContext = BookAppointmentServices.this;
+
+        density = CommonMethods.getDeviceResolution(mContext) + "/";
+
         //------Load background image : START------
         ClickEvent clickEvent1 = mReceivedDashboardMenuListData.getClickEvent();
         if (clickEvent1 != null) {
@@ -95,15 +103,13 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
 
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
+                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.skipMemoryCache(true);
 
-                if (clickEvent1.getBgImageUrl().getTime().isEmpty()) {
-                    requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                    requestOptions.skipMemoryCache(true);
-                } else
-                    requestOptions.signature(new ObjectKey(clickEvent1.getBgImageUrl().getTime()));
+                String imageURL = Config.BASE_URL + FOLDER_PATH + density + clickEvent1.getBgImageUrl();
 
                 Glide.with(this)
-                        .load(clickEvent1.getBgImageUrl().getUrl())
+                        .load(imageURL)
                         .apply(requestOptions)
                         .into(imgGroupPhoto);
             }

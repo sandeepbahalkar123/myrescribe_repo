@@ -27,7 +27,6 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.ObjectKey;
 import com.heinrichreimersoftware.materialdrawer.R;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 
@@ -117,7 +116,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 
     public void setUpAdapterForBottomSheet(String patientImageUrl, String patientName, String patientMobileNo) {
 
-        mMobileNumber.setText("+91 - "+patientMobileNo);
+        mMobileNumber.setText("+91 - " + patientMobileNo);
         mPatientName.setText(patientName);
 
         int color2 = mColorGenerator.getColor(patientName);
@@ -175,19 +174,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
                 }
             });
 
-            RequestOptions requestOptions = new RequestOptions()
-                    .centerInside()
-                    .override(getResources().getDimensionPixelSize(R.dimen.bottom_sheet_icon_size));
-
-            if (bottomSheetMenus.get(i).getIconImageUrl().getTime().isEmpty()) {
-                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                requestOptions.skipMemoryCache(true);
-            } else
-                requestOptions.signature(new ObjectKey(bottomSheetMenus.get(i).getIconImageUrl().getTime()));
-
-            Glide.with(menuBottomIcon.getContext())
-                    .load(bottomSheetMenus.get(i).getIconImageUrl().getUrl()).apply(requestOptions)
-                    .into(menuBottomIcon);
+            menuBottomIcon.setImageDrawable(bottomSheetMenu.getIconImageUrl());
 
             tableRow.setGravity(Gravity.CENTER);
             tableRow.addView(item);

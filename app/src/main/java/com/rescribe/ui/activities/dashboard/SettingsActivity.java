@@ -16,6 +16,7 @@ import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
+import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.adapters.settings.SettingsAdapter;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -44,6 +45,7 @@ import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticles;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import net.gotev.uploadservice.UploadService;
@@ -55,6 +57,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
+import static com.rescribe.util.RescribeConstants.DRAWABLE;
 
 /**
  * Created by jeetal on 3/11/17.
@@ -62,6 +65,7 @@ import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
 public class SettingsActivity extends BottomMenuActivity implements BottomMenuAdapter.OnBottomMenuClickListener, SettingsAdapter.OnClickOofSettingItemListener, HelperResponse {
 
+    private static final String TAG = "SettingsActivity";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
@@ -103,7 +107,11 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             bottomSheetMenus.clear();
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
             BottomMenu bottomMenu = new BottomMenu();
-            bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
+            int resourceId = getResources().getIdentifier(dashboardBottomMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+            if (resourceId > 0)
+                bottomMenu.setMenuIcon(getResources().getDrawable(resourceId));
+            else
+                CommonMethods.Log(TAG, "Resource does not exist");
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
             bottomMenu.setNotificationCount(notificationCount);
@@ -121,12 +129,18 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
                 for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
                     if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl().getUrl();
+                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
                     }
                     if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                         bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
-                        bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
+
+                        int resourceId = getResources().getIdentifier(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+                        if (resourceId > 0)
+                            bottomSheetMenu.setIconImageUrl(getResources().getDrawable(resourceId));
+                        else
+                            CommonMethods.Log(TAG, "Resource does not exist");
+
                         bottomSheetMenu.setNotificationCount(notificationCount);
 
                         //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());

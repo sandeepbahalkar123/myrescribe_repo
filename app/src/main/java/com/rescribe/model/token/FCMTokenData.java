@@ -53,9 +53,6 @@ public class FCMTokenData implements Parcelable {
     @SerializedName("favorite")
     @Expose
     private Boolean favorite;
-    @SerializedName("time")
-    @Expose
-    private String time;
 
     public final static Parcelable.Creator<FCMTokenData> CREATOR = new Creator<FCMTokenData>() {
 
@@ -89,7 +86,6 @@ public class FCMTokenData implements Parcelable {
         this.locationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.tokenNumber = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.favorite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-        this.time = ((String) in.readValue((String.class.getClassLoader())));
     }
 
     public FCMTokenData() {
@@ -215,14 +211,6 @@ public class FCMTokenData implements Parcelable {
         this.favorite = favorite;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(msg);
         dest.writeValue(clinicName);
@@ -239,7 +227,6 @@ public class FCMTokenData implements Parcelable {
         dest.writeValue(locationId);
         dest.writeValue(tokenNumber);
         dest.writeValue(favorite);
-        dest.writeValue(time);
     }
 
     public int describeContents() {

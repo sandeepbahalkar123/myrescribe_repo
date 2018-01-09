@@ -78,6 +78,8 @@ public class RescribeConstants {
 
     public static final String DOCTOR_OBJECT = "services";
 
+    public static final String DRAWABLE = "drawable";
+
     //Click codes
     public static final String CLICK_DELETE = RescribeConstants.BLANK + 0;
     public static final String CLICK_EXPAND_VIEW = RescribeConstants.BLANK + 1;

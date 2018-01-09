@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,9 +33,11 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
+import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.adapters.dashboard.MenuOptionsDashBoardAdapter;
 import com.rescribe.adapters.dashboard.ShowBackgroundViewPagerAdapter;
@@ -52,6 +55,7 @@ import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
+import com.rescribe.model.dashboard_api.DashboardMenuData;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.login.ActiveRequest;
@@ -77,6 +81,7 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.RescribeConstants;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -93,6 +98,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import static com.rescribe.ui.activities.book_appointment.BookAppointFindLocation.REQUEST_CHECK_SETTINGS;
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
+import static com.rescribe.util.RescribeConstants.DRAWABLE;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
 /**
@@ -105,6 +111,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         GoogleApiClient.OnConnectionFailedListener, GoogleSettingsApi.LocationSettings {
 
     private static final String TAG = "HomePage";
+    @BindView(R.id.custom_progress_bar)
+    RelativeLayout custom_progress_bar;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.viewPagerDoctorItem)
@@ -125,7 +133,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     int Min = c.get(Calendar.MINUTE);
     ArrayList<DoctorList> mDashboardDoctorListsToShowDashboardDoctor;
     private int widthPixels;
+
     DashboardDataModel mDashboardDataModel;
+    DashboardMenuData mDashboardMenuData;
+
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     private ServicesCardViewImpl mDashboardDataBuilder;
     private AppDBHelper appDBHelper;
@@ -150,20 +161,20 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         ButterKnife.bind(this);
         RescribeApplication.setPreviousUserSelectedLocationInfo(this, null, null);
         mContext = HomePageActivity.this;
+
         appDBHelper = new AppDBHelper(mContext);
         mDashboardHelper = new DashboardHelper(this, this);
 
-        //----------
-        //----------
+        doConfigureMenuOptions();
+
+        custom_progress_bar.setVisibility(View.VISIBLE);
+
+        appDBHelper = new AppDBHelper(mContext);
         createLocationRequest();
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
-
-        //-------
         mDashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
-
         mDashboardDataBuilder = new ServicesCardViewImpl(this, this);
 
-        //------
         String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
         LoginHelper loginHelper = new LoginHelper(mContext, HomePageActivity.this);
         ActiveRequest activeRequest = new ActiveRequest();
@@ -367,6 +378,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
                     if (bottomMenus.isEmpty() || bottomSheetMenus.isEmpty())
                         doConfigureMenuOptions();
+
+                    custom_progress_bar.setVisibility(View.GONE);
                 }
                 break;
 
@@ -426,7 +439,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
         viewPagerDoctorItem.setPageMargin(pager_margin);
 
-        ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, mDashboardDataModel.getCardBgImageUrlList());
+        ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, mDashboardMenuData.getCardBgImageUrlList());
         viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
 
@@ -455,17 +468,17 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-        ///  mCustomProgressDialog.cancel();
+        custom_progress_bar.setVisibility(View.GONE);
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
-        //  mCustomProgressDialog.cancel();
+        custom_progress_bar.setVisibility(View.GONE);
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        // mCustomProgressDialog.cancel();
+        custom_progress_bar.setVisibility(View.GONE);
     }
 
 
@@ -563,6 +576,21 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     private void doConfigureMenuOptions() {
 
+        try {
+            InputStream is = mContext.getAssets().open("dashboard_menu.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+
+            mDashboardMenuData = new Gson().fromJson(json, DashboardMenuData.class);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+
         int appCount = RescribeApplication.doGetUnreadNotificationCount(this, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
         int invCount = RescribeApplication.doGetUnreadNotificationCount(this, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
         int medCount = RescribeApplication.doGetUnreadNotificationCount(this, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
@@ -571,7 +599,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
 
-        ArrayList<DashboardMenuList> dashboardMenuList = mDashboardDataModel.getDashboardMenuList();
+        ArrayList<DashboardMenuList> dashboardMenuList = mDashboardMenuData.getDashboardMenuList();
         //------- Menus received from server, like find_doc,ongoing_medication : START
         MenuOptionsDashBoardAdapter mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, dashboardMenuList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -581,10 +609,16 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         //------- Menus received from server, like find_doc,ongoing_medication : START
 
         // add bottom menu : like home,setting,support
-        dashboardBottomMenuLists = mDashboardDataModel.getDashboardBottomMenuList();
+        dashboardBottomMenuLists = mDashboardMenuData.getDashboardBottomMenuList();
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
             BottomMenu bottomMenu = new BottomMenu();
-            bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
+
+            int resourceId = getResources().getIdentifier(dashboardBottomMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+            if (resourceId > 0)
+                bottomMenu.setMenuIcon(getResources().getDrawable(resourceId));
+            else
+                CommonMethods.Log(TAG, "Resource does not exist");
+
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
             bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.home)));
@@ -600,15 +634,19 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
                     ClickOption clickOption = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j);
                     if (clickOption.getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        profileImageString = clickOption.getIconImageUrl().getUrl();
+                        profileImageString = clickOption.getIconImageUrl();
                     }
                     if (!clickOption.getName().equalsIgnoreCase(getString(R.string.profile))) {
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                         bottomSheetMenu.setName(clickOption.getName());
-                        bottomSheetMenu.setIconImageUrl(clickOption.getIconImageUrl());
-                        bottomSheetMenu.setNotificationCount(notificationCount);
 
-                        //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
+                        int resourceId = getResources().getIdentifier(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+                        if (resourceId > 0)
+                            bottomSheetMenu.setIconImageUrl(getResources().getDrawable(resourceId));
+                        else
+                            CommonMethods.Log(TAG, "Resource does not exist");
+
+                        bottomSheetMenu.setNotificationCount(notificationCount);
                         addBottomSheetMenu(bottomSheetMenu);
                     }
                 }
@@ -841,49 +879,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
             Intent intent = new Intent(this, UnreadNotificationMessageActivity.class);
             startActivity(intent);
-            /*  Cursor cursor = appDBHelper.getPreferences("1");
-            String breakFastTime = "";
-            String lunchTime = "";
-            String dinnerTime = "";
-            String snacksTime = "";
-
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    breakFastTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
-                    lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
-                    dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
-                    snacksTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.SNACKS_TIME));
-                    cursor.moveToNext();
-                }
-            }
-            cursor.close();
-
-            Calendar c = Calendar.getInstance();
-            int hour24 = c.get(Calendar.HOUR_OF_DAY);
-            int Min = c.get(Calendar.MINUTE);
-
-            String mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
-            Intent intent = new Intent(this, NotificationActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            intent.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-
-            if (mGetMealTime.equals(getString(R.string.break_fast))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
-                intent.putExtra(RescribeConstants.TIME, breakFastTime);
-            } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
-                intent.putExtra(RescribeConstants.TIME, lunchTime);
-            } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
-                intent.putExtra(RescribeConstants.TIME, snacksTime);
-            } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intent.putExtra(RescribeConstants.TIME, dinnerTime);
-            } else if (mGetMealTime.isEmpty()) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intent.putExtra(RescribeConstants.TIME, dinnerTime);
-            }
-*/
 
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {
             MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();

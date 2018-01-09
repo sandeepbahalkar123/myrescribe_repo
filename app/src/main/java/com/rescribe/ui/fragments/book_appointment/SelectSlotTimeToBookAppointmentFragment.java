@@ -208,6 +208,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     }
 
     private void init() {
+        mContext = getContext();
         yearsExperienceLine.setVisibility(View.GONE);
         selectClinicLine.setVisibility(View.GONE);
         mColorGenerator = ColorGenerator.MATERIAL;
@@ -530,7 +531,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
 
                 if (fcmTokenData != null) {
-                    showTokenStatusMessageBox(fcmTokenData.getTokenNumber(), fcmTokenData.getMsg(), fcmTokenData.getTime(), fcmTokenData.getDocId(), fcmTokenData.getLocationId());
+                    showTokenStatusMessageBox(fcmTokenData.getTokenNumber(), fcmTokenData.getMsg(), null, fcmTokenData.getDocId(), fcmTokenData.getLocationId());
                 }
 
             } else {

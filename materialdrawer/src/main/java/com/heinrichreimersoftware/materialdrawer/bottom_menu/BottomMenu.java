@@ -1,12 +1,13 @@
 package com.heinrichreimersoftware.materialdrawer.bottom_menu;
 
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class BottomMenu implements Parcelable {
 
     private String menuName = "";
-    private IconImage menuIcon;
+    private Drawable menuIcon;
     private boolean isSelected;
     private boolean isAppIcon;
     private int notificationCount;
@@ -30,7 +31,7 @@ public class BottomMenu implements Parcelable {
 
     protected BottomMenu(Parcel in) {
         this.menuName = ((String) in.readValue((String.class.getClassLoader())));
-        this.menuIcon = ((IconImage) in.readValue((IconImage.class.getClassLoader())));
+        this.menuIcon = ((Drawable) in.readValue((String.class.getClassLoader())));
         this.isSelected = ((boolean) in.readValue((boolean.class.getClassLoader())));
         this.isAppIcon = ((boolean) in.readValue((boolean.class.getClassLoader())));
         this.notificationCount = ((int) in.readValue((boolean.class.getClassLoader())));
@@ -47,11 +48,11 @@ public class BottomMenu implements Parcelable {
         this.menuName = menuName;
     }
 
-    public IconImage getMenuIcon() {
+    public Drawable getMenuIcon() {
         return menuIcon;
     }
 
-    public void setMenuIcon(IconImage menuIcon) {
+    public void setMenuIcon(Drawable menuIcon) {
         this.menuIcon = menuIcon;
     }
 

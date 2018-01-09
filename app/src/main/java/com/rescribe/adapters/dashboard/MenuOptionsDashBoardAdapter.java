@@ -11,15 +11,18 @@ import android.widget.RelativeLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.ObjectKey;
+import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.rescribe.util.RescribeConstants.DRAWABLE;
 
 /**
  * Created by jeetal on 28/9/17.
@@ -28,6 +31,7 @@ import butterknife.ButterKnife;
 @SuppressWarnings("CheckResult")
 public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOptionsDashBoardAdapter.ListViewHolder> {
 
+    private static final String TAG = "MenuOption";
     private onMenuListClickListener mMenuListClickListener;
     private ArrayList<DashboardMenuList> mDashboardMenuList;
     private Context mContext;
@@ -56,25 +60,18 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
                 mMenuListClickListener.onClickOfMenu(dashboardMenuList);
             }
         });
-        
+
         if (mDashboardMenuList.get(position).getName().equals(mContext.getString(R.string.health_offers)))
             holder.healthoffersTag.setVisibility(View.VISIBLE);
         else holder.healthoffersTag.setVisibility(View.GONE);
 
-        RequestOptions requestOptions = new RequestOptions()
-                .dontAnimate()
-                .override(mContext.getResources().getDimensionPixelSize(R.dimen.menu_list_icon_size));
-
-        if (mDashboardMenuList.get(position).getIconImageUrl().getTime().isEmpty()) {
-            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-            requestOptions.skipMemoryCache(true);
-        } else
-            requestOptions.signature(new ObjectKey(mDashboardMenuList.get(position).getIconImageUrl().getTime()));
-
-        Glide.with(mContext)
-                .load(mDashboardMenuList.get(position).getIconImageUrl().getUrl())
-                .apply(requestOptions)
-                .into(holder.menuIcon);
+        int resourceId = mContext.getResources().getIdentifier(dashboardMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+        if (resourceId > 0) {
+            holder.menuIcon.setImageResource(resourceId);
+        } else {
+            // Do something is the resource does not exist
+            CommonMethods.Log(TAG, "Resource not found");
+        }
     }
 
     @Override

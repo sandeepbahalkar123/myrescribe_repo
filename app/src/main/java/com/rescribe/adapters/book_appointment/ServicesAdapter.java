@@ -11,16 +11,19 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.ObjectKey;
+import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
 import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.rescribe.util.RescribeConstants.DRAWABLE;
 
 /**
  * Created by jeetal on 15/9/17.
@@ -28,9 +31,10 @@ import butterknife.ButterKnife;
 
 public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListViewHolder> {
 
+    private static final String TAG = "ServicesAdapter";
     private Context mContext;
     private ArrayList<ClickOption> clickOptions;
-    IOnMenuClickListener onServicesClickListener;
+    private IOnMenuClickListener onServicesClickListener;
 
     public ServicesAdapter(Context mContext, ArrayList<ClickOption> clickOptions, IOnMenuClickListener bookAppointmentServices) {
         this.onServicesClickListener = bookAppointmentServices;
@@ -58,23 +62,13 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ListVi
             }
         });
 
-        //------------
-        if (clickOption.getIconImageUrl() != null) {
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.dontAnimate();
-
-            if (clickOption.getIconImageUrl().getTime().isEmpty()) {
-                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                requestOptions.skipMemoryCache(true);
-            } else
-                requestOptions.signature(new ObjectKey(clickOption.getIconImageUrl().getTime()));
-
-            Glide.with(mContext)
-                    .load(clickOption.getIconImageUrl().getUrl())
-                    .apply(requestOptions)
-                    .into(holder.serviceIcon);
+        int resourceId = mContext.getResources().getIdentifier(clickOption.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+        if (resourceId > 0) {
+            holder.serviceIcon.setImageResource(resourceId);
+        } else {
+            // Do something is the resource does not exist
+            CommonMethods.Log(TAG, "Resource not found");
         }
-        //--------------
     }
 
     @Override
